@@ -51,7 +51,7 @@ the rest:
 
 | Option | Effect |
 | --- | --- |
-| `hduhelp.WithBaseURL(url)` | Gateway base URL (default `https://open.hduhelp.com`). |
+| `hduhelp.WithBaseURL(url)` | Gateway base URL (default `https://api.hduhelp.com`). |
 | `hduhelp.WithHTTPClient(hc)` | Supply your own `*http.Client`. |
 | `hduhelp.WithReqTimeout(d)` | Per-request timeout for the built-in client (default 30s). |
 | `hduhelp.WithEnableTokenCache(b)` | Toggle automatic token management (default on). |

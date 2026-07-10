@@ -6,7 +6,7 @@ import (
 )
 
 // DefaultBaseURL is the hduhelp-neo gateway used when none is configured.
-const DefaultBaseURL = "https://open.hduhelp.com"
+const DefaultBaseURL = "https://api.hduhelp.com"
 
 // DefaultReqTimeout bounds a single API/token HTTP call when the caller does not
 // supply their own *http.Client. It prevents a hung endpoint from blocking a
