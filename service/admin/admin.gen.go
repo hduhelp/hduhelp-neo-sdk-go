@@ -489,6 +489,169 @@ func (s *Service) RevokeAuthorization(ctx context.Context, req *RevokeAuthorizat
 	return resp, err
 }
 
+// ListCampusesReq is the request for ListCampuses.
+type ListCampusesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	body        any
+}
+
+// ListCampusesReqBuilder builds a ListCampusesReq with a fluent setter per field.
+type ListCampusesReqBuilder struct{ req *ListCampusesReq }
+
+// NewListCampusesReqBuilder creates a request builder for ListCampuses.
+func NewListCampusesReqBuilder() *ListCampusesReqBuilder {
+	return &ListCampusesReqBuilder{req: &ListCampusesReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *ListCampusesReqBuilder) Build() *ListCampusesReq { return b.req }
+
+// ListCampusesResp is the response for ListCampuses.
+type ListCampusesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.AdminCampusInfo `json:"data"`
+}
+
+// ListCampuses: 校区列表
+func (s *Service) ListCampuses(ctx context.Context, req *ListCampusesReq, opts ...core.RequestOption) (*ListCampusesResp, error) {
+	resp := &ListCampusesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/campuses",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// CreateCampusReq is the request for CreateCampus.
+type CreateCampusReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	body        any
+}
+
+// CreateCampusReqBuilder builds a CreateCampusReq with a fluent setter per field.
+type CreateCampusReqBuilder struct{ req *CreateCampusReq }
+
+// NewCreateCampusReqBuilder creates a request builder for CreateCampus.
+func NewCreateCampusReqBuilder() *CreateCampusReqBuilder {
+	return &CreateCampusReqBuilder{req: &CreateCampusReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *CreateCampusReqBuilder) Body(body *models.CreateCampusRequestBody) *CreateCampusReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *CreateCampusReqBuilder) Build() *CreateCampusReq { return b.req }
+
+// CreateCampusResp is the response for CreateCampus.
+type CreateCampusResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AdminCampusInfo `json:"data"`
+}
+
+// CreateCampus: 新建校区
+func (s *Service) CreateCampus(ctx context.Context, req *CreateCampusReq, opts ...core.RequestOption) (*CreateCampusResp, error) {
+	resp := &CreateCampusResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/campuses",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// UpdateCampusReq is the request for UpdateCampus.
+type UpdateCampusReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	body        any
+}
+
+// UpdateCampusReqBuilder builds a UpdateCampusReq with a fluent setter per field.
+type UpdateCampusReqBuilder struct{ req *UpdateCampusReq }
+
+// NewUpdateCampusReqBuilder creates a request builder for UpdateCampus.
+func NewUpdateCampusReqBuilder() *UpdateCampusReqBuilder {
+	return &UpdateCampusReqBuilder{req: &UpdateCampusReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *UpdateCampusReqBuilder) Body(body *models.UpdateCampusRequestBody) *UpdateCampusReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *UpdateCampusReqBuilder) Build() *UpdateCampusReq { return b.req }
+
+// UpdateCampusResp is the response for UpdateCampus.
+type UpdateCampusResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AdminCampusInfo `json:"data"`
+}
+
+// UpdateCampus: 编辑校区
+func (s *Service) UpdateCampus(ctx context.Context, req *UpdateCampusReq, opts ...core.RequestOption) (*UpdateCampusResp, error) {
+	resp := &UpdateCampusResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/campuses",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// DeleteCampusReq is the request for DeleteCampus.
+type DeleteCampusReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	body        any
+}
+
+// DeleteCampusReqBuilder builds a DeleteCampusReq with a fluent setter per field.
+type DeleteCampusReqBuilder struct{ req *DeleteCampusReq }
+
+// NewDeleteCampusReqBuilder creates a request builder for DeleteCampus.
+func NewDeleteCampusReqBuilder() *DeleteCampusReqBuilder {
+	return &DeleteCampusReqBuilder{req: &DeleteCampusReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *DeleteCampusReqBuilder) Build() *DeleteCampusReq { return b.req }
+
+// DeleteCampusResp is the response for DeleteCampus.
+type DeleteCampusResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// DeleteCampus: 删除校区
+func (s *Service) DeleteCampus(ctx context.Context, req *DeleteCampusReq, opts ...core.RequestOption) (*DeleteCampusResp, error) {
+	resp := &DeleteCampusResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/admin/campuses",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // GetConfigReq is the request for GetConfig.
 type GetConfigReq struct {
 	pathParams  map[string]string
@@ -526,6 +689,87 @@ func (s *Service) GetConfig(ctx context.Context, req *GetConfigReq, opts ...core
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/admin/config",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// GetCaiyunConfigReq is the request for GetCaiyunConfig.
+type GetCaiyunConfigReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	body        any
+}
+
+// GetCaiyunConfigReqBuilder builds a GetCaiyunConfigReq with a fluent setter per field.
+type GetCaiyunConfigReqBuilder struct{ req *GetCaiyunConfigReq }
+
+// NewGetCaiyunConfigReqBuilder creates a request builder for GetCaiyunConfig.
+func NewGetCaiyunConfigReqBuilder() *GetCaiyunConfigReqBuilder {
+	return &GetCaiyunConfigReqBuilder{req: &GetCaiyunConfigReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *GetCaiyunConfigReqBuilder) Build() *GetCaiyunConfigReq { return b.req }
+
+// GetCaiyunConfigResp is the response for GetCaiyunConfig.
+type GetCaiyunConfigResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.CaiyunConfigData `json:"data"`
+}
+
+// GetCaiyunConfig: 获取彩云天气配置
+func (s *Service) GetCaiyunConfig(ctx context.Context, req *GetCaiyunConfigReq, opts ...core.RequestOption) (*GetCaiyunConfigResp, error) {
+	resp := &GetCaiyunConfigResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/config/caiyun",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SetCaiyunConfigReq is the request for SetCaiyunConfig.
+type SetCaiyunConfigReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	body        any
+}
+
+// SetCaiyunConfigReqBuilder builds a SetCaiyunConfigReq with a fluent setter per field.
+type SetCaiyunConfigReqBuilder struct{ req *SetCaiyunConfigReq }
+
+// NewSetCaiyunConfigReqBuilder creates a request builder for SetCaiyunConfig.
+func NewSetCaiyunConfigReqBuilder() *SetCaiyunConfigReqBuilder {
+	return &SetCaiyunConfigReqBuilder{req: &SetCaiyunConfigReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *SetCaiyunConfigReqBuilder) Body(body *models.SetCaiyunConfigRequestBody) *SetCaiyunConfigReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *SetCaiyunConfigReqBuilder) Build() *SetCaiyunConfigReq { return b.req }
+
+// SetCaiyunConfigResp is the response for SetCaiyunConfig.
+type SetCaiyunConfigResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// SetCaiyunConfig: 设置彩云天气配置
+func (s *Service) SetCaiyunConfig(ctx context.Context, req *SetCaiyunConfigReq, opts ...core.RequestOption) (*SetCaiyunConfigResp, error) {
+	resp := &SetCaiyunConfigResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/config/caiyun",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Body:         req.body,
@@ -663,6 +907,130 @@ func (s *Service) TestConnection(ctx context.Context, req *TestConnectionReq, op
 	return resp, err
 }
 
+// ListCronTasksReq is the request for ListCronTasks.
+type ListCronTasksReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	body        any
+}
+
+// ListCronTasksReqBuilder builds a ListCronTasksReq with a fluent setter per field.
+type ListCronTasksReqBuilder struct{ req *ListCronTasksReq }
+
+// NewListCronTasksReqBuilder creates a request builder for ListCronTasks.
+func NewListCronTasksReqBuilder() *ListCronTasksReqBuilder {
+	return &ListCronTasksReqBuilder{req: &ListCronTasksReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *ListCronTasksReqBuilder) Build() *ListCronTasksReq { return b.req }
+
+// ListCronTasksResp is the response for ListCronTasks.
+type ListCronTasksResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.CronTaskInfo `json:"data"`
+}
+
+// ListCronTasks: 定时任务列表
+func (s *Service) ListCronTasks(ctx context.Context, req *ListCronTasksReq, opts ...core.RequestOption) (*ListCronTasksResp, error) {
+	resp := &ListCronTasksResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/cron",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// UpdateCronTaskReq is the request for UpdateCronTask.
+type UpdateCronTaskReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	body        any
+}
+
+// UpdateCronTaskReqBuilder builds a UpdateCronTaskReq with a fluent setter per field.
+type UpdateCronTaskReqBuilder struct{ req *UpdateCronTaskReq }
+
+// NewUpdateCronTaskReqBuilder creates a request builder for UpdateCronTask.
+func NewUpdateCronTaskReqBuilder() *UpdateCronTaskReqBuilder {
+	return &UpdateCronTaskReqBuilder{req: &UpdateCronTaskReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *UpdateCronTaskReqBuilder) Body(body *models.UpdateCronTaskRequestBody) *UpdateCronTaskReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *UpdateCronTaskReqBuilder) Build() *UpdateCronTaskReq { return b.req }
+
+// UpdateCronTaskResp is the response for UpdateCronTask.
+type UpdateCronTaskResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// UpdateCronTask: 更新定时任务
+func (s *Service) UpdateCronTask(ctx context.Context, req *UpdateCronTaskReq, opts ...core.RequestOption) (*UpdateCronTaskResp, error) {
+	resp := &UpdateCronTaskResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/cron",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// RunCronTaskReq is the request for RunCronTask.
+type RunCronTaskReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	body        any
+}
+
+// RunCronTaskReqBuilder builds a RunCronTaskReq with a fluent setter per field.
+type RunCronTaskReqBuilder struct{ req *RunCronTaskReq }
+
+// NewRunCronTaskReqBuilder creates a request builder for RunCronTask.
+func NewRunCronTaskReqBuilder() *RunCronTaskReqBuilder {
+	return &RunCronTaskReqBuilder{req: &RunCronTaskReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *RunCronTaskReqBuilder) Body(body *models.RunCronTaskRequestBody) *RunCronTaskReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *RunCronTaskReqBuilder) Build() *RunCronTaskReq { return b.req }
+
+// RunCronTaskResp is the response for RunCronTask.
+type RunCronTaskResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// RunCronTask: 立即执行定时任务
+func (s *Service) RunCronTask(ctx context.Context, req *RunCronTaskReq, opts ...core.RequestOption) (*RunCronTaskResp, error) {
+	resp := &RunCronTaskResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/cron/run",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // AdminLoginReq is the request for AdminLogin.
 type AdminLoginReq struct {
 	pathParams  map[string]string
@@ -700,6 +1068,87 @@ func (s *Service) AdminLogin(ctx context.Context, req *AdminLoginReq, opts ...co
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
 		PathTemplate: "/hduhelp-neo/admin/login",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ListLoginMethodsReq is the request for ListLoginMethods.
+type ListLoginMethodsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	body        any
+}
+
+// ListLoginMethodsReqBuilder builds a ListLoginMethodsReq with a fluent setter per field.
+type ListLoginMethodsReqBuilder struct{ req *ListLoginMethodsReq }
+
+// NewListLoginMethodsReqBuilder creates a request builder for ListLoginMethods.
+func NewListLoginMethodsReqBuilder() *ListLoginMethodsReqBuilder {
+	return &ListLoginMethodsReqBuilder{req: &ListLoginMethodsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *ListLoginMethodsReqBuilder) Build() *ListLoginMethodsReq { return b.req }
+
+// ListLoginMethodsResp is the response for ListLoginMethods.
+type ListLoginMethodsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.LoginMethodItem `json:"data"`
+}
+
+// ListLoginMethods: 登录方式列表
+func (s *Service) ListLoginMethods(ctx context.Context, req *ListLoginMethodsReq, opts ...core.RequestOption) (*ListLoginMethodsResp, error) {
+	resp := &ListLoginMethodsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/login-methods",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SetLoginMethodsReq is the request for SetLoginMethods.
+type SetLoginMethodsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	body        any
+}
+
+// SetLoginMethodsReqBuilder builds a SetLoginMethodsReq with a fluent setter per field.
+type SetLoginMethodsReqBuilder struct{ req *SetLoginMethodsReq }
+
+// NewSetLoginMethodsReqBuilder creates a request builder for SetLoginMethods.
+func NewSetLoginMethodsReqBuilder() *SetLoginMethodsReqBuilder {
+	return &SetLoginMethodsReqBuilder{req: &SetLoginMethodsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *SetLoginMethodsReqBuilder) Body(body *models.SetLoginMethodsRequestBody) *SetLoginMethodsReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *SetLoginMethodsReqBuilder) Build() *SetLoginMethodsReq { return b.req }
+
+// SetLoginMethodsResp is the response for SetLoginMethods.
+type SetLoginMethodsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// SetLoginMethods: 设置登录方式启用状态
+func (s *Service) SetLoginMethods(ctx context.Context, req *SetLoginMethodsReq, opts ...core.RequestOption) (*SetLoginMethodsResp, error) {
+	resp := &SetLoginMethodsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/login-methods",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Body:         req.body,

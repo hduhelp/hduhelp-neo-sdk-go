@@ -78,12 +78,88 @@ type IcsLinkResp struct {
 	Data *models.IcsLinkData `json:"data"`
 }
 
-// IcsLink: 生成课表ICS订阅链接
+// IcsLink: 获取课表ICS订阅链接(无则新建)
 func (s *Service) IcsLink(ctx context.Context, req *IcsLinkReq, opts ...core.RequestOption) (*IcsLinkResp, error) {
 	resp := &IcsLinkResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/feed/ics_link",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// RevokeIcsTokenReq is the request for RevokeIcsToken.
+type RevokeIcsTokenReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	body        any
+}
+
+// RevokeIcsTokenReqBuilder builds a RevokeIcsTokenReq with a fluent setter per field.
+type RevokeIcsTokenReqBuilder struct{ req *RevokeIcsTokenReq }
+
+// NewRevokeIcsTokenReqBuilder creates a request builder for RevokeIcsToken.
+func NewRevokeIcsTokenReqBuilder() *RevokeIcsTokenReqBuilder {
+	return &RevokeIcsTokenReqBuilder{req: &RevokeIcsTokenReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *RevokeIcsTokenReqBuilder) Build() *RevokeIcsTokenReq { return b.req }
+
+// RevokeIcsTokenResp is the response for RevokeIcsToken.
+type RevokeIcsTokenResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.IcsLinkData `json:"data"`
+}
+
+// RevokeIcsToken: 吊销课表ICS订阅令牌
+func (s *Service) RevokeIcsToken(ctx context.Context, req *RevokeIcsTokenReq, opts ...core.RequestOption) (*RevokeIcsTokenResp, error) {
+	resp := &RevokeIcsTokenResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/feed/ics_link",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// RotateIcsTokenReq is the request for RotateIcsToken.
+type RotateIcsTokenReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	body        any
+}
+
+// RotateIcsTokenReqBuilder builds a RotateIcsTokenReq with a fluent setter per field.
+type RotateIcsTokenReqBuilder struct{ req *RotateIcsTokenReq }
+
+// NewRotateIcsTokenReqBuilder creates a request builder for RotateIcsToken.
+func NewRotateIcsTokenReqBuilder() *RotateIcsTokenReqBuilder {
+	return &RotateIcsTokenReqBuilder{req: &RotateIcsTokenReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *RotateIcsTokenReqBuilder) Build() *RotateIcsTokenReq { return b.req }
+
+// RotateIcsTokenResp is the response for RotateIcsToken.
+type RotateIcsTokenResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.IcsLinkData `json:"data"`
+}
+
+// RotateIcsToken: 轮换课表ICS订阅令牌(返回新链接)
+func (s *Service) RotateIcsToken(ctx context.Context, req *RotateIcsTokenReq, opts ...core.RequestOption) (*RotateIcsTokenResp, error) {
+	resp := &RotateIcsTokenResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/feed/ics_link/rotate",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Body:         req.body,
@@ -106,9 +182,9 @@ func NewScheduleIcsReqBuilder() *ScheduleIcsReqBuilder {
 	return &ScheduleIcsReqBuilder{req: &ScheduleIcsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
 }
 
-// StaffId sets the "staffId" query parameter.
-func (b *ScheduleIcsReqBuilder) StaffId(v string) *ScheduleIcsReqBuilder {
-	b.req.queryParams["staffId"] = v
+// Token sets the "token" query parameter.
+func (b *ScheduleIcsReqBuilder) Token(v string) *ScheduleIcsReqBuilder {
+	b.req.queryParams["token"] = v
 	return b
 }
 

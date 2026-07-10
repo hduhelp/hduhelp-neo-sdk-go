@@ -727,6 +727,50 @@ func (s *Service) CreateGroup(ctx context.Context, req *CreateGroupReq, opts ...
 	return resp, err
 }
 
+// LeaveGroupReq is the request for LeaveGroup.
+type LeaveGroupReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	body        any
+}
+
+// LeaveGroupReqBuilder builds a LeaveGroupReq with a fluent setter per field.
+type LeaveGroupReqBuilder struct{ req *LeaveGroupReq }
+
+// NewLeaveGroupReqBuilder creates a request builder for LeaveGroup.
+func NewLeaveGroupReqBuilder() *LeaveGroupReqBuilder {
+	return &LeaveGroupReqBuilder{req: &LeaveGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+}
+
+// OpenConversationId sets the "openConversationId" query parameter.
+func (b *LeaveGroupReqBuilder) OpenConversationId(v string) *LeaveGroupReqBuilder {
+	b.req.queryParams["openConversationId"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *LeaveGroupReqBuilder) Build() *LeaveGroupReq { return b.req }
+
+// LeaveGroupResp is the response for LeaveGroup.
+type LeaveGroupResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data string `json:"data"`
+}
+
+// LeaveGroup: 退出群聊
+func (s *Service) LeaveGroup(ctx context.Context, req *LeaveGroupReq, opts ...core.RequestOption) (*LeaveGroupResp, error) {
+	resp := &LeaveGroupResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/groupchat/groups/member",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // GetPreviousSchoolChatGroupReq is the request for GetPreviousSchoolChatGroup.
 type GetPreviousSchoolChatGroupReq struct {
 	pathParams  map[string]string

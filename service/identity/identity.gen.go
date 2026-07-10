@@ -229,6 +229,50 @@ func (s *Service) MergePreview(ctx context.Context, req *MergePreviewReq, opts .
 	return resp, err
 }
 
+// MergeStartReq is the request for MergeStart.
+type MergeStartReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	body        any
+}
+
+// MergeStartReqBuilder builds a MergeStartReq with a fluent setter per field.
+type MergeStartReqBuilder struct{ req *MergeStartReq }
+
+// NewMergeStartReqBuilder creates a request builder for MergeStart.
+func NewMergeStartReqBuilder() *MergeStartReqBuilder {
+	return &MergeStartReqBuilder{req: &MergeStartReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *MergeStartReqBuilder) Body(body *models.MergeStartRequestBody) *MergeStartReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *MergeStartReqBuilder) Build() *MergeStartReq { return b.req }
+
+// MergeStartResp is the response for MergeStart.
+type MergeStartResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.MergeStartData `json:"data"`
+}
+
+// MergeStart: 主动发起账号合并/关联
+func (s *Service) MergeStart(ctx context.Context, req *MergeStartReq, opts ...core.RequestOption) (*MergeStartResp, error) {
+	resp := &MergeStartResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/identity/account/merge/start",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // RegisterAppReq is the request for RegisterApp.
 type RegisterAppReq struct {
 	pathParams  map[string]string
@@ -2230,6 +2274,49 @@ func (s *Service) Me(ctx context.Context, req *MeReq, opts ...core.RequestOption
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/identity/me",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SetCurrentCampusReq is the request for SetCurrentCampus.
+type SetCurrentCampusReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	body        any
+}
+
+// SetCurrentCampusReqBuilder builds a SetCurrentCampusReq with a fluent setter per field.
+type SetCurrentCampusReqBuilder struct{ req *SetCurrentCampusReq }
+
+// NewSetCurrentCampusReqBuilder creates a request builder for SetCurrentCampus.
+func NewSetCurrentCampusReqBuilder() *SetCurrentCampusReqBuilder {
+	return &SetCurrentCampusReqBuilder{req: &SetCurrentCampusReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *SetCurrentCampusReqBuilder) Body(body *models.SetCurrentCampusRequestBody) *SetCurrentCampusReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *SetCurrentCampusReqBuilder) Build() *SetCurrentCampusReq { return b.req }
+
+// SetCurrentCampusResp is the response for SetCurrentCampus.
+type SetCurrentCampusResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// SetCurrentCampus: 设置当前所在校区
+func (s *Service) SetCurrentCampus(ctx context.Context, req *SetCurrentCampusReq, opts ...core.RequestOption) (*SetCurrentCampusResp, error) {
+	resp := &SetCurrentCampusResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/identity/me/campus",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Body:         req.body,

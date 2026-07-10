@@ -1522,6 +1522,69 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/RevokeAuthorizationResponseBody'
+    /hduhelp-neo/admin/campuses:
+        get:
+            tags:
+                - AdminService
+            summary: 校区列表
+            description: 返回全部校区(名称/代码/经纬度/默认标记/排序)
+            operationId: AdminService_ListCampuses
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CampusListResponseBody'
+        put:
+            tags:
+                - AdminService
+            summary: 编辑校区
+            description: 更新校区字段；标记默认会清除其它校区的默认标记；不允许取消唯一默认校区的默认标记
+            operationId: AdminService_UpdateCampus
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateCampusRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CampusMutateResponseBody'
+        post:
+            tags:
+                - AdminService
+            summary: 新建校区
+            description: 创建一个校区；code 唯一；标记默认会清除其它校区的默认标记(恰好一个默认)
+            operationId: AdminService_CreateCampus
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateCampusRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CampusMutateResponseBody'
+        delete:
+            tags:
+                - AdminService
+            summary: 删除校区
+            description: 删除一个校区；删除默认校区时自动将另一校区提升为默认(始终恰好一个默认)
+            operationId: AdminService_DeleteCampus
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeleteCampusResponseBody'
     /hduhelp-neo/admin/config:
         get:
             tags:
@@ -1541,6 +1604,38 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ConfigGetResponseBody'
+    /hduhelp-neo/admin/config/caiyun:
+        get:
+            tags:
+                - AdminService
+            summary: 获取彩云天气配置
+            description: 返回彩云 BaseURL 与掩码后的 APIKey(密文不下发)
+            operationId: AdminService_GetCaiyunConfig
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CaiyunConfigResponseBody'
+        put:
+            tags:
+                - AdminService
+            summary: 设置彩云天气配置
+            description: 校验并持久化彩云 BaseURL 与 APIKey；APIKey 留空即保留原值
+            operationId: AdminService_SetCaiyunConfig
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SetCaiyunConfigRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SetCaiyunConfigResponseBody'
     /hduhelp-neo/admin/configs:
         get:
             tags:
@@ -1597,6 +1692,57 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/TestConnectionResponseBody'
+    /hduhelp-neo/admin/cron:
+        get:
+            tags:
+                - AdminService
+            summary: 定时任务列表
+            description: 返回代码声明的全部定时任务类型及其当前启用状态/cron表达式/配置/最近执行结果
+            operationId: AdminService_ListCronTasks
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CronTaskListResponseBody'
+        put:
+            tags:
+                - AdminService
+            summary: 更新定时任务
+            description: 更新某任务的启用状态/cron表达式/配置；服务端校验cron表达式与该任务配置schema，非法输入被拒绝；改动即时热加载
+            operationId: AdminService_UpdateCronTask
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateCronTaskRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UpdateCronTaskResponseBody'
+    /hduhelp-neo/admin/cron/run:
+        post:
+            tags:
+                - AdminService
+            summary: 立即执行定时任务
+            description: 在分布式锁保护下将指定任务立即执行一次（脱离排期）
+            operationId: AdminService_RunCronTask
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RunCronTaskRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RunCronTaskResponseBody'
     /hduhelp-neo/admin/login:
         post:
             tags:
@@ -1617,6 +1763,38 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AdminLoginResponseBody'
+    /hduhelp-neo/admin/login-methods:
+        get:
+            tags:
+                - AdminService
+            summary: 登录方式列表
+            description: 返回全部登录方式(密码/短信/邮箱 + 各 provider)及其启用状态
+            operationId: AdminService_ListLoginMethods
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LoginMethodListResponseBody'
+        put:
+            tags:
+                - AdminService
+            summary: 设置登录方式启用状态
+            description: 提交被停用的登录方式 key 列表；被停用的方式在 GetAuthConfig 中报告为 disabled
+            operationId: AdminService_SetLoginMethods
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SetLoginMethodsRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SetLoginMethodsResponseBody'
     /hduhelp-neo/admin/logout:
         post:
             tags:
@@ -1984,6 +2162,19 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/NamedListResponseBody'
+    /hduhelp-neo/campuslife/campuses:
+        get:
+            tags:
+                - CampusLifeService
+            summary: 校区列表(公开：id/名称/坐标)
+            operationId: CampusLifeService_ListPublicCampuses
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PublicCampusListResponseBody'
     /hduhelp-neo/campuslife/card/balance:
         get:
             tags:
@@ -2112,10 +2303,16 @@ paths:
             summary: 获取天气信息流卡片(AQI/温度/停雨)
             operationId: CampusLifeService_InfoStream
             parameters:
-                - name: school
+                - name: lat
                   in: query
                   schema:
-                    type: string
+                    type: number
+                    format: double
+                - name: lng
+                  in: query
+                  schema:
+                    type: number
+                    format: double
             responses:
                 "200":
                     description: Successful response
@@ -2130,15 +2327,21 @@ paths:
             summary: 获取天气预报(逐小时/逐天)
             operationId: CampusLifeService_Predict
             parameters:
-                - name: school
-                  in: query
-                  schema:
-                    type: string
                 - name: days
                   in: query
                   schema:
                     type: integer
                     format: int32
+                - name: lat
+                  in: query
+                  schema:
+                    type: number
+                    format: double
+                - name: lng
+                  in: query
+                  schema:
+                    type: number
+                    format: double
             responses:
                 "200":
                     description: Successful response
@@ -2153,10 +2356,16 @@ paths:
             summary: 获取实时天气
             operationId: CampusLifeService_RealTime
             parameters:
-                - name: school
+                - name: lat
                   in: query
                   schema:
-                    type: string
+                    type: number
+                    format: double
+                - name: lng
+                  in: query
+                  schema:
+                    type: number
+                    format: double
             responses:
                 "200":
                     description: Successful response
@@ -2168,8 +2377,19 @@ paths:
         get:
             tags:
                 - CampusLifeService
-            summary: 查询校园天气
+            summary: 查询校园天气(按当前校区坐标)
             operationId: CampusLifeService_Weather
+            parameters:
+                - name: lat
+                  in: query
+                  schema:
+                    type: number
+                    format: double
+                - name: lng
+                  in: query
+                  schema:
+                    type: number
+                    format: double
             responses:
                 "200":
                     description: Successful response
@@ -2603,8 +2823,33 @@ paths:
         get:
             tags:
                 - FeedService
-            summary: 生成课表ICS订阅链接
+            summary: 获取课表ICS订阅链接(无则新建)
             operationId: FeedService_IcsLink
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/IcsLinkResponseBody'
+        delete:
+            tags:
+                - FeedService
+            summary: 吊销课表ICS订阅令牌
+            operationId: FeedService_RevokeIcsToken
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/IcsLinkResponseBody'
+    /hduhelp-neo/feed/ics_link/rotate:
+        post:
+            tags:
+                - FeedService
+            summary: 轮换课表ICS订阅令牌(返回新链接)
+            operationId: FeedService_RotateIcsToken
             responses:
                 "200":
                     description: Successful response
@@ -2619,7 +2864,7 @@ paths:
             summary: 课表iCalendar订阅
             operationId: FeedService_ScheduleIcs
             parameters:
-                - name: staffId
+                - name: token
                   in: query
                   schema:
                     type: string
@@ -2661,8 +2906,17 @@ paths:
             tags:
                 - GraduateService
             summary: 查询本人研究生成绩
-            description: 按学号返回研究生课程成绩(课程/学分/最终成绩/绩点/是否学位课)
+            description: 按学号返回研究生课程成绩(课程/学分/最终成绩/绩点/是否学位课);可选按学年(schoolYear)+学期(semester)过滤, 留空返回全部
             operationId: GraduateService_GraduateGrades
+            parameters:
+                - name: schoolYear
+                  in: query
+                  schema:
+                    type: string
+                - name: semester
+                  in: query
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -2996,6 +3250,25 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/CreateGroupResponseBody'
+    /hduhelp-neo/groupchat/groups/member:
+        delete:
+            tags:
+                - GroupChatService
+            summary: 退出群聊
+            description: 移除当前用户在指定群(openConversationId)的成员记录
+            operationId: GroupChatService_LeaveGroup
+            parameters:
+                - name: openConversationId
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LeaveGroupResponseBody'
     /hduhelp-neo/groupchat/previous-school:
         get:
             tags:
@@ -3082,7 +3355,7 @@ paths:
             tags:
                 - IdentityService
             summary: 账号合并确认
-            description: 将源账号 B 的资源按 user_id 改挂到目标 A（同类冲突默认保留 A、丢弃 B 重复项，或按 conflictResolutions），注销 B 并失效其全部会话。幂等、事务、审计。消费 merge_token。仅原生会话可调用。
+            description: 将源账号 B 的资源按 user_id 改挂到目标 A（同类冲突默认保留 A、丢弃 B 重复项，或按 conflictResolutions）；社交身份固定“两者保留”不受策略影响；注销 B 并失效其全部会话（sourceInvalidated=true）。幂等、事务、审计。消费 merge_token。仅原生会话可调用。
             operationId: IdentityService_MergeConfirm
             requestBody:
                 content:
@@ -3118,6 +3391,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/MergePreviewResponseBody'
+    /hduhelp-neo/identity/account/merge/start:
+        post:
+            tags:
+                - IdentityService
+            summary: 主动发起账号合并/关联
+            description: 当前会话用户 A 主动开启一次以合并为目的的第三方登录，返回授权 URL。A 在第三方证明对另一账号 B 的控制后回到 /login/callback，若解析到不同账号 B 即签发一次性 merge_token（target=A，source=B），随后走 preview/confirm。安全模型不变：仅原生会话可发起，target 恒为当前会话用户。
+            operationId: IdentityService_MergeStart
+            requestBody:
+                description: |-
+                    ---- MergeStart: 主动发起“合并/关联其他账号”（authSessionUser） ----
+                    当前会话用户 A 主动开启一次以合并为目的的第三方登录（如 CAS）。返回第三方授权
+                    URL；A 在第三方证明对账号 B 的控制后回到 /login/callback，若解析到另一账号 B，即
+                    签发一次性 merge_token（target=当前会话用户 A，source=B），随后走 preview/confirm。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/MergeStartRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/MergeStartResponseBody'
     /hduhelp-neo/identity/apps:
         post:
             tags:
@@ -4107,6 +4404,26 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/MeResponseBody'
+    /hduhelp-neo/identity/me/campus:
+        put:
+            tags:
+                - IdentityService
+            summary: 设置当前所在校区
+            description: 设置当前用户的当前所在校区(campuses.id)，天气据此解析坐标；campus_id 留空即清除，回落默认校区。仅登录用户可调用。
+            operationId: IdentityService_SetCurrentCampus
+            requestBody:
+                description: '---- 设置当前所在校区 ----'
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SetCurrentCampusRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SetCurrentCampusResponseBody'
     /hduhelp-neo/identity/register:
         post:
             tags:
@@ -4813,6 +5130,35 @@ components:
                     type: integer
                     format: int64
             description: '-------------------- 用户授权（app_authorizations） --------------------'
+        AdminCampusInfo:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                code:
+                    type: string
+                lng:
+                    type: number
+                    description: 经度
+                    format: double
+                lat:
+                    type: number
+                    description: 纬度
+                    format: double
+                isDefault:
+                    type: boolean
+                    description: 默认校区(恰好一个)
+                sort:
+                    type: integer
+                    description: 排序(升序)
+                    format: int32
+                createdAt:
+                    type: integer
+                    description: 创建时间(unix 毫秒)
+                    format: int64
+            description: '-------------------- 校区地理位置管理（campuses） --------------------'
         AdminLoginData:
             type: object
             properties:
@@ -5649,6 +5995,26 @@ components:
                     format: int64
                 msg:
                     type: string
+        CaiyunConfigData:
+            type: object
+            properties:
+                baseURL:
+                    type: string
+                    description: v2.6 base URL
+                apiKey:
+                    type: string
+                    description: 密文；读取时掩码，编辑留空即保留原值
+            description: '-------------------- 彩云天气配置（平台配置） --------------------'
+        CaiyunConfigResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/CaiyunConfigData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         CampusBinding:
             type: object
             properties:
@@ -5664,6 +6030,28 @@ components:
                     type: string
                 isPrimary:
                     type: boolean
+        CampusListResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AdminCampusInfo'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        CampusMutateResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminCampusInfo'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         CardBalanceData:
             type: object
             properties:
@@ -6148,6 +6536,24 @@ components:
                     format: int64
                 msg:
                     type: string
+        CreateCampusRequestBody:
+            type: object
+            properties:
+                name:
+                    type: string
+                code:
+                    type: string
+                lng:
+                    type: number
+                    format: double
+                lat:
+                    type: number
+                    format: double
+                is_default:
+                    type: boolean
+                sort:
+                    type: integer
+                    format: int32
         CreateCityChatGroupRequestBody:
             type: object
             properties:
@@ -6363,6 +6769,64 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/AdminTenantInfo'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        CronTaskInfo:
+            type: object
+            properties:
+                key:
+                    type: string
+                    description: 注册表任务键
+                name:
+                    type: string
+                    description: 中文显示名（代码声明）
+                description:
+                    type: string
+                    description: 说明（代码声明）
+                enabled:
+                    type: boolean
+                    description: 是否启用
+                spec:
+                    type: string
+                    description: 当前 cron 表达式（5段）
+                config:
+                    type: string
+                    description: 当前任务配置(JSON 字符串)
+                defaultSpec:
+                    type: string
+                    description: 注册表默认 cron 表达式
+                defaultConfig:
+                    type: string
+                    description: 注册表默认配置(JSON 字符串)
+                lastRunAt:
+                    type: integer
+                    description: 最近执行时间(unix 毫秒)
+                    format: int64
+                lastStatus:
+                    type: string
+                    description: success/error
+                lastError:
+                    type: string
+                    description: 最近失败原因
+            description: '-------------------- 定时任务（cron_tasks） --------------------'
+        CronTaskListResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/CronTaskInfo'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        DeleteCampusResponseBody:
+            type: object
+            properties:
                 code:
                     type: integer
                     format: int64
@@ -7500,6 +7964,12 @@ components:
                 isDegree:
                     type: boolean
                     description: 是否学位课
+                schoolYear:
+                    type: string
+                    description: 学年(如 2023-2024),来自开课学期
+                semester:
+                    type: string
+                    description: 学期(1/2)
             description: ===== 研究生成绩 =====
         GraduateGradesResponseBody:
             type: object
@@ -7650,7 +8120,11 @@ components:
             properties:
                 link:
                     type: string
-            description: IcsLinkData 携带课表 ICS 订阅链接。
+                hasToken:
+                    type: boolean
+            description: |-
+                IcsLinkData 携带课表 ICS 订阅链接。link 仅在本次新建令牌时返回明文(服务端只存哈希,
+                无法回显既有令牌);hasToken 表示当前是否已有有效令牌。
         IcsLinkResponseBody:
             type: object
             properties:
@@ -7751,6 +8225,16 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/BookStat'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        LeaveGroupResponseBody:
+            type: object
+            properties:
+                data:
+                    type: string
                 code:
                     type: integer
                     format: int64
@@ -7871,6 +8355,34 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/LoginExchangeData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        LoginMethodItem:
+            type: object
+            properties:
+                key:
+                    type: string
+                    description: password/sms/email 或 provider grantKey(cas/wxmp…)
+                name:
+                    type: string
+                    description: 中文显示名
+                kind:
+                    type: string
+                    description: native | campus | social
+                enabled:
+                    type: boolean
+                    description: 是否启用
+            description: '-------------------- 登录方式启用/停用（平台配置） --------------------'
+        LoginMethodListResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/LoginMethodItem'
                 code:
                     type: integer
                     format: int64
@@ -8065,6 +8577,9 @@ components:
                         $ref: '#/components/schemas/MergeMigratedItem'
                 alreadyMerged:
                     type: boolean
+                sourceInvalidated:
+                    type: boolean
+                    description: 源账号 B 已被注销、其全部登录设备将被登出（合并完成后恒为 true）
         MergeConfirmRequestBody:
             type: object
             properties:
@@ -8093,6 +8608,10 @@ components:
                     type: string
                 resolution:
                     type: string
+                    description: 该冲突在合并时的处理结果（keep_target/keep_source/keep_both）
+                overridable:
+                    type: boolean
+                    description: 是否可用 conflictResolutions 覆盖：社交身份固定“两者保留”(overridable=false)，校园/电费等按策略迁移(overridable=true)
         MergeConflictResolution:
             type: object
             properties:
@@ -8165,6 +8684,31 @@ components:
                 count:
                     type: integer
                     format: int64
+        MergeStartData:
+            type: object
+            properties:
+                url:
+                    type: string
+                    description: 第三方授权 URL，前端跳转
+                state:
+                    type: string
+                    description: 本次合并登录的 state
+        MergeStartRequestBody:
+            type: object
+            properties:
+                grant_key:
+                    type: string
+                    description: '用于证明对目标账号控制权的登录来源: cas/wxmp/dingtalk/...'
+        MergeStartResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/MergeStartData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         ModifyCityRequestBody:
             type: object
             properties:
@@ -8558,6 +9102,32 @@ components:
                     format: int64
                 msg:
                     type: string
+        PublicCampusItem:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                lng:
+                    type: number
+                    format: double
+                lat:
+                    type: number
+                    format: double
+            description: '---- 校区列表(公开：id/名称/坐标) ----'
+        PublicCampusListResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PublicCampusItem'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         ReadingSummary:
             type: object
             properties:
@@ -8840,6 +9410,19 @@ components:
                 periodsPerDay:
                     type: integer
                     format: int32
+        RunCronTaskRequestBody:
+            type: object
+            properties:
+                key:
+                    type: string
+        RunCronTaskResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         ScheduleCourse:
             type: object
             properties:
@@ -9317,6 +9900,22 @@ components:
                     format: int64
                 msg:
                     type: string
+        SetCaiyunConfigRequestBody:
+            type: object
+            properties:
+                base_url:
+                    type: string
+                api_key:
+                    type: string
+                    description: 留空即保留原 APIKey
+        SetCaiyunConfigResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         SetConfigRequestBody:
             type: object
             properties:
@@ -9325,6 +9924,36 @@ components:
                 value:
                     type: string
         SetConfigResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        SetCurrentCampusRequestBody:
+            type: object
+            properties:
+                campus_id:
+                    type: string
+                    description: campuses.id；留空即清除(回落默认校区)
+        SetCurrentCampusResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        SetLoginMethodsRequestBody:
+            type: object
+            properties:
+                disabled:
+                    type: array
+                    items:
+                        type: string
+                    description: 被停用的方式 key 列表
+        SetLoginMethodsResponseBody:
             type: object
             properties:
                 code:
@@ -10198,6 +10827,46 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/AdminAppDetail'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        UpdateCampusRequestBody:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                code:
+                    type: string
+                lng:
+                    type: number
+                    format: double
+                lat:
+                    type: number
+                    format: double
+                is_default:
+                    type: boolean
+                sort:
+                    type: integer
+                    format: int32
+        UpdateCronTaskRequestBody:
+            type: object
+            properties:
+                key:
+                    type: string
+                enabled:
+                    type: boolean
+                spec:
+                    type: string
+                config:
+                    type: string
+                    description: 任务配置 JSON 字符串
+        UpdateCronTaskResponseBody:
+            type: object
+            properties:
                 code:
                     type: integer
                     format: int64

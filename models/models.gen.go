@@ -94,6 +94,28 @@ type AdminAuthorizationInfo struct {
 	UserNickName    *string   `json:"userNickName,omitempty"`
 }
 
+// AdminCampusInfo -------------------- 校区地理位置管理（campuses） --------------------
+type AdminCampusInfo struct {
+	Code *string `json:"code,omitempty"`
+
+	// CreatedAt 创建时间(unix 毫秒)
+	CreatedAt *int64  `json:"createdAt,omitempty"`
+	Id        *string `json:"id,omitempty"`
+
+	// IsDefault 默认校区(恰好一个)
+	IsDefault *bool `json:"isDefault,omitempty"`
+
+	// Lat 纬度
+	Lat *float64 `json:"lat,omitempty"`
+
+	// Lng 经度
+	Lng  *float64 `json:"lng,omitempty"`
+	Name *string  `json:"name,omitempty"`
+
+	// Sort 排序(升序)
+	Sort *int32 `json:"sort,omitempty"`
+}
+
 // AdminLoginData defines model for AdminLoginData.
 type AdminLoginData struct {
 	ExpiresIn     *int64        `json:"expiresIn,omitempty"`
@@ -688,6 +710,24 @@ type BorrowListResponseBody struct {
 	Msg  *string     `json:"msg,omitempty"`
 }
 
+// CaiyunConfigData -------------------- 彩云天气配置（平台配置） --------------------
+type CaiyunConfigData struct {
+	// ApiKey 密文；读取时掩码，编辑留空即保留原值
+	ApiKey *string `json:"apiKey,omitempty"`
+
+	// BaseURL v2.6 base URL
+	BaseURL *string `json:"baseURL,omitempty"`
+}
+
+// CaiyunConfigResponseBody defines model for CaiyunConfigResponseBody.
+type CaiyunConfigResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data -------------------- 彩云天气配置（平台配置） --------------------
+	Data *CaiyunConfigData `json:"data,omitempty"`
+	Msg  *string           `json:"msg,omitempty"`
+}
+
 // CampusBinding defines model for CampusBinding.
 type CampusBinding struct {
 	Id        *string `json:"id,omitempty"`
@@ -696,6 +736,22 @@ type CampusBinding struct {
 	StaffId   *string `json:"staffId,omitempty"`
 	StaffName *string `json:"staffName,omitempty"`
 	StaffType *string `json:"staffType,omitempty"`
+}
+
+// CampusListResponseBody defines model for CampusListResponseBody.
+type CampusListResponseBody struct {
+	Code *int64             `json:"code,omitempty"`
+	Data *[]AdminCampusInfo `json:"data,omitempty"`
+	Msg  *string            `json:"msg,omitempty"`
+}
+
+// CampusMutateResponseBody defines model for CampusMutateResponseBody.
+type CampusMutateResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data -------------------- 校区地理位置管理（campuses） --------------------
+	Data *AdminCampusInfo `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
 }
 
 // CardBalanceData defines model for CardBalanceData.
@@ -1036,6 +1092,16 @@ type CreateAppResponseBody struct {
 	Msg  *string        `json:"msg,omitempty"`
 }
 
+// CreateCampusRequestBody defines model for CreateCampusRequestBody.
+type CreateCampusRequestBody struct {
+	Code      *string  `json:"code,omitempty"`
+	IsDefault *bool    `json:"is_default,omitempty"`
+	Lat       *float64 `json:"lat,omitempty"`
+	Lng       *float64 `json:"lng,omitempty"`
+	Name      *string  `json:"name,omitempty"`
+	Sort      *int32   `json:"sort,omitempty"`
+}
+
 // CreateCityChatGroupRequestBody defines model for CreateCityChatGroupRequestBody.
 type CreateCityChatGroupRequestBody struct {
 	City *string `json:"city,omitempty"`
@@ -1210,6 +1276,55 @@ type CreateTenantResponseBody struct {
 	// Data -------------------- 租户（接入方）管理 --------------------
 	Data *AdminTenantInfo `json:"data,omitempty"`
 	Msg  *string          `json:"msg,omitempty"`
+}
+
+// CronTaskInfo -------------------- 定时任务（cron_tasks） --------------------
+type CronTaskInfo struct {
+	// Config 当前任务配置(JSON 字符串)
+	Config *string `json:"config,omitempty"`
+
+	// DefaultConfig 注册表默认配置(JSON 字符串)
+	DefaultConfig *string `json:"defaultConfig,omitempty"`
+
+	// DefaultSpec 注册表默认 cron 表达式
+	DefaultSpec *string `json:"defaultSpec,omitempty"`
+
+	// Description 说明（代码声明）
+	Description *string `json:"description,omitempty"`
+
+	// Enabled 是否启用
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Key 注册表任务键
+	Key *string `json:"key,omitempty"`
+
+	// LastError 最近失败原因
+	LastError *string `json:"lastError,omitempty"`
+
+	// LastRunAt 最近执行时间(unix 毫秒)
+	LastRunAt *int64 `json:"lastRunAt,omitempty"`
+
+	// LastStatus success/error
+	LastStatus *string `json:"lastStatus,omitempty"`
+
+	// Name 中文显示名（代码声明）
+	Name *string `json:"name,omitempty"`
+
+	// Spec 当前 cron 表达式（5段）
+	Spec *string `json:"spec,omitempty"`
+}
+
+// CronTaskListResponseBody defines model for CronTaskListResponseBody.
+type CronTaskListResponseBody struct {
+	Code *int64          `json:"code,omitempty"`
+	Data *[]CronTaskInfo `json:"data,omitempty"`
+	Msg  *string         `json:"msg,omitempty"`
+}
+
+// DeleteCampusResponseBody defines model for DeleteCampusResponseBody.
+type DeleteCampusResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
 }
 
 // DeleteEventResponseBody defines model for DeleteEventResponseBody.
@@ -1985,9 +2100,15 @@ type GraduateGradeItem struct {
 	// IsDegree 是否学位课
 	IsDegree *bool `json:"isDegree,omitempty"`
 
+	// SchoolYear 学年(如 2023-2024),来自开课学期
+	SchoolYear *string `json:"schoolYear,omitempty"`
+
 	// Score 最终成绩(可能为五级制)
 	Score     *string `json:"score,omitempty"`
 	ScoreType *string `json:"scoreType,omitempty"`
+
+	// Semester 学期(1/2)
+	Semester *string `json:"semester,omitempty"`
 }
 
 // GraduateGradesResponseBody defines model for GraduateGradesResponseBody.
@@ -2097,16 +2218,19 @@ type HomeResponseBody struct {
 	Msg  *string   `json:"msg,omitempty"`
 }
 
-// IcsLinkData IcsLinkData 携带课表 ICS 订阅链接。
+// IcsLinkData IcsLinkData 携带课表 ICS 订阅链接。link 仅在本次新建令牌时返回明文(服务端只存哈希,
+// 无法回显既有令牌);hasToken 表示当前是否已有有效令牌。
 type IcsLinkData struct {
-	Link *string `json:"link,omitempty"`
+	HasToken *bool   `json:"hasToken,omitempty"`
+	Link     *string `json:"link,omitempty"`
 }
 
 // IcsLinkResponseBody defines model for IcsLinkResponseBody.
 type IcsLinkResponseBody struct {
 	Code *int64 `json:"code,omitempty"`
 
-	// Data IcsLinkData 携带课表 ICS 订阅链接。
+	// Data IcsLinkData 携带课表 ICS 订阅链接。link 仅在本次新建令牌时返回明文(服务端只存哈希,
+	// 无法回显既有令牌);hasToken 表示当前是否已有有效令牌。
 	Data *IcsLinkData `json:"data,omitempty"`
 	Msg  *string      `json:"msg,omitempty"`
 }
@@ -2178,6 +2302,13 @@ type LeastPopularResponseBody struct {
 	Code *int64      `json:"code,omitempty"`
 	Data *[]BookStat `json:"data,omitempty"`
 	Msg  *string     `json:"msg,omitempty"`
+}
+
+// LeaveGroupResponseBody defines model for LeaveGroupResponseBody.
+type LeaveGroupResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Data *string `json:"data,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
 }
 
 // LeaveRoomResponseBody defines model for LeaveRoomResponseBody.
@@ -2264,6 +2395,28 @@ type LoginExchangeRequestBody struct {
 type LoginExchangeResponseBody struct {
 	Code *int64             `json:"code,omitempty"`
 	Data *LoginExchangeData `json:"data,omitempty"`
+	Msg  *string            `json:"msg,omitempty"`
+}
+
+// LoginMethodItem -------------------- 登录方式启用/停用（平台配置） --------------------
+type LoginMethodItem struct {
+	// Enabled 是否启用
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Key password/sms/email 或 provider grantKey(cas/wxmp…)
+	Key *string `json:"key,omitempty"`
+
+	// Kind native | campus | social
+	Kind *string `json:"kind,omitempty"`
+
+	// Name 中文显示名
+	Name *string `json:"name,omitempty"`
+}
+
+// LoginMethodListResponseBody defines model for LoginMethodListResponseBody.
+type LoginMethodListResponseBody struct {
+	Code *int64             `json:"code,omitempty"`
+	Data *[]LoginMethodItem `json:"data,omitempty"`
 	Msg  *string            `json:"msg,omitempty"`
 }
 
@@ -2419,8 +2572,11 @@ type MergeClassChatGroupResponseBody struct {
 type MergeConfirmData struct {
 	AlreadyMerged *bool                `json:"alreadyMerged,omitempty"`
 	Migrated      *[]MergeMigratedItem `json:"migrated,omitempty"`
-	SourceUserId  *string              `json:"sourceUserId,omitempty"`
-	TargetUserId  *string              `json:"targetUserId,omitempty"`
+
+	// SourceInvalidated 源账号 B 已被注销、其全部登录设备将被登出（合并完成后恒为 true）
+	SourceInvalidated *bool   `json:"sourceInvalidated,omitempty"`
+	SourceUserId      *string `json:"sourceUserId,omitempty"`
+	TargetUserId      *string `json:"targetUserId,omitempty"`
 }
 
 // MergeConfirmRequestBody defines model for MergeConfirmRequestBody.
@@ -2438,7 +2594,12 @@ type MergeConfirmResponseBody struct {
 
 // MergeConflictItem defines model for MergeConflictItem.
 type MergeConflictItem struct {
-	Key        *string `json:"key,omitempty"`
+	Key *string `json:"key,omitempty"`
+
+	// Overridable 是否可用 conflictResolutions 覆盖：社交身份固定“两者保留”(overridable=false)，校园/电费等按策略迁移(overridable=true)
+	Overridable *bool `json:"overridable,omitempty"`
+
+	// Resolution 该冲突在合并时的处理结果（keep_target/keep_source/keep_both）
 	Resolution *string `json:"resolution,omitempty"`
 	Resource   *string `json:"resource,omitempty"`
 }
@@ -2489,6 +2650,28 @@ type MergePreviewResponseBody struct {
 type MergeResourceCount struct {
 	Count    *int64  `json:"count,omitempty"`
 	Resource *string `json:"resource,omitempty"`
+}
+
+// MergeStartData defines model for MergeStartData.
+type MergeStartData struct {
+	// State 本次合并登录的 state
+	State *string `json:"state,omitempty"`
+
+	// Url 第三方授权 URL，前端跳转
+	Url *string `json:"url,omitempty"`
+}
+
+// MergeStartRequestBody defines model for MergeStartRequestBody.
+type MergeStartRequestBody struct {
+	// GrantKey 用于证明对目标账号控制权的登录来源: cas/wxmp/dingtalk/...
+	GrantKey *string `json:"grant_key,omitempty"`
+}
+
+// MergeStartResponseBody defines model for MergeStartResponseBody.
+type MergeStartResponseBody struct {
+	Code *int64          `json:"code,omitempty"`
+	Data *MergeStartData `json:"data,omitempty"`
+	Msg  *string         `json:"msg,omitempty"`
 }
 
 // ModifyCityRequestBody defines model for ModifyCityRequestBody.
@@ -2759,6 +2942,21 @@ type PreviousSchoolInfoResponseBody struct {
 	Msg  *string          `json:"msg,omitempty"`
 }
 
+// PublicCampusItem ---- 校区列表(公开：id/名称/坐标) ----
+type PublicCampusItem struct {
+	Id   *string  `json:"id,omitempty"`
+	Lat  *float64 `json:"lat,omitempty"`
+	Lng  *float64 `json:"lng,omitempty"`
+	Name *string  `json:"name,omitempty"`
+}
+
+// PublicCampusListResponseBody defines model for PublicCampusListResponseBody.
+type PublicCampusListResponseBody struct {
+	Code *int64              `json:"code,omitempty"`
+	Data *[]PublicCampusItem `json:"data,omitempty"`
+	Msg  *string             `json:"msg,omitempty"`
+}
+
 // ReadingSummary defines model for ReadingSummary.
 type ReadingSummary struct {
 	HasRecord  *bool    `json:"hasRecord,omitempty"`
@@ -2967,6 +3165,17 @@ type RoomInfo struct {
 	Name          *string `json:"name,omitempty"`
 	PeriodsPerDay *int32  `json:"periodsPerDay,omitempty"`
 	Weeks         *int32  `json:"weeks,omitempty"`
+}
+
+// RunCronTaskRequestBody defines model for RunCronTaskRequestBody.
+type RunCronTaskRequestBody struct {
+	Key *string `json:"key,omitempty"`
+}
+
+// RunCronTaskResponseBody defines model for RunCronTaskResponseBody.
+type RunCronTaskResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
 }
 
 // ScheduleCourse ===== 今日/明日课表（now / v2 / v3）=====
@@ -3295,6 +3504,19 @@ type SetAppScopesResponseBody struct {
 	Msg  *string `json:"msg,omitempty"`
 }
 
+// SetCaiyunConfigRequestBody defines model for SetCaiyunConfigRequestBody.
+type SetCaiyunConfigRequestBody struct {
+	// ApiKey 留空即保留原 APIKey
+	ApiKey  *string `json:"api_key,omitempty"`
+	BaseUrl *string `json:"base_url,omitempty"`
+}
+
+// SetCaiyunConfigResponseBody defines model for SetCaiyunConfigResponseBody.
+type SetCaiyunConfigResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
 // SetConfigRequestBody defines model for SetConfigRequestBody.
 type SetConfigRequestBody struct {
 	Key   *string `json:"key,omitempty"`
@@ -3303,6 +3525,30 @@ type SetConfigRequestBody struct {
 
 // SetConfigResponseBody defines model for SetConfigResponseBody.
 type SetConfigResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
+// SetCurrentCampusRequestBody defines model for SetCurrentCampusRequestBody.
+type SetCurrentCampusRequestBody struct {
+	// CampusId campuses.id；留空即清除(回落默认校区)
+	CampusId *string `json:"campus_id,omitempty"`
+}
+
+// SetCurrentCampusResponseBody defines model for SetCurrentCampusResponseBody.
+type SetCurrentCampusResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
+// SetLoginMethodsRequestBody defines model for SetLoginMethodsRequestBody.
+type SetLoginMethodsRequestBody struct {
+	// Disabled 被停用的方式 key 列表
+	Disabled *[]string `json:"disabled,omitempty"`
+}
+
+// SetLoginMethodsResponseBody defines model for SetLoginMethodsResponseBody.
+type SetLoginMethodsResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
 }
@@ -3904,6 +4150,32 @@ type UpdateAppResponseBody struct {
 	Msg  *string         `json:"msg,omitempty"`
 }
 
+// UpdateCampusRequestBody defines model for UpdateCampusRequestBody.
+type UpdateCampusRequestBody struct {
+	Code      *string  `json:"code,omitempty"`
+	Id        *string  `json:"id,omitempty"`
+	IsDefault *bool    `json:"is_default,omitempty"`
+	Lat       *float64 `json:"lat,omitempty"`
+	Lng       *float64 `json:"lng,omitempty"`
+	Name      *string  `json:"name,omitempty"`
+	Sort      *int32   `json:"sort,omitempty"`
+}
+
+// UpdateCronTaskRequestBody defines model for UpdateCronTaskRequestBody.
+type UpdateCronTaskRequestBody struct {
+	// Config 任务配置 JSON 字符串
+	Config  *string `json:"config,omitempty"`
+	Enabled *bool   `json:"enabled,omitempty"`
+	Key     *string `json:"key,omitempty"`
+	Spec    *string `json:"spec,omitempty"`
+}
+
+// UpdateCronTaskResponseBody defines model for UpdateCronTaskResponseBody.
+type UpdateCronTaskResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
 // UpdateFavoriteRequestBody defines model for UpdateFavoriteRequestBody.
 type UpdateFavoriteRequestBody struct {
 	FId  *string `json:"f_id,omitempty"`
@@ -4344,18 +4616,27 @@ type CampusLifeServiceListRoomsParams struct {
 
 // CampusLifeServiceInfoStreamParams defines parameters for CampusLifeServiceInfoStream.
 type CampusLifeServiceInfoStreamParams struct {
-	School *string `form:"school,omitempty" json:"school,omitempty"`
+	Lat *float64 `form:"lat,omitempty" json:"lat,omitempty"`
+	Lng *float64 `form:"lng,omitempty" json:"lng,omitempty"`
 }
 
 // CampusLifeServicePredictParams defines parameters for CampusLifeServicePredict.
 type CampusLifeServicePredictParams struct {
-	School *string `form:"school,omitempty" json:"school,omitempty"`
-	Days   *int32  `form:"days,omitempty" json:"days,omitempty"`
+	Days *int32   `form:"days,omitempty" json:"days,omitempty"`
+	Lat  *float64 `form:"lat,omitempty" json:"lat,omitempty"`
+	Lng  *float64 `form:"lng,omitempty" json:"lng,omitempty"`
 }
 
 // CampusLifeServiceRealTimeParams defines parameters for CampusLifeServiceRealTime.
 type CampusLifeServiceRealTimeParams struct {
-	School *string `form:"school,omitempty" json:"school,omitempty"`
+	Lat *float64 `form:"lat,omitempty" json:"lat,omitempty"`
+	Lng *float64 `form:"lng,omitempty" json:"lng,omitempty"`
+}
+
+// CampusLifeServiceWeatherParams defines parameters for CampusLifeServiceWeather.
+type CampusLifeServiceWeatherParams struct {
+	Lat *float64 `form:"lat,omitempty" json:"lat,omitempty"`
+	Lng *float64 `form:"lng,omitempty" json:"lng,omitempty"`
 }
 
 // EmptyScheduleServiceDeleteEventParams defines parameters for EmptyScheduleServiceDeleteEvent.
@@ -4403,7 +4684,13 @@ type EmptyScheduleServiceLookUpShareParams struct {
 
 // FeedServiceScheduleIcsParams defines parameters for FeedServiceScheduleIcs.
 type FeedServiceScheduleIcsParams struct {
-	StaffId *string `form:"staffId,omitempty" json:"staffId,omitempty"`
+	Token *string `form:"token,omitempty" json:"token,omitempty"`
+}
+
+// GraduateServiceGraduateGradesParams defines parameters for GraduateServiceGraduateGrades.
+type GraduateServiceGraduateGradesParams struct {
+	SchoolYear *string `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
+	Semester   *string `form:"semester,omitempty" json:"semester,omitempty"`
 }
 
 // GroupChatServiceGetCityChatGroupParams defines parameters for GroupChatServiceGetCityChatGroup.
@@ -4420,6 +4707,11 @@ type GroupChatServiceGetClassChatGroupParams struct {
 type GroupChatServiceGetGradeChatGroupParams struct {
 	UnitId *string `form:"unit_id,omitempty" json:"unit_id,omitempty"`
 	Grade  *string `form:"grade,omitempty" json:"grade,omitempty"`
+}
+
+// GroupChatServiceLeaveGroupParams defines parameters for GroupChatServiceLeaveGroup.
+type GroupChatServiceLeaveGroupParams struct {
+	OpenConversationId *string `form:"openConversationId,omitempty" json:"openConversationId,omitempty"`
 }
 
 // GroupChatServiceGetPreviousSchoolChatGroupParams defines parameters for GroupChatServiceGetPreviousSchoolChatGroup.
@@ -4635,14 +4927,32 @@ type AdminServiceAdminChangePasswordJSONRequestBody = ChangePasswordRequestBody
 // AdminServiceRevokeAuthorizationJSONRequestBody defines body for AdminServiceRevokeAuthorization for application/json ContentType.
 type AdminServiceRevokeAuthorizationJSONRequestBody = RevokeAuthorizationRequestBody
 
+// AdminServiceCreateCampusJSONRequestBody defines body for AdminServiceCreateCampus for application/json ContentType.
+type AdminServiceCreateCampusJSONRequestBody = CreateCampusRequestBody
+
+// AdminServiceUpdateCampusJSONRequestBody defines body for AdminServiceUpdateCampus for application/json ContentType.
+type AdminServiceUpdateCampusJSONRequestBody = UpdateCampusRequestBody
+
+// AdminServiceSetCaiyunConfigJSONRequestBody defines body for AdminServiceSetCaiyunConfig for application/json ContentType.
+type AdminServiceSetCaiyunConfigJSONRequestBody = SetCaiyunConfigRequestBody
+
 // AdminServiceSetConfigJSONRequestBody defines body for AdminServiceSetConfig for application/json ContentType.
 type AdminServiceSetConfigJSONRequestBody = SetConfigRequestBody
 
 // AdminServiceTestConnectionJSONRequestBody defines body for AdminServiceTestConnection for application/json ContentType.
 type AdminServiceTestConnectionJSONRequestBody = TestConnectionRequestBody
 
+// AdminServiceUpdateCronTaskJSONRequestBody defines body for AdminServiceUpdateCronTask for application/json ContentType.
+type AdminServiceUpdateCronTaskJSONRequestBody = UpdateCronTaskRequestBody
+
+// AdminServiceRunCronTaskJSONRequestBody defines body for AdminServiceRunCronTask for application/json ContentType.
+type AdminServiceRunCronTaskJSONRequestBody = RunCronTaskRequestBody
+
 // AdminServiceAdminLoginJSONRequestBody defines body for AdminServiceAdminLogin for application/json ContentType.
 type AdminServiceAdminLoginJSONRequestBody = AdminLoginRequestBody
+
+// AdminServiceSetLoginMethodsJSONRequestBody defines body for AdminServiceSetLoginMethods for application/json ContentType.
+type AdminServiceSetLoginMethodsJSONRequestBody = SetLoginMethodsRequestBody
 
 // AdminServiceCreateOperatorJSONRequestBody defines body for AdminServiceCreateOperator for application/json ContentType.
 type AdminServiceCreateOperatorJSONRequestBody = CreateOperatorRequestBody
@@ -4743,6 +5053,9 @@ type IdentityServiceMergeConfirmJSONRequestBody = MergeConfirmRequestBody
 // IdentityServiceMergePreviewJSONRequestBody defines body for IdentityServiceMergePreview for application/json ContentType.
 type IdentityServiceMergePreviewJSONRequestBody = MergePreviewRequestBody
 
+// IdentityServiceMergeStartJSONRequestBody defines body for IdentityServiceMergeStart for application/json ContentType.
+type IdentityServiceMergeStartJSONRequestBody = MergeStartRequestBody
+
 // IdentityServiceRegisterAppJSONRequestBody defines body for IdentityServiceRegisterApp for application/json ContentType.
 type IdentityServiceRegisterAppJSONRequestBody = RegisterAppRequestBody
 
@@ -4805,6 +5118,9 @@ type IdentityServiceLoginCallbackGrantJSONRequestBody = LoginCallbackGrantReques
 
 // IdentityServiceLoginExchangeJSONRequestBody defines body for IdentityServiceLoginExchange for application/json ContentType.
 type IdentityServiceLoginExchangeJSONRequestBody = LoginExchangeRequestBody
+
+// IdentityServiceSetCurrentCampusJSONRequestBody defines body for IdentityServiceSetCurrentCampus for application/json ContentType.
+type IdentityServiceSetCurrentCampusJSONRequestBody = SetCurrentCampusRequestBody
 
 // IdentityServiceRegisterJSONRequestBody defines body for IdentityServiceRegister for application/json ContentType.
 type IdentityServiceRegisterJSONRequestBody = RegisterRequestBody

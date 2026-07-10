@@ -30,6 +30,18 @@ func NewGraduateGradesReqBuilder() *GraduateGradesReqBuilder {
 	return &GraduateGradesReqBuilder{req: &GraduateGradesReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
 }
 
+// SchoolYear sets the "schoolYear" query parameter.
+func (b *GraduateGradesReqBuilder) SchoolYear(v string) *GraduateGradesReqBuilder {
+	b.req.queryParams["schoolYear"] = v
+	return b
+}
+
+// Semester sets the "semester" query parameter.
+func (b *GraduateGradesReqBuilder) Semester(v string) *GraduateGradesReqBuilder {
+	b.req.queryParams["semester"] = v
+	return b
+}
+
 // Build finalizes the request.
 func (b *GraduateGradesReqBuilder) Build() *GraduateGradesReq { return b.req }
 

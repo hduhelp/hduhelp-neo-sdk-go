@@ -185,6 +185,44 @@ func (s *Service) ListRooms(ctx context.Context, req *ListRoomsReq, opts ...core
 	return resp, err
 }
 
+// ListPublicCampusesReq is the request for ListPublicCampuses.
+type ListPublicCampusesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	body        any
+}
+
+// ListPublicCampusesReqBuilder builds a ListPublicCampusesReq with a fluent setter per field.
+type ListPublicCampusesReqBuilder struct{ req *ListPublicCampusesReq }
+
+// NewListPublicCampusesReqBuilder creates a request builder for ListPublicCampuses.
+func NewListPublicCampusesReqBuilder() *ListPublicCampusesReqBuilder {
+	return &ListPublicCampusesReqBuilder{req: &ListPublicCampusesReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *ListPublicCampusesReqBuilder) Build() *ListPublicCampusesReq { return b.req }
+
+// ListPublicCampusesResp is the response for ListPublicCampuses.
+type ListPublicCampusesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.PublicCampusItem `json:"data"`
+}
+
+// ListPublicCampuses: 校区列表(公开：id/名称/坐标)
+func (s *Service) ListPublicCampuses(ctx context.Context, req *ListPublicCampusesReq, opts ...core.RequestOption) (*ListPublicCampusesResp, error) {
+	resp := &ListPublicCampusesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/campuslife/campuses",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // CardBalanceReq is the request for CardBalance.
 type CardBalanceReq struct {
 	pathParams  map[string]string
@@ -546,9 +584,15 @@ func NewInfoStreamReqBuilder() *InfoStreamReqBuilder {
 	return &InfoStreamReqBuilder{req: &InfoStreamReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
 }
 
-// School sets the "school" query parameter.
-func (b *InfoStreamReqBuilder) School(v string) *InfoStreamReqBuilder {
-	b.req.queryParams["school"] = v
+// Lat sets the "lat" query parameter.
+func (b *InfoStreamReqBuilder) Lat(v float64) *InfoStreamReqBuilder {
+	b.req.queryParams["lat"] = strconv.FormatFloat(v, 'g', -1, 64)
+	return b
+}
+
+// Lng sets the "lng" query parameter.
+func (b *InfoStreamReqBuilder) Lng(v float64) *InfoStreamReqBuilder {
+	b.req.queryParams["lng"] = strconv.FormatFloat(v, 'g', -1, 64)
 	return b
 }
 
@@ -590,15 +634,21 @@ func NewPredictReqBuilder() *PredictReqBuilder {
 	return &PredictReqBuilder{req: &PredictReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
 }
 
-// School sets the "school" query parameter.
-func (b *PredictReqBuilder) School(v string) *PredictReqBuilder {
-	b.req.queryParams["school"] = v
-	return b
-}
-
 // Days sets the "days" query parameter.
 func (b *PredictReqBuilder) Days(v int32) *PredictReqBuilder {
 	b.req.queryParams["days"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Lat sets the "lat" query parameter.
+func (b *PredictReqBuilder) Lat(v float64) *PredictReqBuilder {
+	b.req.queryParams["lat"] = strconv.FormatFloat(v, 'g', -1, 64)
+	return b
+}
+
+// Lng sets the "lng" query parameter.
+func (b *PredictReqBuilder) Lng(v float64) *PredictReqBuilder {
+	b.req.queryParams["lng"] = strconv.FormatFloat(v, 'g', -1, 64)
 	return b
 }
 
@@ -640,9 +690,15 @@ func NewRealTimeReqBuilder() *RealTimeReqBuilder {
 	return &RealTimeReqBuilder{req: &RealTimeReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
 }
 
-// School sets the "school" query parameter.
-func (b *RealTimeReqBuilder) School(v string) *RealTimeReqBuilder {
-	b.req.queryParams["school"] = v
+// Lat sets the "lat" query parameter.
+func (b *RealTimeReqBuilder) Lat(v float64) *RealTimeReqBuilder {
+	b.req.queryParams["lat"] = strconv.FormatFloat(v, 'g', -1, 64)
+	return b
+}
+
+// Lng sets the "lng" query parameter.
+func (b *RealTimeReqBuilder) Lng(v float64) *RealTimeReqBuilder {
+	b.req.queryParams["lng"] = strconv.FormatFloat(v, 'g', -1, 64)
 	return b
 }
 
@@ -684,6 +740,18 @@ func NewWeatherReqBuilder() *WeatherReqBuilder {
 	return &WeatherReqBuilder{req: &WeatherReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
 }
 
+// Lat sets the "lat" query parameter.
+func (b *WeatherReqBuilder) Lat(v float64) *WeatherReqBuilder {
+	b.req.queryParams["lat"] = strconv.FormatFloat(v, 'g', -1, 64)
+	return b
+}
+
+// Lng sets the "lng" query parameter.
+func (b *WeatherReqBuilder) Lng(v float64) *WeatherReqBuilder {
+	b.req.queryParams["lng"] = strconv.FormatFloat(v, 'g', -1, 64)
+	return b
+}
+
 // Build finalizes the request.
 func (b *WeatherReqBuilder) Build() *WeatherReq { return b.req }
 
@@ -694,7 +762,7 @@ type WeatherResp struct {
 	Data *models.WeatherData `json:"data"`
 }
 
-// Weather: 查询校园天气
+// Weather: 查询校园天气(按当前校区坐标)
 func (s *Service) Weather(ctx context.Context, req *WeatherReq, opts ...core.RequestOption) (*WeatherResp, error) {
 	resp := &WeatherResp{}
 	err := s.config.Do(ctx, &core.APIReq{

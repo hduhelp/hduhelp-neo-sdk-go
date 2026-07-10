@@ -10,4 +10,4 @@
 # Go modules need no registry, so tagging is the entire publish step. If the tag
 # already exists, the workflow is a no-op. Never push tags by hand. Use
 # major.minor.patch.
-version: 0.1.1
+version: 0.1.2
