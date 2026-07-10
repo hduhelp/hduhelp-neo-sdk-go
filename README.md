@@ -69,7 +69,11 @@ endpoint.
 
 ```go
 client := hduhelp.NewClient("cli_xxx", "secret")
-resp, err := client.Identity.AuthenUserInfoV1(ctx, identity.NewAuthenUserInfoV1ReqBuilder().Build())
+// StaffID is required when the automatic tenant token targets a user.
+req := academic.NewStudentInfoReqBuilder().
+    StaffID("2025123456").
+    Build()
+resp, err := client.Academic.StudentInfo(ctx, req)
 ```
 
 ### Personal access token (PAT)
@@ -114,9 +118,12 @@ resp, err := client.Academic.Schedule(ctx, req, hduhelp.WithUserAccessToken(uat)
 
 ## Request builders and responses
 
-Each endpoint has `New<Method>ReqBuilder()` with a setter per query and path
-parameter, a `.Body(*models.X)` setter when the endpoint takes a body, and
-`.Build()`. Each call returns a typed `*<Method>Resp` embedding:
+Each endpoint has `New<Method>ReqBuilder()` with a setter per query, path, and
+header parameter, a `.Body(*models.X)` setter when the endpoint takes a body,
+and `.Build()`. For a user-data endpoint called with a tenant/app token, set
+the generated `.StaffID(...)` header parameter; a user token gets the target
+identity from the token and does not need it. Each call returns a typed
+`*<Method>Resp` embedding:
 
 - `resp.Success()` — true when the business code is 0.
 - `resp.Code`, `resp.Msg` — the response envelope.

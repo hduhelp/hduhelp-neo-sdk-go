@@ -19,6 +19,7 @@ func NewService(config *core.Config) *Service { return &Service{config: config} 
 type UploadReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -27,7 +28,7 @@ type UploadReqBuilder struct{ req *UploadReq }
 
 // NewUploadReqBuilder creates a request builder for Upload.
 func NewUploadReqBuilder() *UploadReqBuilder {
-	return &UploadReqBuilder{req: &UploadReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &UploadReqBuilder{req: &UploadReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Usage sets the "usage" query parameter: 可选业务分组(仅记录/审计)
@@ -54,6 +55,7 @@ func (s *Service) Upload(ctx context.Context, req *UploadReq, opts ...core.Reque
 		PathTemplate: "/hduhelp-neo/upload",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -63,6 +65,7 @@ func (s *Service) Upload(ctx context.Context, req *UploadReq, opts ...core.Reque
 type DownloadReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -71,7 +74,7 @@ type DownloadReqBuilder struct{ req *DownloadReq }
 
 // NewDownloadReqBuilder creates a request builder for Download.
 func NewDownloadReqBuilder() *DownloadReqBuilder {
-	return &DownloadReqBuilder{req: &DownloadReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &DownloadReqBuilder{req: &DownloadReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Key sets the "key" path parameter.
@@ -97,6 +100,7 @@ func (s *Service) Download(ctx context.Context, req *DownloadReq, opts ...core.R
 		PathTemplate: "/hduhelp-neo/upload/{key}",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err

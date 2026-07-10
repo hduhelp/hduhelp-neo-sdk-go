@@ -19,6 +19,7 @@ func NewService(config *core.Config) *Service { return &Service{config: config} 
 type HomeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -27,7 +28,13 @@ type HomeReqBuilder struct{ req *HomeReq }
 
 // NewHomeReqBuilder creates a request builder for Home.
 func NewHomeReqBuilder() *HomeReqBuilder {
-	return &HomeReqBuilder{req: &HomeReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &HomeReqBuilder{req: &HomeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *HomeReqBuilder) StaffID(v string) *HomeReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -48,6 +55,7 @@ func (s *Service) Home(ctx context.Context, req *HomeReq, opts ...core.RequestOp
 		PathTemplate: "/hduhelp-neo/feed",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -57,6 +65,7 @@ func (s *Service) Home(ctx context.Context, req *HomeReq, opts ...core.RequestOp
 type IcsLinkReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -65,7 +74,13 @@ type IcsLinkReqBuilder struct{ req *IcsLinkReq }
 
 // NewIcsLinkReqBuilder creates a request builder for IcsLink.
 func NewIcsLinkReqBuilder() *IcsLinkReqBuilder {
-	return &IcsLinkReqBuilder{req: &IcsLinkReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &IcsLinkReqBuilder{req: &IcsLinkReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *IcsLinkReqBuilder) StaffID(v string) *IcsLinkReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -86,6 +101,7 @@ func (s *Service) IcsLink(ctx context.Context, req *IcsLinkReq, opts ...core.Req
 		PathTemplate: "/hduhelp-neo/feed/ics_link",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -95,6 +111,7 @@ func (s *Service) IcsLink(ctx context.Context, req *IcsLinkReq, opts ...core.Req
 type RevokeIcsTokenReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -103,7 +120,7 @@ type RevokeIcsTokenReqBuilder struct{ req *RevokeIcsTokenReq }
 
 // NewRevokeIcsTokenReqBuilder creates a request builder for RevokeIcsToken.
 func NewRevokeIcsTokenReqBuilder() *RevokeIcsTokenReqBuilder {
-	return &RevokeIcsTokenReqBuilder{req: &RevokeIcsTokenReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &RevokeIcsTokenReqBuilder{req: &RevokeIcsTokenReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -124,6 +141,7 @@ func (s *Service) RevokeIcsToken(ctx context.Context, req *RevokeIcsTokenReq, op
 		PathTemplate: "/hduhelp-neo/feed/ics_link",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -133,6 +151,7 @@ func (s *Service) RevokeIcsToken(ctx context.Context, req *RevokeIcsTokenReq, op
 type RotateIcsTokenReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -141,7 +160,7 @@ type RotateIcsTokenReqBuilder struct{ req *RotateIcsTokenReq }
 
 // NewRotateIcsTokenReqBuilder creates a request builder for RotateIcsToken.
 func NewRotateIcsTokenReqBuilder() *RotateIcsTokenReqBuilder {
-	return &RotateIcsTokenReqBuilder{req: &RotateIcsTokenReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &RotateIcsTokenReqBuilder{req: &RotateIcsTokenReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -162,6 +181,7 @@ func (s *Service) RotateIcsToken(ctx context.Context, req *RotateIcsTokenReq, op
 		PathTemplate: "/hduhelp-neo/feed/ics_link/rotate",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -171,6 +191,7 @@ func (s *Service) RotateIcsToken(ctx context.Context, req *RotateIcsTokenReq, op
 type ScheduleIcsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -179,7 +200,7 @@ type ScheduleIcsReqBuilder struct{ req *ScheduleIcsReq }
 
 // NewScheduleIcsReqBuilder creates a request builder for ScheduleIcs.
 func NewScheduleIcsReqBuilder() *ScheduleIcsReqBuilder {
-	return &ScheduleIcsReqBuilder{req: &ScheduleIcsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ScheduleIcsReqBuilder{req: &ScheduleIcsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Token sets the "token" query parameter.
@@ -205,6 +226,7 @@ func (s *Service) ScheduleIcs(ctx context.Context, req *ScheduleIcsReq, opts ...
 		PathTemplate: "/hduhelp-neo/feed/schedule",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -214,6 +236,7 @@ func (s *Service) ScheduleIcs(ctx context.Context, req *ScheduleIcsReq, opts ...
 type FeedV3Req struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -222,7 +245,13 @@ type FeedV3ReqBuilder struct{ req *FeedV3Req }
 
 // NewFeedV3ReqBuilder creates a request builder for FeedV3.
 func NewFeedV3ReqBuilder() *FeedV3ReqBuilder {
-	return &FeedV3ReqBuilder{req: &FeedV3Req{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &FeedV3ReqBuilder{req: &FeedV3Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *FeedV3ReqBuilder) StaffID(v string) *FeedV3ReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -243,6 +272,7 @@ func (s *Service) FeedV3(ctx context.Context, req *FeedV3Req, opts ...core.Reque
 		PathTemplate: "/hduhelp-neo/feed/v3",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -252,6 +282,7 @@ func (s *Service) FeedV3(ctx context.Context, req *FeedV3Req, opts ...core.Reque
 type FeedV4Req struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -260,7 +291,13 @@ type FeedV4ReqBuilder struct{ req *FeedV4Req }
 
 // NewFeedV4ReqBuilder creates a request builder for FeedV4.
 func NewFeedV4ReqBuilder() *FeedV4ReqBuilder {
-	return &FeedV4ReqBuilder{req: &FeedV4Req{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &FeedV4ReqBuilder{req: &FeedV4Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *FeedV4ReqBuilder) StaffID(v string) *FeedV4ReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -281,6 +318,7 @@ func (s *Service) FeedV4(ctx context.Context, req *FeedV4Req, opts ...core.Reque
 		PathTemplate: "/hduhelp-neo/feed/v4",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err

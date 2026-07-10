@@ -20,6 +20,7 @@ func NewService(config *core.Config) *Service { return &Service{config: config} 
 type SubscribeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -28,7 +29,7 @@ type SubscribeReqBuilder struct{ req *SubscribeReq }
 
 // NewSubscribeReqBuilder creates a request builder for Subscribe.
 func NewSubscribeReqBuilder() *SubscribeReqBuilder {
-	return &SubscribeReqBuilder{req: &SubscribeReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &SubscribeReqBuilder{req: &SubscribeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Channel sets the "channel" query parameter.
@@ -60,6 +61,7 @@ func (s *Service) Subscribe(ctx context.Context, req *SubscribeReq, opts ...core
 		PathTemplate: "/hduhelp-neo/subscription",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -69,6 +71,7 @@ func (s *Service) Subscribe(ctx context.Context, req *SubscribeReq, opts ...core
 type UpdateSubscriptionReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -77,7 +80,7 @@ type UpdateSubscriptionReqBuilder struct{ req *UpdateSubscriptionReq }
 
 // NewUpdateSubscriptionReqBuilder creates a request builder for UpdateSubscription.
 func NewUpdateSubscriptionReqBuilder() *UpdateSubscriptionReqBuilder {
-	return &UpdateSubscriptionReqBuilder{req: &UpdateSubscriptionReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &UpdateSubscriptionReqBuilder{req: &UpdateSubscriptionReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -103,6 +106,7 @@ func (s *Service) UpdateSubscription(ctx context.Context, req *UpdateSubscriptio
 		PathTemplate: "/hduhelp-neo/subscription",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -112,6 +116,7 @@ func (s *Service) UpdateSubscription(ctx context.Context, req *UpdateSubscriptio
 type UnsubscribeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -120,7 +125,7 @@ type UnsubscribeReqBuilder struct{ req *UnsubscribeReq }
 
 // NewUnsubscribeReqBuilder creates a request builder for Unsubscribe.
 func NewUnsubscribeReqBuilder() *UnsubscribeReqBuilder {
-	return &UnsubscribeReqBuilder{req: &UnsubscribeReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &UnsubscribeReqBuilder{req: &UnsubscribeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Channel sets the "channel" query parameter.
@@ -146,6 +151,7 @@ func (s *Service) Unsubscribe(ctx context.Context, req *UnsubscribeReq, opts ...
 		PathTemplate: "/hduhelp-neo/subscription",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -155,6 +161,7 @@ func (s *Service) Unsubscribe(ctx context.Context, req *UnsubscribeReq, opts ...
 type SunrunDetailReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -163,7 +170,7 @@ type SunrunDetailReqBuilder struct{ req *SunrunDetailReq }
 
 // NewSunrunDetailReqBuilder creates a request builder for SunrunDetail.
 func NewSunrunDetailReqBuilder() *SunrunDetailReqBuilder {
-	return &SunrunDetailReqBuilder{req: &SunrunDetailReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &SunrunDetailReqBuilder{req: &SunrunDetailReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Start sets the "start" query parameter: 起始序号(默认 1)
@@ -175,6 +182,12 @@ func (b *SunrunDetailReqBuilder) Start(v int32) *SunrunDetailReqBuilder {
 // End sets the "end" query parameter: 结束序号(默认 20)
 func (b *SunrunDetailReqBuilder) End(v int32) *SunrunDetailReqBuilder {
 	b.req.queryParams["end"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *SunrunDetailReqBuilder) StaffID(v string) *SunrunDetailReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -196,6 +209,7 @@ func (s *Service) SunrunDetail(ctx context.Context, req *SunrunDetailReq, opts .
 		PathTemplate: "/hduhelp-neo/subscription/sunrun/detail",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -205,6 +219,7 @@ func (s *Service) SunrunDetail(ctx context.Context, req *SunrunDetailReq, opts .
 type SunrunGroupReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -213,7 +228,13 @@ type SunrunGroupReqBuilder struct{ req *SunrunGroupReq }
 
 // NewSunrunGroupReqBuilder creates a request builder for SunrunGroup.
 func NewSunrunGroupReqBuilder() *SunrunGroupReqBuilder {
-	return &SunrunGroupReqBuilder{req: &SunrunGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &SunrunGroupReqBuilder{req: &SunrunGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *SunrunGroupReqBuilder) StaffID(v string) *SunrunGroupReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -234,6 +255,7 @@ func (s *Service) SunrunGroup(ctx context.Context, req *SunrunGroupReq, opts ...
 		PathTemplate: "/hduhelp-neo/subscription/sunrun/group",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -243,6 +265,7 @@ func (s *Service) SunrunGroup(ctx context.Context, req *SunrunGroupReq, opts ...
 type SunrunOverviewReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -251,7 +274,13 @@ type SunrunOverviewReqBuilder struct{ req *SunrunOverviewReq }
 
 // NewSunrunOverviewReqBuilder creates a request builder for SunrunOverview.
 func NewSunrunOverviewReqBuilder() *SunrunOverviewReqBuilder {
-	return &SunrunOverviewReqBuilder{req: &SunrunOverviewReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &SunrunOverviewReqBuilder{req: &SunrunOverviewReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *SunrunOverviewReqBuilder) StaffID(v string) *SunrunOverviewReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -272,6 +301,7 @@ func (s *Service) SunrunOverview(ctx context.Context, req *SunrunOverviewReq, op
 		PathTemplate: "/hduhelp-neo/subscription/sunrun/overview",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -281,6 +311,7 @@ func (s *Service) SunrunOverview(ctx context.Context, req *SunrunOverviewReq, op
 type ListSubscriptionsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -289,7 +320,7 @@ type ListSubscriptionsReqBuilder struct{ req *ListSubscriptionsReq }
 
 // NewListSubscriptionsReqBuilder creates a request builder for ListSubscriptions.
 func NewListSubscriptionsReqBuilder() *ListSubscriptionsReqBuilder {
-	return &ListSubscriptionsReqBuilder{req: &ListSubscriptionsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ListSubscriptionsReqBuilder{req: &ListSubscriptionsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -310,6 +341,7 @@ func (s *Service) ListSubscriptions(ctx context.Context, req *ListSubscriptionsR
 		PathTemplate: "/hduhelp-neo/subscriptions",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err

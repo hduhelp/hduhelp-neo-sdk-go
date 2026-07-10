@@ -20,6 +20,7 @@ func NewService(config *core.Config) *Service { return &Service{config: config} 
 type ListPATsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -28,7 +29,7 @@ type ListPATsReqBuilder struct{ req *ListPATsReq }
 
 // NewListPATsReqBuilder creates a request builder for ListPATs.
 func NewListPATsReqBuilder() *ListPATsReqBuilder {
-	return &ListPATsReqBuilder{req: &ListPATsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ListPATsReqBuilder{req: &ListPATsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -49,6 +50,7 @@ func (s *Service) ListPATs(ctx context.Context, req *ListPATsReq, opts ...core.R
 		PathTemplate: "/hduhelp-neo/cli/tokens",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -58,6 +60,7 @@ func (s *Service) ListPATs(ctx context.Context, req *ListPATsReq, opts ...core.R
 type CreatePATReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -66,7 +69,7 @@ type CreatePATReqBuilder struct{ req *CreatePATReq }
 
 // NewCreatePATReqBuilder creates a request builder for CreatePAT.
 func NewCreatePATReqBuilder() *CreatePATReqBuilder {
-	return &CreatePATReqBuilder{req: &CreatePATReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &CreatePATReqBuilder{req: &CreatePATReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -93,6 +96,7 @@ func (s *Service) CreatePAT(ctx context.Context, req *CreatePATReq, opts ...core
 		PathTemplate: "/hduhelp-neo/cli/tokens",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -102,6 +106,7 @@ func (s *Service) CreatePAT(ctx context.Context, req *CreatePATReq, opts ...core
 type RevokePATReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -110,7 +115,7 @@ type RevokePATReqBuilder struct{ req *RevokePATReq }
 
 // NewRevokePATReqBuilder creates a request builder for RevokePAT.
 func NewRevokePATReqBuilder() *RevokePATReqBuilder {
-	return &RevokePATReqBuilder{req: &RevokePATReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &RevokePATReqBuilder{req: &RevokePATReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Id sets the "id" path parameter.
@@ -136,6 +141,7 @@ func (s *Service) RevokePAT(ctx context.Context, req *RevokePATReq, opts ...core
 		PathTemplate: "/hduhelp-neo/cli/tokens/{id}",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -145,6 +151,7 @@ func (s *Service) RevokePAT(ctx context.Context, req *RevokePATReq, opts ...core
 type MergeConfirmReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -153,7 +160,7 @@ type MergeConfirmReqBuilder struct{ req *MergeConfirmReq }
 
 // NewMergeConfirmReqBuilder creates a request builder for MergeConfirm.
 func NewMergeConfirmReqBuilder() *MergeConfirmReqBuilder {
-	return &MergeConfirmReqBuilder{req: &MergeConfirmReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &MergeConfirmReqBuilder{req: &MergeConfirmReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -180,6 +187,7 @@ func (s *Service) MergeConfirm(ctx context.Context, req *MergeConfirmReq, opts .
 		PathTemplate: "/hduhelp-neo/identity/account/merge/confirm",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -189,6 +197,7 @@ func (s *Service) MergeConfirm(ctx context.Context, req *MergeConfirmReq, opts .
 type MergePreviewReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -197,7 +206,7 @@ type MergePreviewReqBuilder struct{ req *MergePreviewReq }
 
 // NewMergePreviewReqBuilder creates a request builder for MergePreview.
 func NewMergePreviewReqBuilder() *MergePreviewReqBuilder {
-	return &MergePreviewReqBuilder{req: &MergePreviewReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &MergePreviewReqBuilder{req: &MergePreviewReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -224,6 +233,7 @@ func (s *Service) MergePreview(ctx context.Context, req *MergePreviewReq, opts .
 		PathTemplate: "/hduhelp-neo/identity/account/merge/preview",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -233,6 +243,7 @@ func (s *Service) MergePreview(ctx context.Context, req *MergePreviewReq, opts .
 type MergeStartReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -241,7 +252,7 @@ type MergeStartReqBuilder struct{ req *MergeStartReq }
 
 // NewMergeStartReqBuilder creates a request builder for MergeStart.
 func NewMergeStartReqBuilder() *MergeStartReqBuilder {
-	return &MergeStartReqBuilder{req: &MergeStartReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &MergeStartReqBuilder{req: &MergeStartReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -268,6 +279,7 @@ func (s *Service) MergeStart(ctx context.Context, req *MergeStartReq, opts ...co
 		PathTemplate: "/hduhelp-neo/identity/account/merge/start",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -277,6 +289,7 @@ func (s *Service) MergeStart(ctx context.Context, req *MergeStartReq, opts ...co
 type RegisterAppReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -285,7 +298,7 @@ type RegisterAppReqBuilder struct{ req *RegisterAppReq }
 
 // NewRegisterAppReqBuilder creates a request builder for RegisterApp.
 func NewRegisterAppReqBuilder() *RegisterAppReqBuilder {
-	return &RegisterAppReqBuilder{req: &RegisterAppReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &RegisterAppReqBuilder{req: &RegisterAppReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -312,6 +325,7 @@ func (s *Service) RegisterApp(ctx context.Context, req *RegisterAppReq, opts ...
 		PathTemplate: "/hduhelp-neo/identity/apps",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -321,6 +335,7 @@ func (s *Service) RegisterApp(ctx context.Context, req *RegisterAppReq, opts ...
 type AuthorizeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -329,7 +344,7 @@ type AuthorizeReqBuilder struct{ req *AuthorizeReq }
 
 // NewAuthorizeReqBuilder creates a request builder for Authorize.
 func NewAuthorizeReqBuilder() *AuthorizeReqBuilder {
-	return &AuthorizeReqBuilder{req: &AuthorizeReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &AuthorizeReqBuilder{req: &AuthorizeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -356,6 +371,7 @@ func (s *Service) Authorize(ctx context.Context, req *AuthorizeReq, opts ...core
 		PathTemplate: "/hduhelp-neo/identity/apps/authorize",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -365,6 +381,7 @@ func (s *Service) Authorize(ctx context.Context, req *AuthorizeReq, opts ...core
 type IssueAppTokenReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -373,7 +390,7 @@ type IssueAppTokenReqBuilder struct{ req *IssueAppTokenReq }
 
 // NewIssueAppTokenReqBuilder creates a request builder for IssueAppToken.
 func NewIssueAppTokenReqBuilder() *IssueAppTokenReqBuilder {
-	return &IssueAppTokenReqBuilder{req: &IssueAppTokenReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &IssueAppTokenReqBuilder{req: &IssueAppTokenReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -400,6 +417,7 @@ func (s *Service) IssueAppToken(ctx context.Context, req *IssueAppTokenReq, opts
 		PathTemplate: "/hduhelp-neo/identity/apps/token",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -409,6 +427,7 @@ func (s *Service) IssueAppToken(ctx context.Context, req *IssueAppTokenReq, opts
 type ExchangeCodeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -417,7 +436,7 @@ type ExchangeCodeReqBuilder struct{ req *ExchangeCodeReq }
 
 // NewExchangeCodeReqBuilder creates a request builder for ExchangeCode.
 func NewExchangeCodeReqBuilder() *ExchangeCodeReqBuilder {
-	return &ExchangeCodeReqBuilder{req: &ExchangeCodeReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ExchangeCodeReqBuilder{req: &ExchangeCodeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -444,6 +463,7 @@ func (s *Service) ExchangeCode(ctx context.Context, req *ExchangeCodeReq, opts .
 		PathTemplate: "/hduhelp-neo/identity/apps/token/exchange",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -453,6 +473,7 @@ func (s *Service) ExchangeCode(ctx context.Context, req *ExchangeCodeReq, opts .
 type BindEmailReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -461,7 +482,7 @@ type BindEmailReqBuilder struct{ req *BindEmailReq }
 
 // NewBindEmailReqBuilder creates a request builder for BindEmail.
 func NewBindEmailReqBuilder() *BindEmailReqBuilder {
-	return &BindEmailReqBuilder{req: &BindEmailReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &BindEmailReqBuilder{req: &BindEmailReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -487,6 +508,7 @@ func (s *Service) BindEmail(ctx context.Context, req *BindEmailReq, opts ...core
 		PathTemplate: "/hduhelp-neo/identity/auth/bind/email",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -496,6 +518,7 @@ func (s *Service) BindEmail(ctx context.Context, req *BindEmailReq, opts ...core
 type ChangeEmailReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -504,7 +527,7 @@ type ChangeEmailReqBuilder struct{ req *ChangeEmailReq }
 
 // NewChangeEmailReqBuilder creates a request builder for ChangeEmail.
 func NewChangeEmailReqBuilder() *ChangeEmailReqBuilder {
-	return &ChangeEmailReqBuilder{req: &ChangeEmailReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ChangeEmailReqBuilder{req: &ChangeEmailReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -530,6 +553,7 @@ func (s *Service) ChangeEmail(ctx context.Context, req *ChangeEmailReq, opts ...
 		PathTemplate: "/hduhelp-neo/identity/auth/bind/email/change",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -539,6 +563,7 @@ func (s *Service) ChangeEmail(ctx context.Context, req *ChangeEmailReq, opts ...
 type BindPhoneReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -547,7 +572,7 @@ type BindPhoneReqBuilder struct{ req *BindPhoneReq }
 
 // NewBindPhoneReqBuilder creates a request builder for BindPhone.
 func NewBindPhoneReqBuilder() *BindPhoneReqBuilder {
-	return &BindPhoneReqBuilder{req: &BindPhoneReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &BindPhoneReqBuilder{req: &BindPhoneReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -574,6 +599,7 @@ func (s *Service) BindPhone(ctx context.Context, req *BindPhoneReq, opts ...core
 		PathTemplate: "/hduhelp-neo/identity/auth/bind/phone",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -583,6 +609,7 @@ func (s *Service) BindPhone(ctx context.Context, req *BindPhoneReq, opts ...core
 type ChangePhoneReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -591,7 +618,7 @@ type ChangePhoneReqBuilder struct{ req *ChangePhoneReq }
 
 // NewChangePhoneReqBuilder creates a request builder for ChangePhone.
 func NewChangePhoneReqBuilder() *ChangePhoneReqBuilder {
-	return &ChangePhoneReqBuilder{req: &ChangePhoneReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ChangePhoneReqBuilder{req: &ChangePhoneReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -617,6 +644,7 @@ func (s *Service) ChangePhone(ctx context.Context, req *ChangePhoneReq, opts ...
 		PathTemplate: "/hduhelp-neo/identity/auth/bind/phone/change",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -626,6 +654,7 @@ func (s *Service) ChangePhone(ctx context.Context, req *ChangePhoneReq, opts ...
 type SendVerificationCodeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -634,7 +663,7 @@ type SendVerificationCodeReqBuilder struct{ req *SendVerificationCodeReq }
 
 // NewSendVerificationCodeReqBuilder creates a request builder for SendVerificationCode.
 func NewSendVerificationCodeReqBuilder() *SendVerificationCodeReqBuilder {
-	return &SendVerificationCodeReqBuilder{req: &SendVerificationCodeReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &SendVerificationCodeReqBuilder{req: &SendVerificationCodeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -660,6 +689,7 @@ func (s *Service) SendVerificationCode(ctx context.Context, req *SendVerificatio
 		PathTemplate: "/hduhelp-neo/identity/auth/code/send",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -669,6 +699,7 @@ func (s *Service) SendVerificationCode(ctx context.Context, req *SendVerificatio
 type GetAuthConfigReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -677,7 +708,13 @@ type GetAuthConfigReqBuilder struct{ req *GetAuthConfigReq }
 
 // NewGetAuthConfigReqBuilder creates a request builder for GetAuthConfig.
 func NewGetAuthConfigReqBuilder() *GetAuthConfigReqBuilder {
-	return &GetAuthConfigReqBuilder{req: &GetAuthConfigReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &GetAuthConfigReqBuilder{req: &GetAuthConfigReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// UserAgent sets the "User-Agent" header parameter.
+func (b *GetAuthConfigReqBuilder) UserAgent(v string) *GetAuthConfigReqBuilder {
+	b.req.headers["User-Agent"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -698,6 +735,7 @@ func (s *Service) GetAuthConfig(ctx context.Context, req *GetAuthConfigReq, opts
 		PathTemplate: "/hduhelp-neo/identity/auth/config",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -707,6 +745,7 @@ func (s *Service) GetAuthConfig(ctx context.Context, req *GetAuthConfigReq, opts
 type LoginWithEmailReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -715,7 +754,19 @@ type LoginWithEmailReqBuilder struct{ req *LoginWithEmailReq }
 
 // NewLoginWithEmailReqBuilder creates a request builder for LoginWithEmail.
 func NewLoginWithEmailReqBuilder() *LoginWithEmailReqBuilder {
-	return &LoginWithEmailReqBuilder{req: &LoginWithEmailReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LoginWithEmailReqBuilder{req: &LoginWithEmailReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// DeviceID sets the "x-device-id" header parameter.
+func (b *LoginWithEmailReqBuilder) DeviceID(v string) *LoginWithEmailReqBuilder {
+	b.req.headers["x-device-id"] = v
+	return b
+}
+
+// DeviceName sets the "x-device-name" header parameter.
+func (b *LoginWithEmailReqBuilder) DeviceName(v string) *LoginWithEmailReqBuilder {
+	b.req.headers["x-device-name"] = v
+	return b
 }
 
 // Body sets the request body.
@@ -742,6 +793,7 @@ func (s *Service) LoginWithEmail(ctx context.Context, req *LoginWithEmailReq, op
 		PathTemplate: "/hduhelp-neo/identity/auth/login/email",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -751,6 +803,7 @@ func (s *Service) LoginWithEmail(ctx context.Context, req *LoginWithEmailReq, op
 type LoginWithPasswordReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -759,7 +812,19 @@ type LoginWithPasswordReqBuilder struct{ req *LoginWithPasswordReq }
 
 // NewLoginWithPasswordReqBuilder creates a request builder for LoginWithPassword.
 func NewLoginWithPasswordReqBuilder() *LoginWithPasswordReqBuilder {
-	return &LoginWithPasswordReqBuilder{req: &LoginWithPasswordReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LoginWithPasswordReqBuilder{req: &LoginWithPasswordReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// DeviceID sets the "x-device-id" header parameter.
+func (b *LoginWithPasswordReqBuilder) DeviceID(v string) *LoginWithPasswordReqBuilder {
+	b.req.headers["x-device-id"] = v
+	return b
+}
+
+// DeviceName sets the "x-device-name" header parameter.
+func (b *LoginWithPasswordReqBuilder) DeviceName(v string) *LoginWithPasswordReqBuilder {
+	b.req.headers["x-device-name"] = v
+	return b
 }
 
 // Body sets the request body.
@@ -786,6 +851,7 @@ func (s *Service) LoginWithPassword(ctx context.Context, req *LoginWithPasswordR
 		PathTemplate: "/hduhelp-neo/identity/auth/login/password",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -795,6 +861,7 @@ func (s *Service) LoginWithPassword(ctx context.Context, req *LoginWithPasswordR
 type LoginWithSMSReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -803,7 +870,19 @@ type LoginWithSMSReqBuilder struct{ req *LoginWithSMSReq }
 
 // NewLoginWithSMSReqBuilder creates a request builder for LoginWithSMS.
 func NewLoginWithSMSReqBuilder() *LoginWithSMSReqBuilder {
-	return &LoginWithSMSReqBuilder{req: &LoginWithSMSReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LoginWithSMSReqBuilder{req: &LoginWithSMSReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// DeviceID sets the "x-device-id" header parameter.
+func (b *LoginWithSMSReqBuilder) DeviceID(v string) *LoginWithSMSReqBuilder {
+	b.req.headers["x-device-id"] = v
+	return b
+}
+
+// DeviceName sets the "x-device-name" header parameter.
+func (b *LoginWithSMSReqBuilder) DeviceName(v string) *LoginWithSMSReqBuilder {
+	b.req.headers["x-device-name"] = v
+	return b
 }
 
 // Body sets the request body.
@@ -830,6 +909,7 @@ func (s *Service) LoginWithSMS(ctx context.Context, req *LoginWithSMSReq, opts .
 		PathTemplate: "/hduhelp-neo/identity/auth/login/sms",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -839,6 +919,7 @@ func (s *Service) LoginWithSMS(ctx context.Context, req *LoginWithSMSReq, opts .
 type AuthLogoutReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -847,7 +928,7 @@ type AuthLogoutReqBuilder struct{ req *AuthLogoutReq }
 
 // NewAuthLogoutReqBuilder creates a request builder for AuthLogout.
 func NewAuthLogoutReqBuilder() *AuthLogoutReqBuilder {
-	return &AuthLogoutReqBuilder{req: &AuthLogoutReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &AuthLogoutReqBuilder{req: &AuthLogoutReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -873,6 +954,7 @@ func (s *Service) AuthLogout(ctx context.Context, req *AuthLogoutReq, opts ...co
 		PathTemplate: "/hduhelp-neo/identity/auth/logout",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -882,6 +964,7 @@ func (s *Service) AuthLogout(ctx context.Context, req *AuthLogoutReq, opts ...co
 type LogoutAllReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -890,7 +973,7 @@ type LogoutAllReqBuilder struct{ req *LogoutAllReq }
 
 // NewLogoutAllReqBuilder creates a request builder for LogoutAll.
 func NewLogoutAllReqBuilder() *LogoutAllReqBuilder {
-	return &LogoutAllReqBuilder{req: &LogoutAllReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LogoutAllReqBuilder{req: &LogoutAllReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -910,6 +993,7 @@ func (s *Service) LogoutAll(ctx context.Context, req *LogoutAllReq, opts ...core
 		PathTemplate: "/hduhelp-neo/identity/auth/logout/all",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -919,6 +1003,7 @@ func (s *Service) LogoutAll(ctx context.Context, req *LogoutAllReq, opts ...core
 type ChangePasswordReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -927,7 +1012,7 @@ type ChangePasswordReqBuilder struct{ req *ChangePasswordReq }
 
 // NewChangePasswordReqBuilder creates a request builder for ChangePassword.
 func NewChangePasswordReqBuilder() *ChangePasswordReqBuilder {
-	return &ChangePasswordReqBuilder{req: &ChangePasswordReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ChangePasswordReqBuilder{req: &ChangePasswordReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -953,6 +1038,7 @@ func (s *Service) ChangePassword(ctx context.Context, req *ChangePasswordReq, op
 		PathTemplate: "/hduhelp-neo/identity/auth/password/change",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -962,6 +1048,7 @@ func (s *Service) ChangePassword(ctx context.Context, req *ChangePasswordReq, op
 type ResetPasswordReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -970,7 +1057,7 @@ type ResetPasswordReqBuilder struct{ req *ResetPasswordReq }
 
 // NewResetPasswordReqBuilder creates a request builder for ResetPassword.
 func NewResetPasswordReqBuilder() *ResetPasswordReqBuilder {
-	return &ResetPasswordReqBuilder{req: &ResetPasswordReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ResetPasswordReqBuilder{req: &ResetPasswordReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -996,6 +1083,7 @@ func (s *Service) ResetPassword(ctx context.Context, req *ResetPasswordReq, opts
 		PathTemplate: "/hduhelp-neo/identity/auth/password/reset",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1005,6 +1093,7 @@ func (s *Service) ResetPassword(ctx context.Context, req *ResetPasswordReq, opts
 type ListSessionsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1013,7 +1102,7 @@ type ListSessionsReqBuilder struct{ req *ListSessionsReq }
 
 // NewListSessionsReqBuilder creates a request builder for ListSessions.
 func NewListSessionsReqBuilder() *ListSessionsReqBuilder {
-	return &ListSessionsReqBuilder{req: &ListSessionsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ListSessionsReqBuilder{req: &ListSessionsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -1040,6 +1129,7 @@ func (s *Service) ListSessions(ctx context.Context, req *ListSessionsReq, opts .
 		PathTemplate: "/hduhelp-neo/identity/auth/sessions",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1049,6 +1139,7 @@ func (s *Service) ListSessions(ctx context.Context, req *ListSessionsReq, opts .
 type RevokeSessionReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1057,7 +1148,7 @@ type RevokeSessionReqBuilder struct{ req *RevokeSessionReq }
 
 // NewRevokeSessionReqBuilder creates a request builder for RevokeSession.
 func NewRevokeSessionReqBuilder() *RevokeSessionReqBuilder {
-	return &RevokeSessionReqBuilder{req: &RevokeSessionReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &RevokeSessionReqBuilder{req: &RevokeSessionReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // SessionId sets the "sessionId" path parameter.
@@ -1083,6 +1174,7 @@ func (s *Service) RevokeSession(ctx context.Context, req *RevokeSessionReq, opts
 		PathTemplate: "/hduhelp-neo/identity/auth/sessions/{sessionId}",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1092,6 +1184,7 @@ func (s *Service) RevokeSession(ctx context.Context, req *RevokeSessionReq, opts
 type GetAuthStatusReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1100,7 +1193,13 @@ type GetAuthStatusReqBuilder struct{ req *GetAuthStatusReq }
 
 // NewGetAuthStatusReqBuilder creates a request builder for GetAuthStatus.
 func NewGetAuthStatusReqBuilder() *GetAuthStatusReqBuilder {
-	return &GetAuthStatusReqBuilder{req: &GetAuthStatusReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &GetAuthStatusReqBuilder{req: &GetAuthStatusReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// IdentityType sets the "X-Identity-Type" header parameter.
+func (b *GetAuthStatusReqBuilder) IdentityType(v string) *GetAuthStatusReqBuilder {
+	b.req.headers["X-Identity-Type"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -1121,6 +1220,7 @@ func (s *Service) GetAuthStatus(ctx context.Context, req *GetAuthStatusReq, opts
 		PathTemplate: "/hduhelp-neo/identity/auth/status",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1130,6 +1230,7 @@ func (s *Service) GetAuthStatus(ctx context.Context, req *GetAuthStatusReq, opts
 type AuthRefreshTokenReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1138,7 +1239,7 @@ type AuthRefreshTokenReqBuilder struct{ req *AuthRefreshTokenReq }
 
 // NewAuthRefreshTokenReqBuilder creates a request builder for AuthRefreshToken.
 func NewAuthRefreshTokenReqBuilder() *AuthRefreshTokenReqBuilder {
-	return &AuthRefreshTokenReqBuilder{req: &AuthRefreshTokenReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &AuthRefreshTokenReqBuilder{req: &AuthRefreshTokenReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -1165,6 +1266,7 @@ func (s *Service) AuthRefreshToken(ctx context.Context, req *AuthRefreshTokenReq
 		PathTemplate: "/hduhelp-neo/identity/auth/token/refresh",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1174,6 +1276,7 @@ func (s *Service) AuthRefreshToken(ctx context.Context, req *AuthRefreshTokenReq
 type ListAuthorizedAppsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1182,7 +1285,7 @@ type ListAuthorizedAppsReqBuilder struct{ req *ListAuthorizedAppsReq }
 
 // NewListAuthorizedAppsReqBuilder creates a request builder for ListAuthorizedApps.
 func NewListAuthorizedAppsReqBuilder() *ListAuthorizedAppsReqBuilder {
-	return &ListAuthorizedAppsReqBuilder{req: &ListAuthorizedAppsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ListAuthorizedAppsReqBuilder{req: &ListAuthorizedAppsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -1203,6 +1306,7 @@ func (s *Service) ListAuthorizedApps(ctx context.Context, req *ListAuthorizedApp
 		PathTemplate: "/hduhelp-neo/identity/authorizations",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1212,6 +1316,7 @@ func (s *Service) ListAuthorizedApps(ctx context.Context, req *ListAuthorizedApp
 type RevokeAuthorizedAppReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1220,7 +1325,7 @@ type RevokeAuthorizedAppReqBuilder struct{ req *RevokeAuthorizedAppReq }
 
 // NewRevokeAuthorizedAppReqBuilder creates a request builder for RevokeAuthorizedApp.
 func NewRevokeAuthorizedAppReqBuilder() *RevokeAuthorizedAppReqBuilder {
-	return &RevokeAuthorizedAppReqBuilder{req: &RevokeAuthorizedAppReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &RevokeAuthorizedAppReqBuilder{req: &RevokeAuthorizedAppReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // ClientID sets the "clientID" query parameter.
@@ -1246,6 +1351,7 @@ func (s *Service) RevokeAuthorizedApp(ctx context.Context, req *RevokeAuthorized
 		PathTemplate: "/hduhelp-neo/identity/authorizations",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1255,6 +1361,7 @@ func (s *Service) RevokeAuthorizedApp(ctx context.Context, req *RevokeAuthorized
 type BindingsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1263,7 +1370,7 @@ type BindingsReqBuilder struct{ req *BindingsReq }
 
 // NewBindingsReqBuilder creates a request builder for Bindings.
 func NewBindingsReqBuilder() *BindingsReqBuilder {
-	return &BindingsReqBuilder{req: &BindingsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &BindingsReqBuilder{req: &BindingsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -1284,6 +1391,7 @@ func (s *Service) Bindings(ctx context.Context, req *BindingsReq, opts ...core.R
 		PathTemplate: "/hduhelp-neo/identity/bindings",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1293,6 +1401,7 @@ func (s *Service) Bindings(ctx context.Context, req *BindingsReq, opts ...core.R
 type BindCampusReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1301,7 +1410,7 @@ type BindCampusReqBuilder struct{ req *BindCampusReq }
 
 // NewBindCampusReqBuilder creates a request builder for BindCampus.
 func NewBindCampusReqBuilder() *BindCampusReqBuilder {
-	return &BindCampusReqBuilder{req: &BindCampusReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &BindCampusReqBuilder{req: &BindCampusReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -1328,6 +1437,7 @@ func (s *Service) BindCampus(ctx context.Context, req *BindCampusReq, opts ...co
 		PathTemplate: "/hduhelp-neo/identity/bindings/campus",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1337,6 +1447,7 @@ func (s *Service) BindCampus(ctx context.Context, req *BindCampusReq, opts ...co
 type UnbindCampusReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1345,7 +1456,7 @@ type UnbindCampusReqBuilder struct{ req *UnbindCampusReq }
 
 // NewUnbindCampusReqBuilder creates a request builder for UnbindCampus.
 func NewUnbindCampusReqBuilder() *UnbindCampusReqBuilder {
-	return &UnbindCampusReqBuilder{req: &UnbindCampusReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &UnbindCampusReqBuilder{req: &UnbindCampusReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // StaffType sets the "staff_type" query parameter: base 除外的校园身份类型：undergraduate|graduate|staff 或数字码 1|2|3
@@ -1371,6 +1482,7 @@ func (s *Service) UnbindCampus(ctx context.Context, req *UnbindCampusReq, opts .
 		PathTemplate: "/hduhelp-neo/identity/bindings/campus",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1380,6 +1492,7 @@ func (s *Service) UnbindCampus(ctx context.Context, req *UnbindCampusReq, opts .
 type BindSocialReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1388,7 +1501,7 @@ type BindSocialReqBuilder struct{ req *BindSocialReq }
 
 // NewBindSocialReqBuilder creates a request builder for BindSocial.
 func NewBindSocialReqBuilder() *BindSocialReqBuilder {
-	return &BindSocialReqBuilder{req: &BindSocialReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &BindSocialReqBuilder{req: &BindSocialReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -1415,6 +1528,7 @@ func (s *Service) BindSocial(ctx context.Context, req *BindSocialReq, opts ...co
 		PathTemplate: "/hduhelp-neo/identity/bindings/social",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1424,6 +1538,7 @@ func (s *Service) BindSocial(ctx context.Context, req *BindSocialReq, opts ...co
 type UnbindSocialReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1432,7 +1547,7 @@ type UnbindSocialReqBuilder struct{ req *UnbindSocialReq }
 
 // NewUnbindSocialReqBuilder creates a request builder for UnbindSocial.
 func NewUnbindSocialReqBuilder() *UnbindSocialReqBuilder {
-	return &UnbindSocialReqBuilder{req: &UnbindSocialReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &UnbindSocialReqBuilder{req: &UnbindSocialReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Provider sets the "provider" query parameter.
@@ -1458,6 +1573,7 @@ func (s *Service) UnbindSocial(ctx context.Context, req *UnbindSocialReq, opts .
 		PathTemplate: "/hduhelp-neo/identity/bindings/social",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1467,6 +1583,7 @@ func (s *Service) UnbindSocial(ctx context.Context, req *UnbindSocialReq, opts .
 type GetBindStatusReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1475,7 +1592,7 @@ type GetBindStatusReqBuilder struct{ req *GetBindStatusReq }
 
 // NewGetBindStatusReqBuilder creates a request builder for GetBindStatus.
 func NewGetBindStatusReqBuilder() *GetBindStatusReqBuilder {
-	return &GetBindStatusReqBuilder{req: &GetBindStatusReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &GetBindStatusReqBuilder{req: &GetBindStatusReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -1496,6 +1613,7 @@ func (s *Service) GetBindStatus(ctx context.Context, req *GetBindStatusReq, opts
 		PathTemplate: "/hduhelp-neo/identity/bindings/status",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1505,6 +1623,7 @@ func (s *Service) GetBindStatus(ctx context.Context, req *GetBindStatusReq, opts
 type AutoLoginReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1513,7 +1632,7 @@ type AutoLoginReqBuilder struct{ req *AutoLoginReq }
 
 // NewAutoLoginReqBuilder creates a request builder for AutoLogin.
 func NewAutoLoginReqBuilder() *AutoLoginReqBuilder {
-	return &AutoLoginReqBuilder{req: &AutoLoginReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &AutoLoginReqBuilder{req: &AutoLoginReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // ClientID sets the "clientID" query parameter.
@@ -1525,6 +1644,12 @@ func (b *AutoLoginReqBuilder) ClientID(v string) *AutoLoginReqBuilder {
 // Redirect sets the "redirect" query parameter.
 func (b *AutoLoginReqBuilder) Redirect(v string) *AutoLoginReqBuilder {
 	b.req.queryParams["redirect"] = v
+	return b
+}
+
+// UserAgent sets the "User-Agent" header parameter.
+func (b *AutoLoginReqBuilder) UserAgent(v string) *AutoLoginReqBuilder {
+	b.req.headers["User-Agent"] = v
 	return b
 }
 
@@ -1546,6 +1671,7 @@ func (s *Service) AutoLogin(ctx context.Context, req *AutoLoginReq, opts ...core
 		PathTemplate: "/hduhelp-neo/identity/login/auto",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1555,6 +1681,7 @@ func (s *Service) AutoLogin(ctx context.Context, req *AutoLoginReq, opts ...core
 type BindSuccessLoginReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1563,7 +1690,7 @@ type BindSuccessLoginReqBuilder struct{ req *BindSuccessLoginReq }
 
 // NewBindSuccessLoginReqBuilder creates a request builder for BindSuccessLogin.
 func NewBindSuccessLoginReqBuilder() *BindSuccessLoginReqBuilder {
-	return &BindSuccessLoginReqBuilder{req: &BindSuccessLoginReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &BindSuccessLoginReqBuilder{req: &BindSuccessLoginReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -1584,6 +1711,7 @@ func (s *Service) BindSuccessLogin(ctx context.Context, req *BindSuccessLoginReq
 		PathTemplate: "/hduhelp-neo/identity/login/bind",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1593,6 +1721,7 @@ func (s *Service) BindSuccessLogin(ctx context.Context, req *BindSuccessLoginReq
 type BindPageReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1601,7 +1730,7 @@ type BindPageReqBuilder struct{ req *BindPageReq }
 
 // NewBindPageReqBuilder creates a request builder for BindPage.
 func NewBindPageReqBuilder() *BindPageReqBuilder {
-	return &BindPageReqBuilder{req: &BindPageReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &BindPageReqBuilder{req: &BindPageReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // State sets the "state" path parameter: 关联登录态
@@ -1628,6 +1757,7 @@ func (s *Service) BindPage(ctx context.Context, req *BindPageReq, opts ...core.R
 		PathTemplate: "/hduhelp-neo/identity/login/bind/{state}",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1637,6 +1767,7 @@ func (s *Service) BindPage(ctx context.Context, req *BindPageReq, opts ...core.R
 type BindPageTypeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1645,7 +1776,7 @@ type BindPageTypeReqBuilder struct{ req *BindPageTypeReq }
 
 // NewBindPageTypeReqBuilder creates a request builder for BindPageType.
 func NewBindPageTypeReqBuilder() *BindPageTypeReqBuilder {
-	return &BindPageTypeReqBuilder{req: &BindPageTypeReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &BindPageTypeReqBuilder{req: &BindPageTypeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // State sets the "state" path parameter: 关联登录态
@@ -1678,6 +1809,7 @@ func (s *Service) BindPageType(ctx context.Context, req *BindPageTypeReq, opts .
 		PathTemplate: "/hduhelp-neo/identity/login/bind/{state}/{GrantType}",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1687,6 +1819,7 @@ func (s *Service) BindPageType(ctx context.Context, req *BindPageTypeReq, opts .
 type BindPageKeyReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1695,7 +1828,7 @@ type BindPageKeyReqBuilder struct{ req *BindPageKeyReq }
 
 // NewBindPageKeyReqBuilder creates a request builder for BindPageKey.
 func NewBindPageKeyReqBuilder() *BindPageKeyReqBuilder {
-	return &BindPageKeyReqBuilder{req: &BindPageKeyReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &BindPageKeyReqBuilder{req: &BindPageKeyReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // State sets the "state" path parameter: 关联登录态
@@ -1734,6 +1867,7 @@ func (s *Service) BindPageKey(ctx context.Context, req *BindPageKeyReq, opts ...
 		PathTemplate: "/hduhelp-neo/identity/login/bind/{state}/{GrantType}/{GrantKey}",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1743,6 +1877,7 @@ func (s *Service) BindPageKey(ctx context.Context, req *BindPageKeyReq, opts ...
 type LoginCallbackReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1751,7 +1886,7 @@ type LoginCallbackReqBuilder struct{ req *LoginCallbackReq }
 
 // NewLoginCallbackReqBuilder creates a request builder for LoginCallback.
 func NewLoginCallbackReqBuilder() *LoginCallbackReqBuilder {
-	return &LoginCallbackReqBuilder{req: &LoginCallbackReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LoginCallbackReqBuilder{req: &LoginCallbackReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // State sets the "state" query parameter.
@@ -1790,6 +1925,7 @@ func (s *Service) LoginCallback(ctx context.Context, req *LoginCallbackReq, opts
 		PathTemplate: "/hduhelp-neo/identity/login/callback",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1799,6 +1935,7 @@ func (s *Service) LoginCallback(ctx context.Context, req *LoginCallbackReq, opts
 type LoginCallbackPostReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1807,7 +1944,7 @@ type LoginCallbackPostReqBuilder struct{ req *LoginCallbackPostReq }
 
 // NewLoginCallbackPostReqBuilder creates a request builder for LoginCallbackPost.
 func NewLoginCallbackPostReqBuilder() *LoginCallbackPostReqBuilder {
-	return &LoginCallbackPostReqBuilder{req: &LoginCallbackPostReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LoginCallbackPostReqBuilder{req: &LoginCallbackPostReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // State sets the "state" query parameter.
@@ -1846,6 +1983,7 @@ func (s *Service) LoginCallbackPost(ctx context.Context, req *LoginCallbackPostR
 		PathTemplate: "/hduhelp-neo/identity/login/callback",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1855,6 +1993,7 @@ func (s *Service) LoginCallbackPost(ctx context.Context, req *LoginCallbackPostR
 type LoginCallbackGrantReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1863,7 +2002,7 @@ type LoginCallbackGrantReqBuilder struct{ req *LoginCallbackGrantReq }
 
 // NewLoginCallbackGrantReqBuilder creates a request builder for LoginCallbackGrant.
 func NewLoginCallbackGrantReqBuilder() *LoginCallbackGrantReqBuilder {
-	return &LoginCallbackGrantReqBuilder{req: &LoginCallbackGrantReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LoginCallbackGrantReqBuilder{req: &LoginCallbackGrantReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // GrantKey sets the "GrantKey" path parameter.
@@ -1908,6 +2047,7 @@ func (s *Service) LoginCallbackGrant(ctx context.Context, req *LoginCallbackGran
 		PathTemplate: "/hduhelp-neo/identity/login/callback/{GrantKey}",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1917,6 +2057,7 @@ func (s *Service) LoginCallbackGrant(ctx context.Context, req *LoginCallbackGran
 type DirectLoginReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1925,7 +2066,7 @@ type DirectLoginReqBuilder struct{ req *DirectLoginReq }
 
 // NewDirectLoginReqBuilder creates a request builder for DirectLogin.
 func NewDirectLoginReqBuilder() *DirectLoginReqBuilder {
-	return &DirectLoginReqBuilder{req: &DirectLoginReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &DirectLoginReqBuilder{req: &DirectLoginReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // GrantKey sets the "GrantKey" path parameter: 登录来源: cas/wxmp/wxmini/dingtalk/...
@@ -1970,6 +2111,7 @@ func (s *Service) DirectLogin(ctx context.Context, req *DirectLoginReq, opts ...
 		PathTemplate: "/hduhelp-neo/identity/login/direct/{GrantKey}",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1979,6 +2121,7 @@ func (s *Service) DirectLogin(ctx context.Context, req *DirectLoginReq, opts ...
 type LoginExchangeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1987,7 +2130,7 @@ type LoginExchangeReqBuilder struct{ req *LoginExchangeReq }
 
 // NewLoginExchangeReqBuilder creates a request builder for LoginExchange.
 func NewLoginExchangeReqBuilder() *LoginExchangeReqBuilder {
-	return &LoginExchangeReqBuilder{req: &LoginExchangeReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LoginExchangeReqBuilder{req: &LoginExchangeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -2014,6 +2157,7 @@ func (s *Service) LoginExchange(ctx context.Context, req *LoginExchangeReq, opts
 		PathTemplate: "/hduhelp-neo/identity/login/exchange",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2023,6 +2167,7 @@ func (s *Service) LoginExchange(ctx context.Context, req *LoginExchangeReq, opts
 type SelectLoginReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2031,7 +2176,7 @@ type SelectLoginReqBuilder struct{ req *SelectLoginReq }
 
 // NewSelectLoginReqBuilder creates a request builder for SelectLogin.
 func NewSelectLoginReqBuilder() *SelectLoginReqBuilder {
-	return &SelectLoginReqBuilder{req: &SelectLoginReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &SelectLoginReqBuilder{req: &SelectLoginReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // ClientID sets the "clientID" query parameter.
@@ -2043,6 +2188,12 @@ func (b *SelectLoginReqBuilder) ClientID(v string) *SelectLoginReqBuilder {
 // Redirect sets the "redirect" query parameter.
 func (b *SelectLoginReqBuilder) Redirect(v string) *SelectLoginReqBuilder {
 	b.req.queryParams["redirect"] = v
+	return b
+}
+
+// UserAgent sets the "User-Agent" header parameter.
+func (b *SelectLoginReqBuilder) UserAgent(v string) *SelectLoginReqBuilder {
+	b.req.headers["User-Agent"] = v
 	return b
 }
 
@@ -2064,6 +2215,7 @@ func (s *Service) SelectLogin(ctx context.Context, req *SelectLoginReq, opts ...
 		PathTemplate: "/hduhelp-neo/identity/login/select",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2073,6 +2225,7 @@ func (s *Service) SelectLogin(ctx context.Context, req *SelectLoginReq, opts ...
 type SSOCallbackReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2081,7 +2234,7 @@ type SSOCallbackReqBuilder struct{ req *SSOCallbackReq }
 
 // NewSSOCallbackReqBuilder creates a request builder for SSOCallback.
 func NewSSOCallbackReqBuilder() *SSOCallbackReqBuilder {
-	return &SSOCallbackReqBuilder{req: &SSOCallbackReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &SSOCallbackReqBuilder{req: &SSOCallbackReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // State sets the "state" query parameter.
@@ -2120,6 +2273,7 @@ func (s *Service) SSOCallback(ctx context.Context, req *SSOCallbackReq, opts ...
 		PathTemplate: "/hduhelp-neo/identity/login/sso",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2129,6 +2283,7 @@ func (s *Service) SSOCallback(ctx context.Context, req *SSOCallbackReq, opts ...
 type SSOStateCallbackReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2137,7 +2292,7 @@ type SSOStateCallbackReqBuilder struct{ req *SSOStateCallbackReq }
 
 // NewSSOStateCallbackReqBuilder creates a request builder for SSOStateCallback.
 func NewSSOStateCallbackReqBuilder() *SSOStateCallbackReqBuilder {
-	return &SSOStateCallbackReqBuilder{req: &SSOStateCallbackReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &SSOStateCallbackReqBuilder{req: &SSOStateCallbackReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // State sets the "state" path parameter.
@@ -2176,6 +2331,7 @@ func (s *Service) SSOStateCallback(ctx context.Context, req *SSOStateCallbackReq
 		PathTemplate: "/hduhelp-neo/identity/login/sso/{state}",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2185,6 +2341,7 @@ func (s *Service) SSOStateCallback(ctx context.Context, req *SSOStateCallbackReq
 type GetLoginURLReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2193,7 +2350,7 @@ type GetLoginURLReqBuilder struct{ req *GetLoginURLReq }
 
 // NewGetLoginURLReqBuilder creates a request builder for GetLoginURL.
 func NewGetLoginURLReqBuilder() *GetLoginURLReqBuilder {
-	return &GetLoginURLReqBuilder{req: &GetLoginURLReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &GetLoginURLReqBuilder{req: &GetLoginURLReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // GrantKey sets the "GrantKey" path parameter: 登录来源: cas/wxmp/wxmini/dingtalk/...
@@ -2238,6 +2395,7 @@ func (s *Service) GetLoginURL(ctx context.Context, req *GetLoginURLReq, opts ...
 		PathTemplate: "/hduhelp-neo/identity/login/url/{GrantKey}",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2247,6 +2405,7 @@ func (s *Service) GetLoginURL(ctx context.Context, req *GetLoginURLReq, opts ...
 type MeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2255,7 +2414,7 @@ type MeReqBuilder struct{ req *MeReq }
 
 // NewMeReqBuilder creates a request builder for Me.
 func NewMeReqBuilder() *MeReqBuilder {
-	return &MeReqBuilder{req: &MeReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &MeReqBuilder{req: &MeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -2276,6 +2435,7 @@ func (s *Service) Me(ctx context.Context, req *MeReq, opts ...core.RequestOption
 		PathTemplate: "/hduhelp-neo/identity/me",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2285,6 +2445,7 @@ func (s *Service) Me(ctx context.Context, req *MeReq, opts ...core.RequestOption
 type SetCurrentCampusReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2293,7 +2454,7 @@ type SetCurrentCampusReqBuilder struct{ req *SetCurrentCampusReq }
 
 // NewSetCurrentCampusReqBuilder creates a request builder for SetCurrentCampus.
 func NewSetCurrentCampusReqBuilder() *SetCurrentCampusReqBuilder {
-	return &SetCurrentCampusReqBuilder{req: &SetCurrentCampusReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &SetCurrentCampusReqBuilder{req: &SetCurrentCampusReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -2319,6 +2480,7 @@ func (s *Service) SetCurrentCampus(ctx context.Context, req *SetCurrentCampusReq
 		PathTemplate: "/hduhelp-neo/identity/me/campus",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2328,6 +2490,7 @@ func (s *Service) SetCurrentCampus(ctx context.Context, req *SetCurrentCampusReq
 type RegisterReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2336,7 +2499,7 @@ type RegisterReqBuilder struct{ req *RegisterReq }
 
 // NewRegisterReqBuilder creates a request builder for Register.
 func NewRegisterReqBuilder() *RegisterReqBuilder {
-	return &RegisterReqBuilder{req: &RegisterReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &RegisterReqBuilder{req: &RegisterReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -2363,6 +2526,7 @@ func (s *Service) Register(ctx context.Context, req *RegisterReq, opts ...core.R
 		PathTemplate: "/hduhelp-neo/identity/register",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2372,6 +2536,7 @@ func (s *Service) Register(ctx context.Context, req *RegisterReq, opts ...core.R
 type LogoutReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2380,7 +2545,7 @@ type LogoutReqBuilder struct{ req *LogoutReq }
 
 // NewLogoutReqBuilder creates a request builder for Logout.
 func NewLogoutReqBuilder() *LogoutReqBuilder {
-	return &LogoutReqBuilder{req: &LogoutReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LogoutReqBuilder{req: &LogoutReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -2400,6 +2565,7 @@ func (s *Service) Logout(ctx context.Context, req *LogoutReq, opts ...core.Reque
 		PathTemplate: "/hduhelp-neo/identity/token",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2409,6 +2575,7 @@ func (s *Service) Logout(ctx context.Context, req *LogoutReq, opts ...core.Reque
 type RefreshTokenReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2417,7 +2584,7 @@ type RefreshTokenReqBuilder struct{ req *RefreshTokenReq }
 
 // NewRefreshTokenReqBuilder creates a request builder for RefreshToken.
 func NewRefreshTokenReqBuilder() *RefreshTokenReqBuilder {
-	return &RefreshTokenReqBuilder{req: &RefreshTokenReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &RefreshTokenReqBuilder{req: &RefreshTokenReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -2444,6 +2611,7 @@ func (s *Service) RefreshToken(ctx context.Context, req *RefreshTokenReq, opts .
 		PathTemplate: "/hduhelp-neo/identity/token/refresh",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2453,6 +2621,7 @@ func (s *Service) RefreshToken(ctx context.Context, req *RefreshTokenReq, opts .
 type AppAccessTokenInternalReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2461,7 +2630,7 @@ type AppAccessTokenInternalReqBuilder struct{ req *AppAccessTokenInternalReq }
 
 // NewAppAccessTokenInternalReqBuilder creates a request builder for AppAccessTokenInternal.
 func NewAppAccessTokenInternalReqBuilder() *AppAccessTokenInternalReqBuilder {
-	return &AppAccessTokenInternalReqBuilder{req: &AppAccessTokenInternalReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &AppAccessTokenInternalReqBuilder{req: &AppAccessTokenInternalReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -2480,7 +2649,7 @@ type AppAccessTokenInternalResp struct {
 	Data *models.AppAccessTokenData `json:"data"`
 }
 
-// AppAccessTokenInternal: 获取 app_access_token（自建应用）
+// AppAccessTokenInternal: 获取 app_access_token
 func (s *Service) AppAccessTokenInternal(ctx context.Context, req *AppAccessTokenInternalReq, opts ...core.RequestOption) (*AppAccessTokenInternalResp, error) {
 	resp := &AppAccessTokenInternalResp{}
 	err := s.config.Do(ctx, &core.APIReq{
@@ -2488,6 +2657,7 @@ func (s *Service) AppAccessTokenInternal(ctx context.Context, req *AppAccessToke
 		PathTemplate: "/hduhelp-neo/open-apis/auth/app_access_token/internal",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2497,6 +2667,7 @@ func (s *Service) AppAccessTokenInternal(ctx context.Context, req *AppAccessToke
 type TenantAccessTokenInternalReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2505,7 +2676,7 @@ type TenantAccessTokenInternalReqBuilder struct{ req *TenantAccessTokenInternalR
 
 // NewTenantAccessTokenInternalReqBuilder creates a request builder for TenantAccessTokenInternal.
 func NewTenantAccessTokenInternalReqBuilder() *TenantAccessTokenInternalReqBuilder {
-	return &TenantAccessTokenInternalReqBuilder{req: &TenantAccessTokenInternalReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &TenantAccessTokenInternalReqBuilder{req: &TenantAccessTokenInternalReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -2524,7 +2695,7 @@ type TenantAccessTokenInternalResp struct {
 	Data *models.TenantAccessTokenData `json:"data"`
 }
 
-// TenantAccessTokenInternal: 获取 tenant_access_token（自建应用）
+// TenantAccessTokenInternal: 获取 tenant_access_token
 func (s *Service) TenantAccessTokenInternal(ctx context.Context, req *TenantAccessTokenInternalReq, opts ...core.RequestOption) (*TenantAccessTokenInternalResp, error) {
 	resp := &TenantAccessTokenInternalResp{}
 	err := s.config.Do(ctx, &core.APIReq{
@@ -2532,6 +2703,7 @@ func (s *Service) TenantAccessTokenInternal(ctx context.Context, req *TenantAcce
 		PathTemplate: "/hduhelp-neo/open-apis/auth/tenant_access_token/internal",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2541,6 +2713,7 @@ func (s *Service) TenantAccessTokenInternal(ctx context.Context, req *TenantAcce
 type AppAccessTokenInternalV3Req struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2549,7 +2722,7 @@ type AppAccessTokenInternalV3ReqBuilder struct{ req *AppAccessTokenInternalV3Req
 
 // NewAppAccessTokenInternalV3ReqBuilder creates a request builder for AppAccessTokenInternalV3.
 func NewAppAccessTokenInternalV3ReqBuilder() *AppAccessTokenInternalV3ReqBuilder {
-	return &AppAccessTokenInternalV3ReqBuilder{req: &AppAccessTokenInternalV3Req{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &AppAccessTokenInternalV3ReqBuilder{req: &AppAccessTokenInternalV3Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -2576,6 +2749,7 @@ func (s *Service) AppAccessTokenInternalV3(ctx context.Context, req *AppAccessTo
 		PathTemplate: "/hduhelp-neo/open-apis/auth/v3/app_access_token/internal",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2585,6 +2759,7 @@ func (s *Service) AppAccessTokenInternalV3(ctx context.Context, req *AppAccessTo
 type TenantAccessTokenInternalV3Req struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2595,7 +2770,7 @@ type TenantAccessTokenInternalV3ReqBuilder struct {
 
 // NewTenantAccessTokenInternalV3ReqBuilder creates a request builder for TenantAccessTokenInternalV3.
 func NewTenantAccessTokenInternalV3ReqBuilder() *TenantAccessTokenInternalV3ReqBuilder {
-	return &TenantAccessTokenInternalV3ReqBuilder{req: &TenantAccessTokenInternalV3Req{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &TenantAccessTokenInternalV3ReqBuilder{req: &TenantAccessTokenInternalV3Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -2622,6 +2797,7 @@ func (s *Service) TenantAccessTokenInternalV3(ctx context.Context, req *TenantAc
 		PathTemplate: "/hduhelp-neo/open-apis/auth/v3/tenant_access_token/internal",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2631,6 +2807,7 @@ func (s *Service) TenantAccessTokenInternalV3(ctx context.Context, req *TenantAc
 type AuthenAccessTokenReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2639,7 +2816,7 @@ type AuthenAccessTokenReqBuilder struct{ req *AuthenAccessTokenReq }
 
 // NewAuthenAccessTokenReqBuilder creates a request builder for AuthenAccessToken.
 func NewAuthenAccessTokenReqBuilder() *AuthenAccessTokenReqBuilder {
-	return &AuthenAccessTokenReqBuilder{req: &AuthenAccessTokenReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &AuthenAccessTokenReqBuilder{req: &AuthenAccessTokenReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -2666,6 +2843,7 @@ func (s *Service) AuthenAccessToken(ctx context.Context, req *AuthenAccessTokenR
 		PathTemplate: "/hduhelp-neo/open-apis/authen/access_token",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2675,6 +2853,7 @@ func (s *Service) AuthenAccessToken(ctx context.Context, req *AuthenAccessTokenR
 type AuthenAuthorizeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2683,7 +2862,7 @@ type AuthenAuthorizeReqBuilder struct{ req *AuthenAuthorizeReq }
 
 // NewAuthenAuthorizeReqBuilder creates a request builder for AuthenAuthorize.
 func NewAuthenAuthorizeReqBuilder() *AuthenAuthorizeReqBuilder {
-	return &AuthenAuthorizeReqBuilder{req: &AuthenAuthorizeReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &AuthenAuthorizeReqBuilder{req: &AuthenAuthorizeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // AppId sets the "app_id" query parameter.
@@ -2698,7 +2877,7 @@ func (b *AuthenAuthorizeReqBuilder) RedirectUri(v string) *AuthenAuthorizeReqBui
 	return b
 }
 
-// Scope sets the "scope" query parameter: 逗号分隔，应用授予范围子集
+// Scope sets the "scope" query parameter: 逗号分隔，用户权限范围子集
 func (b *AuthenAuthorizeReqBuilder) Scope(v string) *AuthenAuthorizeReqBuilder {
 	b.req.queryParams["scope"] = v
 	return b
@@ -2746,6 +2925,7 @@ func (s *Service) AuthenAuthorize(ctx context.Context, req *AuthenAuthorizeReq, 
 		PathTemplate: "/hduhelp-neo/open-apis/authen/authorize",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2755,6 +2935,7 @@ func (s *Service) AuthenAuthorize(ctx context.Context, req *AuthenAuthorizeReq, 
 type AuthenRefreshAccessTokenReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2763,7 +2944,7 @@ type AuthenRefreshAccessTokenReqBuilder struct{ req *AuthenRefreshAccessTokenReq
 
 // NewAuthenRefreshAccessTokenReqBuilder creates a request builder for AuthenRefreshAccessToken.
 func NewAuthenRefreshAccessTokenReqBuilder() *AuthenRefreshAccessTokenReqBuilder {
-	return &AuthenRefreshAccessTokenReqBuilder{req: &AuthenRefreshAccessTokenReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &AuthenRefreshAccessTokenReqBuilder{req: &AuthenRefreshAccessTokenReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -2790,6 +2971,7 @@ func (s *Service) AuthenRefreshAccessToken(ctx context.Context, req *AuthenRefre
 		PathTemplate: "/hduhelp-neo/open-apis/authen/refresh_access_token",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2799,6 +2981,7 @@ func (s *Service) AuthenRefreshAccessToken(ctx context.Context, req *AuthenRefre
 type AuthenRevokeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2807,7 +2990,7 @@ type AuthenRevokeReqBuilder struct{ req *AuthenRevokeReq }
 
 // NewAuthenRevokeReqBuilder creates a request builder for AuthenRevoke.
 func NewAuthenRevokeReqBuilder() *AuthenRevokeReqBuilder {
-	return &AuthenRevokeReqBuilder{req: &AuthenRevokeReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &AuthenRevokeReqBuilder{req: &AuthenRevokeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -2833,6 +3016,7 @@ func (s *Service) AuthenRevoke(ctx context.Context, req *AuthenRevokeReq, opts .
 		PathTemplate: "/hduhelp-neo/open-apis/authen/revoke",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2842,6 +3026,7 @@ func (s *Service) AuthenRevoke(ctx context.Context, req *AuthenRevokeReq, opts .
 type AuthenUserInfoReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2850,7 +3035,7 @@ type AuthenUserInfoReqBuilder struct{ req *AuthenUserInfoReq }
 
 // NewAuthenUserInfoReqBuilder creates a request builder for AuthenUserInfo.
 func NewAuthenUserInfoReqBuilder() *AuthenUserInfoReqBuilder {
-	return &AuthenUserInfoReqBuilder{req: &AuthenUserInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &AuthenUserInfoReqBuilder{req: &AuthenUserInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -2871,6 +3056,7 @@ func (s *Service) AuthenUserInfo(ctx context.Context, req *AuthenUserInfoReq, op
 		PathTemplate: "/hduhelp-neo/open-apis/authen/user_info",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2880,6 +3066,7 @@ func (s *Service) AuthenUserInfo(ctx context.Context, req *AuthenUserInfoReq, op
 type AuthenAccessTokenV1Req struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2888,7 +3075,7 @@ type AuthenAccessTokenV1ReqBuilder struct{ req *AuthenAccessTokenV1Req }
 
 // NewAuthenAccessTokenV1ReqBuilder creates a request builder for AuthenAccessTokenV1.
 func NewAuthenAccessTokenV1ReqBuilder() *AuthenAccessTokenV1ReqBuilder {
-	return &AuthenAccessTokenV1ReqBuilder{req: &AuthenAccessTokenV1Req{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &AuthenAccessTokenV1ReqBuilder{req: &AuthenAccessTokenV1Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -2915,6 +3102,7 @@ func (s *Service) AuthenAccessTokenV1(ctx context.Context, req *AuthenAccessToke
 		PathTemplate: "/hduhelp-neo/open-apis/authen/v1/access_token",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2924,6 +3112,7 @@ func (s *Service) AuthenAccessTokenV1(ctx context.Context, req *AuthenAccessToke
 type AuthenAuthorizeV1Req struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2932,7 +3121,7 @@ type AuthenAuthorizeV1ReqBuilder struct{ req *AuthenAuthorizeV1Req }
 
 // NewAuthenAuthorizeV1ReqBuilder creates a request builder for AuthenAuthorizeV1.
 func NewAuthenAuthorizeV1ReqBuilder() *AuthenAuthorizeV1ReqBuilder {
-	return &AuthenAuthorizeV1ReqBuilder{req: &AuthenAuthorizeV1Req{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &AuthenAuthorizeV1ReqBuilder{req: &AuthenAuthorizeV1Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // AppId sets the "app_id" query parameter.
@@ -2947,7 +3136,7 @@ func (b *AuthenAuthorizeV1ReqBuilder) RedirectUri(v string) *AuthenAuthorizeV1Re
 	return b
 }
 
-// Scope sets the "scope" query parameter: 逗号分隔，应用授予范围子集
+// Scope sets the "scope" query parameter: 逗号分隔，用户权限范围子集
 func (b *AuthenAuthorizeV1ReqBuilder) Scope(v string) *AuthenAuthorizeV1ReqBuilder {
 	b.req.queryParams["scope"] = v
 	return b
@@ -2995,6 +3184,7 @@ func (s *Service) AuthenAuthorizeV1(ctx context.Context, req *AuthenAuthorizeV1R
 		PathTemplate: "/hduhelp-neo/open-apis/authen/v1/authorize",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -3004,6 +3194,7 @@ func (s *Service) AuthenAuthorizeV1(ctx context.Context, req *AuthenAuthorizeV1R
 type AuthenRefreshAccessTokenV1Req struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -3014,7 +3205,7 @@ type AuthenRefreshAccessTokenV1ReqBuilder struct {
 
 // NewAuthenRefreshAccessTokenV1ReqBuilder creates a request builder for AuthenRefreshAccessTokenV1.
 func NewAuthenRefreshAccessTokenV1ReqBuilder() *AuthenRefreshAccessTokenV1ReqBuilder {
-	return &AuthenRefreshAccessTokenV1ReqBuilder{req: &AuthenRefreshAccessTokenV1Req{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &AuthenRefreshAccessTokenV1ReqBuilder{req: &AuthenRefreshAccessTokenV1Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -3041,6 +3232,7 @@ func (s *Service) AuthenRefreshAccessTokenV1(ctx context.Context, req *AuthenRef
 		PathTemplate: "/hduhelp-neo/open-apis/authen/v1/refresh_access_token",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -3050,6 +3242,7 @@ func (s *Service) AuthenRefreshAccessTokenV1(ctx context.Context, req *AuthenRef
 type AuthenRevokeV1Req struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -3058,7 +3251,7 @@ type AuthenRevokeV1ReqBuilder struct{ req *AuthenRevokeV1Req }
 
 // NewAuthenRevokeV1ReqBuilder creates a request builder for AuthenRevokeV1.
 func NewAuthenRevokeV1ReqBuilder() *AuthenRevokeV1ReqBuilder {
-	return &AuthenRevokeV1ReqBuilder{req: &AuthenRevokeV1Req{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &AuthenRevokeV1ReqBuilder{req: &AuthenRevokeV1Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -3084,6 +3277,7 @@ func (s *Service) AuthenRevokeV1(ctx context.Context, req *AuthenRevokeV1Req, op
 		PathTemplate: "/hduhelp-neo/open-apis/authen/v1/revoke",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -3093,6 +3287,7 @@ func (s *Service) AuthenRevokeV1(ctx context.Context, req *AuthenRevokeV1Req, op
 type AuthenUserInfoV1Req struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -3101,7 +3296,7 @@ type AuthenUserInfoV1ReqBuilder struct{ req *AuthenUserInfoV1Req }
 
 // NewAuthenUserInfoV1ReqBuilder creates a request builder for AuthenUserInfoV1.
 func NewAuthenUserInfoV1ReqBuilder() *AuthenUserInfoV1ReqBuilder {
-	return &AuthenUserInfoV1ReqBuilder{req: &AuthenUserInfoV1Req{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &AuthenUserInfoV1ReqBuilder{req: &AuthenUserInfoV1Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -3122,6 +3317,7 @@ func (s *Service) AuthenUserInfoV1(ctx context.Context, req *AuthenUserInfoV1Req
 		PathTemplate: "/hduhelp-neo/open-apis/authen/v1/user_info",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err

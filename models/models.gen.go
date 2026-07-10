@@ -54,19 +54,20 @@ type AcademicYearTerm struct {
 	Semester *string `json:"semester,omitempty"`
 }
 
-// AdminAppDetail 应用详情：含所属租户、当前被授予的 scope、回调白名单与状态。
+// AdminAppDetail 应用详情：应用权限供 TAT/App + X-Staff-Id 使用；用户权限供 UAT
+// 授权码流程请求和用户同意。
 type AdminAppDetail struct {
-	ClientId     *string   `json:"clientId,omitempty"`
-	CreatedAt    *int64    `json:"createdAt,omitempty"`
-	Description  *string   `json:"description,omitempty"`
-	Id           *string   `json:"id,omitempty"`
-	Name         *string   `json:"name,omitempty"`
-	RedirectUris *[]string `json:"redirectUris,omitempty"`
-	Scopes       *[]string `json:"scopes,omitempty"`
-	Status       *int32    `json:"status,omitempty"`
-	TenantKey    *string   `json:"tenantKey,omitempty"`
-	TenantName   *string   `json:"tenantName,omitempty"`
-	Type         *string   `json:"type,omitempty"`
+	ApplicationScopes *[]string `json:"applicationScopes,omitempty"`
+	ClientId          *string   `json:"clientId,omitempty"`
+	CreatedAt         *int64    `json:"createdAt,omitempty"`
+	Description       *string   `json:"description,omitempty"`
+	Id                *string   `json:"id,omitempty"`
+	Name              *string   `json:"name,omitempty"`
+	RedirectUris      *[]string `json:"redirectUris,omitempty"`
+	Status            *int32    `json:"status,omitempty"`
+	TenantKey         *string   `json:"tenantKey,omitempty"`
+	TenantName        *string   `json:"tenantName,omitempty"`
+	UserScopes        *[]string `json:"userScopes,omitempty"`
 }
 
 // AdminAppInfo defines model for AdminAppInfo.
@@ -78,7 +79,6 @@ type AdminAppInfo struct {
 	Name        *string `json:"name,omitempty"`
 	Status      *int32  `json:"status,omitempty"`
 	TenantKey   *string `json:"tenantKey,omitempty"`
-	Type        *string `json:"type,omitempty"`
 }
 
 // AdminAuthorizationInfo -------------------- 用户授权（app_authorizations） --------------------
@@ -255,7 +255,8 @@ type AppAccessTokenInternalResponseBody struct {
 type AppGetResponseBody struct {
 	Code *int64 `json:"code,omitempty"`
 
-	// Data 应用详情：含所属租户、当前被授予的 scope、回调白名单与状态。
+	// Data 应用详情：应用权限供 TAT/App + X-Staff-Id 使用；用户权限供 UAT
+	// 授权码流程请求和用户同意。
 	Data *AdminAppDetail `json:"data,omitempty"`
 	Msg  *string         `json:"msg,omitempty"`
 }
@@ -1068,21 +1069,22 @@ type ConfigListResponseBody struct {
 
 // CreateAppData defines model for CreateAppData.
 type CreateAppData struct {
-	// App 应用详情：含所属租户、当前被授予的 scope、回调白名单与状态。
+	// App 应用详情：应用权限供 TAT/App + X-Staff-Id 使用；用户权限供 UAT
+	// 授权码流程请求和用户同意。
 	App          *AdminAppDetail `json:"app,omitempty"`
 	ClientSecret *string         `json:"clientSecret,omitempty"`
 }
 
 // CreateAppRequestBody defines model for CreateAppRequestBody.
 type CreateAppRequestBody struct {
-	Description  *string   `json:"description,omitempty"`
-	Name         *string   `json:"name,omitempty"`
-	RedirectUris *[]string `json:"redirect_uris,omitempty"`
-	Scopes       *[]string `json:"scopes,omitempty"`
+	ApplicationScopes *[]string `json:"application_scopes,omitempty"`
+	Description       *string   `json:"description,omitempty"`
+	Name              *string   `json:"name,omitempty"`
+	RedirectUris      *[]string `json:"redirect_uris,omitempty"`
 
 	// TenantKey 单租户隐式：租户不再是用户可见入参。缺省即自动归属到种子默认租户，管理员无需填写。
-	TenantKey *string `json:"tenant_key,omitempty"`
-	Type      *string `json:"type,omitempty"`
+	TenantKey  *string   `json:"tenant_key,omitempty"`
+	UserScopes *[]string `json:"user_scopes,omitempty"`
 }
 
 // CreateAppResponseBody defines model for CreateAppResponseBody.
@@ -2674,15 +2676,15 @@ type MergeStartResponseBody struct {
 	Msg  *string         `json:"msg,omitempty"`
 }
 
-// ModifyCityRequestBody defines model for ModifyCityRequestBody.
-type ModifyCityRequestBody struct {
-	CityCode *string `json:"cityCode,omitempty"`
-}
-
 // ModifyCityResponseBody defines model for ModifyCityResponseBody.
 type ModifyCityResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
+}
+
+// ModifyPreviousSchoolCityRequestBody defines model for ModifyPreviousSchoolCityRequestBody.
+type ModifyPreviousSchoolCityRequestBody struct {
+	CityCode *string `json:"cityCode,omitempty"`
 }
 
 // MonthStat defines model for MonthStat.
@@ -3054,17 +3056,12 @@ type RegisterAppData struct {
 
 	// ClientSecret 明文仅返回一次
 	ClientSecret *string `json:"clientSecret,omitempty"`
-	Type         *string `json:"type,omitempty"`
 }
 
 // RegisterAppRequestBody defines model for RegisterAppRequestBody.
 type RegisterAppRequestBody struct {
 	Name         *string   `json:"name,omitempty"`
 	RedirectUris *[]string `json:"redirect_uris,omitempty"`
-	Scopes       *[]string `json:"scopes,omitempty"`
-
-	// Type first_party | third_party
-	Type *string `json:"type,omitempty"`
 }
 
 // RegisterAppResponseBody defines model for RegisterAppResponseBody.
@@ -3492,14 +3489,15 @@ type SessionInfo struct {
 	LastActiveAt *int64  `json:"lastActiveAt,omitempty"`
 }
 
-// SetAppScopesRequestBody defines model for SetAppScopesRequestBody.
-type SetAppScopesRequestBody struct {
-	Id     *string   `json:"id,omitempty"`
-	Scopes *[]string `json:"scopes,omitempty"`
+// SetAppPermissionsRequestBody defines model for SetAppPermissionsRequestBody.
+type SetAppPermissionsRequestBody struct {
+	ApplicationScopes *[]string `json:"application_scopes,omitempty"`
+	Id                *string   `json:"id,omitempty"`
+	UserScopes        *[]string `json:"user_scopes,omitempty"`
 }
 
-// SetAppScopesResponseBody defines model for SetAppScopesResponseBody.
-type SetAppScopesResponseBody struct {
+// SetAppPermissionsResponseBody defines model for SetAppPermissionsResponseBody.
+type SetAppPermissionsResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
 }
@@ -4145,7 +4143,8 @@ type UpdateAppRequestBody struct {
 type UpdateAppResponseBody struct {
 	Code *int64 `json:"code,omitempty"`
 
-	// Data 应用详情：含所属租户、当前被授予的 scope、回调白名单与状态。
+	// Data 应用详情：应用权限供 TAT/App + X-Staff-Id 使用；用户权限供 UAT
+	// 授权码流程请求和用户同意。
 	Data *AdminAppDetail `json:"data,omitempty"`
 	Msg  *string         `json:"msg,omitempty"`
 }
@@ -4340,6 +4339,16 @@ type AcademicServiceClassDetailParams struct {
 	ClassID *string `form:"classID,omitempty" json:"classID,omitempty"`
 }
 
+// AcademicServiceClassQueryFavGetParams defines parameters for AcademicServiceClassQueryFavGet.
+type AcademicServiceClassQueryFavGetParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServiceClassQueryFavSetParams defines parameters for AcademicServiceClassQueryFavSet.
+type AcademicServiceClassQueryFavSetParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
 // AcademicServiceClassQueryGetParams defines parameters for AcademicServiceClassQueryGet.
 type AcademicServiceClassQueryGetParams struct {
 	Classes *[]string `form:"classes,omitempty" json:"classes,omitempty"`
@@ -4382,10 +4391,30 @@ type AcademicServiceCityByCodeParams struct {
 	Code *string `form:"code,omitempty" json:"code,omitempty"`
 }
 
+// AcademicServiceFreshmanBaseParams defines parameters for AcademicServiceFreshmanBase.
+type AcademicServiceFreshmanBaseParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServiceFreshmanDetailParams defines parameters for AcademicServiceFreshmanDetail.
+type AcademicServiceFreshmanDetailParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServiceFreshmanRoommatesParams defines parameters for AcademicServiceFreshmanRoommates.
+type AcademicServiceFreshmanRoommatesParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
 // AcademicServiceGlobalStudentGradeParams defines parameters for AcademicServiceGlobalStudentGrade.
 type AcademicServiceGlobalStudentGradeParams struct {
 	SchoolYear *string `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
 	Semester   *string `form:"semester,omitempty" json:"semester,omitempty"`
+}
+
+// AcademicServiceGradesParams defines parameters for AcademicServiceGrades.
+type AcademicServiceGradesParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceLibraryFloorsParams defines parameters for AcademicServiceLibraryFloors.
@@ -4394,7 +4423,8 @@ type AcademicServiceLibraryFloorsParams struct {
 	Start *string `form:"start,omitempty" json:"start,omitempty"`
 
 	// End yyyy-MM-dd
-	End *string `form:"end,omitempty" json:"end,omitempty"`
+	End      *string `form:"end,omitempty" json:"end,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceLibraryMonthsParams defines parameters for AcademicServiceLibraryMonths.
@@ -4403,7 +4433,8 @@ type AcademicServiceLibraryMonthsParams struct {
 	Start *string `form:"start,omitempty" json:"start,omitempty"`
 
 	// End yyyy-MM-dd
-	End *string `form:"end,omitempty" json:"end,omitempty"`
+	End      *string `form:"end,omitempty" json:"end,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceLibraryAttendanceStatsParams defines parameters for AcademicServiceLibraryAttendanceStats.
@@ -4412,7 +4443,8 @@ type AcademicServiceLibraryAttendanceStatsParams struct {
 	Start *string `form:"start,omitempty" json:"start,omitempty"`
 
 	// End yyyy-MM-dd
-	End *string `form:"end,omitempty" json:"end,omitempty"`
+	End      *string `form:"end,omitempty" json:"end,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceLibraryTimeSlotsParams defines parameters for AcademicServiceLibraryTimeSlots.
@@ -4421,65 +4453,85 @@ type AcademicServiceLibraryTimeSlotsParams struct {
 	Start *string `form:"start,omitempty" json:"start,omitempty"`
 
 	// End yyyy-MM-dd
-	End *string `form:"end,omitempty" json:"end,omitempty"`
+	End      *string `form:"end,omitempty" json:"end,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceLibraryReadAllParams defines parameters for AcademicServiceLibraryReadAll.
 type AcademicServiceLibraryReadAllParams struct {
-	Start *string `form:"start,omitempty" json:"start,omitempty"`
-	End   *string `form:"end,omitempty" json:"end,omitempty"`
-	Page  *int32  `form:"page,omitempty" json:"page,omitempty"`
-	Size  *int32  `form:"size,omitempty" json:"size,omitempty"`
+	Start    *string `form:"start,omitempty" json:"start,omitempty"`
+	End      *string `form:"end,omitempty" json:"end,omitempty"`
+	Page     *int32  `form:"page,omitempty" json:"page,omitempty"`
+	Size     *int32  `form:"size,omitempty" json:"size,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceLibraryReadBorrowsParams defines parameters for AcademicServiceLibraryReadBorrows.
 type AcademicServiceLibraryReadBorrowsParams struct {
-	Start *string `form:"start,omitempty" json:"start,omitempty"`
-	End   *string `form:"end,omitempty" json:"end,omitempty"`
-	Page  *int32  `form:"page,omitempty" json:"page,omitempty"`
-	Size  *int32  `form:"size,omitempty" json:"size,omitempty"`
+	Start    *string `form:"start,omitempty" json:"start,omitempty"`
+	End      *string `form:"end,omitempty" json:"end,omitempty"`
+	Page     *int32  `form:"page,omitempty" json:"page,omitempty"`
+	Size     *int32  `form:"size,omitempty" json:"size,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceLibraryReadFirstBookParams defines parameters for AcademicServiceLibraryReadFirstBook.
 type AcademicServiceLibraryReadFirstBookParams struct {
-	Start *string `form:"start,omitempty" json:"start,omitempty"`
-	End   *string `form:"end,omitempty" json:"end,omitempty"`
+	Start    *string `form:"start,omitempty" json:"start,omitempty"`
+	End      *string `form:"end,omitempty" json:"end,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceLibraryReadLeastPopularParams defines parameters for AcademicServiceLibraryReadLeastPopular.
 type AcademicServiceLibraryReadLeastPopularParams struct {
-	Start *string `form:"start,omitempty" json:"start,omitempty"`
-	End   *string `form:"end,omitempty" json:"end,omitempty"`
+	Start    *string `form:"start,omitempty" json:"start,omitempty"`
+	End      *string `form:"end,omitempty" json:"end,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceLibraryReadMaxMonthParams defines parameters for AcademicServiceLibraryReadMaxMonth.
 type AcademicServiceLibraryReadMaxMonthParams struct {
-	Start *string `form:"start,omitempty" json:"start,omitempty"`
-	End   *string `form:"end,omitempty" json:"end,omitempty"`
+	Start    *string `form:"start,omitempty" json:"start,omitempty"`
+	End      *string `form:"end,omitempty" json:"end,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceLibraryReadMonthsParams defines parameters for AcademicServiceLibraryReadMonths.
 type AcademicServiceLibraryReadMonthsParams struct {
-	Start *string `form:"start,omitempty" json:"start,omitempty"`
-	End   *string `form:"end,omitempty" json:"end,omitempty"`
+	Start    *string `form:"start,omitempty" json:"start,omitempty"`
+	End      *string `form:"end,omitempty" json:"end,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServiceLibraryReadNewerParams defines parameters for AcademicServiceLibraryReadNewer.
+type AcademicServiceLibraryReadNewerParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceLibraryReadPreferenceParams defines parameters for AcademicServiceLibraryReadPreference.
 type AcademicServiceLibraryReadPreferenceParams struct {
-	Start *string `form:"start,omitempty" json:"start,omitempty"`
-	End   *string `form:"end,omitempty" json:"end,omitempty"`
+	Start    *string `form:"start,omitempty" json:"start,omitempty"`
+	End      *string `form:"end,omitempty" json:"end,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceLibraryReadSummaryParams defines parameters for AcademicServiceLibraryReadSummary.
 type AcademicServiceLibraryReadSummaryParams struct {
-	Start *string `form:"start,omitempty" json:"start,omitempty"`
-	End   *string `form:"end,omitempty" json:"end,omitempty"`
+	Start    *string `form:"start,omitempty" json:"start,omitempty"`
+	End      *string `form:"end,omitempty" json:"end,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceLibraryReadTotalTimeParams defines parameters for AcademicServiceLibraryReadTotalTime.
 type AcademicServiceLibraryReadTotalTimeParams struct {
-	Start *string `form:"start,omitempty" json:"start,omitempty"`
-	End   *string `form:"end,omitempty" json:"end,omitempty"`
+	Start    *string `form:"start,omitempty" json:"start,omitempty"`
+	End      *string `form:"end,omitempty" json:"end,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServiceLibraryReadUnreturnedParams defines parameters for AcademicServiceLibraryReadUnreturned.
+type AcademicServiceLibraryReadUnreturnedParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceGetUnreturnedBooksListParams defines parameters for AcademicServiceGetUnreturnedBooksList.
@@ -4490,7 +4542,13 @@ type AcademicServiceGetUnreturnedBooksListParams struct {
 // AcademicServiceLibrarySeatReservationsParams defines parameters for AcademicServiceLibrarySeatReservations.
 type AcademicServiceLibrarySeatReservationsParams struct {
 	// Limit 返回近 N 条，默认 20，最大 200
-	Limit *int32 `form:"limit,omitempty" json:"limit,omitempty"`
+	Limit    *int32  `form:"limit,omitempty" json:"limit,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServiceLibraryShareIDParams defines parameters for AcademicServiceLibraryShareID.
+type AcademicServiceLibraryShareIDParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceLibraryShareStaffParams defines parameters for AcademicServiceLibraryShareStaff.
@@ -4498,10 +4556,36 @@ type AcademicServiceLibraryShareStaffParams struct {
 	ShareId *string `form:"share_id,omitempty" json:"share_id,omitempty"`
 }
 
+// AcademicServiceNeedyListParams defines parameters for AcademicServiceNeedyList.
+type AcademicServiceNeedyListParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServiceNeedyStudentInfoParams defines parameters for AcademicServiceNeedyStudentInfo.
+type AcademicServiceNeedyStudentInfoParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServicePersonInfoParams defines parameters for AcademicServicePersonInfo.
+type AcademicServicePersonInfoParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServiceModifyPreviousSchoolCityParams defines parameters for AcademicServiceModifyPreviousSchoolCity.
+type AcademicServiceModifyPreviousSchoolCityParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
 // AcademicServicePreviousSchoolDetailParams defines parameters for AcademicServicePreviousSchoolDetail.
 type AcademicServicePreviousSchoolDetailParams struct {
 	SchoolName *string `form:"schoolName,omitempty" json:"schoolName,omitempty"`
 	Grade      *string `form:"grade,omitempty" json:"grade,omitempty"`
+	XStaffId   *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServicePreviousSchoolInfoParams defines parameters for AcademicServicePreviousSchoolInfo.
+type AcademicServicePreviousSchoolInfoParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceScheduleParams defines parameters for AcademicServiceSchedule.
@@ -4510,12 +4594,28 @@ type AcademicServiceScheduleParams struct {
 	SchoolYear *string `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
 	Semester   *int32  `form:"semester,omitempty" json:"semester,omitempty"`
 	Week       *int32  `form:"week,omitempty" json:"week,omitempty"`
+	XStaffId   *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServiceScheduleNowParams defines parameters for AcademicServiceScheduleNow.
+type AcademicServiceScheduleNowParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServiceScheduleNowV3Params defines parameters for AcademicServiceScheduleNowV3.
+type AcademicServiceScheduleNowV3Params struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceGlobalScheduleParams defines parameters for AcademicServiceGlobalSchedule.
 type AcademicServiceGlobalScheduleParams struct {
 	Week    *int32 `form:"week,omitempty" json:"week,omitempty"`
 	Weekday *int32 `form:"weekday,omitempty" json:"weekday,omitempty"`
+}
+
+// AcademicServiceScheduleNowV2Params defines parameters for AcademicServiceScheduleNowV2.
+type AcademicServiceScheduleNowV2Params struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceSemesterListByDateParams defines parameters for AcademicServiceSemesterListByDate.
@@ -4526,14 +4626,30 @@ type AcademicServiceSemesterListByDateParams struct {
 
 // AcademicServiceSklUnitDetailParams defines parameters for AcademicServiceSklUnitDetail.
 type AcademicServiceSklUnitDetailParams struct {
-	UnitId *string `form:"unit_id,omitempty" json:"unit_id,omitempty"`
-	Grade  *string `form:"grade,omitempty" json:"grade,omitempty"`
+	UnitId   *string `form:"unit_id,omitempty" json:"unit_id,omitempty"`
+	Grade    *string `form:"grade,omitempty" json:"grade,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServiceSklUnitsParams defines parameters for AcademicServiceSklUnits.
+type AcademicServiceSklUnitsParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServiceStudentBirthdayParams defines parameters for AcademicServiceStudentBirthday.
+type AcademicServiceStudentBirthdayParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceStudentBirthdaysParams defines parameters for AcademicServiceStudentBirthdays.
 type AcademicServiceStudentBirthdaysParams struct {
 	Month *int32 `form:"month,omitempty" json:"month,omitempty"`
 	Day   *int32 `form:"day,omitempty" json:"day,omitempty"`
+}
+
+// AcademicServiceStudentCityParams defines parameters for AcademicServiceStudentCity.
+type AcademicServiceStudentCityParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceStudentCountParams defines parameters for AcademicServiceStudentCount.
@@ -4543,31 +4659,61 @@ type AcademicServiceStudentCountParams struct {
 
 // AcademicServiceDailyExamParams defines parameters for AcademicServiceDailyExam.
 type AcademicServiceDailyExamParams struct {
-	Date *string `form:"date,omitempty" json:"date,omitempty"`
+	Date     *string `form:"date,omitempty" json:"date,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServiceStudentDormParams defines parameters for AcademicServiceStudentDorm.
+type AcademicServiceStudentDormParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceStudentExamParams defines parameters for AcademicServiceStudentExam.
 type AcademicServiceStudentExamParams struct {
 	SchoolYear *string `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
 	Semester   *string `form:"semester,omitempty" json:"semester,omitempty"`
+	XStaffId   *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServiceStudentGPAParams defines parameters for AcademicServiceStudentGPA.
+type AcademicServiceStudentGPAParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceStudentGradeParams defines parameters for AcademicServiceStudentGrade.
 type AcademicServiceStudentGradeParams struct {
 	SchoolYear *string `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
 	Semester   *string `form:"semester,omitempty" json:"semester,omitempty"`
+	XStaffId   *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServiceStudentStaySchoolParams defines parameters for AcademicServiceStudentStaySchool.
+type AcademicServiceStudentStaySchoolParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServiceStudentInfoParams defines parameters for AcademicServiceStudentInfo.
+type AcademicServiceStudentInfoParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceStudentRewardsParams defines parameters for AcademicServiceStudentRewards.
 type AcademicServiceStudentRewardsParams struct {
 	SchoolYear *string `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
 	Semester   *string `form:"semester,omitempty" json:"semester,omitempty"`
+	XStaffId   *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServiceStudentSchoolRollStatusParams defines parameters for AcademicServiceStudentSchoolRollStatus.
+type AcademicServiceStudentSchoolRollStatusParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceStudentSelectionsParams defines parameters for AcademicServiceStudentSelections.
 type AcademicServiceStudentSelectionsParams struct {
 	SchoolYear *string `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
 	Semester   *string `form:"semester,omitempty" json:"semester,omitempty"`
+	XStaffId   *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AdminServiceGetAppParams defines parameters for AdminServiceGetApp.
@@ -4612,6 +4758,21 @@ type CampusLifeServiceListFloorsParams struct {
 // CampusLifeServiceListRoomsParams defines parameters for CampusLifeServiceListRooms.
 type CampusLifeServiceListRoomsParams struct {
 	FloorId *int64 `form:"floor_id,omitempty" json:"floor_id,omitempty"`
+}
+
+// CampusLifeServiceCardBalanceParams defines parameters for CampusLifeServiceCardBalance.
+type CampusLifeServiceCardBalanceParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// CampusLifeServiceCardConsumeParams defines parameters for CampusLifeServiceCardConsume.
+type CampusLifeServiceCardConsumeParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// CampusLifeServiceCardInfoParams defines parameters for CampusLifeServiceCardInfo.
+type CampusLifeServiceCardInfoParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // CampusLifeServiceInfoStreamParams defines parameters for CampusLifeServiceInfoStream.
@@ -4682,42 +4843,153 @@ type EmptyScheduleServiceLookUpShareParams struct {
 	Code *string `form:"code,omitempty" json:"code,omitempty"`
 }
 
+// FeedServiceHomeParams defines parameters for FeedServiceHome.
+type FeedServiceHomeParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// FeedServiceIcsLinkParams defines parameters for FeedServiceIcsLink.
+type FeedServiceIcsLinkParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
 // FeedServiceScheduleIcsParams defines parameters for FeedServiceScheduleIcs.
 type FeedServiceScheduleIcsParams struct {
 	Token *string `form:"token,omitempty" json:"token,omitempty"`
+}
+
+// FeedServiceFeedV3Params defines parameters for FeedServiceFeedV3.
+type FeedServiceFeedV3Params struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// FeedServiceFeedV4Params defines parameters for FeedServiceFeedV4.
+type FeedServiceFeedV4Params struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // GraduateServiceGraduateGradesParams defines parameters for GraduateServiceGraduateGrades.
 type GraduateServiceGraduateGradesParams struct {
 	SchoolYear *string `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
 	Semester   *string `form:"semester,omitempty" json:"semester,omitempty"`
+	XStaffId   *string `json:"X-Staff-Id,omitempty"`
+}
+
+// GraduateServiceGraduateInfoParams defines parameters for GraduateServiceGraduateInfo.
+type GraduateServiceGraduateInfoParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// GraduateServiceGraduateTutorsParams defines parameters for GraduateServiceGraduateTutors.
+type GraduateServiceGraduateTutorsParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // GroupChatServiceGetCityChatGroupParams defines parameters for GroupChatServiceGetCityChatGroup.
 type GroupChatServiceGetCityChatGroupParams struct {
-	City *string `form:"city,omitempty" json:"city,omitempty"`
+	City     *string `form:"city,omitempty" json:"city,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// GroupChatServiceCreateCityChatGroupParams defines parameters for GroupChatServiceCreateCityChatGroup.
+type GroupChatServiceCreateCityChatGroupParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // GroupChatServiceGetClassChatGroupParams defines parameters for GroupChatServiceGetClassChatGroup.
 type GroupChatServiceGetClassChatGroupParams struct {
-	ClassId *string `form:"class_id,omitempty" json:"class_id,omitempty"`
+	ClassId  *string `form:"class_id,omitempty" json:"class_id,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// GroupChatServiceCreateClassChatGroupParams defines parameters for GroupChatServiceCreateClassChatGroup.
+type GroupChatServiceCreateClassChatGroupParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// GroupChatServiceMergeClassChatGroupParams defines parameters for GroupChatServiceMergeClassChatGroup.
+type GroupChatServiceMergeClassChatGroupParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// GroupChatServiceSyncClassChatGroupParams defines parameters for GroupChatServiceSyncClassChatGroup.
+type GroupChatServiceSyncClassChatGroupParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// GroupChatServiceDingTalkExamParams defines parameters for GroupChatServiceDingTalkExam.
+type GroupChatServiceDingTalkExamParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// GroupChatServiceDingTalkInfoStreamParams defines parameters for GroupChatServiceDingTalkInfoStream.
+type GroupChatServiceDingTalkInfoStreamParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// GroupChatServiceDingTalkScheduleNowParams defines parameters for GroupChatServiceDingTalkScheduleNow.
+type GroupChatServiceDingTalkScheduleNowParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// GroupChatServiceDingTalkScoreParams defines parameters for GroupChatServiceDingTalkScore.
+type GroupChatServiceDingTalkScoreParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// GroupChatServiceDingTalkTimeParams defines parameters for GroupChatServiceDingTalkTime.
+type GroupChatServiceDingTalkTimeParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // GroupChatServiceGetGradeChatGroupParams defines parameters for GroupChatServiceGetGradeChatGroup.
 type GroupChatServiceGetGradeChatGroupParams struct {
-	UnitId *string `form:"unit_id,omitempty" json:"unit_id,omitempty"`
-	Grade  *string `form:"grade,omitempty" json:"grade,omitempty"`
+	UnitId   *string `form:"unit_id,omitempty" json:"unit_id,omitempty"`
+	Grade    *string `form:"grade,omitempty" json:"grade,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// GroupChatServiceCreateGradeChatGroupParams defines parameters for GroupChatServiceCreateGradeChatGroup.
+type GroupChatServiceCreateGradeChatGroupParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// GroupChatServiceSyncGradeChatGroupParams defines parameters for GroupChatServiceSyncGradeChatGroup.
+type GroupChatServiceSyncGradeChatGroupParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// GroupChatServiceCreateGroupParams defines parameters for GroupChatServiceCreateGroup.
+type GroupChatServiceCreateGroupParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // GroupChatServiceLeaveGroupParams defines parameters for GroupChatServiceLeaveGroup.
 type GroupChatServiceLeaveGroupParams struct {
 	OpenConversationId *string `form:"openConversationId,omitempty" json:"openConversationId,omitempty"`
+	XStaffId           *string `json:"X-Staff-Id,omitempty"`
 }
 
 // GroupChatServiceGetPreviousSchoolChatGroupParams defines parameters for GroupChatServiceGetPreviousSchoolChatGroup.
 type GroupChatServiceGetPreviousSchoolChatGroupParams struct {
 	SchoolName *string `form:"school_name,omitempty" json:"school_name,omitempty"`
 	Grade      *string `form:"grade,omitempty" json:"grade,omitempty"`
+	XStaffId   *string `json:"X-Staff-Id,omitempty"`
+}
+
+// GroupChatServiceCreatePreviousSchoolChatGroupParams defines parameters for GroupChatServiceCreatePreviousSchoolChatGroup.
+type GroupChatServiceCreatePreviousSchoolChatGroupParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// GroupChatServiceJoinPreviousSchoolChatGroupParams defines parameters for GroupChatServiceJoinPreviousSchoolChatGroup.
+type GroupChatServiceJoinPreviousSchoolChatGroupParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// GroupChatServiceCreateRecruitChatGroupParams defines parameters for GroupChatServiceCreateRecruitChatGroup.
+type GroupChatServiceCreateRecruitChatGroupParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // IdentityServiceGetAuthConfigParams defines parameters for IdentityServiceGetAuthConfig.
@@ -4842,7 +5114,7 @@ type IdentityServiceAuthenAuthorizeParams struct {
 	AppId       *string `form:"app_id,omitempty" json:"app_id,omitempty"`
 	RedirectUri *string `form:"redirect_uri,omitempty" json:"redirect_uri,omitempty"`
 
-	// Scope 逗号分隔，应用授予范围子集
+	// Scope 逗号分隔，用户权限范围子集
 	Scope *string `form:"scope,omitempty" json:"scope,omitempty"`
 	State *string `form:"state,omitempty" json:"state,omitempty"`
 
@@ -4861,7 +5133,7 @@ type IdentityServiceAuthenAuthorizeV1Params struct {
 	AppId       *string `form:"app_id,omitempty" json:"app_id,omitempty"`
 	RedirectUri *string `form:"redirect_uri,omitempty" json:"redirect_uri,omitempty"`
 
-	// Scope 逗号分隔，应用授予范围子集
+	// Scope 逗号分隔，用户权限范围子集
 	Scope *string `form:"scope,omitempty" json:"scope,omitempty"`
 	State *string `form:"state,omitempty" json:"state,omitempty"`
 
@@ -4891,7 +5163,18 @@ type SubscriptionServiceSunrunDetailParams struct {
 	Start *int32 `form:"start,omitempty" json:"start,omitempty"`
 
 	// End 结束序号(默认 20)
-	End *int32 `form:"end,omitempty" json:"end,omitempty"`
+	End      *int32  `form:"end,omitempty" json:"end,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// SubscriptionServiceSunrunGroupParams defines parameters for SubscriptionServiceSunrunGroup.
+type SubscriptionServiceSunrunGroupParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// SubscriptionServiceSunrunOverviewParams defines parameters for SubscriptionServiceSunrunOverview.
+type SubscriptionServiceSunrunOverviewParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // UploadServiceUploadParams defines parameters for UploadServiceUpload.
@@ -4904,7 +5187,7 @@ type UploadServiceUploadParams struct {
 type AcademicServiceClassQueryFavSetJSONRequestBody = ClassQueryFavSetRequestBody
 
 // AcademicServiceModifyPreviousSchoolCityJSONRequestBody defines body for AcademicServiceModifyPreviousSchoolCity for application/json ContentType.
-type AcademicServiceModifyPreviousSchoolCityJSONRequestBody = ModifyCityRequestBody
+type AcademicServiceModifyPreviousSchoolCityJSONRequestBody = ModifyPreviousSchoolCityRequestBody
 
 // AdminServiceCreateAppJSONRequestBody defines body for AdminServiceCreateApp for application/json ContentType.
 type AdminServiceCreateAppJSONRequestBody = CreateAppRequestBody
@@ -4915,8 +5198,8 @@ type AdminServiceDisableAppJSONRequestBody = DisableAppRequestBody
 // AdminServiceEnableAppJSONRequestBody defines body for AdminServiceEnableApp for application/json ContentType.
 type AdminServiceEnableAppJSONRequestBody = EnableAppRequestBody
 
-// AdminServiceSetAppScopesJSONRequestBody defines body for AdminServiceSetAppScopes for application/json ContentType.
-type AdminServiceSetAppScopesJSONRequestBody = SetAppScopesRequestBody
+// AdminServiceSetAppPermissionsJSONRequestBody defines body for AdminServiceSetAppPermissions for application/json ContentType.
+type AdminServiceSetAppPermissionsJSONRequestBody = SetAppPermissionsRequestBody
 
 // AdminServiceUpdateAppJSONRequestBody defines body for AdminServiceUpdateApp for application/json ContentType.
 type AdminServiceUpdateAppJSONRequestBody = UpdateAppRequestBody

@@ -19,6 +19,7 @@ func NewService(config *core.Config) *Service { return &Service{config: config} 
 type GraduateGradesReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -27,7 +28,7 @@ type GraduateGradesReqBuilder struct{ req *GraduateGradesReq }
 
 // NewGraduateGradesReqBuilder creates a request builder for GraduateGrades.
 func NewGraduateGradesReqBuilder() *GraduateGradesReqBuilder {
-	return &GraduateGradesReqBuilder{req: &GraduateGradesReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &GraduateGradesReqBuilder{req: &GraduateGradesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // SchoolYear sets the "schoolYear" query parameter.
@@ -39,6 +40,12 @@ func (b *GraduateGradesReqBuilder) SchoolYear(v string) *GraduateGradesReqBuilde
 // Semester sets the "semester" query parameter.
 func (b *GraduateGradesReqBuilder) Semester(v string) *GraduateGradesReqBuilder {
 	b.req.queryParams["semester"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *GraduateGradesReqBuilder) StaffID(v string) *GraduateGradesReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -60,6 +67,7 @@ func (s *Service) GraduateGrades(ctx context.Context, req *GraduateGradesReq, op
 		PathTemplate: "/hduhelp-neo/graduate/grades",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -69,6 +77,7 @@ func (s *Service) GraduateGrades(ctx context.Context, req *GraduateGradesReq, op
 type GraduateInfoReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -77,7 +86,13 @@ type GraduateInfoReqBuilder struct{ req *GraduateInfoReq }
 
 // NewGraduateInfoReqBuilder creates a request builder for GraduateInfo.
 func NewGraduateInfoReqBuilder() *GraduateInfoReqBuilder {
-	return &GraduateInfoReqBuilder{req: &GraduateInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &GraduateInfoReqBuilder{req: &GraduateInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *GraduateInfoReqBuilder) StaffID(v string) *GraduateInfoReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -98,6 +113,7 @@ func (s *Service) GraduateInfo(ctx context.Context, req *GraduateInfoReq, opts .
 		PathTemplate: "/hduhelp-neo/graduate/info",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -107,6 +123,7 @@ func (s *Service) GraduateInfo(ctx context.Context, req *GraduateInfoReq, opts .
 type GraduateTutorsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -115,7 +132,13 @@ type GraduateTutorsReqBuilder struct{ req *GraduateTutorsReq }
 
 // NewGraduateTutorsReqBuilder creates a request builder for GraduateTutors.
 func NewGraduateTutorsReqBuilder() *GraduateTutorsReqBuilder {
-	return &GraduateTutorsReqBuilder{req: &GraduateTutorsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &GraduateTutorsReqBuilder{req: &GraduateTutorsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *GraduateTutorsReqBuilder) StaffID(v string) *GraduateTutorsReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -136,6 +159,7 @@ func (s *Service) GraduateTutors(ctx context.Context, req *GraduateTutorsReq, op
 		PathTemplate: "/hduhelp-neo/graduate/tutors",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err

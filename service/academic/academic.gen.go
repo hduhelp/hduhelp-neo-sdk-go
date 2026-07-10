@@ -21,6 +21,7 @@ func NewService(config *core.Config) *Service { return &Service{config: config} 
 type AllPersonInfoReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -29,7 +30,7 @@ type AllPersonInfoReqBuilder struct{ req *AllPersonInfoReq }
 
 // NewAllPersonInfoReqBuilder creates a request builder for AllPersonInfo.
 func NewAllPersonInfoReqBuilder() *AllPersonInfoReqBuilder {
-	return &AllPersonInfoReqBuilder{req: &AllPersonInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &AllPersonInfoReqBuilder{req: &AllPersonInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -50,6 +51,7 @@ func (s *Service) AllPersonInfo(ctx context.Context, req *AllPersonInfoReq, opts
 		PathTemplate: "/hduhelp-neo/academic/all/person/info",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -59,6 +61,7 @@ func (s *Service) AllPersonInfo(ctx context.Context, req *AllPersonInfoReq, opts
 type ClassDetailReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -67,7 +70,7 @@ type ClassDetailReqBuilder struct{ req *ClassDetailReq }
 
 // NewClassDetailReqBuilder creates a request builder for ClassDetail.
 func NewClassDetailReqBuilder() *ClassDetailReqBuilder {
-	return &ClassDetailReqBuilder{req: &ClassDetailReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ClassDetailReqBuilder{req: &ClassDetailReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // ClassID sets the "classID" query parameter.
@@ -94,6 +97,7 @@ func (s *Service) ClassDetail(ctx context.Context, req *ClassDetailReq, opts ...
 		PathTemplate: "/hduhelp-neo/academic/class/detail",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -103,6 +107,7 @@ func (s *Service) ClassDetail(ctx context.Context, req *ClassDetailReq, opts ...
 type ClassQueryFavGetReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -111,7 +116,13 @@ type ClassQueryFavGetReqBuilder struct{ req *ClassQueryFavGetReq }
 
 // NewClassQueryFavGetReqBuilder creates a request builder for ClassQueryFavGet.
 func NewClassQueryFavGetReqBuilder() *ClassQueryFavGetReqBuilder {
-	return &ClassQueryFavGetReqBuilder{req: &ClassQueryFavGetReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ClassQueryFavGetReqBuilder{req: &ClassQueryFavGetReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *ClassQueryFavGetReqBuilder) StaffID(v string) *ClassQueryFavGetReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -132,6 +143,7 @@ func (s *Service) ClassQueryFavGet(ctx context.Context, req *ClassQueryFavGetReq
 		PathTemplate: "/hduhelp-neo/academic/class/fav",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -141,6 +153,7 @@ func (s *Service) ClassQueryFavGet(ctx context.Context, req *ClassQueryFavGetReq
 type ClassQueryFavSetReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -149,7 +162,13 @@ type ClassQueryFavSetReqBuilder struct{ req *ClassQueryFavSetReq }
 
 // NewClassQueryFavSetReqBuilder creates a request builder for ClassQueryFavSet.
 func NewClassQueryFavSetReqBuilder() *ClassQueryFavSetReqBuilder {
-	return &ClassQueryFavSetReqBuilder{req: &ClassQueryFavSetReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ClassQueryFavSetReqBuilder{req: &ClassQueryFavSetReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *ClassQueryFavSetReqBuilder) StaffID(v string) *ClassQueryFavSetReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Body sets the request body.
@@ -175,6 +194,7 @@ func (s *Service) ClassQueryFavSet(ctx context.Context, req *ClassQueryFavSetReq
 		PathTemplate: "/hduhelp-neo/academic/class/fav",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -184,6 +204,7 @@ func (s *Service) ClassQueryFavSet(ctx context.Context, req *ClassQueryFavSetReq
 type ClassQueryFavRankReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -192,7 +213,7 @@ type ClassQueryFavRankReqBuilder struct{ req *ClassQueryFavRankReq }
 
 // NewClassQueryFavRankReqBuilder creates a request builder for ClassQueryFavRank.
 func NewClassQueryFavRankReqBuilder() *ClassQueryFavRankReqBuilder {
-	return &ClassQueryFavRankReqBuilder{req: &ClassQueryFavRankReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ClassQueryFavRankReqBuilder{req: &ClassQueryFavRankReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -213,6 +234,7 @@ func (s *Service) ClassQueryFavRank(ctx context.Context, req *ClassQueryFavRankR
 		PathTemplate: "/hduhelp-neo/academic/class/fav/rank",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -222,6 +244,7 @@ func (s *Service) ClassQueryFavRank(ctx context.Context, req *ClassQueryFavRankR
 type ClassQueryGetReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -230,7 +253,7 @@ type ClassQueryGetReqBuilder struct{ req *ClassQueryGetReq }
 
 // NewClassQueryGetReqBuilder creates a request builder for ClassQueryGet.
 func NewClassQueryGetReqBuilder() *ClassQueryGetReqBuilder {
-	return &ClassQueryGetReqBuilder{req: &ClassQueryGetReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ClassQueryGetReqBuilder{req: &ClassQueryGetReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Classes sets the "classes" query parameter.
@@ -257,6 +280,7 @@ func (s *Service) ClassQueryGet(ctx context.Context, req *ClassQueryGetReq, opts
 		PathTemplate: "/hduhelp-neo/academic/class/get",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -266,6 +290,7 @@ func (s *Service) ClassQueryGet(ctx context.Context, req *ClassQueryGetReq, opts
 type ClassQueryMapReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -274,7 +299,7 @@ type ClassQueryMapReqBuilder struct{ req *ClassQueryMapReq }
 
 // NewClassQueryMapReqBuilder creates a request builder for ClassQueryMap.
 func NewClassQueryMapReqBuilder() *ClassQueryMapReqBuilder {
-	return &ClassQueryMapReqBuilder{req: &ClassQueryMapReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ClassQueryMapReqBuilder{req: &ClassQueryMapReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -295,6 +320,7 @@ func (s *Service) ClassQueryMap(ctx context.Context, req *ClassQueryMapReq, opts
 		PathTemplate: "/hduhelp-neo/academic/class/map",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -304,6 +330,7 @@ func (s *Service) ClassQueryMap(ctx context.Context, req *ClassQueryMapReq, opts
 type ClassQuerySearchReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -312,7 +339,7 @@ type ClassQuerySearchReqBuilder struct{ req *ClassQuerySearchReq }
 
 // NewClassQuerySearchReqBuilder creates a request builder for ClassQuerySearch.
 func NewClassQuerySearchReqBuilder() *ClassQuerySearchReqBuilder {
-	return &ClassQuerySearchReqBuilder{req: &ClassQuerySearchReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ClassQuerySearchReqBuilder{req: &ClassQuerySearchReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Query sets the "query" query parameter.
@@ -351,6 +378,7 @@ func (s *Service) ClassQuerySearch(ctx context.Context, req *ClassQuerySearchReq
 		PathTemplate: "/hduhelp-neo/academic/class/search",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -360,6 +388,7 @@ func (s *Service) ClassQuerySearch(ctx context.Context, req *ClassQuerySearchReq
 type GetClassroomsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -368,7 +397,7 @@ type GetClassroomsReqBuilder struct{ req *GetClassroomsReq }
 
 // NewGetClassroomsReqBuilder creates a request builder for GetClassrooms.
 func NewGetClassroomsReqBuilder() *GetClassroomsReqBuilder {
-	return &GetClassroomsReqBuilder{req: &GetClassroomsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &GetClassroomsReqBuilder{req: &GetClassroomsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // BuildingID sets the "buildingID" query parameter.
@@ -413,6 +442,7 @@ func (s *Service) GetClassrooms(ctx context.Context, req *GetClassroomsReq, opts
 		PathTemplate: "/hduhelp-neo/academic/classroom/list",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -422,6 +452,7 @@ func (s *Service) GetClassrooms(ctx context.Context, req *GetClassroomsReq, opts
 type UnusedClassroomsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -430,7 +461,7 @@ type UnusedClassroomsReqBuilder struct{ req *UnusedClassroomsReq }
 
 // NewUnusedClassroomsReqBuilder creates a request builder for UnusedClassrooms.
 func NewUnusedClassroomsReqBuilder() *UnusedClassroomsReqBuilder {
-	return &UnusedClassroomsReqBuilder{req: &UnusedClassroomsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &UnusedClassroomsReqBuilder{req: &UnusedClassroomsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // BuildingID sets the "buildingID" query parameter.
@@ -487,6 +518,7 @@ func (s *Service) UnusedClassrooms(ctx context.Context, req *UnusedClassroomsReq
 		PathTemplate: "/hduhelp-neo/academic/classroom/unused",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -496,6 +528,7 @@ func (s *Service) UnusedClassrooms(ctx context.Context, req *UnusedClassroomsReq
 type ClassroomUsageReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -504,7 +537,7 @@ type ClassroomUsageReqBuilder struct{ req *ClassroomUsageReq }
 
 // NewClassroomUsageReqBuilder creates a request builder for ClassroomUsage.
 func NewClassroomUsageReqBuilder() *ClassroomUsageReqBuilder {
-	return &ClassroomUsageReqBuilder{req: &ClassroomUsageReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ClassroomUsageReqBuilder{req: &ClassroomUsageReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // LocationID sets the "locationID" query parameter.
@@ -543,6 +576,7 @@ func (s *Service) ClassroomUsage(ctx context.Context, req *ClassroomUsageReq, op
 		PathTemplate: "/hduhelp-neo/academic/classroom/usage",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -552,6 +586,7 @@ func (s *Service) ClassroomUsage(ctx context.Context, req *ClassroomUsageReq, op
 type CityByCodeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -560,7 +595,7 @@ type CityByCodeReqBuilder struct{ req *CityByCodeReq }
 
 // NewCityByCodeReqBuilder creates a request builder for CityByCode.
 func NewCityByCodeReqBuilder() *CityByCodeReqBuilder {
-	return &CityByCodeReqBuilder{req: &CityByCodeReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &CityByCodeReqBuilder{req: &CityByCodeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Code sets the "code" query parameter.
@@ -587,6 +622,7 @@ func (s *Service) CityByCode(ctx context.Context, req *CityByCodeReq, opts ...co
 		PathTemplate: "/hduhelp-neo/academic/code/city",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -596,6 +632,7 @@ func (s *Service) CityByCode(ctx context.Context, req *CityByCodeReq, opts ...co
 type AcademicConfigReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -604,7 +641,7 @@ type AcademicConfigReqBuilder struct{ req *AcademicConfigReq }
 
 // NewAcademicConfigReqBuilder creates a request builder for AcademicConfig.
 func NewAcademicConfigReqBuilder() *AcademicConfigReqBuilder {
-	return &AcademicConfigReqBuilder{req: &AcademicConfigReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &AcademicConfigReqBuilder{req: &AcademicConfigReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -625,6 +662,7 @@ func (s *Service) AcademicConfig(ctx context.Context, req *AcademicConfigReq, op
 		PathTemplate: "/hduhelp-neo/academic/config",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -634,6 +672,7 @@ func (s *Service) AcademicConfig(ctx context.Context, req *AcademicConfigReq, op
 type FreshmanBaseReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -642,7 +681,13 @@ type FreshmanBaseReqBuilder struct{ req *FreshmanBaseReq }
 
 // NewFreshmanBaseReqBuilder creates a request builder for FreshmanBase.
 func NewFreshmanBaseReqBuilder() *FreshmanBaseReqBuilder {
-	return &FreshmanBaseReqBuilder{req: &FreshmanBaseReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &FreshmanBaseReqBuilder{req: &FreshmanBaseReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *FreshmanBaseReqBuilder) StaffID(v string) *FreshmanBaseReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -663,6 +708,7 @@ func (s *Service) FreshmanBase(ctx context.Context, req *FreshmanBaseReq, opts .
 		PathTemplate: "/hduhelp-neo/academic/freshman/base",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -672,6 +718,7 @@ func (s *Service) FreshmanBase(ctx context.Context, req *FreshmanBaseReq, opts .
 type FreshmanDetailReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -680,7 +727,13 @@ type FreshmanDetailReqBuilder struct{ req *FreshmanDetailReq }
 
 // NewFreshmanDetailReqBuilder creates a request builder for FreshmanDetail.
 func NewFreshmanDetailReqBuilder() *FreshmanDetailReqBuilder {
-	return &FreshmanDetailReqBuilder{req: &FreshmanDetailReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &FreshmanDetailReqBuilder{req: &FreshmanDetailReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *FreshmanDetailReqBuilder) StaffID(v string) *FreshmanDetailReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -701,6 +754,7 @@ func (s *Service) FreshmanDetail(ctx context.Context, req *FreshmanDetailReq, op
 		PathTemplate: "/hduhelp-neo/academic/freshman/info",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -710,6 +764,7 @@ func (s *Service) FreshmanDetail(ctx context.Context, req *FreshmanDetailReq, op
 type FreshmanRoommatesReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -718,7 +773,13 @@ type FreshmanRoommatesReqBuilder struct{ req *FreshmanRoommatesReq }
 
 // NewFreshmanRoommatesReqBuilder creates a request builder for FreshmanRoommates.
 func NewFreshmanRoommatesReqBuilder() *FreshmanRoommatesReqBuilder {
-	return &FreshmanRoommatesReqBuilder{req: &FreshmanRoommatesReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &FreshmanRoommatesReqBuilder{req: &FreshmanRoommatesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *FreshmanRoommatesReqBuilder) StaffID(v string) *FreshmanRoommatesReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -739,6 +800,7 @@ func (s *Service) FreshmanRoommates(ctx context.Context, req *FreshmanRoommatesR
 		PathTemplate: "/hduhelp-neo/academic/freshman/roommate",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -748,6 +810,7 @@ func (s *Service) FreshmanRoommates(ctx context.Context, req *FreshmanRoommatesR
 type GlobalStudentGradeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -756,7 +819,7 @@ type GlobalStudentGradeReqBuilder struct{ req *GlobalStudentGradeReq }
 
 // NewGlobalStudentGradeReqBuilder creates a request builder for GlobalStudentGrade.
 func NewGlobalStudentGradeReqBuilder() *GlobalStudentGradeReqBuilder {
-	return &GlobalStudentGradeReqBuilder{req: &GlobalStudentGradeReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &GlobalStudentGradeReqBuilder{req: &GlobalStudentGradeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // SchoolYear sets the "schoolYear" query parameter.
@@ -789,6 +852,7 @@ func (s *Service) GlobalStudentGrade(ctx context.Context, req *GlobalStudentGrad
 		PathTemplate: "/hduhelp-neo/academic/global/student/grade",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -798,6 +862,7 @@ func (s *Service) GlobalStudentGrade(ctx context.Context, req *GlobalStudentGrad
 type GradesReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -806,7 +871,13 @@ type GradesReqBuilder struct{ req *GradesReq }
 
 // NewGradesReqBuilder creates a request builder for Grades.
 func NewGradesReqBuilder() *GradesReqBuilder {
-	return &GradesReqBuilder{req: &GradesReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &GradesReqBuilder{req: &GradesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *GradesReqBuilder) StaffID(v string) *GradesReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -827,6 +898,7 @@ func (s *Service) Grades(ctx context.Context, req *GradesReq, opts ...core.Reque
 		PathTemplate: "/hduhelp-neo/academic/grades",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -836,6 +908,7 @@ func (s *Service) Grades(ctx context.Context, req *GradesReq, opts ...core.Reque
 type LibraryFloorsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -844,7 +917,7 @@ type LibraryFloorsReqBuilder struct{ req *LibraryFloorsReq }
 
 // NewLibraryFloorsReqBuilder creates a request builder for LibraryFloors.
 func NewLibraryFloorsReqBuilder() *LibraryFloorsReqBuilder {
-	return &LibraryFloorsReqBuilder{req: &LibraryFloorsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LibraryFloorsReqBuilder{req: &LibraryFloorsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Start sets the "start" query parameter: yyyy-MM-dd
@@ -856,6 +929,12 @@ func (b *LibraryFloorsReqBuilder) Start(v string) *LibraryFloorsReqBuilder {
 // End sets the "end" query parameter: yyyy-MM-dd
 func (b *LibraryFloorsReqBuilder) End(v string) *LibraryFloorsReqBuilder {
 	b.req.queryParams["end"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *LibraryFloorsReqBuilder) StaffID(v string) *LibraryFloorsReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -877,6 +956,7 @@ func (s *Service) LibraryFloors(ctx context.Context, req *LibraryFloorsReq, opts
 		PathTemplate: "/hduhelp-neo/academic/library/attendance/floors",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -886,6 +966,7 @@ func (s *Service) LibraryFloors(ctx context.Context, req *LibraryFloorsReq, opts
 type LibraryMonthsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -894,7 +975,7 @@ type LibraryMonthsReqBuilder struct{ req *LibraryMonthsReq }
 
 // NewLibraryMonthsReqBuilder creates a request builder for LibraryMonths.
 func NewLibraryMonthsReqBuilder() *LibraryMonthsReqBuilder {
-	return &LibraryMonthsReqBuilder{req: &LibraryMonthsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LibraryMonthsReqBuilder{req: &LibraryMonthsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Start sets the "start" query parameter: yyyy-MM-dd
@@ -906,6 +987,12 @@ func (b *LibraryMonthsReqBuilder) Start(v string) *LibraryMonthsReqBuilder {
 // End sets the "end" query parameter: yyyy-MM-dd
 func (b *LibraryMonthsReqBuilder) End(v string) *LibraryMonthsReqBuilder {
 	b.req.queryParams["end"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *LibraryMonthsReqBuilder) StaffID(v string) *LibraryMonthsReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -927,6 +1014,7 @@ func (s *Service) LibraryMonths(ctx context.Context, req *LibraryMonthsReq, opts
 		PathTemplate: "/hduhelp-neo/academic/library/attendance/months",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -936,6 +1024,7 @@ func (s *Service) LibraryMonths(ctx context.Context, req *LibraryMonthsReq, opts
 type LibraryAttendanceStatsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -944,7 +1033,7 @@ type LibraryAttendanceStatsReqBuilder struct{ req *LibraryAttendanceStatsReq }
 
 // NewLibraryAttendanceStatsReqBuilder creates a request builder for LibraryAttendanceStats.
 func NewLibraryAttendanceStatsReqBuilder() *LibraryAttendanceStatsReqBuilder {
-	return &LibraryAttendanceStatsReqBuilder{req: &LibraryAttendanceStatsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LibraryAttendanceStatsReqBuilder{req: &LibraryAttendanceStatsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Start sets the "start" query parameter: yyyy-MM-dd
@@ -956,6 +1045,12 @@ func (b *LibraryAttendanceStatsReqBuilder) Start(v string) *LibraryAttendanceSta
 // End sets the "end" query parameter: yyyy-MM-dd
 func (b *LibraryAttendanceStatsReqBuilder) End(v string) *LibraryAttendanceStatsReqBuilder {
 	b.req.queryParams["end"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *LibraryAttendanceStatsReqBuilder) StaffID(v string) *LibraryAttendanceStatsReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -977,6 +1072,7 @@ func (s *Service) LibraryAttendanceStats(ctx context.Context, req *LibraryAttend
 		PathTemplate: "/hduhelp-neo/academic/library/attendance/stats",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -986,6 +1082,7 @@ func (s *Service) LibraryAttendanceStats(ctx context.Context, req *LibraryAttend
 type LibraryTimeSlotsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -994,7 +1091,7 @@ type LibraryTimeSlotsReqBuilder struct{ req *LibraryTimeSlotsReq }
 
 // NewLibraryTimeSlotsReqBuilder creates a request builder for LibraryTimeSlots.
 func NewLibraryTimeSlotsReqBuilder() *LibraryTimeSlotsReqBuilder {
-	return &LibraryTimeSlotsReqBuilder{req: &LibraryTimeSlotsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LibraryTimeSlotsReqBuilder{req: &LibraryTimeSlotsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Start sets the "start" query parameter: yyyy-MM-dd
@@ -1006,6 +1103,12 @@ func (b *LibraryTimeSlotsReqBuilder) Start(v string) *LibraryTimeSlotsReqBuilder
 // End sets the "end" query parameter: yyyy-MM-dd
 func (b *LibraryTimeSlotsReqBuilder) End(v string) *LibraryTimeSlotsReqBuilder {
 	b.req.queryParams["end"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *LibraryTimeSlotsReqBuilder) StaffID(v string) *LibraryTimeSlotsReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -1027,6 +1130,7 @@ func (s *Service) LibraryTimeSlots(ctx context.Context, req *LibraryTimeSlotsReq
 		PathTemplate: "/hduhelp-neo/academic/library/attendance/time_slots",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1036,6 +1140,7 @@ func (s *Service) LibraryTimeSlots(ctx context.Context, req *LibraryTimeSlotsReq
 type LibraryReadAllReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1044,7 +1149,7 @@ type LibraryReadAllReqBuilder struct{ req *LibraryReadAllReq }
 
 // NewLibraryReadAllReqBuilder creates a request builder for LibraryReadAll.
 func NewLibraryReadAllReqBuilder() *LibraryReadAllReqBuilder {
-	return &LibraryReadAllReqBuilder{req: &LibraryReadAllReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LibraryReadAllReqBuilder{req: &LibraryReadAllReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Start sets the "start" query parameter.
@@ -1071,6 +1176,12 @@ func (b *LibraryReadAllReqBuilder) Size(v int32) *LibraryReadAllReqBuilder {
 	return b
 }
 
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *LibraryReadAllReqBuilder) StaffID(v string) *LibraryReadAllReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
+}
+
 // Build finalizes the request.
 func (b *LibraryReadAllReqBuilder) Build() *LibraryReadAllReq { return b.req }
 
@@ -1089,6 +1200,7 @@ func (s *Service) LibraryReadAll(ctx context.Context, req *LibraryReadAllReq, op
 		PathTemplate: "/hduhelp-neo/academic/library/read/all",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1098,6 +1210,7 @@ func (s *Service) LibraryReadAll(ctx context.Context, req *LibraryReadAllReq, op
 type LibraryReadBorrowsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1106,7 +1219,7 @@ type LibraryReadBorrowsReqBuilder struct{ req *LibraryReadBorrowsReq }
 
 // NewLibraryReadBorrowsReqBuilder creates a request builder for LibraryReadBorrows.
 func NewLibraryReadBorrowsReqBuilder() *LibraryReadBorrowsReqBuilder {
-	return &LibraryReadBorrowsReqBuilder{req: &LibraryReadBorrowsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LibraryReadBorrowsReqBuilder{req: &LibraryReadBorrowsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Start sets the "start" query parameter.
@@ -1133,6 +1246,12 @@ func (b *LibraryReadBorrowsReqBuilder) Size(v int32) *LibraryReadBorrowsReqBuild
 	return b
 }
 
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *LibraryReadBorrowsReqBuilder) StaffID(v string) *LibraryReadBorrowsReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
+}
+
 // Build finalizes the request.
 func (b *LibraryReadBorrowsReqBuilder) Build() *LibraryReadBorrowsReq { return b.req }
 
@@ -1151,6 +1270,7 @@ func (s *Service) LibraryReadBorrows(ctx context.Context, req *LibraryReadBorrow
 		PathTemplate: "/hduhelp-neo/academic/library/read/borrows",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1160,6 +1280,7 @@ func (s *Service) LibraryReadBorrows(ctx context.Context, req *LibraryReadBorrow
 type LibraryReadFirstBookReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1168,7 +1289,7 @@ type LibraryReadFirstBookReqBuilder struct{ req *LibraryReadFirstBookReq }
 
 // NewLibraryReadFirstBookReqBuilder creates a request builder for LibraryReadFirstBook.
 func NewLibraryReadFirstBookReqBuilder() *LibraryReadFirstBookReqBuilder {
-	return &LibraryReadFirstBookReqBuilder{req: &LibraryReadFirstBookReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LibraryReadFirstBookReqBuilder{req: &LibraryReadFirstBookReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Start sets the "start" query parameter.
@@ -1180,6 +1301,12 @@ func (b *LibraryReadFirstBookReqBuilder) Start(v string) *LibraryReadFirstBookRe
 // End sets the "end" query parameter.
 func (b *LibraryReadFirstBookReqBuilder) End(v string) *LibraryReadFirstBookReqBuilder {
 	b.req.queryParams["end"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *LibraryReadFirstBookReqBuilder) StaffID(v string) *LibraryReadFirstBookReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -1201,6 +1328,7 @@ func (s *Service) LibraryReadFirstBook(ctx context.Context, req *LibraryReadFirs
 		PathTemplate: "/hduhelp-neo/academic/library/read/first_book",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1210,6 +1338,7 @@ func (s *Service) LibraryReadFirstBook(ctx context.Context, req *LibraryReadFirs
 type LibraryReadLeastPopularReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1218,7 +1347,7 @@ type LibraryReadLeastPopularReqBuilder struct{ req *LibraryReadLeastPopularReq }
 
 // NewLibraryReadLeastPopularReqBuilder creates a request builder for LibraryReadLeastPopular.
 func NewLibraryReadLeastPopularReqBuilder() *LibraryReadLeastPopularReqBuilder {
-	return &LibraryReadLeastPopularReqBuilder{req: &LibraryReadLeastPopularReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LibraryReadLeastPopularReqBuilder{req: &LibraryReadLeastPopularReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Start sets the "start" query parameter.
@@ -1230,6 +1359,12 @@ func (b *LibraryReadLeastPopularReqBuilder) Start(v string) *LibraryReadLeastPop
 // End sets the "end" query parameter.
 func (b *LibraryReadLeastPopularReqBuilder) End(v string) *LibraryReadLeastPopularReqBuilder {
 	b.req.queryParams["end"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *LibraryReadLeastPopularReqBuilder) StaffID(v string) *LibraryReadLeastPopularReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -1251,6 +1386,7 @@ func (s *Service) LibraryReadLeastPopular(ctx context.Context, req *LibraryReadL
 		PathTemplate: "/hduhelp-neo/academic/library/read/least_popular",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1260,6 +1396,7 @@ func (s *Service) LibraryReadLeastPopular(ctx context.Context, req *LibraryReadL
 type LibraryReadMaxMonthReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1268,7 +1405,7 @@ type LibraryReadMaxMonthReqBuilder struct{ req *LibraryReadMaxMonthReq }
 
 // NewLibraryReadMaxMonthReqBuilder creates a request builder for LibraryReadMaxMonth.
 func NewLibraryReadMaxMonthReqBuilder() *LibraryReadMaxMonthReqBuilder {
-	return &LibraryReadMaxMonthReqBuilder{req: &LibraryReadMaxMonthReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LibraryReadMaxMonthReqBuilder{req: &LibraryReadMaxMonthReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Start sets the "start" query parameter.
@@ -1280,6 +1417,12 @@ func (b *LibraryReadMaxMonthReqBuilder) Start(v string) *LibraryReadMaxMonthReqB
 // End sets the "end" query parameter.
 func (b *LibraryReadMaxMonthReqBuilder) End(v string) *LibraryReadMaxMonthReqBuilder {
 	b.req.queryParams["end"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *LibraryReadMaxMonthReqBuilder) StaffID(v string) *LibraryReadMaxMonthReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -1301,6 +1444,7 @@ func (s *Service) LibraryReadMaxMonth(ctx context.Context, req *LibraryReadMaxMo
 		PathTemplate: "/hduhelp-neo/academic/library/read/max_month",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1310,6 +1454,7 @@ func (s *Service) LibraryReadMaxMonth(ctx context.Context, req *LibraryReadMaxMo
 type LibraryReadMonthsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1318,7 +1463,7 @@ type LibraryReadMonthsReqBuilder struct{ req *LibraryReadMonthsReq }
 
 // NewLibraryReadMonthsReqBuilder creates a request builder for LibraryReadMonths.
 func NewLibraryReadMonthsReqBuilder() *LibraryReadMonthsReqBuilder {
-	return &LibraryReadMonthsReqBuilder{req: &LibraryReadMonthsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LibraryReadMonthsReqBuilder{req: &LibraryReadMonthsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Start sets the "start" query parameter.
@@ -1330,6 +1475,12 @@ func (b *LibraryReadMonthsReqBuilder) Start(v string) *LibraryReadMonthsReqBuild
 // End sets the "end" query parameter.
 func (b *LibraryReadMonthsReqBuilder) End(v string) *LibraryReadMonthsReqBuilder {
 	b.req.queryParams["end"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *LibraryReadMonthsReqBuilder) StaffID(v string) *LibraryReadMonthsReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -1351,6 +1502,7 @@ func (s *Service) LibraryReadMonths(ctx context.Context, req *LibraryReadMonthsR
 		PathTemplate: "/hduhelp-neo/academic/library/read/months",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1360,6 +1512,7 @@ func (s *Service) LibraryReadMonths(ctx context.Context, req *LibraryReadMonthsR
 type LibraryReadNewerReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1368,7 +1521,13 @@ type LibraryReadNewerReqBuilder struct{ req *LibraryReadNewerReq }
 
 // NewLibraryReadNewerReqBuilder creates a request builder for LibraryReadNewer.
 func NewLibraryReadNewerReqBuilder() *LibraryReadNewerReqBuilder {
-	return &LibraryReadNewerReqBuilder{req: &LibraryReadNewerReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LibraryReadNewerReqBuilder{req: &LibraryReadNewerReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *LibraryReadNewerReqBuilder) StaffID(v string) *LibraryReadNewerReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -1389,6 +1548,7 @@ func (s *Service) LibraryReadNewer(ctx context.Context, req *LibraryReadNewerReq
 		PathTemplate: "/hduhelp-neo/academic/library/read/newer",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1398,6 +1558,7 @@ func (s *Service) LibraryReadNewer(ctx context.Context, req *LibraryReadNewerReq
 type LibraryReadPreferenceReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1406,7 +1567,7 @@ type LibraryReadPreferenceReqBuilder struct{ req *LibraryReadPreferenceReq }
 
 // NewLibraryReadPreferenceReqBuilder creates a request builder for LibraryReadPreference.
 func NewLibraryReadPreferenceReqBuilder() *LibraryReadPreferenceReqBuilder {
-	return &LibraryReadPreferenceReqBuilder{req: &LibraryReadPreferenceReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LibraryReadPreferenceReqBuilder{req: &LibraryReadPreferenceReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Start sets the "start" query parameter.
@@ -1418,6 +1579,12 @@ func (b *LibraryReadPreferenceReqBuilder) Start(v string) *LibraryReadPreference
 // End sets the "end" query parameter.
 func (b *LibraryReadPreferenceReqBuilder) End(v string) *LibraryReadPreferenceReqBuilder {
 	b.req.queryParams["end"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *LibraryReadPreferenceReqBuilder) StaffID(v string) *LibraryReadPreferenceReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -1439,6 +1606,7 @@ func (s *Service) LibraryReadPreference(ctx context.Context, req *LibraryReadPre
 		PathTemplate: "/hduhelp-neo/academic/library/read/preference",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1448,6 +1616,7 @@ func (s *Service) LibraryReadPreference(ctx context.Context, req *LibraryReadPre
 type LibraryReadSummaryReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1456,7 +1625,7 @@ type LibraryReadSummaryReqBuilder struct{ req *LibraryReadSummaryReq }
 
 // NewLibraryReadSummaryReqBuilder creates a request builder for LibraryReadSummary.
 func NewLibraryReadSummaryReqBuilder() *LibraryReadSummaryReqBuilder {
-	return &LibraryReadSummaryReqBuilder{req: &LibraryReadSummaryReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LibraryReadSummaryReqBuilder{req: &LibraryReadSummaryReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Start sets the "start" query parameter.
@@ -1468,6 +1637,12 @@ func (b *LibraryReadSummaryReqBuilder) Start(v string) *LibraryReadSummaryReqBui
 // End sets the "end" query parameter.
 func (b *LibraryReadSummaryReqBuilder) End(v string) *LibraryReadSummaryReqBuilder {
 	b.req.queryParams["end"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *LibraryReadSummaryReqBuilder) StaffID(v string) *LibraryReadSummaryReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -1489,6 +1664,7 @@ func (s *Service) LibraryReadSummary(ctx context.Context, req *LibraryReadSummar
 		PathTemplate: "/hduhelp-neo/academic/library/read/summary",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1498,6 +1674,7 @@ func (s *Service) LibraryReadSummary(ctx context.Context, req *LibraryReadSummar
 type LibraryReadTotalTimeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1506,7 +1683,7 @@ type LibraryReadTotalTimeReqBuilder struct{ req *LibraryReadTotalTimeReq }
 
 // NewLibraryReadTotalTimeReqBuilder creates a request builder for LibraryReadTotalTime.
 func NewLibraryReadTotalTimeReqBuilder() *LibraryReadTotalTimeReqBuilder {
-	return &LibraryReadTotalTimeReqBuilder{req: &LibraryReadTotalTimeReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LibraryReadTotalTimeReqBuilder{req: &LibraryReadTotalTimeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Start sets the "start" query parameter.
@@ -1518,6 +1695,12 @@ func (b *LibraryReadTotalTimeReqBuilder) Start(v string) *LibraryReadTotalTimeRe
 // End sets the "end" query parameter.
 func (b *LibraryReadTotalTimeReqBuilder) End(v string) *LibraryReadTotalTimeReqBuilder {
 	b.req.queryParams["end"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *LibraryReadTotalTimeReqBuilder) StaffID(v string) *LibraryReadTotalTimeReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -1539,6 +1722,7 @@ func (s *Service) LibraryReadTotalTime(ctx context.Context, req *LibraryReadTota
 		PathTemplate: "/hduhelp-neo/academic/library/read/total_time",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1548,6 +1732,7 @@ func (s *Service) LibraryReadTotalTime(ctx context.Context, req *LibraryReadTota
 type LibraryReadUnreturnedReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1556,7 +1741,13 @@ type LibraryReadUnreturnedReqBuilder struct{ req *LibraryReadUnreturnedReq }
 
 // NewLibraryReadUnreturnedReqBuilder creates a request builder for LibraryReadUnreturned.
 func NewLibraryReadUnreturnedReqBuilder() *LibraryReadUnreturnedReqBuilder {
-	return &LibraryReadUnreturnedReqBuilder{req: &LibraryReadUnreturnedReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LibraryReadUnreturnedReqBuilder{req: &LibraryReadUnreturnedReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *LibraryReadUnreturnedReqBuilder) StaffID(v string) *LibraryReadUnreturnedReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -1577,6 +1768,7 @@ func (s *Service) LibraryReadUnreturned(ctx context.Context, req *LibraryReadUnr
 		PathTemplate: "/hduhelp-neo/academic/library/read/unreturned",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1586,6 +1778,7 @@ func (s *Service) LibraryReadUnreturned(ctx context.Context, req *LibraryReadUnr
 type GetUnreturnedBooksListReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1594,7 +1787,7 @@ type GetUnreturnedBooksListReqBuilder struct{ req *GetUnreturnedBooksListReq }
 
 // NewGetUnreturnedBooksListReqBuilder creates a request builder for GetUnreturnedBooksList.
 func NewGetUnreturnedBooksListReqBuilder() *GetUnreturnedBooksListReqBuilder {
-	return &GetUnreturnedBooksListReqBuilder{req: &GetUnreturnedBooksListReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &GetUnreturnedBooksListReqBuilder{req: &GetUnreturnedBooksListReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // StaffIds sets the "staffIds" query parameter.
@@ -1621,6 +1814,7 @@ func (s *Service) GetUnreturnedBooksList(ctx context.Context, req *GetUnreturned
 		PathTemplate: "/hduhelp-neo/academic/library/read/unreturned/batch",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1630,6 +1824,7 @@ func (s *Service) GetUnreturnedBooksList(ctx context.Context, req *GetUnreturned
 type LibrarySeatReservationsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1638,12 +1833,18 @@ type LibrarySeatReservationsReqBuilder struct{ req *LibrarySeatReservationsReq }
 
 // NewLibrarySeatReservationsReqBuilder creates a request builder for LibrarySeatReservations.
 func NewLibrarySeatReservationsReqBuilder() *LibrarySeatReservationsReqBuilder {
-	return &LibrarySeatReservationsReqBuilder{req: &LibrarySeatReservationsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LibrarySeatReservationsReqBuilder{req: &LibrarySeatReservationsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Limit sets the "limit" query parameter: 返回近 N 条，默认 20，最大 200
 func (b *LibrarySeatReservationsReqBuilder) Limit(v int32) *LibrarySeatReservationsReqBuilder {
 	b.req.queryParams["limit"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *LibrarySeatReservationsReqBuilder) StaffID(v string) *LibrarySeatReservationsReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -1665,6 +1866,7 @@ func (s *Service) LibrarySeatReservations(ctx context.Context, req *LibrarySeatR
 		PathTemplate: "/hduhelp-neo/academic/library/seat/reservations",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1674,6 +1876,7 @@ func (s *Service) LibrarySeatReservations(ctx context.Context, req *LibrarySeatR
 type LibrarySeatRoomsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1682,7 +1885,7 @@ type LibrarySeatRoomsReqBuilder struct{ req *LibrarySeatRoomsReq }
 
 // NewLibrarySeatRoomsReqBuilder creates a request builder for LibrarySeatRooms.
 func NewLibrarySeatRoomsReqBuilder() *LibrarySeatRoomsReqBuilder {
-	return &LibrarySeatRoomsReqBuilder{req: &LibrarySeatRoomsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LibrarySeatRoomsReqBuilder{req: &LibrarySeatRoomsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -1703,6 +1906,7 @@ func (s *Service) LibrarySeatRooms(ctx context.Context, req *LibrarySeatRoomsReq
 		PathTemplate: "/hduhelp-neo/academic/library/seat/rooms",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1712,6 +1916,7 @@ func (s *Service) LibrarySeatRooms(ctx context.Context, req *LibrarySeatRoomsReq
 type LibraryShareIDReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1720,7 +1925,13 @@ type LibraryShareIDReqBuilder struct{ req *LibraryShareIDReq }
 
 // NewLibraryShareIDReqBuilder creates a request builder for LibraryShareID.
 func NewLibraryShareIDReqBuilder() *LibraryShareIDReqBuilder {
-	return &LibraryShareIDReqBuilder{req: &LibraryShareIDReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LibraryShareIDReqBuilder{req: &LibraryShareIDReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *LibraryShareIDReqBuilder) StaffID(v string) *LibraryShareIDReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -1741,6 +1952,7 @@ func (s *Service) LibraryShareID(ctx context.Context, req *LibraryShareIDReq, op
 		PathTemplate: "/hduhelp-neo/academic/library/share/share",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1750,6 +1962,7 @@ func (s *Service) LibraryShareID(ctx context.Context, req *LibraryShareIDReq, op
 type LibraryShareStaffReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1758,7 +1971,7 @@ type LibraryShareStaffReqBuilder struct{ req *LibraryShareStaffReq }
 
 // NewLibraryShareStaffReqBuilder creates a request builder for LibraryShareStaff.
 func NewLibraryShareStaffReqBuilder() *LibraryShareStaffReqBuilder {
-	return &LibraryShareStaffReqBuilder{req: &LibraryShareStaffReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LibraryShareStaffReqBuilder{req: &LibraryShareStaffReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // ShareId sets the "share_id" query parameter.
@@ -1785,6 +1998,7 @@ func (s *Service) LibraryShareStaff(ctx context.Context, req *LibraryShareStaffR
 		PathTemplate: "/hduhelp-neo/academic/library/share/staff",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1794,6 +2008,7 @@ func (s *Service) LibraryShareStaff(ctx context.Context, req *LibraryShareStaffR
 type NeedyListReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1802,7 +2017,13 @@ type NeedyListReqBuilder struct{ req *NeedyListReq }
 
 // NewNeedyListReqBuilder creates a request builder for NeedyList.
 func NewNeedyListReqBuilder() *NeedyListReqBuilder {
-	return &NeedyListReqBuilder{req: &NeedyListReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &NeedyListReqBuilder{req: &NeedyListReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *NeedyListReqBuilder) StaffID(v string) *NeedyListReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -1823,6 +2044,7 @@ func (s *Service) NeedyList(ctx context.Context, req *NeedyListReq, opts ...core
 		PathTemplate: "/hduhelp-neo/academic/needy",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1832,6 +2054,7 @@ func (s *Service) NeedyList(ctx context.Context, req *NeedyListReq, opts ...core
 type NeedyStudentInfoReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1840,7 +2063,13 @@ type NeedyStudentInfoReqBuilder struct{ req *NeedyStudentInfoReq }
 
 // NewNeedyStudentInfoReqBuilder creates a request builder for NeedyStudentInfo.
 func NewNeedyStudentInfoReqBuilder() *NeedyStudentInfoReqBuilder {
-	return &NeedyStudentInfoReqBuilder{req: &NeedyStudentInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &NeedyStudentInfoReqBuilder{req: &NeedyStudentInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *NeedyStudentInfoReqBuilder) StaffID(v string) *NeedyStudentInfoReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -1861,6 +2090,7 @@ func (s *Service) NeedyStudentInfo(ctx context.Context, req *NeedyStudentInfoReq
 		PathTemplate: "/hduhelp-neo/academic/needy/student",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1870,6 +2100,7 @@ func (s *Service) NeedyStudentInfo(ctx context.Context, req *NeedyStudentInfoReq
 type PersonInfoReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1878,7 +2109,13 @@ type PersonInfoReqBuilder struct{ req *PersonInfoReq }
 
 // NewPersonInfoReqBuilder creates a request builder for PersonInfo.
 func NewPersonInfoReqBuilder() *PersonInfoReqBuilder {
-	return &PersonInfoReqBuilder{req: &PersonInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &PersonInfoReqBuilder{req: &PersonInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *PersonInfoReqBuilder) StaffID(v string) *PersonInfoReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -1899,6 +2136,7 @@ func (s *Service) PersonInfo(ctx context.Context, req *PersonInfoReq, opts ...co
 		PathTemplate: "/hduhelp-neo/academic/person/info",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1908,6 +2146,7 @@ func (s *Service) PersonInfo(ctx context.Context, req *PersonInfoReq, opts ...co
 type ModifyPreviousSchoolCityReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1916,11 +2155,17 @@ type ModifyPreviousSchoolCityReqBuilder struct{ req *ModifyPreviousSchoolCityReq
 
 // NewModifyPreviousSchoolCityReqBuilder creates a request builder for ModifyPreviousSchoolCity.
 func NewModifyPreviousSchoolCityReqBuilder() *ModifyPreviousSchoolCityReqBuilder {
-	return &ModifyPreviousSchoolCityReqBuilder{req: &ModifyPreviousSchoolCityReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ModifyPreviousSchoolCityReqBuilder{req: &ModifyPreviousSchoolCityReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *ModifyPreviousSchoolCityReqBuilder) StaffID(v string) *ModifyPreviousSchoolCityReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Body sets the request body.
-func (b *ModifyPreviousSchoolCityReqBuilder) Body(body *models.ModifyCityRequestBody) *ModifyPreviousSchoolCityReqBuilder {
+func (b *ModifyPreviousSchoolCityReqBuilder) Body(body *models.ModifyPreviousSchoolCityRequestBody) *ModifyPreviousSchoolCityReqBuilder {
 	b.req.body = body
 	return b
 }
@@ -1942,6 +2187,7 @@ func (s *Service) ModifyPreviousSchoolCity(ctx context.Context, req *ModifyPrevi
 		PathTemplate: "/hduhelp-neo/academic/previous_school/city",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -1951,6 +2197,7 @@ func (s *Service) ModifyPreviousSchoolCity(ctx context.Context, req *ModifyPrevi
 type PreviousSchoolDetailReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -1959,7 +2206,7 @@ type PreviousSchoolDetailReqBuilder struct{ req *PreviousSchoolDetailReq }
 
 // NewPreviousSchoolDetailReqBuilder creates a request builder for PreviousSchoolDetail.
 func NewPreviousSchoolDetailReqBuilder() *PreviousSchoolDetailReqBuilder {
-	return &PreviousSchoolDetailReqBuilder{req: &PreviousSchoolDetailReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &PreviousSchoolDetailReqBuilder{req: &PreviousSchoolDetailReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // SchoolName sets the "schoolName" query parameter.
@@ -1971,6 +2218,12 @@ func (b *PreviousSchoolDetailReqBuilder) SchoolName(v string) *PreviousSchoolDet
 // Grade sets the "grade" query parameter.
 func (b *PreviousSchoolDetailReqBuilder) Grade(v string) *PreviousSchoolDetailReqBuilder {
 	b.req.queryParams["grade"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *PreviousSchoolDetailReqBuilder) StaffID(v string) *PreviousSchoolDetailReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -1992,6 +2245,7 @@ func (s *Service) PreviousSchoolDetail(ctx context.Context, req *PreviousSchoolD
 		PathTemplate: "/hduhelp-neo/academic/previous_school/detail",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2001,6 +2255,7 @@ func (s *Service) PreviousSchoolDetail(ctx context.Context, req *PreviousSchoolD
 type PreviousSchoolInfoReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2009,7 +2264,13 @@ type PreviousSchoolInfoReqBuilder struct{ req *PreviousSchoolInfoReq }
 
 // NewPreviousSchoolInfoReqBuilder creates a request builder for PreviousSchoolInfo.
 func NewPreviousSchoolInfoReqBuilder() *PreviousSchoolInfoReqBuilder {
-	return &PreviousSchoolInfoReqBuilder{req: &PreviousSchoolInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &PreviousSchoolInfoReqBuilder{req: &PreviousSchoolInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *PreviousSchoolInfoReqBuilder) StaffID(v string) *PreviousSchoolInfoReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -2030,6 +2291,7 @@ func (s *Service) PreviousSchoolInfo(ctx context.Context, req *PreviousSchoolInf
 		PathTemplate: "/hduhelp-neo/academic/previous_school/info",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2039,6 +2301,7 @@ func (s *Service) PreviousSchoolInfo(ctx context.Context, req *PreviousSchoolInf
 type ScheduleReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2047,7 +2310,7 @@ type ScheduleReqBuilder struct{ req *ScheduleReq }
 
 // NewScheduleReqBuilder creates a request builder for Schedule.
 func NewScheduleReqBuilder() *ScheduleReqBuilder {
-	return &ScheduleReqBuilder{req: &ScheduleReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ScheduleReqBuilder{req: &ScheduleReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Timestamp sets the "timestamp" query parameter.
@@ -2074,6 +2337,12 @@ func (b *ScheduleReqBuilder) Week(v int32) *ScheduleReqBuilder {
 	return b
 }
 
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *ScheduleReqBuilder) StaffID(v string) *ScheduleReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
+}
+
 // Build finalizes the request.
 func (b *ScheduleReqBuilder) Build() *ScheduleReq { return b.req }
 
@@ -2092,6 +2361,7 @@ func (s *Service) Schedule(ctx context.Context, req *ScheduleReq, opts ...core.R
 		PathTemplate: "/hduhelp-neo/academic/schedule",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2101,6 +2371,7 @@ func (s *Service) Schedule(ctx context.Context, req *ScheduleReq, opts ...core.R
 type ScheduleNowReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2109,7 +2380,13 @@ type ScheduleNowReqBuilder struct{ req *ScheduleNowReq }
 
 // NewScheduleNowReqBuilder creates a request builder for ScheduleNow.
 func NewScheduleNowReqBuilder() *ScheduleNowReqBuilder {
-	return &ScheduleNowReqBuilder{req: &ScheduleNowReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ScheduleNowReqBuilder{req: &ScheduleNowReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *ScheduleNowReqBuilder) StaffID(v string) *ScheduleNowReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -2130,6 +2407,7 @@ func (s *Service) ScheduleNow(ctx context.Context, req *ScheduleNowReq, opts ...
 		PathTemplate: "/hduhelp-neo/academic/schedule/now",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2139,6 +2417,7 @@ func (s *Service) ScheduleNow(ctx context.Context, req *ScheduleNowReq, opts ...
 type ScheduleNowV3Req struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2147,7 +2426,13 @@ type ScheduleNowV3ReqBuilder struct{ req *ScheduleNowV3Req }
 
 // NewScheduleNowV3ReqBuilder creates a request builder for ScheduleNowV3.
 func NewScheduleNowV3ReqBuilder() *ScheduleNowV3ReqBuilder {
-	return &ScheduleNowV3ReqBuilder{req: &ScheduleNowV3Req{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ScheduleNowV3ReqBuilder{req: &ScheduleNowV3Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *ScheduleNowV3ReqBuilder) StaffID(v string) *ScheduleNowV3ReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -2168,6 +2453,7 @@ func (s *Service) ScheduleNowV3(ctx context.Context, req *ScheduleNowV3Req, opts
 		PathTemplate: "/hduhelp-neo/academic/schedule/now/v3",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2177,6 +2463,7 @@ func (s *Service) ScheduleNowV3(ctx context.Context, req *ScheduleNowV3Req, opts
 type GlobalScheduleReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2185,7 +2472,7 @@ type GlobalScheduleReqBuilder struct{ req *GlobalScheduleReq }
 
 // NewGlobalScheduleReqBuilder creates a request builder for GlobalSchedule.
 func NewGlobalScheduleReqBuilder() *GlobalScheduleReqBuilder {
-	return &GlobalScheduleReqBuilder{req: &GlobalScheduleReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &GlobalScheduleReqBuilder{req: &GlobalScheduleReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Week sets the "week" query parameter.
@@ -2218,6 +2505,7 @@ func (s *Service) GlobalSchedule(ctx context.Context, req *GlobalScheduleReq, op
 		PathTemplate: "/hduhelp-neo/academic/schedule/private/global",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2227,6 +2515,7 @@ func (s *Service) GlobalSchedule(ctx context.Context, req *GlobalScheduleReq, op
 type ScheduleNowV2Req struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2235,7 +2524,13 @@ type ScheduleNowV2ReqBuilder struct{ req *ScheduleNowV2Req }
 
 // NewScheduleNowV2ReqBuilder creates a request builder for ScheduleNowV2.
 func NewScheduleNowV2ReqBuilder() *ScheduleNowV2ReqBuilder {
-	return &ScheduleNowV2ReqBuilder{req: &ScheduleNowV2Req{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ScheduleNowV2ReqBuilder{req: &ScheduleNowV2Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *ScheduleNowV2ReqBuilder) StaffID(v string) *ScheduleNowV2ReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -2256,6 +2551,7 @@ func (s *Service) ScheduleNowV2(ctx context.Context, req *ScheduleNowV2Req, opts
 		PathTemplate: "/hduhelp-neo/academic/schedule/v2/now",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2265,6 +2561,7 @@ func (s *Service) ScheduleNowV2(ctx context.Context, req *ScheduleNowV2Req, opts
 type SemesterListByDateReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2273,7 +2570,7 @@ type SemesterListByDateReqBuilder struct{ req *SemesterListByDateReq }
 
 // NewSemesterListByDateReqBuilder creates a request builder for SemesterListByDate.
 func NewSemesterListByDateReqBuilder() *SemesterListByDateReqBuilder {
-	return &SemesterListByDateReqBuilder{req: &SemesterListByDateReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &SemesterListByDateReqBuilder{req: &SemesterListByDateReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // StartDate sets the "start_date" query parameter.
@@ -2306,6 +2603,7 @@ func (s *Service) SemesterListByDate(ctx context.Context, req *SemesterListByDat
 		PathTemplate: "/hduhelp-neo/academic/schooltime/semester/listByDate",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2315,6 +2613,7 @@ func (s *Service) SemesterListByDate(ctx context.Context, req *SemesterListByDat
 type SchoolTimeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2323,7 +2622,7 @@ type SchoolTimeReqBuilder struct{ req *SchoolTimeReq }
 
 // NewSchoolTimeReqBuilder creates a request builder for SchoolTime.
 func NewSchoolTimeReqBuilder() *SchoolTimeReqBuilder {
-	return &SchoolTimeReqBuilder{req: &SchoolTimeReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &SchoolTimeReqBuilder{req: &SchoolTimeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -2344,6 +2643,7 @@ func (s *Service) SchoolTime(ctx context.Context, req *SchoolTimeReq, opts ...co
 		PathTemplate: "/hduhelp-neo/academic/schooltime/time",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2353,6 +2653,7 @@ func (s *Service) SchoolTime(ctx context.Context, req *SchoolTimeReq, opts ...co
 type SklUnitDetailReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2361,7 +2662,7 @@ type SklUnitDetailReqBuilder struct{ req *SklUnitDetailReq }
 
 // NewSklUnitDetailReqBuilder creates a request builder for SklUnitDetail.
 func NewSklUnitDetailReqBuilder() *SklUnitDetailReqBuilder {
-	return &SklUnitDetailReqBuilder{req: &SklUnitDetailReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &SklUnitDetailReqBuilder{req: &SklUnitDetailReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // UnitId sets the "unit_id" query parameter.
@@ -2373,6 +2674,12 @@ func (b *SklUnitDetailReqBuilder) UnitId(v string) *SklUnitDetailReqBuilder {
 // Grade sets the "grade" query parameter.
 func (b *SklUnitDetailReqBuilder) Grade(v string) *SklUnitDetailReqBuilder {
 	b.req.queryParams["grade"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *SklUnitDetailReqBuilder) StaffID(v string) *SklUnitDetailReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -2394,6 +2701,7 @@ func (s *Service) SklUnitDetail(ctx context.Context, req *SklUnitDetailReq, opts
 		PathTemplate: "/hduhelp-neo/academic/skl/unit/detail",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2403,6 +2711,7 @@ func (s *Service) SklUnitDetail(ctx context.Context, req *SklUnitDetailReq, opts
 type SklUnitsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2411,7 +2720,13 @@ type SklUnitsReqBuilder struct{ req *SklUnitsReq }
 
 // NewSklUnitsReqBuilder creates a request builder for SklUnits.
 func NewSklUnitsReqBuilder() *SklUnitsReqBuilder {
-	return &SklUnitsReqBuilder{req: &SklUnitsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &SklUnitsReqBuilder{req: &SklUnitsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *SklUnitsReqBuilder) StaffID(v string) *SklUnitsReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -2432,6 +2747,7 @@ func (s *Service) SklUnits(ctx context.Context, req *SklUnitsReq, opts ...core.R
 		PathTemplate: "/hduhelp-neo/academic/skl/unit/info",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2441,6 +2757,7 @@ func (s *Service) SklUnits(ctx context.Context, req *SklUnitsReq, opts ...core.R
 type StudentBirthdayReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2449,7 +2766,13 @@ type StudentBirthdayReqBuilder struct{ req *StudentBirthdayReq }
 
 // NewStudentBirthdayReqBuilder creates a request builder for StudentBirthday.
 func NewStudentBirthdayReqBuilder() *StudentBirthdayReqBuilder {
-	return &StudentBirthdayReqBuilder{req: &StudentBirthdayReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &StudentBirthdayReqBuilder{req: &StudentBirthdayReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *StudentBirthdayReqBuilder) StaffID(v string) *StudentBirthdayReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -2470,6 +2793,7 @@ func (s *Service) StudentBirthday(ctx context.Context, req *StudentBirthdayReq, 
 		PathTemplate: "/hduhelp-neo/academic/student/birthday",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2479,6 +2803,7 @@ func (s *Service) StudentBirthday(ctx context.Context, req *StudentBirthdayReq, 
 type StudentBirthdaysReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2487,7 +2812,7 @@ type StudentBirthdaysReqBuilder struct{ req *StudentBirthdaysReq }
 
 // NewStudentBirthdaysReqBuilder creates a request builder for StudentBirthdays.
 func NewStudentBirthdaysReqBuilder() *StudentBirthdaysReqBuilder {
-	return &StudentBirthdaysReqBuilder{req: &StudentBirthdaysReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &StudentBirthdaysReqBuilder{req: &StudentBirthdaysReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Month sets the "month" query parameter.
@@ -2520,6 +2845,7 @@ func (s *Service) StudentBirthdays(ctx context.Context, req *StudentBirthdaysReq
 		PathTemplate: "/hduhelp-neo/academic/student/birthdays",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2529,6 +2855,7 @@ func (s *Service) StudentBirthdays(ctx context.Context, req *StudentBirthdaysReq
 type StudentCityReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2537,7 +2864,13 @@ type StudentCityReqBuilder struct{ req *StudentCityReq }
 
 // NewStudentCityReqBuilder creates a request builder for StudentCity.
 func NewStudentCityReqBuilder() *StudentCityReqBuilder {
-	return &StudentCityReqBuilder{req: &StudentCityReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &StudentCityReqBuilder{req: &StudentCityReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *StudentCityReqBuilder) StaffID(v string) *StudentCityReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -2558,6 +2891,7 @@ func (s *Service) StudentCity(ctx context.Context, req *StudentCityReq, opts ...
 		PathTemplate: "/hduhelp-neo/academic/student/city",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2567,6 +2901,7 @@ func (s *Service) StudentCity(ctx context.Context, req *StudentCityReq, opts ...
 type StudentCountReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2575,7 +2910,7 @@ type StudentCountReqBuilder struct{ req *StudentCountReq }
 
 // NewStudentCountReqBuilder creates a request builder for StudentCount.
 func NewStudentCountReqBuilder() *StudentCountReqBuilder {
-	return &StudentCountReqBuilder{req: &StudentCountReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &StudentCountReqBuilder{req: &StudentCountReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Grade sets the "grade" query parameter.
@@ -2602,6 +2937,7 @@ func (s *Service) StudentCount(ctx context.Context, req *StudentCountReq, opts .
 		PathTemplate: "/hduhelp-neo/academic/student/count",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2611,6 +2947,7 @@ func (s *Service) StudentCount(ctx context.Context, req *StudentCountReq, opts .
 type DailyExamReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2619,12 +2956,18 @@ type DailyExamReqBuilder struct{ req *DailyExamReq }
 
 // NewDailyExamReqBuilder creates a request builder for DailyExam.
 func NewDailyExamReqBuilder() *DailyExamReqBuilder {
-	return &DailyExamReqBuilder{req: &DailyExamReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &DailyExamReqBuilder{req: &DailyExamReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Date sets the "date" query parameter.
 func (b *DailyExamReqBuilder) Date(v string) *DailyExamReqBuilder {
 	b.req.queryParams["date"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *DailyExamReqBuilder) StaffID(v string) *DailyExamReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -2646,6 +2989,7 @@ func (s *Service) DailyExam(ctx context.Context, req *DailyExamReq, opts ...core
 		PathTemplate: "/hduhelp-neo/academic/student/dailyExam",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2655,6 +2999,7 @@ func (s *Service) DailyExam(ctx context.Context, req *DailyExamReq, opts ...core
 type StudentDormReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2663,7 +3008,13 @@ type StudentDormReqBuilder struct{ req *StudentDormReq }
 
 // NewStudentDormReqBuilder creates a request builder for StudentDorm.
 func NewStudentDormReqBuilder() *StudentDormReqBuilder {
-	return &StudentDormReqBuilder{req: &StudentDormReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &StudentDormReqBuilder{req: &StudentDormReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *StudentDormReqBuilder) StaffID(v string) *StudentDormReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -2684,6 +3035,7 @@ func (s *Service) StudentDorm(ctx context.Context, req *StudentDormReq, opts ...
 		PathTemplate: "/hduhelp-neo/academic/student/dorm",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2693,6 +3045,7 @@ func (s *Service) StudentDorm(ctx context.Context, req *StudentDormReq, opts ...
 type StudentExamReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2701,7 +3054,7 @@ type StudentExamReqBuilder struct{ req *StudentExamReq }
 
 // NewStudentExamReqBuilder creates a request builder for StudentExam.
 func NewStudentExamReqBuilder() *StudentExamReqBuilder {
-	return &StudentExamReqBuilder{req: &StudentExamReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &StudentExamReqBuilder{req: &StudentExamReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // SchoolYear sets the "schoolYear" query parameter.
@@ -2713,6 +3066,12 @@ func (b *StudentExamReqBuilder) SchoolYear(v string) *StudentExamReqBuilder {
 // Semester sets the "semester" query parameter.
 func (b *StudentExamReqBuilder) Semester(v string) *StudentExamReqBuilder {
 	b.req.queryParams["semester"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *StudentExamReqBuilder) StaffID(v string) *StudentExamReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -2734,6 +3093,7 @@ func (s *Service) StudentExam(ctx context.Context, req *StudentExamReq, opts ...
 		PathTemplate: "/hduhelp-neo/academic/student/exam",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2743,6 +3103,7 @@ func (s *Service) StudentExam(ctx context.Context, req *StudentExamReq, opts ...
 type PostStudentGateAccessReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2751,7 +3112,7 @@ type PostStudentGateAccessReqBuilder struct{ req *PostStudentGateAccessReq }
 
 // NewPostStudentGateAccessReqBuilder creates a request builder for PostStudentGateAccess.
 func NewPostStudentGateAccessReqBuilder() *PostStudentGateAccessReqBuilder {
-	return &PostStudentGateAccessReqBuilder{req: &PostStudentGateAccessReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &PostStudentGateAccessReqBuilder{req: &PostStudentGateAccessReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -2772,6 +3133,7 @@ func (s *Service) PostStudentGateAccess(ctx context.Context, req *PostStudentGat
 		PathTemplate: "/hduhelp-neo/academic/student/gate_access",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2781,6 +3143,7 @@ func (s *Service) PostStudentGateAccess(ctx context.Context, req *PostStudentGat
 type StudentGPAReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2789,7 +3152,13 @@ type StudentGPAReqBuilder struct{ req *StudentGPAReq }
 
 // NewStudentGPAReqBuilder creates a request builder for StudentGPA.
 func NewStudentGPAReqBuilder() *StudentGPAReqBuilder {
-	return &StudentGPAReqBuilder{req: &StudentGPAReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &StudentGPAReqBuilder{req: &StudentGPAReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *StudentGPAReqBuilder) StaffID(v string) *StudentGPAReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -2810,6 +3179,7 @@ func (s *Service) StudentGPA(ctx context.Context, req *StudentGPAReq, opts ...co
 		PathTemplate: "/hduhelp-neo/academic/student/gpa",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2819,6 +3189,7 @@ func (s *Service) StudentGPA(ctx context.Context, req *StudentGPAReq, opts ...co
 type StudentGradeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2827,7 +3198,7 @@ type StudentGradeReqBuilder struct{ req *StudentGradeReq }
 
 // NewStudentGradeReqBuilder creates a request builder for StudentGrade.
 func NewStudentGradeReqBuilder() *StudentGradeReqBuilder {
-	return &StudentGradeReqBuilder{req: &StudentGradeReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &StudentGradeReqBuilder{req: &StudentGradeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // SchoolYear sets the "schoolYear" query parameter.
@@ -2839,6 +3210,12 @@ func (b *StudentGradeReqBuilder) SchoolYear(v string) *StudentGradeReqBuilder {
 // Semester sets the "semester" query parameter.
 func (b *StudentGradeReqBuilder) Semester(v string) *StudentGradeReqBuilder {
 	b.req.queryParams["semester"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *StudentGradeReqBuilder) StaffID(v string) *StudentGradeReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -2860,6 +3237,7 @@ func (s *Service) StudentGrade(ctx context.Context, req *StudentGradeReq, opts .
 		PathTemplate: "/hduhelp-neo/academic/student/grade",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2869,6 +3247,7 @@ func (s *Service) StudentGrade(ctx context.Context, req *StudentGradeReq, opts .
 type StudentStaySchoolReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2877,7 +3256,13 @@ type StudentStaySchoolReqBuilder struct{ req *StudentStaySchoolReq }
 
 // NewStudentStaySchoolReqBuilder creates a request builder for StudentStaySchool.
 func NewStudentStaySchoolReqBuilder() *StudentStaySchoolReqBuilder {
-	return &StudentStaySchoolReqBuilder{req: &StudentStaySchoolReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &StudentStaySchoolReqBuilder{req: &StudentStaySchoolReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *StudentStaySchoolReqBuilder) StaffID(v string) *StudentStaySchoolReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -2898,6 +3283,7 @@ func (s *Service) StudentStaySchool(ctx context.Context, req *StudentStaySchoolR
 		PathTemplate: "/hduhelp-neo/academic/student/holidayStay",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2907,6 +3293,7 @@ func (s *Service) StudentStaySchool(ctx context.Context, req *StudentStaySchoolR
 type StudentInfoReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2915,7 +3302,13 @@ type StudentInfoReqBuilder struct{ req *StudentInfoReq }
 
 // NewStudentInfoReqBuilder creates a request builder for StudentInfo.
 func NewStudentInfoReqBuilder() *StudentInfoReqBuilder {
-	return &StudentInfoReqBuilder{req: &StudentInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &StudentInfoReqBuilder{req: &StudentInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *StudentInfoReqBuilder) StaffID(v string) *StudentInfoReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -2936,6 +3329,7 @@ func (s *Service) StudentInfo(ctx context.Context, req *StudentInfoReq, opts ...
 		PathTemplate: "/hduhelp-neo/academic/student/info",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2945,6 +3339,7 @@ func (s *Service) StudentInfo(ctx context.Context, req *StudentInfoReq, opts ...
 type StudentRewardsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -2953,7 +3348,7 @@ type StudentRewardsReqBuilder struct{ req *StudentRewardsReq }
 
 // NewStudentRewardsReqBuilder creates a request builder for StudentRewards.
 func NewStudentRewardsReqBuilder() *StudentRewardsReqBuilder {
-	return &StudentRewardsReqBuilder{req: &StudentRewardsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &StudentRewardsReqBuilder{req: &StudentRewardsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // SchoolYear sets the "schoolYear" query parameter.
@@ -2965,6 +3360,12 @@ func (b *StudentRewardsReqBuilder) SchoolYear(v string) *StudentRewardsReqBuilde
 // Semester sets the "semester" query parameter.
 func (b *StudentRewardsReqBuilder) Semester(v string) *StudentRewardsReqBuilder {
 	b.req.queryParams["semester"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *StudentRewardsReqBuilder) StaffID(v string) *StudentRewardsReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -2986,6 +3387,7 @@ func (s *Service) StudentRewards(ctx context.Context, req *StudentRewardsReq, op
 		PathTemplate: "/hduhelp-neo/academic/student/reward",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -2995,6 +3397,7 @@ func (s *Service) StudentRewards(ctx context.Context, req *StudentRewardsReq, op
 type StudentSchoolRollStatusReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -3003,7 +3406,13 @@ type StudentSchoolRollStatusReqBuilder struct{ req *StudentSchoolRollStatusReq }
 
 // NewStudentSchoolRollStatusReqBuilder creates a request builder for StudentSchoolRollStatus.
 func NewStudentSchoolRollStatusReqBuilder() *StudentSchoolRollStatusReqBuilder {
-	return &StudentSchoolRollStatusReqBuilder{req: &StudentSchoolRollStatusReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &StudentSchoolRollStatusReqBuilder{req: &StudentSchoolRollStatusReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *StudentSchoolRollStatusReqBuilder) StaffID(v string) *StudentSchoolRollStatusReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -3024,6 +3433,7 @@ func (s *Service) StudentSchoolRollStatus(ctx context.Context, req *StudentSchoo
 		PathTemplate: "/hduhelp-neo/academic/student/schoolRollStatus",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -3033,6 +3443,7 @@ func (s *Service) StudentSchoolRollStatus(ctx context.Context, req *StudentSchoo
 type StudentSelectionsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -3041,7 +3452,7 @@ type StudentSelectionsReqBuilder struct{ req *StudentSelectionsReq }
 
 // NewStudentSelectionsReqBuilder creates a request builder for StudentSelections.
 func NewStudentSelectionsReqBuilder() *StudentSelectionsReqBuilder {
-	return &StudentSelectionsReqBuilder{req: &StudentSelectionsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &StudentSelectionsReqBuilder{req: &StudentSelectionsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // SchoolYear sets the "schoolYear" query parameter.
@@ -3053,6 +3464,12 @@ func (b *StudentSelectionsReqBuilder) SchoolYear(v string) *StudentSelectionsReq
 // Semester sets the "semester" query parameter.
 func (b *StudentSelectionsReqBuilder) Semester(v string) *StudentSelectionsReqBuilder {
 	b.req.queryParams["semester"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *StudentSelectionsReqBuilder) StaffID(v string) *StudentSelectionsReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -3074,6 +3491,7 @@ func (s *Service) StudentSelections(ctx context.Context, req *StudentSelectionsR
 		PathTemplate: "/hduhelp-neo/academic/student/select",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err

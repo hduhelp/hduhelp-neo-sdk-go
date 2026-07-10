@@ -19,6 +19,7 @@ func NewService(config *core.Config) *Service { return &Service{config: config} 
 type GetCityChatGroupReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -27,12 +28,18 @@ type GetCityChatGroupReqBuilder struct{ req *GetCityChatGroupReq }
 
 // NewGetCityChatGroupReqBuilder creates a request builder for GetCityChatGroup.
 func NewGetCityChatGroupReqBuilder() *GetCityChatGroupReqBuilder {
-	return &GetCityChatGroupReqBuilder{req: &GetCityChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &GetCityChatGroupReqBuilder{req: &GetCityChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // City sets the "city" query parameter.
 func (b *GetCityChatGroupReqBuilder) City(v string) *GetCityChatGroupReqBuilder {
 	b.req.queryParams["city"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *GetCityChatGroupReqBuilder) StaffID(v string) *GetCityChatGroupReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -54,6 +61,7 @@ func (s *Service) GetCityChatGroup(ctx context.Context, req *GetCityChatGroupReq
 		PathTemplate: "/hduhelp-neo/groupchat/city",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -63,6 +71,7 @@ func (s *Service) GetCityChatGroup(ctx context.Context, req *GetCityChatGroupReq
 type CreateCityChatGroupReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -71,7 +80,13 @@ type CreateCityChatGroupReqBuilder struct{ req *CreateCityChatGroupReq }
 
 // NewCreateCityChatGroupReqBuilder creates a request builder for CreateCityChatGroup.
 func NewCreateCityChatGroupReqBuilder() *CreateCityChatGroupReqBuilder {
-	return &CreateCityChatGroupReqBuilder{req: &CreateCityChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &CreateCityChatGroupReqBuilder{req: &CreateCityChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *CreateCityChatGroupReqBuilder) StaffID(v string) *CreateCityChatGroupReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Body sets the request body.
@@ -98,6 +113,7 @@ func (s *Service) CreateCityChatGroup(ctx context.Context, req *CreateCityChatGr
 		PathTemplate: "/hduhelp-neo/groupchat/city",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -107,6 +123,7 @@ func (s *Service) CreateCityChatGroup(ctx context.Context, req *CreateCityChatGr
 type GetClassChatGroupReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -115,12 +132,18 @@ type GetClassChatGroupReqBuilder struct{ req *GetClassChatGroupReq }
 
 // NewGetClassChatGroupReqBuilder creates a request builder for GetClassChatGroup.
 func NewGetClassChatGroupReqBuilder() *GetClassChatGroupReqBuilder {
-	return &GetClassChatGroupReqBuilder{req: &GetClassChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &GetClassChatGroupReqBuilder{req: &GetClassChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // ClassId sets the "class_id" query parameter.
 func (b *GetClassChatGroupReqBuilder) ClassId(v string) *GetClassChatGroupReqBuilder {
 	b.req.queryParams["class_id"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *GetClassChatGroupReqBuilder) StaffID(v string) *GetClassChatGroupReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -142,6 +165,7 @@ func (s *Service) GetClassChatGroup(ctx context.Context, req *GetClassChatGroupR
 		PathTemplate: "/hduhelp-neo/groupchat/class",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -151,6 +175,7 @@ func (s *Service) GetClassChatGroup(ctx context.Context, req *GetClassChatGroupR
 type CreateClassChatGroupReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -159,7 +184,13 @@ type CreateClassChatGroupReqBuilder struct{ req *CreateClassChatGroupReq }
 
 // NewCreateClassChatGroupReqBuilder creates a request builder for CreateClassChatGroup.
 func NewCreateClassChatGroupReqBuilder() *CreateClassChatGroupReqBuilder {
-	return &CreateClassChatGroupReqBuilder{req: &CreateClassChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &CreateClassChatGroupReqBuilder{req: &CreateClassChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *CreateClassChatGroupReqBuilder) StaffID(v string) *CreateClassChatGroupReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Body sets the request body.
@@ -186,6 +217,7 @@ func (s *Service) CreateClassChatGroup(ctx context.Context, req *CreateClassChat
 		PathTemplate: "/hduhelp-neo/groupchat/class",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -195,6 +227,7 @@ func (s *Service) CreateClassChatGroup(ctx context.Context, req *CreateClassChat
 type MergeClassChatGroupReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -203,7 +236,13 @@ type MergeClassChatGroupReqBuilder struct{ req *MergeClassChatGroupReq }
 
 // NewMergeClassChatGroupReqBuilder creates a request builder for MergeClassChatGroup.
 func NewMergeClassChatGroupReqBuilder() *MergeClassChatGroupReqBuilder {
-	return &MergeClassChatGroupReqBuilder{req: &MergeClassChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &MergeClassChatGroupReqBuilder{req: &MergeClassChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *MergeClassChatGroupReqBuilder) StaffID(v string) *MergeClassChatGroupReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Body sets the request body.
@@ -230,6 +269,7 @@ func (s *Service) MergeClassChatGroup(ctx context.Context, req *MergeClassChatGr
 		PathTemplate: "/hduhelp-neo/groupchat/class/merge",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -239,6 +279,7 @@ func (s *Service) MergeClassChatGroup(ctx context.Context, req *MergeClassChatGr
 type SyncClassChatGroupReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -247,7 +288,13 @@ type SyncClassChatGroupReqBuilder struct{ req *SyncClassChatGroupReq }
 
 // NewSyncClassChatGroupReqBuilder creates a request builder for SyncClassChatGroup.
 func NewSyncClassChatGroupReqBuilder() *SyncClassChatGroupReqBuilder {
-	return &SyncClassChatGroupReqBuilder{req: &SyncClassChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &SyncClassChatGroupReqBuilder{req: &SyncClassChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *SyncClassChatGroupReqBuilder) StaffID(v string) *SyncClassChatGroupReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Body sets the request body.
@@ -274,6 +321,7 @@ func (s *Service) SyncClassChatGroup(ctx context.Context, req *SyncClassChatGrou
 		PathTemplate: "/hduhelp-neo/groupchat/class/sync",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -283,6 +331,7 @@ func (s *Service) SyncClassChatGroup(ctx context.Context, req *SyncClassChatGrou
 type DingTalkExamReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -291,7 +340,13 @@ type DingTalkExamReqBuilder struct{ req *DingTalkExamReq }
 
 // NewDingTalkExamReqBuilder creates a request builder for DingTalkExam.
 func NewDingTalkExamReqBuilder() *DingTalkExamReqBuilder {
-	return &DingTalkExamReqBuilder{req: &DingTalkExamReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &DingTalkExamReqBuilder{req: &DingTalkExamReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *DingTalkExamReqBuilder) StaffID(v string) *DingTalkExamReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -312,6 +367,7 @@ func (s *Service) DingTalkExam(ctx context.Context, req *DingTalkExamReq, opts .
 		PathTemplate: "/hduhelp-neo/groupchat/dingtalk/exam",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -321,6 +377,7 @@ func (s *Service) DingTalkExam(ctx context.Context, req *DingTalkExamReq, opts .
 type DingTalkInfoStreamReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -329,7 +386,13 @@ type DingTalkInfoStreamReqBuilder struct{ req *DingTalkInfoStreamReq }
 
 // NewDingTalkInfoStreamReqBuilder creates a request builder for DingTalkInfoStream.
 func NewDingTalkInfoStreamReqBuilder() *DingTalkInfoStreamReqBuilder {
-	return &DingTalkInfoStreamReqBuilder{req: &DingTalkInfoStreamReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &DingTalkInfoStreamReqBuilder{req: &DingTalkInfoStreamReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *DingTalkInfoStreamReqBuilder) StaffID(v string) *DingTalkInfoStreamReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -350,6 +413,7 @@ func (s *Service) DingTalkInfoStream(ctx context.Context, req *DingTalkInfoStrea
 		PathTemplate: "/hduhelp-neo/groupchat/dingtalk/infoStream",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -359,6 +423,7 @@ func (s *Service) DingTalkInfoStream(ctx context.Context, req *DingTalkInfoStrea
 type DingTalkPingReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -367,7 +432,7 @@ type DingTalkPingReqBuilder struct{ req *DingTalkPingReq }
 
 // NewDingTalkPingReqBuilder creates a request builder for DingTalkPing.
 func NewDingTalkPingReqBuilder() *DingTalkPingReqBuilder {
-	return &DingTalkPingReqBuilder{req: &DingTalkPingReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &DingTalkPingReqBuilder{req: &DingTalkPingReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -388,6 +453,7 @@ func (s *Service) DingTalkPing(ctx context.Context, req *DingTalkPingReq, opts .
 		PathTemplate: "/hduhelp-neo/groupchat/dingtalk/ping",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -397,6 +463,7 @@ func (s *Service) DingTalkPing(ctx context.Context, req *DingTalkPingReq, opts .
 type DingTalkScheduleNowReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -405,7 +472,13 @@ type DingTalkScheduleNowReqBuilder struct{ req *DingTalkScheduleNowReq }
 
 // NewDingTalkScheduleNowReqBuilder creates a request builder for DingTalkScheduleNow.
 func NewDingTalkScheduleNowReqBuilder() *DingTalkScheduleNowReqBuilder {
-	return &DingTalkScheduleNowReqBuilder{req: &DingTalkScheduleNowReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &DingTalkScheduleNowReqBuilder{req: &DingTalkScheduleNowReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *DingTalkScheduleNowReqBuilder) StaffID(v string) *DingTalkScheduleNowReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -426,6 +499,7 @@ func (s *Service) DingTalkScheduleNow(ctx context.Context, req *DingTalkSchedule
 		PathTemplate: "/hduhelp-neo/groupchat/dingtalk/schedule/now",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -435,6 +509,7 @@ func (s *Service) DingTalkScheduleNow(ctx context.Context, req *DingTalkSchedule
 type DingTalkScoreReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -443,7 +518,13 @@ type DingTalkScoreReqBuilder struct{ req *DingTalkScoreReq }
 
 // NewDingTalkScoreReqBuilder creates a request builder for DingTalkScore.
 func NewDingTalkScoreReqBuilder() *DingTalkScoreReqBuilder {
-	return &DingTalkScoreReqBuilder{req: &DingTalkScoreReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &DingTalkScoreReqBuilder{req: &DingTalkScoreReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *DingTalkScoreReqBuilder) StaffID(v string) *DingTalkScoreReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -464,6 +545,7 @@ func (s *Service) DingTalkScore(ctx context.Context, req *DingTalkScoreReq, opts
 		PathTemplate: "/hduhelp-neo/groupchat/dingtalk/score",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -473,6 +555,7 @@ func (s *Service) DingTalkScore(ctx context.Context, req *DingTalkScoreReq, opts
 type DingTalkTimeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -481,7 +564,13 @@ type DingTalkTimeReqBuilder struct{ req *DingTalkTimeReq }
 
 // NewDingTalkTimeReqBuilder creates a request builder for DingTalkTime.
 func NewDingTalkTimeReqBuilder() *DingTalkTimeReqBuilder {
-	return &DingTalkTimeReqBuilder{req: &DingTalkTimeReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &DingTalkTimeReqBuilder{req: &DingTalkTimeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *DingTalkTimeReqBuilder) StaffID(v string) *DingTalkTimeReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -502,6 +591,7 @@ func (s *Service) DingTalkTime(ctx context.Context, req *DingTalkTimeReq, opts .
 		PathTemplate: "/hduhelp-neo/groupchat/dingtalk/time",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -511,6 +601,7 @@ func (s *Service) DingTalkTime(ctx context.Context, req *DingTalkTimeReq, opts .
 type GetGradeChatGroupReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -519,7 +610,7 @@ type GetGradeChatGroupReqBuilder struct{ req *GetGradeChatGroupReq }
 
 // NewGetGradeChatGroupReqBuilder creates a request builder for GetGradeChatGroup.
 func NewGetGradeChatGroupReqBuilder() *GetGradeChatGroupReqBuilder {
-	return &GetGradeChatGroupReqBuilder{req: &GetGradeChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &GetGradeChatGroupReqBuilder{req: &GetGradeChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // UnitId sets the "unit_id" query parameter.
@@ -531,6 +622,12 @@ func (b *GetGradeChatGroupReqBuilder) UnitId(v string) *GetGradeChatGroupReqBuil
 // Grade sets the "grade" query parameter.
 func (b *GetGradeChatGroupReqBuilder) Grade(v string) *GetGradeChatGroupReqBuilder {
 	b.req.queryParams["grade"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *GetGradeChatGroupReqBuilder) StaffID(v string) *GetGradeChatGroupReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -552,6 +649,7 @@ func (s *Service) GetGradeChatGroup(ctx context.Context, req *GetGradeChatGroupR
 		PathTemplate: "/hduhelp-neo/groupchat/grade",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -561,6 +659,7 @@ func (s *Service) GetGradeChatGroup(ctx context.Context, req *GetGradeChatGroupR
 type CreateGradeChatGroupReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -569,7 +668,13 @@ type CreateGradeChatGroupReqBuilder struct{ req *CreateGradeChatGroupReq }
 
 // NewCreateGradeChatGroupReqBuilder creates a request builder for CreateGradeChatGroup.
 func NewCreateGradeChatGroupReqBuilder() *CreateGradeChatGroupReqBuilder {
-	return &CreateGradeChatGroupReqBuilder{req: &CreateGradeChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &CreateGradeChatGroupReqBuilder{req: &CreateGradeChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *CreateGradeChatGroupReqBuilder) StaffID(v string) *CreateGradeChatGroupReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Body sets the request body.
@@ -596,6 +701,7 @@ func (s *Service) CreateGradeChatGroup(ctx context.Context, req *CreateGradeChat
 		PathTemplate: "/hduhelp-neo/groupchat/grade",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -605,6 +711,7 @@ func (s *Service) CreateGradeChatGroup(ctx context.Context, req *CreateGradeChat
 type SyncGradeChatGroupReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -613,7 +720,13 @@ type SyncGradeChatGroupReqBuilder struct{ req *SyncGradeChatGroupReq }
 
 // NewSyncGradeChatGroupReqBuilder creates a request builder for SyncGradeChatGroup.
 func NewSyncGradeChatGroupReqBuilder() *SyncGradeChatGroupReqBuilder {
-	return &SyncGradeChatGroupReqBuilder{req: &SyncGradeChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &SyncGradeChatGroupReqBuilder{req: &SyncGradeChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *SyncGradeChatGroupReqBuilder) StaffID(v string) *SyncGradeChatGroupReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Body sets the request body.
@@ -640,6 +753,7 @@ func (s *Service) SyncGradeChatGroup(ctx context.Context, req *SyncGradeChatGrou
 		PathTemplate: "/hduhelp-neo/groupchat/grade/sync",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -649,6 +763,7 @@ func (s *Service) SyncGradeChatGroup(ctx context.Context, req *SyncGradeChatGrou
 type MyGroupsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -657,7 +772,7 @@ type MyGroupsReqBuilder struct{ req *MyGroupsReq }
 
 // NewMyGroupsReqBuilder creates a request builder for MyGroups.
 func NewMyGroupsReqBuilder() *MyGroupsReqBuilder {
-	return &MyGroupsReqBuilder{req: &MyGroupsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &MyGroupsReqBuilder{req: &MyGroupsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -678,6 +793,7 @@ func (s *Service) MyGroups(ctx context.Context, req *MyGroupsReq, opts ...core.R
 		PathTemplate: "/hduhelp-neo/groupchat/groups",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -687,6 +803,7 @@ func (s *Service) MyGroups(ctx context.Context, req *MyGroupsReq, opts ...core.R
 type CreateGroupReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -695,7 +812,13 @@ type CreateGroupReqBuilder struct{ req *CreateGroupReq }
 
 // NewCreateGroupReqBuilder creates a request builder for CreateGroup.
 func NewCreateGroupReqBuilder() *CreateGroupReqBuilder {
-	return &CreateGroupReqBuilder{req: &CreateGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &CreateGroupReqBuilder{req: &CreateGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *CreateGroupReqBuilder) StaffID(v string) *CreateGroupReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Body sets the request body.
@@ -722,6 +845,7 @@ func (s *Service) CreateGroup(ctx context.Context, req *CreateGroupReq, opts ...
 		PathTemplate: "/hduhelp-neo/groupchat/groups",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -731,6 +855,7 @@ func (s *Service) CreateGroup(ctx context.Context, req *CreateGroupReq, opts ...
 type LeaveGroupReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -739,12 +864,18 @@ type LeaveGroupReqBuilder struct{ req *LeaveGroupReq }
 
 // NewLeaveGroupReqBuilder creates a request builder for LeaveGroup.
 func NewLeaveGroupReqBuilder() *LeaveGroupReqBuilder {
-	return &LeaveGroupReqBuilder{req: &LeaveGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LeaveGroupReqBuilder{req: &LeaveGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // OpenConversationId sets the "openConversationId" query parameter.
 func (b *LeaveGroupReqBuilder) OpenConversationId(v string) *LeaveGroupReqBuilder {
 	b.req.queryParams["openConversationId"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *LeaveGroupReqBuilder) StaffID(v string) *LeaveGroupReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -766,6 +897,7 @@ func (s *Service) LeaveGroup(ctx context.Context, req *LeaveGroupReq, opts ...co
 		PathTemplate: "/hduhelp-neo/groupchat/groups/member",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -775,6 +907,7 @@ func (s *Service) LeaveGroup(ctx context.Context, req *LeaveGroupReq, opts ...co
 type GetPreviousSchoolChatGroupReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -785,7 +918,7 @@ type GetPreviousSchoolChatGroupReqBuilder struct {
 
 // NewGetPreviousSchoolChatGroupReqBuilder creates a request builder for GetPreviousSchoolChatGroup.
 func NewGetPreviousSchoolChatGroupReqBuilder() *GetPreviousSchoolChatGroupReqBuilder {
-	return &GetPreviousSchoolChatGroupReqBuilder{req: &GetPreviousSchoolChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &GetPreviousSchoolChatGroupReqBuilder{req: &GetPreviousSchoolChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // SchoolName sets the "school_name" query parameter.
@@ -797,6 +930,12 @@ func (b *GetPreviousSchoolChatGroupReqBuilder) SchoolName(v string) *GetPrevious
 // Grade sets the "grade" query parameter.
 func (b *GetPreviousSchoolChatGroupReqBuilder) Grade(v string) *GetPreviousSchoolChatGroupReqBuilder {
 	b.req.queryParams["grade"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *GetPreviousSchoolChatGroupReqBuilder) StaffID(v string) *GetPreviousSchoolChatGroupReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
@@ -818,6 +957,7 @@ func (s *Service) GetPreviousSchoolChatGroup(ctx context.Context, req *GetPrevio
 		PathTemplate: "/hduhelp-neo/groupchat/previous-school",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -827,6 +967,7 @@ func (s *Service) GetPreviousSchoolChatGroup(ctx context.Context, req *GetPrevio
 type CreatePreviousSchoolChatGroupReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -837,7 +978,13 @@ type CreatePreviousSchoolChatGroupReqBuilder struct {
 
 // NewCreatePreviousSchoolChatGroupReqBuilder creates a request builder for CreatePreviousSchoolChatGroup.
 func NewCreatePreviousSchoolChatGroupReqBuilder() *CreatePreviousSchoolChatGroupReqBuilder {
-	return &CreatePreviousSchoolChatGroupReqBuilder{req: &CreatePreviousSchoolChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &CreatePreviousSchoolChatGroupReqBuilder{req: &CreatePreviousSchoolChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *CreatePreviousSchoolChatGroupReqBuilder) StaffID(v string) *CreatePreviousSchoolChatGroupReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Body sets the request body.
@@ -866,6 +1013,7 @@ func (s *Service) CreatePreviousSchoolChatGroup(ctx context.Context, req *Create
 		PathTemplate: "/hduhelp-neo/groupchat/previous-school",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -875,6 +1023,7 @@ func (s *Service) CreatePreviousSchoolChatGroup(ctx context.Context, req *Create
 type JoinPreviousSchoolChatGroupReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -885,7 +1034,13 @@ type JoinPreviousSchoolChatGroupReqBuilder struct {
 
 // NewJoinPreviousSchoolChatGroupReqBuilder creates a request builder for JoinPreviousSchoolChatGroup.
 func NewJoinPreviousSchoolChatGroupReqBuilder() *JoinPreviousSchoolChatGroupReqBuilder {
-	return &JoinPreviousSchoolChatGroupReqBuilder{req: &JoinPreviousSchoolChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &JoinPreviousSchoolChatGroupReqBuilder{req: &JoinPreviousSchoolChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *JoinPreviousSchoolChatGroupReqBuilder) StaffID(v string) *JoinPreviousSchoolChatGroupReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Body sets the request body.
@@ -912,6 +1067,7 @@ func (s *Service) JoinPreviousSchoolChatGroup(ctx context.Context, req *JoinPrev
 		PathTemplate: "/hduhelp-neo/groupchat/previous-school/join",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -921,6 +1077,7 @@ func (s *Service) JoinPreviousSchoolChatGroup(ctx context.Context, req *JoinPrev
 type CreateRecruitChatGroupReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -929,7 +1086,13 @@ type CreateRecruitChatGroupReqBuilder struct{ req *CreateRecruitChatGroupReq }
 
 // NewCreateRecruitChatGroupReqBuilder creates a request builder for CreateRecruitChatGroup.
 func NewCreateRecruitChatGroupReqBuilder() *CreateRecruitChatGroupReqBuilder {
-	return &CreateRecruitChatGroupReqBuilder{req: &CreateRecruitChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &CreateRecruitChatGroupReqBuilder{req: &CreateRecruitChatGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *CreateRecruitChatGroupReqBuilder) StaffID(v string) *CreateRecruitChatGroupReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Body sets the request body.
@@ -956,6 +1119,7 @@ func (s *Service) CreateRecruitChatGroup(ctx context.Context, req *CreateRecruit
 		PathTemplate: "/hduhelp-neo/groupchat/recruit",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err

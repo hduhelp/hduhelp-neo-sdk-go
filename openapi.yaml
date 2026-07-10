@@ -46,6 +46,11 @@ paths:
             summary: 获取选课收藏
             description: 返回当前登录学生已收藏的班级号列表
             operationId: AcademicService_ClassQueryFavGet
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -59,6 +64,11 @@ paths:
             summary: 设置选课收藏
             description: 覆盖保存当前登录学生的收藏班级号列表
             operationId: AcademicService_ClassQueryFavSet
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             requestBody:
                 content:
                     application/json:
@@ -294,6 +304,11 @@ paths:
                 - AcademicService
             summary: 查询新生录取基础信息
             operationId: AcademicService_FreshmanBase
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -307,6 +322,11 @@ paths:
                 - AcademicService
             summary: 查询新生详细信息
             operationId: AcademicService_FreshmanDetail
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -320,6 +340,11 @@ paths:
                 - AcademicService
             summary: 查询新生舍友信息
             operationId: AcademicService_FreshmanRoommates
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -356,6 +381,11 @@ paths:
             summary: 获取成绩与绩点
             description: 返回当前登录学生的历史成绩，并计算学分加权总绩点
             operationId: AcademicService_Grades
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -380,6 +410,10 @@ paths:
                   description: yyyy-MM-dd
                   schema:
                     type: string
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -402,6 +436,10 @@ paths:
                 - name: end
                   in: query
                   description: yyyy-MM-dd
+                  schema:
+                    type: string
+                - name: X-Staff-Id
+                  in: header
                   schema:
                     type: string
             responses:
@@ -429,6 +467,10 @@ paths:
                   description: yyyy-MM-dd
                   schema:
                     type: string
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -451,6 +493,10 @@ paths:
                 - name: end
                   in: query
                   description: yyyy-MM-dd
+                  schema:
+                    type: string
+                - name: X-Staff-Id
+                  in: header
                   schema:
                     type: string
             responses:
@@ -485,6 +531,10 @@ paths:
                   schema:
                     type: integer
                     format: int32
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -517,6 +567,10 @@ paths:
                   schema:
                     type: integer
                     format: int32
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -537,6 +591,10 @@ paths:
                     type: string
                 - name: end
                   in: query
+                  schema:
+                    type: string
+                - name: X-Staff-Id
+                  in: header
                   schema:
                     type: string
             responses:
@@ -561,6 +619,10 @@ paths:
                   in: query
                   schema:
                     type: string
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -581,6 +643,10 @@ paths:
                     type: string
                 - name: end
                   in: query
+                  schema:
+                    type: string
+                - name: X-Staff-Id
+                  in: header
                   schema:
                     type: string
             responses:
@@ -605,6 +671,10 @@ paths:
                   in: query
                   schema:
                     type: string
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -618,6 +688,11 @@ paths:
                 - AcademicService
             summary: 判断本人是否本学年新生
             operationId: AcademicService_LibraryReadNewer
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -638,6 +713,10 @@ paths:
                     type: string
                 - name: end
                   in: query
+                  schema:
+                    type: string
+                - name: X-Staff-Id
+                  in: header
                   schema:
                     type: string
             responses:
@@ -663,6 +742,10 @@ paths:
                   in: query
                   schema:
                     type: string
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -685,6 +768,10 @@ paths:
                   in: query
                   schema:
                     type: string
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -698,6 +785,11 @@ paths:
                 - AcademicService
             summary: 查询本人未归还图书
             operationId: AcademicService_LibraryReadUnreturned
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -739,6 +831,10 @@ paths:
                   schema:
                     type: integer
                     format: int32
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -767,6 +863,11 @@ paths:
             summary: 获取本人图书馆分享 ID
             description: '---- 图书馆 · 分享 ----'
             operationId: AcademicService_LibraryShareID
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -798,6 +899,11 @@ paths:
                 - AcademicService
             summary: 查询困难生认定列表
             operationId: AcademicService_NeedyList
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -812,6 +918,11 @@ paths:
             summary: 查询本人困难生认定信息
             description: '---- 困难生 ----'
             operationId: AcademicService_NeedyStudentInfo
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -825,6 +936,11 @@ paths:
                 - AcademicService
             summary: 查询本人人员信息
             operationId: AcademicService_PersonInfo
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -838,11 +954,16 @@ paths:
                 - AcademicService
             summary: 修改本人生源地城市
             operationId: AcademicService_ModifyPreviousSchoolCity
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/ModifyCityRequestBody'
+                            $ref: '#/components/schemas/ModifyPreviousSchoolCityRequestBody'
             responses:
                 "200":
                     description: Successful response
@@ -865,6 +986,10 @@ paths:
                   in: query
                   schema:
                     type: string
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -878,6 +1003,11 @@ paths:
                 - AcademicService
             summary: 查询本人生源中学信息
             operationId: AcademicService_PreviousSchoolInfo
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -912,6 +1042,10 @@ paths:
                   schema:
                     type: integer
                     format: int32
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -926,6 +1060,11 @@ paths:
             summary: 获取今明课表
             description: 返回当前登录学生今天与明天的课程安排
             operationId: AcademicService_ScheduleNow
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -940,6 +1079,11 @@ paths:
             summary: 获取近六日课表(v3)
             description: 返回从今天起连续六天的课程安排，含日期与星期名称
             operationId: AcademicService_ScheduleNowV3
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -979,6 +1123,11 @@ paths:
             summary: 获取今明课表(v2)
             description: 返回今天与明天的课程安排，含周次与星期，按上课时间排序
             operationId: AcademicService_ScheduleNowV2
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -1037,6 +1186,10 @@ paths:
                   in: query
                   schema:
                     type: string
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -1051,6 +1204,11 @@ paths:
             summary: 查询本人所属教学班信息
             description: '---- skl 教学班 ----'
             operationId: AcademicService_SklUnits
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -1064,6 +1222,11 @@ paths:
                 - AcademicService
             summary: 查询本人生日
             operationId: AcademicService_StudentBirthday
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -1101,6 +1264,11 @@ paths:
                 - AcademicService
             summary: 查询本人生源地城市
             operationId: AcademicService_StudentCity
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -1139,6 +1307,10 @@ paths:
                   in: query
                   schema:
                     type: string
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -1152,6 +1324,11 @@ paths:
                 - AcademicService
             summary: 查询本人宿舍信息
             operationId: AcademicService_StudentDorm
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -1172,6 +1349,10 @@ paths:
                     type: string
                 - name: semester
                   in: query
+                  schema:
+                    type: string
+                - name: X-Staff-Id
+                  in: header
                   schema:
                     type: string
             responses:
@@ -1201,6 +1382,11 @@ paths:
                 - AcademicService
             summary: 查询本人学期与总绩点
             operationId: AcademicService_StudentGPA
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -1223,6 +1409,10 @@ paths:
                   in: query
                   schema:
                     type: string
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -1236,6 +1426,11 @@ paths:
                 - AcademicService
             summary: 查询本人假期留校信息
             operationId: AcademicService_StudentStaySchool
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -1249,6 +1444,11 @@ paths:
                 - AcademicService
             summary: 查询本人学籍信息
             operationId: AcademicService_StudentInfo
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -1271,6 +1471,10 @@ paths:
                   in: query
                   schema:
                     type: string
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -1285,6 +1489,11 @@ paths:
             summary: 查询本人学籍状态
             description: 返回当前登录本科学生的学籍状态代码与中文描述(读自学校教务 Oracle STUDENT_DETAIL 视图)
             operationId: AcademicService_StudentSchoolRollStatus
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -1305,6 +1514,10 @@ paths:
                     type: string
                 - name: semester
                   in: query
+                  schema:
+                    type: string
+                - name: X-Staff-Id
+                  in: header
                   schema:
                     type: string
             responses:
@@ -1332,7 +1545,7 @@ paths:
             tags:
                 - AdminService
             summary: 创建OAuth应用
-            description: 在指定租户下创建应用，返回 app_id 与一次性明文 app_secret（仅此刻可见，不再回显）
+            description: 创建应用并可分别配置 application_scopes（TAT/App+X-Staff-Id）和 user_scopes（UAT+用户同意）；返回 app_id 与一次性明文 app_secret（仅此刻可见，不再回显）
             operationId: AdminService_CreateApp
             requestBody:
                 description: 在某租户下创建应用；返回一次性明文 secret（仅此刻可见）。
@@ -1390,7 +1603,7 @@ paths:
             tags:
                 - AdminService
             summary: OAuth应用详情
-            description: 返回应用所属租户、当前被授予的 scope 集、回调白名单与状态
+            description: 返回应用所属租户、应用权限、用户权限、回调白名单与状态
             operationId: AdminService_GetApp
             parameters:
                 - name: id
@@ -1404,26 +1617,28 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AppGetResponseBody'
-    /hduhelp-neo/admin/apps/scopes:
+    /hduhelp-neo/admin/apps/permissions:
         put:
             tags:
                 - AdminService
-            summary: 设置应用被授予的scope集
-            description: 覆盖写入 apps.scopes（scope 必须存在于能力目录 pkg/scope.Catalog）；TAT/UAT 调用时现查该字段，改动即时生效无需重发令牌
-            operationId: AdminService_SetAppScopes
+            summary: 设置应用权限和用户权限
+            description: application_scopes 决定 TAT/App 携带 X-Staff-Id 的直接访问；user_scopes 限制 UAT 可请求且用户可同意的权限。两者均实时生效，无需重发令牌。
+            operationId: AdminService_SetAppPermissions
             requestBody:
-                description: 设置/更新应用被授予的 scope 集（写 apps.scopes；TAT/UAT 即时生效）。
+                description: |-
+                    设置应用权限与用户权限。应用权限仅对 TAT/App + X-Staff-Id 生效；用户权限
+                    仅对 UAT 生效，并仍需经过用户授权同意。两套权限均实时读取、即时生效。
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/SetAppScopesRequestBody'
+                            $ref: '#/components/schemas/SetAppPermissionsRequestBody'
             responses:
                 "200":
                     description: Successful response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/SetAppScopesResponseBody'
+                                $ref: '#/components/schemas/SetAppPermissionsResponseBody'
     /hduhelp-neo/admin/apps/update:
         put:
             tags:
@@ -2181,6 +2396,11 @@ paths:
                 - CampusLifeService
             summary: 查询校园卡余额
             operationId: CampusLifeService_CardBalance
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -2194,6 +2414,11 @@ paths:
                 - CampusLifeService
             summary: 查询校园卡消费流水
             operationId: CampusLifeService_CardConsume
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -2207,6 +2432,11 @@ paths:
                 - CampusLifeService
             summary: 查询校园卡信息
             operationId: CampusLifeService_CardInfo
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -2812,6 +3042,11 @@ paths:
                 - FeedService
             summary: 首页信息流聚合
             operationId: FeedService_Home
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -2825,6 +3060,11 @@ paths:
                 - FeedService
             summary: 获取课表ICS订阅链接(无则新建)
             operationId: FeedService_IcsLink
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -2881,6 +3121,11 @@ paths:
                 - FeedService
             summary: 信息流V3(并发聚合)
             operationId: FeedService_FeedV3
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -2894,6 +3139,11 @@ paths:
                 - FeedService
             summary: 信息流V4(固定顺序+熔断)
             operationId: FeedService_FeedV4
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -2917,6 +3167,10 @@ paths:
                   in: query
                   schema:
                     type: string
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -2931,6 +3185,11 @@ paths:
             summary: 查询本人研究生学籍/个人信息
             description: 按当前登录用户的学号读取研究生管理系统的学籍与个人信息(姓名/性别/证件/联系方式/年级/专业/培养方向/学历/在校状态等)
             operationId: GraduateService_GraduateInfo
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -2945,6 +3204,11 @@ paths:
             summary: 查询本人研究生导师
             description: 按学号返回研究生的导师列表(教师号/姓名/导师类型)
             operationId: GraduateService_GraduateTutors
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -2964,6 +3228,10 @@ paths:
                   in: query
                   schema:
                     type: string
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -2977,6 +3245,11 @@ paths:
             summary: 创建城市校友群
             description: 按城市创建杭电城市校友钉钉群
             operationId: GroupChatService_CreateCityChatGroup
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             requestBody:
                 description: '---- 城市群 (city) ----'
                 content:
@@ -3002,6 +3275,10 @@ paths:
                   in: query
                   schema:
                     type: string
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -3015,6 +3292,11 @@ paths:
             summary: 创建班级群
             description: 为指定教学班创建钉钉班级群并返回入群二维码
             operationId: GroupChatService_CreateClassChatGroup
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             requestBody:
                 description: '---- 班级群 (class) ----'
                 content:
@@ -3035,6 +3317,11 @@ paths:
             summary: 合并已有班级群
             description: 校验调用者为任课教师后，把全班名册合并进指定已有钉钉群并登记映射
             operationId: GroupChatService_MergeClassChatGroup
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             requestBody:
                 content:
                     application/json:
@@ -3054,6 +3341,11 @@ paths:
             summary: 同步班级群成员
             description: 校验调用者为任课教师后拉取全班名册补入群，对比前后人数返回新增人数；群已解散则移除记录
             operationId: GroupChatService_SyncClassChatGroup
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             requestBody:
                 content:
                     application/json:
@@ -3073,6 +3365,11 @@ paths:
             summary: 钉钉考试数据源
             description: 读取 salmon 考试安排并按未开始/进行中/已结束分类排序返回，供钉钉工作台卡片渲染
             operationId: GroupChatService_DingTalkExam
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -3087,6 +3384,11 @@ paths:
             summary: 钉钉信息流数据源
             description: 聚合课表、电费、校园卡余额与校园时间，供钉钉工作台信息流卡片渲染
             operationId: GroupChatService_DingTalkInfoStream
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -3118,6 +3420,11 @@ paths:
             summary: 钉钉课表数据源
             description: 返回当前登录学生的课程表，供钉钉工作台卡片渲染
             operationId: GroupChatService_DingTalkScheduleNow
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -3132,6 +3439,11 @@ paths:
             summary: 钉钉成绩数据源
             description: 返回当前登录学生的成绩与绩点，供钉钉工作台卡片渲染
             operationId: GroupChatService_DingTalkScore
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -3146,6 +3458,11 @@ paths:
             summary: 钉钉校园时间数据源
             description: 返回当前学年学期与教学周信息，供钉钉工作台卡片渲染
             operationId: GroupChatService_DingTalkTime
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -3169,6 +3486,10 @@ paths:
                   in: query
                   schema:
                     type: string
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -3182,6 +3503,11 @@ paths:
             summary: 创建年级群
             description: 为指定学院单位与年级创建钉钉年级群
             operationId: GroupChatService_CreateGradeChatGroup
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             requestBody:
                 description: '---- 年级群 (grade / unit) ----'
                 content:
@@ -3202,6 +3528,11 @@ paths:
             summary: 同步年级群成员
             description: 校验调用者为辅导员后拉取全年级名册补入群，对比前后人数返回新增人数；群已解散则移除记录
             operationId: GroupChatService_SyncGradeChatGroup
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             requestBody:
                 content:
                     application/json:
@@ -3234,6 +3565,11 @@ paths:
             summary: 创建钉钉群聊
             description: 按类型(班级/年级/招新/校友/城市)创建钉钉场景群并记录群映射
             operationId: GroupChatService_CreateGroup
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             requestBody:
                 description: |-
                     ============================================================================
@@ -3262,6 +3598,10 @@ paths:
                   in: query
                   schema:
                     type: string
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -3285,6 +3625,10 @@ paths:
                   in: query
                   schema:
                     type: string
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -3298,6 +3642,11 @@ paths:
             summary: 创建校友群
             description: 按毕业中学与年级创建钉钉校友群
             operationId: GroupChatService_CreatePreviousSchoolChatGroup
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             requestBody:
                 description: '---- 校友群 (previous_school) ----'
                 content:
@@ -3318,6 +3667,11 @@ paths:
             summary: 加入校友群
             description: 将当前用户加入指定校友群，已加入则提示重复加入
             operationId: GroupChatService_JoinPreviousSchoolChatGroup
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             requestBody:
                 content:
                     application/json:
@@ -3337,6 +3691,11 @@ paths:
             summary: 创建招新群
             description: 白名单成员专用：按给定成员名单创建招新钉钉群，返回入群二维码与解析失败的成员
             operationId: GroupChatService_CreateRecruitChatGroup
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             requestBody:
                 description: '---- 招新群 (recruit) ----'
                 content:
@@ -3420,10 +3779,10 @@ paths:
             tags:
                 - IdentityService
             summary: 注册应用
-            description: 飞书式应用注册：创建第一方或第三方应用，返回 client_id 与仅出现一次的明文 client_secret。
+            description: 注册应用，返回 client_id 与仅出现一次的明文 client_secret。权限仅可由 Admin 配置。
             operationId: IdentityService_RegisterApp
             requestBody:
-                description: '---- 飞书式应用授权 ----'
+                description: '---- 应用授权 ----'
                 content:
                     application/json:
                         schema:
@@ -3440,7 +3799,7 @@ paths:
             tags:
                 - IdentityService
             summary: 用户授权应用
-            description: 已登录用户同意授权某第三方应用后，返回一次性授权 code，用于换取用户级令牌。
+            description: 已登录用户同意授权某应用后，返回一次性授权 code，用于换取用户级令牌。
             operationId: IdentityService_Authorize
             requestBody:
                 description: 用户授权（需用户 token）：同意后返回一次性 code
@@ -3479,7 +3838,7 @@ paths:
             tags:
                 - IdentityService
             summary: 授权码换令牌
-            description: 第三方应用用授权 code 加自身凭据换取 User Access Token（含 refresh token）。
+            description: 应用用授权 code 加自身凭据换取 User Access Token（含 refresh token）。
             operationId: IdentityService_ExchangeCode
             requestBody:
                 description: code + client 凭据 换 User Access Token
@@ -3857,7 +4216,7 @@ paths:
             tags:
                 - IdentityService
             summary: 已授权应用列表
-            description: 返回当前登录用户已授权的第三方应用列表（client_id、名称、描述、scope），供用户自助管理已连接应用。需要用户已登录。
+            description: 返回当前登录用户已授权的应用列表（client_id、名称、描述、scope），供用户自助管理已连接应用。需要用户已登录。
             operationId: IdentityService_ListAuthorizedApps
             responses:
                 "200":
@@ -4482,15 +4841,17 @@ paths:
         post:
             tags:
                 - IdentityService
-            summary: 获取 app_access_token（自建应用）
-            description: 自建应用用 app_id + app_secret 换取应用自身身份令牌 app_access_token（短时，约 7200 秒）。令牌值绑定 {app_id, tenant_key, scopes}。
+            summary: 获取 app_access_token
+            description: 应用用 app_id + app_secret 换取应用自身身份令牌 app_access_token（短时，约 7200 秒）。令牌只绑定 {app_id, tenant_key}，有效应用权限实时读取。
             operationId: IdentityService_AppAccessTokenInternal
             requestBody:
                 description: |-
                     ============================================================
-                    飞书式三令牌（自建应用 internal）：app_access_token / tenant_access_token /
+                    三令牌（应用）：app_access_token / tenant_access_token /
                     user_access_token。app_id + app_secret 直接换 app/tenant 令牌（无 app_ticket/ISV）；
-                    授权码流程换 user_access_token。令牌短时存 Redis，值含 {app_id, tenant_key, scopes}。
+                    app/tenant 令牌短时存 Redis，值只含 {app_id, tenant_key}，应用权限从
+                    apps.application_scopes 实时解析。授权码流程换 user_access_token，其有效权限为
+                    用户同意快照 ∩ apps.user_scopes。
                     ============================================================
                 content:
                     application/json:
@@ -4507,8 +4868,8 @@ paths:
         post:
             tags:
                 - IdentityService
-            summary: 获取 tenant_access_token（自建应用）
-            description: 自建应用用 app_id + app_secret 换取绑定其租户 tenant_key 的租户令牌 tenant_access_token（短时，约 7200 秒）——服务端 API 主力令牌。
+            summary: 获取 tenant_access_token
+            description: 应用用 app_id + app_secret 换取绑定其租户 tenant_key 的租户令牌 tenant_access_token（短时，约 7200 秒）——服务端 API 主力令牌。
             operationId: IdentityService_TenantAccessTokenInternal
             requestBody:
                 content:
@@ -4532,9 +4893,11 @@ paths:
             requestBody:
                 description: |-
                     ============================================================
-                    飞书式三令牌（自建应用 internal）：app_access_token / tenant_access_token /
+                    三令牌（应用）：app_access_token / tenant_access_token /
                     user_access_token。app_id + app_secret 直接换 app/tenant 令牌（无 app_ticket/ISV）；
-                    授权码流程换 user_access_token。令牌短时存 Redis，值含 {app_id, tenant_key, scopes}。
+                    app/tenant 令牌短时存 Redis，值只含 {app_id, tenant_key}，应用权限从
+                    apps.application_scopes 实时解析。授权码流程换 user_access_token，其有效权限为
+                    用户同意快照 ∩ apps.user_scopes。
                     ============================================================
                 content:
                     application/json:
@@ -4590,7 +4953,7 @@ paths:
             tags:
                 - IdentityService
             summary: 授权码（用户同意）
-            description: 已登录用户同意授权某应用后返回一次性授权码 code，用于换取 user_access_token。scope 为逗号分隔、应用授予范围的子集。
+            description: 已登录用户同意授权某应用后返回一次性授权码 code，用于换取 user_access_token。scope 为逗号分隔的用户权限子集。
             operationId: IdentityService_AuthenAuthorize
             parameters:
                 - name: app_id
@@ -4603,7 +4966,7 @@ paths:
                     type: string
                 - name: scope
                   in: query
-                  description: 逗号分隔，应用授予范围子集
+                  description: 逗号分隔，用户权限范围子集
                   schema:
                     type: string
                 - name: state
@@ -4722,7 +5085,7 @@ paths:
                     type: string
                 - name: scope
                   in: query
-                  description: 逗号分隔，应用授予范围子集
+                  description: 逗号分隔，用户权限范围子集
                   schema:
                     type: string
                 - name: state
@@ -4884,6 +5247,10 @@ paths:
                   schema:
                     type: integer
                     format: int32
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -4898,6 +5265,11 @@ paths:
             summary: 阳光长跑达标要求
             description: 返回当前登录学生所在分组的阳光长跑达标次数、速度与里程要求
             operationId: SubscriptionService_SunrunGroup
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -4912,6 +5284,11 @@ paths:
             summary: 阳光长跑成绩概览
             description: 返回当前登录学生的阳光长跑有效次数、里程、速度等成绩概览
             operationId: SubscriptionService_SunrunOverview
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -5058,8 +5435,6 @@ components:
                     type: string
                 name:
                     type: string
-                type:
-                    type: string
                 clientId:
                     type: string
                 status:
@@ -5069,10 +5444,6 @@ components:
                     type: string
                 tenantName:
                     type: string
-                scopes:
-                    type: array
-                    items:
-                        type: string
                 redirectUris:
                     type: array
                     items:
@@ -5082,15 +5453,23 @@ components:
                 createdAt:
                     type: integer
                     format: int64
-            description: 应用详情：含所属租户、当前被授予的 scope、回调白名单与状态。
+                applicationScopes:
+                    type: array
+                    items:
+                        type: string
+                userScopes:
+                    type: array
+                    items:
+                        type: string
+            description: |-
+                应用详情：应用权限供 TAT/App + X-Staff-Id 使用；用户权限供 UAT
+                授权码流程请求和用户同意。
         AdminAppInfo:
             type: object
             properties:
                 id:
                     type: string
                 name:
-                    type: string
-                type:
                     type: string
                 clientId:
                     type: string
@@ -6514,15 +6893,17 @@ components:
                 tenant_key:
                     type: string
                     description: 单租户隐式：租户不再是用户可见入参。缺省即自动归属到种子默认租户，管理员无需填写。
-                type:
-                    type: string
                 description:
                     type: string
                 redirect_uris:
                     type: array
                     items:
                         type: string
-                scopes:
+                application_scopes:
+                    type: array
+                    items:
+                        type: string
+                user_scopes:
                     type: array
                     items:
                         type: string
@@ -8709,11 +9090,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        ModifyCityRequestBody:
-            type: object
-            properties:
-                cityCode:
-                    type: string
         ModifyCityResponseBody:
             type: object
             properties:
@@ -8721,6 +9097,11 @@ components:
                     type: integer
                     format: int64
                 msg:
+                    type: string
+        ModifyPreviousSchoolCityRequestBody:
+            type: object
+            properties:
+                cityCode:
                     type: string
         MonthStat:
             type: object
@@ -9254,21 +9635,12 @@ components:
                 clientSecret:
                     type: string
                     description: 明文仅返回一次
-                type:
-                    type: string
         RegisterAppRequestBody:
             type: object
             properties:
                 name:
                     type: string
-                type:
-                    type: string
-                    description: first_party | third_party
                 redirect_uris:
-                    type: array
-                    items:
-                        type: string
-                scopes:
                     type: array
                     items:
                         type: string
@@ -9883,16 +10255,20 @@ components:
                     type: integer
                     format: int64
             description: 会话信息
-        SetAppScopesRequestBody:
+        SetAppPermissionsRequestBody:
             type: object
             properties:
                 id:
                     type: string
-                scopes:
+                application_scopes:
                     type: array
                     items:
                         type: string
-        SetAppScopesResponseBody:
+                user_scopes:
+                    type: array
+                    items:
+                        type: string
+        SetAppPermissionsResponseBody:
             type: object
             properties:
                 code:

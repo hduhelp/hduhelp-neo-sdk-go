@@ -20,6 +20,7 @@ func NewService(config *core.Config) *Service { return &Service{config: config} 
 type EnrollReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -28,7 +29,7 @@ type EnrollReqBuilder struct{ req *EnrollReq }
 
 // NewEnrollReqBuilder creates a request builder for Enroll.
 func NewEnrollReqBuilder() *EnrollReqBuilder {
-	return &EnrollReqBuilder{req: &EnrollReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &EnrollReqBuilder{req: &EnrollReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -55,6 +56,7 @@ func (s *Service) Enroll(ctx context.Context, req *EnrollReq, opts ...core.Reque
 		PathTemplate: "/hduhelp-neo/emptyschedule/enroll",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -64,6 +66,7 @@ func (s *Service) Enroll(ctx context.Context, req *EnrollReq, opts ...core.Reque
 type EventResultReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -72,7 +75,7 @@ type EventResultReqBuilder struct{ req *EventResultReq }
 
 // NewEventResultReqBuilder creates a request builder for EventResult.
 func NewEventResultReqBuilder() *EventResultReqBuilder {
-	return &EventResultReqBuilder{req: &EventResultReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &EventResultReqBuilder{req: &EventResultReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // RoomId sets the "room_id" query parameter.
@@ -105,6 +108,7 @@ func (s *Service) EventResult(ctx context.Context, req *EventResultReq, opts ...
 		PathTemplate: "/hduhelp-neo/emptyschedule/events",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -114,6 +118,7 @@ func (s *Service) EventResult(ctx context.Context, req *EventResultReq, opts ...
 type DeleteEventReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -122,7 +127,7 @@ type DeleteEventReqBuilder struct{ req *DeleteEventReq }
 
 // NewDeleteEventReqBuilder creates a request builder for DeleteEvent.
 func NewDeleteEventReqBuilder() *DeleteEventReqBuilder {
-	return &DeleteEventReqBuilder{req: &DeleteEventReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &DeleteEventReqBuilder{req: &DeleteEventReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // RoomId sets the "room_id" query parameter.
@@ -155,6 +160,7 @@ func (s *Service) DeleteEvent(ctx context.Context, req *DeleteEventReq, opts ...
 		PathTemplate: "/hduhelp-neo/emptyschedule/events",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -164,6 +170,7 @@ func (s *Service) DeleteEvent(ctx context.Context, req *DeleteEventReq, opts ...
 type ShareReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -172,7 +179,7 @@ type ShareReqBuilder struct{ req *ShareReq }
 
 // NewShareReqBuilder creates a request builder for Share.
 func NewShareReqBuilder() *ShareReqBuilder {
-	return &ShareReqBuilder{req: &ShareReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ShareReqBuilder{req: &ShareReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -199,6 +206,7 @@ func (s *Service) Share(ctx context.Context, req *ShareReq, opts ...core.Request
 		PathTemplate: "/hduhelp-neo/emptyschedule/events/share",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -208,6 +216,7 @@ func (s *Service) Share(ctx context.Context, req *ShareReq, opts ...core.Request
 type FavoritesReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -216,7 +225,7 @@ type FavoritesReqBuilder struct{ req *FavoritesReq }
 
 // NewFavoritesReqBuilder creates a request builder for Favorites.
 func NewFavoritesReqBuilder() *FavoritesReqBuilder {
-	return &FavoritesReqBuilder{req: &FavoritesReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &FavoritesReqBuilder{req: &FavoritesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Page sets the "page" query parameter.
@@ -249,6 +258,7 @@ func (s *Service) Favorites(ctx context.Context, req *FavoritesReq, opts ...core
 		PathTemplate: "/hduhelp-neo/emptyschedule/favorites",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -258,6 +268,7 @@ func (s *Service) Favorites(ctx context.Context, req *FavoritesReq, opts ...core
 type FavoriteReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -266,7 +277,7 @@ type FavoriteReqBuilder struct{ req *FavoriteReq }
 
 // NewFavoriteReqBuilder creates a request builder for Favorite.
 func NewFavoriteReqBuilder() *FavoriteReqBuilder {
-	return &FavoriteReqBuilder{req: &FavoriteReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &FavoriteReqBuilder{req: &FavoriteReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -293,6 +304,7 @@ func (s *Service) Favorite(ctx context.Context, req *FavoriteReq, opts ...core.R
 		PathTemplate: "/hduhelp-neo/emptyschedule/favorites",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -302,6 +314,7 @@ func (s *Service) Favorite(ctx context.Context, req *FavoriteReq, opts ...core.R
 type UpdateFavoriteReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -310,7 +323,7 @@ type UpdateFavoriteReqBuilder struct{ req *UpdateFavoriteReq }
 
 // NewUpdateFavoriteReqBuilder creates a request builder for UpdateFavorite.
 func NewUpdateFavoriteReqBuilder() *UpdateFavoriteReqBuilder {
-	return &UpdateFavoriteReqBuilder{req: &UpdateFavoriteReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &UpdateFavoriteReqBuilder{req: &UpdateFavoriteReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -337,6 +350,7 @@ func (s *Service) UpdateFavorite(ctx context.Context, req *UpdateFavoriteReq, op
 		PathTemplate: "/hduhelp-neo/emptyschedule/favorites",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -346,6 +360,7 @@ func (s *Service) UpdateFavorite(ctx context.Context, req *UpdateFavoriteReq, op
 type DeleteFavoriteReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -354,7 +369,7 @@ type DeleteFavoriteReqBuilder struct{ req *DeleteFavoriteReq }
 
 // NewDeleteFavoriteReqBuilder creates a request builder for DeleteFavorite.
 func NewDeleteFavoriteReqBuilder() *DeleteFavoriteReqBuilder {
-	return &DeleteFavoriteReqBuilder{req: &DeleteFavoriteReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &DeleteFavoriteReqBuilder{req: &DeleteFavoriteReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // FId sets the "f_id" query parameter.
@@ -381,6 +396,7 @@ func (s *Service) DeleteFavorite(ctx context.Context, req *DeleteFavoriteReq, op
 		PathTemplate: "/hduhelp-neo/emptyschedule/favorites",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -390,6 +406,7 @@ func (s *Service) DeleteFavorite(ctx context.Context, req *DeleteFavoriteReq, op
 type GenReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -398,7 +415,7 @@ type GenReqBuilder struct{ req *GenReq }
 
 // NewGenReqBuilder creates a request builder for Gen.
 func NewGenReqBuilder() *GenReqBuilder {
-	return &GenReqBuilder{req: &GenReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &GenReqBuilder{req: &GenReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -419,6 +436,7 @@ func (s *Service) Gen(ctx context.Context, req *GenReq, opts ...core.RequestOpti
 		PathTemplate: "/hduhelp-neo/emptyschedule/gen",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -428,6 +446,7 @@ func (s *Service) Gen(ctx context.Context, req *GenReq, opts ...core.RequestOpti
 type MyRoomsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -436,7 +455,7 @@ type MyRoomsReqBuilder struct{ req *MyRoomsReq }
 
 // NewMyRoomsReqBuilder creates a request builder for MyRooms.
 func NewMyRoomsReqBuilder() *MyRoomsReqBuilder {
-	return &MyRoomsReqBuilder{req: &MyRoomsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &MyRoomsReqBuilder{req: &MyRoomsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -457,6 +476,7 @@ func (s *Service) MyRooms(ctx context.Context, req *MyRoomsReq, opts ...core.Req
 		PathTemplate: "/hduhelp-neo/emptyschedule/rooms",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -466,6 +486,7 @@ func (s *Service) MyRooms(ctx context.Context, req *MyRoomsReq, opts ...core.Req
 type CreateRoomReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -474,7 +495,7 @@ type CreateRoomReqBuilder struct{ req *CreateRoomReq }
 
 // NewCreateRoomReqBuilder creates a request builder for CreateRoom.
 func NewCreateRoomReqBuilder() *CreateRoomReqBuilder {
-	return &CreateRoomReqBuilder{req: &CreateRoomReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &CreateRoomReqBuilder{req: &CreateRoomReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -501,6 +522,7 @@ func (s *Service) CreateRoom(ctx context.Context, req *CreateRoomReq, opts ...co
 		PathTemplate: "/hduhelp-neo/emptyschedule/rooms",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -510,6 +532,7 @@ func (s *Service) CreateRoom(ctx context.Context, req *CreateRoomReq, opts ...co
 type DeleteRoomReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -518,7 +541,7 @@ type DeleteRoomReqBuilder struct{ req *DeleteRoomReq }
 
 // NewDeleteRoomReqBuilder creates a request builder for DeleteRoom.
 func NewDeleteRoomReqBuilder() *DeleteRoomReqBuilder {
-	return &DeleteRoomReqBuilder{req: &DeleteRoomReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &DeleteRoomReqBuilder{req: &DeleteRoomReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // RoomId sets the "room_id" query parameter.
@@ -545,6 +568,7 @@ func (s *Service) DeleteRoom(ctx context.Context, req *DeleteRoomReq, opts ...co
 		PathTemplate: "/hduhelp-neo/emptyschedule/rooms",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -554,6 +578,7 @@ func (s *Service) DeleteRoom(ctx context.Context, req *DeleteRoomReq, opts ...co
 type RoomDetailReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -562,7 +587,7 @@ type RoomDetailReqBuilder struct{ req *RoomDetailReq }
 
 // NewRoomDetailReqBuilder creates a request builder for RoomDetail.
 func NewRoomDetailReqBuilder() *RoomDetailReqBuilder {
-	return &RoomDetailReqBuilder{req: &RoomDetailReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &RoomDetailReqBuilder{req: &RoomDetailReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // RoomId sets the "room_id" query parameter.
@@ -589,6 +614,7 @@ func (s *Service) RoomDetail(ctx context.Context, req *RoomDetailReq, opts ...co
 		PathTemplate: "/hduhelp-neo/emptyschedule/rooms/detail",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -598,6 +624,7 @@ func (s *Service) RoomDetail(ctx context.Context, req *RoomDetailReq, opts ...co
 type GenerateReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -606,7 +633,7 @@ type GenerateReqBuilder struct{ req *GenerateReq }
 
 // NewGenerateReqBuilder creates a request builder for Generate.
 func NewGenerateReqBuilder() *GenerateReqBuilder {
-	return &GenerateReqBuilder{req: &GenerateReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &GenerateReqBuilder{req: &GenerateReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -633,6 +660,7 @@ func (s *Service) Generate(ctx context.Context, req *GenerateReq, opts ...core.R
 		PathTemplate: "/hduhelp-neo/emptyschedule/rooms/generate",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -642,6 +670,7 @@ func (s *Service) Generate(ctx context.Context, req *GenerateReq, opts ...core.R
 type InviteReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -650,7 +679,7 @@ type InviteReqBuilder struct{ req *InviteReq }
 
 // NewInviteReqBuilder creates a request builder for Invite.
 func NewInviteReqBuilder() *InviteReqBuilder {
-	return &InviteReqBuilder{req: &InviteReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &InviteReqBuilder{req: &InviteReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -677,6 +706,7 @@ func (s *Service) Invite(ctx context.Context, req *InviteReq, opts ...core.Reque
 		PathTemplate: "/hduhelp-neo/emptyschedule/rooms/invite",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -686,6 +716,7 @@ func (s *Service) Invite(ctx context.Context, req *InviteReq, opts ...core.Reque
 type JoinReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -694,7 +725,7 @@ type JoinReqBuilder struct{ req *JoinReq }
 
 // NewJoinReqBuilder creates a request builder for Join.
 func NewJoinReqBuilder() *JoinReqBuilder {
-	return &JoinReqBuilder{req: &JoinReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &JoinReqBuilder{req: &JoinReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -721,6 +752,7 @@ func (s *Service) Join(ctx context.Context, req *JoinReq, opts ...core.RequestOp
 		PathTemplate: "/hduhelp-neo/emptyschedule/rooms/join",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -730,6 +762,7 @@ func (s *Service) Join(ctx context.Context, req *JoinReq, opts ...core.RequestOp
 type LeaveRoomReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -738,7 +771,7 @@ type LeaveRoomReqBuilder struct{ req *LeaveRoomReq }
 
 // NewLeaveRoomReqBuilder creates a request builder for LeaveRoom.
 func NewLeaveRoomReqBuilder() *LeaveRoomReqBuilder {
-	return &LeaveRoomReqBuilder{req: &LeaveRoomReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LeaveRoomReqBuilder{req: &LeaveRoomReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // RoomId sets the "room_id" query parameter.
@@ -765,6 +798,7 @@ func (s *Service) LeaveRoom(ctx context.Context, req *LeaveRoomReq, opts ...core
 		PathTemplate: "/hduhelp-neo/emptyschedule/rooms/leave",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -774,6 +808,7 @@ func (s *Service) LeaveRoom(ctx context.Context, req *LeaveRoomReq, opts ...core
 type LookUpShareReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -782,7 +817,7 @@ type LookUpShareReqBuilder struct{ req *LookUpShareReq }
 
 // NewLookUpShareReqBuilder creates a request builder for LookUpShare.
 func NewLookUpShareReqBuilder() *LookUpShareReqBuilder {
-	return &LookUpShareReqBuilder{req: &LookUpShareReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &LookUpShareReqBuilder{req: &LookUpShareReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Code sets the "code" query parameter.
@@ -809,6 +844,7 @@ func (s *Service) LookUpShare(ctx context.Context, req *LookUpShareReq, opts ...
 		PathTemplate: "/hduhelp-neo/emptyschedule/share",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -818,6 +854,7 @@ func (s *Service) LookUpShare(ctx context.Context, req *LookUpShareReq, opts ...
 type StatusReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -826,7 +863,7 @@ type StatusReqBuilder struct{ req *StatusReq }
 
 // NewStatusReqBuilder creates a request builder for Status.
 func NewStatusReqBuilder() *StatusReqBuilder {
-	return &StatusReqBuilder{req: &StatusReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &StatusReqBuilder{req: &StatusReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -847,6 +884,7 @@ func (s *Service) Status(ctx context.Context, req *StatusReq, opts ...core.Reque
 		PathTemplate: "/hduhelp-neo/emptyschedule/status",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err

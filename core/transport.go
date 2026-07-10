@@ -18,6 +18,7 @@ type APIReq struct {
 	PathTemplate string            // e.g. "/hduhelp-neo/identity/login/bind/{state}"
 	PathParams   map[string]string // template placeholder -> value
 	QueryParams  map[string]string
+	Headers      map[string]string
 	Body         any // nil for bodyless requests
 }
 
@@ -55,6 +56,9 @@ func (c *Config) Do(ctx context.Context, req *APIReq, result ResponseSetter, opt
 		httpReq.Header.Set("Content-Type", "application/json")
 	}
 	httpReq.Header.Set("Accept", "application/json")
+	for name, value := range req.Headers {
+		httpReq.Header.Set(name, value)
+	}
 
 	token, err := c.resolveToken(ctx, ro)
 	if err != nil {

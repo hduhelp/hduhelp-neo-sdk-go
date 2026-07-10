@@ -20,6 +20,7 @@ func NewService(config *core.Config) *Service { return &Service{config: config} 
 type BindRoomReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -28,7 +29,7 @@ type BindRoomReqBuilder struct{ req *BindRoomReq }
 
 // NewBindRoomReqBuilder creates a request builder for BindRoom.
 func NewBindRoomReqBuilder() *BindRoomReqBuilder {
-	return &BindRoomReqBuilder{req: &BindRoomReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &BindRoomReqBuilder{req: &BindRoomReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -54,6 +55,7 @@ func (s *Service) BindRoom(ctx context.Context, req *BindRoomReq, opts ...core.R
 		PathTemplate: "/hduhelp-neo/campuslife/bind",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -63,6 +65,7 @@ func (s *Service) BindRoom(ctx context.Context, req *BindRoomReq, opts ...core.R
 type ListBuildingsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -71,7 +74,7 @@ type ListBuildingsReqBuilder struct{ req *ListBuildingsReq }
 
 // NewListBuildingsReqBuilder creates a request builder for ListBuildings.
 func NewListBuildingsReqBuilder() *ListBuildingsReqBuilder {
-	return &ListBuildingsReqBuilder{req: &ListBuildingsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ListBuildingsReqBuilder{req: &ListBuildingsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -92,6 +95,7 @@ func (s *Service) ListBuildings(ctx context.Context, req *ListBuildingsReq, opts
 		PathTemplate: "/hduhelp-neo/campuslife/bind/building",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -101,6 +105,7 @@ func (s *Service) ListBuildings(ctx context.Context, req *ListBuildingsReq, opts
 type ListFloorsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -109,7 +114,7 @@ type ListFloorsReqBuilder struct{ req *ListFloorsReq }
 
 // NewListFloorsReqBuilder creates a request builder for ListFloors.
 func NewListFloorsReqBuilder() *ListFloorsReqBuilder {
-	return &ListFloorsReqBuilder{req: &ListFloorsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ListFloorsReqBuilder{req: &ListFloorsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // BuildingId sets the "building_id" query parameter.
@@ -136,6 +141,7 @@ func (s *Service) ListFloors(ctx context.Context, req *ListFloorsReq, opts ...co
 		PathTemplate: "/hduhelp-neo/campuslife/bind/floor",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -145,6 +151,7 @@ func (s *Service) ListFloors(ctx context.Context, req *ListFloorsReq, opts ...co
 type ListRoomsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -153,7 +160,7 @@ type ListRoomsReqBuilder struct{ req *ListRoomsReq }
 
 // NewListRoomsReqBuilder creates a request builder for ListRooms.
 func NewListRoomsReqBuilder() *ListRoomsReqBuilder {
-	return &ListRoomsReqBuilder{req: &ListRoomsReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ListRoomsReqBuilder{req: &ListRoomsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // FloorId sets the "floor_id" query parameter.
@@ -180,6 +187,7 @@ func (s *Service) ListRooms(ctx context.Context, req *ListRoomsReq, opts ...core
 		PathTemplate: "/hduhelp-neo/campuslife/bind/room",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -189,6 +197,7 @@ func (s *Service) ListRooms(ctx context.Context, req *ListRoomsReq, opts ...core
 type ListPublicCampusesReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -197,7 +206,7 @@ type ListPublicCampusesReqBuilder struct{ req *ListPublicCampusesReq }
 
 // NewListPublicCampusesReqBuilder creates a request builder for ListPublicCampuses.
 func NewListPublicCampusesReqBuilder() *ListPublicCampusesReqBuilder {
-	return &ListPublicCampusesReqBuilder{req: &ListPublicCampusesReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ListPublicCampusesReqBuilder{req: &ListPublicCampusesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -218,6 +227,7 @@ func (s *Service) ListPublicCampuses(ctx context.Context, req *ListPublicCampuse
 		PathTemplate: "/hduhelp-neo/campuslife/campuses",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -227,6 +237,7 @@ func (s *Service) ListPublicCampuses(ctx context.Context, req *ListPublicCampuse
 type CardBalanceReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -235,7 +246,13 @@ type CardBalanceReqBuilder struct{ req *CardBalanceReq }
 
 // NewCardBalanceReqBuilder creates a request builder for CardBalance.
 func NewCardBalanceReqBuilder() *CardBalanceReqBuilder {
-	return &CardBalanceReqBuilder{req: &CardBalanceReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &CardBalanceReqBuilder{req: &CardBalanceReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *CardBalanceReqBuilder) StaffID(v string) *CardBalanceReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -256,6 +273,7 @@ func (s *Service) CardBalance(ctx context.Context, req *CardBalanceReq, opts ...
 		PathTemplate: "/hduhelp-neo/campuslife/card/balance",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -265,6 +283,7 @@ func (s *Service) CardBalance(ctx context.Context, req *CardBalanceReq, opts ...
 type CardConsumeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -273,7 +292,13 @@ type CardConsumeReqBuilder struct{ req *CardConsumeReq }
 
 // NewCardConsumeReqBuilder creates a request builder for CardConsume.
 func NewCardConsumeReqBuilder() *CardConsumeReqBuilder {
-	return &CardConsumeReqBuilder{req: &CardConsumeReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &CardConsumeReqBuilder{req: &CardConsumeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *CardConsumeReqBuilder) StaffID(v string) *CardConsumeReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -294,6 +319,7 @@ func (s *Service) CardConsume(ctx context.Context, req *CardConsumeReq, opts ...
 		PathTemplate: "/hduhelp-neo/campuslife/card/consume",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -303,6 +329,7 @@ func (s *Service) CardConsume(ctx context.Context, req *CardConsumeReq, opts ...
 type CardInfoReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -311,7 +338,13 @@ type CardInfoReqBuilder struct{ req *CardInfoReq }
 
 // NewCardInfoReqBuilder creates a request builder for CardInfo.
 func NewCardInfoReqBuilder() *CardInfoReqBuilder {
-	return &CardInfoReqBuilder{req: &CardInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &CardInfoReqBuilder{req: &CardInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *CardInfoReqBuilder) StaffID(v string) *CardInfoReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -332,6 +365,7 @@ func (s *Service) CardInfo(ctx context.Context, req *CardInfoReq, opts ...core.R
 		PathTemplate: "/hduhelp-neo/campuslife/card/info",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -341,6 +375,7 @@ func (s *Service) CardInfo(ctx context.Context, req *CardInfoReq, opts ...core.R
 type ElectricBalanceReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -349,7 +384,7 @@ type ElectricBalanceReqBuilder struct{ req *ElectricBalanceReq }
 
 // NewElectricBalanceReqBuilder creates a request builder for ElectricBalance.
 func NewElectricBalanceReqBuilder() *ElectricBalanceReqBuilder {
-	return &ElectricBalanceReqBuilder{req: &ElectricBalanceReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ElectricBalanceReqBuilder{req: &ElectricBalanceReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -370,6 +405,7 @@ func (s *Service) ElectricBalance(ctx context.Context, req *ElectricBalanceReq, 
 		PathTemplate: "/hduhelp-neo/campuslife/electric/balance",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -379,6 +415,7 @@ func (s *Service) ElectricBalance(ctx context.Context, req *ElectricBalanceReq, 
 type BindMeterReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -387,7 +424,7 @@ type BindMeterReqBuilder struct{ req *BindMeterReq }
 
 // NewBindMeterReqBuilder creates a request builder for BindMeter.
 func NewBindMeterReqBuilder() *BindMeterReqBuilder {
-	return &BindMeterReqBuilder{req: &BindMeterReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &BindMeterReqBuilder{req: &BindMeterReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
@@ -413,6 +450,7 @@ func (s *Service) BindMeter(ctx context.Context, req *BindMeterReq, opts ...core
 		PathTemplate: "/hduhelp-neo/campuslife/electric/bind",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -422,6 +460,7 @@ func (s *Service) BindMeter(ctx context.Context, req *BindMeterReq, opts ...core
 type UnbindMeterReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -430,7 +469,7 @@ type UnbindMeterReqBuilder struct{ req *UnbindMeterReq }
 
 // NewUnbindMeterReqBuilder creates a request builder for UnbindMeter.
 func NewUnbindMeterReqBuilder() *UnbindMeterReqBuilder {
-	return &UnbindMeterReqBuilder{req: &UnbindMeterReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &UnbindMeterReqBuilder{req: &UnbindMeterReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -450,6 +489,7 @@ func (s *Service) UnbindMeter(ctx context.Context, req *UnbindMeterReq, opts ...
 		PathTemplate: "/hduhelp-neo/campuslife/electric/bind",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -459,6 +499,7 @@ func (s *Service) UnbindMeter(ctx context.Context, req *UnbindMeterReq, opts ...
 type ElectricBindingReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -467,7 +508,7 @@ type ElectricBindingReqBuilder struct{ req *ElectricBindingReq }
 
 // NewElectricBindingReqBuilder creates a request builder for ElectricBinding.
 func NewElectricBindingReqBuilder() *ElectricBindingReqBuilder {
-	return &ElectricBindingReqBuilder{req: &ElectricBindingReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ElectricBindingReqBuilder{req: &ElectricBindingReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -488,6 +529,7 @@ func (s *Service) ElectricBinding(ctx context.Context, req *ElectricBindingReq, 
 		PathTemplate: "/hduhelp-neo/campuslife/electric/binding",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -497,6 +539,7 @@ func (s *Service) ElectricBinding(ctx context.Context, req *ElectricBindingReq, 
 type FeeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -505,7 +548,7 @@ type FeeReqBuilder struct{ req *FeeReq }
 
 // NewFeeReqBuilder creates a request builder for Fee.
 func NewFeeReqBuilder() *FeeReqBuilder {
-	return &FeeReqBuilder{req: &FeeReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &FeeReqBuilder{req: &FeeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -526,6 +569,7 @@ func (s *Service) Fee(ctx context.Context, req *FeeReq, opts ...core.RequestOpti
 		PathTemplate: "/hduhelp-neo/campuslife/fee",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -535,6 +579,7 @@ func (s *Service) Fee(ctx context.Context, req *FeeReq, opts ...core.RequestOpti
 type ElectricHistoryReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -543,7 +588,7 @@ type ElectricHistoryReqBuilder struct{ req *ElectricHistoryReq }
 
 // NewElectricHistoryReqBuilder creates a request builder for ElectricHistory.
 func NewElectricHistoryReqBuilder() *ElectricHistoryReqBuilder {
-	return &ElectricHistoryReqBuilder{req: &ElectricHistoryReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &ElectricHistoryReqBuilder{req: &ElectricHistoryReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -564,6 +609,7 @@ func (s *Service) ElectricHistory(ctx context.Context, req *ElectricHistoryReq, 
 		PathTemplate: "/hduhelp-neo/campuslife/history",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -573,6 +619,7 @@ func (s *Service) ElectricHistory(ctx context.Context, req *ElectricHistoryReq, 
 type InfoStreamReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -581,7 +628,7 @@ type InfoStreamReqBuilder struct{ req *InfoStreamReq }
 
 // NewInfoStreamReqBuilder creates a request builder for InfoStream.
 func NewInfoStreamReqBuilder() *InfoStreamReqBuilder {
-	return &InfoStreamReqBuilder{req: &InfoStreamReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &InfoStreamReqBuilder{req: &InfoStreamReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Lat sets the "lat" query parameter.
@@ -614,6 +661,7 @@ func (s *Service) InfoStream(ctx context.Context, req *InfoStreamReq, opts ...co
 		PathTemplate: "/hduhelp-neo/campuslife/v1/infoStream",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -623,6 +671,7 @@ func (s *Service) InfoStream(ctx context.Context, req *InfoStreamReq, opts ...co
 type PredictReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -631,7 +680,7 @@ type PredictReqBuilder struct{ req *PredictReq }
 
 // NewPredictReqBuilder creates a request builder for Predict.
 func NewPredictReqBuilder() *PredictReqBuilder {
-	return &PredictReqBuilder{req: &PredictReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &PredictReqBuilder{req: &PredictReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Days sets the "days" query parameter.
@@ -670,6 +719,7 @@ func (s *Service) Predict(ctx context.Context, req *PredictReq, opts ...core.Req
 		PathTemplate: "/hduhelp-neo/campuslife/v1/predict",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -679,6 +729,7 @@ func (s *Service) Predict(ctx context.Context, req *PredictReq, opts ...core.Req
 type RealTimeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -687,7 +738,7 @@ type RealTimeReqBuilder struct{ req *RealTimeReq }
 
 // NewRealTimeReqBuilder creates a request builder for RealTime.
 func NewRealTimeReqBuilder() *RealTimeReqBuilder {
-	return &RealTimeReqBuilder{req: &RealTimeReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &RealTimeReqBuilder{req: &RealTimeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Lat sets the "lat" query parameter.
@@ -720,6 +771,7 @@ func (s *Service) RealTime(ctx context.Context, req *RealTimeReq, opts ...core.R
 		PathTemplate: "/hduhelp-neo/campuslife/v1/realTime",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
@@ -729,6 +781,7 @@ func (s *Service) RealTime(ctx context.Context, req *RealTimeReq, opts ...core.R
 type WeatherReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -737,7 +790,7 @@ type WeatherReqBuilder struct{ req *WeatherReq }
 
 // NewWeatherReqBuilder creates a request builder for Weather.
 func NewWeatherReqBuilder() *WeatherReqBuilder {
-	return &WeatherReqBuilder{req: &WeatherReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &WeatherReqBuilder{req: &WeatherReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Lat sets the "lat" query parameter.
@@ -770,6 +823,7 @@ func (s *Service) Weather(ctx context.Context, req *WeatherReq, opts ...core.Req
 		PathTemplate: "/hduhelp-neo/campuslife/weather",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err

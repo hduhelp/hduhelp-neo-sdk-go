@@ -65,12 +65,13 @@ var httpMethods = []string{"get", "post", "put", "delete", "patch"}
 // ---- resolved intermediate representation ----
 
 type field struct {
-	Setter  string // exported setter/method name
-	RawName string // spec parameter name (query/path key)
-	GoType  string // scalar Go type of the setter argument
-	Conv    string // expression converting the arg `v` to a string
-	IsPath  bool
-	Doc     string
+	Setter   string // exported setter/method name
+	RawName  string // spec parameter name (query/path/header key)
+	GoType   string // scalar Go type of the setter argument
+	Conv     string // expression converting the arg `v` to a string
+	IsPath   bool
+	IsHeader bool
+	Doc      string
 }
 
 type endpoint struct {
@@ -78,7 +79,7 @@ type endpoint struct {
 	HTTPVerb  string // "GET"
 	Path      string
 	Summary   string
-	Fields    []field // query + path params
+	Fields    []field // query + path + header params
 	BodyType  string  // e.g. "*models.XxxRequestBody"; empty if none
 	DataType  string  // e.g. "*models.XxxData", "[]models.Y", "string", "json.RawMessage"; empty = no Data field
 	NeedStrmt bool
@@ -163,7 +164,7 @@ func resolveEndpoint(doc *spec, path, verb string, op operation) endpoint {
 	}
 
 	for _, p := range op.Parameters {
-		if p.In != "query" && p.In != "path" {
+		if p.In != "query" && p.In != "path" && p.In != "header" {
 			continue
 		}
 		goType, conv, needStr := scalarType(p.Schema)
@@ -171,12 +172,13 @@ func resolveEndpoint(doc *spec, path, verb string, op operation) endpoint {
 			ep.NeedStrmt = true
 		}
 		ep.Fields = append(ep.Fields, field{
-			Setter:  exportIdent(p.Name),
-			RawName: p.Name,
-			GoType:  goType,
-			Conv:    conv,
-			IsPath:  p.In == "path",
-			Doc:     firstLine(p.Description),
+			Setter:   parameterSetter(p),
+			RawName:  p.Name,
+			GoType:   goType,
+			Conv:     conv,
+			IsPath:   p.In == "path",
+			IsHeader: p.In == "header",
+			Doc:      firstLine(p.Description),
 		})
 	}
 
@@ -354,6 +356,7 @@ func emitEndpoint(p func(string, ...any), ep endpoint) {
 	p("type %s struct {\n", reqType)
 	p("\tpathParams  map[string]string\n")
 	p("\tqueryParams map[string]string\n")
+	p("\theaders     map[string]string\n")
 	p("\tbody        any\n")
 	p("}\n\n")
 
@@ -362,18 +365,20 @@ func emitEndpoint(p func(string, ...any), ep endpoint) {
 
 	p("// New%s creates a request builder for %s.\n", builderType, ep.Method)
 	p("func New%s() *%s {\n", builderType, builderType)
-	p("\treturn &%s{req: &%s{pathParams: map[string]string{}, queryParams: map[string]string{}}}\n", builderType, reqType)
+	p("\treturn &%s{req: &%s{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}\n", builderType, reqType)
 	p("}\n\n")
 
 	for _, f := range ep.Fields {
 		target := "queryParams"
 		if f.IsPath {
 			target = "pathParams"
+		} else if f.IsHeader {
+			target = "headers"
 		}
 		if f.Doc != "" {
-			p("// %s sets the %q %s parameter: %s\n", f.Setter, f.RawName, paramKind(f.IsPath), f.Doc)
+			p("// %s sets the %q %s parameter: %s\n", f.Setter, f.RawName, paramKind(f), f.Doc)
 		} else {
-			p("// %s sets the %q %s parameter.\n", f.Setter, f.RawName, paramKind(f.IsPath))
+			p("// %s sets the %q %s parameter.\n", f.Setter, f.RawName, paramKind(f))
 		}
 		p("func (b *%s) %s(v %s) *%s {\n", builderType, f.Setter, f.GoType, builderType)
 		p("\tb.req.%s[%q] = %s\n", target, f.RawName, f.Conv)
@@ -415,6 +420,7 @@ func emitEndpoint(p func(string, ...any), ep endpoint) {
 	p("\t\tPathTemplate: %q,\n", ep.Path)
 	p("\t\tPathParams:   req.pathParams,\n")
 	p("\t\tQueryParams:  req.queryParams,\n")
+	p("\t\tHeaders:      req.headers,\n")
 	p("\t\tBody:         req.body,\n")
 	p("\t}, resp, opts...)\n")
 	p("\treturn resp, err\n")
@@ -475,11 +481,51 @@ func refName(ref string) string {
 	return ""
 }
 
-func paramKind(isPath bool) string {
-	if isPath {
+func paramKind(f field) string {
+	if f.IsPath {
 		return "path"
 	}
+	if f.IsHeader {
+		return "header"
+	}
 	return "query"
+}
+
+func parameterSetter(p param) string {
+	if p.In == "header" {
+		return exportHeaderIdent(p.Name)
+	}
+	return exportIdent(p.Name)
+}
+
+// exportHeaderIdent turns an HTTP header name into a Go fluent-setter name.
+// It drops the conventional X- prefix and preserves common initialisms, so
+// X-Staff-Id becomes StaffID while User-Agent becomes UserAgent.
+func exportHeaderIdent(name string) string {
+	name = strings.TrimPrefix(name, "X-")
+	name = strings.TrimPrefix(name, "x-")
+	var out strings.Builder
+	for _, part := range strings.FieldsFunc(name, func(r rune) bool { return !isAlnum(r) }) {
+		if part == "" {
+			continue
+		}
+		switch strings.ToLower(part) {
+		case "id":
+			out.WriteString("ID")
+		case "url":
+			out.WriteString("URL")
+		case "uri":
+			out.WriteString("URI")
+		case "ip":
+			out.WriteString("IP")
+		default:
+			out.WriteString(strings.ToUpper(part[:1]) + part[1:])
+		}
+	}
+	if out.Len() == 0 {
+		return "Header"
+	}
+	return out.String()
 }
 
 func firstLine(s string) string {

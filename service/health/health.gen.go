@@ -18,6 +18,7 @@ func NewService(config *core.Config) *Service { return &Service{config: config} 
 type HealthzReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
+	headers     map[string]string
 	body        any
 }
 
@@ -26,7 +27,7 @@ type HealthzReqBuilder struct{ req *HealthzReq }
 
 // NewHealthzReqBuilder creates a request builder for Healthz.
 func NewHealthzReqBuilder() *HealthzReqBuilder {
-	return &HealthzReqBuilder{req: &HealthzReq{pathParams: map[string]string{}, queryParams: map[string]string{}}}
+	return &HealthzReqBuilder{req: &HealthzReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
@@ -46,6 +47,7 @@ func (s *Service) Healthz(ctx context.Context, req *HealthzReq, opts ...core.Req
 		PathTemplate: "/healthz",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
+		Headers:      req.headers,
 		Body:         req.body,
 	}, resp, opts...)
 	return resp, err
