@@ -71,6 +71,8 @@ func (c *Config) Do(ctx context.Context, req *APIReq, result ResponseSetter, opt
 	defer httpResp.Body.Close()
 	rawBody, err := io.ReadAll(io.LimitReader(httpResp.Body, maxAPIResponseBytes))
 	if err != nil {
+		// Still attach the transport metadata so the caller can trace the failure.
+		result.SetRawResponse(&RawResponse{StatusCode: httpResp.StatusCode, Header: httpResp.Header})
 		return fmt.Errorf("hduhelp: read response: %w", err)
 	}
 
@@ -81,6 +83,9 @@ func (c *Config) Do(ctx context.Context, req *APIReq, result ResponseSetter, opt
 	}
 
 	if httpResp.StatusCode/100 != 2 {
+		// Best-effort decode so resp.Code/Msg reflect the server envelope when the
+		// error body carries one. Callers must still check the returned error.
+		_ = json.Unmarshal(rawBody, result)
 		result.SetRawResponse(raw)
 		return fmt.Errorf("hduhelp: %s %s returned HTTP %d: %s",
 			req.HTTPMethod, req.PathTemplate, httpResp.StatusCode, truncate(string(rawBody)))

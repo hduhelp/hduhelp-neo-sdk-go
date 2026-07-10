@@ -133,20 +133,28 @@ type UserTokenSource struct {
 	mu           sync.Mutex
 	accessToken  string
 	refreshToken string
-	refresh      time.Time
+	refresh      time.Time // soft: begin a proactive refresh after this
+	expiry       time.Time // hard: token no longer accepted after this
 	inflight     chan struct{}
 	lastErr      error
 	nowFn        func() time.Time
 }
 
-// NewUserTokenSource builds an auto-refreshing source from a seed token.
+// NewUserTokenSource builds an auto-refreshing source from a seed token. When
+// the seed's ExpiresIn is unknown (<= 0) but a refresh token is present, the
+// first Token call refreshes immediately rather than trusting a possibly-stale
+// access token for the fallback lifetime.
 func NewUserTokenSource(auth *UserAuth, seed UserToken) *UserTokenSource {
 	s := &UserTokenSource{
 		auth:         auth,
 		accessToken:  seed.AccessToken,
 		refreshToken: seed.RefreshToken,
 	}
-	s.refresh = refreshInstant(s.now(), seed.ExpiresIn)
+	if seed.ExpiresIn <= 0 && seed.RefreshToken != "" {
+		// Zero instants are already in the past: fast path skipped, refresh forced.
+		return s
+	}
+	s.refresh, s.expiry = window(s.now(), seed.ExpiresIn)
 	return s
 }
 
@@ -194,7 +202,9 @@ func (s *UserTokenSource) Token(ctx context.Context) (string, error) {
 
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if s.accessToken != "" && s.now().Before(s.refresh) {
+	// Serve a still-valid access token even if the just-finished refresh failed:
+	// within the early-refresh grace it is still accepted by the server.
+	if s.accessToken != "" && s.now().Before(s.expiry) {
 		return s.accessToken, nil
 	}
 	if s.lastErr != nil {
@@ -211,7 +221,10 @@ func (s *UserTokenSource) doRefresh(done chan struct{}) {
 	rt := s.refreshToken
 	s.mu.Unlock()
 
-	tok, err := s.auth.Refresh(context.Background(), rt)
+	// Bound the detached refresh so a hung endpoint cannot wedge the source.
+	ctx, cancel := context.WithTimeout(context.Background(), s.auth.cfg.refreshTimeout())
+	defer cancel()
+	tok, err := s.auth.Refresh(ctx, rt)
 
 	s.mu.Lock()
 	if err != nil {
@@ -223,7 +236,7 @@ func (s *UserTokenSource) doRefresh(done chan struct{}) {
 			// The server rotates refresh tokens single-use; keep the newest.
 			s.refreshToken = tok.RefreshToken
 		}
-		s.refresh = refreshInstant(s.now(), tok.ExpiresIn)
+		s.refresh, s.expiry = window(s.now(), tok.ExpiresIn)
 	}
 	s.inflight = nil
 	close(done)

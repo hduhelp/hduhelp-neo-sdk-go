@@ -88,6 +88,49 @@ func TestTenantTokenSingleFlight(t *testing.T) {
 	}
 }
 
+func TestTenantTokenServedStaleWithinGraceOnRefreshFailure(t *testing.T) {
+	var fail atomic.Bool
+	var hits int64
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		atomic.AddInt64(&hits, 1)
+		if fail.Load() {
+			http.Error(w, "boom", http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		// 120s lifetime -> soft refresh at +60s, hard expiry at +120s.
+		fmt.Fprint(w, `{"code":0,"data":{"tenantAccessToken":"tat-1","expire":120}}`)
+	}))
+	defer srv.Close()
+
+	cfg := NewConfig("a", "s", WithBaseURL(srv.URL))
+	t0 := time.Now()
+	now := t0
+	cfg.tokenCache.nowFn = func() time.Time { return now }
+
+	tok, err := cfg.tokenCache.Token(context.Background())
+	if err != nil || tok != "tat-1" {
+		t.Fatalf("initial Token = %q, %v", tok, err)
+	}
+
+	// Past the soft refresh instant but before hard expiry; the refresh now fails.
+	fail.Store(true)
+	now = t0.Add(70 * time.Second)
+	tok, err = cfg.tokenCache.Token(context.Background())
+	if err != nil {
+		t.Fatalf("within grace, expected stale token served, got error: %v", err)
+	}
+	if tok != "tat-1" {
+		t.Fatalf("within grace, expected tat-1, got %q", tok)
+	}
+
+	// Past hard expiry; the failing refresh must now surface as an error.
+	now = t0.Add(130 * time.Second)
+	if _, err := cfg.tokenCache.Token(context.Background()); err == nil {
+		t.Fatal("past expiry with failing endpoint, expected error, got nil")
+	}
+}
+
 func TestTokenContextHonoredWhileRefreshing(t *testing.T) {
 	// A slow endpoint: a caller with an already-cancelled context must not block
 	// on the in-flight refresh.

@@ -36,20 +36,36 @@ type tenantTokenData struct {
 	TenantKey         string `json:"tenantKey"`
 }
 
-// refreshInstant computes when a token should be refreshed: its full lifetime
-// minus the early-refresh lead time. `expireSeconds` is the server-reported
-// remaining lifetime; a non-positive value falls back to two hours so a
-// malformed response still yields a bounded cache window.
-func refreshInstant(now time.Time, expireSeconds int64) time.Time {
+// lifetimeOf is the token's usable lifetime. `expireSeconds` is the
+// server-reported remaining lifetime; a non-positive value falls back to two
+// hours so a malformed response still yields a bounded cache window.
+func lifetimeOf(expireSeconds int64) time.Duration {
 	lifetime := time.Duration(expireSeconds) * time.Second
 	if lifetime <= 0 {
 		lifetime = 2 * time.Hour
 	}
+	return lifetime
+}
+
+// earlyLead is the lead time before expiry at which a token is proactively
+// refreshed, clamped so it never exceeds half the lifetime.
+func earlyLead(lifetime time.Duration) time.Duration {
 	early := earlyRefresh
 	if early > lifetime/2 {
 		early = lifetime / 2
 	}
-	return now.Add(lifetime - early)
+	return early
+}
+
+// window returns the soft refresh instant (expiry minus the early-refresh lead,
+// when a proactive refresh begins) and the hard expiry instant (after which the
+// token is no longer accepted). Between the two, a failed refresh may still
+// serve the cached token.
+func window(now time.Time, expireSeconds int64) (refresh, expiry time.Time) {
+	lifetime := lifetimeOf(expireSeconds)
+	expiry = now.Add(lifetime)
+	refresh = now.Add(lifetime - earlyLead(lifetime))
+	return refresh, expiry
 }
 
 func truncate(s string) string {
@@ -113,7 +129,8 @@ type tenantTokenCache struct {
 
 	mu       sync.Mutex
 	token    string
-	refresh  time.Time
+	refresh  time.Time // soft: begin a proactive refresh after this
+	expiry   time.Time // hard: token no longer accepted after this
 	inflight chan struct{}
 	lastErr  error
 	nowFn    func() time.Time
@@ -153,7 +170,10 @@ func (c *tenantTokenCache) Token(ctx context.Context) (string, error) {
 
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	if c.token != "" && c.now().Before(c.refresh) {
+	// Serve a still-valid token even if the just-finished refresh failed: within
+	// the early-refresh grace the cached token is still accepted by the server,
+	// so a transient token-endpoint outage does not break every call.
+	if c.token != "" && c.now().Before(c.expiry) {
 		return c.token, nil
 	}
 	if c.lastErr != nil {
@@ -166,14 +186,18 @@ func (c *tenantTokenCache) Token(ctx context.Context) (string, error) {
 }
 
 func (c *tenantTokenCache) doRefresh(done chan struct{}) {
-	token, expire, err := c.fetch(context.Background())
+	// Bound the detached refresh so a hung endpoint (even behind a caller-
+	// supplied http.Client with no timeout) cannot wedge the cache forever.
+	ctx, cancel := context.WithTimeout(context.Background(), c.cfg.refreshTimeout())
+	defer cancel()
+	token, expire, err := c.fetch(ctx)
 	c.mu.Lock()
 	if err != nil {
 		c.lastErr = err
 	} else {
 		c.lastErr = nil
 		c.token = token
-		c.refresh = refreshInstant(c.now(), expire)
+		c.refresh, c.expiry = window(c.now(), expire)
 	}
 	c.inflight = nil
 	close(done)

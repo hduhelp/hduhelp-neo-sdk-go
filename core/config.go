@@ -68,6 +68,15 @@ func (c *Config) httpClient() *http.Client {
 	return c.httpCached
 }
 
+// refreshTimeout bounds a detached token refresh, so a hung endpoint cannot
+// wedge the token cache even when the caller supplied a timeout-less HTTP client.
+func (c *Config) refreshTimeout() time.Duration {
+	if c.ReqTimeout > 0 {
+		return c.ReqTimeout
+	}
+	return DefaultReqTimeout
+}
+
 // resolveToken picks the bearer token for a call: an explicit per-request token
 // wins (user > tenant > pat), otherwise the client default (PAT, else the cached
 // tenant_access_token when token caching is enabled and credentials are set).
