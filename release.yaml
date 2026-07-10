@@ -1,0 +1,13 @@
+# Release manifest for the hduhelp-neo Go SDK.
+#
+# Bump `version` and push to main to cut a release. The Release workflow
+# (.github/workflows/release.yml) reads this value and, if no matching git tag
+# exists yet, creates and pushes the annotated tag `v<version>`. That tag is what
+# makes the module consumable:
+#
+#     go get github.com/hduhelp-neo/hduhelp-neo-sdk-go@v<version>
+#
+# Go modules need no registry, so tagging is the entire publish step. If the tag
+# already exists, the workflow is a no-op. Never push tags by hand. Use
+# major.minor.patch.
+version: 0.1.0

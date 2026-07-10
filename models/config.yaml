@@ -1,0 +1,8 @@
+# oapi-codegen: models only. The Feishu-style client/builders/services are
+# emitted by the custom generator in internal/gen from the same spec.
+package: models
+output: models/models.gen.go
+generate:
+  models: true
+output-options:
+  skip-prune: true
