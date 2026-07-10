@@ -1,7 +1,7 @@
 .PHONY: generate build vet test tidy
 
 OAPI_CODEGEN_VERSION := v2.7.2
-MODULE := github.com/hduhelp-neo/hduhelp-neo-sdk-go
+MODULE := github.com/hduhelp/hduhelp-neo-sdk-go
 NORMALIZED := $(CURDIR)/.openapi.normalized.yaml
 
 # Regenerate the whole SDK from the vendored openapi.yaml, in three steps:

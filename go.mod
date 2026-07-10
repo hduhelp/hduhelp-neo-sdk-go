@@ -1,3 +1,3 @@
-module github.com/hduhelp-neo/hduhelp-neo-sdk-go
+module github.com/hduhelp/hduhelp-neo-sdk-go
 
 go 1.24.0

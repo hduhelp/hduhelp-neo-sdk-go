@@ -5,7 +5,7 @@
 # exists yet, creates and pushes the annotated tag `v<version>`. That tag is what
 # makes the module consumable:
 #
-#     go get github.com/hduhelp-neo/hduhelp-neo-sdk-go@v<version>
+#     go get github.com/hduhelp/hduhelp-neo-sdk-go@v<version>
 #
 # Go modules need no registry, so tagging is the entire publish step. If the tag
 # already exists, the workflow is a no-op. Never push tags by hand. Use

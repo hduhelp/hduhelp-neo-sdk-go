@@ -3,19 +3,19 @@
 package hduhelp
 
 import (
-	"github.com/hduhelp-neo/hduhelp-neo-sdk-go/core"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/core"
 
-	"github.com/hduhelp-neo/hduhelp-neo-sdk-go/service/academic"
-	"github.com/hduhelp-neo/hduhelp-neo-sdk-go/service/admin"
-	"github.com/hduhelp-neo/hduhelp-neo-sdk-go/service/campuslife"
-	"github.com/hduhelp-neo/hduhelp-neo-sdk-go/service/emptyschedule"
-	"github.com/hduhelp-neo/hduhelp-neo-sdk-go/service/feed"
-	"github.com/hduhelp-neo/hduhelp-neo-sdk-go/service/graduate"
-	"github.com/hduhelp-neo/hduhelp-neo-sdk-go/service/groupchat"
-	"github.com/hduhelp-neo/hduhelp-neo-sdk-go/service/health"
-	"github.com/hduhelp-neo/hduhelp-neo-sdk-go/service/identity"
-	"github.com/hduhelp-neo/hduhelp-neo-sdk-go/service/subscription"
-	"github.com/hduhelp-neo/hduhelp-neo-sdk-go/service/upload"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/academic"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/admin"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/campuslife"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/emptyschedule"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/feed"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/graduate"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/groupchat"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/health"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/identity"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/subscription"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/upload"
 )
 
 // Client is a fully configured hduhelp-neo API client. Each field is a

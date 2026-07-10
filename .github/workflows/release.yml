@@ -3,7 +3,7 @@ name: Release
 # The Go module is published purely by tagging. Bump `version:` in release.yaml
 # and push to main: this workflow reads that value and, if the tag v<version>
 # does not exist yet, creates and pushes it. Consumers then use
-# `go get github.com/hduhelp-neo/hduhelp-neo-sdk-go@v<version>`.
+# `go get github.com/hduhelp/hduhelp-neo-sdk-go@v<version>`.
 #
 # We deliberately do NOT trigger on tag pushes: the version file is the single
 # source of truth and the workflow is what creates the tag.

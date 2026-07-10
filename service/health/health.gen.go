@@ -5,7 +5,7 @@ package health
 import (
 	"context"
 
-	"github.com/hduhelp-neo/hduhelp-neo-sdk-go/core"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/core"
 )
 
 // Service groups the Health endpoints.

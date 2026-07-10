@@ -7,8 +7,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/hduhelp-neo/hduhelp-neo-sdk-go"
-	"github.com/hduhelp-neo/hduhelp-neo-sdk-go/service/academic"
+	"github.com/hduhelp/hduhelp-neo-sdk-go"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/academic"
 )
 
 // fakeGateway serves the tenant token endpoint plus one academic endpoint,

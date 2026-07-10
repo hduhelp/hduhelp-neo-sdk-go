@@ -26,7 +26,7 @@ use(resp.Data) // []models.ScheduleItem
 ## Install
 
 ```sh
-go get github.com/hduhelp-neo/hduhelp-neo-sdk-go@latest
+go get github.com/hduhelp/hduhelp-neo-sdk-go@latest
 ```
 
 Requires Go 1.24+.
@@ -155,7 +155,7 @@ Releases are driven by the `version` field in `release.yaml`:
 The Release workflow reads `version` and, if the tag `v<version>` does not
 exist, creates and pushes it. That tag is the entire publish step for a Go
 module — consumers then run
-`go get github.com/hduhelp-neo/hduhelp-neo-sdk-go@v<version>`. Tags are never
+`go get github.com/hduhelp/hduhelp-neo-sdk-go@v<version>`. Tags are never
 pushed by hand.
 
 ## License

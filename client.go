@@ -16,7 +16,7 @@
 // WithUserAccessToken / WithTenantAccessToken / WithPAT request options.
 package hduhelp
 
-import "github.com/hduhelp-neo/hduhelp-neo-sdk-go/core"
+import "github.com/hduhelp/hduhelp-neo-sdk-go/core"
 
 // NewClient builds a client from app credentials. With no options it manages the
 // tenant_access_token automatically; options tune the base URL, HTTP client,

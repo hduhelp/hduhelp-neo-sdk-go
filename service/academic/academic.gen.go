@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/hduhelp-neo/hduhelp-neo-sdk-go/core"
-	"github.com/hduhelp-neo/hduhelp-neo-sdk-go/models"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/core"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/models"
 )
 
 // Service groups the Academic endpoints.
