@@ -147,9 +147,10 @@ make generate
 ```
 
 `make generate` normalizes the spec, runs `oapi-codegen` for the models, and
-runs the custom generator for the services and client. CI regenerates on every
-push and fails if the committed `models`, `service`, or `client.gen.go` differ,
-so the checked-in code always matches the spec.
+runs the custom generator for the services and client. The upstream release
+pipeline runs this same generation and then builds, vets, and tests the result
+before it pushes the code and tag here, so the checked-in code always matches
+the spec and compiles.
 
 ## Releasing
 
