@@ -16,183 +16,6 @@ type Service struct{ config *core.Config }
 // NewService binds the CampusLife service to a client config.
 func NewService(config *core.Config) *Service { return &Service{config: config} }
 
-// BindRoomReq is the request for BindRoom.
-type BindRoomReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// BindRoomReqBuilder builds a BindRoomReq with a fluent setter per field.
-type BindRoomReqBuilder struct{ req *BindRoomReq }
-
-// NewBindRoomReqBuilder creates a request builder for BindRoom.
-func NewBindRoomReqBuilder() *BindRoomReqBuilder {
-	return &BindRoomReqBuilder{req: &BindRoomReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *BindRoomReqBuilder) Body(body *models.BindRoomRequestBody) *BindRoomReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *BindRoomReqBuilder) Build() *BindRoomReq { return b.req }
-
-// BindRoomResp is the response for BindRoom.
-type BindRoomResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-}
-
-// BindRoom: 按房间绑定宿舍电表
-func (s *Service) BindRoom(ctx context.Context, req *BindRoomReq, opts ...core.RequestOption) (*BindRoomResp, error) {
-	resp := &BindRoomResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "PUT",
-		PathTemplate: "/hduhelp-neo/campuslife/bind",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ListBuildingsReq is the request for ListBuildings.
-type ListBuildingsReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ListBuildingsReqBuilder builds a ListBuildingsReq with a fluent setter per field.
-type ListBuildingsReqBuilder struct{ req *ListBuildingsReq }
-
-// NewListBuildingsReqBuilder creates a request builder for ListBuildings.
-func NewListBuildingsReqBuilder() *ListBuildingsReqBuilder {
-	return &ListBuildingsReqBuilder{req: &ListBuildingsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Build finalizes the request.
-func (b *ListBuildingsReqBuilder) Build() *ListBuildingsReq { return b.req }
-
-// ListBuildingsResp is the response for ListBuildings.
-type ListBuildingsResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.NamedItem `json:"data"`
-}
-
-// ListBuildings: 查询可绑定楼栋列表
-func (s *Service) ListBuildings(ctx context.Context, req *ListBuildingsReq, opts ...core.RequestOption) (*ListBuildingsResp, error) {
-	resp := &ListBuildingsResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/campuslife/bind/building",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ListFloorsReq is the request for ListFloors.
-type ListFloorsReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ListFloorsReqBuilder builds a ListFloorsReq with a fluent setter per field.
-type ListFloorsReqBuilder struct{ req *ListFloorsReq }
-
-// NewListFloorsReqBuilder creates a request builder for ListFloors.
-func NewListFloorsReqBuilder() *ListFloorsReqBuilder {
-	return &ListFloorsReqBuilder{req: &ListFloorsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// BuildingId sets the "building_id" query parameter.
-func (b *ListFloorsReqBuilder) BuildingId(v int64) *ListFloorsReqBuilder {
-	b.req.queryParams["building_id"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// Build finalizes the request.
-func (b *ListFloorsReqBuilder) Build() *ListFloorsReq { return b.req }
-
-// ListFloorsResp is the response for ListFloors.
-type ListFloorsResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.NamedItem `json:"data"`
-}
-
-// ListFloors: 按楼栋查询楼层列表
-func (s *Service) ListFloors(ctx context.Context, req *ListFloorsReq, opts ...core.RequestOption) (*ListFloorsResp, error) {
-	resp := &ListFloorsResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/campuslife/bind/floor",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ListRoomsReq is the request for ListRooms.
-type ListRoomsReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ListRoomsReqBuilder builds a ListRoomsReq with a fluent setter per field.
-type ListRoomsReqBuilder struct{ req *ListRoomsReq }
-
-// NewListRoomsReqBuilder creates a request builder for ListRooms.
-func NewListRoomsReqBuilder() *ListRoomsReqBuilder {
-	return &ListRoomsReqBuilder{req: &ListRoomsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// FloorId sets the "floor_id" query parameter.
-func (b *ListRoomsReqBuilder) FloorId(v int64) *ListRoomsReqBuilder {
-	b.req.queryParams["floor_id"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// Build finalizes the request.
-func (b *ListRoomsReqBuilder) Build() *ListRoomsReq { return b.req }
-
-// ListRoomsResp is the response for ListRooms.
-type ListRoomsResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.NamedItem `json:"data"`
-}
-
-// ListRooms: 按楼层查询房间列表
-func (s *Service) ListRooms(ctx context.Context, req *ListRoomsReq, opts ...core.RequestOption) (*ListRoomsResp, error) {
-	resp := &ListRoomsResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/campuslife/bind/room",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
 // ListPublicCampusesReq is the request for ListPublicCampuses.
 type ListPublicCampusesReq struct {
 	pathParams  map[string]string
@@ -411,43 +234,84 @@ func (s *Service) ElectricBalance(ctx context.Context, req *ElectricBalanceReq, 
 	return resp, err
 }
 
-// BindMeterReq is the request for BindMeter.
-type BindMeterReq struct {
+// ElectricBindingReq is the request for ElectricBinding.
+type ElectricBindingReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// BindMeterReqBuilder builds a BindMeterReq with a fluent setter per field.
-type BindMeterReqBuilder struct{ req *BindMeterReq }
+// ElectricBindingReqBuilder builds a ElectricBindingReq with a fluent setter per field.
+type ElectricBindingReqBuilder struct{ req *ElectricBindingReq }
 
-// NewBindMeterReqBuilder creates a request builder for BindMeter.
-func NewBindMeterReqBuilder() *BindMeterReqBuilder {
-	return &BindMeterReqBuilder{req: &BindMeterReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewElectricBindingReqBuilder creates a request builder for ElectricBinding.
+func NewElectricBindingReqBuilder() *ElectricBindingReqBuilder {
+	return &ElectricBindingReqBuilder{req: &ElectricBindingReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *ElectricBindingReqBuilder) Build() *ElectricBindingReq { return b.req }
+
+// ElectricBindingResp is the response for ElectricBinding.
+type ElectricBindingResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ElectricBindingData `json:"data"`
+}
+
+// ElectricBinding: 查询当前电表绑定信息
+func (s *Service) ElectricBinding(ctx context.Context, req *ElectricBindingReq, opts ...core.RequestOption) (*ElectricBindingResp, error) {
+	resp := &ElectricBindingResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/campuslife/electric/binding",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// BindRoomReq is the request for BindRoom.
+type BindRoomReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// BindRoomReqBuilder builds a BindRoomReq with a fluent setter per field.
+type BindRoomReqBuilder struct{ req *BindRoomReq }
+
+// NewBindRoomReqBuilder creates a request builder for BindRoom.
+func NewBindRoomReqBuilder() *BindRoomReqBuilder {
+	return &BindRoomReqBuilder{req: &BindRoomReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
-func (b *BindMeterReqBuilder) Body(body *models.BindMeterRequestBody) *BindMeterReqBuilder {
+func (b *BindRoomReqBuilder) Body(body *models.BindRoomRequestBody) *BindRoomReqBuilder {
 	b.req.body = body
 	return b
 }
 
 // Build finalizes the request.
-func (b *BindMeterReqBuilder) Build() *BindMeterReq { return b.req }
+func (b *BindRoomReqBuilder) Build() *BindRoomReq { return b.req }
 
-// BindMeterResp is the response for BindMeter.
-type BindMeterResp struct {
+// BindRoomResp is the response for BindRoom.
+type BindRoomResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
+	Data *models.ElectricBindingData `json:"data"`
 }
 
-// BindMeter: 按电表号绑定宿舍电表
-func (s *Service) BindMeter(ctx context.Context, req *BindMeterReq, opts ...core.RequestOption) (*BindMeterResp, error) {
-	resp := &BindMeterResp{}
+// BindRoom: 按真实寝室绑定宿舍电表
+func (s *Service) BindRoom(ctx context.Context, req *BindRoomReq, opts ...core.RequestOption) (*BindRoomResp, error) {
+	resp := &BindRoomResp{}
 	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/campuslife/electric/bind",
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/campuslife/electric/binding",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -486,7 +350,7 @@ func (s *Service) UnbindMeter(ctx context.Context, req *UnbindMeterReq, opts ...
 	resp := &UnbindMeterResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "DELETE",
-		PathTemplate: "/hduhelp-neo/campuslife/electric/bind",
+		PathTemplate: "/hduhelp-neo/campuslife/electric/binding",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -495,38 +359,130 @@ func (s *Service) UnbindMeter(ctx context.Context, req *UnbindMeterReq, opts ...
 	return resp, err
 }
 
-// ElectricBindingReq is the request for ElectricBinding.
-type ElectricBindingReq struct {
+// ListBuildingsReq is the request for ListBuildings.
+type ListBuildingsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// ElectricBindingReqBuilder builds a ElectricBindingReq with a fluent setter per field.
-type ElectricBindingReqBuilder struct{ req *ElectricBindingReq }
+// ListBuildingsReqBuilder builds a ListBuildingsReq with a fluent setter per field.
+type ListBuildingsReqBuilder struct{ req *ListBuildingsReq }
 
-// NewElectricBindingReqBuilder creates a request builder for ElectricBinding.
-func NewElectricBindingReqBuilder() *ElectricBindingReqBuilder {
-	return &ElectricBindingReqBuilder{req: &ElectricBindingReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewListBuildingsReqBuilder creates a request builder for ListBuildings.
+func NewListBuildingsReqBuilder() *ListBuildingsReqBuilder {
+	return &ListBuildingsReqBuilder{req: &ListBuildingsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
-func (b *ElectricBindingReqBuilder) Build() *ElectricBindingReq { return b.req }
+func (b *ListBuildingsReqBuilder) Build() *ListBuildingsReq { return b.req }
 
-// ElectricBindingResp is the response for ElectricBinding.
-type ElectricBindingResp struct {
+// ListBuildingsResp is the response for ListBuildings.
+type ListBuildingsResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.ElectricBindingData `json:"data"`
+	Data []models.ElectricBuildingItem `json:"data"`
 }
 
-// ElectricBinding: 查询当前电表绑定信息
-func (s *Service) ElectricBinding(ctx context.Context, req *ElectricBindingReq, opts ...core.RequestOption) (*ElectricBindingResp, error) {
-	resp := &ElectricBindingResp{}
+// ListBuildings: 查询真实楼栋列表
+func (s *Service) ListBuildings(ctx context.Context, req *ListBuildingsReq, opts ...core.RequestOption) (*ListBuildingsResp, error) {
+	resp := &ListBuildingsResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/campuslife/electric/binding",
+		PathTemplate: "/hduhelp-neo/campuslife/electric/buildings",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ListFloorsReq is the request for ListFloors.
+type ListFloorsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListFloorsReqBuilder builds a ListFloorsReq with a fluent setter per field.
+type ListFloorsReqBuilder struct{ req *ListFloorsReq }
+
+// NewListFloorsReqBuilder creates a request builder for ListFloors.
+func NewListFloorsReqBuilder() *ListFloorsReqBuilder {
+	return &ListFloorsReqBuilder{req: &ListFloorsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// BuildingId sets the "building_id" query parameter.
+func (b *ListFloorsReqBuilder) BuildingId(v int64) *ListFloorsReqBuilder {
+	b.req.queryParams["building_id"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *ListFloorsReqBuilder) Build() *ListFloorsReq { return b.req }
+
+// ListFloorsResp is the response for ListFloors.
+type ListFloorsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.ElectricFloorItem `json:"data"`
+}
+
+// ListFloors: 按楼栋查询真实楼层列表
+func (s *Service) ListFloors(ctx context.Context, req *ListFloorsReq, opts ...core.RequestOption) (*ListFloorsResp, error) {
+	resp := &ListFloorsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/campuslife/electric/floors",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ListRoomsReq is the request for ListRooms.
+type ListRoomsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListRoomsReqBuilder builds a ListRoomsReq with a fluent setter per field.
+type ListRoomsReqBuilder struct{ req *ListRoomsReq }
+
+// NewListRoomsReqBuilder creates a request builder for ListRooms.
+func NewListRoomsReqBuilder() *ListRoomsReqBuilder {
+	return &ListRoomsReqBuilder{req: &ListRoomsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// FloorId sets the "floor_id" query parameter.
+func (b *ListRoomsReqBuilder) FloorId(v int64) *ListRoomsReqBuilder {
+	b.req.queryParams["floor_id"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *ListRoomsReqBuilder) Build() *ListRoomsReq { return b.req }
+
+// ListRoomsResp is the response for ListRooms.
+type ListRoomsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.ElectricRoomItem `json:"data"`
+}
+
+// ListRooms: 按楼层查询真实寝室与电表列表
+func (s *Service) ListRooms(ctx context.Context, req *ListRoomsReq, opts ...core.RequestOption) (*ListRoomsResp, error) {
+	resp := &ListRoomsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/campuslife/electric/rooms",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

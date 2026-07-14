@@ -14,6 +14,7 @@ import (
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/groupchat"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/health"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/identity"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/messaging"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/subscription"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/upload"
 )
@@ -32,6 +33,7 @@ type Client struct {
 	GroupChat     *groupchat.Service
 	Health        *health.Service
 	Identity      *identity.Service
+	Messaging     *messaging.Service
 	Subscription  *subscription.Service
 	Upload        *upload.Service
 }
@@ -47,6 +49,7 @@ func attachServices(c *Client) {
 	c.GroupChat = groupchat.NewService(c.config)
 	c.Health = health.NewService(c.config)
 	c.Identity = identity.NewService(c.config)
+	c.Messaging = messaging.NewService(c.config)
 	c.Subscription = subscription.NewService(c.config)
 	c.Upload = upload.NewService(c.config)
 }

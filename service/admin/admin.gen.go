@@ -1079,6 +1079,219 @@ func (s *Service) RunCronTask(ctx context.Context, req *RunCronTaskReq, opts ...
 	return resp, err
 }
 
+// ListElectricityMetersReq is the request for ListElectricityMeters.
+type ListElectricityMetersReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListElectricityMetersReqBuilder builds a ListElectricityMetersReq with a fluent setter per field.
+type ListElectricityMetersReqBuilder struct{ req *ListElectricityMetersReq }
+
+// NewListElectricityMetersReqBuilder creates a request builder for ListElectricityMeters.
+func NewListElectricityMetersReqBuilder() *ListElectricityMetersReqBuilder {
+	return &ListElectricityMetersReqBuilder{req: &ListElectricityMetersReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Keyword sets the "keyword" query parameter.
+func (b *ListElectricityMetersReqBuilder) Keyword(v string) *ListElectricityMetersReqBuilder {
+	b.req.queryParams["keyword"] = v
+	return b
+}
+
+// BuildingId sets the "building_id" query parameter.
+func (b *ListElectricityMetersReqBuilder) BuildingId(v int64) *ListElectricityMetersReqBuilder {
+	b.req.queryParams["building_id"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// FloorId sets the "floor_id" query parameter.
+func (b *ListElectricityMetersReqBuilder) FloorId(v int64) *ListElectricityMetersReqBuilder {
+	b.req.queryParams["floor_id"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// Page sets the "page" query parameter.
+func (b *ListElectricityMetersReqBuilder) Page(v int32) *ListElectricityMetersReqBuilder {
+	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Size sets the "size" query parameter.
+func (b *ListElectricityMetersReqBuilder) Size(v int32) *ListElectricityMetersReqBuilder {
+	b.req.queryParams["size"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *ListElectricityMetersReqBuilder) Build() *ListElectricityMetersReq { return b.req }
+
+// ListElectricityMetersResp is the response for ListElectricityMeters.
+type ListElectricityMetersResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ElectricityMeterPage `json:"data"`
+}
+
+// ListElectricityMeters: 电表主数据列表
+func (s *Service) ListElectricityMeters(ctx context.Context, req *ListElectricityMetersReq, opts ...core.RequestOption) (*ListElectricityMetersResp, error) {
+	resp := &ListElectricityMetersResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/electricity/meters",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// CreateElectricityMeterReq is the request for CreateElectricityMeter.
+type CreateElectricityMeterReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// CreateElectricityMeterReqBuilder builds a CreateElectricityMeterReq with a fluent setter per field.
+type CreateElectricityMeterReqBuilder struct{ req *CreateElectricityMeterReq }
+
+// NewCreateElectricityMeterReqBuilder creates a request builder for CreateElectricityMeter.
+func NewCreateElectricityMeterReqBuilder() *CreateElectricityMeterReqBuilder {
+	return &CreateElectricityMeterReqBuilder{req: &CreateElectricityMeterReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *CreateElectricityMeterReqBuilder) Body(body *models.CreateElectricityMeterRequestBody) *CreateElectricityMeterReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *CreateElectricityMeterReqBuilder) Build() *CreateElectricityMeterReq { return b.req }
+
+// CreateElectricityMeterResp is the response for CreateElectricityMeter.
+type CreateElectricityMeterResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AdminElectricityMeter `json:"data"`
+}
+
+// CreateElectricityMeter: 新增电表主数据
+func (s *Service) CreateElectricityMeter(ctx context.Context, req *CreateElectricityMeterReq, opts ...core.RequestOption) (*CreateElectricityMeterResp, error) {
+	resp := &CreateElectricityMeterResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/electricity/meters",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// UpdateElectricityMeterReq is the request for UpdateElectricityMeter.
+type UpdateElectricityMeterReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// UpdateElectricityMeterReqBuilder builds a UpdateElectricityMeterReq with a fluent setter per field.
+type UpdateElectricityMeterReqBuilder struct{ req *UpdateElectricityMeterReq }
+
+// NewUpdateElectricityMeterReqBuilder creates a request builder for UpdateElectricityMeter.
+func NewUpdateElectricityMeterReqBuilder() *UpdateElectricityMeterReqBuilder {
+	return &UpdateElectricityMeterReqBuilder{req: &UpdateElectricityMeterReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *UpdateElectricityMeterReqBuilder) Id(v string) *UpdateElectricityMeterReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *UpdateElectricityMeterReqBuilder) Body(body *models.UpdateElectricityMeterRequestBody) *UpdateElectricityMeterReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *UpdateElectricityMeterReqBuilder) Build() *UpdateElectricityMeterReq { return b.req }
+
+// UpdateElectricityMeterResp is the response for UpdateElectricityMeter.
+type UpdateElectricityMeterResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AdminElectricityMeter `json:"data"`
+}
+
+// UpdateElectricityMeter: 编辑电表主数据
+func (s *Service) UpdateElectricityMeter(ctx context.Context, req *UpdateElectricityMeterReq, opts ...core.RequestOption) (*UpdateElectricityMeterResp, error) {
+	resp := &UpdateElectricityMeterResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/electricity/meters/{id}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// DeleteElectricityMeterReq is the request for DeleteElectricityMeter.
+type DeleteElectricityMeterReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// DeleteElectricityMeterReqBuilder builds a DeleteElectricityMeterReq with a fluent setter per field.
+type DeleteElectricityMeterReqBuilder struct{ req *DeleteElectricityMeterReq }
+
+// NewDeleteElectricityMeterReqBuilder creates a request builder for DeleteElectricityMeter.
+func NewDeleteElectricityMeterReqBuilder() *DeleteElectricityMeterReqBuilder {
+	return &DeleteElectricityMeterReqBuilder{req: &DeleteElectricityMeterReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *DeleteElectricityMeterReqBuilder) Id(v string) *DeleteElectricityMeterReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *DeleteElectricityMeterReqBuilder) Build() *DeleteElectricityMeterReq { return b.req }
+
+// DeleteElectricityMeterResp is the response for DeleteElectricityMeter.
+type DeleteElectricityMeterResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// DeleteElectricityMeter: 删除电表主数据
+func (s *Service) DeleteElectricityMeter(ctx context.Context, req *DeleteElectricityMeterReq, opts ...core.RequestOption) (*DeleteElectricityMeterResp, error) {
+	resp := &DeleteElectricityMeterResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/admin/electricity/meters/{id}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // AdminLoginReq is the request for AdminLogin.
 type AdminLoginReq struct {
 	pathParams  map[string]string
@@ -1117,6 +1330,229 @@ func (s *Service) AdminLogin(ctx context.Context, req *AdminLoginReq, opts ...co
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
 		PathTemplate: "/hduhelp-neo/admin/login",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ListLoginClientsReq is the request for ListLoginClients.
+type ListLoginClientsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListLoginClientsReqBuilder builds a ListLoginClientsReq with a fluent setter per field.
+type ListLoginClientsReqBuilder struct{ req *ListLoginClientsReq }
+
+// NewListLoginClientsReqBuilder creates a request builder for ListLoginClients.
+func NewListLoginClientsReqBuilder() *ListLoginClientsReqBuilder {
+	return &ListLoginClientsReqBuilder{req: &ListLoginClientsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *ListLoginClientsReqBuilder) Build() *ListLoginClientsReq { return b.req }
+
+// ListLoginClientsResp is the response for ListLoginClients.
+type ListLoginClientsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.AdminLoginClientInfo `json:"data"`
+}
+
+// ListLoginClients: 登录客户端列表
+func (s *Service) ListLoginClients(ctx context.Context, req *ListLoginClientsReq, opts ...core.RequestOption) (*ListLoginClientsResp, error) {
+	resp := &ListLoginClientsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/login-clients",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// CreateLoginClientReq is the request for CreateLoginClient.
+type CreateLoginClientReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// CreateLoginClientReqBuilder builds a CreateLoginClientReq with a fluent setter per field.
+type CreateLoginClientReqBuilder struct{ req *CreateLoginClientReq }
+
+// NewCreateLoginClientReqBuilder creates a request builder for CreateLoginClient.
+func NewCreateLoginClientReqBuilder() *CreateLoginClientReqBuilder {
+	return &CreateLoginClientReqBuilder{req: &CreateLoginClientReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *CreateLoginClientReqBuilder) Body(body *models.CreateLoginClientRequestBody) *CreateLoginClientReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *CreateLoginClientReqBuilder) Build() *CreateLoginClientReq { return b.req }
+
+// CreateLoginClientResp is the response for CreateLoginClient.
+type CreateLoginClientResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AdminLoginClientInfo `json:"data"`
+}
+
+// CreateLoginClient: 创建登录客户端
+func (s *Service) CreateLoginClient(ctx context.Context, req *CreateLoginClientReq, opts ...core.RequestOption) (*CreateLoginClientResp, error) {
+	resp := &CreateLoginClientResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/login-clients",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// UpdateLoginClientReq is the request for UpdateLoginClient.
+type UpdateLoginClientReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// UpdateLoginClientReqBuilder builds a UpdateLoginClientReq with a fluent setter per field.
+type UpdateLoginClientReqBuilder struct{ req *UpdateLoginClientReq }
+
+// NewUpdateLoginClientReqBuilder creates a request builder for UpdateLoginClient.
+func NewUpdateLoginClientReqBuilder() *UpdateLoginClientReqBuilder {
+	return &UpdateLoginClientReqBuilder{req: &UpdateLoginClientReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *UpdateLoginClientReqBuilder) Body(body *models.UpdateLoginClientRequestBody) *UpdateLoginClientReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *UpdateLoginClientReqBuilder) Build() *UpdateLoginClientReq { return b.req }
+
+// UpdateLoginClientResp is the response for UpdateLoginClient.
+type UpdateLoginClientResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AdminLoginClientInfo `json:"data"`
+}
+
+// UpdateLoginClient: 编辑登录客户端
+func (s *Service) UpdateLoginClient(ctx context.Context, req *UpdateLoginClientReq, opts ...core.RequestOption) (*UpdateLoginClientResp, error) {
+	resp := &UpdateLoginClientResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/login-clients",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// DeleteLoginClientReq is the request for DeleteLoginClient.
+type DeleteLoginClientReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// DeleteLoginClientReqBuilder builds a DeleteLoginClientReq with a fluent setter per field.
+type DeleteLoginClientReqBuilder struct{ req *DeleteLoginClientReq }
+
+// NewDeleteLoginClientReqBuilder creates a request builder for DeleteLoginClient.
+func NewDeleteLoginClientReqBuilder() *DeleteLoginClientReqBuilder {
+	return &DeleteLoginClientReqBuilder{req: &DeleteLoginClientReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" query parameter.
+func (b *DeleteLoginClientReqBuilder) Id(v string) *DeleteLoginClientReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *DeleteLoginClientReqBuilder) Build() *DeleteLoginClientReq { return b.req }
+
+// DeleteLoginClientResp is the response for DeleteLoginClient.
+type DeleteLoginClientResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// DeleteLoginClient: 删除登录客户端
+func (s *Service) DeleteLoginClient(ctx context.Context, req *DeleteLoginClientReq, opts ...core.RequestOption) (*DeleteLoginClientResp, error) {
+	resp := &DeleteLoginClientResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/admin/login-clients",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// GetLoginClientReq is the request for GetLoginClient.
+type GetLoginClientReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// GetLoginClientReqBuilder builds a GetLoginClientReq with a fluent setter per field.
+type GetLoginClientReqBuilder struct{ req *GetLoginClientReq }
+
+// NewGetLoginClientReqBuilder creates a request builder for GetLoginClient.
+func NewGetLoginClientReqBuilder() *GetLoginClientReqBuilder {
+	return &GetLoginClientReqBuilder{req: &GetLoginClientReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" query parameter.
+func (b *GetLoginClientReqBuilder) Id(v string) *GetLoginClientReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *GetLoginClientReqBuilder) Build() *GetLoginClientReq { return b.req }
+
+// GetLoginClientResp is the response for GetLoginClient.
+type GetLoginClientResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AdminLoginClientInfo `json:"data"`
+}
+
+// GetLoginClient: 登录客户端详情
+func (s *Service) GetLoginClient(ctx context.Context, req *GetLoginClientReq, opts ...core.RequestOption) (*GetLoginClientResp, error) {
+	resp := &GetLoginClientResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/login-clients/get",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -1833,6 +2269,243 @@ func (s *Service) BanUser(ctx context.Context, req *BanUserReq, opts ...core.Req
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "PUT",
 		PathTemplate: "/hduhelp-neo/admin/users/ban",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// UpsertUserCampusIdentityReq is the request for UpsertUserCampusIdentity.
+type UpsertUserCampusIdentityReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// UpsertUserCampusIdentityReqBuilder builds a UpsertUserCampusIdentityReq with a fluent setter per field.
+type UpsertUserCampusIdentityReqBuilder struct{ req *UpsertUserCampusIdentityReq }
+
+// NewUpsertUserCampusIdentityReqBuilder creates a request builder for UpsertUserCampusIdentity.
+func NewUpsertUserCampusIdentityReqBuilder() *UpsertUserCampusIdentityReqBuilder {
+	return &UpsertUserCampusIdentityReqBuilder{req: &UpsertUserCampusIdentityReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *UpsertUserCampusIdentityReqBuilder) Body(body *models.UpsertUserCampusIdentityRequestBody) *UpsertUserCampusIdentityReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *UpsertUserCampusIdentityReqBuilder) Build() *UpsertUserCampusIdentityReq { return b.req }
+
+// UpsertUserCampusIdentityResp is the response for UpsertUserCampusIdentity.
+type UpsertUserCampusIdentityResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// UpsertUserCampusIdentity: 调整用户校园身份
+func (s *Service) UpsertUserCampusIdentity(ctx context.Context, req *UpsertUserCampusIdentityReq, opts ...core.RequestOption) (*UpsertUserCampusIdentityResp, error) {
+	resp := &UpsertUserCampusIdentityResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/users/bindings/campus",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// DeleteUserCampusIdentityReq is the request for DeleteUserCampusIdentity.
+type DeleteUserCampusIdentityReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// DeleteUserCampusIdentityReqBuilder builds a DeleteUserCampusIdentityReq with a fluent setter per field.
+type DeleteUserCampusIdentityReqBuilder struct{ req *DeleteUserCampusIdentityReq }
+
+// NewDeleteUserCampusIdentityReqBuilder creates a request builder for DeleteUserCampusIdentity.
+func NewDeleteUserCampusIdentityReqBuilder() *DeleteUserCampusIdentityReqBuilder {
+	return &DeleteUserCampusIdentityReqBuilder{req: &DeleteUserCampusIdentityReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// UserId sets the "user_id" query parameter.
+func (b *DeleteUserCampusIdentityReqBuilder) UserId(v string) *DeleteUserCampusIdentityReqBuilder {
+	b.req.queryParams["user_id"] = v
+	return b
+}
+
+// IdentityId sets the "identity_id" query parameter.
+func (b *DeleteUserCampusIdentityReqBuilder) IdentityId(v string) *DeleteUserCampusIdentityReqBuilder {
+	b.req.queryParams["identity_id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *DeleteUserCampusIdentityReqBuilder) Build() *DeleteUserCampusIdentityReq { return b.req }
+
+// DeleteUserCampusIdentityResp is the response for DeleteUserCampusIdentity.
+type DeleteUserCampusIdentityResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// DeleteUserCampusIdentity: 删除用户校园身份
+func (s *Service) DeleteUserCampusIdentity(ctx context.Context, req *DeleteUserCampusIdentityReq, opts ...core.RequestOption) (*DeleteUserCampusIdentityResp, error) {
+	resp := &DeleteUserCampusIdentityResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/admin/users/bindings/campus",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// UpsertUserSocialIdentityReq is the request for UpsertUserSocialIdentity.
+type UpsertUserSocialIdentityReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// UpsertUserSocialIdentityReqBuilder builds a UpsertUserSocialIdentityReq with a fluent setter per field.
+type UpsertUserSocialIdentityReqBuilder struct{ req *UpsertUserSocialIdentityReq }
+
+// NewUpsertUserSocialIdentityReqBuilder creates a request builder for UpsertUserSocialIdentity.
+func NewUpsertUserSocialIdentityReqBuilder() *UpsertUserSocialIdentityReqBuilder {
+	return &UpsertUserSocialIdentityReqBuilder{req: &UpsertUserSocialIdentityReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *UpsertUserSocialIdentityReqBuilder) Body(body *models.UpsertUserSocialIdentityRequestBody) *UpsertUserSocialIdentityReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *UpsertUserSocialIdentityReqBuilder) Build() *UpsertUserSocialIdentityReq { return b.req }
+
+// UpsertUserSocialIdentityResp is the response for UpsertUserSocialIdentity.
+type UpsertUserSocialIdentityResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// UpsertUserSocialIdentity: 调整用户第三方绑定
+func (s *Service) UpsertUserSocialIdentity(ctx context.Context, req *UpsertUserSocialIdentityReq, opts ...core.RequestOption) (*UpsertUserSocialIdentityResp, error) {
+	resp := &UpsertUserSocialIdentityResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/users/bindings/social",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// DeleteUserSocialIdentityReq is the request for DeleteUserSocialIdentity.
+type DeleteUserSocialIdentityReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// DeleteUserSocialIdentityReqBuilder builds a DeleteUserSocialIdentityReq with a fluent setter per field.
+type DeleteUserSocialIdentityReqBuilder struct{ req *DeleteUserSocialIdentityReq }
+
+// NewDeleteUserSocialIdentityReqBuilder creates a request builder for DeleteUserSocialIdentity.
+func NewDeleteUserSocialIdentityReqBuilder() *DeleteUserSocialIdentityReqBuilder {
+	return &DeleteUserSocialIdentityReqBuilder{req: &DeleteUserSocialIdentityReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// UserId sets the "user_id" query parameter.
+func (b *DeleteUserSocialIdentityReqBuilder) UserId(v string) *DeleteUserSocialIdentityReqBuilder {
+	b.req.queryParams["user_id"] = v
+	return b
+}
+
+// IdentityId sets the "identity_id" query parameter.
+func (b *DeleteUserSocialIdentityReqBuilder) IdentityId(v string) *DeleteUserSocialIdentityReqBuilder {
+	b.req.queryParams["identity_id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *DeleteUserSocialIdentityReqBuilder) Build() *DeleteUserSocialIdentityReq { return b.req }
+
+// DeleteUserSocialIdentityResp is the response for DeleteUserSocialIdentity.
+type DeleteUserSocialIdentityResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// DeleteUserSocialIdentity: 删除用户第三方绑定
+func (s *Service) DeleteUserSocialIdentity(ctx context.Context, req *DeleteUserSocialIdentityReq, opts ...core.RequestOption) (*DeleteUserSocialIdentityResp, error) {
+	resp := &DeleteUserSocialIdentityResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/admin/users/bindings/social",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SetUserDefaultIdentityReq is the request for SetUserDefaultIdentity.
+type SetUserDefaultIdentityReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// SetUserDefaultIdentityReqBuilder builds a SetUserDefaultIdentityReq with a fluent setter per field.
+type SetUserDefaultIdentityReqBuilder struct{ req *SetUserDefaultIdentityReq }
+
+// NewSetUserDefaultIdentityReqBuilder creates a request builder for SetUserDefaultIdentity.
+func NewSetUserDefaultIdentityReqBuilder() *SetUserDefaultIdentityReqBuilder {
+	return &SetUserDefaultIdentityReqBuilder{req: &SetUserDefaultIdentityReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *SetUserDefaultIdentityReqBuilder) Body(body *models.SetUserDefaultIdentityRequestBody) *SetUserDefaultIdentityReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *SetUserDefaultIdentityReqBuilder) Build() *SetUserDefaultIdentityReq { return b.req }
+
+// SetUserDefaultIdentityResp is the response for SetUserDefaultIdentity.
+type SetUserDefaultIdentityResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// SetUserDefaultIdentity: 设置用户主身份
+func (s *Service) SetUserDefaultIdentity(ctx context.Context, req *SetUserDefaultIdentityReq, opts ...core.RequestOption) (*SetUserDefaultIdentityResp, error) {
+	resp := &SetUserDefaultIdentityResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/users/default-identity",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
