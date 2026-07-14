@@ -153,17 +153,16 @@ so the checked-in code always matches the spec.
 
 ## Releasing
 
-Releases are driven by the `version` field in `release.yaml`:
+This repository is a generated mirror; releases are driven from the upstream
+`hduhelp-neo` repository. Bump the `sdk` key in its `release.yml` and push to
+`main`: that pipeline regenerates the SDK from the upstream
+`swagger/openapi.yaml`, pushes the vendored `openapi.yaml` and generated client
+here, and creates the annotated tag `v<version>`. Tagging is the entire publish
+step for a Go module — consumers then run
+`go get github.com/hduhelp/hduhelp-neo-sdk-go@v<version>`.
 
-1. Regenerate from the latest `openapi.yaml` and commit.
-2. Bump `version` in `release.yaml` (major.minor.patch).
-3. Push to `main`.
-
-The Release workflow reads `version` and, if the tag `v<version>` does not
-exist, creates and pushes it. That tag is the entire publish step for a Go
-module — consumers then run
-`go get github.com/hduhelp/hduhelp-neo-sdk-go@v<version>`. Tags are never
-pushed by hand.
+The vendored `openapi.yaml`, the generated files, the version, and the tags are
+all owned by that pipeline. Do not edit them here by hand.
 
 ## License
 
