@@ -17,84 +17,44 @@ type Service struct{ config *core.Config }
 // NewService binds the Academic service to a client config.
 func NewService(config *core.Config) *Service { return &Service{config: config} }
 
-// AllPersonInfoReq is the request for AllPersonInfo.
-type AllPersonInfoReq struct {
+// CityByCodeReq is the request for CityByCode.
+type CityByCodeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// AllPersonInfoReqBuilder builds a AllPersonInfoReq with a fluent setter per field.
-type AllPersonInfoReqBuilder struct{ req *AllPersonInfoReq }
+// CityByCodeReqBuilder builds a CityByCodeReq with a fluent setter per field.
+type CityByCodeReqBuilder struct{ req *CityByCodeReq }
 
-// NewAllPersonInfoReqBuilder creates a request builder for AllPersonInfo.
-func NewAllPersonInfoReqBuilder() *AllPersonInfoReqBuilder {
-	return &AllPersonInfoReqBuilder{req: &AllPersonInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewCityByCodeReqBuilder creates a request builder for CityByCode.
+func NewCityByCodeReqBuilder() *CityByCodeReqBuilder {
+	return &CityByCodeReqBuilder{req: &CityByCodeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// Build finalizes the request.
-func (b *AllPersonInfoReqBuilder) Build() *AllPersonInfoReq { return b.req }
-
-// AllPersonInfoResp is the response for AllPersonInfo.
-type AllPersonInfoResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.PersonInfo `json:"data"`
-}
-
-// AllPersonInfo: 查询全部在校人员信息
-func (s *Service) AllPersonInfo(ctx context.Context, req *AllPersonInfoReq, opts ...core.RequestOption) (*AllPersonInfoResp, error) {
-	resp := &AllPersonInfoResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/all/person/info",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ClassDetailReq is the request for ClassDetail.
-type ClassDetailReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ClassDetailReqBuilder builds a ClassDetailReq with a fluent setter per field.
-type ClassDetailReqBuilder struct{ req *ClassDetailReq }
-
-// NewClassDetailReqBuilder creates a request builder for ClassDetail.
-func NewClassDetailReqBuilder() *ClassDetailReqBuilder {
-	return &ClassDetailReqBuilder{req: &ClassDetailReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// ClassID sets the "classID" query parameter.
-func (b *ClassDetailReqBuilder) ClassID(v string) *ClassDetailReqBuilder {
-	b.req.queryParams["classID"] = v
+// Code sets the "code" query parameter.
+func (b *CityByCodeReqBuilder) Code(v string) *CityByCodeReqBuilder {
+	b.req.queryParams["code"] = v
 	return b
 }
 
 // Build finalizes the request.
-func (b *ClassDetailReqBuilder) Build() *ClassDetailReq { return b.req }
+func (b *CityByCodeReqBuilder) Build() *CityByCodeReq { return b.req }
 
-// ClassDetailResp is the response for ClassDetail.
-type ClassDetailResp struct {
+// CityByCodeResp is the response for CityByCode.
+type CityByCodeResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.ClassInfo `json:"data"`
+	Data *models.CityByCodeData `json:"data"`
 }
 
-// ClassDetail: 获取课程详情
-func (s *Service) ClassDetail(ctx context.Context, req *ClassDetailReq, opts ...core.RequestOption) (*ClassDetailResp, error) {
-	resp := &ClassDetailResp{}
+// CityByCode: 按城市编码查询城市名称
+func (s *Service) CityByCode(ctx context.Context, req *CityByCodeReq, opts ...core.RequestOption) (*CityByCodeResp, error) {
+	resp := &CityByCodeResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/class/detail",
+		PathTemplate: "/hduhelp-neo/academic/city-code",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -132,7 +92,7 @@ func (b *ClassQueryFavGetReqBuilder) Build() *ClassQueryFavGetReq { return b.req
 type ClassQueryFavGetResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data []string `json:"data"`
+	Data []models.FavClass `json:"data"`
 }
 
 // ClassQueryFavGet: 获取选课收藏
@@ -223,7 +183,7 @@ func (b *ClassQueryFavRankReqBuilder) Build() *ClassQueryFavRankReq { return b.r
 type ClassQueryFavRankResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data []string `json:"data"`
+	Data []models.FavRankItem `json:"data"`
 }
 
 // ClassQueryFavRank: 选课收藏排行
@@ -232,52 +192,6 @@ func (s *Service) ClassQueryFavRank(ctx context.Context, req *ClassQueryFavRankR
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/academic/class/fav/rank",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ClassQueryGetReq is the request for ClassQueryGet.
-type ClassQueryGetReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ClassQueryGetReqBuilder builds a ClassQueryGetReq with a fluent setter per field.
-type ClassQueryGetReqBuilder struct{ req *ClassQueryGetReq }
-
-// NewClassQueryGetReqBuilder creates a request builder for ClassQueryGet.
-func NewClassQueryGetReqBuilder() *ClassQueryGetReqBuilder {
-	return &ClassQueryGetReqBuilder{req: &ClassQueryGetReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Classes sets the "classes" query parameter.
-func (b *ClassQueryGetReqBuilder) Classes(v []string) *ClassQueryGetReqBuilder {
-	b.req.queryParams["classes"] = strings.Join(v, ",")
-	return b
-}
-
-// Build finalizes the request.
-func (b *ClassQueryGetReqBuilder) Build() *ClassQueryGetReq { return b.req }
-
-// ClassQueryGetResp is the response for ClassQueryGet.
-type ClassQueryGetResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ClassQueryInfo `json:"data"`
-}
-
-// ClassQueryGet: 按班级号批量取详情
-func (s *Service) ClassQueryGet(ctx context.Context, req *ClassQueryGetReq, opts ...core.RequestOption) (*ClassQueryGetResp, error) {
-	resp := &ClassQueryGetResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/class/get",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -309,7 +223,7 @@ func (b *ClassQueryMapReqBuilder) Build() *ClassQueryMapReq { return b.req }
 type ClassQueryMapResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data string `json:"data"`
+	Data *models.ClassQueryMapData `json:"data"`
 }
 
 // ClassQueryMap: 选课字典映射
@@ -406,6 +320,12 @@ func (b *GetClassroomsReqBuilder) BuildingID(v string) *GetClassroomsReqBuilder 
 	return b
 }
 
+// Status sets the "status" query parameter.
+func (b *GetClassroomsReqBuilder) Status(v string) *GetClassroomsReqBuilder {
+	b.req.queryParams["status"] = v
+	return b
+}
+
 // Week sets the "week" query parameter.
 func (b *GetClassroomsReqBuilder) Week(v int32) *GetClassroomsReqBuilder {
 	b.req.queryParams["week"] = strconv.FormatInt(int64(v), 10)
@@ -424,6 +344,18 @@ func (b *GetClassroomsReqBuilder) Section(v []string) *GetClassroomsReqBuilder {
 	return b
 }
 
+// SchoolYear sets the "schoolYear" query parameter.
+func (b *GetClassroomsReqBuilder) SchoolYear(v string) *GetClassroomsReqBuilder {
+	b.req.queryParams["schoolYear"] = v
+	return b
+}
+
+// Semester sets the "semester" query parameter.
+func (b *GetClassroomsReqBuilder) Semester(v string) *GetClassroomsReqBuilder {
+	b.req.queryParams["semester"] = v
+	return b
+}
+
 // Build finalizes the request.
 func (b *GetClassroomsReqBuilder) Build() *GetClassroomsReq { return b.req }
 
@@ -434,88 +366,12 @@ type GetClassroomsResp struct {
 	Data []models.ClassroomItem `json:"data"`
 }
 
-// GetClassrooms: 获取教室列表(含自习标记)
+// GetClassrooms: 获取教室列表
 func (s *Service) GetClassrooms(ctx context.Context, req *GetClassroomsReq, opts ...core.RequestOption) (*GetClassroomsResp, error) {
 	resp := &GetClassroomsResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/classroom/list",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// UnusedClassroomsReq is the request for UnusedClassrooms.
-type UnusedClassroomsReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// UnusedClassroomsReqBuilder builds a UnusedClassroomsReq with a fluent setter per field.
-type UnusedClassroomsReqBuilder struct{ req *UnusedClassroomsReq }
-
-// NewUnusedClassroomsReqBuilder creates a request builder for UnusedClassrooms.
-func NewUnusedClassroomsReqBuilder() *UnusedClassroomsReqBuilder {
-	return &UnusedClassroomsReqBuilder{req: &UnusedClassroomsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// BuildingID sets the "buildingID" query parameter.
-func (b *UnusedClassroomsReqBuilder) BuildingID(v string) *UnusedClassroomsReqBuilder {
-	b.req.queryParams["buildingID"] = v
-	return b
-}
-
-// Week sets the "week" query parameter.
-func (b *UnusedClassroomsReqBuilder) Week(v int32) *UnusedClassroomsReqBuilder {
-	b.req.queryParams["week"] = strconv.FormatInt(int64(v), 10)
-	return b
-}
-
-// Weekday sets the "weekday" query parameter.
-func (b *UnusedClassroomsReqBuilder) Weekday(v int32) *UnusedClassroomsReqBuilder {
-	b.req.queryParams["weekday"] = strconv.FormatInt(int64(v), 10)
-	return b
-}
-
-// Section sets the "section" query parameter.
-func (b *UnusedClassroomsReqBuilder) Section(v []string) *UnusedClassroomsReqBuilder {
-	b.req.queryParams["section"] = strings.Join(v, ",")
-	return b
-}
-
-// SchoolYear sets the "schoolYear" query parameter.
-func (b *UnusedClassroomsReqBuilder) SchoolYear(v string) *UnusedClassroomsReqBuilder {
-	b.req.queryParams["schoolYear"] = v
-	return b
-}
-
-// Semester sets the "semester" query parameter.
-func (b *UnusedClassroomsReqBuilder) Semester(v string) *UnusedClassroomsReqBuilder {
-	b.req.queryParams["semester"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *UnusedClassroomsReqBuilder) Build() *UnusedClassroomsReq { return b.req }
-
-// UnusedClassroomsResp is the response for UnusedClassrooms.
-type UnusedClassroomsResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.UnusedClassroomItem `json:"data"`
-}
-
-// UnusedClassrooms: 获取空闲教室
-func (s *Service) UnusedClassrooms(ctx context.Context, req *UnusedClassroomsReq, opts ...core.RequestOption) (*UnusedClassroomsResp, error) {
-	resp := &UnusedClassroomsResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/classroom/unused",
+		PathTemplate: "/hduhelp-neo/academic/classroom",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -582,52 +438,6 @@ func (s *Service) ClassroomUsage(ctx context.Context, req *ClassroomUsageReq, op
 	return resp, err
 }
 
-// CityByCodeReq is the request for CityByCode.
-type CityByCodeReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// CityByCodeReqBuilder builds a CityByCodeReq with a fluent setter per field.
-type CityByCodeReqBuilder struct{ req *CityByCodeReq }
-
-// NewCityByCodeReqBuilder creates a request builder for CityByCode.
-func NewCityByCodeReqBuilder() *CityByCodeReqBuilder {
-	return &CityByCodeReqBuilder{req: &CityByCodeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Code sets the "code" query parameter.
-func (b *CityByCodeReqBuilder) Code(v string) *CityByCodeReqBuilder {
-	b.req.queryParams["code"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *CityByCodeReqBuilder) Build() *CityByCodeReq { return b.req }
-
-// CityByCodeResp is the response for CityByCode.
-type CityByCodeResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.CityByCodeData `json:"data"`
-}
-
-// CityByCode: 按城市编码查询城市名称
-func (s *Service) CityByCode(ctx context.Context, req *CityByCodeReq, opts ...core.RequestOption) (*CityByCodeResp, error) {
-	resp := &CityByCodeResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/code/city",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
 // AcademicConfigReq is the request for AcademicConfig.
 type AcademicConfigReq struct {
 	pathParams  map[string]string
@@ -668,44 +478,448 @@ func (s *Service) AcademicConfig(ctx context.Context, req *AcademicConfigReq, op
 	return resp, err
 }
 
-// FreshmanBaseReq is the request for FreshmanBase.
-type FreshmanBaseReq struct {
+// CourseReq is the request for Course.
+type CourseReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// FreshmanBaseReqBuilder builds a FreshmanBaseReq with a fluent setter per field.
-type FreshmanBaseReqBuilder struct{ req *FreshmanBaseReq }
+// CourseReqBuilder builds a CourseReq with a fluent setter per field.
+type CourseReqBuilder struct{ req *CourseReq }
 
-// NewFreshmanBaseReqBuilder creates a request builder for FreshmanBase.
-func NewFreshmanBaseReqBuilder() *FreshmanBaseReqBuilder {
-	return &FreshmanBaseReqBuilder{req: &FreshmanBaseReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewCourseReqBuilder creates a request builder for Course.
+func NewCourseReqBuilder() *CourseReqBuilder {
+	return &CourseReqBuilder{req: &CourseReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" query parameter.
+func (b *CourseReqBuilder) Id(v []string) *CourseReqBuilder {
+	b.req.queryParams["id"] = strings.Join(v, ",")
+	return b
+}
+
+// Build finalizes the request.
+func (b *CourseReqBuilder) Build() *CourseReq { return b.req }
+
+// CourseResp is the response for Course.
+type CourseResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ClassQueryInfo `json:"data"`
+}
+
+// Course: 按班级号批量查询课程
+func (s *Service) Course(ctx context.Context, req *CourseReq, opts ...core.RequestOption) (*CourseResp, error) {
+	resp := &CourseResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/course",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// StudentSelectionsReq is the request for StudentSelections.
+type StudentSelectionsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// StudentSelectionsReqBuilder builds a StudentSelectionsReq with a fluent setter per field.
+type StudentSelectionsReqBuilder struct{ req *StudentSelectionsReq }
+
+// NewStudentSelectionsReqBuilder creates a request builder for StudentSelections.
+func NewStudentSelectionsReqBuilder() *StudentSelectionsReqBuilder {
+	return &StudentSelectionsReqBuilder{req: &StudentSelectionsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// SchoolYear sets the "schoolYear" query parameter.
+func (b *StudentSelectionsReqBuilder) SchoolYear(v string) *StudentSelectionsReqBuilder {
+	b.req.queryParams["schoolYear"] = v
+	return b
+}
+
+// Semester sets the "semester" query parameter.
+func (b *StudentSelectionsReqBuilder) Semester(v string) *StudentSelectionsReqBuilder {
+	b.req.queryParams["semester"] = v
+	return b
 }
 
 // StaffID sets the "X-Staff-Id" header parameter.
-func (b *FreshmanBaseReqBuilder) StaffID(v string) *FreshmanBaseReqBuilder {
+func (b *StudentSelectionsReqBuilder) StaffID(v string) *StudentSelectionsReqBuilder {
 	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
 // Build finalizes the request.
-func (b *FreshmanBaseReqBuilder) Build() *FreshmanBaseReq { return b.req }
+func (b *StudentSelectionsReqBuilder) Build() *StudentSelectionsReq { return b.req }
 
-// FreshmanBaseResp is the response for FreshmanBase.
-type FreshmanBaseResp struct {
+// StudentSelectionsResp is the response for StudentSelections.
+type StudentSelectionsResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.FreshmanBaseInfo `json:"data"`
+	Data []models.StudentCourseSelection `json:"data"`
 }
 
-// FreshmanBase: 查询新生录取基础信息
-func (s *Service) FreshmanBase(ctx context.Context, req *FreshmanBaseReq, opts ...core.RequestOption) (*FreshmanBaseResp, error) {
-	resp := &FreshmanBaseResp{}
+// StudentSelections: 查询本人选课信息
+func (s *Service) StudentSelections(ctx context.Context, req *StudentSelectionsReq, opts ...core.RequestOption) (*StudentSelectionsResp, error) {
+	resp := &StudentSelectionsResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/freshman/base",
+		PathTemplate: "/hduhelp-neo/academic/course-selection",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// StudentBirthdaysReq is the request for StudentBirthdays.
+type StudentBirthdaysReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// StudentBirthdaysReqBuilder builds a StudentBirthdaysReq with a fluent setter per field.
+type StudentBirthdaysReqBuilder struct{ req *StudentBirthdaysReq }
+
+// NewStudentBirthdaysReqBuilder creates a request builder for StudentBirthdays.
+func NewStudentBirthdaysReqBuilder() *StudentBirthdaysReqBuilder {
+	return &StudentBirthdaysReqBuilder{req: &StudentBirthdaysReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Month sets the "month" query parameter.
+func (b *StudentBirthdaysReqBuilder) Month(v int32) *StudentBirthdaysReqBuilder {
+	b.req.queryParams["month"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Day sets the "day" query parameter.
+func (b *StudentBirthdaysReqBuilder) Day(v int32) *StudentBirthdaysReqBuilder {
+	b.req.queryParams["day"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *StudentBirthdaysReqBuilder) Build() *StudentBirthdaysReq { return b.req }
+
+// StudentBirthdaysResp is the response for StudentBirthdays.
+type StudentBirthdaysResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.StudentBirthdayInfo `json:"data"`
+}
+
+// StudentBirthdays: 查询生日目录
+func (s *Service) StudentBirthdays(ctx context.Context, req *StudentBirthdaysReq, opts ...core.RequestOption) (*StudentBirthdaysResp, error) {
+	resp := &StudentBirthdaysResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/directory/birthdays",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// StudentCountReq is the request for StudentCount.
+type StudentCountReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// StudentCountReqBuilder builds a StudentCountReq with a fluent setter per field.
+type StudentCountReqBuilder struct{ req *StudentCountReq }
+
+// NewStudentCountReqBuilder creates a request builder for StudentCount.
+func NewStudentCountReqBuilder() *StudentCountReqBuilder {
+	return &StudentCountReqBuilder{req: &StudentCountReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Grade sets the "grade" query parameter.
+func (b *StudentCountReqBuilder) Grade(v []string) *StudentCountReqBuilder {
+	b.req.queryParams["grade"] = strings.Join(v, ",")
+	return b
+}
+
+// Build finalizes the request.
+func (b *StudentCountReqBuilder) Build() *StudentCountReq { return b.req }
+
+// StudentCountResp is the response for StudentCount.
+type StudentCountResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.StudentCountData `json:"data"`
+}
+
+// StudentCount: 按年级统计学生人数
+func (s *Service) StudentCount(ctx context.Context, req *StudentCountReq, opts ...core.RequestOption) (*StudentCountResp, error) {
+	resp := &StudentCountResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/directory/count",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// GlobalStudentGradeReq is the request for GlobalStudentGrade.
+type GlobalStudentGradeReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// GlobalStudentGradeReqBuilder builds a GlobalStudentGradeReq with a fluent setter per field.
+type GlobalStudentGradeReqBuilder struct{ req *GlobalStudentGradeReq }
+
+// NewGlobalStudentGradeReqBuilder creates a request builder for GlobalStudentGrade.
+func NewGlobalStudentGradeReqBuilder() *GlobalStudentGradeReqBuilder {
+	return &GlobalStudentGradeReqBuilder{req: &GlobalStudentGradeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// SchoolYear sets the "schoolYear" query parameter.
+func (b *GlobalStudentGradeReqBuilder) SchoolYear(v string) *GlobalStudentGradeReqBuilder {
+	b.req.queryParams["schoolYear"] = v
+	return b
+}
+
+// Semester sets the "semester" query parameter.
+func (b *GlobalStudentGradeReqBuilder) Semester(v string) *GlobalStudentGradeReqBuilder {
+	b.req.queryParams["semester"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *GlobalStudentGradeReqBuilder) Build() *GlobalStudentGradeReq { return b.req }
+
+// GlobalStudentGradeResp is the response for GlobalStudentGrade.
+type GlobalStudentGradeResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.GlobalStudentGrade `json:"data"`
+}
+
+// GlobalStudentGrade: 查询成绩目录
+func (s *Service) GlobalStudentGrade(ctx context.Context, req *GlobalStudentGradeReq, opts ...core.RequestOption) (*GlobalStudentGradeResp, error) {
+	resp := &GlobalStudentGradeResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/directory/grade",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AllPersonInfoReq is the request for AllPersonInfo.
+type AllPersonInfoReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AllPersonInfoReqBuilder builds a AllPersonInfoReq with a fluent setter per field.
+type AllPersonInfoReqBuilder struct{ req *AllPersonInfoReq }
+
+// NewAllPersonInfoReqBuilder creates a request builder for AllPersonInfo.
+func NewAllPersonInfoReqBuilder() *AllPersonInfoReqBuilder {
+	return &AllPersonInfoReqBuilder{req: &AllPersonInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *AllPersonInfoReqBuilder) Build() *AllPersonInfoReq { return b.req }
+
+// AllPersonInfoResp is the response for AllPersonInfo.
+type AllPersonInfoResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.PersonInfo `json:"data"`
+}
+
+// AllPersonInfo: 查询在校人员目录
+func (s *Service) AllPersonInfo(ctx context.Context, req *AllPersonInfoReq, opts ...core.RequestOption) (*AllPersonInfoResp, error) {
+	resp := &AllPersonInfoResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/directory/person",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// StudentDormReq is the request for StudentDorm.
+type StudentDormReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// StudentDormReqBuilder builds a StudentDormReq with a fluent setter per field.
+type StudentDormReqBuilder struct{ req *StudentDormReq }
+
+// NewStudentDormReqBuilder creates a request builder for StudentDorm.
+func NewStudentDormReqBuilder() *StudentDormReqBuilder {
+	return &StudentDormReqBuilder{req: &StudentDormReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *StudentDormReqBuilder) StaffID(v string) *StudentDormReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *StudentDormReqBuilder) Build() *StudentDormReq { return b.req }
+
+// StudentDormResp is the response for StudentDorm.
+type StudentDormResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.DormInfo `json:"data"`
+}
+
+// StudentDorm: 查询本人宿舍信息
+func (s *Service) StudentDorm(ctx context.Context, req *StudentDormReq, opts ...core.RequestOption) (*StudentDormResp, error) {
+	resp := &StudentDormResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/dorm",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// StudentExamReq is the request for StudentExam.
+type StudentExamReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// StudentExamReqBuilder builds a StudentExamReq with a fluent setter per field.
+type StudentExamReqBuilder struct{ req *StudentExamReq }
+
+// NewStudentExamReqBuilder creates a request builder for StudentExam.
+func NewStudentExamReqBuilder() *StudentExamReqBuilder {
+	return &StudentExamReqBuilder{req: &StudentExamReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// SchoolYear sets the "schoolYear" query parameter.
+func (b *StudentExamReqBuilder) SchoolYear(v string) *StudentExamReqBuilder {
+	b.req.queryParams["schoolYear"] = v
+	return b
+}
+
+// Semester sets the "semester" query parameter.
+func (b *StudentExamReqBuilder) Semester(v string) *StudentExamReqBuilder {
+	b.req.queryParams["semester"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *StudentExamReqBuilder) StaffID(v string) *StudentExamReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *StudentExamReqBuilder) Build() *StudentExamReq { return b.req }
+
+// StudentExamResp is the response for StudentExam.
+type StudentExamResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.StudentExam `json:"data"`
+}
+
+// StudentExam: 查询本人考试安排
+func (s *Service) StudentExam(ctx context.Context, req *StudentExamReq, opts ...core.RequestOption) (*StudentExamResp, error) {
+	resp := &StudentExamResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/exam",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// DailyExamReq is the request for DailyExam.
+type DailyExamReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// DailyExamReqBuilder builds a DailyExamReq with a fluent setter per field.
+type DailyExamReqBuilder struct{ req *DailyExamReq }
+
+// NewDailyExamReqBuilder creates a request builder for DailyExam.
+func NewDailyExamReqBuilder() *DailyExamReqBuilder {
+	return &DailyExamReqBuilder{req: &DailyExamReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Date sets the "date" query parameter.
+func (b *DailyExamReqBuilder) Date(v string) *DailyExamReqBuilder {
+	b.req.queryParams["date"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *DailyExamReqBuilder) StaffID(v string) *DailyExamReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *DailyExamReqBuilder) Build() *DailyExamReq { return b.req }
+
+// DailyExamResp is the response for DailyExam.
+type DailyExamResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.StudentExam `json:"data"`
+}
+
+// DailyExam: 查询本人指定日期的考试安排
+func (s *Service) DailyExam(ctx context.Context, req *DailyExamReq, opts ...core.RequestOption) (*DailyExamResp, error) {
+	resp := &DailyExamResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/exam/today",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -746,7 +960,7 @@ type FreshmanDetailResp struct {
 	Data *models.FreshmanDetail `json:"data"`
 }
 
-// FreshmanDetail: 查询新生详细信息
+// FreshmanDetail: 查询新生信息
 func (s *Service) FreshmanDetail(ctx context.Context, req *FreshmanDetailReq, opts ...core.RequestOption) (*FreshmanDetailResp, error) {
 	resp := &FreshmanDetailResp{}
 	err := s.config.Do(ctx, &core.APIReq{
@@ -806,96 +1020,96 @@ func (s *Service) FreshmanRoommates(ctx context.Context, req *FreshmanRoommatesR
 	return resp, err
 }
 
-// GlobalStudentGradeReq is the request for GlobalStudentGrade.
-type GlobalStudentGradeReq struct {
+// PostStudentGateAccessReq is the request for PostStudentGateAccess.
+type PostStudentGateAccessReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// GlobalStudentGradeReqBuilder builds a GlobalStudentGradeReq with a fluent setter per field.
-type GlobalStudentGradeReqBuilder struct{ req *GlobalStudentGradeReq }
+// PostStudentGateAccessReqBuilder builds a PostStudentGateAccessReq with a fluent setter per field.
+type PostStudentGateAccessReqBuilder struct{ req *PostStudentGateAccessReq }
 
-// NewGlobalStudentGradeReqBuilder creates a request builder for GlobalStudentGrade.
-func NewGlobalStudentGradeReqBuilder() *GlobalStudentGradeReqBuilder {
-	return &GlobalStudentGradeReqBuilder{req: &GlobalStudentGradeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewPostStudentGateAccessReqBuilder creates a request builder for PostStudentGateAccess.
+func NewPostStudentGateAccessReqBuilder() *PostStudentGateAccessReqBuilder {
+	return &PostStudentGateAccessReqBuilder{req: &PostStudentGateAccessReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *PostStudentGateAccessReqBuilder) Build() *PostStudentGateAccessReq { return b.req }
+
+// PostStudentGateAccessResp is the response for PostStudentGateAccess.
+type PostStudentGateAccessResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.GateAccessData `json:"data"`
+}
+
+// PostStudentGateAccess: 上报学生门禁放行时段
+func (s *Service) PostStudentGateAccess(ctx context.Context, req *PostStudentGateAccessReq, opts ...core.RequestOption) (*PostStudentGateAccessResp, error) {
+	resp := &PostStudentGateAccessResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/academic/gate-access",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// StudentGradeReq is the request for StudentGrade.
+type StudentGradeReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// StudentGradeReqBuilder builds a StudentGradeReq with a fluent setter per field.
+type StudentGradeReqBuilder struct{ req *StudentGradeReq }
+
+// NewStudentGradeReqBuilder creates a request builder for StudentGrade.
+func NewStudentGradeReqBuilder() *StudentGradeReqBuilder {
+	return &StudentGradeReqBuilder{req: &StudentGradeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // SchoolYear sets the "schoolYear" query parameter.
-func (b *GlobalStudentGradeReqBuilder) SchoolYear(v string) *GlobalStudentGradeReqBuilder {
+func (b *StudentGradeReqBuilder) SchoolYear(v string) *StudentGradeReqBuilder {
 	b.req.queryParams["schoolYear"] = v
 	return b
 }
 
 // Semester sets the "semester" query parameter.
-func (b *GlobalStudentGradeReqBuilder) Semester(v string) *GlobalStudentGradeReqBuilder {
+func (b *StudentGradeReqBuilder) Semester(v string) *StudentGradeReqBuilder {
 	b.req.queryParams["semester"] = v
 	return b
 }
 
-// Build finalizes the request.
-func (b *GlobalStudentGradeReqBuilder) Build() *GlobalStudentGradeReq { return b.req }
-
-// GlobalStudentGradeResp is the response for GlobalStudentGrade.
-type GlobalStudentGradeResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.GlobalStudentGrade `json:"data"`
-}
-
-// GlobalStudentGrade: 查询全局成绩
-func (s *Service) GlobalStudentGrade(ctx context.Context, req *GlobalStudentGradeReq, opts ...core.RequestOption) (*GlobalStudentGradeResp, error) {
-	resp := &GlobalStudentGradeResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/global/student/grade",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// GradesReq is the request for Grades.
-type GradesReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// GradesReqBuilder builds a GradesReq with a fluent setter per field.
-type GradesReqBuilder struct{ req *GradesReq }
-
-// NewGradesReqBuilder creates a request builder for Grades.
-func NewGradesReqBuilder() *GradesReqBuilder {
-	return &GradesReqBuilder{req: &GradesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
 // StaffID sets the "X-Staff-Id" header parameter.
-func (b *GradesReqBuilder) StaffID(v string) *GradesReqBuilder {
+func (b *StudentGradeReqBuilder) StaffID(v string) *StudentGradeReqBuilder {
 	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
 // Build finalizes the request.
-func (b *GradesReqBuilder) Build() *GradesReq { return b.req }
+func (b *StudentGradeReqBuilder) Build() *StudentGradeReq { return b.req }
 
-// GradesResp is the response for Grades.
-type GradesResp struct {
+// StudentGradeResp is the response for StudentGrade.
+type StudentGradeResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.GradesData `json:"data"`
+	Data *models.StudentGradeData `json:"data"`
 }
 
-// Grades: 获取成绩与绩点
-func (s *Service) Grades(ctx context.Context, req *GradesReq, opts ...core.RequestOption) (*GradesResp, error) {
-	resp := &GradesResp{}
+// StudentGrade: 查询本人成绩与绩点
+func (s *Service) StudentGrade(ctx context.Context, req *StudentGradeReq, opts ...core.RequestOption) (*StudentGradeResp, error) {
+	resp := &StudentGradeResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/grades",
+		PathTemplate: "/hduhelp-neo/academic/grade",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -904,56 +1118,108 @@ func (s *Service) Grades(ctx context.Context, req *GradesReq, opts ...core.Reque
 	return resp, err
 }
 
-// LibraryFloorsReq is the request for LibraryFloors.
-type LibraryFloorsReq struct {
+// StudentStaySchoolReq is the request for StudentStaySchool.
+type StudentStaySchoolReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// LibraryFloorsReqBuilder builds a LibraryFloorsReq with a fluent setter per field.
-type LibraryFloorsReqBuilder struct{ req *LibraryFloorsReq }
+// StudentStaySchoolReqBuilder builds a StudentStaySchoolReq with a fluent setter per field.
+type StudentStaySchoolReqBuilder struct{ req *StudentStaySchoolReq }
 
-// NewLibraryFloorsReqBuilder creates a request builder for LibraryFloors.
-func NewLibraryFloorsReqBuilder() *LibraryFloorsReqBuilder {
-	return &LibraryFloorsReqBuilder{req: &LibraryFloorsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewStudentStaySchoolReqBuilder creates a request builder for StudentStaySchool.
+func NewStudentStaySchoolReqBuilder() *StudentStaySchoolReqBuilder {
+	return &StudentStaySchoolReqBuilder{req: &StudentStaySchoolReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *StudentStaySchoolReqBuilder) StaffID(v string) *StudentStaySchoolReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *StudentStaySchoolReqBuilder) Build() *StudentStaySchoolReq { return b.req }
+
+// StudentStaySchoolResp is the response for StudentStaySchool.
+type StudentStaySchoolResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.StudentStaySchoolInfo `json:"data"`
+}
+
+// StudentStaySchool: 查询本人假期留校信息
+func (s *Service) StudentStaySchool(ctx context.Context, req *StudentStaySchoolReq, opts ...core.RequestOption) (*StudentStaySchoolResp, error) {
+	resp := &StudentStaySchoolResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/holiday-stay",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// LibraryAttendanceReq is the request for LibraryAttendance.
+type LibraryAttendanceReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// LibraryAttendanceReqBuilder builds a LibraryAttendanceReq with a fluent setter per field.
+type LibraryAttendanceReqBuilder struct{ req *LibraryAttendanceReq }
+
+// NewLibraryAttendanceReqBuilder creates a request builder for LibraryAttendance.
+func NewLibraryAttendanceReqBuilder() *LibraryAttendanceReqBuilder {
+	return &LibraryAttendanceReqBuilder{req: &LibraryAttendanceReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Dimension sets the "dimension" query parameter: stats | time-slots | floors | months
+func (b *LibraryAttendanceReqBuilder) Dimension(v string) *LibraryAttendanceReqBuilder {
+	b.req.queryParams["dimension"] = v
+	return b
 }
 
 // Start sets the "start" query parameter: yyyy-MM-dd
-func (b *LibraryFloorsReqBuilder) Start(v string) *LibraryFloorsReqBuilder {
+func (b *LibraryAttendanceReqBuilder) Start(v string) *LibraryAttendanceReqBuilder {
 	b.req.queryParams["start"] = v
 	return b
 }
 
 // End sets the "end" query parameter: yyyy-MM-dd
-func (b *LibraryFloorsReqBuilder) End(v string) *LibraryFloorsReqBuilder {
+func (b *LibraryAttendanceReqBuilder) End(v string) *LibraryAttendanceReqBuilder {
 	b.req.queryParams["end"] = v
 	return b
 }
 
 // StaffID sets the "X-Staff-Id" header parameter.
-func (b *LibraryFloorsReqBuilder) StaffID(v string) *LibraryFloorsReqBuilder {
+func (b *LibraryAttendanceReqBuilder) StaffID(v string) *LibraryAttendanceReqBuilder {
 	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
 // Build finalizes the request.
-func (b *LibraryFloorsReqBuilder) Build() *LibraryFloorsReq { return b.req }
+func (b *LibraryAttendanceReqBuilder) Build() *LibraryAttendanceReq { return b.req }
 
-// LibraryFloorsResp is the response for LibraryFloors.
-type LibraryFloorsResp struct {
+// LibraryAttendanceResp is the response for LibraryAttendance.
+type LibraryAttendanceResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data []models.FloorStat `json:"data"`
+	Data *models.LibraryAttendanceData `json:"data"`
 }
 
-// LibraryFloors: 查询本人常去楼层分布
-func (s *Service) LibraryFloors(ctx context.Context, req *LibraryFloorsReq, opts ...core.RequestOption) (*LibraryFloorsResp, error) {
-	resp := &LibraryFloorsResp{}
+// LibraryAttendance: 按维度查询本人图书馆在馆统计
+func (s *Service) LibraryAttendance(ctx context.Context, req *LibraryAttendanceReq, opts ...core.RequestOption) (*LibraryAttendanceResp, error) {
+	resp := &LibraryAttendanceResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/library/attendance/floors",
+		PathTemplate: "/hduhelp-neo/academic/library/attendance",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -962,856 +1228,86 @@ func (s *Service) LibraryFloors(ctx context.Context, req *LibraryFloorsReq, opts
 	return resp, err
 }
 
-// LibraryMonthsReq is the request for LibraryMonths.
-type LibraryMonthsReq struct {
+// LibraryReadingReq is the request for LibraryReading.
+type LibraryReadingReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// LibraryMonthsReqBuilder builds a LibraryMonthsReq with a fluent setter per field.
-type LibraryMonthsReqBuilder struct{ req *LibraryMonthsReq }
+// LibraryReadingReqBuilder builds a LibraryReadingReq with a fluent setter per field.
+type LibraryReadingReqBuilder struct{ req *LibraryReadingReq }
 
-// NewLibraryMonthsReqBuilder creates a request builder for LibraryMonths.
-func NewLibraryMonthsReqBuilder() *LibraryMonthsReqBuilder {
-	return &LibraryMonthsReqBuilder{req: &LibraryMonthsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewLibraryReadingReqBuilder creates a request builder for LibraryReading.
+func NewLibraryReadingReqBuilder() *LibraryReadingReqBuilder {
+	return &LibraryReadingReqBuilder{req: &LibraryReadingReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Metric sets the "metric" query parameter: summary | first-book | months | max-month | least-popular | preference | total-time | borrows | newer | all | unreturned
+func (b *LibraryReadingReqBuilder) Metric(v string) *LibraryReadingReqBuilder {
+	b.req.queryParams["metric"] = v
+	return b
 }
 
 // Start sets the "start" query parameter: yyyy-MM-dd
-func (b *LibraryMonthsReqBuilder) Start(v string) *LibraryMonthsReqBuilder {
+func (b *LibraryReadingReqBuilder) Start(v string) *LibraryReadingReqBuilder {
 	b.req.queryParams["start"] = v
 	return b
 }
 
 // End sets the "end" query parameter: yyyy-MM-dd
-func (b *LibraryMonthsReqBuilder) End(v string) *LibraryMonthsReqBuilder {
+func (b *LibraryReadingReqBuilder) End(v string) *LibraryReadingReqBuilder {
 	b.req.queryParams["end"] = v
 	return b
 }
 
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *LibraryMonthsReqBuilder) StaffID(v string) *LibraryMonthsReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *LibraryMonthsReqBuilder) Build() *LibraryMonthsReq { return b.req }
-
-// LibraryMonthsResp is the response for LibraryMonths.
-type LibraryMonthsResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.MonthlyStat `json:"data"`
-}
-
-// LibraryMonths: 查询本人到馆月度分布
-func (s *Service) LibraryMonths(ctx context.Context, req *LibraryMonthsReq, opts ...core.RequestOption) (*LibraryMonthsResp, error) {
-	resp := &LibraryMonthsResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/library/attendance/months",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// LibraryAttendanceStatsReq is the request for LibraryAttendanceStats.
-type LibraryAttendanceStatsReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// LibraryAttendanceStatsReqBuilder builds a LibraryAttendanceStatsReq with a fluent setter per field.
-type LibraryAttendanceStatsReqBuilder struct{ req *LibraryAttendanceStatsReq }
-
-// NewLibraryAttendanceStatsReqBuilder creates a request builder for LibraryAttendanceStats.
-func NewLibraryAttendanceStatsReqBuilder() *LibraryAttendanceStatsReqBuilder {
-	return &LibraryAttendanceStatsReqBuilder{req: &LibraryAttendanceStatsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Start sets the "start" query parameter: yyyy-MM-dd
-func (b *LibraryAttendanceStatsReqBuilder) Start(v string) *LibraryAttendanceStatsReqBuilder {
-	b.req.queryParams["start"] = v
-	return b
-}
-
-// End sets the "end" query parameter: yyyy-MM-dd
-func (b *LibraryAttendanceStatsReqBuilder) End(v string) *LibraryAttendanceStatsReqBuilder {
-	b.req.queryParams["end"] = v
-	return b
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *LibraryAttendanceStatsReqBuilder) StaffID(v string) *LibraryAttendanceStatsReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *LibraryAttendanceStatsReqBuilder) Build() *LibraryAttendanceStatsReq { return b.req }
-
-// LibraryAttendanceStatsResp is the response for LibraryAttendanceStats.
-type LibraryAttendanceStatsResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.AttendanceStats `json:"data"`
-}
-
-// LibraryAttendanceStats: 查询本人图书馆在馆统计
-func (s *Service) LibraryAttendanceStats(ctx context.Context, req *LibraryAttendanceStatsReq, opts ...core.RequestOption) (*LibraryAttendanceStatsResp, error) {
-	resp := &LibraryAttendanceStatsResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/library/attendance/stats",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// LibraryTimeSlotsReq is the request for LibraryTimeSlots.
-type LibraryTimeSlotsReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// LibraryTimeSlotsReqBuilder builds a LibraryTimeSlotsReq with a fluent setter per field.
-type LibraryTimeSlotsReqBuilder struct{ req *LibraryTimeSlotsReq }
-
-// NewLibraryTimeSlotsReqBuilder creates a request builder for LibraryTimeSlots.
-func NewLibraryTimeSlotsReqBuilder() *LibraryTimeSlotsReqBuilder {
-	return &LibraryTimeSlotsReqBuilder{req: &LibraryTimeSlotsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Start sets the "start" query parameter: yyyy-MM-dd
-func (b *LibraryTimeSlotsReqBuilder) Start(v string) *LibraryTimeSlotsReqBuilder {
-	b.req.queryParams["start"] = v
-	return b
-}
-
-// End sets the "end" query parameter: yyyy-MM-dd
-func (b *LibraryTimeSlotsReqBuilder) End(v string) *LibraryTimeSlotsReqBuilder {
-	b.req.queryParams["end"] = v
-	return b
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *LibraryTimeSlotsReqBuilder) StaffID(v string) *LibraryTimeSlotsReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *LibraryTimeSlotsReqBuilder) Build() *LibraryTimeSlotsReq { return b.req }
-
-// LibraryTimeSlotsResp is the response for LibraryTimeSlots.
-type LibraryTimeSlotsResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.TimeSlotStat `json:"data"`
-}
-
-// LibraryTimeSlots: 查询本人到馆时段分布
-func (s *Service) LibraryTimeSlots(ctx context.Context, req *LibraryTimeSlotsReq, opts ...core.RequestOption) (*LibraryTimeSlotsResp, error) {
-	resp := &LibraryTimeSlotsResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/library/attendance/time_slots",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// LibraryReadAllReq is the request for LibraryReadAll.
-type LibraryReadAllReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// LibraryReadAllReqBuilder builds a LibraryReadAllReq with a fluent setter per field.
-type LibraryReadAllReqBuilder struct{ req *LibraryReadAllReq }
-
-// NewLibraryReadAllReqBuilder creates a request builder for LibraryReadAll.
-func NewLibraryReadAllReqBuilder() *LibraryReadAllReqBuilder {
-	return &LibraryReadAllReqBuilder{req: &LibraryReadAllReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Start sets the "start" query parameter.
-func (b *LibraryReadAllReqBuilder) Start(v string) *LibraryReadAllReqBuilder {
-	b.req.queryParams["start"] = v
-	return b
-}
-
-// End sets the "end" query parameter.
-func (b *LibraryReadAllReqBuilder) End(v string) *LibraryReadAllReqBuilder {
-	b.req.queryParams["end"] = v
-	return b
-}
-
-// Page sets the "page" query parameter.
-func (b *LibraryReadAllReqBuilder) Page(v int32) *LibraryReadAllReqBuilder {
+// Page sets the "page" query parameter: metric=borrows|all 分页页码
+func (b *LibraryReadingReqBuilder) Page(v int32) *LibraryReadingReqBuilder {
 	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
 	return b
 }
 
-// Size sets the "size" query parameter.
-func (b *LibraryReadAllReqBuilder) Size(v int32) *LibraryReadAllReqBuilder {
+// Size sets the "size" query parameter: metric=borrows|all 分页大小
+func (b *LibraryReadingReqBuilder) Size(v int32) *LibraryReadingReqBuilder {
 	b.req.queryParams["size"] = strconv.FormatInt(int64(v), 10)
 	return b
 }
 
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *LibraryReadAllReqBuilder) StaffID(v string) *LibraryReadAllReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
+// Batch sets the "batch" query parameter: metric=unreturned 时 true=按 staffIds 批量
+func (b *LibraryReadingReqBuilder) Batch(v bool) *LibraryReadingReqBuilder {
+	b.req.queryParams["batch"] = strconv.FormatBool(v)
 	return b
 }
 
-// Build finalizes the request.
-func (b *LibraryReadAllReqBuilder) Build() *LibraryReadAllReq { return b.req }
-
-// LibraryReadAllResp is the response for LibraryReadAll.
-type LibraryReadAllResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.FlatReadData `json:"data"`
-}
-
-// LibraryReadAll: 查询本人汇总阅读数据
-func (s *Service) LibraryReadAll(ctx context.Context, req *LibraryReadAllReq, opts ...core.RequestOption) (*LibraryReadAllResp, error) {
-	resp := &LibraryReadAllResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/library/read/all",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// LibraryReadBorrowsReq is the request for LibraryReadBorrows.
-type LibraryReadBorrowsReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// LibraryReadBorrowsReqBuilder builds a LibraryReadBorrowsReq with a fluent setter per field.
-type LibraryReadBorrowsReqBuilder struct{ req *LibraryReadBorrowsReq }
-
-// NewLibraryReadBorrowsReqBuilder creates a request builder for LibraryReadBorrows.
-func NewLibraryReadBorrowsReqBuilder() *LibraryReadBorrowsReqBuilder {
-	return &LibraryReadBorrowsReqBuilder{req: &LibraryReadBorrowsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Start sets the "start" query parameter.
-func (b *LibraryReadBorrowsReqBuilder) Start(v string) *LibraryReadBorrowsReqBuilder {
-	b.req.queryParams["start"] = v
-	return b
-}
-
-// End sets the "end" query parameter.
-func (b *LibraryReadBorrowsReqBuilder) End(v string) *LibraryReadBorrowsReqBuilder {
-	b.req.queryParams["end"] = v
-	return b
-}
-
-// Page sets the "page" query parameter.
-func (b *LibraryReadBorrowsReqBuilder) Page(v int32) *LibraryReadBorrowsReqBuilder {
-	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
-	return b
-}
-
-// Size sets the "size" query parameter.
-func (b *LibraryReadBorrowsReqBuilder) Size(v int32) *LibraryReadBorrowsReqBuilder {
-	b.req.queryParams["size"] = strconv.FormatInt(int64(v), 10)
-	return b
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *LibraryReadBorrowsReqBuilder) StaffID(v string) *LibraryReadBorrowsReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *LibraryReadBorrowsReqBuilder) Build() *LibraryReadBorrowsReq { return b.req }
-
-// LibraryReadBorrowsResp is the response for LibraryReadBorrows.
-type LibraryReadBorrowsResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.BorrowList `json:"data"`
-}
-
-// LibraryReadBorrows: 分页查询本人借阅清单
-func (s *Service) LibraryReadBorrows(ctx context.Context, req *LibraryReadBorrowsReq, opts ...core.RequestOption) (*LibraryReadBorrowsResp, error) {
-	resp := &LibraryReadBorrowsResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/library/read/borrows",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// LibraryReadFirstBookReq is the request for LibraryReadFirstBook.
-type LibraryReadFirstBookReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// LibraryReadFirstBookReqBuilder builds a LibraryReadFirstBookReq with a fluent setter per field.
-type LibraryReadFirstBookReqBuilder struct{ req *LibraryReadFirstBookReq }
-
-// NewLibraryReadFirstBookReqBuilder creates a request builder for LibraryReadFirstBook.
-func NewLibraryReadFirstBookReqBuilder() *LibraryReadFirstBookReqBuilder {
-	return &LibraryReadFirstBookReqBuilder{req: &LibraryReadFirstBookReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Start sets the "start" query parameter.
-func (b *LibraryReadFirstBookReqBuilder) Start(v string) *LibraryReadFirstBookReqBuilder {
-	b.req.queryParams["start"] = v
-	return b
-}
-
-// End sets the "end" query parameter.
-func (b *LibraryReadFirstBookReqBuilder) End(v string) *LibraryReadFirstBookReqBuilder {
-	b.req.queryParams["end"] = v
-	return b
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *LibraryReadFirstBookReqBuilder) StaffID(v string) *LibraryReadFirstBookReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *LibraryReadFirstBookReqBuilder) Build() *LibraryReadFirstBookReq { return b.req }
-
-// LibraryReadFirstBookResp is the response for LibraryReadFirstBook.
-type LibraryReadFirstBookResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.FirstBook `json:"data"`
-}
-
-// LibraryReadFirstBook: 查询本人首本借阅图书
-func (s *Service) LibraryReadFirstBook(ctx context.Context, req *LibraryReadFirstBookReq, opts ...core.RequestOption) (*LibraryReadFirstBookResp, error) {
-	resp := &LibraryReadFirstBookResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/library/read/first_book",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// LibraryReadLeastPopularReq is the request for LibraryReadLeastPopular.
-type LibraryReadLeastPopularReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// LibraryReadLeastPopularReqBuilder builds a LibraryReadLeastPopularReq with a fluent setter per field.
-type LibraryReadLeastPopularReqBuilder struct{ req *LibraryReadLeastPopularReq }
-
-// NewLibraryReadLeastPopularReqBuilder creates a request builder for LibraryReadLeastPopular.
-func NewLibraryReadLeastPopularReqBuilder() *LibraryReadLeastPopularReqBuilder {
-	return &LibraryReadLeastPopularReqBuilder{req: &LibraryReadLeastPopularReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Start sets the "start" query parameter.
-func (b *LibraryReadLeastPopularReqBuilder) Start(v string) *LibraryReadLeastPopularReqBuilder {
-	b.req.queryParams["start"] = v
-	return b
-}
-
-// End sets the "end" query parameter.
-func (b *LibraryReadLeastPopularReqBuilder) End(v string) *LibraryReadLeastPopularReqBuilder {
-	b.req.queryParams["end"] = v
-	return b
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *LibraryReadLeastPopularReqBuilder) StaffID(v string) *LibraryReadLeastPopularReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *LibraryReadLeastPopularReqBuilder) Build() *LibraryReadLeastPopularReq { return b.req }
-
-// LibraryReadLeastPopularResp is the response for LibraryReadLeastPopular.
-type LibraryReadLeastPopularResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.BookStat `json:"data"`
-}
-
-// LibraryReadLeastPopular: 查询本人借阅最少的图书
-func (s *Service) LibraryReadLeastPopular(ctx context.Context, req *LibraryReadLeastPopularReq, opts ...core.RequestOption) (*LibraryReadLeastPopularResp, error) {
-	resp := &LibraryReadLeastPopularResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/library/read/least_popular",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// LibraryReadMaxMonthReq is the request for LibraryReadMaxMonth.
-type LibraryReadMaxMonthReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// LibraryReadMaxMonthReqBuilder builds a LibraryReadMaxMonthReq with a fluent setter per field.
-type LibraryReadMaxMonthReqBuilder struct{ req *LibraryReadMaxMonthReq }
-
-// NewLibraryReadMaxMonthReqBuilder creates a request builder for LibraryReadMaxMonth.
-func NewLibraryReadMaxMonthReqBuilder() *LibraryReadMaxMonthReqBuilder {
-	return &LibraryReadMaxMonthReqBuilder{req: &LibraryReadMaxMonthReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Start sets the "start" query parameter.
-func (b *LibraryReadMaxMonthReqBuilder) Start(v string) *LibraryReadMaxMonthReqBuilder {
-	b.req.queryParams["start"] = v
-	return b
-}
-
-// End sets the "end" query parameter.
-func (b *LibraryReadMaxMonthReqBuilder) End(v string) *LibraryReadMaxMonthReqBuilder {
-	b.req.queryParams["end"] = v
-	return b
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *LibraryReadMaxMonthReqBuilder) StaffID(v string) *LibraryReadMaxMonthReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *LibraryReadMaxMonthReqBuilder) Build() *LibraryReadMaxMonthReq { return b.req }
-
-// LibraryReadMaxMonthResp is the response for LibraryReadMaxMonth.
-type LibraryReadMaxMonthResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.MaxMonth `json:"data"`
-}
-
-// LibraryReadMaxMonth: 查询本人借阅最多的月份
-func (s *Service) LibraryReadMaxMonth(ctx context.Context, req *LibraryReadMaxMonthReq, opts ...core.RequestOption) (*LibraryReadMaxMonthResp, error) {
-	resp := &LibraryReadMaxMonthResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/library/read/max_month",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// LibraryReadMonthsReq is the request for LibraryReadMonths.
-type LibraryReadMonthsReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// LibraryReadMonthsReqBuilder builds a LibraryReadMonthsReq with a fluent setter per field.
-type LibraryReadMonthsReqBuilder struct{ req *LibraryReadMonthsReq }
-
-// NewLibraryReadMonthsReqBuilder creates a request builder for LibraryReadMonths.
-func NewLibraryReadMonthsReqBuilder() *LibraryReadMonthsReqBuilder {
-	return &LibraryReadMonthsReqBuilder{req: &LibraryReadMonthsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Start sets the "start" query parameter.
-func (b *LibraryReadMonthsReqBuilder) Start(v string) *LibraryReadMonthsReqBuilder {
-	b.req.queryParams["start"] = v
-	return b
-}
-
-// End sets the "end" query parameter.
-func (b *LibraryReadMonthsReqBuilder) End(v string) *LibraryReadMonthsReqBuilder {
-	b.req.queryParams["end"] = v
-	return b
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *LibraryReadMonthsReqBuilder) StaffID(v string) *LibraryReadMonthsReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *LibraryReadMonthsReqBuilder) Build() *LibraryReadMonthsReq { return b.req }
-
-// LibraryReadMonthsResp is the response for LibraryReadMonths.
-type LibraryReadMonthsResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.MonthStat `json:"data"`
-}
-
-// LibraryReadMonths: 查询本人借阅月度统计
-func (s *Service) LibraryReadMonths(ctx context.Context, req *LibraryReadMonthsReq, opts ...core.RequestOption) (*LibraryReadMonthsResp, error) {
-	resp := &LibraryReadMonthsResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/library/read/months",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// LibraryReadNewerReq is the request for LibraryReadNewer.
-type LibraryReadNewerReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// LibraryReadNewerReqBuilder builds a LibraryReadNewerReq with a fluent setter per field.
-type LibraryReadNewerReqBuilder struct{ req *LibraryReadNewerReq }
-
-// NewLibraryReadNewerReqBuilder creates a request builder for LibraryReadNewer.
-func NewLibraryReadNewerReqBuilder() *LibraryReadNewerReqBuilder {
-	return &LibraryReadNewerReqBuilder{req: &LibraryReadNewerReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *LibraryReadNewerReqBuilder) StaffID(v string) *LibraryReadNewerReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *LibraryReadNewerReqBuilder) Build() *LibraryReadNewerReq { return b.req }
-
-// LibraryReadNewerResp is the response for LibraryReadNewer.
-type LibraryReadNewerResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.NewerData `json:"data"`
-}
-
-// LibraryReadNewer: 判断本人是否本学年新生
-func (s *Service) LibraryReadNewer(ctx context.Context, req *LibraryReadNewerReq, opts ...core.RequestOption) (*LibraryReadNewerResp, error) {
-	resp := &LibraryReadNewerResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/library/read/newer",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// LibraryReadPreferenceReq is the request for LibraryReadPreference.
-type LibraryReadPreferenceReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// LibraryReadPreferenceReqBuilder builds a LibraryReadPreferenceReq with a fluent setter per field.
-type LibraryReadPreferenceReqBuilder struct{ req *LibraryReadPreferenceReq }
-
-// NewLibraryReadPreferenceReqBuilder creates a request builder for LibraryReadPreference.
-func NewLibraryReadPreferenceReqBuilder() *LibraryReadPreferenceReqBuilder {
-	return &LibraryReadPreferenceReqBuilder{req: &LibraryReadPreferenceReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Start sets the "start" query parameter.
-func (b *LibraryReadPreferenceReqBuilder) Start(v string) *LibraryReadPreferenceReqBuilder {
-	b.req.queryParams["start"] = v
-	return b
-}
-
-// End sets the "end" query parameter.
-func (b *LibraryReadPreferenceReqBuilder) End(v string) *LibraryReadPreferenceReqBuilder {
-	b.req.queryParams["end"] = v
-	return b
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *LibraryReadPreferenceReqBuilder) StaffID(v string) *LibraryReadPreferenceReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *LibraryReadPreferenceReqBuilder) Build() *LibraryReadPreferenceReq { return b.req }
-
-// LibraryReadPreferenceResp is the response for LibraryReadPreference.
-type LibraryReadPreferenceResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.Preference `json:"data"`
-}
-
-// LibraryReadPreference: 查询本人借阅偏好
-func (s *Service) LibraryReadPreference(ctx context.Context, req *LibraryReadPreferenceReq, opts ...core.RequestOption) (*LibraryReadPreferenceResp, error) {
-	resp := &LibraryReadPreferenceResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/library/read/preference",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// LibraryReadSummaryReq is the request for LibraryReadSummary.
-type LibraryReadSummaryReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// LibraryReadSummaryReqBuilder builds a LibraryReadSummaryReq with a fluent setter per field.
-type LibraryReadSummaryReqBuilder struct{ req *LibraryReadSummaryReq }
-
-// NewLibraryReadSummaryReqBuilder creates a request builder for LibraryReadSummary.
-func NewLibraryReadSummaryReqBuilder() *LibraryReadSummaryReqBuilder {
-	return &LibraryReadSummaryReqBuilder{req: &LibraryReadSummaryReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Start sets the "start" query parameter.
-func (b *LibraryReadSummaryReqBuilder) Start(v string) *LibraryReadSummaryReqBuilder {
-	b.req.queryParams["start"] = v
-	return b
-}
-
-// End sets the "end" query parameter.
-func (b *LibraryReadSummaryReqBuilder) End(v string) *LibraryReadSummaryReqBuilder {
-	b.req.queryParams["end"] = v
-	return b
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *LibraryReadSummaryReqBuilder) StaffID(v string) *LibraryReadSummaryReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *LibraryReadSummaryReqBuilder) Build() *LibraryReadSummaryReq { return b.req }
-
-// LibraryReadSummaryResp is the response for LibraryReadSummary.
-type LibraryReadSummaryResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ReadingSummary `json:"data"`
-}
-
-// LibraryReadSummary: 查询本人阅读摘要与排名
-func (s *Service) LibraryReadSummary(ctx context.Context, req *LibraryReadSummaryReq, opts ...core.RequestOption) (*LibraryReadSummaryResp, error) {
-	resp := &LibraryReadSummaryResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/library/read/summary",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// LibraryReadTotalTimeReq is the request for LibraryReadTotalTime.
-type LibraryReadTotalTimeReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// LibraryReadTotalTimeReqBuilder builds a LibraryReadTotalTimeReq with a fluent setter per field.
-type LibraryReadTotalTimeReqBuilder struct{ req *LibraryReadTotalTimeReq }
-
-// NewLibraryReadTotalTimeReqBuilder creates a request builder for LibraryReadTotalTime.
-func NewLibraryReadTotalTimeReqBuilder() *LibraryReadTotalTimeReqBuilder {
-	return &LibraryReadTotalTimeReqBuilder{req: &LibraryReadTotalTimeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Start sets the "start" query parameter.
-func (b *LibraryReadTotalTimeReqBuilder) Start(v string) *LibraryReadTotalTimeReqBuilder {
-	b.req.queryParams["start"] = v
-	return b
-}
-
-// End sets the "end" query parameter.
-func (b *LibraryReadTotalTimeReqBuilder) End(v string) *LibraryReadTotalTimeReqBuilder {
-	b.req.queryParams["end"] = v
-	return b
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *LibraryReadTotalTimeReqBuilder) StaffID(v string) *LibraryReadTotalTimeReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *LibraryReadTotalTimeReqBuilder) Build() *LibraryReadTotalTimeReq { return b.req }
-
-// LibraryReadTotalTimeResp is the response for LibraryReadTotalTime.
-type LibraryReadTotalTimeResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.TotalTime `json:"data"`
-}
-
-// LibraryReadTotalTime: 查询本人平均借阅时长
-func (s *Service) LibraryReadTotalTime(ctx context.Context, req *LibraryReadTotalTimeReq, opts ...core.RequestOption) (*LibraryReadTotalTimeResp, error) {
-	resp := &LibraryReadTotalTimeResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/library/read/total_time",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// LibraryReadUnreturnedReq is the request for LibraryReadUnreturned.
-type LibraryReadUnreturnedReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// LibraryReadUnreturnedReqBuilder builds a LibraryReadUnreturnedReq with a fluent setter per field.
-type LibraryReadUnreturnedReqBuilder struct{ req *LibraryReadUnreturnedReq }
-
-// NewLibraryReadUnreturnedReqBuilder creates a request builder for LibraryReadUnreturned.
-func NewLibraryReadUnreturnedReqBuilder() *LibraryReadUnreturnedReqBuilder {
-	return &LibraryReadUnreturnedReqBuilder{req: &LibraryReadUnreturnedReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *LibraryReadUnreturnedReqBuilder) StaffID(v string) *LibraryReadUnreturnedReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *LibraryReadUnreturnedReqBuilder) Build() *LibraryReadUnreturnedReq { return b.req }
-
-// LibraryReadUnreturnedResp is the response for LibraryReadUnreturned.
-type LibraryReadUnreturnedResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.BorrowList `json:"data"`
-}
-
-// LibraryReadUnreturned: 查询本人未归还图书
-func (s *Service) LibraryReadUnreturned(ctx context.Context, req *LibraryReadUnreturnedReq, opts ...core.RequestOption) (*LibraryReadUnreturnedResp, error) {
-	resp := &LibraryReadUnreturnedResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/library/read/unreturned",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// GetUnreturnedBooksListReq is the request for GetUnreturnedBooksList.
-type GetUnreturnedBooksListReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// GetUnreturnedBooksListReqBuilder builds a GetUnreturnedBooksListReq with a fluent setter per field.
-type GetUnreturnedBooksListReqBuilder struct{ req *GetUnreturnedBooksListReq }
-
-// NewGetUnreturnedBooksListReqBuilder creates a request builder for GetUnreturnedBooksList.
-func NewGetUnreturnedBooksListReqBuilder() *GetUnreturnedBooksListReqBuilder {
-	return &GetUnreturnedBooksListReqBuilder{req: &GetUnreturnedBooksListReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// StaffIds sets the "staffIds" query parameter.
-func (b *GetUnreturnedBooksListReqBuilder) StaffIds(v []string) *GetUnreturnedBooksListReqBuilder {
+// StaffIds sets the "staffIds" query parameter: batch=true 时的学号列表
+func (b *LibraryReadingReqBuilder) StaffIds(v []string) *LibraryReadingReqBuilder {
 	b.req.queryParams["staffIds"] = strings.Join(v, ",")
 	return b
 }
 
-// Build finalizes the request.
-func (b *GetUnreturnedBooksListReqBuilder) Build() *GetUnreturnedBooksListReq { return b.req }
-
-// GetUnreturnedBooksListResp is the response for GetUnreturnedBooksList.
-type GetUnreturnedBooksListResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.UnreturnedBatchItem `json:"data"`
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *LibraryReadingReqBuilder) StaffID(v string) *LibraryReadingReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
 }
 
-// GetUnreturnedBooksList: 批量查询多名学生未归还图书
-func (s *Service) GetUnreturnedBooksList(ctx context.Context, req *GetUnreturnedBooksListReq, opts ...core.RequestOption) (*GetUnreturnedBooksListResp, error) {
-	resp := &GetUnreturnedBooksListResp{}
+// Build finalizes the request.
+func (b *LibraryReadingReqBuilder) Build() *LibraryReadingReq { return b.req }
+
+// LibraryReadingResp is the response for LibraryReading.
+type LibraryReadingResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.LibraryReadingData `json:"data"`
+}
+
+// LibraryReading: 按指标查询本人阅读数据
+func (s *Service) LibraryReading(ctx context.Context, req *LibraryReadingReq, opts ...core.RequestOption) (*LibraryReadingResp, error) {
+	resp := &LibraryReadingResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/library/read/unreturned/batch",
+		PathTemplate: "/hduhelp-neo/academic/library/reading",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -1912,52 +1408,6 @@ func (s *Service) LibrarySeatRooms(ctx context.Context, req *LibrarySeatRoomsReq
 	return resp, err
 }
 
-// LibraryShareIDReq is the request for LibraryShareID.
-type LibraryShareIDReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// LibraryShareIDReqBuilder builds a LibraryShareIDReq with a fluent setter per field.
-type LibraryShareIDReqBuilder struct{ req *LibraryShareIDReq }
-
-// NewLibraryShareIDReqBuilder creates a request builder for LibraryShareID.
-func NewLibraryShareIDReqBuilder() *LibraryShareIDReqBuilder {
-	return &LibraryShareIDReqBuilder{req: &LibraryShareIDReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *LibraryShareIDReqBuilder) StaffID(v string) *LibraryShareIDReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *LibraryShareIDReqBuilder) Build() *LibraryShareIDReq { return b.req }
-
-// LibraryShareIDResp is the response for LibraryShareID.
-type LibraryShareIDResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ShareIDData `json:"data"`
-}
-
-// LibraryShareID: 获取本人图书馆分享 ID
-func (s *Service) LibraryShareID(ctx context.Context, req *LibraryShareIDReq, opts ...core.RequestOption) (*LibraryShareIDResp, error) {
-	resp := &LibraryShareIDResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/library/share/share",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
 // LibraryShareStaffReq is the request for LibraryShareStaff.
 type LibraryShareStaffReq struct {
 	pathParams  map[string]string
@@ -1995,7 +1445,53 @@ func (s *Service) LibraryShareStaff(ctx context.Context, req *LibraryShareStaffR
 	resp := &LibraryShareStaffResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/library/share/staff",
+		PathTemplate: "/hduhelp-neo/academic/library/share",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// LibraryShareIDReq is the request for LibraryShareID.
+type LibraryShareIDReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// LibraryShareIDReqBuilder builds a LibraryShareIDReq with a fluent setter per field.
+type LibraryShareIDReqBuilder struct{ req *LibraryShareIDReq }
+
+// NewLibraryShareIDReqBuilder creates a request builder for LibraryShareID.
+func NewLibraryShareIDReqBuilder() *LibraryShareIDReqBuilder {
+	return &LibraryShareIDReqBuilder{req: &LibraryShareIDReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *LibraryShareIDReqBuilder) StaffID(v string) *LibraryShareIDReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *LibraryShareIDReqBuilder) Build() *LibraryShareIDReq { return b.req }
+
+// LibraryShareIDResp is the response for LibraryShareID.
+type LibraryShareIDResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ShareIDData `json:"data"`
+}
+
+// LibraryShareID: 创建或获取本人图书馆分享 ID
+func (s *Service) LibraryShareID(ctx context.Context, req *LibraryShareIDReq, opts ...core.RequestOption) (*LibraryShareIDResp, error) {
+	resp := &LibraryShareIDResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/academic/library/share",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -2096,6 +1592,52 @@ func (s *Service) NeedyStudentInfo(ctx context.Context, req *NeedyStudentInfoReq
 	return resp, err
 }
 
+// StudentCityReq is the request for StudentCity.
+type StudentCityReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// StudentCityReqBuilder builds a StudentCityReq with a fluent setter per field.
+type StudentCityReqBuilder struct{ req *StudentCityReq }
+
+// NewStudentCityReqBuilder creates a request builder for StudentCity.
+func NewStudentCityReqBuilder() *StudentCityReqBuilder {
+	return &StudentCityReqBuilder{req: &StudentCityReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *StudentCityReqBuilder) StaffID(v string) *StudentCityReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *StudentCityReqBuilder) Build() *StudentCityReq { return b.req }
+
+// StudentCityResp is the response for StudentCity.
+type StudentCityResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.CityInfo `json:"data"`
+}
+
+// StudentCity: 查询本人生源地城市
+func (s *Service) StudentCity(ctx context.Context, req *StudentCityReq, opts ...core.RequestOption) (*StudentCityResp, error) {
+	resp := &StudentCityResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/origin-city",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // PersonInfoReq is the request for PersonInfo.
 type PersonInfoReq struct {
 	pathParams  map[string]string
@@ -2125,7 +1667,7 @@ func (b *PersonInfoReqBuilder) Build() *PersonInfoReq { return b.req }
 type PersonInfoResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.PersonInfo `json:"data"`
+	Data *models.PersonInfoData `json:"data"`
 }
 
 // PersonInfo: 查询本人人员信息
@@ -2134,6 +1676,64 @@ func (s *Service) PersonInfo(ctx context.Context, req *PersonInfoReq, opts ...co
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/academic/person/info",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// PreviousSchoolReq is the request for PreviousSchool.
+type PreviousSchoolReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// PreviousSchoolReqBuilder builds a PreviousSchoolReq with a fluent setter per field.
+type PreviousSchoolReqBuilder struct{ req *PreviousSchoolReq }
+
+// NewPreviousSchoolReqBuilder creates a request builder for PreviousSchool.
+func NewPreviousSchoolReqBuilder() *PreviousSchoolReqBuilder {
+	return &PreviousSchoolReqBuilder{req: &PreviousSchoolReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// SchoolName sets the "schoolName" query parameter.
+func (b *PreviousSchoolReqBuilder) SchoolName(v string) *PreviousSchoolReqBuilder {
+	b.req.queryParams["schoolName"] = v
+	return b
+}
+
+// Grade sets the "grade" query parameter.
+func (b *PreviousSchoolReqBuilder) Grade(v string) *PreviousSchoolReqBuilder {
+	b.req.queryParams["grade"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *PreviousSchoolReqBuilder) StaffID(v string) *PreviousSchoolReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *PreviousSchoolReqBuilder) Build() *PreviousSchoolReq { return b.req }
+
+// PreviousSchoolResp is the response for PreviousSchool.
+type PreviousSchoolResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.PreviousSchoolData `json:"data"`
+}
+
+// PreviousSchool: 查询生源中学与同校同城统计
+func (s *Service) PreviousSchool(ctx context.Context, req *PreviousSchoolReq, opts ...core.RequestOption) (*PreviousSchoolResp, error) {
+	resp := &PreviousSchoolResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/previous-school",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -2184,7 +1784,7 @@ func (s *Service) ModifyPreviousSchoolCity(ctx context.Context, req *ModifyPrevi
 	resp := &ModifyPreviousSchoolCityResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/academic/previous_school/city",
+		PathTemplate: "/hduhelp-neo/academic/previous-school/city",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -2193,102 +1793,56 @@ func (s *Service) ModifyPreviousSchoolCity(ctx context.Context, req *ModifyPrevi
 	return resp, err
 }
 
-// PreviousSchoolDetailReq is the request for PreviousSchoolDetail.
-type PreviousSchoolDetailReq struct {
+// StudentRewardsReq is the request for StudentRewards.
+type StudentRewardsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// PreviousSchoolDetailReqBuilder builds a PreviousSchoolDetailReq with a fluent setter per field.
-type PreviousSchoolDetailReqBuilder struct{ req *PreviousSchoolDetailReq }
+// StudentRewardsReqBuilder builds a StudentRewardsReq with a fluent setter per field.
+type StudentRewardsReqBuilder struct{ req *StudentRewardsReq }
 
-// NewPreviousSchoolDetailReqBuilder creates a request builder for PreviousSchoolDetail.
-func NewPreviousSchoolDetailReqBuilder() *PreviousSchoolDetailReqBuilder {
-	return &PreviousSchoolDetailReqBuilder{req: &PreviousSchoolDetailReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewStudentRewardsReqBuilder creates a request builder for StudentRewards.
+func NewStudentRewardsReqBuilder() *StudentRewardsReqBuilder {
+	return &StudentRewardsReqBuilder{req: &StudentRewardsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// SchoolName sets the "schoolName" query parameter.
-func (b *PreviousSchoolDetailReqBuilder) SchoolName(v string) *PreviousSchoolDetailReqBuilder {
-	b.req.queryParams["schoolName"] = v
+// SchoolYear sets the "schoolYear" query parameter.
+func (b *StudentRewardsReqBuilder) SchoolYear(v string) *StudentRewardsReqBuilder {
+	b.req.queryParams["schoolYear"] = v
 	return b
 }
 
-// Grade sets the "grade" query parameter.
-func (b *PreviousSchoolDetailReqBuilder) Grade(v string) *PreviousSchoolDetailReqBuilder {
-	b.req.queryParams["grade"] = v
+// Semester sets the "semester" query parameter.
+func (b *StudentRewardsReqBuilder) Semester(v string) *StudentRewardsReqBuilder {
+	b.req.queryParams["semester"] = v
 	return b
 }
 
 // StaffID sets the "X-Staff-Id" header parameter.
-func (b *PreviousSchoolDetailReqBuilder) StaffID(v string) *PreviousSchoolDetailReqBuilder {
+func (b *StudentRewardsReqBuilder) StaffID(v string) *StudentRewardsReqBuilder {
 	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
 // Build finalizes the request.
-func (b *PreviousSchoolDetailReqBuilder) Build() *PreviousSchoolDetailReq { return b.req }
+func (b *StudentRewardsReqBuilder) Build() *StudentRewardsReq { return b.req }
 
-// PreviousSchoolDetailResp is the response for PreviousSchoolDetail.
-type PreviousSchoolDetailResp struct {
+// StudentRewardsResp is the response for StudentRewards.
+type StudentRewardsResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.SchoolInfo `json:"data"`
+	Data []models.StudentReward `json:"data"`
 }
 
-// PreviousSchoolDetail: 查询生源中学同校同城统计
-func (s *Service) PreviousSchoolDetail(ctx context.Context, req *PreviousSchoolDetailReq, opts ...core.RequestOption) (*PreviousSchoolDetailResp, error) {
-	resp := &PreviousSchoolDetailResp{}
+// StudentRewards: 查询本人奖励信息
+func (s *Service) StudentRewards(ctx context.Context, req *StudentRewardsReq, opts ...core.RequestOption) (*StudentRewardsResp, error) {
+	resp := &StudentRewardsResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/previous_school/detail",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// PreviousSchoolInfoReq is the request for PreviousSchoolInfo.
-type PreviousSchoolInfoReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// PreviousSchoolInfoReqBuilder builds a PreviousSchoolInfoReq with a fluent setter per field.
-type PreviousSchoolInfoReqBuilder struct{ req *PreviousSchoolInfoReq }
-
-// NewPreviousSchoolInfoReqBuilder creates a request builder for PreviousSchoolInfo.
-func NewPreviousSchoolInfoReqBuilder() *PreviousSchoolInfoReqBuilder {
-	return &PreviousSchoolInfoReqBuilder{req: &PreviousSchoolInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *PreviousSchoolInfoReqBuilder) StaffID(v string) *PreviousSchoolInfoReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *PreviousSchoolInfoReqBuilder) Build() *PreviousSchoolInfoReq { return b.req }
-
-// PreviousSchoolInfoResp is the response for PreviousSchoolInfo.
-type PreviousSchoolInfoResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.StaffSchoolInfo `json:"data"`
-}
-
-// PreviousSchoolInfo: 查询本人生源中学信息
-func (s *Service) PreviousSchoolInfo(ctx context.Context, req *PreviousSchoolInfoReq, opts ...core.RequestOption) (*PreviousSchoolInfoResp, error) {
-	resp := &PreviousSchoolInfoResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/previous_school/info",
+		PathTemplate: "/hduhelp-neo/academic/reward",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -2367,6 +1921,58 @@ func (s *Service) Schedule(ctx context.Context, req *ScheduleReq, opts ...core.R
 	return resp, err
 }
 
+// GlobalScheduleReq is the request for GlobalSchedule.
+type GlobalScheduleReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// GlobalScheduleReqBuilder builds a GlobalScheduleReq with a fluent setter per field.
+type GlobalScheduleReqBuilder struct{ req *GlobalScheduleReq }
+
+// NewGlobalScheduleReqBuilder creates a request builder for GlobalSchedule.
+func NewGlobalScheduleReqBuilder() *GlobalScheduleReqBuilder {
+	return &GlobalScheduleReqBuilder{req: &GlobalScheduleReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Week sets the "week" query parameter.
+func (b *GlobalScheduleReqBuilder) Week(v int32) *GlobalScheduleReqBuilder {
+	b.req.queryParams["week"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Weekday sets the "weekday" query parameter.
+func (b *GlobalScheduleReqBuilder) Weekday(v int32) *GlobalScheduleReqBuilder {
+	b.req.queryParams["weekday"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *GlobalScheduleReqBuilder) Build() *GlobalScheduleReq { return b.req }
+
+// GlobalScheduleResp is the response for GlobalSchedule.
+type GlobalScheduleResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.GlobalScheduleItem `json:"data"`
+}
+
+// GlobalSchedule: 获取全局课表(内部)
+func (s *Service) GlobalSchedule(ctx context.Context, req *GlobalScheduleReq, opts ...core.RequestOption) (*GlobalScheduleResp, error) {
+	resp := &GlobalScheduleResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/schedule/global",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // ScheduleNowReq is the request for ScheduleNow.
 type ScheduleNowReq struct {
 	pathParams  map[string]string
@@ -2413,142 +2019,44 @@ func (s *Service) ScheduleNow(ctx context.Context, req *ScheduleNowReq, opts ...
 	return resp, err
 }
 
-// ScheduleNowV3Req is the request for ScheduleNowV3.
-type ScheduleNowV3Req struct {
+// StudentSchoolRollStatusReq is the request for StudentSchoolRollStatus.
+type StudentSchoolRollStatusReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// ScheduleNowV3ReqBuilder builds a ScheduleNowV3Req with a fluent setter per field.
-type ScheduleNowV3ReqBuilder struct{ req *ScheduleNowV3Req }
+// StudentSchoolRollStatusReqBuilder builds a StudentSchoolRollStatusReq with a fluent setter per field.
+type StudentSchoolRollStatusReqBuilder struct{ req *StudentSchoolRollStatusReq }
 
-// NewScheduleNowV3ReqBuilder creates a request builder for ScheduleNowV3.
-func NewScheduleNowV3ReqBuilder() *ScheduleNowV3ReqBuilder {
-	return &ScheduleNowV3ReqBuilder{req: &ScheduleNowV3Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewStudentSchoolRollStatusReqBuilder creates a request builder for StudentSchoolRollStatus.
+func NewStudentSchoolRollStatusReqBuilder() *StudentSchoolRollStatusReqBuilder {
+	return &StudentSchoolRollStatusReqBuilder{req: &StudentSchoolRollStatusReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // StaffID sets the "X-Staff-Id" header parameter.
-func (b *ScheduleNowV3ReqBuilder) StaffID(v string) *ScheduleNowV3ReqBuilder {
+func (b *StudentSchoolRollStatusReqBuilder) StaffID(v string) *StudentSchoolRollStatusReqBuilder {
 	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
 // Build finalizes the request.
-func (b *ScheduleNowV3ReqBuilder) Build() *ScheduleNowV3Req { return b.req }
+func (b *StudentSchoolRollStatusReqBuilder) Build() *StudentSchoolRollStatusReq { return b.req }
 
-// ScheduleNowV3Resp is the response for ScheduleNowV3.
-type ScheduleNowV3Resp struct {
+// StudentSchoolRollStatusResp is the response for StudentSchoolRollStatus.
+type StudentSchoolRollStatusResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data []models.ScheduleDay `json:"data"`
+	Data *models.SchoolRollStatus `json:"data"`
 }
 
-// ScheduleNowV3: 获取近六日课表(v3)
-func (s *Service) ScheduleNowV3(ctx context.Context, req *ScheduleNowV3Req, opts ...core.RequestOption) (*ScheduleNowV3Resp, error) {
-	resp := &ScheduleNowV3Resp{}
+// StudentSchoolRollStatus: 查询本人学籍状态
+func (s *Service) StudentSchoolRollStatus(ctx context.Context, req *StudentSchoolRollStatusReq, opts ...core.RequestOption) (*StudentSchoolRollStatusResp, error) {
+	resp := &StudentSchoolRollStatusResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/schedule/now/v3",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// GlobalScheduleReq is the request for GlobalSchedule.
-type GlobalScheduleReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// GlobalScheduleReqBuilder builds a GlobalScheduleReq with a fluent setter per field.
-type GlobalScheduleReqBuilder struct{ req *GlobalScheduleReq }
-
-// NewGlobalScheduleReqBuilder creates a request builder for GlobalSchedule.
-func NewGlobalScheduleReqBuilder() *GlobalScheduleReqBuilder {
-	return &GlobalScheduleReqBuilder{req: &GlobalScheduleReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Week sets the "week" query parameter.
-func (b *GlobalScheduleReqBuilder) Week(v int32) *GlobalScheduleReqBuilder {
-	b.req.queryParams["week"] = strconv.FormatInt(int64(v), 10)
-	return b
-}
-
-// Weekday sets the "weekday" query parameter.
-func (b *GlobalScheduleReqBuilder) Weekday(v int32) *GlobalScheduleReqBuilder {
-	b.req.queryParams["weekday"] = strconv.FormatInt(int64(v), 10)
-	return b
-}
-
-// Build finalizes the request.
-func (b *GlobalScheduleReqBuilder) Build() *GlobalScheduleReq { return b.req }
-
-// GlobalScheduleResp is the response for GlobalSchedule.
-type GlobalScheduleResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.GlobalScheduleItem `json:"data"`
-}
-
-// GlobalSchedule: 获取全局课表(内部)
-func (s *Service) GlobalSchedule(ctx context.Context, req *GlobalScheduleReq, opts ...core.RequestOption) (*GlobalScheduleResp, error) {
-	resp := &GlobalScheduleResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/schedule/private/global",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ScheduleNowV2Req is the request for ScheduleNowV2.
-type ScheduleNowV2Req struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ScheduleNowV2ReqBuilder builds a ScheduleNowV2Req with a fluent setter per field.
-type ScheduleNowV2ReqBuilder struct{ req *ScheduleNowV2Req }
-
-// NewScheduleNowV2ReqBuilder creates a request builder for ScheduleNowV2.
-func NewScheduleNowV2ReqBuilder() *ScheduleNowV2ReqBuilder {
-	return &ScheduleNowV2ReqBuilder{req: &ScheduleNowV2Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *ScheduleNowV2ReqBuilder) StaffID(v string) *ScheduleNowV2ReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *ScheduleNowV2ReqBuilder) Build() *ScheduleNowV2Req { return b.req }
-
-// ScheduleNowV2Resp is the response for ScheduleNowV2.
-type ScheduleNowV2Resp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ScheduleNowV2Data `json:"data"`
-}
-
-// ScheduleNowV2: 获取今明课表(v2)
-func (s *Service) ScheduleNowV2(ctx context.Context, req *ScheduleNowV2Req, opts ...core.RequestOption) (*ScheduleNowV2Resp, error) {
-	resp := &ScheduleNowV2Resp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/schedule/v2/now",
+		PathTemplate: "/hduhelp-neo/academic/school-roll-status",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -2600,7 +2108,7 @@ func (s *Service) SemesterListByDate(ctx context.Context, req *SemesterListByDat
 	resp := &SemesterListByDateResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/schooltime/semester/listByDate",
+		PathTemplate: "/hduhelp-neo/academic/schooltime/semester/list-by-date",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -2649,846 +2157,56 @@ func (s *Service) SchoolTime(ctx context.Context, req *SchoolTimeReq, opts ...co
 	return resp, err
 }
 
-// SklUnitDetailReq is the request for SklUnitDetail.
-type SklUnitDetailReq struct {
+// TeachingClassReq is the request for TeachingClass.
+type TeachingClassReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// SklUnitDetailReqBuilder builds a SklUnitDetailReq with a fluent setter per field.
-type SklUnitDetailReqBuilder struct{ req *SklUnitDetailReq }
+// TeachingClassReqBuilder builds a TeachingClassReq with a fluent setter per field.
+type TeachingClassReqBuilder struct{ req *TeachingClassReq }
 
-// NewSklUnitDetailReqBuilder creates a request builder for SklUnitDetail.
-func NewSklUnitDetailReqBuilder() *SklUnitDetailReqBuilder {
-	return &SklUnitDetailReqBuilder{req: &SklUnitDetailReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewTeachingClassReqBuilder creates a request builder for TeachingClass.
+func NewTeachingClassReqBuilder() *TeachingClassReqBuilder {
+	return &TeachingClassReqBuilder{req: &TeachingClassReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// UnitId sets the "unit_id" query parameter.
-func (b *SklUnitDetailReqBuilder) UnitId(v string) *SklUnitDetailReqBuilder {
+// UnitId sets the "unit_id" query parameter: 与 grade 同传 → 返回教学班成员详情
+func (b *TeachingClassReqBuilder) UnitId(v string) *TeachingClassReqBuilder {
 	b.req.queryParams["unit_id"] = v
 	return b
 }
 
 // Grade sets the "grade" query parameter.
-func (b *SklUnitDetailReqBuilder) Grade(v string) *SklUnitDetailReqBuilder {
+func (b *TeachingClassReqBuilder) Grade(v string) *TeachingClassReqBuilder {
 	b.req.queryParams["grade"] = v
 	return b
 }
 
 // StaffID sets the "X-Staff-Id" header parameter.
-func (b *SklUnitDetailReqBuilder) StaffID(v string) *SklUnitDetailReqBuilder {
+func (b *TeachingClassReqBuilder) StaffID(v string) *TeachingClassReqBuilder {
 	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
 // Build finalizes the request.
-func (b *SklUnitDetailReqBuilder) Build() *SklUnitDetailReq { return b.req }
+func (b *TeachingClassReqBuilder) Build() *TeachingClassReq { return b.req }
 
-// SklUnitDetailResp is the response for SklUnitDetail.
-type SklUnitDetailResp struct {
+// TeachingClassResp is the response for TeachingClass.
+type TeachingClassResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.SklUnitDetailData `json:"data"`
+	Data *models.TeachingClassData `json:"data"`
 }
 
-// SklUnitDetail: 查询教学班成员详情
-func (s *Service) SklUnitDetail(ctx context.Context, req *SklUnitDetailReq, opts ...core.RequestOption) (*SklUnitDetailResp, error) {
-	resp := &SklUnitDetailResp{}
+// TeachingClass: 查询教学班
+func (s *Service) TeachingClass(ctx context.Context, req *TeachingClassReq, opts ...core.RequestOption) (*TeachingClassResp, error) {
+	resp := &TeachingClassResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/skl/unit/detail",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// SklUnitsReq is the request for SklUnits.
-type SklUnitsReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// SklUnitsReqBuilder builds a SklUnitsReq with a fluent setter per field.
-type SklUnitsReqBuilder struct{ req *SklUnitsReq }
-
-// NewSklUnitsReqBuilder creates a request builder for SklUnits.
-func NewSklUnitsReqBuilder() *SklUnitsReqBuilder {
-	return &SklUnitsReqBuilder{req: &SklUnitsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *SklUnitsReqBuilder) StaffID(v string) *SklUnitsReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *SklUnitsReqBuilder) Build() *SklUnitsReq { return b.req }
-
-// SklUnitsResp is the response for SklUnits.
-type SklUnitsResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.SklUnitInfoItem `json:"data"`
-}
-
-// SklUnits: 查询本人所属教学班信息
-func (s *Service) SklUnits(ctx context.Context, req *SklUnitsReq, opts ...core.RequestOption) (*SklUnitsResp, error) {
-	resp := &SklUnitsResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/skl/unit/info",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// StudentBirthdayReq is the request for StudentBirthday.
-type StudentBirthdayReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// StudentBirthdayReqBuilder builds a StudentBirthdayReq with a fluent setter per field.
-type StudentBirthdayReqBuilder struct{ req *StudentBirthdayReq }
-
-// NewStudentBirthdayReqBuilder creates a request builder for StudentBirthday.
-func NewStudentBirthdayReqBuilder() *StudentBirthdayReqBuilder {
-	return &StudentBirthdayReqBuilder{req: &StudentBirthdayReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *StudentBirthdayReqBuilder) StaffID(v string) *StudentBirthdayReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *StudentBirthdayReqBuilder) Build() *StudentBirthdayReq { return b.req }
-
-// StudentBirthdayResp is the response for StudentBirthday.
-type StudentBirthdayResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.StudentBirthdayInfo `json:"data"`
-}
-
-// StudentBirthday: 查询本人生日
-func (s *Service) StudentBirthday(ctx context.Context, req *StudentBirthdayReq, opts ...core.RequestOption) (*StudentBirthdayResp, error) {
-	resp := &StudentBirthdayResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/student/birthday",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// StudentBirthdaysReq is the request for StudentBirthdays.
-type StudentBirthdaysReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// StudentBirthdaysReqBuilder builds a StudentBirthdaysReq with a fluent setter per field.
-type StudentBirthdaysReqBuilder struct{ req *StudentBirthdaysReq }
-
-// NewStudentBirthdaysReqBuilder creates a request builder for StudentBirthdays.
-func NewStudentBirthdaysReqBuilder() *StudentBirthdaysReqBuilder {
-	return &StudentBirthdaysReqBuilder{req: &StudentBirthdaysReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Month sets the "month" query parameter.
-func (b *StudentBirthdaysReqBuilder) Month(v int32) *StudentBirthdaysReqBuilder {
-	b.req.queryParams["month"] = strconv.FormatInt(int64(v), 10)
-	return b
-}
-
-// Day sets the "day" query parameter.
-func (b *StudentBirthdaysReqBuilder) Day(v int32) *StudentBirthdaysReqBuilder {
-	b.req.queryParams["day"] = strconv.FormatInt(int64(v), 10)
-	return b
-}
-
-// Build finalizes the request.
-func (b *StudentBirthdaysReqBuilder) Build() *StudentBirthdaysReq { return b.req }
-
-// StudentBirthdaysResp is the response for StudentBirthdays.
-type StudentBirthdaysResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.StudentBirthdayInfo `json:"data"`
-}
-
-// StudentBirthdays: 查询指定日期生日的学生
-func (s *Service) StudentBirthdays(ctx context.Context, req *StudentBirthdaysReq, opts ...core.RequestOption) (*StudentBirthdaysResp, error) {
-	resp := &StudentBirthdaysResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/student/birthdays",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// StudentCityReq is the request for StudentCity.
-type StudentCityReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// StudentCityReqBuilder builds a StudentCityReq with a fluent setter per field.
-type StudentCityReqBuilder struct{ req *StudentCityReq }
-
-// NewStudentCityReqBuilder creates a request builder for StudentCity.
-func NewStudentCityReqBuilder() *StudentCityReqBuilder {
-	return &StudentCityReqBuilder{req: &StudentCityReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *StudentCityReqBuilder) StaffID(v string) *StudentCityReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *StudentCityReqBuilder) Build() *StudentCityReq { return b.req }
-
-// StudentCityResp is the response for StudentCity.
-type StudentCityResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.CityInfo `json:"data"`
-}
-
-// StudentCity: 查询本人生源地城市
-func (s *Service) StudentCity(ctx context.Context, req *StudentCityReq, opts ...core.RequestOption) (*StudentCityResp, error) {
-	resp := &StudentCityResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/student/city",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// StudentCountReq is the request for StudentCount.
-type StudentCountReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// StudentCountReqBuilder builds a StudentCountReq with a fluent setter per field.
-type StudentCountReqBuilder struct{ req *StudentCountReq }
-
-// NewStudentCountReqBuilder creates a request builder for StudentCount.
-func NewStudentCountReqBuilder() *StudentCountReqBuilder {
-	return &StudentCountReqBuilder{req: &StudentCountReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Grade sets the "grade" query parameter.
-func (b *StudentCountReqBuilder) Grade(v []string) *StudentCountReqBuilder {
-	b.req.queryParams["grade"] = strings.Join(v, ",")
-	return b
-}
-
-// Build finalizes the request.
-func (b *StudentCountReqBuilder) Build() *StudentCountReq { return b.req }
-
-// StudentCountResp is the response for StudentCount.
-type StudentCountResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.StudentCountData `json:"data"`
-}
-
-// StudentCount: 按年级统计学生人数
-func (s *Service) StudentCount(ctx context.Context, req *StudentCountReq, opts ...core.RequestOption) (*StudentCountResp, error) {
-	resp := &StudentCountResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/student/count",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// DailyExamReq is the request for DailyExam.
-type DailyExamReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// DailyExamReqBuilder builds a DailyExamReq with a fluent setter per field.
-type DailyExamReqBuilder struct{ req *DailyExamReq }
-
-// NewDailyExamReqBuilder creates a request builder for DailyExam.
-func NewDailyExamReqBuilder() *DailyExamReqBuilder {
-	return &DailyExamReqBuilder{req: &DailyExamReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Date sets the "date" query parameter.
-func (b *DailyExamReqBuilder) Date(v string) *DailyExamReqBuilder {
-	b.req.queryParams["date"] = v
-	return b
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *DailyExamReqBuilder) StaffID(v string) *DailyExamReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *DailyExamReqBuilder) Build() *DailyExamReq { return b.req }
-
-// DailyExamResp is the response for DailyExam.
-type DailyExamResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.StudentExam `json:"data"`
-}
-
-// DailyExam: 查询本人指定日期的考试安排
-func (s *Service) DailyExam(ctx context.Context, req *DailyExamReq, opts ...core.RequestOption) (*DailyExamResp, error) {
-	resp := &DailyExamResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/student/dailyExam",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// StudentDormReq is the request for StudentDorm.
-type StudentDormReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// StudentDormReqBuilder builds a StudentDormReq with a fluent setter per field.
-type StudentDormReqBuilder struct{ req *StudentDormReq }
-
-// NewStudentDormReqBuilder creates a request builder for StudentDorm.
-func NewStudentDormReqBuilder() *StudentDormReqBuilder {
-	return &StudentDormReqBuilder{req: &StudentDormReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *StudentDormReqBuilder) StaffID(v string) *StudentDormReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *StudentDormReqBuilder) Build() *StudentDormReq { return b.req }
-
-// StudentDormResp is the response for StudentDorm.
-type StudentDormResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.DormInfo `json:"data"`
-}
-
-// StudentDorm: 查询本人宿舍信息
-func (s *Service) StudentDorm(ctx context.Context, req *StudentDormReq, opts ...core.RequestOption) (*StudentDormResp, error) {
-	resp := &StudentDormResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/student/dorm",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// StudentExamReq is the request for StudentExam.
-type StudentExamReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// StudentExamReqBuilder builds a StudentExamReq with a fluent setter per field.
-type StudentExamReqBuilder struct{ req *StudentExamReq }
-
-// NewStudentExamReqBuilder creates a request builder for StudentExam.
-func NewStudentExamReqBuilder() *StudentExamReqBuilder {
-	return &StudentExamReqBuilder{req: &StudentExamReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// SchoolYear sets the "schoolYear" query parameter.
-func (b *StudentExamReqBuilder) SchoolYear(v string) *StudentExamReqBuilder {
-	b.req.queryParams["schoolYear"] = v
-	return b
-}
-
-// Semester sets the "semester" query parameter.
-func (b *StudentExamReqBuilder) Semester(v string) *StudentExamReqBuilder {
-	b.req.queryParams["semester"] = v
-	return b
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *StudentExamReqBuilder) StaffID(v string) *StudentExamReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *StudentExamReqBuilder) Build() *StudentExamReq { return b.req }
-
-// StudentExamResp is the response for StudentExam.
-type StudentExamResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.StudentExam `json:"data"`
-}
-
-// StudentExam: 查询本人考试安排
-func (s *Service) StudentExam(ctx context.Context, req *StudentExamReq, opts ...core.RequestOption) (*StudentExamResp, error) {
-	resp := &StudentExamResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/student/exam",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// PostStudentGateAccessReq is the request for PostStudentGateAccess.
-type PostStudentGateAccessReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// PostStudentGateAccessReqBuilder builds a PostStudentGateAccessReq with a fluent setter per field.
-type PostStudentGateAccessReqBuilder struct{ req *PostStudentGateAccessReq }
-
-// NewPostStudentGateAccessReqBuilder creates a request builder for PostStudentGateAccess.
-func NewPostStudentGateAccessReqBuilder() *PostStudentGateAccessReqBuilder {
-	return &PostStudentGateAccessReqBuilder{req: &PostStudentGateAccessReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Build finalizes the request.
-func (b *PostStudentGateAccessReqBuilder) Build() *PostStudentGateAccessReq { return b.req }
-
-// PostStudentGateAccessResp is the response for PostStudentGateAccess.
-type PostStudentGateAccessResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.GateAccessData `json:"data"`
-}
-
-// PostStudentGateAccess: 上报学生门禁放行时段
-func (s *Service) PostStudentGateAccess(ctx context.Context, req *PostStudentGateAccessReq, opts ...core.RequestOption) (*PostStudentGateAccessResp, error) {
-	resp := &PostStudentGateAccessResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/academic/student/gate_access",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// StudentGPAReq is the request for StudentGPA.
-type StudentGPAReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// StudentGPAReqBuilder builds a StudentGPAReq with a fluent setter per field.
-type StudentGPAReqBuilder struct{ req *StudentGPAReq }
-
-// NewStudentGPAReqBuilder creates a request builder for StudentGPA.
-func NewStudentGPAReqBuilder() *StudentGPAReqBuilder {
-	return &StudentGPAReqBuilder{req: &StudentGPAReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *StudentGPAReqBuilder) StaffID(v string) *StudentGPAReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *StudentGPAReqBuilder) Build() *StudentGPAReq { return b.req }
-
-// StudentGPAResp is the response for StudentGPA.
-type StudentGPAResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.StudentGPA `json:"data"`
-}
-
-// StudentGPA: 查询本人学期与总绩点
-func (s *Service) StudentGPA(ctx context.Context, req *StudentGPAReq, opts ...core.RequestOption) (*StudentGPAResp, error) {
-	resp := &StudentGPAResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/student/gpa",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// StudentGradeReq is the request for StudentGrade.
-type StudentGradeReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// StudentGradeReqBuilder builds a StudentGradeReq with a fluent setter per field.
-type StudentGradeReqBuilder struct{ req *StudentGradeReq }
-
-// NewStudentGradeReqBuilder creates a request builder for StudentGrade.
-func NewStudentGradeReqBuilder() *StudentGradeReqBuilder {
-	return &StudentGradeReqBuilder{req: &StudentGradeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// SchoolYear sets the "schoolYear" query parameter.
-func (b *StudentGradeReqBuilder) SchoolYear(v string) *StudentGradeReqBuilder {
-	b.req.queryParams["schoolYear"] = v
-	return b
-}
-
-// Semester sets the "semester" query parameter.
-func (b *StudentGradeReqBuilder) Semester(v string) *StudentGradeReqBuilder {
-	b.req.queryParams["semester"] = v
-	return b
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *StudentGradeReqBuilder) StaffID(v string) *StudentGradeReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *StudentGradeReqBuilder) Build() *StudentGradeReq { return b.req }
-
-// StudentGradeResp is the response for StudentGrade.
-type StudentGradeResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.StudentGradeItem `json:"data"`
-}
-
-// StudentGrade: 查询本人成绩明细
-func (s *Service) StudentGrade(ctx context.Context, req *StudentGradeReq, opts ...core.RequestOption) (*StudentGradeResp, error) {
-	resp := &StudentGradeResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/student/grade",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// StudentStaySchoolReq is the request for StudentStaySchool.
-type StudentStaySchoolReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// StudentStaySchoolReqBuilder builds a StudentStaySchoolReq with a fluent setter per field.
-type StudentStaySchoolReqBuilder struct{ req *StudentStaySchoolReq }
-
-// NewStudentStaySchoolReqBuilder creates a request builder for StudentStaySchool.
-func NewStudentStaySchoolReqBuilder() *StudentStaySchoolReqBuilder {
-	return &StudentStaySchoolReqBuilder{req: &StudentStaySchoolReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *StudentStaySchoolReqBuilder) StaffID(v string) *StudentStaySchoolReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *StudentStaySchoolReqBuilder) Build() *StudentStaySchoolReq { return b.req }
-
-// StudentStaySchoolResp is the response for StudentStaySchool.
-type StudentStaySchoolResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.StudentStaySchoolInfo `json:"data"`
-}
-
-// StudentStaySchool: 查询本人假期留校信息
-func (s *Service) StudentStaySchool(ctx context.Context, req *StudentStaySchoolReq, opts ...core.RequestOption) (*StudentStaySchoolResp, error) {
-	resp := &StudentStaySchoolResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/student/holidayStay",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// StudentInfoReq is the request for StudentInfo.
-type StudentInfoReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// StudentInfoReqBuilder builds a StudentInfoReq with a fluent setter per field.
-type StudentInfoReqBuilder struct{ req *StudentInfoReq }
-
-// NewStudentInfoReqBuilder creates a request builder for StudentInfo.
-func NewStudentInfoReqBuilder() *StudentInfoReqBuilder {
-	return &StudentInfoReqBuilder{req: &StudentInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *StudentInfoReqBuilder) StaffID(v string) *StudentInfoReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *StudentInfoReqBuilder) Build() *StudentInfoReq { return b.req }
-
-// StudentInfoResp is the response for StudentInfo.
-type StudentInfoResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.StudentInfo `json:"data"`
-}
-
-// StudentInfo: 查询本人学籍信息
-func (s *Service) StudentInfo(ctx context.Context, req *StudentInfoReq, opts ...core.RequestOption) (*StudentInfoResp, error) {
-	resp := &StudentInfoResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/student/info",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// StudentRewardsReq is the request for StudentRewards.
-type StudentRewardsReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// StudentRewardsReqBuilder builds a StudentRewardsReq with a fluent setter per field.
-type StudentRewardsReqBuilder struct{ req *StudentRewardsReq }
-
-// NewStudentRewardsReqBuilder creates a request builder for StudentRewards.
-func NewStudentRewardsReqBuilder() *StudentRewardsReqBuilder {
-	return &StudentRewardsReqBuilder{req: &StudentRewardsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// SchoolYear sets the "schoolYear" query parameter.
-func (b *StudentRewardsReqBuilder) SchoolYear(v string) *StudentRewardsReqBuilder {
-	b.req.queryParams["schoolYear"] = v
-	return b
-}
-
-// Semester sets the "semester" query parameter.
-func (b *StudentRewardsReqBuilder) Semester(v string) *StudentRewardsReqBuilder {
-	b.req.queryParams["semester"] = v
-	return b
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *StudentRewardsReqBuilder) StaffID(v string) *StudentRewardsReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *StudentRewardsReqBuilder) Build() *StudentRewardsReq { return b.req }
-
-// StudentRewardsResp is the response for StudentRewards.
-type StudentRewardsResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.StudentReward `json:"data"`
-}
-
-// StudentRewards: 查询本人奖励信息
-func (s *Service) StudentRewards(ctx context.Context, req *StudentRewardsReq, opts ...core.RequestOption) (*StudentRewardsResp, error) {
-	resp := &StudentRewardsResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/student/reward",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// StudentSchoolRollStatusReq is the request for StudentSchoolRollStatus.
-type StudentSchoolRollStatusReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// StudentSchoolRollStatusReqBuilder builds a StudentSchoolRollStatusReq with a fluent setter per field.
-type StudentSchoolRollStatusReqBuilder struct{ req *StudentSchoolRollStatusReq }
-
-// NewStudentSchoolRollStatusReqBuilder creates a request builder for StudentSchoolRollStatus.
-func NewStudentSchoolRollStatusReqBuilder() *StudentSchoolRollStatusReqBuilder {
-	return &StudentSchoolRollStatusReqBuilder{req: &StudentSchoolRollStatusReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *StudentSchoolRollStatusReqBuilder) StaffID(v string) *StudentSchoolRollStatusReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *StudentSchoolRollStatusReqBuilder) Build() *StudentSchoolRollStatusReq { return b.req }
-
-// StudentSchoolRollStatusResp is the response for StudentSchoolRollStatus.
-type StudentSchoolRollStatusResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.SchoolRollStatus `json:"data"`
-}
-
-// StudentSchoolRollStatus: 查询本人学籍状态
-func (s *Service) StudentSchoolRollStatus(ctx context.Context, req *StudentSchoolRollStatusReq, opts ...core.RequestOption) (*StudentSchoolRollStatusResp, error) {
-	resp := &StudentSchoolRollStatusResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/student/schoolRollStatus",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// StudentSelectionsReq is the request for StudentSelections.
-type StudentSelectionsReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// StudentSelectionsReqBuilder builds a StudentSelectionsReq with a fluent setter per field.
-type StudentSelectionsReqBuilder struct{ req *StudentSelectionsReq }
-
-// NewStudentSelectionsReqBuilder creates a request builder for StudentSelections.
-func NewStudentSelectionsReqBuilder() *StudentSelectionsReqBuilder {
-	return &StudentSelectionsReqBuilder{req: &StudentSelectionsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// SchoolYear sets the "schoolYear" query parameter.
-func (b *StudentSelectionsReqBuilder) SchoolYear(v string) *StudentSelectionsReqBuilder {
-	b.req.queryParams["schoolYear"] = v
-	return b
-}
-
-// Semester sets the "semester" query parameter.
-func (b *StudentSelectionsReqBuilder) Semester(v string) *StudentSelectionsReqBuilder {
-	b.req.queryParams["semester"] = v
-	return b
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *StudentSelectionsReqBuilder) StaffID(v string) *StudentSelectionsReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *StudentSelectionsReqBuilder) Build() *StudentSelectionsReq { return b.req }
-
-// StudentSelectionsResp is the response for StudentSelections.
-type StudentSelectionsResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.StudentCourseSelection `json:"data"`
-}
-
-// StudentSelections: 查询本人选课信息
-func (s *Service) StudentSelections(ctx context.Context, req *StudentSelectionsReq, opts ...core.RequestOption) (*StudentSelectionsResp, error) {
-	resp := &StudentSelectionsResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/student/select",
+		PathTemplate: "/hduhelp-neo/academic/teaching-class",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

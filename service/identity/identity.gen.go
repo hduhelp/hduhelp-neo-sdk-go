@@ -32,9 +32,9 @@ func NewGetDeviceRequestReqBuilder() *GetDeviceRequestReqBuilder {
 	return &GetDeviceRequestReqBuilder{req: &GetDeviceRequestReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// UserCode sets the "userCode" path parameter.
+// UserCode sets the "user-code" query parameter.
 func (b *GetDeviceRequestReqBuilder) UserCode(v string) *GetDeviceRequestReqBuilder {
-	b.req.pathParams["userCode"] = v
+	b.req.queryParams["user-code"] = v
 	return b
 }
 
@@ -53,7 +53,7 @@ func (s *Service) GetDeviceRequest(ctx context.Context, req *GetDeviceRequestReq
 	resp := &GetDeviceRequestResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/cli/device/requests/{userCode}",
+		PathTemplate: "/hduhelp-neo/cli/device/requests",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -78,9 +78,9 @@ func NewApproveDeviceReqBuilder() *ApproveDeviceReqBuilder {
 	return &ApproveDeviceReqBuilder{req: &ApproveDeviceReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// UserCode sets the "userCode" path parameter.
+// UserCode sets the "user-code" query parameter.
 func (b *ApproveDeviceReqBuilder) UserCode(v string) *ApproveDeviceReqBuilder {
-	b.req.pathParams["userCode"] = v
+	b.req.queryParams["user-code"] = v
 	return b
 }
 
@@ -104,7 +104,7 @@ func (s *Service) ApproveDevice(ctx context.Context, req *ApproveDeviceReq, opts
 	resp := &ApproveDeviceResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/cli/device/requests/{userCode}/approve",
+		PathTemplate: "/hduhelp-neo/cli/device/requests/approve",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -129,9 +129,9 @@ func NewDenyDeviceReqBuilder() *DenyDeviceReqBuilder {
 	return &DenyDeviceReqBuilder{req: &DenyDeviceReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// UserCode sets the "userCode" path parameter.
+// UserCode sets the "user-code" query parameter.
 func (b *DenyDeviceReqBuilder) UserCode(v string) *DenyDeviceReqBuilder {
-	b.req.pathParams["userCode"] = v
+	b.req.queryParams["user-code"] = v
 	return b
 }
 
@@ -149,7 +149,7 @@ func (s *Service) DenyDevice(ctx context.Context, req *DenyDeviceReq, opts ...co
 	resp := &DenyDeviceResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/cli/device/requests/{userCode}/deny",
+		PathTemplate: "/hduhelp-neo/cli/device/requests/deny",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -300,9 +300,9 @@ func NewRevokePATReqBuilder() *RevokePATReqBuilder {
 	return &RevokePATReqBuilder{req: &RevokePATReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// Id sets the "id" path parameter.
+// Id sets the "id" query parameter.
 func (b *RevokePATReqBuilder) Id(v string) *RevokePATReqBuilder {
-	b.req.pathParams["id"] = v
+	b.req.queryParams["id"] = v
 	return b
 }
 
@@ -320,7 +320,7 @@ func (s *Service) RevokePAT(ctx context.Context, req *RevokePATReq, opts ...core
 	resp := &RevokePATResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "DELETE",
-		PathTemplate: "/hduhelp-neo/cli/tokens/{id}",
+		PathTemplate: "/hduhelp-neo/cli/tokens",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -459,190 +459,6 @@ func (s *Service) MergeStart(ctx context.Context, req *MergeStartReq, opts ...co
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
 		PathTemplate: "/hduhelp-neo/identity/account/merge/start",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// RegisterAppReq is the request for RegisterApp.
-type RegisterAppReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// RegisterAppReqBuilder builds a RegisterAppReq with a fluent setter per field.
-type RegisterAppReqBuilder struct{ req *RegisterAppReq }
-
-// NewRegisterAppReqBuilder creates a request builder for RegisterApp.
-func NewRegisterAppReqBuilder() *RegisterAppReqBuilder {
-	return &RegisterAppReqBuilder{req: &RegisterAppReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *RegisterAppReqBuilder) Body(body *models.RegisterAppRequestBody) *RegisterAppReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *RegisterAppReqBuilder) Build() *RegisterAppReq { return b.req }
-
-// RegisterAppResp is the response for RegisterApp.
-type RegisterAppResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.RegisterAppData `json:"data"`
-}
-
-// RegisterApp: 注册应用
-func (s *Service) RegisterApp(ctx context.Context, req *RegisterAppReq, opts ...core.RequestOption) (*RegisterAppResp, error) {
-	resp := &RegisterAppResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/identity/apps",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// AuthorizeReq is the request for Authorize.
-type AuthorizeReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// AuthorizeReqBuilder builds a AuthorizeReq with a fluent setter per field.
-type AuthorizeReqBuilder struct{ req *AuthorizeReq }
-
-// NewAuthorizeReqBuilder creates a request builder for Authorize.
-func NewAuthorizeReqBuilder() *AuthorizeReqBuilder {
-	return &AuthorizeReqBuilder{req: &AuthorizeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *AuthorizeReqBuilder) Body(body *models.AuthorizeRequestBody) *AuthorizeReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *AuthorizeReqBuilder) Build() *AuthorizeReq { return b.req }
-
-// AuthorizeResp is the response for Authorize.
-type AuthorizeResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.AuthorizeData `json:"data"`
-}
-
-// Authorize: 用户授权应用
-func (s *Service) Authorize(ctx context.Context, req *AuthorizeReq, opts ...core.RequestOption) (*AuthorizeResp, error) {
-	resp := &AuthorizeResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/identity/apps/authorize",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// IssueAppTokenReq is the request for IssueAppToken.
-type IssueAppTokenReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// IssueAppTokenReqBuilder builds a IssueAppTokenReq with a fluent setter per field.
-type IssueAppTokenReqBuilder struct{ req *IssueAppTokenReq }
-
-// NewIssueAppTokenReqBuilder creates a request builder for IssueAppToken.
-func NewIssueAppTokenReqBuilder() *IssueAppTokenReqBuilder {
-	return &IssueAppTokenReqBuilder{req: &IssueAppTokenReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *IssueAppTokenReqBuilder) Body(body *models.AppTokenRequestBody) *IssueAppTokenReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *IssueAppTokenReqBuilder) Build() *IssueAppTokenReq { return b.req }
-
-// IssueAppTokenResp is the response for IssueAppToken.
-type IssueAppTokenResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.AppTokenData `json:"data"`
-}
-
-// IssueAppToken: 签发应用令牌
-func (s *Service) IssueAppToken(ctx context.Context, req *IssueAppTokenReq, opts ...core.RequestOption) (*IssueAppTokenResp, error) {
-	resp := &IssueAppTokenResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/identity/apps/token",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ExchangeCodeReq is the request for ExchangeCode.
-type ExchangeCodeReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ExchangeCodeReqBuilder builds a ExchangeCodeReq with a fluent setter per field.
-type ExchangeCodeReqBuilder struct{ req *ExchangeCodeReq }
-
-// NewExchangeCodeReqBuilder creates a request builder for ExchangeCode.
-func NewExchangeCodeReqBuilder() *ExchangeCodeReqBuilder {
-	return &ExchangeCodeReqBuilder{req: &ExchangeCodeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *ExchangeCodeReqBuilder) Body(body *models.ExchangeCodeRequestBody) *ExchangeCodeReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *ExchangeCodeReqBuilder) Build() *ExchangeCodeReq { return b.req }
-
-// ExchangeCodeResp is the response for ExchangeCode.
-type ExchangeCodeResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.TokenPair `json:"data"`
-}
-
-// ExchangeCode: 授权码换令牌
-func (s *Service) ExchangeCode(ctx context.Context, req *ExchangeCodeReq, opts ...core.RequestOption) (*ExchangeCodeResp, error) {
-	resp := &ExchangeCodeResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/identity/apps/token/exchange",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -1327,9 +1143,9 @@ func NewRevokeSessionReqBuilder() *RevokeSessionReqBuilder {
 	return &RevokeSessionReqBuilder{req: &RevokeSessionReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// SessionId sets the "sessionId" path parameter.
+// SessionId sets the "session-id" query parameter.
 func (b *RevokeSessionReqBuilder) SessionId(v string) *RevokeSessionReqBuilder {
-	b.req.pathParams["sessionId"] = v
+	b.req.queryParams["session-id"] = v
 	return b
 }
 
@@ -1347,7 +1163,7 @@ func (s *Service) RevokeSession(ctx context.Context, req *RevokeSessionReq, opts
 	resp := &RevokeSessionResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "DELETE",
-		PathTemplate: "/hduhelp-neo/identity/auth/sessions/{sessionId}",
+		PathTemplate: "/hduhelp-neo/identity/auth/sessions",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -1846,110 +1662,6 @@ func (s *Service) SetDefaultIdentity(ctx context.Context, req *SetDefaultIdentit
 	return resp, err
 }
 
-// AutoLoginReq is the request for AutoLogin.
-type AutoLoginReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// AutoLoginReqBuilder builds a AutoLoginReq with a fluent setter per field.
-type AutoLoginReqBuilder struct{ req *AutoLoginReq }
-
-// NewAutoLoginReqBuilder creates a request builder for AutoLogin.
-func NewAutoLoginReqBuilder() *AutoLoginReqBuilder {
-	return &AutoLoginReqBuilder{req: &AutoLoginReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// ClientId sets the "client_id" query parameter.
-func (b *AutoLoginReqBuilder) ClientId(v string) *AutoLoginReqBuilder {
-	b.req.queryParams["client_id"] = v
-	return b
-}
-
-// RedirectUri sets the "redirect_uri" query parameter.
-func (b *AutoLoginReqBuilder) RedirectUri(v string) *AutoLoginReqBuilder {
-	b.req.queryParams["redirect_uri"] = v
-	return b
-}
-
-// UserAgent sets the "User-Agent" header parameter.
-func (b *AutoLoginReqBuilder) UserAgent(v string) *AutoLoginReqBuilder {
-	b.req.headers["User-Agent"] = v
-	return b
-}
-
-// ReturnTo sets the "return_to" query parameter.
-func (b *AutoLoginReqBuilder) ReturnTo(v string) *AutoLoginReqBuilder {
-	b.req.queryParams["return_to"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *AutoLoginReqBuilder) Build() *AutoLoginReq { return b.req }
-
-// AutoLoginResp is the response for AutoLogin.
-type AutoLoginResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.AutoLoginData `json:"data"`
-}
-
-// AutoLogin: 自动登录
-func (s *Service) AutoLogin(ctx context.Context, req *AutoLoginReq, opts ...core.RequestOption) (*AutoLoginResp, error) {
-	resp := &AutoLoginResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/identity/login/auto",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// BindSuccessLoginReq is the request for BindSuccessLogin.
-type BindSuccessLoginReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// BindSuccessLoginReqBuilder builds a BindSuccessLoginReq with a fluent setter per field.
-type BindSuccessLoginReqBuilder struct{ req *BindSuccessLoginReq }
-
-// NewBindSuccessLoginReqBuilder creates a request builder for BindSuccessLogin.
-func NewBindSuccessLoginReqBuilder() *BindSuccessLoginReqBuilder {
-	return &BindSuccessLoginReqBuilder{req: &BindSuccessLoginReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Build finalizes the request.
-func (b *BindSuccessLoginReqBuilder) Build() *BindSuccessLoginReq { return b.req }
-
-// BindSuccessLoginResp is the response for BindSuccessLogin.
-type BindSuccessLoginResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.BindSuccessData `json:"data"`
-}
-
-// BindSuccessLogin: 绑定成功页（/login 前缀）
-func (s *Service) BindSuccessLogin(ctx context.Context, req *BindSuccessLoginReq, opts ...core.RequestOption) (*BindSuccessLoginResp, error) {
-	resp := &BindSuccessLoginResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/identity/login/bind",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
 // BindPageReq is the request for BindPage.
 type BindPageReq struct {
 	pathParams  map[string]string
@@ -1966,9 +1678,21 @@ func NewBindPageReqBuilder() *BindPageReqBuilder {
 	return &BindPageReqBuilder{req: &BindPageReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// State sets the "state" path parameter: 关联登录态
+// State sets the "state" query parameter: 关联登录态
 func (b *BindPageReqBuilder) State(v string) *BindPageReqBuilder {
-	b.req.pathParams["state"] = v
+	b.req.queryParams["state"] = v
+	return b
+}
+
+// GrantType sets the "grant-type" query parameter: 绑定来源大类
+func (b *BindPageReqBuilder) GrantType(v string) *BindPageReqBuilder {
+	b.req.queryParams["grant-type"] = v
+	return b
+}
+
+// GrantKey sets the "grant-key" query parameter: 绑定来源具体项
+func (b *BindPageReqBuilder) GrantKey(v string) *BindPageReqBuilder {
+	b.req.queryParams["grant-key"] = v
 	return b
 }
 
@@ -1994,146 +1718,12 @@ type BindPageResp struct {
 	Data *models.BindPageData `json:"data"`
 }
 
-// BindPage: 发起绑定（选择来源）
+// BindPage: 发起绑定
 func (s *Service) BindPage(ctx context.Context, req *BindPageReq, opts ...core.RequestOption) (*BindPageResp, error) {
 	resp := &BindPageResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/identity/login/bind/{state}",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// BindPageTypeReq is the request for BindPageType.
-type BindPageTypeReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// BindPageTypeReqBuilder builds a BindPageTypeReq with a fluent setter per field.
-type BindPageTypeReqBuilder struct{ req *BindPageTypeReq }
-
-// NewBindPageTypeReqBuilder creates a request builder for BindPageType.
-func NewBindPageTypeReqBuilder() *BindPageTypeReqBuilder {
-	return &BindPageTypeReqBuilder{req: &BindPageTypeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// State sets the "state" path parameter: 关联登录态
-func (b *BindPageTypeReqBuilder) State(v string) *BindPageTypeReqBuilder {
-	b.req.pathParams["state"] = v
-	return b
-}
-
-// GrantType sets the "GrantType" path parameter: 绑定来源大类
-func (b *BindPageTypeReqBuilder) GrantType(v string) *BindPageTypeReqBuilder {
-	b.req.pathParams["GrantType"] = v
-	return b
-}
-
-// ClientId sets the "client_id" query parameter: 运营平台注册的第一方登录客户端
-func (b *BindPageTypeReqBuilder) ClientId(v string) *BindPageTypeReqBuilder {
-	b.req.queryParams["client_id"] = v
-	return b
-}
-
-// RedirectUri sets the "redirect_uri" query parameter: 精确匹配客户端白名单
-func (b *BindPageTypeReqBuilder) RedirectUri(v string) *BindPageTypeReqBuilder {
-	b.req.queryParams["redirect_uri"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *BindPageTypeReqBuilder) Build() *BindPageTypeReq { return b.req }
-
-// BindPageTypeResp is the response for BindPageType.
-type BindPageTypeResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.BindPageData `json:"data"`
-}
-
-// BindPageType: 发起绑定（指定大类）
-func (s *Service) BindPageType(ctx context.Context, req *BindPageTypeReq, opts ...core.RequestOption) (*BindPageTypeResp, error) {
-	resp := &BindPageTypeResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/identity/login/bind/{state}/{GrantType}",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// BindPageKeyReq is the request for BindPageKey.
-type BindPageKeyReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// BindPageKeyReqBuilder builds a BindPageKeyReq with a fluent setter per field.
-type BindPageKeyReqBuilder struct{ req *BindPageKeyReq }
-
-// NewBindPageKeyReqBuilder creates a request builder for BindPageKey.
-func NewBindPageKeyReqBuilder() *BindPageKeyReqBuilder {
-	return &BindPageKeyReqBuilder{req: &BindPageKeyReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// State sets the "state" path parameter: 关联登录态
-func (b *BindPageKeyReqBuilder) State(v string) *BindPageKeyReqBuilder {
-	b.req.pathParams["state"] = v
-	return b
-}
-
-// GrantType sets the "GrantType" path parameter: 绑定来源大类
-func (b *BindPageKeyReqBuilder) GrantType(v string) *BindPageKeyReqBuilder {
-	b.req.pathParams["GrantType"] = v
-	return b
-}
-
-// GrantKey sets the "GrantKey" path parameter: 绑定来源具体项
-func (b *BindPageKeyReqBuilder) GrantKey(v string) *BindPageKeyReqBuilder {
-	b.req.pathParams["GrantKey"] = v
-	return b
-}
-
-// ClientId sets the "client_id" query parameter: 运营平台注册的第一方登录客户端
-func (b *BindPageKeyReqBuilder) ClientId(v string) *BindPageKeyReqBuilder {
-	b.req.queryParams["client_id"] = v
-	return b
-}
-
-// RedirectUri sets the "redirect_uri" query parameter: 精确匹配客户端白名单
-func (b *BindPageKeyReqBuilder) RedirectUri(v string) *BindPageKeyReqBuilder {
-	b.req.queryParams["redirect_uri"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *BindPageKeyReqBuilder) Build() *BindPageKeyReq { return b.req }
-
-// BindPageKeyResp is the response for BindPageKey.
-type BindPageKeyResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.BindPageData `json:"data"`
-}
-
-// BindPageKey: 发起绑定（指定来源项）
-func (s *Service) BindPageKey(ctx context.Context, req *BindPageKeyReq, opts ...core.RequestOption) (*BindPageKeyResp, error) {
-	resp := &BindPageKeyResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/identity/login/bind/{state}/{GrantType}/{GrantKey}",
+		PathTemplate: "/hduhelp-neo/identity/login/bind",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -2322,76 +1912,6 @@ func (s *Service) LoginCallbackGrant(ctx context.Context, req *LoginCallbackGran
 	return resp, err
 }
 
-// DirectLoginReq is the request for DirectLogin.
-type DirectLoginReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// DirectLoginReqBuilder builds a DirectLoginReq with a fluent setter per field.
-type DirectLoginReqBuilder struct{ req *DirectLoginReq }
-
-// NewDirectLoginReqBuilder creates a request builder for DirectLogin.
-func NewDirectLoginReqBuilder() *DirectLoginReqBuilder {
-	return &DirectLoginReqBuilder{req: &DirectLoginReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// GrantKey sets the "GrantKey" path parameter: 登录来源: cas/wxmp/wxmini/dingtalk/...
-func (b *DirectLoginReqBuilder) GrantKey(v string) *DirectLoginReqBuilder {
-	b.req.pathParams["GrantKey"] = v
-	return b
-}
-
-// ClientId sets the "client_id" query parameter: 运营平台注册的第一方登录客户端
-func (b *DirectLoginReqBuilder) ClientId(v string) *DirectLoginReqBuilder {
-	b.req.queryParams["client_id"] = v
-	return b
-}
-
-// RedirectUri sets the "redirect_uri" query parameter: 精确匹配客户端白名单；缺省取首项
-func (b *DirectLoginReqBuilder) RedirectUri(v string) *DirectLoginReqBuilder {
-	b.req.queryParams["redirect_uri"] = v
-	return b
-}
-
-// Remember sets the "remember" query parameter: "true" 记住登录
-func (b *DirectLoginReqBuilder) Remember(v string) *DirectLoginReqBuilder {
-	b.req.queryParams["remember"] = v
-	return b
-}
-
-// ReturnTo sets the "return_to" query parameter: 登录后恢复的第一方 SPA 相对路径，服务端校验并存 state
-func (b *DirectLoginReqBuilder) ReturnTo(v string) *DirectLoginReqBuilder {
-	b.req.queryParams["return_to"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *DirectLoginReqBuilder) Build() *DirectLoginReq { return b.req }
-
-// DirectLoginResp is the response for DirectLogin.
-type DirectLoginResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.LoginURLData `json:"data"`
-}
-
-// DirectLogin: 直接跳转登录
-func (s *Service) DirectLogin(ctx context.Context, req *DirectLoginReq, opts ...core.RequestOption) (*DirectLoginResp, error) {
-	resp := &DirectLoginResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/identity/login/direct/{GrantKey}",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
 // LoginExchangeReq is the request for LoginExchange.
 type LoginExchangeReq struct {
 	pathParams  map[string]string
@@ -2476,70 +1996,6 @@ func (s *Service) LoginFlowExchange(ctx context.Context, req *LoginFlowExchangeR
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
 		PathTemplate: "/hduhelp-neo/identity/login/flow/exchange",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// SelectLoginReq is the request for SelectLogin.
-type SelectLoginReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// SelectLoginReqBuilder builds a SelectLoginReq with a fluent setter per field.
-type SelectLoginReqBuilder struct{ req *SelectLoginReq }
-
-// NewSelectLoginReqBuilder creates a request builder for SelectLogin.
-func NewSelectLoginReqBuilder() *SelectLoginReqBuilder {
-	return &SelectLoginReqBuilder{req: &SelectLoginReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// ClientId sets the "client_id" query parameter.
-func (b *SelectLoginReqBuilder) ClientId(v string) *SelectLoginReqBuilder {
-	b.req.queryParams["client_id"] = v
-	return b
-}
-
-// RedirectUri sets the "redirect_uri" query parameter.
-func (b *SelectLoginReqBuilder) RedirectUri(v string) *SelectLoginReqBuilder {
-	b.req.queryParams["redirect_uri"] = v
-	return b
-}
-
-// UserAgent sets the "User-Agent" header parameter.
-func (b *SelectLoginReqBuilder) UserAgent(v string) *SelectLoginReqBuilder {
-	b.req.headers["User-Agent"] = v
-	return b
-}
-
-// ReturnTo sets the "return_to" query parameter.
-func (b *SelectLoginReqBuilder) ReturnTo(v string) *SelectLoginReqBuilder {
-	b.req.queryParams["return_to"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *SelectLoginReqBuilder) Build() *SelectLoginReq { return b.req }
-
-// SelectLoginResp is the response for SelectLogin.
-type SelectLoginResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.AutoLoginData `json:"data"`
-}
-
-// SelectLogin: 选择登录方式
-func (s *Service) SelectLogin(ctx context.Context, req *SelectLoginReq, opts ...core.RequestOption) (*SelectLoginResp, error) {
-	resp := &SelectLoginResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/identity/login/select",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -2680,9 +2136,9 @@ func NewGetLoginURLReqBuilder() *GetLoginURLReqBuilder {
 	return &GetLoginURLReqBuilder{req: &GetLoginURLReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// GrantKey sets the "GrantKey" path parameter: 登录来源: cas/wxmp/wxmini/dingtalk/...
+// GrantKey sets the "grant-key" query parameter: 登录来源: cas/wxmp/wxmini/dingtalk/...
 func (b *GetLoginURLReqBuilder) GrantKey(v string) *GetLoginURLReqBuilder {
-	b.req.pathParams["GrantKey"] = v
+	b.req.queryParams["grant-key"] = v
 	return b
 }
 
@@ -2725,7 +2181,7 @@ func (s *Service) GetLoginURL(ctx context.Context, req *GetLoginURLReq, opts ...
 	resp := &GetLoginURLResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/identity/login/url/{GrantKey}",
+		PathTemplate: "/hduhelp-neo/identity/login/url",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -2819,137 +2275,6 @@ func (s *Service) SetCurrentCampus(ctx context.Context, req *SetCurrentCampusReq
 	return resp, err
 }
 
-// RegisterReq is the request for Register.
-type RegisterReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// RegisterReqBuilder builds a RegisterReq with a fluent setter per field.
-type RegisterReqBuilder struct{ req *RegisterReq }
-
-// NewRegisterReqBuilder creates a request builder for Register.
-func NewRegisterReqBuilder() *RegisterReqBuilder {
-	return &RegisterReqBuilder{req: &RegisterReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *RegisterReqBuilder) Body(body *models.RegisterRequestBody) *RegisterReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *RegisterReqBuilder) Build() *RegisterReq { return b.req }
-
-// RegisterResp is the response for Register.
-type RegisterResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.RegisterData `json:"data"`
-}
-
-// Register: 注册自由用户
-func (s *Service) Register(ctx context.Context, req *RegisterReq, opts ...core.RequestOption) (*RegisterResp, error) {
-	resp := &RegisterResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/identity/register",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// LogoutReq is the request for Logout.
-type LogoutReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// LogoutReqBuilder builds a LogoutReq with a fluent setter per field.
-type LogoutReqBuilder struct{ req *LogoutReq }
-
-// NewLogoutReqBuilder creates a request builder for Logout.
-func NewLogoutReqBuilder() *LogoutReqBuilder {
-	return &LogoutReqBuilder{req: &LogoutReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Build finalizes the request.
-func (b *LogoutReqBuilder) Build() *LogoutReq { return b.req }
-
-// LogoutResp is the response for Logout.
-type LogoutResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-}
-
-// Logout: 登出
-func (s *Service) Logout(ctx context.Context, req *LogoutReq, opts ...core.RequestOption) (*LogoutResp, error) {
-	resp := &LogoutResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "DELETE",
-		PathTemplate: "/hduhelp-neo/identity/token",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// RefreshTokenReq is the request for RefreshToken.
-type RefreshTokenReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// RefreshTokenReqBuilder builds a RefreshTokenReq with a fluent setter per field.
-type RefreshTokenReqBuilder struct{ req *RefreshTokenReq }
-
-// NewRefreshTokenReqBuilder creates a request builder for RefreshToken.
-func NewRefreshTokenReqBuilder() *RefreshTokenReqBuilder {
-	return &RefreshTokenReqBuilder{req: &RefreshTokenReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *RefreshTokenReqBuilder) Body(body *models.RefreshRequestBody) *RefreshTokenReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *RefreshTokenReqBuilder) Build() *RefreshTokenReq { return b.req }
-
-// RefreshTokenResp is the response for RefreshToken.
-type RefreshTokenResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.TokenPair `json:"data"`
-}
-
-// RefreshToken: 刷新访问令牌
-func (s *Service) RefreshToken(ctx context.Context, req *RefreshTokenReq, opts ...core.RequestOption) (*RefreshTokenResp, error) {
-	resp := &RefreshTokenResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/identity/token/refresh",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
 // AppAccessTokenInternalReq is the request for AppAccessTokenInternal.
 type AppAccessTokenInternalReq struct {
 	pathParams  map[string]string
@@ -2987,7 +2312,7 @@ func (s *Service) AppAccessTokenInternal(ctx context.Context, req *AppAccessToke
 	resp := &AppAccessTokenInternalResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/open-apis/auth/app_access_token/internal",
+		PathTemplate: "/hduhelp-neo/open-apis/auth/app-access-token/internal",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -3026,7 +2351,7 @@ func (s *Service) DeviceAuthorization(ctx context.Context, req *DeviceAuthorizat
 	resp := &DeviceAuthorizationResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/open-apis/auth/device_authorization",
+		PathTemplate: "/hduhelp-neo/open-apis/auth/device-authorization",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -3071,7 +2396,7 @@ func (s *Service) CancelDeviceAuthorization(ctx context.Context, req *CancelDevi
 	resp := &CancelDeviceAuthorizationResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/open-apis/auth/device_authorization/cancel",
+		PathTemplate: "/hduhelp-neo/open-apis/auth/device-authorization/cancel",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -3117,101 +2442,7 @@ func (s *Service) TenantAccessTokenInternal(ctx context.Context, req *TenantAcce
 	resp := &TenantAccessTokenInternalResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/open-apis/auth/tenant_access_token/internal",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// AppAccessTokenInternalV3Req is the request for AppAccessTokenInternalV3.
-type AppAccessTokenInternalV3Req struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// AppAccessTokenInternalV3ReqBuilder builds a AppAccessTokenInternalV3Req with a fluent setter per field.
-type AppAccessTokenInternalV3ReqBuilder struct{ req *AppAccessTokenInternalV3Req }
-
-// NewAppAccessTokenInternalV3ReqBuilder creates a request builder for AppAccessTokenInternalV3.
-func NewAppAccessTokenInternalV3ReqBuilder() *AppAccessTokenInternalV3ReqBuilder {
-	return &AppAccessTokenInternalV3ReqBuilder{req: &AppAccessTokenInternalV3Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *AppAccessTokenInternalV3ReqBuilder) Body(body *models.AppAccessTokenInternalRequestBody) *AppAccessTokenInternalV3ReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *AppAccessTokenInternalV3ReqBuilder) Build() *AppAccessTokenInternalV3Req { return b.req }
-
-// AppAccessTokenInternalV3Resp is the response for AppAccessTokenInternalV3.
-type AppAccessTokenInternalV3Resp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.AppAccessTokenData `json:"data"`
-}
-
-// AppAccessTokenInternalV3: 获取 app_access_token（v3）
-func (s *Service) AppAccessTokenInternalV3(ctx context.Context, req *AppAccessTokenInternalV3Req, opts ...core.RequestOption) (*AppAccessTokenInternalV3Resp, error) {
-	resp := &AppAccessTokenInternalV3Resp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/open-apis/auth/v3/app_access_token/internal",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// TenantAccessTokenInternalV3Req is the request for TenantAccessTokenInternalV3.
-type TenantAccessTokenInternalV3Req struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// TenantAccessTokenInternalV3ReqBuilder builds a TenantAccessTokenInternalV3Req with a fluent setter per field.
-type TenantAccessTokenInternalV3ReqBuilder struct {
-	req *TenantAccessTokenInternalV3Req
-}
-
-// NewTenantAccessTokenInternalV3ReqBuilder creates a request builder for TenantAccessTokenInternalV3.
-func NewTenantAccessTokenInternalV3ReqBuilder() *TenantAccessTokenInternalV3ReqBuilder {
-	return &TenantAccessTokenInternalV3ReqBuilder{req: &TenantAccessTokenInternalV3Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *TenantAccessTokenInternalV3ReqBuilder) Body(body *models.TenantAccessTokenInternalRequestBody) *TenantAccessTokenInternalV3ReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *TenantAccessTokenInternalV3ReqBuilder) Build() *TenantAccessTokenInternalV3Req { return b.req }
-
-// TenantAccessTokenInternalV3Resp is the response for TenantAccessTokenInternalV3.
-type TenantAccessTokenInternalV3Resp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.TenantAccessTokenData `json:"data"`
-}
-
-// TenantAccessTokenInternalV3: 获取 tenant_access_token（v3）
-func (s *Service) TenantAccessTokenInternalV3(ctx context.Context, req *TenantAccessTokenInternalV3Req, opts ...core.RequestOption) (*TenantAccessTokenInternalV3Resp, error) {
-	resp := &TenantAccessTokenInternalV3Resp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/open-apis/auth/v3/tenant_access_token/internal",
+		PathTemplate: "/hduhelp-neo/open-apis/auth/tenant-access-token/internal",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -3251,7 +2482,7 @@ func (s *Service) AuthenAccessToken(ctx context.Context, req *AuthenAccessTokenR
 	resp := &AuthenAccessTokenResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/open-apis/authen/access_token",
+		PathTemplate: "/hduhelp-neo/open-apis/authen/access-token",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -3473,7 +2704,7 @@ func (s *Service) AuthenRefreshAccessToken(ctx context.Context, req *AuthenRefre
 	resp := &AuthenRefreshAccessTokenResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/open-apis/authen/refresh_access_token",
+		PathTemplate: "/hduhelp-neo/open-apis/authen/refresh-access-token",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -3558,268 +2789,7 @@ func (s *Service) AuthenUserInfo(ctx context.Context, req *AuthenUserInfoReq, op
 	resp := &AuthenUserInfoResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/open-apis/authen/user_info",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// AuthenAccessTokenV1Req is the request for AuthenAccessTokenV1.
-type AuthenAccessTokenV1Req struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// AuthenAccessTokenV1ReqBuilder builds a AuthenAccessTokenV1Req with a fluent setter per field.
-type AuthenAccessTokenV1ReqBuilder struct{ req *AuthenAccessTokenV1Req }
-
-// NewAuthenAccessTokenV1ReqBuilder creates a request builder for AuthenAccessTokenV1.
-func NewAuthenAccessTokenV1ReqBuilder() *AuthenAccessTokenV1ReqBuilder {
-	return &AuthenAccessTokenV1ReqBuilder{req: &AuthenAccessTokenV1Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Build finalizes the request.
-func (b *AuthenAccessTokenV1ReqBuilder) Build() *AuthenAccessTokenV1Req { return b.req }
-
-// AuthenAccessTokenV1Resp is the response for AuthenAccessTokenV1.
-type AuthenAccessTokenV1Resp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.AuthenTokenData `json:"data"`
-}
-
-// AuthenAccessTokenV1: 授权码换 user_access_token（v1）
-func (s *Service) AuthenAccessTokenV1(ctx context.Context, req *AuthenAccessTokenV1Req, opts ...core.RequestOption) (*AuthenAccessTokenV1Resp, error) {
-	resp := &AuthenAccessTokenV1Resp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/open-apis/authen/v1/access_token",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// AuthenAuthorizeV1Req is the request for AuthenAuthorizeV1.
-type AuthenAuthorizeV1Req struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// AuthenAuthorizeV1ReqBuilder builds a AuthenAuthorizeV1Req with a fluent setter per field.
-type AuthenAuthorizeV1ReqBuilder struct{ req *AuthenAuthorizeV1Req }
-
-// NewAuthenAuthorizeV1ReqBuilder creates a request builder for AuthenAuthorizeV1.
-func NewAuthenAuthorizeV1ReqBuilder() *AuthenAuthorizeV1ReqBuilder {
-	return &AuthenAuthorizeV1ReqBuilder{req: &AuthenAuthorizeV1Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// AppId sets the "app_id" query parameter.
-func (b *AuthenAuthorizeV1ReqBuilder) AppId(v string) *AuthenAuthorizeV1ReqBuilder {
-	b.req.queryParams["app_id"] = v
-	return b
-}
-
-// RedirectUri sets the "redirect_uri" query parameter.
-func (b *AuthenAuthorizeV1ReqBuilder) RedirectUri(v string) *AuthenAuthorizeV1ReqBuilder {
-	b.req.queryParams["redirect_uri"] = v
-	return b
-}
-
-// Scope sets the "scope" query parameter: 逗号分隔，用户权限范围子集
-func (b *AuthenAuthorizeV1ReqBuilder) Scope(v string) *AuthenAuthorizeV1ReqBuilder {
-	b.req.queryParams["scope"] = v
-	return b
-}
-
-// State sets the "state" query parameter.
-func (b *AuthenAuthorizeV1ReqBuilder) State(v string) *AuthenAuthorizeV1ReqBuilder {
-	b.req.queryParams["state"] = v
-	return b
-}
-
-// ResponseType sets the "response_type" query parameter: 固定 code
-func (b *AuthenAuthorizeV1ReqBuilder) ResponseType(v string) *AuthenAuthorizeV1ReqBuilder {
-	b.req.queryParams["response_type"] = v
-	return b
-}
-
-// CodeChallenge sets the "code_challenge" query parameter: PKCE 挑战 (RFC 7636)
-func (b *AuthenAuthorizeV1ReqBuilder) CodeChallenge(v string) *AuthenAuthorizeV1ReqBuilder {
-	b.req.queryParams["code_challenge"] = v
-	return b
-}
-
-// CodeChallengeMethod sets the "code_challenge_method" query parameter: S256|plain
-func (b *AuthenAuthorizeV1ReqBuilder) CodeChallengeMethod(v string) *AuthenAuthorizeV1ReqBuilder {
-	b.req.queryParams["code_challenge_method"] = v
-	return b
-}
-
-// Consent sets the "consent" query parameter: true=用户已在一方页面明确同意
-func (b *AuthenAuthorizeV1ReqBuilder) Consent(v bool) *AuthenAuthorizeV1ReqBuilder {
-	b.req.queryParams["consent"] = strconv.FormatBool(v)
-	return b
-}
-
-// Build finalizes the request.
-func (b *AuthenAuthorizeV1ReqBuilder) Build() *AuthenAuthorizeV1Req { return b.req }
-
-// AuthenAuthorizeV1Resp is the response for AuthenAuthorizeV1.
-type AuthenAuthorizeV1Resp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.AuthenAuthorizeData `json:"data"`
-}
-
-// AuthenAuthorizeV1: 授权码（v1）
-func (s *Service) AuthenAuthorizeV1(ctx context.Context, req *AuthenAuthorizeV1Req, opts ...core.RequestOption) (*AuthenAuthorizeV1Resp, error) {
-	resp := &AuthenAuthorizeV1Resp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/open-apis/authen/v1/authorize",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// AuthenRefreshAccessTokenV1Req is the request for AuthenRefreshAccessTokenV1.
-type AuthenRefreshAccessTokenV1Req struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// AuthenRefreshAccessTokenV1ReqBuilder builds a AuthenRefreshAccessTokenV1Req with a fluent setter per field.
-type AuthenRefreshAccessTokenV1ReqBuilder struct {
-	req *AuthenRefreshAccessTokenV1Req
-}
-
-// NewAuthenRefreshAccessTokenV1ReqBuilder creates a request builder for AuthenRefreshAccessTokenV1.
-func NewAuthenRefreshAccessTokenV1ReqBuilder() *AuthenRefreshAccessTokenV1ReqBuilder {
-	return &AuthenRefreshAccessTokenV1ReqBuilder{req: &AuthenRefreshAccessTokenV1Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *AuthenRefreshAccessTokenV1ReqBuilder) Body(body *models.AuthenRefreshAccessTokenRequestBody) *AuthenRefreshAccessTokenV1ReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *AuthenRefreshAccessTokenV1ReqBuilder) Build() *AuthenRefreshAccessTokenV1Req { return b.req }
-
-// AuthenRefreshAccessTokenV1Resp is the response for AuthenRefreshAccessTokenV1.
-type AuthenRefreshAccessTokenV1Resp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.AuthenTokenData `json:"data"`
-}
-
-// AuthenRefreshAccessTokenV1: 刷新 user_access_token（v1）
-func (s *Service) AuthenRefreshAccessTokenV1(ctx context.Context, req *AuthenRefreshAccessTokenV1Req, opts ...core.RequestOption) (*AuthenRefreshAccessTokenV1Resp, error) {
-	resp := &AuthenRefreshAccessTokenV1Resp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/open-apis/authen/v1/refresh_access_token",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// AuthenRevokeV1Req is the request for AuthenRevokeV1.
-type AuthenRevokeV1Req struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// AuthenRevokeV1ReqBuilder builds a AuthenRevokeV1Req with a fluent setter per field.
-type AuthenRevokeV1ReqBuilder struct{ req *AuthenRevokeV1Req }
-
-// NewAuthenRevokeV1ReqBuilder creates a request builder for AuthenRevokeV1.
-func NewAuthenRevokeV1ReqBuilder() *AuthenRevokeV1ReqBuilder {
-	return &AuthenRevokeV1ReqBuilder{req: &AuthenRevokeV1Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *AuthenRevokeV1ReqBuilder) Body(body *models.AuthenRevokeRequestBody) *AuthenRevokeV1ReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *AuthenRevokeV1ReqBuilder) Build() *AuthenRevokeV1Req { return b.req }
-
-// AuthenRevokeV1Resp is the response for AuthenRevokeV1.
-type AuthenRevokeV1Resp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-}
-
-// AuthenRevokeV1: 吊销 user_access_token（v1，RFC 7009）
-func (s *Service) AuthenRevokeV1(ctx context.Context, req *AuthenRevokeV1Req, opts ...core.RequestOption) (*AuthenRevokeV1Resp, error) {
-	resp := &AuthenRevokeV1Resp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/open-apis/authen/v1/revoke",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// AuthenUserInfoV1Req is the request for AuthenUserInfoV1.
-type AuthenUserInfoV1Req struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// AuthenUserInfoV1ReqBuilder builds a AuthenUserInfoV1Req with a fluent setter per field.
-type AuthenUserInfoV1ReqBuilder struct{ req *AuthenUserInfoV1Req }
-
-// NewAuthenUserInfoV1ReqBuilder creates a request builder for AuthenUserInfoV1.
-func NewAuthenUserInfoV1ReqBuilder() *AuthenUserInfoV1ReqBuilder {
-	return &AuthenUserInfoV1ReqBuilder{req: &AuthenUserInfoV1Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Build finalizes the request.
-func (b *AuthenUserInfoV1ReqBuilder) Build() *AuthenUserInfoV1Req { return b.req }
-
-// AuthenUserInfoV1Resp is the response for AuthenUserInfoV1.
-type AuthenUserInfoV1Resp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.AuthenUserInfoData `json:"data"`
-}
-
-// AuthenUserInfoV1: 获取用户信息（v1）
-func (s *Service) AuthenUserInfoV1(ctx context.Context, req *AuthenUserInfoV1Req, opts ...core.RequestOption) (*AuthenUserInfoV1Resp, error) {
-	resp := &AuthenUserInfoV1Resp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/open-apis/authen/v1/user_info",
+		PathTemplate: "/hduhelp-neo/open-apis/authen/user-info",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

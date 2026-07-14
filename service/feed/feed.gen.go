@@ -15,41 +15,41 @@ type Service struct{ config *core.Config }
 // NewService binds the Feed service to a client config.
 func NewService(config *core.Config) *Service { return &Service{config: config} }
 
-// HomeReq is the request for Home.
-type HomeReq struct {
+// FeedReq is the request for Feed.
+type FeedReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// HomeReqBuilder builds a HomeReq with a fluent setter per field.
-type HomeReqBuilder struct{ req *HomeReq }
+// FeedReqBuilder builds a FeedReq with a fluent setter per field.
+type FeedReqBuilder struct{ req *FeedReq }
 
-// NewHomeReqBuilder creates a request builder for Home.
-func NewHomeReqBuilder() *HomeReqBuilder {
-	return &HomeReqBuilder{req: &HomeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewFeedReqBuilder creates a request builder for Feed.
+func NewFeedReqBuilder() *FeedReqBuilder {
+	return &FeedReqBuilder{req: &FeedReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // StaffID sets the "X-Staff-Id" header parameter.
-func (b *HomeReqBuilder) StaffID(v string) *HomeReqBuilder {
+func (b *FeedReqBuilder) StaffID(v string) *FeedReqBuilder {
 	b.req.headers["X-Staff-Id"] = v
 	return b
 }
 
 // Build finalizes the request.
-func (b *HomeReqBuilder) Build() *HomeReq { return b.req }
+func (b *FeedReqBuilder) Build() *FeedReq { return b.req }
 
-// HomeResp is the response for Home.
-type HomeResp struct {
+// FeedResp is the response for Feed.
+type FeedResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.HomeData `json:"data"`
+	Data *models.FeedAggData `json:"data"`
 }
 
-// Home: 首页信息流聚合
-func (s *Service) Home(ctx context.Context, req *HomeReq, opts ...core.RequestOption) (*HomeResp, error) {
-	resp := &HomeResp{}
+// Feed: 首页信息流聚合(并发)
+func (s *Service) Feed(ctx context.Context, req *FeedReq, opts ...core.RequestOption) (*FeedResp, error) {
+	resp := &FeedResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/feed",
@@ -98,7 +98,7 @@ func (s *Service) IcsLink(ctx context.Context, req *IcsLinkReq, opts ...core.Req
 	resp := &IcsLinkResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/feed/ics_link",
+		PathTemplate: "/hduhelp-neo/feed/ics-link",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -138,7 +138,7 @@ func (s *Service) RevokeIcsToken(ctx context.Context, req *RevokeIcsTokenReq, op
 	resp := &RevokeIcsTokenResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "DELETE",
-		PathTemplate: "/hduhelp-neo/feed/ics_link",
+		PathTemplate: "/hduhelp-neo/feed/ics-link",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -178,7 +178,7 @@ func (s *Service) RotateIcsToken(ctx context.Context, req *RotateIcsTokenReq, op
 	resp := &RotateIcsTokenResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/feed/ics_link/rotate",
+		PathTemplate: "/hduhelp-neo/feed/ics-link/rotate",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -224,98 +224,6 @@ func (s *Service) ScheduleIcs(ctx context.Context, req *ScheduleIcsReq, opts ...
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/feed/schedule",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// FeedV3Req is the request for FeedV3.
-type FeedV3Req struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// FeedV3ReqBuilder builds a FeedV3Req with a fluent setter per field.
-type FeedV3ReqBuilder struct{ req *FeedV3Req }
-
-// NewFeedV3ReqBuilder creates a request builder for FeedV3.
-func NewFeedV3ReqBuilder() *FeedV3ReqBuilder {
-	return &FeedV3ReqBuilder{req: &FeedV3Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *FeedV3ReqBuilder) StaffID(v string) *FeedV3ReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *FeedV3ReqBuilder) Build() *FeedV3Req { return b.req }
-
-// FeedV3Resp is the response for FeedV3.
-type FeedV3Resp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.FeedAggData `json:"data"`
-}
-
-// FeedV3: 信息流V3(并发聚合)
-func (s *Service) FeedV3(ctx context.Context, req *FeedV3Req, opts ...core.RequestOption) (*FeedV3Resp, error) {
-	resp := &FeedV3Resp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/feed/v3",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// FeedV4Req is the request for FeedV4.
-type FeedV4Req struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// FeedV4ReqBuilder builds a FeedV4Req with a fluent setter per field.
-type FeedV4ReqBuilder struct{ req *FeedV4Req }
-
-// NewFeedV4ReqBuilder creates a request builder for FeedV4.
-func NewFeedV4ReqBuilder() *FeedV4ReqBuilder {
-	return &FeedV4ReqBuilder{req: &FeedV4Req{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *FeedV4ReqBuilder) StaffID(v string) *FeedV4ReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *FeedV4ReqBuilder) Build() *FeedV4Req { return b.req }
-
-// FeedV4Resp is the response for FeedV4.
-type FeedV4Resp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.FeedAggData `json:"data"`
-}
-
-// FeedV4: 信息流V4(固定顺序+熔断)
-func (s *Service) FeedV4(ctx context.Context, req *FeedV4Req, opts ...core.RequestOption) (*FeedV4Resp, error) {
-	resp := &FeedV4Resp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/feed/v4",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

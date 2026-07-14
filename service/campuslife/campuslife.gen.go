@@ -220,7 +220,7 @@ type ElectricBalanceResp struct {
 	Data *models.ElectricBalanceData `json:"data"`
 }
 
-// ElectricBalance: 查询绑定电表余额
+// ElectricBalance: 查询宿舍电费余额(绑定电表)
 func (s *Service) ElectricBalance(ctx context.Context, req *ElectricBalanceReq, opts ...core.RequestOption) (*ElectricBalanceResp, error) {
 	resp := &ElectricBalanceResp{}
 	err := s.config.Do(ctx, &core.APIReq{
@@ -445,6 +445,46 @@ func (s *Service) ListFloors(ctx context.Context, req *ListFloorsReq, opts ...co
 	return resp, err
 }
 
+// ElectricHistoryReq is the request for ElectricHistory.
+type ElectricHistoryReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ElectricHistoryReqBuilder builds a ElectricHistoryReq with a fluent setter per field.
+type ElectricHistoryReqBuilder struct{ req *ElectricHistoryReq }
+
+// NewElectricHistoryReqBuilder creates a request builder for ElectricHistory.
+func NewElectricHistoryReqBuilder() *ElectricHistoryReqBuilder {
+	return &ElectricHistoryReqBuilder{req: &ElectricHistoryReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *ElectricHistoryReqBuilder) Build() *ElectricHistoryReq { return b.req }
+
+// ElectricHistoryResp is the response for ElectricHistory.
+type ElectricHistoryResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ElectricHistoryData `json:"data"`
+}
+
+// ElectricHistory: 查询近14天电费历史
+func (s *Service) ElectricHistory(ctx context.Context, req *ElectricHistoryReq, opts ...core.RequestOption) (*ElectricHistoryResp, error) {
+	resp := &ElectricHistoryResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/campuslife/electric/history",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // ListRoomsReq is the request for ListRooms.
 type ListRoomsReq struct {
 	pathParams  map[string]string
@@ -483,138 +523,6 @@ func (s *Service) ListRooms(ctx context.Context, req *ListRoomsReq, opts ...core
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/campuslife/electric/rooms",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// FeeReq is the request for Fee.
-type FeeReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// FeeReqBuilder builds a FeeReq with a fluent setter per field.
-type FeeReqBuilder struct{ req *FeeReq }
-
-// NewFeeReqBuilder creates a request builder for Fee.
-func NewFeeReqBuilder() *FeeReqBuilder {
-	return &FeeReqBuilder{req: &FeeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Build finalizes the request.
-func (b *FeeReqBuilder) Build() *FeeReq { return b.req }
-
-// FeeResp is the response for Fee.
-type FeeResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.FeeData `json:"data"`
-}
-
-// Fee: 查询宿舍电费余额
-func (s *Service) Fee(ctx context.Context, req *FeeReq, opts ...core.RequestOption) (*FeeResp, error) {
-	resp := &FeeResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/campuslife/fee",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ElectricHistoryReq is the request for ElectricHistory.
-type ElectricHistoryReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ElectricHistoryReqBuilder builds a ElectricHistoryReq with a fluent setter per field.
-type ElectricHistoryReqBuilder struct{ req *ElectricHistoryReq }
-
-// NewElectricHistoryReqBuilder creates a request builder for ElectricHistory.
-func NewElectricHistoryReqBuilder() *ElectricHistoryReqBuilder {
-	return &ElectricHistoryReqBuilder{req: &ElectricHistoryReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Build finalizes the request.
-func (b *ElectricHistoryReqBuilder) Build() *ElectricHistoryReq { return b.req }
-
-// ElectricHistoryResp is the response for ElectricHistory.
-type ElectricHistoryResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ElectricHistoryData `json:"data"`
-}
-
-// ElectricHistory: 查询近14天电费历史
-func (s *Service) ElectricHistory(ctx context.Context, req *ElectricHistoryReq, opts ...core.RequestOption) (*ElectricHistoryResp, error) {
-	resp := &ElectricHistoryResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/campuslife/history",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// InfoStreamReq is the request for InfoStream.
-type InfoStreamReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// InfoStreamReqBuilder builds a InfoStreamReq with a fluent setter per field.
-type InfoStreamReqBuilder struct{ req *InfoStreamReq }
-
-// NewInfoStreamReqBuilder creates a request builder for InfoStream.
-func NewInfoStreamReqBuilder() *InfoStreamReqBuilder {
-	return &InfoStreamReqBuilder{req: &InfoStreamReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Lat sets the "lat" query parameter.
-func (b *InfoStreamReqBuilder) Lat(v float64) *InfoStreamReqBuilder {
-	b.req.queryParams["lat"] = strconv.FormatFloat(v, 'g', -1, 64)
-	return b
-}
-
-// Lng sets the "lng" query parameter.
-func (b *InfoStreamReqBuilder) Lng(v float64) *InfoStreamReqBuilder {
-	b.req.queryParams["lng"] = strconv.FormatFloat(v, 'g', -1, 64)
-	return b
-}
-
-// Build finalizes the request.
-func (b *InfoStreamReqBuilder) Build() *InfoStreamReq { return b.req }
-
-// InfoStreamResp is the response for InfoStream.
-type InfoStreamResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.InfoStreamData `json:"data"`
-}
-
-// InfoStream: 获取天气信息流卡片(AQI/温度/停雨)
-func (s *Service) InfoStream(ctx context.Context, req *InfoStreamReq, opts ...core.RequestOption) (*InfoStreamResp, error) {
-	resp := &InfoStreamResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/campuslife/v1/infoStream",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -672,7 +580,59 @@ func (s *Service) Predict(ctx context.Context, req *PredictReq, opts ...core.Req
 	resp := &PredictResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/campuslife/v1/predict",
+		PathTemplate: "/hduhelp-neo/campuslife/weather/forecast",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// InfoStreamReq is the request for InfoStream.
+type InfoStreamReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// InfoStreamReqBuilder builds a InfoStreamReq with a fluent setter per field.
+type InfoStreamReqBuilder struct{ req *InfoStreamReq }
+
+// NewInfoStreamReqBuilder creates a request builder for InfoStream.
+func NewInfoStreamReqBuilder() *InfoStreamReqBuilder {
+	return &InfoStreamReqBuilder{req: &InfoStreamReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Lat sets the "lat" query parameter.
+func (b *InfoStreamReqBuilder) Lat(v float64) *InfoStreamReqBuilder {
+	b.req.queryParams["lat"] = strconv.FormatFloat(v, 'g', -1, 64)
+	return b
+}
+
+// Lng sets the "lng" query parameter.
+func (b *InfoStreamReqBuilder) Lng(v float64) *InfoStreamReqBuilder {
+	b.req.queryParams["lng"] = strconv.FormatFloat(v, 'g', -1, 64)
+	return b
+}
+
+// Build finalizes the request.
+func (b *InfoStreamReqBuilder) Build() *InfoStreamReq { return b.req }
+
+// InfoStreamResp is the response for InfoStream.
+type InfoStreamResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.InfoStreamData `json:"data"`
+}
+
+// InfoStream: 获取天气信息流卡片(AQI/温度/停雨)
+func (s *Service) InfoStream(ctx context.Context, req *InfoStreamReq, opts ...core.RequestOption) (*InfoStreamResp, error) {
+	resp := &InfoStreamResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/campuslife/weather/info-stream",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -719,64 +679,12 @@ type RealTimeResp struct {
 	Data *models.RealTimeData `json:"data"`
 }
 
-// RealTime: 获取实时天气
+// RealTime: 获取实时天气(按当前校区坐标)
 func (s *Service) RealTime(ctx context.Context, req *RealTimeReq, opts ...core.RequestOption) (*RealTimeResp, error) {
 	resp := &RealTimeResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/campuslife/v1/realTime",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// WeatherReq is the request for Weather.
-type WeatherReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// WeatherReqBuilder builds a WeatherReq with a fluent setter per field.
-type WeatherReqBuilder struct{ req *WeatherReq }
-
-// NewWeatherReqBuilder creates a request builder for Weather.
-func NewWeatherReqBuilder() *WeatherReqBuilder {
-	return &WeatherReqBuilder{req: &WeatherReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Lat sets the "lat" query parameter.
-func (b *WeatherReqBuilder) Lat(v float64) *WeatherReqBuilder {
-	b.req.queryParams["lat"] = strconv.FormatFloat(v, 'g', -1, 64)
-	return b
-}
-
-// Lng sets the "lng" query parameter.
-func (b *WeatherReqBuilder) Lng(v float64) *WeatherReqBuilder {
-	b.req.queryParams["lng"] = strconv.FormatFloat(v, 'g', -1, 64)
-	return b
-}
-
-// Build finalizes the request.
-func (b *WeatherReqBuilder) Build() *WeatherReq { return b.req }
-
-// WeatherResp is the response for Weather.
-type WeatherResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.WeatherData `json:"data"`
-}
-
-// Weather: 查询校园天气(按当前校区坐标)
-func (s *Service) Weather(ctx context.Context, req *WeatherReq, opts ...core.RequestOption) (*WeatherResp, error) {
-	resp := &WeatherResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/campuslife/weather",
+		PathTemplate: "/hduhelp-neo/campuslife/weather/real-time",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

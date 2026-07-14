@@ -114,6 +114,51 @@ func (s *Service) SendPigeon(ctx context.Context, req *SendPigeonReq, opts ...co
 	return resp, err
 }
 
+// RecallPigeonReq is the request for RecallPigeon.
+type RecallPigeonReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// RecallPigeonReqBuilder builds a RecallPigeonReq with a fluent setter per field.
+type RecallPigeonReqBuilder struct{ req *RecallPigeonReq }
+
+// NewRecallPigeonReqBuilder creates a request builder for RecallPigeon.
+func NewRecallPigeonReqBuilder() *RecallPigeonReqBuilder {
+	return &RecallPigeonReqBuilder{req: &RecallPigeonReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" query parameter.
+func (b *RecallPigeonReqBuilder) Id(v string) *RecallPigeonReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *RecallPigeonReqBuilder) Build() *RecallPigeonReq { return b.req }
+
+// RecallPigeonResp is the response for RecallPigeon.
+type RecallPigeonResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// RecallPigeon: 撤回校友传话
+func (s *Service) RecallPigeon(ctx context.Context, req *RecallPigeonReq, opts ...core.RequestOption) (*RecallPigeonResp, error) {
+	resp := &RecallPigeonResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/messaging/pigeons",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // ListBlacklistReq is the request for ListBlacklist.
 type ListBlacklistReq struct {
 	pathParams  map[string]string
@@ -221,9 +266,9 @@ func NewRemoveBlacklistReqBuilder() *RemoveBlacklistReqBuilder {
 	return &RemoveBlacklistReqBuilder{req: &RemoveBlacklistReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// StaffId sets the "staff_id" path parameter.
+// StaffId sets the "staff-id" query parameter.
 func (b *RemoveBlacklistReqBuilder) StaffId(v string) *RemoveBlacklistReqBuilder {
-	b.req.pathParams["staff_id"] = v
+	b.req.queryParams["staff-id"] = v
 	return b
 }
 
@@ -241,52 +286,7 @@ func (s *Service) RemoveBlacklist(ctx context.Context, req *RemoveBlacklistReq, 
 	resp := &RemoveBlacklistResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "DELETE",
-		PathTemplate: "/hduhelp-neo/messaging/pigeons/blacklist/{staff_id}",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// RecallPigeonReq is the request for RecallPigeon.
-type RecallPigeonReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// RecallPigeonReqBuilder builds a RecallPigeonReq with a fluent setter per field.
-type RecallPigeonReqBuilder struct{ req *RecallPigeonReq }
-
-// NewRecallPigeonReqBuilder creates a request builder for RecallPigeon.
-func NewRecallPigeonReqBuilder() *RecallPigeonReqBuilder {
-	return &RecallPigeonReqBuilder{req: &RecallPigeonReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Id sets the "id" path parameter.
-func (b *RecallPigeonReqBuilder) Id(v string) *RecallPigeonReqBuilder {
-	b.req.pathParams["id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *RecallPigeonReqBuilder) Build() *RecallPigeonReq { return b.req }
-
-// RecallPigeonResp is the response for RecallPigeon.
-type RecallPigeonResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-}
-
-// RecallPigeon: 撤回校友传话
-func (s *Service) RecallPigeon(ctx context.Context, req *RecallPigeonReq, opts ...core.RequestOption) (*RecallPigeonResp, error) {
-	resp := &RecallPigeonResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "DELETE",
-		PathTemplate: "/hduhelp-neo/messaging/pigeons/{id}",
+		PathTemplate: "/hduhelp-neo/messaging/pigeons/blacklist",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

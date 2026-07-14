@@ -258,7 +258,6 @@ func (b *MergeClassChatGroupReqBuilder) Build() *MergeClassChatGroupReq { return
 type MergeClassChatGroupResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data string `json:"data"`
 }
 
 // MergeClassChatGroup: 合并已有班级群
@@ -310,7 +309,6 @@ func (b *SyncClassChatGroupReqBuilder) Build() *SyncClassChatGroupReq { return b
 type SyncClassChatGroupResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data string `json:"data"`
 }
 
 // SyncClassChatGroup: 同步班级群成员
@@ -327,268 +325,50 @@ func (s *Service) SyncClassChatGroup(ctx context.Context, req *SyncClassChatGrou
 	return resp, err
 }
 
-// DingTalkExamReq is the request for DingTalkExam.
-type DingTalkExamReq struct {
+// CourseGroupsReq is the request for CourseGroups.
+type CourseGroupsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// DingTalkExamReqBuilder builds a DingTalkExamReq with a fluent setter per field.
-type DingTalkExamReqBuilder struct{ req *DingTalkExamReq }
+// CourseGroupsReqBuilder builds a CourseGroupsReq with a fluent setter per field.
+type CourseGroupsReqBuilder struct{ req *CourseGroupsReq }
 
-// NewDingTalkExamReqBuilder creates a request builder for DingTalkExam.
-func NewDingTalkExamReqBuilder() *DingTalkExamReqBuilder {
-	return &DingTalkExamReqBuilder{req: &DingTalkExamReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewCourseGroupsReqBuilder creates a request builder for CourseGroups.
+func NewCourseGroupsReqBuilder() *CourseGroupsReqBuilder {
+	return &CourseGroupsReqBuilder{req: &CourseGroupsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *DingTalkExamReqBuilder) StaffID(v string) *DingTalkExamReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
+// SchoolYear sets the "schoolYear" query parameter.
+func (b *CourseGroupsReqBuilder) SchoolYear(v string) *CourseGroupsReqBuilder {
+	b.req.queryParams["schoolYear"] = v
+	return b
+}
+
+// Semester sets the "semester" query parameter.
+func (b *CourseGroupsReqBuilder) Semester(v string) *CourseGroupsReqBuilder {
+	b.req.queryParams["semester"] = v
 	return b
 }
 
 // Build finalizes the request.
-func (b *DingTalkExamReqBuilder) Build() *DingTalkExamReq { return b.req }
+func (b *CourseGroupsReqBuilder) Build() *CourseGroupsReq { return b.req }
 
-// DingTalkExamResp is the response for DingTalkExam.
-type DingTalkExamResp struct {
+// CourseGroupsResp is the response for CourseGroups.
+type CourseGroupsResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data []models.DingTalkExamItem `json:"data"`
+	Data []models.CourseGroupItem `json:"data"`
 }
 
-// DingTalkExam: 钉钉考试数据源
-func (s *Service) DingTalkExam(ctx context.Context, req *DingTalkExamReq, opts ...core.RequestOption) (*DingTalkExamResp, error) {
-	resp := &DingTalkExamResp{}
+// CourseGroups: 我的课程群列表
+func (s *Service) CourseGroups(ctx context.Context, req *CourseGroupsReq, opts ...core.RequestOption) (*CourseGroupsResp, error) {
+	resp := &CourseGroupsResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/groupchat/dingtalk/exam",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// DingTalkInfoStreamReq is the request for DingTalkInfoStream.
-type DingTalkInfoStreamReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// DingTalkInfoStreamReqBuilder builds a DingTalkInfoStreamReq with a fluent setter per field.
-type DingTalkInfoStreamReqBuilder struct{ req *DingTalkInfoStreamReq }
-
-// NewDingTalkInfoStreamReqBuilder creates a request builder for DingTalkInfoStream.
-func NewDingTalkInfoStreamReqBuilder() *DingTalkInfoStreamReqBuilder {
-	return &DingTalkInfoStreamReqBuilder{req: &DingTalkInfoStreamReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *DingTalkInfoStreamReqBuilder) StaffID(v string) *DingTalkInfoStreamReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *DingTalkInfoStreamReqBuilder) Build() *DingTalkInfoStreamReq { return b.req }
-
-// DingTalkInfoStreamResp is the response for DingTalkInfoStream.
-type DingTalkInfoStreamResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.DingTalkInfoStreamData `json:"data"`
-}
-
-// DingTalkInfoStream: 钉钉信息流数据源
-func (s *Service) DingTalkInfoStream(ctx context.Context, req *DingTalkInfoStreamReq, opts ...core.RequestOption) (*DingTalkInfoStreamResp, error) {
-	resp := &DingTalkInfoStreamResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/groupchat/dingtalk/infoStream",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// DingTalkPingReq is the request for DingTalkPing.
-type DingTalkPingReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// DingTalkPingReqBuilder builds a DingTalkPingReq with a fluent setter per field.
-type DingTalkPingReqBuilder struct{ req *DingTalkPingReq }
-
-// NewDingTalkPingReqBuilder creates a request builder for DingTalkPing.
-func NewDingTalkPingReqBuilder() *DingTalkPingReqBuilder {
-	return &DingTalkPingReqBuilder{req: &DingTalkPingReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Build finalizes the request.
-func (b *DingTalkPingReqBuilder) Build() *DingTalkPingReq { return b.req }
-
-// DingTalkPingResp is the response for DingTalkPing.
-type DingTalkPingResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data string `json:"data"`
-}
-
-// DingTalkPing: 钉钉数据源存活探测
-func (s *Service) DingTalkPing(ctx context.Context, req *DingTalkPingReq, opts ...core.RequestOption) (*DingTalkPingResp, error) {
-	resp := &DingTalkPingResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/groupchat/dingtalk/ping",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// DingTalkScheduleNowReq is the request for DingTalkScheduleNow.
-type DingTalkScheduleNowReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// DingTalkScheduleNowReqBuilder builds a DingTalkScheduleNowReq with a fluent setter per field.
-type DingTalkScheduleNowReqBuilder struct{ req *DingTalkScheduleNowReq }
-
-// NewDingTalkScheduleNowReqBuilder creates a request builder for DingTalkScheduleNow.
-func NewDingTalkScheduleNowReqBuilder() *DingTalkScheduleNowReqBuilder {
-	return &DingTalkScheduleNowReqBuilder{req: &DingTalkScheduleNowReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *DingTalkScheduleNowReqBuilder) StaffID(v string) *DingTalkScheduleNowReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *DingTalkScheduleNowReqBuilder) Build() *DingTalkScheduleNowReq { return b.req }
-
-// DingTalkScheduleNowResp is the response for DingTalkScheduleNow.
-type DingTalkScheduleNowResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.DingTalkScheduleItem `json:"data"`
-}
-
-// DingTalkScheduleNow: 钉钉课表数据源
-func (s *Service) DingTalkScheduleNow(ctx context.Context, req *DingTalkScheduleNowReq, opts ...core.RequestOption) (*DingTalkScheduleNowResp, error) {
-	resp := &DingTalkScheduleNowResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/groupchat/dingtalk/schedule/now",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// DingTalkScoreReq is the request for DingTalkScore.
-type DingTalkScoreReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// DingTalkScoreReqBuilder builds a DingTalkScoreReq with a fluent setter per field.
-type DingTalkScoreReqBuilder struct{ req *DingTalkScoreReq }
-
-// NewDingTalkScoreReqBuilder creates a request builder for DingTalkScore.
-func NewDingTalkScoreReqBuilder() *DingTalkScoreReqBuilder {
-	return &DingTalkScoreReqBuilder{req: &DingTalkScoreReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *DingTalkScoreReqBuilder) StaffID(v string) *DingTalkScoreReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *DingTalkScoreReqBuilder) Build() *DingTalkScoreReq { return b.req }
-
-// DingTalkScoreResp is the response for DingTalkScore.
-type DingTalkScoreResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.DingTalkScoreItem `json:"data"`
-}
-
-// DingTalkScore: 钉钉成绩数据源
-func (s *Service) DingTalkScore(ctx context.Context, req *DingTalkScoreReq, opts ...core.RequestOption) (*DingTalkScoreResp, error) {
-	resp := &DingTalkScoreResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/groupchat/dingtalk/score",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// DingTalkTimeReq is the request for DingTalkTime.
-type DingTalkTimeReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// DingTalkTimeReqBuilder builds a DingTalkTimeReq with a fluent setter per field.
-type DingTalkTimeReqBuilder struct{ req *DingTalkTimeReq }
-
-// NewDingTalkTimeReqBuilder creates a request builder for DingTalkTime.
-func NewDingTalkTimeReqBuilder() *DingTalkTimeReqBuilder {
-	return &DingTalkTimeReqBuilder{req: &DingTalkTimeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *DingTalkTimeReqBuilder) StaffID(v string) *DingTalkTimeReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *DingTalkTimeReqBuilder) Build() *DingTalkTimeReq { return b.req }
-
-// DingTalkTimeResp is the response for DingTalkTime.
-type DingTalkTimeResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.DingTalkTimeData `json:"data"`
-}
-
-// DingTalkTime: 钉钉校园时间数据源
-func (s *Service) DingTalkTime(ctx context.Context, req *DingTalkTimeReq, opts ...core.RequestOption) (*DingTalkTimeResp, error) {
-	resp := &DingTalkTimeResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/groupchat/dingtalk/time",
+		PathTemplate: "/hduhelp-neo/groupchat/courses",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -742,7 +522,6 @@ func (b *SyncGradeChatGroupReqBuilder) Build() *SyncGradeChatGroupReq { return b
 type SyncGradeChatGroupResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data string `json:"data"`
 }
 
 // SyncGradeChatGroup: 同步年级群成员
@@ -886,7 +665,6 @@ func (b *LeaveGroupReqBuilder) Build() *LeaveGroupReq { return b.req }
 type LeaveGroupResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data string `json:"data"`
 }
 
 // LeaveGroup: 退出群聊
@@ -1056,7 +834,6 @@ func (b *JoinPreviousSchoolChatGroupReqBuilder) Build() *JoinPreviousSchoolChatG
 type JoinPreviousSchoolChatGroupResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data string `json:"data"`
 }
 
 // JoinPreviousSchoolChatGroup: 加入校友群

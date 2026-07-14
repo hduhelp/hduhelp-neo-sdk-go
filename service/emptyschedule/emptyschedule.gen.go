@@ -149,7 +149,6 @@ func (b *DeleteEventReqBuilder) Build() *DeleteEventReq { return b.req }
 type DeleteEventResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data string `json:"data"`
 }
 
 // DeleteEvent: 删除排班结果
@@ -195,7 +194,7 @@ func (b *ShareReqBuilder) Build() *ShareReq { return b.req }
 type ShareResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data string `json:"data"`
+	Data *models.ShareData `json:"data"`
 }
 
 // Share: 分享排班结果生成分享码
@@ -293,7 +292,7 @@ func (b *FavoriteReqBuilder) Build() *FavoriteReq { return b.req }
 type FavoriteResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data string `json:"data"`
+	Data *models.FavoriteData `json:"data"`
 }
 
 // Favorite: 收藏排班结果
@@ -385,7 +384,6 @@ func (b *DeleteFavoriteReqBuilder) Build() *DeleteFavoriteReq { return b.req }
 type DeleteFavoriteResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data string `json:"data"`
 }
 
 // DeleteFavorite: 删除收藏
@@ -557,7 +555,6 @@ func (b *DeleteRoomReqBuilder) Build() *DeleteRoomReq { return b.req }
 type DeleteRoomResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data string `json:"data"`
 }
 
 // DeleteRoom: 删除房间
@@ -695,7 +692,7 @@ func (b *InviteReqBuilder) Build() *InviteReq { return b.req }
 type InviteResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data string `json:"data"`
+	Data *models.InviteData `json:"data"`
 }
 
 // Invite: 生成房间邀请码
@@ -774,9 +771,9 @@ func NewLeaveRoomReqBuilder() *LeaveRoomReqBuilder {
 	return &LeaveRoomReqBuilder{req: &LeaveRoomReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// RoomId sets the "room_id" query parameter.
-func (b *LeaveRoomReqBuilder) RoomId(v string) *LeaveRoomReqBuilder {
-	b.req.queryParams["room_id"] = v
+// Body sets the request body.
+func (b *LeaveRoomReqBuilder) Body(body *models.LeaveRoomRequestBody) *LeaveRoomReqBuilder {
+	b.req.body = body
 	return b
 }
 
@@ -787,14 +784,13 @@ func (b *LeaveRoomReqBuilder) Build() *LeaveRoomReq { return b.req }
 type LeaveRoomResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data string `json:"data"`
 }
 
 // LeaveRoom: 离开房间
 func (s *Service) LeaveRoom(ctx context.Context, req *LeaveRoomReq, opts ...core.RequestOption) (*LeaveRoomResp, error) {
 	resp := &LeaveRoomResp{}
 	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "DELETE",
+		HTTPMethod:   "POST",
 		PathTemplate: "/hduhelp-neo/emptyschedule/rooms/leave",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,

@@ -15,6 +15,51 @@ type Service struct{ config *core.Config }
 // NewService binds the Upload service to a client config.
 func NewService(config *core.Config) *Service { return &Service{config: config} }
 
+// DownloadReq is the request for Download.
+type DownloadReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// DownloadReqBuilder builds a DownloadReq with a fluent setter per field.
+type DownloadReqBuilder struct{ req *DownloadReq }
+
+// NewDownloadReqBuilder creates a request builder for Download.
+func NewDownloadReqBuilder() *DownloadReqBuilder {
+	return &DownloadReqBuilder{req: &DownloadReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Key sets the "key" query parameter.
+func (b *DownloadReqBuilder) Key(v string) *DownloadReqBuilder {
+	b.req.queryParams["key"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *DownloadReqBuilder) Build() *DownloadReq { return b.req }
+
+// DownloadResp is the response for Download.
+type DownloadResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// Download: 获取已上传文件
+func (s *Service) Download(ctx context.Context, req *DownloadReq, opts ...core.RequestOption) (*DownloadResp, error) {
+	resp := &DownloadResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/upload",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // UploadReq is the request for Upload.
 type UploadReq struct {
 	pathParams  map[string]string
@@ -53,51 +98,6 @@ func (s *Service) Upload(ctx context.Context, req *UploadReq, opts ...core.Reque
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
 		PathTemplate: "/hduhelp-neo/upload",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// DownloadReq is the request for Download.
-type DownloadReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// DownloadReqBuilder builds a DownloadReq with a fluent setter per field.
-type DownloadReqBuilder struct{ req *DownloadReq }
-
-// NewDownloadReqBuilder creates a request builder for Download.
-func NewDownloadReqBuilder() *DownloadReqBuilder {
-	return &DownloadReqBuilder{req: &DownloadReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Key sets the "key" path parameter.
-func (b *DownloadReqBuilder) Key(v string) *DownloadReqBuilder {
-	b.req.pathParams["key"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *DownloadReqBuilder) Build() *DownloadReq { return b.req }
-
-// DownloadResp is the response for Download.
-type DownloadResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-}
-
-// Download: 获取已上传文件
-func (s *Service) Download(ctx context.Context, req *DownloadReq, opts ...core.RequestOption) (*DownloadResp, error) {
-	resp := &DownloadResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/upload/{key}",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

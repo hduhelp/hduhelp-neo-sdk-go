@@ -16,147 +16,6 @@ type Service struct{ config *core.Config }
 // NewService binds the Subscription service to a client config.
 func NewService(config *core.Config) *Service { return &Service{config: config} }
 
-// SubscribeReq is the request for Subscribe.
-type SubscribeReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// SubscribeReqBuilder builds a SubscribeReq with a fluent setter per field.
-type SubscribeReqBuilder struct{ req *SubscribeReq }
-
-// NewSubscribeReqBuilder creates a request builder for Subscribe.
-func NewSubscribeReqBuilder() *SubscribeReqBuilder {
-	return &SubscribeReqBuilder{req: &SubscribeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Channel sets the "channel" query parameter.
-func (b *SubscribeReqBuilder) Channel(v string) *SubscribeReqBuilder {
-	b.req.queryParams["channel"] = v
-	return b
-}
-
-// Body sets the request body.
-func (b *SubscribeReqBuilder) Body(body *models.SubscribeRequestBody) *SubscribeReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *SubscribeReqBuilder) Build() *SubscribeReq { return b.req }
-
-// SubscribeResp is the response for Subscribe.
-type SubscribeResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-}
-
-// Subscribe: 订阅提醒渠道
-func (s *Service) Subscribe(ctx context.Context, req *SubscribeReq, opts ...core.RequestOption) (*SubscribeResp, error) {
-	resp := &SubscribeResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/subscription",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// UpdateSubscriptionReq is the request for UpdateSubscription.
-type UpdateSubscriptionReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// UpdateSubscriptionReqBuilder builds a UpdateSubscriptionReq with a fluent setter per field.
-type UpdateSubscriptionReqBuilder struct{ req *UpdateSubscriptionReq }
-
-// NewUpdateSubscriptionReqBuilder creates a request builder for UpdateSubscription.
-func NewUpdateSubscriptionReqBuilder() *UpdateSubscriptionReqBuilder {
-	return &UpdateSubscriptionReqBuilder{req: &UpdateSubscriptionReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *UpdateSubscriptionReqBuilder) Body(body *models.UpdateSubscriptionRequestBody) *UpdateSubscriptionReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *UpdateSubscriptionReqBuilder) Build() *UpdateSubscriptionReq { return b.req }
-
-// UpdateSubscriptionResp is the response for UpdateSubscription.
-type UpdateSubscriptionResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-}
-
-// UpdateSubscription: 更新订阅渠道配置
-func (s *Service) UpdateSubscription(ctx context.Context, req *UpdateSubscriptionReq, opts ...core.RequestOption) (*UpdateSubscriptionResp, error) {
-	resp := &UpdateSubscriptionResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "PUT",
-		PathTemplate: "/hduhelp-neo/subscription",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// UnsubscribeReq is the request for Unsubscribe.
-type UnsubscribeReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// UnsubscribeReqBuilder builds a UnsubscribeReq with a fluent setter per field.
-type UnsubscribeReqBuilder struct{ req *UnsubscribeReq }
-
-// NewUnsubscribeReqBuilder creates a request builder for Unsubscribe.
-func NewUnsubscribeReqBuilder() *UnsubscribeReqBuilder {
-	return &UnsubscribeReqBuilder{req: &UnsubscribeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Channel sets the "channel" query parameter.
-func (b *UnsubscribeReqBuilder) Channel(v string) *UnsubscribeReqBuilder {
-	b.req.queryParams["channel"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *UnsubscribeReqBuilder) Build() *UnsubscribeReq { return b.req }
-
-// UnsubscribeResp is the response for Unsubscribe.
-type UnsubscribeResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-}
-
-// Unsubscribe: 退订提醒渠道
-func (s *Service) Unsubscribe(ctx context.Context, req *UnsubscribeReq, opts ...core.RequestOption) (*UnsubscribeResp, error) {
-	resp := &UnsubscribeResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "DELETE",
-		PathTemplate: "/hduhelp-neo/subscription",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
 // SunrunDetailReq is the request for SunrunDetail.
 type SunrunDetailReq struct {
 	pathParams  map[string]string
@@ -338,6 +197,153 @@ func (s *Service) ListSubscriptions(ctx context.Context, req *ListSubscriptionsR
 	resp := &ListSubscriptionsResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/subscriptions",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SubscribeReq is the request for Subscribe.
+type SubscribeReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// SubscribeReqBuilder builds a SubscribeReq with a fluent setter per field.
+type SubscribeReqBuilder struct{ req *SubscribeReq }
+
+// NewSubscribeReqBuilder creates a request builder for Subscribe.
+func NewSubscribeReqBuilder() *SubscribeReqBuilder {
+	return &SubscribeReqBuilder{req: &SubscribeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Channel sets the "channel" query parameter.
+func (b *SubscribeReqBuilder) Channel(v string) *SubscribeReqBuilder {
+	b.req.queryParams["channel"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *SubscribeReqBuilder) Body(body *models.SubscribeRequestBody) *SubscribeReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *SubscribeReqBuilder) Build() *SubscribeReq { return b.req }
+
+// SubscribeResp is the response for Subscribe.
+type SubscribeResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// Subscribe: 订阅提醒渠道
+func (s *Service) Subscribe(ctx context.Context, req *SubscribeReq, opts ...core.RequestOption) (*SubscribeResp, error) {
+	resp := &SubscribeResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/subscriptions",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// UpdateSubscriptionReq is the request for UpdateSubscription.
+type UpdateSubscriptionReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// UpdateSubscriptionReqBuilder builds a UpdateSubscriptionReq with a fluent setter per field.
+type UpdateSubscriptionReqBuilder struct{ req *UpdateSubscriptionReq }
+
+// NewUpdateSubscriptionReqBuilder creates a request builder for UpdateSubscription.
+func NewUpdateSubscriptionReqBuilder() *UpdateSubscriptionReqBuilder {
+	return &UpdateSubscriptionReqBuilder{req: &UpdateSubscriptionReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" query parameter: 渠道 id，定位集合内单条订阅
+func (b *UpdateSubscriptionReqBuilder) Id(v string) *UpdateSubscriptionReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *UpdateSubscriptionReqBuilder) Body(body *models.UpdateSubscriptionRequestBody) *UpdateSubscriptionReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *UpdateSubscriptionReqBuilder) Build() *UpdateSubscriptionReq { return b.req }
+
+// UpdateSubscriptionResp is the response for UpdateSubscription.
+type UpdateSubscriptionResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// UpdateSubscription: 更新订阅渠道配置
+func (s *Service) UpdateSubscription(ctx context.Context, req *UpdateSubscriptionReq, opts ...core.RequestOption) (*UpdateSubscriptionResp, error) {
+	resp := &UpdateSubscriptionResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/subscriptions",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// UnsubscribeReq is the request for Unsubscribe.
+type UnsubscribeReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// UnsubscribeReqBuilder builds a UnsubscribeReq with a fluent setter per field.
+type UnsubscribeReqBuilder struct{ req *UnsubscribeReq }
+
+// NewUnsubscribeReqBuilder creates a request builder for Unsubscribe.
+func NewUnsubscribeReqBuilder() *UnsubscribeReqBuilder {
+	return &UnsubscribeReqBuilder{req: &UnsubscribeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" query parameter.
+func (b *UnsubscribeReqBuilder) Id(v string) *UnsubscribeReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *UnsubscribeReqBuilder) Build() *UnsubscribeReq { return b.req }
+
+// UnsubscribeResp is the response for Unsubscribe.
+type UnsubscribeResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// Unsubscribe: 退订提醒渠道
+func (s *Service) Unsubscribe(ctx context.Context, req *UnsubscribeReq, opts ...core.RequestOption) (*UnsubscribeResp, error) {
+	resp := &UnsubscribeResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
 		PathTemplate: "/hduhelp-neo/subscriptions",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,

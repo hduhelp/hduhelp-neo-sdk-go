@@ -32,6 +32,12 @@ func NewListAppsReqBuilder() *ListAppsReqBuilder {
 	return &ListAppsReqBuilder{req: &ListAppsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
+// Id sets the "id" query parameter: 传入时定位单个应用，返回其详情
+func (b *ListAppsReqBuilder) Id(v string) *ListAppsReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
+}
+
 // Build finalizes the request.
 func (b *ListAppsReqBuilder) Build() *ListAppsReq { return b.req }
 
@@ -39,10 +45,10 @@ func (b *ListAppsReqBuilder) Build() *ListAppsReq { return b.req }
 type ListAppsResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data []models.AdminAppInfo `json:"data"`
+	Data *models.AdminAppsData `json:"data"`
 }
 
-// ListApps: OAuth应用列表
+// ListApps: OAuth应用列表/详情
 func (s *Service) ListApps(ctx context.Context, req *ListAppsReq, opts ...core.RequestOption) (*ListAppsResp, error) {
 	resp := &ListAppsResp{}
 	err := s.config.Do(ctx, &core.APIReq{
@@ -102,134 +108,101 @@ func (s *Service) CreateApp(ctx context.Context, req *CreateAppReq, opts ...core
 	return resp, err
 }
 
-// DisableAppReq is the request for DisableApp.
-type DisableAppReq struct {
+// UpdateAppReq is the request for UpdateApp.
+type UpdateAppReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// DisableAppReqBuilder builds a DisableAppReq with a fluent setter per field.
-type DisableAppReqBuilder struct{ req *DisableAppReq }
+// UpdateAppReqBuilder builds a UpdateAppReq with a fluent setter per field.
+type UpdateAppReqBuilder struct{ req *UpdateAppReq }
 
-// NewDisableAppReqBuilder creates a request builder for DisableApp.
-func NewDisableAppReqBuilder() *DisableAppReqBuilder {
-	return &DisableAppReqBuilder{req: &DisableAppReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *DisableAppReqBuilder) Body(body *models.DisableAppRequestBody) *DisableAppReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *DisableAppReqBuilder) Build() *DisableAppReq { return b.req }
-
-// DisableAppResp is the response for DisableApp.
-type DisableAppResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-}
-
-// DisableApp: 停用OAuth应用
-func (s *Service) DisableApp(ctx context.Context, req *DisableAppReq, opts ...core.RequestOption) (*DisableAppResp, error) {
-	resp := &DisableAppResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "PUT",
-		PathTemplate: "/hduhelp-neo/admin/apps/disable",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// EnableAppReq is the request for EnableApp.
-type EnableAppReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// EnableAppReqBuilder builds a EnableAppReq with a fluent setter per field.
-type EnableAppReqBuilder struct{ req *EnableAppReq }
-
-// NewEnableAppReqBuilder creates a request builder for EnableApp.
-func NewEnableAppReqBuilder() *EnableAppReqBuilder {
-	return &EnableAppReqBuilder{req: &EnableAppReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *EnableAppReqBuilder) Body(body *models.EnableAppRequestBody) *EnableAppReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *EnableAppReqBuilder) Build() *EnableAppReq { return b.req }
-
-// EnableAppResp is the response for EnableApp.
-type EnableAppResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-}
-
-// EnableApp: 启用OAuth应用
-func (s *Service) EnableApp(ctx context.Context, req *EnableAppReq, opts ...core.RequestOption) (*EnableAppResp, error) {
-	resp := &EnableAppResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "PUT",
-		PathTemplate: "/hduhelp-neo/admin/apps/enable",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// GetAppReq is the request for GetApp.
-type GetAppReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// GetAppReqBuilder builds a GetAppReq with a fluent setter per field.
-type GetAppReqBuilder struct{ req *GetAppReq }
-
-// NewGetAppReqBuilder creates a request builder for GetApp.
-func NewGetAppReqBuilder() *GetAppReqBuilder {
-	return &GetAppReqBuilder{req: &GetAppReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewUpdateAppReqBuilder creates a request builder for UpdateApp.
+func NewUpdateAppReqBuilder() *UpdateAppReqBuilder {
+	return &UpdateAppReqBuilder{req: &UpdateAppReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Id sets the "id" query parameter.
-func (b *GetAppReqBuilder) Id(v string) *GetAppReqBuilder {
+func (b *UpdateAppReqBuilder) Id(v string) *UpdateAppReqBuilder {
 	b.req.queryParams["id"] = v
 	return b
 }
 
-// Build finalizes the request.
-func (b *GetAppReqBuilder) Build() *GetAppReq { return b.req }
+// Body sets the request body.
+func (b *UpdateAppReqBuilder) Body(body *models.UpdateAppRequestBody) *UpdateAppReqBuilder {
+	b.req.body = body
+	return b
+}
 
-// GetAppResp is the response for GetApp.
-type GetAppResp struct {
+// Build finalizes the request.
+func (b *UpdateAppReqBuilder) Build() *UpdateAppReq { return b.req }
+
+// UpdateAppResp is the response for UpdateApp.
+type UpdateAppResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
 	Data *models.AdminAppDetail `json:"data"`
 }
 
-// GetApp: OAuth应用详情
-func (s *Service) GetApp(ctx context.Context, req *GetAppReq, opts ...core.RequestOption) (*GetAppResp, error) {
-	resp := &GetAppResp{}
+// UpdateApp: 编辑OAuth应用
+func (s *Service) UpdateApp(ctx context.Context, req *UpdateAppReq, opts ...core.RequestOption) (*UpdateAppResp, error) {
+	resp := &UpdateAppResp{}
 	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/admin/apps/get",
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/apps",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SetAppEnabledReq is the request for SetAppEnabled.
+type SetAppEnabledReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// SetAppEnabledReqBuilder builds a SetAppEnabledReq with a fluent setter per field.
+type SetAppEnabledReqBuilder struct{ req *SetAppEnabledReq }
+
+// NewSetAppEnabledReqBuilder creates a request builder for SetAppEnabled.
+func NewSetAppEnabledReqBuilder() *SetAppEnabledReqBuilder {
+	return &SetAppEnabledReqBuilder{req: &SetAppEnabledReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" query parameter.
+func (b *SetAppEnabledReqBuilder) Id(v string) *SetAppEnabledReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *SetAppEnabledReqBuilder) Body(body *models.SetAppEnabledRequestBody) *SetAppEnabledReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *SetAppEnabledReqBuilder) Build() *SetAppEnabledReq { return b.req }
+
+// SetAppEnabledResp is the response for SetAppEnabled.
+type SetAppEnabledResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// SetAppEnabled: 启用/停用OAuth应用
+func (s *Service) SetAppEnabled(ctx context.Context, req *SetAppEnabledReq, opts ...core.RequestOption) (*SetAppEnabledResp, error) {
+	resp := &SetAppEnabledResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PATCH",
+		PathTemplate: "/hduhelp-neo/admin/apps",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -254,6 +227,12 @@ func NewSetAppPermissionsReqBuilder() *SetAppPermissionsReqBuilder {
 	return &SetAppPermissionsReqBuilder{req: &SetAppPermissionsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
+// Id sets the "id" query parameter.
+func (b *SetAppPermissionsReqBuilder) Id(v string) *SetAppPermissionsReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
+}
+
 // Body sets the request body.
 func (b *SetAppPermissionsReqBuilder) Body(body *models.SetAppPermissionsRequestBody) *SetAppPermissionsReqBuilder {
 	b.req.body = body
@@ -275,52 +254,6 @@ func (s *Service) SetAppPermissions(ctx context.Context, req *SetAppPermissionsR
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "PUT",
 		PathTemplate: "/hduhelp-neo/admin/apps/permissions",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// UpdateAppReq is the request for UpdateApp.
-type UpdateAppReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// UpdateAppReqBuilder builds a UpdateAppReq with a fluent setter per field.
-type UpdateAppReqBuilder struct{ req *UpdateAppReq }
-
-// NewUpdateAppReqBuilder creates a request builder for UpdateApp.
-func NewUpdateAppReqBuilder() *UpdateAppReqBuilder {
-	return &UpdateAppReqBuilder{req: &UpdateAppReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *UpdateAppReqBuilder) Body(body *models.UpdateAppRequestBody) *UpdateAppReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *UpdateAppReqBuilder) Build() *UpdateAppReq { return b.req }
-
-// UpdateAppResp is the response for UpdateApp.
-type UpdateAppResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.AdminAppDetail `json:"data"`
-}
-
-// UpdateApp: 编辑OAuth应用
-func (s *Service) UpdateApp(ctx context.Context, req *UpdateAppReq, opts ...core.RequestOption) (*UpdateAppResp, error) {
-	resp := &UpdateAppResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "PUT",
-		PathTemplate: "/hduhelp-neo/admin/apps/update",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -482,9 +415,9 @@ func NewRevokeAuthorizationReqBuilder() *RevokeAuthorizationReqBuilder {
 	return &RevokeAuthorizationReqBuilder{req: &RevokeAuthorizationReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// Body sets the request body.
-func (b *RevokeAuthorizationReqBuilder) Body(body *models.RevokeAuthorizationRequestBody) *RevokeAuthorizationReqBuilder {
-	b.req.body = body
+// Id sets the "id" query parameter.
+func (b *RevokeAuthorizationReqBuilder) Id(v string) *RevokeAuthorizationReqBuilder {
+	b.req.queryParams["id"] = v
 	return b
 }
 
@@ -501,8 +434,8 @@ type RevokeAuthorizationResp struct {
 func (s *Service) RevokeAuthorization(ctx context.Context, req *RevokeAuthorizationReq, opts ...core.RequestOption) (*RevokeAuthorizationResp, error) {
 	resp := &RevokeAuthorizationResp{}
 	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "PUT",
-		PathTemplate: "/hduhelp-neo/admin/authorizations/revoke",
+		HTTPMethod:   "PATCH",
+		PathTemplate: "/hduhelp-neo/admin/authorizations",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -1211,9 +1144,9 @@ func NewUpdateElectricityMeterReqBuilder() *UpdateElectricityMeterReqBuilder {
 	return &UpdateElectricityMeterReqBuilder{req: &UpdateElectricityMeterReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// Id sets the "id" path parameter.
+// Id sets the "id" query parameter.
 func (b *UpdateElectricityMeterReqBuilder) Id(v string) *UpdateElectricityMeterReqBuilder {
-	b.req.pathParams["id"] = v
+	b.req.queryParams["id"] = v
 	return b
 }
 
@@ -1238,7 +1171,7 @@ func (s *Service) UpdateElectricityMeter(ctx context.Context, req *UpdateElectri
 	resp := &UpdateElectricityMeterResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "PUT",
-		PathTemplate: "/hduhelp-neo/admin/electricity/meters/{id}",
+		PathTemplate: "/hduhelp-neo/admin/electricity/meters",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -1263,9 +1196,9 @@ func NewDeleteElectricityMeterReqBuilder() *DeleteElectricityMeterReqBuilder {
 	return &DeleteElectricityMeterReqBuilder{req: &DeleteElectricityMeterReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// Id sets the "id" path parameter.
+// Id sets the "id" query parameter.
 func (b *DeleteElectricityMeterReqBuilder) Id(v string) *DeleteElectricityMeterReqBuilder {
-	b.req.pathParams["id"] = v
+	b.req.queryParams["id"] = v
 	return b
 }
 
@@ -1283,7 +1216,7 @@ func (s *Service) DeleteElectricityMeter(ctx context.Context, req *DeleteElectri
 	resp := &DeleteElectricityMeterResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "DELETE",
-		PathTemplate: "/hduhelp-neo/admin/electricity/meters/{id}",
+		PathTemplate: "/hduhelp-neo/admin/electricity/meters",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -1352,6 +1285,12 @@ type ListLoginClientsReqBuilder struct{ req *ListLoginClientsReq }
 // NewListLoginClientsReqBuilder creates a request builder for ListLoginClients.
 func NewListLoginClientsReqBuilder() *ListLoginClientsReqBuilder {
 	return &ListLoginClientsReqBuilder{req: &ListLoginClientsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" query parameter: 传入时仅返回该客户端（单元素列表）
+func (b *ListLoginClientsReqBuilder) Id(v string) *ListLoginClientsReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
 }
 
 // Build finalizes the request.
@@ -1507,52 +1446,6 @@ func (s *Service) DeleteLoginClient(ctx context.Context, req *DeleteLoginClientR
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "DELETE",
 		PathTemplate: "/hduhelp-neo/admin/login-clients",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// GetLoginClientReq is the request for GetLoginClient.
-type GetLoginClientReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// GetLoginClientReqBuilder builds a GetLoginClientReq with a fluent setter per field.
-type GetLoginClientReqBuilder struct{ req *GetLoginClientReq }
-
-// NewGetLoginClientReqBuilder creates a request builder for GetLoginClient.
-func NewGetLoginClientReqBuilder() *GetLoginClientReqBuilder {
-	return &GetLoginClientReqBuilder{req: &GetLoginClientReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Id sets the "id" query parameter.
-func (b *GetLoginClientReqBuilder) Id(v string) *GetLoginClientReqBuilder {
-	b.req.queryParams["id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *GetLoginClientReqBuilder) Build() *GetLoginClientReq { return b.req }
-
-// GetLoginClientResp is the response for GetLoginClient.
-type GetLoginClientResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.AdminLoginClientInfo `json:"data"`
-}
-
-// GetLoginClient: 登录客户端详情
-func (s *Service) GetLoginClient(ctx context.Context, req *GetLoginClientReq, opts ...core.RequestOption) (*GetLoginClientResp, error) {
-	resp := &GetLoginClientResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/admin/login-clients/get",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -1771,88 +1664,49 @@ func (s *Service) CreateOperator(ctx context.Context, req *CreateOperatorReq, op
 	return resp, err
 }
 
-// DisableOperatorReq is the request for DisableOperator.
-type DisableOperatorReq struct {
+// SetOperatorEnabledReq is the request for SetOperatorEnabled.
+type SetOperatorEnabledReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// DisableOperatorReqBuilder builds a DisableOperatorReq with a fluent setter per field.
-type DisableOperatorReqBuilder struct{ req *DisableOperatorReq }
+// SetOperatorEnabledReqBuilder builds a SetOperatorEnabledReq with a fluent setter per field.
+type SetOperatorEnabledReqBuilder struct{ req *SetOperatorEnabledReq }
 
-// NewDisableOperatorReqBuilder creates a request builder for DisableOperator.
-func NewDisableOperatorReqBuilder() *DisableOperatorReqBuilder {
-	return &DisableOperatorReqBuilder{req: &DisableOperatorReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewSetOperatorEnabledReqBuilder creates a request builder for SetOperatorEnabled.
+func NewSetOperatorEnabledReqBuilder() *SetOperatorEnabledReqBuilder {
+	return &SetOperatorEnabledReqBuilder{req: &SetOperatorEnabledReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" query parameter.
+func (b *SetOperatorEnabledReqBuilder) Id(v string) *SetOperatorEnabledReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
 }
 
 // Body sets the request body.
-func (b *DisableOperatorReqBuilder) Body(body *models.DisableOperatorRequestBody) *DisableOperatorReqBuilder {
+func (b *SetOperatorEnabledReqBuilder) Body(body *models.SetOperatorEnabledRequestBody) *SetOperatorEnabledReqBuilder {
 	b.req.body = body
 	return b
 }
 
 // Build finalizes the request.
-func (b *DisableOperatorReqBuilder) Build() *DisableOperatorReq { return b.req }
+func (b *SetOperatorEnabledReqBuilder) Build() *SetOperatorEnabledReq { return b.req }
 
-// DisableOperatorResp is the response for DisableOperator.
-type DisableOperatorResp struct {
+// SetOperatorEnabledResp is the response for SetOperatorEnabled.
+type SetOperatorEnabledResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
 }
 
-// DisableOperator: 停用运营者
-func (s *Service) DisableOperator(ctx context.Context, req *DisableOperatorReq, opts ...core.RequestOption) (*DisableOperatorResp, error) {
-	resp := &DisableOperatorResp{}
+// SetOperatorEnabled: 启用/停用运营者
+func (s *Service) SetOperatorEnabled(ctx context.Context, req *SetOperatorEnabledReq, opts ...core.RequestOption) (*SetOperatorEnabledResp, error) {
+	resp := &SetOperatorEnabledResp{}
 	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "PUT",
-		PathTemplate: "/hduhelp-neo/admin/operators/disable",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// EnableOperatorReq is the request for EnableOperator.
-type EnableOperatorReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// EnableOperatorReqBuilder builds a EnableOperatorReq with a fluent setter per field.
-type EnableOperatorReqBuilder struct{ req *EnableOperatorReq }
-
-// NewEnableOperatorReqBuilder creates a request builder for EnableOperator.
-func NewEnableOperatorReqBuilder() *EnableOperatorReqBuilder {
-	return &EnableOperatorReqBuilder{req: &EnableOperatorReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *EnableOperatorReqBuilder) Body(body *models.EnableOperatorRequestBody) *EnableOperatorReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *EnableOperatorReqBuilder) Build() *EnableOperatorReq { return b.req }
-
-// EnableOperatorResp is the response for EnableOperator.
-type EnableOperatorResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-}
-
-// EnableOperator: 启用运营者
-func (s *Service) EnableOperator(ctx context.Context, req *EnableOperatorReq, opts ...core.RequestOption) (*EnableOperatorResp, error) {
-	resp := &EnableOperatorResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "PUT",
-		PathTemplate: "/hduhelp-neo/admin/operators/enable",
+		HTTPMethod:   "PATCH",
+		PathTemplate: "/hduhelp-neo/admin/operators",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -1875,6 +1729,12 @@ type ResetOperatorPasswordReqBuilder struct{ req *ResetOperatorPasswordReq }
 // NewResetOperatorPasswordReqBuilder creates a request builder for ResetOperatorPassword.
 func NewResetOperatorPasswordReqBuilder() *ResetOperatorPasswordReqBuilder {
 	return &ResetOperatorPasswordReqBuilder{req: &ResetOperatorPasswordReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" query parameter.
+func (b *ResetOperatorPasswordReqBuilder) Id(v string) *ResetOperatorPasswordReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
 }
 
 // Body sets the request body.
@@ -2078,88 +1938,49 @@ func (s *Service) CreateTenant(ctx context.Context, req *CreateTenantReq, opts .
 	return resp, err
 }
 
-// DisableTenantReq is the request for DisableTenant.
-type DisableTenantReq struct {
+// SetTenantEnabledReq is the request for SetTenantEnabled.
+type SetTenantEnabledReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// DisableTenantReqBuilder builds a DisableTenantReq with a fluent setter per field.
-type DisableTenantReqBuilder struct{ req *DisableTenantReq }
+// SetTenantEnabledReqBuilder builds a SetTenantEnabledReq with a fluent setter per field.
+type SetTenantEnabledReqBuilder struct{ req *SetTenantEnabledReq }
 
-// NewDisableTenantReqBuilder creates a request builder for DisableTenant.
-func NewDisableTenantReqBuilder() *DisableTenantReqBuilder {
-	return &DisableTenantReqBuilder{req: &DisableTenantReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewSetTenantEnabledReqBuilder creates a request builder for SetTenantEnabled.
+func NewSetTenantEnabledReqBuilder() *SetTenantEnabledReqBuilder {
+	return &SetTenantEnabledReqBuilder{req: &SetTenantEnabledReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" query parameter.
+func (b *SetTenantEnabledReqBuilder) Id(v string) *SetTenantEnabledReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
 }
 
 // Body sets the request body.
-func (b *DisableTenantReqBuilder) Body(body *models.DisableTenantRequestBody) *DisableTenantReqBuilder {
+func (b *SetTenantEnabledReqBuilder) Body(body *models.SetTenantEnabledRequestBody) *SetTenantEnabledReqBuilder {
 	b.req.body = body
 	return b
 }
 
 // Build finalizes the request.
-func (b *DisableTenantReqBuilder) Build() *DisableTenantReq { return b.req }
+func (b *SetTenantEnabledReqBuilder) Build() *SetTenantEnabledReq { return b.req }
 
-// DisableTenantResp is the response for DisableTenant.
-type DisableTenantResp struct {
+// SetTenantEnabledResp is the response for SetTenantEnabled.
+type SetTenantEnabledResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
 }
 
-// DisableTenant: 停用租户
-func (s *Service) DisableTenant(ctx context.Context, req *DisableTenantReq, opts ...core.RequestOption) (*DisableTenantResp, error) {
-	resp := &DisableTenantResp{}
+// SetTenantEnabled: 启用/停用租户
+func (s *Service) SetTenantEnabled(ctx context.Context, req *SetTenantEnabledReq, opts ...core.RequestOption) (*SetTenantEnabledResp, error) {
+	resp := &SetTenantEnabledResp{}
 	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "PUT",
-		PathTemplate: "/hduhelp-neo/admin/tenants/disable",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// EnableTenantReq is the request for EnableTenant.
-type EnableTenantReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// EnableTenantReqBuilder builds a EnableTenantReq with a fluent setter per field.
-type EnableTenantReqBuilder struct{ req *EnableTenantReq }
-
-// NewEnableTenantReqBuilder creates a request builder for EnableTenant.
-func NewEnableTenantReqBuilder() *EnableTenantReqBuilder {
-	return &EnableTenantReqBuilder{req: &EnableTenantReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *EnableTenantReqBuilder) Body(body *models.EnableTenantRequestBody) *EnableTenantReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *EnableTenantReqBuilder) Build() *EnableTenantReq { return b.req }
-
-// EnableTenantResp is the response for EnableTenant.
-type EnableTenantResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-}
-
-// EnableTenant: 启用租户
-func (s *Service) EnableTenant(ctx context.Context, req *EnableTenantReq, opts ...core.RequestOption) (*EnableTenantResp, error) {
-	resp := &EnableTenantResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "PUT",
-		PathTemplate: "/hduhelp-neo/admin/tenants/enable",
+		HTTPMethod:   "PATCH",
+		PathTemplate: "/hduhelp-neo/admin/tenants",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -2208,6 +2029,12 @@ func (b *SearchUsersReqBuilder) Size(v int32) *SearchUsersReqBuilder {
 	return b
 }
 
+// Id sets the "id" query parameter: 传入时定位单个用户，返回其富详情
+func (b *SearchUsersReqBuilder) Id(v string) *SearchUsersReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
+}
+
 // Build finalizes the request.
 func (b *SearchUsersReqBuilder) Build() *SearchUsersReq { return b.req }
 
@@ -2215,10 +2042,10 @@ func (b *SearchUsersReqBuilder) Build() *SearchUsersReq { return b.req }
 type SearchUsersResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data []models.AdminUserInfo `json:"data"`
+	Data *models.AdminUsersData `json:"data"`
 }
 
-// SearchUsers: 搜索用户
+// SearchUsers: 搜索用户/用户详情
 func (s *Service) SearchUsers(ctx context.Context, req *SearchUsersReq, opts ...core.RequestOption) (*SearchUsersResp, error) {
 	resp := &SearchUsersResp{}
 	err := s.config.Do(ctx, &core.APIReq{
@@ -2232,43 +2059,49 @@ func (s *Service) SearchUsers(ctx context.Context, req *SearchUsersReq, opts ...
 	return resp, err
 }
 
-// BanUserReq is the request for BanUser.
-type BanUserReq struct {
+// SetUserStatusReq is the request for SetUserStatus.
+type SetUserStatusReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// BanUserReqBuilder builds a BanUserReq with a fluent setter per field.
-type BanUserReqBuilder struct{ req *BanUserReq }
+// SetUserStatusReqBuilder builds a SetUserStatusReq with a fluent setter per field.
+type SetUserStatusReqBuilder struct{ req *SetUserStatusReq }
 
-// NewBanUserReqBuilder creates a request builder for BanUser.
-func NewBanUserReqBuilder() *BanUserReqBuilder {
-	return &BanUserReqBuilder{req: &BanUserReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewSetUserStatusReqBuilder creates a request builder for SetUserStatus.
+func NewSetUserStatusReqBuilder() *SetUserStatusReqBuilder {
+	return &SetUserStatusReqBuilder{req: &SetUserStatusReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" query parameter.
+func (b *SetUserStatusReqBuilder) Id(v string) *SetUserStatusReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
 }
 
 // Body sets the request body.
-func (b *BanUserReqBuilder) Body(body *models.BanUserRequestBody) *BanUserReqBuilder {
+func (b *SetUserStatusReqBuilder) Body(body *models.SetUserStatusRequestBody) *SetUserStatusReqBuilder {
 	b.req.body = body
 	return b
 }
 
 // Build finalizes the request.
-func (b *BanUserReqBuilder) Build() *BanUserReq { return b.req }
+func (b *SetUserStatusReqBuilder) Build() *SetUserStatusReq { return b.req }
 
-// BanUserResp is the response for BanUser.
-type BanUserResp struct {
+// SetUserStatusResp is the response for SetUserStatus.
+type SetUserStatusResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
 }
 
-// BanUser: 封禁用户
-func (s *Service) BanUser(ctx context.Context, req *BanUserReq, opts ...core.RequestOption) (*BanUserResp, error) {
-	resp := &BanUserResp{}
+// SetUserStatus: 调整用户状态
+func (s *Service) SetUserStatus(ctx context.Context, req *SetUserStatusReq, opts ...core.RequestOption) (*SetUserStatusResp, error) {
+	resp := &SetUserStatusResp{}
 	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "PUT",
-		PathTemplate: "/hduhelp-neo/admin/users/ban",
+		HTTPMethod:   "PATCH",
+		PathTemplate: "/hduhelp-neo/admin/users",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -2506,97 +2339,6 @@ func (s *Service) SetUserDefaultIdentity(ctx context.Context, req *SetUserDefaul
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "PUT",
 		PathTemplate: "/hduhelp-neo/admin/users/default-identity",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// GetUserDetailReq is the request for GetUserDetail.
-type GetUserDetailReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// GetUserDetailReqBuilder builds a GetUserDetailReq with a fluent setter per field.
-type GetUserDetailReqBuilder struct{ req *GetUserDetailReq }
-
-// NewGetUserDetailReqBuilder creates a request builder for GetUserDetail.
-func NewGetUserDetailReqBuilder() *GetUserDetailReqBuilder {
-	return &GetUserDetailReqBuilder{req: &GetUserDetailReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// UserId sets the "user_id" query parameter.
-func (b *GetUserDetailReqBuilder) UserId(v string) *GetUserDetailReqBuilder {
-	b.req.queryParams["user_id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *GetUserDetailReqBuilder) Build() *GetUserDetailReq { return b.req }
-
-// GetUserDetailResp is the response for GetUserDetail.
-type GetUserDetailResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.AdminUserDetail `json:"data"`
-}
-
-// GetUserDetail: 用户详情
-func (s *Service) GetUserDetail(ctx context.Context, req *GetUserDetailReq, opts ...core.RequestOption) (*GetUserDetailResp, error) {
-	resp := &GetUserDetailResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/admin/users/detail",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// UnbanUserReq is the request for UnbanUser.
-type UnbanUserReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// UnbanUserReqBuilder builds a UnbanUserReq with a fluent setter per field.
-type UnbanUserReqBuilder struct{ req *UnbanUserReq }
-
-// NewUnbanUserReqBuilder creates a request builder for UnbanUser.
-func NewUnbanUserReqBuilder() *UnbanUserReqBuilder {
-	return &UnbanUserReqBuilder{req: &UnbanUserReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *UnbanUserReqBuilder) Body(body *models.UnbanUserRequestBody) *UnbanUserReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *UnbanUserReqBuilder) Build() *UnbanUserReq { return b.req }
-
-// UnbanUserResp is the response for UnbanUser.
-type UnbanUserResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-}
-
-// UnbanUser: 解封用户
-func (s *Service) UnbanUser(ctx context.Context, req *UnbanUserReq, opts ...core.RequestOption) (*UnbanUserResp, error) {
-	resp := &UnbanUserResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "PUT",
-		PathTemplate: "/hduhelp-neo/admin/users/unban",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
