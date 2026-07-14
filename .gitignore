@@ -1,8 +1,4 @@
-# Transient generation input
-/.openapi.normalized.yaml
 # Editor / OS cruft
 .DS_Store
 .idea/
 *.out
-# Compiled generator binary
-/internal/gen/gen
