@@ -7,6 +7,7 @@ const (
 	BearerAuthScopes         bearerAuthContextKey         = "BearerAuth.Scopes"
 	NativeSessionAuthScopes  nativeSessionAuthContextKey  = "NativeSessionAuth.Scopes"
 	OperatorBearerAuthScopes operatorBearerAuthContextKey = "OperatorBearerAuth.Scopes"
+	PATBearerAuthScopes      pATBearerAuthContextKey      = "PATBearerAuth.Scopes"
 	UATBearerAuthScopes      uATBearerAuthContextKey      = "UATBearerAuth.Scopes"
 )
 
@@ -4565,6 +4566,9 @@ type nativeSessionAuthContextKey string
 
 // operatorBearerAuthContextKey is the context key for OperatorBearerAuth security scheme
 type operatorBearerAuthContextKey string
+
+// pATBearerAuthContextKey is the context key for PATBearerAuth security scheme
+type pATBearerAuthContextKey string
 
 // uATBearerAuthContextKey is the context key for UATBearerAuth security scheme
 type uATBearerAuthContextKey string

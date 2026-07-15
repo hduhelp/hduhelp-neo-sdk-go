@@ -2642,6 +2642,23 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/RevokePATResponseBody'
             x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/cli/tokens/current:
+        delete:
+            tags:
+                - IdentityService
+            summary: 吊销当前个人访问令牌
+            description: 仅允许有效 PAT 通过自身 Bearer 凭据吊销自己。不接受令牌 ID，也不要求额外 scope。
+            operationId: IdentityService_RevokeCurrentPAT
+            security:
+                - PATBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RevokePATResponseBody'
+            x-hduhelp-http: {'auth': 'pat'}
     /hduhelp-neo/emptyschedule/enroll:
         post:
             tags:
@@ -5312,6 +5329,10 @@ components:
             scheme: bearer
             bearerFormat: opaque
         OperatorBearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: opaque
+        PATBearerAuth:
             type: http
             scheme: bearer
             bearerFormat: opaque

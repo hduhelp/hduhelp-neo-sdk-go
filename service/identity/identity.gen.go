@@ -329,6 +329,45 @@ func (s *Service) RevokePAT(ctx context.Context, req *RevokePATReq, opts ...core
 	return resp, err
 }
 
+// RevokeCurrentPATReq is the request for RevokeCurrentPAT.
+type RevokeCurrentPATReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// RevokeCurrentPATReqBuilder builds a RevokeCurrentPATReq with a fluent setter per field.
+type RevokeCurrentPATReqBuilder struct{ req *RevokeCurrentPATReq }
+
+// NewRevokeCurrentPATReqBuilder creates a request builder for RevokeCurrentPAT.
+func NewRevokeCurrentPATReqBuilder() *RevokeCurrentPATReqBuilder {
+	return &RevokeCurrentPATReqBuilder{req: &RevokeCurrentPATReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *RevokeCurrentPATReqBuilder) Build() *RevokeCurrentPATReq { return b.req }
+
+// RevokeCurrentPATResp is the response for RevokeCurrentPAT.
+type RevokeCurrentPATResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// RevokeCurrentPAT: 吊销当前个人访问令牌
+func (s *Service) RevokeCurrentPAT(ctx context.Context, req *RevokeCurrentPATReq, opts ...core.RequestOption) (*RevokeCurrentPATResp, error) {
+	resp := &RevokeCurrentPATResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/cli/tokens/current",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // MergeConfirmReq is the request for MergeConfirm.
 type MergeConfirmReq struct {
 	pathParams  map[string]string
