@@ -1999,7 +1999,7 @@ type FaqEntry struct {
 
 // FaqImportRequestBody defines model for FaqImportRequestBody.
 type FaqImportRequestBody struct {
-	// DomainId 应用到全部行的主知识域
+	// DomainId 应用到全部行的主知识域；留空=每条交给 AI 按内容分类
 	DomainId *string         `json:"domain_id,omitempty"`
 	Rows     *[]FaqImportRow `json:"rows,omitempty"`
 }

@@ -9175,7 +9175,7 @@ components:
             properties:
                 domain_id:
                     type: string
-                    description: 应用到全部行的主知识域
+                    description: 应用到全部行的主知识域；留空=每条交给 AI 按内容分类
                 rows:
                     type: array
                     items:
