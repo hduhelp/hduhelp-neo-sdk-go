@@ -1673,6 +1673,900 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/DeleteElectricityMeterResponseBody'
+    /hduhelp-neo/admin/knowledge/audit:
+        get:
+            tags:
+                - KnowledgeService
+            summary: 操作审计
+            description: 按对象/动作分页查看知识库的人工与自动操作流水
+            operationId: KnowledgeService_AdminListAudit
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: target_id
+                  in: query
+                  schema:
+                    type: string
+                - name: target_type
+                  in: query
+                  schema:
+                    type: string
+                - name: action
+                  in: query
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListAuditResponseBody'
+    /hduhelp-neo/admin/knowledge/chunks:
+        get:
+            tags:
+                - KnowledgeService
+            summary: 切片列表
+            description: 列出文件文档的全部切片：方舟自动解析(只读)与我方补充(可编辑)
+            operationId: KnowledgeService_AdminListChunks
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: carrier_id
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListChunksResponseBody'
+        put:
+            tags:
+                - KnowledgeService
+            summary: 编辑切片
+            description: 修改一条我方补充切片的标题与内容
+            operationId: KnowledgeService_AdminUpdateChunk
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: carrier_id
+                  in: query
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateChunkRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ChunkMutateResponseBody'
+        post:
+            tags:
+                - KnowledgeService
+            summary: 新增补充切片
+            description: 在文件文档上补充一条文本切片(标题+内容)
+            operationId: KnowledgeService_AdminAddChunk
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AddChunkRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ChunkMutateResponseBody'
+        delete:
+            tags:
+                - KnowledgeService
+            summary: 删除切片
+            description: 删除一条我方补充切片
+            operationId: KnowledgeService_AdminDeleteChunk
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: carrier_id
+                  in: query
+                  schema:
+                    type: string
+                - name: point_id
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ChunkDeleteResponseBody'
+    /hduhelp-neo/admin/knowledge/collectors:
+        get:
+            tags:
+                - KnowledgeService
+            summary: 采集器列表
+            description: 列出代码注册的采集器及其运营覆盖配置(站点/栏目/凭据/排程)与最近运行
+            operationId: KnowledgeService_AdminListCollectors
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListCollectorsResponseBody'
+        put:
+            tags:
+                - KnowledgeService
+            summary: 配置采集器
+            description: 开关采集器、调整 cron 排程或覆盖抓取配置；首次覆盖时落库运营配置
+            operationId: KnowledgeService_AdminUpdateCollector
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: key
+                  in: query
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateCollectorRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CollectorMutateResponseBody'
+    /hduhelp-neo/admin/knowledge/collectors/run:
+        post:
+            tags:
+                - KnowledgeService
+            summary: 立即运行采集器
+            description: 手动触发一次抓取，返回抓取运行 ID 以便追踪
+            operationId: KnowledgeService_AdminRunCollector
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: key
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RunCollectorResponseBody'
+    /hduhelp-neo/admin/knowledge/content/discard:
+        post:
+            tags:
+                - KnowledgeService
+            summary: 撤销草稿
+            description: 丢弃当前草稿，内容回到最近线上版本
+            operationId: KnowledgeService_AdminDiscardDraft
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: carrier_id
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CarrierResponseBody'
+    /hduhelp-neo/admin/knowledge/content/draft:
+        post:
+            tags:
+                - KnowledgeService
+            summary: 保存草稿
+            description: 对内容载体保存编辑草稿；不影响线上版本，可撤销回到最初来源版本
+            operationId: KnowledgeService_AdminSaveDraft
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: carrier_id
+                  in: query
+                  schema:
+                    type: string
+            requestBody:
+                description: |-
+                    ============================================================================
+                    管理端：内容编辑（草稿 / 版本）
+                    ============================================================================
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SaveDraftRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CarrierResponseBody'
+    /hduhelp-neo/admin/knowledge/content/publish:
+        post:
+            tags:
+                - KnowledgeService
+            summary: 发布草稿
+            description: 把草稿提升为线上版本并入队同步方舟切片
+            operationId: KnowledgeService_AdminPublishDraft
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: carrier_id
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CarrierResponseBody'
+    /hduhelp-neo/admin/knowledge/content/restore:
+        post:
+            tags:
+                - KnowledgeService
+            summary: 恢复历史版本
+            description: 把指定历史版本恢复为新草稿以便再发布
+            operationId: KnowledgeService_AdminRestoreVersion
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: carrier_id
+                  in: query
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RestoreVersionRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CarrierResponseBody'
+    /hduhelp-neo/admin/knowledge/crawl-runs:
+        get:
+            tags:
+                - KnowledgeService
+            summary: 抓取运行记录
+            description: 分页查看采集运行历史与统计(扫描/新增/入库/过滤/失败)
+            operationId: KnowledgeService_AdminListCrawlRuns
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: collector_key
+                  in: query
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListCrawlRunsResponseBody'
+    /hduhelp-neo/admin/knowledge/domains:
+        get:
+            tags:
+                - KnowledgeService
+            summary: 知识域列表
+            description: 返回完整知识域树(含各域直接挂载条目数)，供管理端维护分类
+            operationId: KnowledgeService_AdminListDomains
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: |-
+                        ============================================================================
+                        管理端：知识域
+                        ============================================================================
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminDomainTreeResponseBody'
+        put:
+            tags:
+                - KnowledgeService
+            summary: 编辑知识域
+            description: 重命名、调整排序或移动到新父节点；移动会级联更新子树祖先链
+            operationId: KnowledgeService_AdminUpdateDomain
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateDomainRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DomainMutateResponseBody'
+        post:
+            tags:
+                - KnowledgeService
+            summary: 新建知识域
+            description: 在指定父节点下创建知识域；key 稳定不可变，祖先链自动计算
+            operationId: KnowledgeService_AdminCreateDomain
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateDomainRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DomainMutateResponseBody'
+        delete:
+            tags:
+                - KnowledgeService
+            summary: 删除知识域
+            description: 删除空域；传 merge_into_id 时先把条目并入目标域再删除
+            operationId: KnowledgeService_AdminDeleteDomain
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: string
+                - name: merge_into_id
+                  in: query
+                  description: 把条目并入目标域后删除
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DomainDeleteResponseBody'
+    /hduhelp-neo/admin/knowledge/faq/import:
+        post:
+            tags:
+                - KnowledgeService
+            summary: 批量导入 FAQ
+            description: 把多条问答录入指定域，去重后落库为待发布 FAQ 条目
+            operationId: KnowledgeService_AdminImportFaq
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/FaqImportRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FaqImportResponseBody'
+    /hduhelp-neo/admin/knowledge/gaps:
+        get:
+            tags:
+                - KnowledgeService
+            summary: 知识盲区列表
+            description: 按状态分页查看累计的未命中问题，用于补建 FAQ
+            operationId: KnowledgeService_AdminListGaps
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListGapsResponseBody'
+    /hduhelp-neo/admin/knowledge/gaps/action:
+        post:
+            tags:
+                - KnowledgeService
+            summary: 处理盲区
+            description: 忽略该盲区，或据其生成一条草稿 FAQ 落到指定域
+            operationId: KnowledgeService_AdminGapAction
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/GapActionRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GapActionResponseBody'
+    /hduhelp-neo/admin/knowledge/items:
+        get:
+            tags:
+                - KnowledgeService
+            summary: 知识条目列表
+            description: 按域/状态/来源/官方性/关键词分页筛选知识条目；审核中心即状态过滤视图
+            operationId: KnowledgeService_AdminListItems
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: domain_id
+                  in: query
+                  schema:
+                    type: string
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+                - name: source_id
+                  in: query
+                  schema:
+                    type: string
+                - name: authority
+                  in: query
+                  description: human | official_school | official_hduhelp
+                  schema:
+                    type: string
+                - name: kind
+                  in: query
+                  description: faq | article | file
+                  schema:
+                    type: string
+                - name: keyword
+                  in: query
+                  schema:
+                    type: string
+                - name: takeover_only
+                  in: query
+                  schema:
+                    type: boolean
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: deleted
+                  in: query
+                  description: 回收站：仅软删条目
+                  schema:
+                    type: boolean
+                - name: sync_status
+                  in: query
+                  description: '收录态过滤: synced | pending | failed'
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListItemsResponseBody'
+        put:
+            tags:
+                - KnowledgeService
+            summary: 编辑条目元信息
+            description: 调整标题、归类(主域/多域)、适用对象、官方性、有效期
+            operationId: KnowledgeService_AdminUpdateItem
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateItemRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ItemMutateResponseBody'
+        post:
+            tags:
+                - KnowledgeService
+            summary: 新建知识条目
+            description: 人工录入文章或单条 FAQ；落库为草稿态，发布后同步方舟
+            operationId: KnowledgeService_AdminCreateItem
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateItemRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ItemMutateResponseBody'
+    /hduhelp-neo/admin/knowledge/items/attach:
+        post:
+            tags:
+                - KnowledgeService
+            summary: 给条目挂附件
+            description: 把已上传的文件作为 file 形态子条目挂到条目下（问答/文章/爬取页面皆可），独立方舟收录
+            operationId: KnowledgeService_AdminAttachFile
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: string
+            requestBody:
+                description: 给已有条目挂一个已上传的文件作为附件（file 形态子条目，独立方舟 doc）
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AttachFileRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ItemMutateResponseBody'
+    /hduhelp-neo/admin/knowledge/items/check-update:
+        post:
+            tags:
+                - KnowledgeService
+            summary: 检查更新
+            description: 对官方条目重抓来源原文并与线上版本比对，返回是否变化及新旧正文差异；不改动内容
+            operationId: KnowledgeService_AdminCheckUpdate
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CheckUpdateResponseBody'
+    /hduhelp-neo/admin/knowledge/items/detail:
+        get:
+            tags:
+                - KnowledgeService
+            summary: 知识条目详情
+            description: 返回条目元信息、内容载体(live/draft 版本与方舟收录态)与所属域
+            operationId: KnowledgeService_AdminItemDetail
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ItemDetailResponseBody'
+    /hduhelp-neo/admin/knowledge/items/retag:
+        post:
+            tags:
+                - KnowledgeService
+            summary: 重新自动打标
+            description: 重新排队 AI 自动打标（打标失败后人工触发）
+            operationId: KnowledgeService_AdminRetag
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ItemStateResponseBody'
+    /hduhelp-neo/admin/knowledge/items/state:
+        post:
+            tags:
+                - KnowledgeService
+            summary: 条目状态流转
+            description: 提交/审核通过/发布/归档/过滤/恢复/删除/接管/释放接管；发布与删除会驱动方舟同步任务
+            operationId: KnowledgeService_AdminItemState
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: string
+            requestBody:
+                description: 条目状态流转：submit(提交审核) | approve | publish | archive | filter | restore | delete | takeover | release
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ItemStateRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ItemStateResponseBody'
+    /hduhelp-neo/admin/knowledge/overview:
+        get:
+            tags:
+                - KnowledgeService
+            summary: 知识库总览
+            description: 各状态条目数、待审、盲区、索引单元、同步异常与最近一次抓取概览
+            operationId: KnowledgeService_AdminOverview
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OverviewResponseBody'
+    /hduhelp-neo/admin/knowledge/sources:
+        get:
+            tags:
+                - KnowledgeService
+            summary: 来源列表
+            description: 返回完整来源树(含各来源直接挂载条目数)，供管理端维护来源分类
+            operationId: KnowledgeService_AdminListSources
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: |-
+                        ============================================================================
+                        管理端：来源（扁平词表）
+                        ============================================================================
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminSourceTreeResponseBody'
+        put:
+            tags:
+                - KnowledgeService
+            summary: 编辑来源
+            description: 重命名或调整排序；key 稳定不可变
+            operationId: KnowledgeService_AdminUpdateSource
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateSourceRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SourceMutateResponseBody'
+        post:
+            tags:
+                - KnowledgeService
+            summary: 新建来源
+            description: 向来源词表新增一项；key 稳定不可变
+            operationId: KnowledgeService_AdminCreateSource
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateSourceRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SourceMutateResponseBody'
+        delete:
+            tags:
+                - KnowledgeService
+            summary: 删除来源
+            description: 删除空来源；传 merge_into_id 时先把条目并入目标来源再删除
+            operationId: KnowledgeService_AdminDeleteSource
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: string
+                - name: merge_into_id
+                  in: query
+                  description: 把条目并入目标来源后删除
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SourceDeleteResponseBody'
+    /hduhelp-neo/admin/knowledge/tagging-prompt:
+        get:
+            tags:
+                - KnowledgeService
+            summary: 获取AI打标提示词
+            description: 返回当前提示词模板、内置默认、可插入变量、及用实时知识域/标签渲染的预览
+            operationId: KnowledgeService_AdminGetTaggingPrompt
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TaggingPromptResponseBody'
+        put:
+            tags:
+                - KnowledgeService
+            summary: 保存AI打标提示词
+            description: 保存提示词模板(Jinja变量)，留空恢复内置默认；返回更新后的编辑视图
+            operationId: KnowledgeService_AdminSetTaggingPrompt
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SetTaggingPromptRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TaggingPromptResponseBody'
+    /hduhelp-neo/admin/knowledge/tagging-prompt/preview:
+        post:
+            tags:
+                - KnowledgeService
+            summary: 预览AI打标提示词
+            description: 用当前实时知识域树+标签词表渲染给定模板，供编辑器实时预览
+            operationId: KnowledgeService_AdminPreviewTaggingPrompt
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SetTaggingPromptRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PreviewTaggingPromptResponseBody'
+    /hduhelp-neo/admin/knowledge/upload:
+        post:
+            tags:
+                - KnowledgeService
+            summary: 上传文件
+            description: multipart 表单字段 file；把图片/附件转存到对象存储，返回可访问 url/key，供正文引用
+            operationId: KnowledgeService_AdminUploadFile
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UploadFileResponseBody'
     /hduhelp-neo/admin/login:
         post:
             tags:
@@ -4633,6 +5527,70 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/SetCurrentCampusResponseBody'
             x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/knowledge/domains:
+        get:
+            tags:
+                - KnowledgeService
+            summary: 知识域树
+            description: 返回启用中的知识域树(含稳定 key 与祖先链)，供问答机器人构造检索过滤
+            operationId: KnowledgeService_KnowledgeDomains
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: |-
+                        ============================================================================
+                        对外检索 API（供问答机器人等内部服务调用，operator/service token）
+                        ============================================================================
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DomainTreeResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/knowledge/gaps:
+        post:
+            tags:
+                - KnowledgeService
+            summary: 上报知识盲区
+            description: 问答未命中时上报问题，归一化后累计计数，进入盲区运营队列
+            operationId: KnowledgeService_KnowledgeReportGap
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ReportGapRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ReportGapResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/knowledge/search:
+        post:
+            tags:
+                - KnowledgeService
+            summary: 知识检索
+            description: 在方舟知识库上做混合检索；支持按域子树、是否官方过滤；命中带回溯源信息与最初来源 URL
+            operationId: KnowledgeService_KnowledgeSearch
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SearchRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SearchResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/messaging/pigeons:
         get:
             tags:
@@ -5411,6 +6369,15 @@ components:
                 semester:
                     type: string
                     description: 学期号 "1"/"2"/"3"（对齐 SchoolTime/SemesterInfo）
+        AddChunkRequestBody:
+            type: object
+            properties:
+                carrier_id:
+                    type: string
+                title:
+                    type: string
+                content:
+                    type: string
         AdminAppDetail:
             type: object
             properties:
@@ -5533,6 +6500,18 @@ components:
                     description: 创建时间(unix 毫秒)
                     format: int64
             description: '-------------------- 校区地理位置管理（campuses） --------------------'
+        AdminDomainTreeResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/KnowledgeDomainNode'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AdminElectricityMeter:
             type: object
             properties:
@@ -5688,6 +6667,18 @@ components:
                 supportsTat:
                     type: boolean
             description: '-------------------- scope 目录（能力级；pkg/scope.Catalog） --------------------'
+        AdminSourceTreeResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/KnowledgeSourceNode'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AdminTenantInfo:
             type: object
             properties:
@@ -5856,6 +6847,13 @@ components:
                     format: int64
                 msg:
                     type: string
+        AttachFileRequestBody:
+            type: object
+            properties:
+                file_url:
+                    type: string
+                file_name:
+                    type: string
         AttendanceStats:
             type: object
             properties:
@@ -5892,6 +6890,37 @@ components:
                 mostFrequentFloorCount:
                     type: integer
                     format: int32
+        AuditEntry:
+            type: object
+            properties:
+                id:
+                    type: string
+                actorId:
+                    type: string
+                actorType:
+                    type: string
+                    description: human | crawler | system
+                action:
+                    type: string
+                targetType:
+                    type: string
+                targetId:
+                    type: string
+                note:
+                    type: string
+                createdAt:
+                    type: integer
+                    format: int64
+                beforeJson:
+                    type: string
+                    description: 变更前(JSON字符串)
+                afterJson:
+                    type: string
+                    description: 变更后(JSON字符串)
+            description: |-
+                ============================================================================
+                管理端：审计历史 与 总览
+                ============================================================================
         AuthConfigData:
             type: object
             properties:
@@ -6571,6 +7600,16 @@ components:
                     format: int64
                 msg:
                     type: string
+        CarrierResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/KnowledgeCarrier'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         ChangeEmailRequestBody:
             type: object
             properties:
@@ -6626,6 +7665,48 @@ components:
                 ============================================================================
                 典型群 DTO：班级/年级/校友/城市群统一返回结构
                 ============================================================================
+        CheckUpdateData:
+            type: object
+            properties:
+                sourceUrl:
+                    type: string
+                changed:
+                    type: boolean
+                oldContent:
+                    type: string
+                newContent:
+                    type: string
+                fetchedAt:
+                    type: integer
+                    format: int64
+        CheckUpdateResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/CheckUpdateData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ChunkDeleteResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ChunkMutateResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/KnowledgeChunk'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         CityByCodeData:
             type: object
             properties:
@@ -6877,6 +7958,41 @@ components:
                     format: int64
                 msg:
                     type: string
+        CollectorInfo:
+            type: object
+            properties:
+                key:
+                    type: string
+                name:
+                    type: string
+                enabled:
+                    type: boolean
+                spec:
+                    type: string
+                    description: cron 表达式
+                config:
+                    type: string
+                    description: JSON 字符串(站点/栏目/凭据)
+                lastRunAt:
+                    type: integer
+                    format: int64
+                lastResult:
+                    type: string
+                    description: success | partial | failed
+            description: |-
+                ============================================================================
+                管理端：采集器（cron 支撑）与抓取运行
+                ============================================================================
+        CollectorMutateResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/CollectorInfo'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         CommonResponseBody:
             type: object
             properties:
@@ -7017,6 +8133,43 @@ components:
             description: |-
                 ---- 课程群列表 (course groups) ----
                 课程的一个排课段（一次课）：星期、周次/节次数组、地点与起止时间。
+        CrawlRunInfo:
+            type: object
+            properties:
+                id:
+                    type: string
+                collectorKey:
+                    type: string
+                result:
+                    type: string
+                    description: running | success | partial | failed
+                startedAt:
+                    type: integer
+                    format: int64
+                finishedAt:
+                    type: integer
+                    format: int64
+                pagesScanned:
+                    type: integer
+                    format: int32
+                foundNew:
+                    type: integer
+                    format: int32
+                ingested:
+                    type: integer
+                    format: int32
+                filtered:
+                    type: integer
+                    format: int32
+                pending:
+                    type: integer
+                    format: int32
+                failed:
+                    type: integer
+                    format: int32
+                log:
+                    type: string
+                    description: JSON 字符串
         CreateAppData:
             type: object
             properties:
@@ -7106,6 +8259,20 @@ components:
                     format: int64
                 msg:
                     type: string
+        CreateDomainRequestBody:
+            type: object
+            properties:
+                name:
+                    type: string
+                key:
+                    type: string
+                    description: 稳定 key，创建后不可改
+                parent_id:
+                    type: string
+                    description: 空=一级域
+                sort_order:
+                    type: integer
+                    format: int32
         CreateElectricityMeterRequestBody:
             type: object
             properties:
@@ -7163,6 +8330,41 @@ components:
                     format: int64
                 msg:
                     type: string
+        CreateItemRequestBody:
+            type: object
+            properties:
+                title:
+                    type: string
+                kind:
+                    type: string
+                    description: faq | article | file
+                source_id:
+                    type: string
+                    description: 来源词表项；空=默认「人工」
+                authority:
+                    type: string
+                    description: human | official_school | official_hduhelp
+                primary_domain_id:
+                    type: string
+                domain_ids:
+                    type: array
+                    items:
+                        type: string
+                origin_url:
+                    type: string
+                body:
+                    type: string
+                    description: 'kind=article: 正文 markdown'
+                faq:
+                    $ref: '#/components/schemas/FaqEntry'
+                valid_until:
+                    type: integer
+                    format: int64
+                tags:
+                    type: array
+                    items:
+                        type: string
+                    description: 主题标签
         CreateLoginClientRequestBody:
             type: object
             properties:
@@ -7329,6 +8531,17 @@ components:
                     format: int64
                 msg:
                     type: string
+        CreateSourceRequestBody:
+            type: object
+            properties:
+                name:
+                    type: string
+                key:
+                    type: string
+                    description: 稳定 key，创建后不可改
+                sort_order:
+                    type: integer
+                    format: int32
         CreateTenantRequestBody:
             type: object
             properties:
@@ -7577,6 +8790,36 @@ components:
                     type: string
                 sensitive:
                     type: boolean
+        DomainDeleteResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        DomainMutateResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/KnowledgeDomainNode'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        DomainTreeResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/KnowledgeDomainNode'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         DormInfo:
             type: object
             properties:
@@ -7915,6 +9158,61 @@ components:
                 seat:
                     type: string
             description: ExamItem 是信息流考试卡片中的一场考试。
+        FaqEntry:
+            type: object
+            properties:
+                question:
+                    type: string
+                answer:
+                    type: string
+                similar:
+                    type: array
+                    items:
+                        type: string
+            description: FAQ 单条录入结构。
+        FaqImportRequestBody:
+            type: object
+            properties:
+                domain_id:
+                    type: string
+                    description: 应用到全部行的主知识域
+                rows:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/FaqImportRow'
+        FaqImportResponseBody:
+            type: object
+            properties:
+                created:
+                    type: integer
+                    format: int32
+                skipped:
+                    type: integer
+                    format: int32
+                errors:
+                    type: array
+                    items:
+                        type: string
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        FaqImportRow:
+            type: object
+            properties:
+                question:
+                    type: string
+                answer:
+                    type: string
+                similar:
+                    type: array
+                    items:
+                        type: string
+            description: |-
+                ============================================================================
+                管理端：FAQ 批量导入
+                ============================================================================
         FavClass:
             type: object
             properties:
@@ -8305,6 +9603,27 @@ components:
                 gradePointAverage:
                     type: string
                 staffId:
+                    type: string
+        GapActionRequestBody:
+            type: object
+            properties:
+                action:
+                    type: string
+                    description: ignore | draft
+                domain_id:
+                    type: string
+                    description: action=draft 时落库到该域的草稿 FAQ
+                answer:
+                    type: string
+        GapActionResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/KnowledgeGapInfo'
+                code:
+                    type: integer
+                    format: int64
+                msg:
                     type: string
         GateAccessData:
             type: object
@@ -8792,6 +10111,43 @@ components:
                     format: int64
                 msg:
                     type: string
+        ItemDetailResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/KnowledgeItemDetail'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ItemMutateResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/KnowledgeItemDetail'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ItemStateRequestBody:
+            type: object
+            properties:
+                action:
+                    type: string
+                note:
+                    type: string
+        ItemStateResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/KnowledgeItemSummary'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         JoinPreviousSchoolChatGroupRequestBody:
             type: object
             properties:
@@ -8826,6 +10182,272 @@ components:
                     format: int64
                 msg:
                     type: string
+        KnowledgeCarrier:
+            type: object
+            properties:
+                id:
+                    type: string
+                itemId:
+                    type: string
+                role:
+                    type: string
+                    description: primary | attachment
+                kind:
+                    type: string
+                    description: text | md | file
+                carrierType:
+                    type: string
+                    description: web | pdf | word | image | none
+                ingestRef:
+                    type: string
+                    description: 交给方舟 fetch 的资源URL(file/md/爬取页)
+                liveVersionId:
+                    type: string
+                    description: 当前发布版
+                draftVersionId:
+                    type: string
+                    description: 当前草稿版 空=无草稿
+                live:
+                    $ref: '#/components/schemas/KnowledgeContentVersion'
+                draft:
+                    $ref: '#/components/schemas/KnowledgeContentVersion'
+                versions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/KnowledgeContentVersion'
+                    description: 全部版本(新→旧)，供版本下拉
+                syncStatus:
+                    type: string
+                    description: synced | pending | failed
+                syncError:
+                    type: string
+                arkDocId:
+                    type: string
+                syncedAt:
+                    type: integer
+                    format: int64
+                seq:
+                    type: integer
+                    description: 条目内顺序
+                    format: int32
+            description: |-
+                KnowledgeCarrier 是 item 下一个可独立索引/编辑的内容载体（= 一个方舟 doc）。方舟对账态
+                (syncStatus/syncError/arkDocId/syncedAt) 来自其 projection。
+        KnowledgeChunk:
+            type: object
+            properties:
+                pointId:
+                    type: string
+                chunkType:
+                    type: string
+                    description: text | image | table
+                title:
+                    type: string
+                content:
+                    type: string
+                attachment:
+                    type: string
+                    description: 图片/文件切片的可渲染链接
+                mine:
+                    type: boolean
+                    description: true=我方补充(可编辑) / false=方舟自动(只读)
+            description: |-
+                ============================================================================
+                管理端：切片管理（file 形态文档：方舟自动切片只读 + 我方补充切片可增删改）
+                ============================================================================
+        KnowledgeContentVersion:
+            type: object
+            properties:
+                id:
+                    type: string
+                versionNo:
+                    type: integer
+                    format: int32
+                origin:
+                    type: string
+                    description: crawl | human | import
+                payload:
+                    type: string
+                    description: JSON 字符串(正文/FAQ 结构)
+                editorId:
+                    type: string
+                note:
+                    type: string
+                createdAt:
+                    type: integer
+                    format: int64
+            description: |-
+                KnowledgeContentVersion 是一个 append-only 内容版本快照。是否 live/draft 只由 carrier
+                上的指针决定；version_no=0 为原始版。
+        KnowledgeDomainNode:
+            type: object
+            properties:
+                id:
+                    type: string
+                key:
+                    type: string
+                parentId:
+                    type: string
+                name:
+                    type: string
+                level:
+                    type: integer
+                    format: int32
+                sortOrder:
+                    type: integer
+                    format: int32
+                ancestorKeys:
+                    type: array
+                    items:
+                        type: string
+                status:
+                    type: string
+                itemCount:
+                    type: integer
+                    description: 直接挂载在该域的知识条目数
+                    format: int64
+                children:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/KnowledgeDomainNode'
+            description: |-
+                KnowledgeDomainNode 是知识域树的一个节点。ancestorKeys 是从根到本节点(含)
+                的稳定 key 链，用于方舟检索时的 domain_ids 过滤（子树命中）。
+        KnowledgeGapInfo:
+            type: object
+            properties:
+                id:
+                    type: string
+                normalizedQuestion:
+                    type: string
+                occurrences:
+                    type: integer
+                    format: int64
+                status:
+                    type: string
+                    description: open | ignored | drafted
+                firstSeen:
+                    type: integer
+                    format: int64
+                lastSeen:
+                    type: integer
+                    format: int64
+                draftFaqItemId:
+                    type: string
+            description: |-
+                ============================================================================
+                管理端：知识盲区（gap）
+                ============================================================================
+        KnowledgeItemDetail:
+            type: object
+            properties:
+                summary:
+                    $ref: '#/components/schemas/KnowledgeItemSummary'
+                domainIds:
+                    type: array
+                    items:
+                        type: string
+                carriers:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/KnowledgeCarrier'
+                identityKey:
+                    type: string
+                    description: 采集去重键
+                crawledAt:
+                    type: integer
+                    format: int64
+                validUntil:
+                    type: integer
+                    format: int64
+                createdBy:
+                    type: string
+                updatedBy:
+                    type: string
+            description: KnowledgeItemDetail 是详情页的富对象。附件即 role=attachment 的载体。
+        KnowledgeItemSummary:
+            type: object
+            properties:
+                id:
+                    type: string
+                title:
+                    type: string
+                authority:
+                    type: string
+                    description: human | official_school | official_hduhelp
+                kind:
+                    type: string
+                    description: faq | article | file
+                sourceId:
+                    type: string
+                    description: 来源词表项 id（knowledge_sources）
+                status:
+                    type: string
+                    description: pending | normal | filtered | maybe_stale | archived | deleted
+                primaryDomainId:
+                    type: string
+                primaryDomainName:
+                    type: string
+                originUrl:
+                    type: string
+                    description: 最初来源 仅对外展示
+                isTakeover:
+                    type: boolean
+                publishedAt:
+                    type: integer
+                    format: int64
+                sourceUpdatedAt:
+                    type: integer
+                    format: int64
+                updatedAt:
+                    type: integer
+                    format: int64
+                syncStatus:
+                    type: string
+                    description: '聚合载体同步态: synced | pending | failed'
+                pendingReason:
+                    type: string
+                    description: 待处理原因(status=pending 时)
+                domainPath:
+                    type: array
+                    items:
+                        type: string
+                    description: 主知识域从根到叶的名称路径
+                tags:
+                    type: array
+                    items:
+                        type: string
+                    description: 主题标签
+                sourceName:
+                    type: string
+                    description: 来源显示名
+                tagStatus:
+                    type: string
+                    description: 自动打标态 pending/tagging/tagged/failed/skipped
+                validUntil:
+                    type: integer
+                    description: 过期时间(ms)，空=长期有效
+                    format: int64
+            description: KnowledgeItemSummary 是列表页展示的知识条目摘要。
+        KnowledgeSourceNode:
+            type: object
+            properties:
+                id:
+                    type: string
+                key:
+                    type: string
+                name:
+                    type: string
+                sortOrder:
+                    type: integer
+                    format: int32
+                status:
+                    type: string
+                itemCount:
+                    type: integer
+                    description: 直接挂载在该来源的知识条目数
+                    format: int64
+            description: KnowledgeSourceNode 是扁平「来源」词表的一项。
         LeaveGroupResponseBody:
             type: object
             properties:
@@ -8917,6 +10539,21 @@ components:
                     format: int64
                 msg:
                     type: string
+        ListAuditResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AuditEntry'
+                total:
+                    type: integer
+                    format: int64
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         ListAuthorizedAppsData:
             type: object
             properties:
@@ -8929,6 +10566,81 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/ListAuthorizedAppsData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ListChunksResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/KnowledgeChunk'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ListCollectorsResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/CollectorInfo'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ListCrawlRunsResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/CrawlRunInfo'
+                total:
+                    type: integer
+                    format: int64
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ListGapsResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/KnowledgeGapInfo'
+                total:
+                    type: integer
+                    format: int64
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ListItemsResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/KnowledgeItemSummary'
+                total:
+                    type: integer
+                    format: int64
+                page:
+                    type: integer
+                    format: int32
+                size:
+                    type: integer
+                    format: int32
                 code:
                     type: integer
                     format: int64
@@ -9599,6 +11311,43 @@ components:
                     format: int64
                 msg:
                     type: string
+        OverviewResponseBody:
+            type: object
+            properties:
+                totalItems:
+                    type: integer
+                    format: int64
+                publishedItems:
+                    type: integer
+                    format: int64
+                pendingReview:
+                    type: integer
+                    format: int64
+                filteredItems:
+                    type: integer
+                    format: int64
+                draftItems:
+                    type: integer
+                    format: int64
+                openGaps:
+                    type: integer
+                    format: int64
+                domainCount:
+                    type: integer
+                    format: int64
+                indexedUnits:
+                    type: integer
+                    format: int64
+                syncErrors:
+                    type: integer
+                    format: int64
+                lastCrawl:
+                    $ref: '#/components/schemas/CrawlRunInfo'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         PATItem:
             type: object
             properties:
@@ -9821,6 +11570,21 @@ components:
                 borrowedCount:
                     type: integer
                     format: int32
+        PreviewData:
+            type: object
+            properties:
+                preview:
+                    type: string
+        PreviewTaggingPromptResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/PreviewData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         PreviousSchoolData:
             type: object
             properties:
@@ -9973,6 +11737,21 @@ components:
             properties:
                 refreshToken:
                     type: string
+        ReportGapRequestBody:
+            type: object
+            properties:
+                question:
+                    type: string
+                session_id:
+                    type: string
+        ReportGapResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         ResetOperatorPasswordRequestBody:
             type: object
             properties:
@@ -9998,6 +11777,11 @@ components:
                 type:
                     type: string
                     description: '"sms" | "email"'
+        RestoreVersionRequestBody:
+            type: object
+            properties:
+                version_id:
+                    type: string
         RevokeAuthorizationResponseBody:
             type: object
             properties:
@@ -10072,6 +11856,16 @@ components:
                 periodsPerDay:
                     type: integer
                     format: int32
+        RunCollectorResponseBody:
+            type: object
+            properties:
+                crawlRunId:
+                    type: string
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         RunCronTaskRequestBody:
             type: object
             properties:
@@ -10084,6 +11878,14 @@ components:
                     type: integer
                     format: int64
                 msg:
+                    type: string
+        SaveDraftRequestBody:
+            type: object
+            properties:
+                payload:
+                    type: string
+                    description: JSON 字符串
+                note:
                     type: string
         ScheduleCourse:
             type: object
@@ -10314,6 +12116,70 @@ components:
                     items:
                         $ref: '#/components/schemas/GradeItem'
             description: ScoresCard 是信息流成绩卡片负载。
+        SearchHit:
+            type: object
+            properties:
+                pointId:
+                    type: string
+                docId:
+                    type: string
+                content:
+                    type: string
+                question:
+                    type: string
+                score:
+                    type: number
+                    format: double
+                itemId:
+                    type: string
+                carrierId:
+                    type: string
+                title:
+                    type: string
+                source:
+                    type: string
+                authority:
+                    type: string
+                    description: human | official_school | official_hduhelp
+                originUrl:
+                    type: string
+                    description: 对外暴露的最初来源
+                domainKeys:
+                    type: array
+                    items:
+                        type: string
+            description: SearchHit 是一条检索命中，溯源信息足以回链到我方 DB 与方舟切片。
+        SearchRequestBody:
+            type: object
+            properties:
+                query:
+                    type: string
+                domain_keys:
+                    type: array
+                    items:
+                        type: string
+                    description: 命中任一子树(set 相交)
+                official_only:
+                    type: boolean
+                    description: 仅学校/助手官方
+                limit:
+                    type: integer
+                    format: int32
+                dense_weight:
+                    type: number
+                    format: double
+        SearchResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SearchHit'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         SearchUsersResponseBody:
             type: object
             properties:
@@ -10618,6 +12484,12 @@ components:
                     format: int64
                 msg:
                     type: string
+        SetTaggingPromptRequestBody:
+            type: object
+            properties:
+                template:
+                    type: string
+                    description: 留空=恢复默认
         SetTenantEnabledRequestBody:
             type: object
             properties:
@@ -10753,6 +12625,24 @@ components:
                 grantKey:
                     type: string
                     description: 具体登录来源：wxmp/wxmini/dingtalk/...
+        SourceDeleteResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        SourceMutateResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/KnowledgeSourceNode'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         StatusData:
             type: object
             properties:
@@ -11275,6 +13165,43 @@ components:
                     type: string
                 grade:
                     type: string
+        TaggingPromptData:
+            type: object
+            properties:
+                template:
+                    type: string
+                    description: 当前模板
+                defaultTemplate:
+                    type: string
+                    description: 内置默认(供重置)
+                variables:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/TaggingVariableItem'
+                preview:
+                    type: string
+                    description: 用实时数据渲染的预览
+        TaggingPromptResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/TaggingPromptData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        TaggingVariableItem:
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: 插入为 {{ name }}
+                label:
+                    type: string
+                description:
+                    type: string
+            description: AI 打标提示词编辑
         TeachingClassData:
             type: object
             properties:
@@ -11474,6 +13401,25 @@ components:
                 sort:
                     type: integer
                     format: int32
+        UpdateChunkRequestBody:
+            type: object
+            properties:
+                point_id:
+                    type: string
+                title:
+                    type: string
+                content:
+                    type: string
+        UpdateCollectorRequestBody:
+            type: object
+            properties:
+                enabled:
+                    type: boolean
+                spec:
+                    type: string
+                config:
+                    type: string
+                    description: JSON 字符串
         UpdateCronTaskRequestBody:
             type: object
             properties:
@@ -11494,6 +13440,17 @@ components:
                     format: int64
                 msg:
                     type: string
+        UpdateDomainRequestBody:
+            type: object
+            properties:
+                name:
+                    type: string
+                sort_order:
+                    type: integer
+                    format: int32
+                new_parent_id:
+                    type: string
+                    description: 移动到新父节点
         UpdateElectricityMeterRequestBody:
             type: object
             properties:
@@ -11533,6 +13490,29 @@ components:
                     format: int64
                 msg:
                     type: string
+        UpdateItemRequestBody:
+            type: object
+            properties:
+                title:
+                    type: string
+                primary_domain_id:
+                    type: string
+                domain_ids:
+                    type: array
+                    items:
+                        type: string
+                authority:
+                    type: string
+                    description: human | official_school | official_hduhelp
+                valid_until:
+                    type: integer
+                    format: int64
+                tags:
+                    type: array
+                    items:
+                        type: string
+                source_id:
+                    type: string
         UpdateLoginClientRequestBody:
             type: object
             properties:
@@ -11563,6 +13543,14 @@ components:
                     format: int64
                 msg:
                     type: string
+        UpdateSourceRequestBody:
+            type: object
+            properties:
+                name:
+                    type: string
+                sort_order:
+                    type: integer
+                    format: int32
         UpdateSubscriptionRequestBody:
             type: object
             properties:
@@ -11585,6 +13573,29 @@ components:
                 UploadData mirrors the legacy lemon_api_gateway image-upload response
                 ({URL, Size}) extended with the server-generated object key and sniffed
                 content type.
+        UploadFileData:
+            type: object
+            properties:
+                url:
+                    type: string
+                key:
+                    type: string
+                size:
+                    type: integer
+                    format: int64
+                contentType:
+                    type: string
+            description: 文件上传（图片/附件转存）：multipart 表单字段 file
+        UploadFileResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/UploadFileData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         UploadResponseBody:
             type: object
             properties:
@@ -11841,6 +13852,11 @@ tags:
     - name: HealthService
       description: HealthService exposes an unauthenticated liveness endpoint for container probes.
     - name: IdentityService
+    - name: KnowledgeService
+      description: |-
+        ============================================================================
+        Service
+        ============================================================================
     - name: MessagingService
     - name: SubscriptionService
     - name: UploadService

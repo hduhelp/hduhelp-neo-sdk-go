@@ -62,6 +62,13 @@ type AcademicYearTerm struct {
 	Semester *string `json:"semester,omitempty"`
 }
 
+// AddChunkRequestBody defines model for AddChunkRequestBody.
+type AddChunkRequestBody struct {
+	CarrierId *string `json:"carrier_id,omitempty"`
+	Content   *string `json:"content,omitempty"`
+	Title     *string `json:"title,omitempty"`
+}
+
 // AdminAppDetail 应用详情：应用权限供 TAT/App + X-Staff-Id 使用；用户权限供 UAT
 // 授权码流程请求和用户同意。
 type AdminAppDetail struct {
@@ -131,6 +138,13 @@ type AdminCampusInfo struct {
 
 	// Sort 排序(升序)
 	Sort *int32 `json:"sort,omitempty"`
+}
+
+// AdminDomainTreeResponseBody defines model for AdminDomainTreeResponseBody.
+type AdminDomainTreeResponseBody struct {
+	Code *int64                 `json:"code,omitempty"`
+	Data *[]KnowledgeDomainNode `json:"data,omitempty"`
+	Msg  *string                `json:"msg,omitempty"`
 }
 
 // AdminElectricityMeter -------------------- 电费主数据管理（electricity_meters） --------------------
@@ -228,6 +242,13 @@ type AdminScopeDef struct {
 	SupportsPat *bool   `json:"supportsPat,omitempty"`
 	SupportsTat *bool   `json:"supportsTat,omitempty"`
 	SupportsUat *bool   `json:"supportsUat,omitempty"`
+}
+
+// AdminSourceTreeResponseBody defines model for AdminSourceTreeResponseBody.
+type AdminSourceTreeResponseBody struct {
+	Code *int64                 `json:"code,omitempty"`
+	Data *[]KnowledgeSourceNode `json:"data,omitempty"`
+	Msg  *string                `json:"msg,omitempty"`
 }
 
 // AdminTenantInfo -------------------- 租户（接入方）管理 --------------------
@@ -332,6 +353,12 @@ type ApproveDeviceRespBody struct {
 	Msg  *string `json:"msg,omitempty"`
 }
 
+// AttachFileRequestBody defines model for AttachFileRequestBody.
+type AttachFileRequestBody struct {
+	FileName *string `json:"file_name,omitempty"`
+	FileUrl  *string `json:"file_url,omitempty"`
+}
+
 // AttendanceStats defines model for AttendanceStats.
 type AttendanceStats struct {
 	EarliestTime *int64 `json:"earliestTime,omitempty"`
@@ -348,6 +375,28 @@ type AttendanceStats struct {
 	TotalStayDays          *int32  `json:"totalStayDays,omitempty"`
 	TotalStayHours         *int32  `json:"totalStayHours,omitempty"`
 	TotalVisitCount        *int32  `json:"totalVisitCount,omitempty"`
+}
+
+// AuditEntry ============================================================================
+// 管理端：审计历史 与 总览
+// ============================================================================
+type AuditEntry struct {
+	Action  *string `json:"action,omitempty"`
+	ActorId *string `json:"actorId,omitempty"`
+
+	// ActorType human | crawler | system
+	ActorType *string `json:"actorType,omitempty"`
+
+	// AfterJson 变更后(JSON字符串)
+	AfterJson *string `json:"afterJson,omitempty"`
+
+	// BeforeJson 变更前(JSON字符串)
+	BeforeJson *string `json:"beforeJson,omitempty"`
+	CreatedAt  *int64  `json:"createdAt,omitempty"`
+	Id         *string `json:"id,omitempty"`
+	Note       *string `json:"note,omitempty"`
+	TargetId   *string `json:"targetId,omitempty"`
+	TargetType *string `json:"targetType,omitempty"`
 }
 
 // AuthConfigData defines model for AuthConfigData.
@@ -844,6 +893,16 @@ type CardInfoResponseBody struct {
 	Msg  *string       `json:"msg,omitempty"`
 }
 
+// CarrierResponseBody defines model for CarrierResponseBody.
+type CarrierResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data KnowledgeCarrier 是 item 下一个可独立索引/编辑的内容载体（= 一个方舟 doc）。方舟对账态
+	// (syncStatus/syncError/arkDocId/syncedAt) 来自其 projection。
+	Data *KnowledgeCarrier `json:"data,omitempty"`
+	Msg  *string           `json:"msg,omitempty"`
+}
+
 // ChangeEmailRequestBody defines model for ChangeEmailRequestBody.
 type ChangeEmailRequestBody struct {
 	NewCode  *string `json:"newCode,omitempty"`
@@ -881,6 +940,39 @@ type ChatGroup struct {
 	InviteUrl          *string `json:"inviteUrl,omitempty"`
 	OpenConversationId *string `json:"openConversationId,omitempty"`
 	SchoolName         *string `json:"schoolName,omitempty"`
+}
+
+// CheckUpdateData defines model for CheckUpdateData.
+type CheckUpdateData struct {
+	Changed    *bool   `json:"changed,omitempty"`
+	FetchedAt  *int64  `json:"fetchedAt,omitempty"`
+	NewContent *string `json:"newContent,omitempty"`
+	OldContent *string `json:"oldContent,omitempty"`
+	SourceUrl  *string `json:"sourceUrl,omitempty"`
+}
+
+// CheckUpdateResponseBody defines model for CheckUpdateResponseBody.
+type CheckUpdateResponseBody struct {
+	Code *int64           `json:"code,omitempty"`
+	Data *CheckUpdateData `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
+}
+
+// ChunkDeleteResponseBody defines model for ChunkDeleteResponseBody.
+type ChunkDeleteResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
+// ChunkMutateResponseBody defines model for ChunkMutateResponseBody.
+type ChunkMutateResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data ============================================================================
+	// 管理端：切片管理（file 形态文档：方舟自动切片只读 + 我方补充切片可增删改）
+	// ============================================================================
+	Data *KnowledgeChunk `json:"data,omitempty"`
+	Msg  *string         `json:"msg,omitempty"`
 }
 
 // CityByCodeData defines model for CityByCodeData.
@@ -1051,6 +1143,35 @@ type ClassroomsResponseBody struct {
 	Msg  *string          `json:"msg,omitempty"`
 }
 
+// CollectorInfo ============================================================================
+// 管理端：采集器（cron 支撑）与抓取运行
+// ============================================================================
+type CollectorInfo struct {
+	// Config JSON 字符串(站点/栏目/凭据)
+	Config  *string `json:"config,omitempty"`
+	Enabled *bool   `json:"enabled,omitempty"`
+	Key     *string `json:"key,omitempty"`
+
+	// LastResult success | partial | failed
+	LastResult *string `json:"lastResult,omitempty"`
+	LastRunAt  *int64  `json:"lastRunAt,omitempty"`
+	Name       *string `json:"name,omitempty"`
+
+	// Spec cron 表达式
+	Spec *string `json:"spec,omitempty"`
+}
+
+// CollectorMutateResponseBody defines model for CollectorMutateResponseBody.
+type CollectorMutateResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data ============================================================================
+	// 管理端：采集器（cron 支撑）与抓取运行
+	// ============================================================================
+	Data *CollectorInfo `json:"data,omitempty"`
+	Msg  *string        `json:"msg,omitempty"`
+}
+
 // CommonResponseBody defines model for CommonResponseBody.
 type CommonResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
@@ -1133,6 +1254,26 @@ type CourseScheduleSlot struct {
 	Weeks      *[]int32 `json:"weeks,omitempty"`
 }
 
+// CrawlRunInfo defines model for CrawlRunInfo.
+type CrawlRunInfo struct {
+	CollectorKey *string `json:"collectorKey,omitempty"`
+	Failed       *int32  `json:"failed,omitempty"`
+	Filtered     *int32  `json:"filtered,omitempty"`
+	FinishedAt   *int64  `json:"finishedAt,omitempty"`
+	FoundNew     *int32  `json:"foundNew,omitempty"`
+	Id           *string `json:"id,omitempty"`
+	Ingested     *int32  `json:"ingested,omitempty"`
+
+	// Log JSON 字符串
+	Log          *string `json:"log,omitempty"`
+	PagesScanned *int32  `json:"pagesScanned,omitempty"`
+	Pending      *int32  `json:"pending,omitempty"`
+
+	// Result running | success | partial | failed
+	Result    *string `json:"result,omitempty"`
+	StartedAt *int64  `json:"startedAt,omitempty"`
+}
+
 // CreateAppData defines model for CreateAppData.
 type CreateAppData struct {
 	// App 应用详情：应用权限供 TAT/App + X-Staff-Id 使用；用户权限供 UAT
@@ -1203,6 +1344,17 @@ type CreateClassChatGroupResponseBody struct {
 	Msg  *string    `json:"msg,omitempty"`
 }
 
+// CreateDomainRequestBody defines model for CreateDomainRequestBody.
+type CreateDomainRequestBody struct {
+	// Key 稳定 key，创建后不可改
+	Key  *string `json:"key,omitempty"`
+	Name *string `json:"name,omitempty"`
+
+	// ParentId 空=一级域
+	ParentId  *string `json:"parent_id,omitempty"`
+	SortOrder *int32  `json:"sort_order,omitempty"`
+}
+
 // CreateElectricityMeterRequestBody defines model for CreateElectricityMeterRequestBody.
 type CreateElectricityMeterRequestBody struct {
 	BuildingId   *int64  `json:"building_id,omitempty"`
@@ -1245,6 +1397,32 @@ type CreateGroupResponseBody struct {
 	Code *int64     `json:"code,omitempty"`
 	Data *GroupInfo `json:"data,omitempty"`
 	Msg  *string    `json:"msg,omitempty"`
+}
+
+// CreateItemRequestBody defines model for CreateItemRequestBody.
+type CreateItemRequestBody struct {
+	// Authority human | official_school | official_hduhelp
+	Authority *string `json:"authority,omitempty"`
+
+	// Body kind=article: 正文 markdown
+	Body      *string   `json:"body,omitempty"`
+	DomainIds *[]string `json:"domain_ids,omitempty"`
+
+	// Faq FAQ 单条录入结构。
+	Faq *FaqEntry `json:"faq,omitempty"`
+
+	// Kind faq | article | file
+	Kind            *string `json:"kind,omitempty"`
+	OriginUrl       *string `json:"origin_url,omitempty"`
+	PrimaryDomainId *string `json:"primary_domain_id,omitempty"`
+
+	// SourceId 来源词表项；空=默认「人工」
+	SourceId *string `json:"source_id,omitempty"`
+
+	// Tags 主题标签
+	Tags       *[]string `json:"tags,omitempty"`
+	Title      *string   `json:"title,omitempty"`
+	ValidUntil *int64    `json:"valid_until,omitempty"`
 }
 
 // CreateLoginClientRequestBody defines model for CreateLoginClientRequestBody.
@@ -1362,6 +1540,14 @@ type CreateRoomResponseBody struct {
 	Code *int64    `json:"code,omitempty"`
 	Data *RoomInfo `json:"data,omitempty"`
 	Msg  *string   `json:"msg,omitempty"`
+}
+
+// CreateSourceRequestBody defines model for CreateSourceRequestBody.
+type CreateSourceRequestBody struct {
+	// Key 稳定 key，创建后不可改
+	Key       *string `json:"key,omitempty"`
+	Name      *string `json:"name,omitempty"`
+	SortOrder *int32  `json:"sort_order,omitempty"`
 }
 
 // CreateTenantRequestBody defines model for CreateTenantRequestBody.
@@ -1545,6 +1731,29 @@ type DeviceScopeItem struct {
 	Domain      *string `json:"domain,omitempty"`
 	Name        *string `json:"name,omitempty"`
 	Sensitive   *bool   `json:"sensitive,omitempty"`
+}
+
+// DomainDeleteResponseBody defines model for DomainDeleteResponseBody.
+type DomainDeleteResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
+// DomainMutateResponseBody defines model for DomainMutateResponseBody.
+type DomainMutateResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data KnowledgeDomainNode 是知识域树的一个节点。ancestorKeys 是从根到本节点(含)
+	// 的稳定 key 链，用于方舟检索时的 domain_ids 过滤（子树命中）。
+	Data *KnowledgeDomainNode `json:"data,omitempty"`
+	Msg  *string              `json:"msg,omitempty"`
+}
+
+// DomainTreeResponseBody defines model for DomainTreeResponseBody.
+type DomainTreeResponseBody struct {
+	Code *int64                 `json:"code,omitempty"`
+	Data *[]KnowledgeDomainNode `json:"data,omitempty"`
+	Msg  *string                `json:"msg,omitempty"`
 }
 
 // DormInfo ---------------------------------------------------------------------------
@@ -1779,6 +1988,38 @@ type ExamItem struct {
 	SelectCode *string `json:"selectCode,omitempty"`
 	Semester   *string `json:"semester,omitempty"`
 	StaffId    *string `json:"staffId,omitempty"`
+}
+
+// FaqEntry FAQ 单条录入结构。
+type FaqEntry struct {
+	Answer   *string   `json:"answer,omitempty"`
+	Question *string   `json:"question,omitempty"`
+	Similar  *[]string `json:"similar,omitempty"`
+}
+
+// FaqImportRequestBody defines model for FaqImportRequestBody.
+type FaqImportRequestBody struct {
+	// DomainId 应用到全部行的主知识域
+	DomainId *string         `json:"domain_id,omitempty"`
+	Rows     *[]FaqImportRow `json:"rows,omitempty"`
+}
+
+// FaqImportResponseBody defines model for FaqImportResponseBody.
+type FaqImportResponseBody struct {
+	Code    *int64    `json:"code,omitempty"`
+	Created *int32    `json:"created,omitempty"`
+	Errors  *[]string `json:"errors,omitempty"`
+	Msg     *string   `json:"msg,omitempty"`
+	Skipped *int32    `json:"skipped,omitempty"`
+}
+
+// FaqImportRow ============================================================================
+// 管理端：FAQ 批量导入
+// ============================================================================
+type FaqImportRow struct {
+	Answer   *string   `json:"answer,omitempty"`
+	Question *string   `json:"question,omitempty"`
+	Similar  *[]string `json:"similar,omitempty"`
 }
 
 // FavClass FavClass 一条收藏的教学班。
@@ -2038,6 +2279,27 @@ type GPAPerSemester struct {
 type GPATotal struct {
 	GradePointAverage *string `json:"gradePointAverage,omitempty"`
 	StaffId           *string `json:"staffId,omitempty"`
+}
+
+// GapActionRequestBody defines model for GapActionRequestBody.
+type GapActionRequestBody struct {
+	// Action ignore | draft
+	Action *string `json:"action,omitempty"`
+	Answer *string `json:"answer,omitempty"`
+
+	// DomainId action=draft 时落库到该域的草稿 FAQ
+	DomainId *string `json:"domain_id,omitempty"`
+}
+
+// GapActionResponseBody defines model for GapActionResponseBody.
+type GapActionResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data ============================================================================
+	// 管理端：知识盲区（gap）
+	// ============================================================================
+	Data *KnowledgeGapInfo `json:"data,omitempty"`
+	Msg  *string           `json:"msg,omitempty"`
 }
 
 // GateAccessData defines model for GateAccessData.
@@ -2396,6 +2658,39 @@ type InviteResponseBody struct {
 	Msg  *string     `json:"msg,omitempty"`
 }
 
+// ItemDetailResponseBody defines model for ItemDetailResponseBody.
+type ItemDetailResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data KnowledgeItemDetail 是详情页的富对象。附件即 role=attachment 的载体。
+	Data *KnowledgeItemDetail `json:"data,omitempty"`
+	Msg  *string              `json:"msg,omitempty"`
+}
+
+// ItemMutateResponseBody defines model for ItemMutateResponseBody.
+type ItemMutateResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data KnowledgeItemDetail 是详情页的富对象。附件即 role=attachment 的载体。
+	Data *KnowledgeItemDetail `json:"data,omitempty"`
+	Msg  *string              `json:"msg,omitempty"`
+}
+
+// ItemStateRequestBody defines model for ItemStateRequestBody.
+type ItemStateRequestBody struct {
+	Action *string `json:"action,omitempty"`
+	Note   *string `json:"note,omitempty"`
+}
+
+// ItemStateResponseBody defines model for ItemStateResponseBody.
+type ItemStateResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data KnowledgeItemSummary 是列表页展示的知识条目摘要。
+	Data *KnowledgeItemSummary `json:"data,omitempty"`
+	Msg  *string               `json:"msg,omitempty"`
+}
+
 // JoinPreviousSchoolChatGroupRequestBody defines model for JoinPreviousSchoolChatGroupRequestBody.
 type JoinPreviousSchoolChatGroupRequestBody struct {
 	OpenConversationId *string `json:"open_conversation_id,omitempty"`
@@ -2419,6 +2714,191 @@ type JoinResponseBody struct {
 	Code *int64    `json:"code,omitempty"`
 	Data *RoomInfo `json:"data,omitempty"`
 	Msg  *string   `json:"msg,omitempty"`
+}
+
+// KnowledgeCarrier KnowledgeCarrier 是 item 下一个可独立索引/编辑的内容载体（= 一个方舟 doc）。方舟对账态
+// (syncStatus/syncError/arkDocId/syncedAt) 来自其 projection。
+type KnowledgeCarrier struct {
+	ArkDocId *string `json:"arkDocId,omitempty"`
+
+	// CarrierType web | pdf | word | image | none
+	CarrierType *string `json:"carrierType,omitempty"`
+
+	// Draft KnowledgeContentVersion 是一个 append-only 内容版本快照。是否 live/draft 只由 carrier
+	// 上的指针决定；version_no=0 为原始版。
+	Draft *KnowledgeContentVersion `json:"draft,omitempty"`
+
+	// DraftVersionId 当前草稿版 空=无草稿
+	DraftVersionId *string `json:"draftVersionId,omitempty"`
+	Id             *string `json:"id,omitempty"`
+
+	// IngestRef 交给方舟 fetch 的资源URL(file/md/爬取页)
+	IngestRef *string `json:"ingestRef,omitempty"`
+	ItemId    *string `json:"itemId,omitempty"`
+
+	// Kind text | md | file
+	Kind *string `json:"kind,omitempty"`
+
+	// Live KnowledgeContentVersion 是一个 append-only 内容版本快照。是否 live/draft 只由 carrier
+	// 上的指针决定；version_no=0 为原始版。
+	Live *KnowledgeContentVersion `json:"live,omitempty"`
+
+	// LiveVersionId 当前发布版
+	LiveVersionId *string `json:"liveVersionId,omitempty"`
+
+	// Role primary | attachment
+	Role *string `json:"role,omitempty"`
+
+	// Seq 条目内顺序
+	Seq       *int32  `json:"seq,omitempty"`
+	SyncError *string `json:"syncError,omitempty"`
+
+	// SyncStatus synced | pending | failed
+	SyncStatus *string `json:"syncStatus,omitempty"`
+	SyncedAt   *int64  `json:"syncedAt,omitempty"`
+
+	// Versions 全部版本(新→旧)，供版本下拉
+	Versions *[]KnowledgeContentVersion `json:"versions,omitempty"`
+}
+
+// KnowledgeChunk ============================================================================
+// 管理端：切片管理（file 形态文档：方舟自动切片只读 + 我方补充切片可增删改）
+// ============================================================================
+type KnowledgeChunk struct {
+	// Attachment 图片/文件切片的可渲染链接
+	Attachment *string `json:"attachment,omitempty"`
+
+	// ChunkType text | image | table
+	ChunkType *string `json:"chunkType,omitempty"`
+	Content   *string `json:"content,omitempty"`
+
+	// Mine true=我方补充(可编辑) / false=方舟自动(只读)
+	Mine    *bool   `json:"mine,omitempty"`
+	PointId *string `json:"pointId,omitempty"`
+	Title   *string `json:"title,omitempty"`
+}
+
+// KnowledgeContentVersion KnowledgeContentVersion 是一个 append-only 内容版本快照。是否 live/draft 只由 carrier
+// 上的指针决定；version_no=0 为原始版。
+type KnowledgeContentVersion struct {
+	CreatedAt *int64  `json:"createdAt,omitempty"`
+	EditorId  *string `json:"editorId,omitempty"`
+	Id        *string `json:"id,omitempty"`
+	Note      *string `json:"note,omitempty"`
+
+	// Origin crawl | human | import
+	Origin *string `json:"origin,omitempty"`
+
+	// Payload JSON 字符串(正文/FAQ 结构)
+	Payload   *string `json:"payload,omitempty"`
+	VersionNo *int32  `json:"versionNo,omitempty"`
+}
+
+// KnowledgeDomainNode KnowledgeDomainNode 是知识域树的一个节点。ancestorKeys 是从根到本节点(含)
+// 的稳定 key 链，用于方舟检索时的 domain_ids 过滤（子树命中）。
+type KnowledgeDomainNode struct {
+	AncestorKeys *[]string              `json:"ancestorKeys,omitempty"`
+	Children     *[]KnowledgeDomainNode `json:"children,omitempty"`
+	Id           *string                `json:"id,omitempty"`
+
+	// ItemCount 直接挂载在该域的知识条目数
+	ItemCount *int64  `json:"itemCount,omitempty"`
+	Key       *string `json:"key,omitempty"`
+	Level     *int32  `json:"level,omitempty"`
+	Name      *string `json:"name,omitempty"`
+	ParentId  *string `json:"parentId,omitempty"`
+	SortOrder *int32  `json:"sortOrder,omitempty"`
+	Status    *string `json:"status,omitempty"`
+}
+
+// KnowledgeGapInfo ============================================================================
+// 管理端：知识盲区（gap）
+// ============================================================================
+type KnowledgeGapInfo struct {
+	DraftFaqItemId     *string `json:"draftFaqItemId,omitempty"`
+	FirstSeen          *int64  `json:"firstSeen,omitempty"`
+	Id                 *string `json:"id,omitempty"`
+	LastSeen           *int64  `json:"lastSeen,omitempty"`
+	NormalizedQuestion *string `json:"normalizedQuestion,omitempty"`
+	Occurrences        *int64  `json:"occurrences,omitempty"`
+
+	// Status open | ignored | drafted
+	Status *string `json:"status,omitempty"`
+}
+
+// KnowledgeItemDetail KnowledgeItemDetail 是详情页的富对象。附件即 role=attachment 的载体。
+type KnowledgeItemDetail struct {
+	Carriers  *[]KnowledgeCarrier `json:"carriers,omitempty"`
+	CrawledAt *int64              `json:"crawledAt,omitempty"`
+	CreatedBy *string             `json:"createdBy,omitempty"`
+	DomainIds *[]string           `json:"domainIds,omitempty"`
+
+	// IdentityKey 采集去重键
+	IdentityKey *string `json:"identityKey,omitempty"`
+
+	// Summary KnowledgeItemSummary 是列表页展示的知识条目摘要。
+	Summary    *KnowledgeItemSummary `json:"summary,omitempty"`
+	UpdatedBy  *string               `json:"updatedBy,omitempty"`
+	ValidUntil *int64                `json:"validUntil,omitempty"`
+}
+
+// KnowledgeItemSummary KnowledgeItemSummary 是列表页展示的知识条目摘要。
+type KnowledgeItemSummary struct {
+	// Authority human | official_school | official_hduhelp
+	Authority *string `json:"authority,omitempty"`
+
+	// DomainPath 主知识域从根到叶的名称路径
+	DomainPath *[]string `json:"domainPath,omitempty"`
+	Id         *string   `json:"id,omitempty"`
+	IsTakeover *bool     `json:"isTakeover,omitempty"`
+
+	// Kind faq | article | file
+	Kind *string `json:"kind,omitempty"`
+
+	// OriginUrl 最初来源 仅对外展示
+	OriginUrl *string `json:"originUrl,omitempty"`
+
+	// PendingReason 待处理原因(status=pending 时)
+	PendingReason     *string `json:"pendingReason,omitempty"`
+	PrimaryDomainId   *string `json:"primaryDomainId,omitempty"`
+	PrimaryDomainName *string `json:"primaryDomainName,omitempty"`
+	PublishedAt       *int64  `json:"publishedAt,omitempty"`
+
+	// SourceId 来源词表项 id（knowledge_sources）
+	SourceId *string `json:"sourceId,omitempty"`
+
+	// SourceName 来源显示名
+	SourceName      *string `json:"sourceName,omitempty"`
+	SourceUpdatedAt *int64  `json:"sourceUpdatedAt,omitempty"`
+
+	// Status pending | normal | filtered | maybe_stale | archived | deleted
+	Status *string `json:"status,omitempty"`
+
+	// SyncStatus 聚合载体同步态: synced | pending | failed
+	SyncStatus *string `json:"syncStatus,omitempty"`
+
+	// TagStatus 自动打标态 pending/tagging/tagged/failed/skipped
+	TagStatus *string `json:"tagStatus,omitempty"`
+
+	// Tags 主题标签
+	Tags      *[]string `json:"tags,omitempty"`
+	Title     *string   `json:"title,omitempty"`
+	UpdatedAt *int64    `json:"updatedAt,omitempty"`
+
+	// ValidUntil 过期时间(ms)，空=长期有效
+	ValidUntil *int64 `json:"validUntil,omitempty"`
+}
+
+// KnowledgeSourceNode KnowledgeSourceNode 是扁平「来源」词表的一项。
+type KnowledgeSourceNode struct {
+	Id *string `json:"id,omitempty"`
+
+	// ItemCount 直接挂载在该来源的知识条目数
+	ItemCount *int64  `json:"itemCount,omitempty"`
+	Key       *string `json:"key,omitempty"`
+	Name      *string `json:"name,omitempty"`
+	SortOrder *int32  `json:"sortOrder,omitempty"`
+	Status    *string `json:"status,omitempty"`
 }
 
 // LeaveGroupResponseBody defines model for LeaveGroupResponseBody.
@@ -2476,6 +2956,14 @@ type LibraryReadingResponseBody struct {
 	Msg  *string             `json:"msg,omitempty"`
 }
 
+// ListAuditResponseBody defines model for ListAuditResponseBody.
+type ListAuditResponseBody struct {
+	Code  *int64        `json:"code,omitempty"`
+	Data  *[]AuditEntry `json:"data,omitempty"`
+	Msg   *string       `json:"msg,omitempty"`
+	Total *int64        `json:"total,omitempty"`
+}
+
 // ListAuthorizedAppsData defines model for ListAuthorizedAppsData.
 type ListAuthorizedAppsData struct {
 	Result *[]AuthorizedAppItem `json:"result,omitempty"`
@@ -2486,6 +2974,46 @@ type ListAuthorizedAppsResponseBody struct {
 	Code *int64                  `json:"code,omitempty"`
 	Data *ListAuthorizedAppsData `json:"data,omitempty"`
 	Msg  *string                 `json:"msg,omitempty"`
+}
+
+// ListChunksResponseBody defines model for ListChunksResponseBody.
+type ListChunksResponseBody struct {
+	Code *int64            `json:"code,omitempty"`
+	Data *[]KnowledgeChunk `json:"data,omitempty"`
+	Msg  *string           `json:"msg,omitempty"`
+}
+
+// ListCollectorsResponseBody defines model for ListCollectorsResponseBody.
+type ListCollectorsResponseBody struct {
+	Code *int64           `json:"code,omitempty"`
+	Data *[]CollectorInfo `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
+}
+
+// ListCrawlRunsResponseBody defines model for ListCrawlRunsResponseBody.
+type ListCrawlRunsResponseBody struct {
+	Code  *int64          `json:"code,omitempty"`
+	Data  *[]CrawlRunInfo `json:"data,omitempty"`
+	Msg   *string         `json:"msg,omitempty"`
+	Total *int64          `json:"total,omitempty"`
+}
+
+// ListGapsResponseBody defines model for ListGapsResponseBody.
+type ListGapsResponseBody struct {
+	Code  *int64              `json:"code,omitempty"`
+	Data  *[]KnowledgeGapInfo `json:"data,omitempty"`
+	Msg   *string             `json:"msg,omitempty"`
+	Total *int64              `json:"total,omitempty"`
+}
+
+// ListItemsResponseBody defines model for ListItemsResponseBody.
+type ListItemsResponseBody struct {
+	Code  *int64                  `json:"code,omitempty"`
+	Data  *[]KnowledgeItemSummary `json:"data,omitempty"`
+	Msg   *string                 `json:"msg,omitempty"`
+	Page  *int32                  `json:"page,omitempty"`
+	Size  *int32                  `json:"size,omitempty"`
+	Total *int64                  `json:"total,omitempty"`
 }
 
 // ListPATData defines model for ListPATData.
@@ -2982,6 +3510,22 @@ type OperatorListResponseBody struct {
 	Msg  *string         `json:"msg,omitempty"`
 }
 
+// OverviewResponseBody defines model for OverviewResponseBody.
+type OverviewResponseBody struct {
+	Code           *int64        `json:"code,omitempty"`
+	DomainCount    *int64        `json:"domainCount,omitempty"`
+	DraftItems     *int64        `json:"draftItems,omitempty"`
+	FilteredItems  *int64        `json:"filteredItems,omitempty"`
+	IndexedUnits   *int64        `json:"indexedUnits,omitempty"`
+	LastCrawl      *CrawlRunInfo `json:"lastCrawl,omitempty"`
+	Msg            *string       `json:"msg,omitempty"`
+	OpenGaps       *int64        `json:"openGaps,omitempty"`
+	PendingReview  *int64        `json:"pendingReview,omitempty"`
+	PublishedItems *int64        `json:"publishedItems,omitempty"`
+	SyncErrors     *int64        `json:"syncErrors,omitempty"`
+	TotalItems     *int64        `json:"totalItems,omitempty"`
+}
+
 // PATItem defines model for PATItem.
 type PATItem struct {
 	ClientId *string `json:"clientId,omitempty"`
@@ -3136,6 +3680,18 @@ type Preference struct {
 	TopPublisher     *string `json:"topPublisher,omitempty"`
 }
 
+// PreviewData defines model for PreviewData.
+type PreviewData struct {
+	Preview *string `json:"preview,omitempty"`
+}
+
+// PreviewTaggingPromptResponseBody defines model for PreviewTaggingPromptResponseBody.
+type PreviewTaggingPromptResponseBody struct {
+	Code *int64       `json:"code,omitempty"`
+	Data *PreviewData `json:"data,omitempty"`
+	Msg  *string      `json:"msg,omitempty"`
+}
+
 // PreviousSchoolData PreviousSchoolData 本人生源中学信息与同校邻近年级、同城人数统计。
 type PreviousSchoolData struct {
 	// City 本人生源地城市
@@ -3250,6 +3806,18 @@ type RefreshTokenRequestBody struct {
 	RefreshToken *string `json:"refreshToken,omitempty"`
 }
 
+// ReportGapRequestBody defines model for ReportGapRequestBody.
+type ReportGapRequestBody struct {
+	Question  *string `json:"question,omitempty"`
+	SessionId *string `json:"session_id,omitempty"`
+}
+
+// ReportGapResponseBody defines model for ReportGapResponseBody.
+type ReportGapResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
 // ResetOperatorPasswordRequestBody defines model for ResetOperatorPasswordRequestBody.
 type ResetOperatorPasswordRequestBody struct {
 	NewPassword *string `json:"new_password,omitempty"`
@@ -3269,6 +3837,11 @@ type ResetPasswordRequestBody struct {
 
 	// Type "sms" | "email"
 	Type *string `json:"type,omitempty"`
+}
+
+// RestoreVersionRequestBody defines model for RestoreVersionRequestBody.
+type RestoreVersionRequestBody struct {
+	VersionId *string `json:"version_id,omitempty"`
 }
 
 // RevokeAuthorizationResponseBody defines model for RevokeAuthorizationResponseBody.
@@ -3319,6 +3892,13 @@ type RoomInfo struct {
 	Weeks         *int32  `json:"weeks,omitempty"`
 }
 
+// RunCollectorResponseBody defines model for RunCollectorResponseBody.
+type RunCollectorResponseBody struct {
+	Code       *int64  `json:"code,omitempty"`
+	CrawlRunId *string `json:"crawlRunId,omitempty"`
+	Msg        *string `json:"msg,omitempty"`
+}
+
 // RunCronTaskRequestBody defines model for RunCronTaskRequestBody.
 type RunCronTaskRequestBody struct {
 	Key *string `json:"key,omitempty"`
@@ -3328,6 +3908,14 @@ type RunCronTaskRequestBody struct {
 type RunCronTaskResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
+}
+
+// SaveDraftRequestBody defines model for SaveDraftRequestBody.
+type SaveDraftRequestBody struct {
+	Note *string `json:"note,omitempty"`
+
+	// Payload JSON 字符串
+	Payload *string `json:"payload,omitempty"`
 }
 
 // ScheduleCourse ===== 今日/明日课表（now）=====
@@ -3493,6 +4081,45 @@ type ScopeListResponseBody struct {
 // ScoresCard ScoresCard 是信息流成绩卡片负载。
 type ScoresCard struct {
 	Grades *[]GradeItem `json:"grades,omitempty"`
+}
+
+// SearchHit SearchHit 是一条检索命中，溯源信息足以回链到我方 DB 与方舟切片。
+type SearchHit struct {
+	// Authority human | official_school | official_hduhelp
+	Authority  *string   `json:"authority,omitempty"`
+	CarrierId  *string   `json:"carrierId,omitempty"`
+	Content    *string   `json:"content,omitempty"`
+	DocId      *string   `json:"docId,omitempty"`
+	DomainKeys *[]string `json:"domainKeys,omitempty"`
+	ItemId     *string   `json:"itemId,omitempty"`
+
+	// OriginUrl 对外暴露的最初来源
+	OriginUrl *string  `json:"originUrl,omitempty"`
+	PointId   *string  `json:"pointId,omitempty"`
+	Question  *string  `json:"question,omitempty"`
+	Score     *float64 `json:"score,omitempty"`
+	Source    *string  `json:"source,omitempty"`
+	Title     *string  `json:"title,omitempty"`
+}
+
+// SearchRequestBody defines model for SearchRequestBody.
+type SearchRequestBody struct {
+	DenseWeight *float64 `json:"dense_weight,omitempty"`
+
+	// DomainKeys 命中任一子树(set 相交)
+	DomainKeys *[]string `json:"domain_keys,omitempty"`
+	Limit      *int32    `json:"limit,omitempty"`
+
+	// OfficialOnly 仅学校/助手官方
+	OfficialOnly *bool   `json:"official_only,omitempty"`
+	Query        *string `json:"query,omitempty"`
+}
+
+// SearchResponseBody defines model for SearchResponseBody.
+type SearchResponseBody struct {
+	Code *int64       `json:"code,omitempty"`
+	Data *[]SearchHit `json:"data,omitempty"`
+	Msg  *string      `json:"msg,omitempty"`
 }
 
 // SearchUsersResponseBody defines model for SearchUsersResponseBody.
@@ -3721,6 +4348,12 @@ type SetOperatorEnabledResponseBody struct {
 	Msg  *string `json:"msg,omitempty"`
 }
 
+// SetTaggingPromptRequestBody defines model for SetTaggingPromptRequestBody.
+type SetTaggingPromptRequestBody struct {
+	// Template 留空=恢复默认
+	Template *string `json:"template,omitempty"`
+}
+
 // SetTenantEnabledRequestBody defines model for SetTenantEnabledRequestBody.
 type SetTenantEnabledRequestBody struct {
 	Enabled *bool `json:"enabled,omitempty"`
@@ -3826,6 +4459,21 @@ type SocialBinding struct {
 	OpenId    *string `json:"openId,omitempty"`
 	Provider  *string `json:"provider,omitempty"`
 	UnionId   *string `json:"unionId,omitempty"`
+}
+
+// SourceDeleteResponseBody defines model for SourceDeleteResponseBody.
+type SourceDeleteResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
+// SourceMutateResponseBody defines model for SourceMutateResponseBody.
+type SourceMutateResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data KnowledgeSourceNode 是扁平「来源」词表的一项。
+	Data *KnowledgeSourceNode `json:"data,omitempty"`
+	Msg  *string              `json:"msg,omitempty"`
 }
 
 // StatusData defines model for StatusData.
@@ -4179,6 +4827,35 @@ type SyncGradeChatGroupRequestBody struct {
 	UnitId *string `json:"unit_id,omitempty"`
 }
 
+// TaggingPromptData defines model for TaggingPromptData.
+type TaggingPromptData struct {
+	// DefaultTemplate 内置默认(供重置)
+	DefaultTemplate *string `json:"defaultTemplate,omitempty"`
+
+	// Preview 用实时数据渲染的预览
+	Preview *string `json:"preview,omitempty"`
+
+	// Template 当前模板
+	Template  *string                `json:"template,omitempty"`
+	Variables *[]TaggingVariableItem `json:"variables,omitempty"`
+}
+
+// TaggingPromptResponseBody defines model for TaggingPromptResponseBody.
+type TaggingPromptResponseBody struct {
+	Code *int64             `json:"code,omitempty"`
+	Data *TaggingPromptData `json:"data,omitempty"`
+	Msg  *string            `json:"msg,omitempty"`
+}
+
+// TaggingVariableItem AI 打标提示词编辑
+type TaggingVariableItem struct {
+	Description *string `json:"description,omitempty"`
+	Label       *string `json:"label,omitempty"`
+
+	// Name 插入为 {{ name }}
+	Name *string `json:"name,omitempty"`
+}
+
 // TeachingClassData defines model for TeachingClassData.
 type TeachingClassData struct {
 	Detail *TeachingClassDetail `json:"detail,omitempty"`
@@ -4312,6 +4989,21 @@ type UpdateCampusRequestBody struct {
 	Sort      *int32   `json:"sort,omitempty"`
 }
 
+// UpdateChunkRequestBody defines model for UpdateChunkRequestBody.
+type UpdateChunkRequestBody struct {
+	Content *string `json:"content,omitempty"`
+	PointId *string `json:"point_id,omitempty"`
+	Title   *string `json:"title,omitempty"`
+}
+
+// UpdateCollectorRequestBody defines model for UpdateCollectorRequestBody.
+type UpdateCollectorRequestBody struct {
+	// Config JSON 字符串
+	Config  *string `json:"config,omitempty"`
+	Enabled *bool   `json:"enabled,omitempty"`
+	Spec    *string `json:"spec,omitempty"`
+}
+
 // UpdateCronTaskRequestBody defines model for UpdateCronTaskRequestBody.
 type UpdateCronTaskRequestBody struct {
 	// Config 任务配置 JSON 字符串
@@ -4325,6 +5017,15 @@ type UpdateCronTaskRequestBody struct {
 type UpdateCronTaskResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
+}
+
+// UpdateDomainRequestBody defines model for UpdateDomainRequestBody.
+type UpdateDomainRequestBody struct {
+	Name *string `json:"name,omitempty"`
+
+	// NewParentId 移动到新父节点
+	NewParentId *string `json:"new_parent_id,omitempty"`
+	SortOrder   *int32  `json:"sort_order,omitempty"`
 }
 
 // UpdateElectricityMeterRequestBody defines model for UpdateElectricityMeterRequestBody.
@@ -4352,6 +5053,18 @@ type UpdateFavoriteResponseBody struct {
 	Msg  *string       `json:"msg,omitempty"`
 }
 
+// UpdateItemRequestBody defines model for UpdateItemRequestBody.
+type UpdateItemRequestBody struct {
+	// Authority human | official_school | official_hduhelp
+	Authority       *string   `json:"authority,omitempty"`
+	DomainIds       *[]string `json:"domain_ids,omitempty"`
+	PrimaryDomainId *string   `json:"primary_domain_id,omitempty"`
+	SourceId        *string   `json:"source_id,omitempty"`
+	Tags            *[]string `json:"tags,omitempty"`
+	Title           *string   `json:"title,omitempty"`
+	ValidUntil      *int64    `json:"valid_until,omitempty"`
+}
+
 // UpdateLoginClientRequestBody defines model for UpdateLoginClientRequestBody.
 type UpdateLoginClientRequestBody struct {
 	Description  *string   `json:"description,omitempty"`
@@ -4373,6 +5086,12 @@ type UpdateLoginClientResponseBody struct {
 	Msg  *string               `json:"msg,omitempty"`
 }
 
+// UpdateSourceRequestBody defines model for UpdateSourceRequestBody.
+type UpdateSourceRequestBody struct {
+	Name      *string `json:"name,omitempty"`
+	SortOrder *int32  `json:"sort_order,omitempty"`
+}
+
 // UpdateSubscriptionRequestBody defines model for UpdateSubscriptionRequestBody.
 type UpdateSubscriptionRequestBody struct {
 	// Options 每用户每渠道偏好，JSON 字符串
@@ -4387,6 +5106,23 @@ type UploadData struct {
 	Key         *string `json:"key,omitempty"`
 	Size        *int64  `json:"size,omitempty"`
 	Url         *string `json:"url,omitempty"`
+}
+
+// UploadFileData 文件上传（图片/附件转存）：multipart 表单字段 file
+type UploadFileData struct {
+	ContentType *string `json:"contentType,omitempty"`
+	Key         *string `json:"key,omitempty"`
+	Size        *int64  `json:"size,omitempty"`
+	Url         *string `json:"url,omitempty"`
+}
+
+// UploadFileResponseBody defines model for UploadFileResponseBody.
+type UploadFileResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data 文件上传（图片/附件转存）：multipart 表单字段 file
+	Data *UploadFileData `json:"data,omitempty"`
+	Msg  *string         `json:"msg,omitempty"`
 }
 
 // UploadResponseBody defines model for UploadResponseBody.
@@ -4873,6 +5609,159 @@ type AdminServiceListElectricityMetersParams struct {
 
 // AdminServiceUpdateElectricityMeterParams defines parameters for AdminServiceUpdateElectricityMeter.
 type AdminServiceUpdateElectricityMeterParams struct {
+	Id *string `form:"id,omitempty" json:"id,omitempty"`
+}
+
+// KnowledgeServiceAdminListAuditParams defines parameters for KnowledgeServiceAdminListAudit.
+type KnowledgeServiceAdminListAuditParams struct {
+	TargetId   *string `form:"target_id,omitempty" json:"target_id,omitempty"`
+	TargetType *string `form:"target_type,omitempty" json:"target_type,omitempty"`
+	Action     *string `form:"action,omitempty" json:"action,omitempty"`
+	Page       *int32  `form:"page,omitempty" json:"page,omitempty"`
+	Size       *int32  `form:"size,omitempty" json:"size,omitempty"`
+}
+
+// KnowledgeServiceAdminDeleteChunkParams defines parameters for KnowledgeServiceAdminDeleteChunk.
+type KnowledgeServiceAdminDeleteChunkParams struct {
+	CarrierId *string `form:"carrier_id,omitempty" json:"carrier_id,omitempty"`
+	PointId   *string `form:"point_id,omitempty" json:"point_id,omitempty"`
+}
+
+// KnowledgeServiceAdminListChunksParams defines parameters for KnowledgeServiceAdminListChunks.
+type KnowledgeServiceAdminListChunksParams struct {
+	CarrierId *string `form:"carrier_id,omitempty" json:"carrier_id,omitempty"`
+}
+
+// KnowledgeServiceAdminUpdateChunkParams defines parameters for KnowledgeServiceAdminUpdateChunk.
+type KnowledgeServiceAdminUpdateChunkParams struct {
+	CarrierId *string `form:"carrier_id,omitempty" json:"carrier_id,omitempty"`
+}
+
+// KnowledgeServiceAdminUpdateCollectorParams defines parameters for KnowledgeServiceAdminUpdateCollector.
+type KnowledgeServiceAdminUpdateCollectorParams struct {
+	Key *string `form:"key,omitempty" json:"key,omitempty"`
+}
+
+// KnowledgeServiceAdminRunCollectorParams defines parameters for KnowledgeServiceAdminRunCollector.
+type KnowledgeServiceAdminRunCollectorParams struct {
+	Key *string `form:"key,omitempty" json:"key,omitempty"`
+}
+
+// KnowledgeServiceAdminDiscardDraftParams defines parameters for KnowledgeServiceAdminDiscardDraft.
+type KnowledgeServiceAdminDiscardDraftParams struct {
+	CarrierId *string `form:"carrier_id,omitempty" json:"carrier_id,omitempty"`
+}
+
+// KnowledgeServiceAdminSaveDraftParams defines parameters for KnowledgeServiceAdminSaveDraft.
+type KnowledgeServiceAdminSaveDraftParams struct {
+	CarrierId *string `form:"carrier_id,omitempty" json:"carrier_id,omitempty"`
+}
+
+// KnowledgeServiceAdminPublishDraftParams defines parameters for KnowledgeServiceAdminPublishDraft.
+type KnowledgeServiceAdminPublishDraftParams struct {
+	CarrierId *string `form:"carrier_id,omitempty" json:"carrier_id,omitempty"`
+}
+
+// KnowledgeServiceAdminRestoreVersionParams defines parameters for KnowledgeServiceAdminRestoreVersion.
+type KnowledgeServiceAdminRestoreVersionParams struct {
+	CarrierId *string `form:"carrier_id,omitempty" json:"carrier_id,omitempty"`
+}
+
+// KnowledgeServiceAdminListCrawlRunsParams defines parameters for KnowledgeServiceAdminListCrawlRuns.
+type KnowledgeServiceAdminListCrawlRunsParams struct {
+	CollectorKey *string `form:"collector_key,omitempty" json:"collector_key,omitempty"`
+	Page         *int32  `form:"page,omitempty" json:"page,omitempty"`
+	Size         *int32  `form:"size,omitempty" json:"size,omitempty"`
+}
+
+// KnowledgeServiceAdminDeleteDomainParams defines parameters for KnowledgeServiceAdminDeleteDomain.
+type KnowledgeServiceAdminDeleteDomainParams struct {
+	Id *string `form:"id,omitempty" json:"id,omitempty"`
+
+	// MergeIntoId 把条目并入目标域后删除
+	MergeIntoId *string `form:"merge_into_id,omitempty" json:"merge_into_id,omitempty"`
+}
+
+// KnowledgeServiceAdminUpdateDomainParams defines parameters for KnowledgeServiceAdminUpdateDomain.
+type KnowledgeServiceAdminUpdateDomainParams struct {
+	Id *string `form:"id,omitempty" json:"id,omitempty"`
+}
+
+// KnowledgeServiceAdminListGapsParams defines parameters for KnowledgeServiceAdminListGaps.
+type KnowledgeServiceAdminListGapsParams struct {
+	Status *string `form:"status,omitempty" json:"status,omitempty"`
+	Page   *int32  `form:"page,omitempty" json:"page,omitempty"`
+	Size   *int32  `form:"size,omitempty" json:"size,omitempty"`
+}
+
+// KnowledgeServiceAdminGapActionParams defines parameters for KnowledgeServiceAdminGapAction.
+type KnowledgeServiceAdminGapActionParams struct {
+	Id *string `form:"id,omitempty" json:"id,omitempty"`
+}
+
+// KnowledgeServiceAdminListItemsParams defines parameters for KnowledgeServiceAdminListItems.
+type KnowledgeServiceAdminListItemsParams struct {
+	DomainId *string `form:"domain_id,omitempty" json:"domain_id,omitempty"`
+	Status   *string `form:"status,omitempty" json:"status,omitempty"`
+	SourceId *string `form:"source_id,omitempty" json:"source_id,omitempty"`
+
+	// Authority human | official_school | official_hduhelp
+	Authority *string `form:"authority,omitempty" json:"authority,omitempty"`
+
+	// Kind faq | article | file
+	Kind         *string `form:"kind,omitempty" json:"kind,omitempty"`
+	Keyword      *string `form:"keyword,omitempty" json:"keyword,omitempty"`
+	TakeoverOnly *bool   `form:"takeover_only,omitempty" json:"takeover_only,omitempty"`
+	Page         *int32  `form:"page,omitempty" json:"page,omitempty"`
+	Size         *int32  `form:"size,omitempty" json:"size,omitempty"`
+
+	// Deleted 回收站：仅软删条目
+	Deleted *bool `form:"deleted,omitempty" json:"deleted,omitempty"`
+
+	// SyncStatus 收录态过滤: synced | pending | failed
+	SyncStatus *string `form:"sync_status,omitempty" json:"sync_status,omitempty"`
+}
+
+// KnowledgeServiceAdminUpdateItemParams defines parameters for KnowledgeServiceAdminUpdateItem.
+type KnowledgeServiceAdminUpdateItemParams struct {
+	Id *string `form:"id,omitempty" json:"id,omitempty"`
+}
+
+// KnowledgeServiceAdminAttachFileParams defines parameters for KnowledgeServiceAdminAttachFile.
+type KnowledgeServiceAdminAttachFileParams struct {
+	Id *string `form:"id,omitempty" json:"id,omitempty"`
+}
+
+// KnowledgeServiceAdminCheckUpdateParams defines parameters for KnowledgeServiceAdminCheckUpdate.
+type KnowledgeServiceAdminCheckUpdateParams struct {
+	Id *string `form:"id,omitempty" json:"id,omitempty"`
+}
+
+// KnowledgeServiceAdminItemDetailParams defines parameters for KnowledgeServiceAdminItemDetail.
+type KnowledgeServiceAdminItemDetailParams struct {
+	Id *string `form:"id,omitempty" json:"id,omitempty"`
+}
+
+// KnowledgeServiceAdminRetagParams defines parameters for KnowledgeServiceAdminRetag.
+type KnowledgeServiceAdminRetagParams struct {
+	Id *string `form:"id,omitempty" json:"id,omitempty"`
+}
+
+// KnowledgeServiceAdminItemStateParams defines parameters for KnowledgeServiceAdminItemState.
+type KnowledgeServiceAdminItemStateParams struct {
+	Id *string `form:"id,omitempty" json:"id,omitempty"`
+}
+
+// KnowledgeServiceAdminDeleteSourceParams defines parameters for KnowledgeServiceAdminDeleteSource.
+type KnowledgeServiceAdminDeleteSourceParams struct {
+	Id *string `form:"id,omitempty" json:"id,omitempty"`
+
+	// MergeIntoId 把条目并入目标来源后删除
+	MergeIntoId *string `form:"merge_into_id,omitempty" json:"merge_into_id,omitempty"`
+}
+
+// KnowledgeServiceAdminUpdateSourceParams defines parameters for KnowledgeServiceAdminUpdateSource.
+type KnowledgeServiceAdminUpdateSourceParams struct {
 	Id *string `form:"id,omitempty" json:"id,omitempty"`
 }
 
@@ -5444,6 +6333,57 @@ type AdminServiceCreateElectricityMeterJSONRequestBody = CreateElectricityMeterR
 // AdminServiceUpdateElectricityMeterJSONRequestBody defines body for AdminServiceUpdateElectricityMeter for application/json ContentType.
 type AdminServiceUpdateElectricityMeterJSONRequestBody = UpdateElectricityMeterRequestBody
 
+// KnowledgeServiceAdminAddChunkJSONRequestBody defines body for KnowledgeServiceAdminAddChunk for application/json ContentType.
+type KnowledgeServiceAdminAddChunkJSONRequestBody = AddChunkRequestBody
+
+// KnowledgeServiceAdminUpdateChunkJSONRequestBody defines body for KnowledgeServiceAdminUpdateChunk for application/json ContentType.
+type KnowledgeServiceAdminUpdateChunkJSONRequestBody = UpdateChunkRequestBody
+
+// KnowledgeServiceAdminUpdateCollectorJSONRequestBody defines body for KnowledgeServiceAdminUpdateCollector for application/json ContentType.
+type KnowledgeServiceAdminUpdateCollectorJSONRequestBody = UpdateCollectorRequestBody
+
+// KnowledgeServiceAdminSaveDraftJSONRequestBody defines body for KnowledgeServiceAdminSaveDraft for application/json ContentType.
+type KnowledgeServiceAdminSaveDraftJSONRequestBody = SaveDraftRequestBody
+
+// KnowledgeServiceAdminRestoreVersionJSONRequestBody defines body for KnowledgeServiceAdminRestoreVersion for application/json ContentType.
+type KnowledgeServiceAdminRestoreVersionJSONRequestBody = RestoreVersionRequestBody
+
+// KnowledgeServiceAdminCreateDomainJSONRequestBody defines body for KnowledgeServiceAdminCreateDomain for application/json ContentType.
+type KnowledgeServiceAdminCreateDomainJSONRequestBody = CreateDomainRequestBody
+
+// KnowledgeServiceAdminUpdateDomainJSONRequestBody defines body for KnowledgeServiceAdminUpdateDomain for application/json ContentType.
+type KnowledgeServiceAdminUpdateDomainJSONRequestBody = UpdateDomainRequestBody
+
+// KnowledgeServiceAdminImportFaqJSONRequestBody defines body for KnowledgeServiceAdminImportFaq for application/json ContentType.
+type KnowledgeServiceAdminImportFaqJSONRequestBody = FaqImportRequestBody
+
+// KnowledgeServiceAdminGapActionJSONRequestBody defines body for KnowledgeServiceAdminGapAction for application/json ContentType.
+type KnowledgeServiceAdminGapActionJSONRequestBody = GapActionRequestBody
+
+// KnowledgeServiceAdminCreateItemJSONRequestBody defines body for KnowledgeServiceAdminCreateItem for application/json ContentType.
+type KnowledgeServiceAdminCreateItemJSONRequestBody = CreateItemRequestBody
+
+// KnowledgeServiceAdminUpdateItemJSONRequestBody defines body for KnowledgeServiceAdminUpdateItem for application/json ContentType.
+type KnowledgeServiceAdminUpdateItemJSONRequestBody = UpdateItemRequestBody
+
+// KnowledgeServiceAdminAttachFileJSONRequestBody defines body for KnowledgeServiceAdminAttachFile for application/json ContentType.
+type KnowledgeServiceAdminAttachFileJSONRequestBody = AttachFileRequestBody
+
+// KnowledgeServiceAdminItemStateJSONRequestBody defines body for KnowledgeServiceAdminItemState for application/json ContentType.
+type KnowledgeServiceAdminItemStateJSONRequestBody = ItemStateRequestBody
+
+// KnowledgeServiceAdminCreateSourceJSONRequestBody defines body for KnowledgeServiceAdminCreateSource for application/json ContentType.
+type KnowledgeServiceAdminCreateSourceJSONRequestBody = CreateSourceRequestBody
+
+// KnowledgeServiceAdminUpdateSourceJSONRequestBody defines body for KnowledgeServiceAdminUpdateSource for application/json ContentType.
+type KnowledgeServiceAdminUpdateSourceJSONRequestBody = UpdateSourceRequestBody
+
+// KnowledgeServiceAdminSetTaggingPromptJSONRequestBody defines body for KnowledgeServiceAdminSetTaggingPrompt for application/json ContentType.
+type KnowledgeServiceAdminSetTaggingPromptJSONRequestBody = SetTaggingPromptRequestBody
+
+// KnowledgeServiceAdminPreviewTaggingPromptJSONRequestBody defines body for KnowledgeServiceAdminPreviewTaggingPrompt for application/json ContentType.
+type KnowledgeServiceAdminPreviewTaggingPromptJSONRequestBody = SetTaggingPromptRequestBody
+
 // AdminServiceAdminLoginJSONRequestBody defines body for AdminServiceAdminLogin for application/json ContentType.
 type AdminServiceAdminLoginJSONRequestBody = AdminLoginRequestBody
 
@@ -5617,6 +6557,12 @@ type IdentityServiceLoginFlowExchangeJSONRequestBody = LoginFlowExchangeRequestB
 
 // IdentityServiceSetCurrentCampusJSONRequestBody defines body for IdentityServiceSetCurrentCampus for application/json ContentType.
 type IdentityServiceSetCurrentCampusJSONRequestBody = SetCurrentCampusRequestBody
+
+// KnowledgeServiceKnowledgeReportGapJSONRequestBody defines body for KnowledgeServiceKnowledgeReportGap for application/json ContentType.
+type KnowledgeServiceKnowledgeReportGapJSONRequestBody = ReportGapRequestBody
+
+// KnowledgeServiceKnowledgeSearchJSONRequestBody defines body for KnowledgeServiceKnowledgeSearch for application/json ContentType.
+type KnowledgeServiceKnowledgeSearchJSONRequestBody = SearchRequestBody
 
 // IdentityServiceAppAccessTokenInternalJSONRequestBody defines body for IdentityServiceAppAccessTokenInternal for application/json ContentType.
 type IdentityServiceAppAccessTokenInternalJSONRequestBody = AppAccessTokenInternalRequestBody
