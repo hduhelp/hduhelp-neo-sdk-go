@@ -1501,6 +1501,91 @@ func (s *Service) AdminOverview(ctx context.Context, req *AdminOverviewReq, opts
 	return resp, err
 }
 
+// AdminGetQAStrategiesReq is the request for AdminGetQAStrategies.
+type AdminGetQAStrategiesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminGetQAStrategiesReqBuilder builds a AdminGetQAStrategiesReq with a fluent setter per field.
+type AdminGetQAStrategiesReqBuilder struct{ req *AdminGetQAStrategiesReq }
+
+// NewAdminGetQAStrategiesReqBuilder creates a request builder for AdminGetQAStrategies.
+func NewAdminGetQAStrategiesReqBuilder() *AdminGetQAStrategiesReqBuilder {
+	return &AdminGetQAStrategiesReqBuilder{req: &AdminGetQAStrategiesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *AdminGetQAStrategiesReqBuilder) Build() *AdminGetQAStrategiesReq { return b.req }
+
+// AdminGetQAStrategiesResp is the response for AdminGetQAStrategies.
+type AdminGetQAStrategiesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.QAStrategiesData `json:"data"`
+}
+
+// AdminGetQAStrategies: 快速问答策略
+func (s *Service) AdminGetQAStrategies(ctx context.Context, req *AdminGetQAStrategiesReq, opts ...core.RequestOption) (*AdminGetQAStrategiesResp, error) {
+	resp := &AdminGetQAStrategiesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/knowledge/qa-strategies",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminSetQAStrategiesReq is the request for AdminSetQAStrategies.
+type AdminSetQAStrategiesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminSetQAStrategiesReqBuilder builds a AdminSetQAStrategiesReq with a fluent setter per field.
+type AdminSetQAStrategiesReqBuilder struct{ req *AdminSetQAStrategiesReq }
+
+// NewAdminSetQAStrategiesReqBuilder creates a request builder for AdminSetQAStrategies.
+func NewAdminSetQAStrategiesReqBuilder() *AdminSetQAStrategiesReqBuilder {
+	return &AdminSetQAStrategiesReqBuilder{req: &AdminSetQAStrategiesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *AdminSetQAStrategiesReqBuilder) Body(body *models.SetQAStrategiesRequestBody) *AdminSetQAStrategiesReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminSetQAStrategiesReqBuilder) Build() *AdminSetQAStrategiesReq { return b.req }
+
+// AdminSetQAStrategiesResp is the response for AdminSetQAStrategies.
+type AdminSetQAStrategiesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// AdminSetQAStrategies: 保存快速问答策略
+func (s *Service) AdminSetQAStrategies(ctx context.Context, req *AdminSetQAStrategiesReq, opts ...core.RequestOption) (*AdminSetQAStrategiesResp, error) {
+	resp := &AdminSetQAStrategiesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/knowledge/qa-strategies",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // AdminListSourcesReq is the request for AdminListSources.
 type AdminListSourcesReq struct {
 	pathParams  map[string]string
@@ -1822,6 +1907,91 @@ func (s *Service) AdminPreviewTaggingPrompt(ctx context.Context, req *AdminPrevi
 	return resp, err
 }
 
+// AdminGetTaggingTargetReq is the request for AdminGetTaggingTarget.
+type AdminGetTaggingTargetReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminGetTaggingTargetReqBuilder builds a AdminGetTaggingTargetReq with a fluent setter per field.
+type AdminGetTaggingTargetReqBuilder struct{ req *AdminGetTaggingTargetReq }
+
+// NewAdminGetTaggingTargetReqBuilder creates a request builder for AdminGetTaggingTarget.
+func NewAdminGetTaggingTargetReqBuilder() *AdminGetTaggingTargetReqBuilder {
+	return &AdminGetTaggingTargetReqBuilder{req: &AdminGetTaggingTargetReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *AdminGetTaggingTargetReqBuilder) Build() *AdminGetTaggingTargetReq { return b.req }
+
+// AdminGetTaggingTargetResp is the response for AdminGetTaggingTarget.
+type AdminGetTaggingTargetResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.TaggingTargetData `json:"data"`
+}
+
+// AdminGetTaggingTarget: 打标接入点
+func (s *Service) AdminGetTaggingTarget(ctx context.Context, req *AdminGetTaggingTargetReq, opts ...core.RequestOption) (*AdminGetTaggingTargetResp, error) {
+	resp := &AdminGetTaggingTargetResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/knowledge/tagging-target",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminSetTaggingTargetReq is the request for AdminSetTaggingTarget.
+type AdminSetTaggingTargetReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminSetTaggingTargetReqBuilder builds a AdminSetTaggingTargetReq with a fluent setter per field.
+type AdminSetTaggingTargetReqBuilder struct{ req *AdminSetTaggingTargetReq }
+
+// NewAdminSetTaggingTargetReqBuilder creates a request builder for AdminSetTaggingTarget.
+func NewAdminSetTaggingTargetReqBuilder() *AdminSetTaggingTargetReqBuilder {
+	return &AdminSetTaggingTargetReqBuilder{req: &AdminSetTaggingTargetReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *AdminSetTaggingTargetReqBuilder) Body(body *models.SetTaggingTargetRequestBody) *AdminSetTaggingTargetReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminSetTaggingTargetReqBuilder) Build() *AdminSetTaggingTargetReq { return b.req }
+
+// AdminSetTaggingTargetResp is the response for AdminSetTaggingTarget.
+type AdminSetTaggingTargetResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// AdminSetTaggingTarget: 保存打标接入点
+func (s *Service) AdminSetTaggingTarget(ctx context.Context, req *AdminSetTaggingTargetReq, opts ...core.RequestOption) (*AdminSetTaggingTargetResp, error) {
+	resp := &AdminSetTaggingTargetResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/knowledge/tagging-target",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // AdminUploadFileReq is the request for AdminUploadFile.
 type AdminUploadFileReq struct {
 	pathParams  map[string]string
@@ -1947,6 +2117,52 @@ func (s *Service) KnowledgeReportGap(ctx context.Context, req *KnowledgeReportGa
 	return resp, err
 }
 
+// KnowledgeRetrieveReq is the request for KnowledgeRetrieve.
+type KnowledgeRetrieveReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// KnowledgeRetrieveReqBuilder builds a KnowledgeRetrieveReq with a fluent setter per field.
+type KnowledgeRetrieveReqBuilder struct{ req *KnowledgeRetrieveReq }
+
+// NewKnowledgeRetrieveReqBuilder creates a request builder for KnowledgeRetrieve.
+func NewKnowledgeRetrieveReqBuilder() *KnowledgeRetrieveReqBuilder {
+	return &KnowledgeRetrieveReqBuilder{req: &KnowledgeRetrieveReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *KnowledgeRetrieveReqBuilder) Body(body *models.RetrieveRequestBody) *KnowledgeRetrieveReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *KnowledgeRetrieveReqBuilder) Build() *KnowledgeRetrieveReq { return b.req }
+
+// KnowledgeRetrieveResp is the response for KnowledgeRetrieve.
+type KnowledgeRetrieveResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.SearchHit `json:"data"`
+}
+
+// KnowledgeRetrieve: 知识检索
+func (s *Service) KnowledgeRetrieve(ctx context.Context, req *KnowledgeRetrieveReq, opts ...core.RequestOption) (*KnowledgeRetrieveResp, error) {
+	resp := &KnowledgeRetrieveResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/knowledge/retrieve",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // KnowledgeSearchReq is the request for KnowledgeSearch.
 type KnowledgeSearchReq struct {
 	pathParams  map[string]string
@@ -2031,6 +2247,46 @@ func (s *Service) KnowledgeServiceChat(ctx context.Context, req *KnowledgeServic
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
 		PathTemplate: "/hduhelp-neo/knowledge/service-chat",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// KnowledgeTagsReq is the request for KnowledgeTags.
+type KnowledgeTagsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// KnowledgeTagsReqBuilder builds a KnowledgeTagsReq with a fluent setter per field.
+type KnowledgeTagsReqBuilder struct{ req *KnowledgeTagsReq }
+
+// NewKnowledgeTagsReqBuilder creates a request builder for KnowledgeTags.
+func NewKnowledgeTagsReqBuilder() *KnowledgeTagsReqBuilder {
+	return &KnowledgeTagsReqBuilder{req: &KnowledgeTagsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *KnowledgeTagsReqBuilder) Build() *KnowledgeTagsReq { return b.req }
+
+// KnowledgeTagsResp is the response for KnowledgeTags.
+type KnowledgeTagsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []string `json:"data"`
+}
+
+// KnowledgeTags: 可用筛选标签
+func (s *Service) KnowledgeTags(ctx context.Context, req *KnowledgeTagsReq, opts ...core.RequestOption) (*KnowledgeTagsResp, error) {
+	resp := &KnowledgeTagsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/knowledge/tags",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

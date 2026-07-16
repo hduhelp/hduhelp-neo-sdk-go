@@ -2901,6 +2901,15 @@ type KnowledgeSourceNode struct {
 	Status    *string `json:"status,omitempty"`
 }
 
+// KnowledgeTagsResponseBody defines model for KnowledgeTagsResponseBody.
+type KnowledgeTagsResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data 可用筛选标签
+	Data *[]string `json:"data,omitempty"`
+	Msg  *string   `json:"msg,omitempty"`
+}
+
 // LeaveGroupResponseBody defines model for LeaveGroupResponseBody.
 type LeaveGroupResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
@@ -3442,6 +3451,12 @@ type MonthlyStat struct {
 	Month *string `json:"month,omitempty"`
 }
 
+// MutateOkResponseBody defines model for MutateOkResponseBody.
+type MutateOkResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
 // MyGroupsResponseBody defines model for MyGroupsResponseBody.
 type MyGroupsResponseBody struct {
 	Code *int64       `json:"code,omitempty"`
@@ -3732,6 +3747,25 @@ type PublicCampusListResponseBody struct {
 	Msg  *string             `json:"msg,omitempty"`
 }
 
+// QAStrategiesData defines model for QAStrategiesData.
+type QAStrategiesData struct {
+	DefaultName *string           `json:"defaultName,omitempty"`
+	Strategies  *[]QAStrategyItem `json:"strategies,omitempty"`
+}
+
+// QAStrategiesResponseBody defines model for QAStrategiesResponseBody.
+type QAStrategiesResponseBody struct {
+	Code *int64            `json:"code,omitempty"`
+	Data *QAStrategiesData `json:"data,omitempty"`
+	Msg  *string           `json:"msg,omitempty"`
+}
+
+// QAStrategyItem 快速问答策略配置(知识服务数组 + 默认)
+type QAStrategyItem struct {
+	Name      *string `json:"name,omitempty"`
+	ServiceId *string `json:"service_id,omitempty"`
+}
+
 // ReadingSummary defines model for ReadingSummary.
 type ReadingSummary struct {
 	HasRecord  *bool    `json:"hasRecord,omitempty"`
@@ -3842,6 +3876,16 @@ type ResetPasswordRequestBody struct {
 // RestoreVersionRequestBody defines model for RestoreVersionRequestBody.
 type RestoreVersionRequestBody struct {
 	VersionId *string `json:"version_id,omitempty"`
+}
+
+// RetrieveRequestBody defines model for RetrieveRequestBody.
+type RetrieveRequestBody struct {
+	// Limit 返回结果数量
+	Limit *int32  `json:"limit,omitempty"`
+	Query *string `json:"query,omitempty"`
+
+	// Tags 标签过滤(命中任一)
+	Tags *[]string `json:"tags,omitempty"`
 }
 
 // RevokeAuthorizationResponseBody defines model for RevokeAuthorizationResponseBody.
@@ -4281,6 +4325,9 @@ type ServiceChatRequestBody struct {
 	DomainKeys   *[]string `json:"domain_keys,omitempty"`
 	OfficialOnly *bool     `json:"official_only,omitempty"`
 	Query        *string   `json:"query,omitempty"`
+
+	// StrategyName 策略(知识服务)名；空=默认
+	StrategyName *string `json:"strategy_name,omitempty"`
 }
 
 // ServiceChatResponseBody defines model for ServiceChatResponseBody.
@@ -4400,10 +4447,23 @@ type SetOperatorEnabledResponseBody struct {
 	Msg  *string `json:"msg,omitempty"`
 }
 
+// SetQAStrategiesRequestBody defines model for SetQAStrategiesRequestBody.
+type SetQAStrategiesRequestBody struct {
+	Default    *string           `json:"default,omitempty"`
+	Strategies *[]QAStrategyItem `json:"strategies,omitempty"`
+}
+
 // SetTaggingPromptRequestBody defines model for SetTaggingPromptRequestBody.
 type SetTaggingPromptRequestBody struct {
 	// Template 留空=恢复默认
 	Template *string `json:"template,omitempty"`
+}
+
+// SetTaggingTargetRequestBody defines model for SetTaggingTargetRequestBody.
+type SetTaggingTargetRequestBody struct {
+	ApiKey  *string `json:"api_key,omitempty"`
+	BaseUrl *string `json:"base_url,omitempty"`
+	Model   *string `json:"model,omitempty"`
 }
 
 // SetTenantEnabledRequestBody defines model for SetTenantEnabledRequestBody.
@@ -4896,6 +4956,22 @@ type TaggingPromptData struct {
 type TaggingPromptResponseBody struct {
 	Code *int64             `json:"code,omitempty"`
 	Data *TaggingPromptData `json:"data,omitempty"`
+	Msg  *string            `json:"msg,omitempty"`
+}
+
+// TaggingTargetData 打标接入点配置（密钥只回下发是否已配置，不回明文；写入留空=保持不变）
+type TaggingTargetData struct {
+	BaseUrl   *string `json:"baseUrl,omitempty"`
+	HasApiKey *bool   `json:"hasApiKey,omitempty"`
+	Model     *string `json:"model,omitempty"`
+}
+
+// TaggingTargetResponseBody defines model for TaggingTargetResponseBody.
+type TaggingTargetResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data 打标接入点配置（密钥只回下发是否已配置，不回明文；写入留空=保持不变）
+	Data *TaggingTargetData `json:"data,omitempty"`
 	Msg  *string            `json:"msg,omitempty"`
 }
 
@@ -6424,6 +6500,9 @@ type KnowledgeServiceAdminAttachFileJSONRequestBody = AttachFileRequestBody
 // KnowledgeServiceAdminItemStateJSONRequestBody defines body for KnowledgeServiceAdminItemState for application/json ContentType.
 type KnowledgeServiceAdminItemStateJSONRequestBody = ItemStateRequestBody
 
+// KnowledgeServiceAdminSetQAStrategiesJSONRequestBody defines body for KnowledgeServiceAdminSetQAStrategies for application/json ContentType.
+type KnowledgeServiceAdminSetQAStrategiesJSONRequestBody = SetQAStrategiesRequestBody
+
 // KnowledgeServiceAdminCreateSourceJSONRequestBody defines body for KnowledgeServiceAdminCreateSource for application/json ContentType.
 type KnowledgeServiceAdminCreateSourceJSONRequestBody = CreateSourceRequestBody
 
@@ -6435,6 +6514,9 @@ type KnowledgeServiceAdminSetTaggingPromptJSONRequestBody = SetTaggingPromptRequ
 
 // KnowledgeServiceAdminPreviewTaggingPromptJSONRequestBody defines body for KnowledgeServiceAdminPreviewTaggingPrompt for application/json ContentType.
 type KnowledgeServiceAdminPreviewTaggingPromptJSONRequestBody = SetTaggingPromptRequestBody
+
+// KnowledgeServiceAdminSetTaggingTargetJSONRequestBody defines body for KnowledgeServiceAdminSetTaggingTarget for application/json ContentType.
+type KnowledgeServiceAdminSetTaggingTargetJSONRequestBody = SetTaggingTargetRequestBody
 
 // AdminServiceAdminLoginJSONRequestBody defines body for AdminServiceAdminLogin for application/json ContentType.
 type AdminServiceAdminLoginJSONRequestBody = AdminLoginRequestBody
@@ -6612,6 +6694,9 @@ type IdentityServiceSetCurrentCampusJSONRequestBody = SetCurrentCampusRequestBod
 
 // KnowledgeServiceKnowledgeReportGapJSONRequestBody defines body for KnowledgeServiceKnowledgeReportGap for application/json ContentType.
 type KnowledgeServiceKnowledgeReportGapJSONRequestBody = ReportGapRequestBody
+
+// KnowledgeServiceKnowledgeRetrieveJSONRequestBody defines body for KnowledgeServiceKnowledgeRetrieve for application/json ContentType.
+type KnowledgeServiceKnowledgeRetrieveJSONRequestBody = RetrieveRequestBody
 
 // KnowledgeServiceKnowledgeSearchJSONRequestBody defines body for KnowledgeServiceKnowledgeSearch for application/json ContentType.
 type KnowledgeServiceKnowledgeSearchJSONRequestBody = SearchRequestBody

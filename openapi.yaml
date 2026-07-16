@@ -2405,6 +2405,42 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/OverviewResponseBody'
+    /hduhelp-neo/admin/knowledge/qa-strategies:
+        get:
+            tags:
+                - KnowledgeService
+            summary: 快速问答策略
+            description: 返回可配置的快速问答策略(知识服务)数组与默认项
+            operationId: KnowledgeService_AdminGetQAStrategies
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/QAStrategiesResponseBody'
+        put:
+            tags:
+                - KnowledgeService
+            summary: 保存快速问答策略
+            description: 保存策略(知识服务)数组与默认策略名
+            operationId: KnowledgeService_AdminSetQAStrategies
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SetQAStrategiesRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/MutateOkResponseBody'
     /hduhelp-neo/admin/knowledge/sources:
         get:
             tags:
@@ -2551,6 +2587,42 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PreviewTaggingPromptResponseBody'
+    /hduhelp-neo/admin/knowledge/tagging-target:
+        get:
+            tags:
+                - KnowledgeService
+            summary: 打标接入点
+            description: 返回 AI 打标模型接入点(Base URL / API Key / Model)
+            operationId: KnowledgeService_AdminGetTaggingTarget
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TaggingTargetResponseBody'
+        put:
+            tags:
+                - KnowledgeService
+            summary: 保存打标接入点
+            description: 保存 AI 打标模型接入点(仅保存，不做连通性测试)
+            operationId: KnowledgeService_AdminSetTaggingTarget
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SetTaggingTargetRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/MutateOkResponseBody'
     /hduhelp-neo/admin/knowledge/upload:
         post:
             tags:
@@ -5569,6 +5641,29 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ReportGapResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/knowledge/retrieve:
+        post:
+            tags:
+                - KnowledgeService
+            summary: 知识检索
+            description: 对外检索:仅支持标签过滤与返回数量;命中带溯源信息
+            operationId: KnowledgeService_KnowledgeRetrieve
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                description: 对外检索:仅暴露标签过滤 + 返回数量
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RetrieveRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SearchResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/knowledge/search:
         post:
             tags:
@@ -5596,7 +5691,7 @@ paths:
             tags:
                 - KnowledgeService
             summary: 快速问答
-            description: 走方舟知识服务的检索/问答：内置 rerank、query 改写与可选 LLM 回答；返回回答与溯源切片
+            description: 走方舟知识服务的检索/问答：内置 rerank、query 改写与可选 LLM 回答；可选 strategy_name 选策略(知识服务), 空=默认；返回回答与溯源切片
             operationId: KnowledgeService_KnowledgeServiceChat
             security:
                 - OperatorBearerAuth: []
@@ -5613,6 +5708,23 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ServiceChatResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/knowledge/tags:
+        get:
+            tags:
+                - KnowledgeService
+            summary: 可用筛选标签
+            description: 返回知识库当前可用于过滤的标签词表
+            operationId: KnowledgeService_KnowledgeTags
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/KnowledgeTagsResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/messaging/pigeons:
         get:
@@ -10471,6 +10583,19 @@ components:
                     description: 直接挂载在该来源的知识条目数
                     format: int64
             description: KnowledgeSourceNode 是扁平「来源」词表的一项。
+        KnowledgeTagsResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        type: string
+                    description: 可用筛选标签
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         LeaveGroupResponseBody:
             type: object
             properties:
@@ -11228,6 +11353,14 @@ components:
                 count:
                     type: integer
                     format: int32
+        MutateOkResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         MyGroupsResponseBody:
             type: object
             properties:
@@ -11667,6 +11800,33 @@ components:
                     format: int64
                 msg:
                     type: string
+        QAStrategiesData:
+            type: object
+            properties:
+                defaultName:
+                    type: string
+                strategies:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/QAStrategyItem'
+        QAStrategiesResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/QAStrategiesData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        QAStrategyItem:
+            type: object
+            properties:
+                name:
+                    type: string
+                service_id:
+                    type: string
+            description: 快速问答策略配置(知识服务数组 + 默认)
         ReadingSummary:
             type: object
             properties:
@@ -11805,6 +11965,20 @@ components:
             properties:
                 version_id:
                     type: string
+        RetrieveRequestBody:
+            type: object
+            properties:
+                query:
+                    type: string
+                tags:
+                    type: array
+                    items:
+                        type: string
+                    description: 标签过滤(命中任一)
+                limit:
+                    type: integer
+                    description: 返回结果数量
+                    format: int32
         RevokeAuthorizationResponseBody:
             type: object
             properties:
@@ -12411,6 +12585,9 @@ components:
                         type: string
                 official_only:
                     type: boolean
+                strategy_name:
+                    type: string
+                    description: 策略(知识服务)名；空=默认
         ServiceChatResponseBody:
             type: object
             properties:
@@ -12569,12 +12746,30 @@ components:
                     format: int64
                 msg:
                     type: string
+        SetQAStrategiesRequestBody:
+            type: object
+            properties:
+                default:
+                    type: string
+                strategies:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/QAStrategyItem'
         SetTaggingPromptRequestBody:
             type: object
             properties:
                 template:
                     type: string
                     description: 留空=恢复默认
+        SetTaggingTargetRequestBody:
+            type: object
+            properties:
+                base_url:
+                    type: string
+                api_key:
+                    type: string
+                model:
+                    type: string
         SetTenantEnabledRequestBody:
             type: object
             properties:
@@ -13271,6 +13466,26 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/TaggingPromptData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        TaggingTargetData:
+            type: object
+            properties:
+                baseUrl:
+                    type: string
+                hasApiKey:
+                    type: boolean
+                model:
+                    type: string
+            description: 打标接入点配置（密钥只回下发是否已配置，不回明文；写入留空=保持不变）
+        TaggingTargetResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/TaggingTargetData'
                 code:
                     type: integer
                     format: int64
