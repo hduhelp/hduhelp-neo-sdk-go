@@ -5591,6 +5591,29 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/SearchResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/knowledge/service-chat:
+        post:
+            tags:
+                - KnowledgeService
+            summary: 快速问答
+            description: 走方舟知识服务的检索/问答：内置 rerank、query 改写与可选 LLM 回答；返回回答与溯源切片
+            operationId: KnowledgeService_KnowledgeServiceChat
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                description: '快速问答(service_chat): 走方舟知识服务(内置 rerank/改写/可选 LLM 回答)'
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ServiceChatRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ServiceChatResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/messaging/pigeons:
         get:
             tags:
@@ -12358,6 +12381,41 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/SendWishData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ServiceChatData:
+            type: object
+            properties:
+                answer:
+                    type: string
+                    description: 生成式回答(问答类型服务才有)
+                rewriteQuery:
+                    type: string
+                    description: query 改写结果
+                hits:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SearchHit'
+                    description: 溯源切片
+        ServiceChatRequestBody:
+            type: object
+            properties:
+                query:
+                    type: string
+                domain_keys:
+                    type: array
+                    items:
+                        type: string
+                official_only:
+                    type: boolean
+        ServiceChatResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ServiceChatData'
                 code:
                     type: integer
                     format: int64

@@ -1992,3 +1992,49 @@ func (s *Service) KnowledgeSearch(ctx context.Context, req *KnowledgeSearchReq, 
 	}, resp, opts...)
 	return resp, err
 }
+
+// KnowledgeServiceChatReq is the request for KnowledgeServiceChat.
+type KnowledgeServiceChatReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// KnowledgeServiceChatReqBuilder builds a KnowledgeServiceChatReq with a fluent setter per field.
+type KnowledgeServiceChatReqBuilder struct{ req *KnowledgeServiceChatReq }
+
+// NewKnowledgeServiceChatReqBuilder creates a request builder for KnowledgeServiceChat.
+func NewKnowledgeServiceChatReqBuilder() *KnowledgeServiceChatReqBuilder {
+	return &KnowledgeServiceChatReqBuilder{req: &KnowledgeServiceChatReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *KnowledgeServiceChatReqBuilder) Body(body *models.ServiceChatRequestBody) *KnowledgeServiceChatReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *KnowledgeServiceChatReqBuilder) Build() *KnowledgeServiceChatReq { return b.req }
+
+// KnowledgeServiceChatResp is the response for KnowledgeServiceChat.
+type KnowledgeServiceChatResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ServiceChatData `json:"data"`
+}
+
+// KnowledgeServiceChat: 快速问答
+func (s *Service) KnowledgeServiceChat(ctx context.Context, req *KnowledgeServiceChatReq, opts ...core.RequestOption) (*KnowledgeServiceChatResp, error) {
+	resp := &KnowledgeServiceChatResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/knowledge/service-chat",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}

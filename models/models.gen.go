@@ -4264,6 +4264,32 @@ type SendWishResponseBody struct {
 	Msg  *string       `json:"msg,omitempty"`
 }
 
+// ServiceChatData defines model for ServiceChatData.
+type ServiceChatData struct {
+	// Answer 生成式回答(问答类型服务才有)
+	Answer *string `json:"answer,omitempty"`
+
+	// Hits 溯源切片
+	Hits *[]SearchHit `json:"hits,omitempty"`
+
+	// RewriteQuery query 改写结果
+	RewriteQuery *string `json:"rewriteQuery,omitempty"`
+}
+
+// ServiceChatRequestBody defines model for ServiceChatRequestBody.
+type ServiceChatRequestBody struct {
+	DomainKeys   *[]string `json:"domain_keys,omitempty"`
+	OfficialOnly *bool     `json:"official_only,omitempty"`
+	Query        *string   `json:"query,omitempty"`
+}
+
+// ServiceChatResponseBody defines model for ServiceChatResponseBody.
+type ServiceChatResponseBody struct {
+	Code *int64           `json:"code,omitempty"`
+	Data *ServiceChatData `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
+}
+
 // SessionInfo 会话信息
 type SessionInfo struct {
 	CreatedAt    *int64  `json:"createdAt,omitempty"`
@@ -6589,6 +6615,9 @@ type KnowledgeServiceKnowledgeReportGapJSONRequestBody = ReportGapRequestBody
 
 // KnowledgeServiceKnowledgeSearchJSONRequestBody defines body for KnowledgeServiceKnowledgeSearch for application/json ContentType.
 type KnowledgeServiceKnowledgeSearchJSONRequestBody = SearchRequestBody
+
+// KnowledgeServiceKnowledgeServiceChatJSONRequestBody defines body for KnowledgeServiceKnowledgeServiceChat for application/json ContentType.
+type KnowledgeServiceKnowledgeServiceChatJSONRequestBody = ServiceChatRequestBody
 
 // IdentityServiceAppAccessTokenInternalJSONRequestBody defines body for IdentityServiceAppAccessTokenInternal for application/json ContentType.
 type IdentityServiceAppAccessTokenInternalJSONRequestBody = AppAccessTokenInternalRequestBody
