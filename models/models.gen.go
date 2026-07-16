@@ -4094,25 +4094,51 @@ type SearchHit struct {
 	ItemId     *string   `json:"itemId,omitempty"`
 
 	// OriginUrl 对外暴露的最初来源
-	OriginUrl *string  `json:"originUrl,omitempty"`
-	PointId   *string  `json:"pointId,omitempty"`
-	Question  *string  `json:"question,omitempty"`
-	Score     *float64 `json:"score,omitempty"`
-	Source    *string  `json:"source,omitempty"`
-	Title     *string  `json:"title,omitempty"`
+	OriginUrl *string `json:"originUrl,omitempty"`
+	PointId   *string `json:"pointId,omitempty"`
+	Question  *string `json:"question,omitempty"`
+
+	// RerankScore 重排得分
+	RerankScore *float64 `json:"rerankScore,omitempty"`
+
+	// Score 向量语义得分
+	Score  *float64 `json:"score,omitempty"`
+	Source *string  `json:"source,omitempty"`
+	Title  *string  `json:"title,omitempty"`
 }
 
 // SearchRequestBody defines model for SearchRequestBody.
 type SearchRequestBody struct {
+	// ChunkGroup 文档聚合排序
+	ChunkGroup *bool `json:"chunk_group,omitempty"`
+
+	// DenseWeight 稠密(向量)权重
 	DenseWeight *float64 `json:"dense_weight,omitempty"`
 
 	// DomainKeys 命中任一子树(set 相交)
 	DomainKeys *[]string `json:"domain_keys,omitempty"`
-	Limit      *int32    `json:"limit,omitempty"`
+
+	// Limit 结果返回数量
+	Limit *int32 `json:"limit,omitempty"`
 
 	// OfficialOnly 仅学校/助手官方
 	OfficialOnly *bool   `json:"official_only,omitempty"`
 	Query        *string `json:"query,omitempty"`
+
+	// Rerank 重排开关
+	Rerank *bool `json:"rerank,omitempty"`
+
+	// RerankModel 重排模型
+	RerankModel *string `json:"rerank_model,omitempty"`
+
+	// RetrieveCount 进入重排数量
+	RetrieveCount *int32 `json:"retrieve_count,omitempty"`
+
+	// Rewrite 问题改写
+	Rewrite *bool `json:"rewrite,omitempty"`
+
+	// ScoreThreshold 阈值过滤(0=不过滤)
+	ScoreThreshold *float64 `json:"score_threshold,omitempty"`
 }
 
 // SearchResponseBody defines model for SearchResponseBody.
