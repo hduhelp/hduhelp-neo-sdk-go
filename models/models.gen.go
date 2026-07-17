@@ -343,8 +343,11 @@ type AppListResponseBody struct {
 
 // ApproveDeviceRequestBody defines model for ApproveDeviceRequestBody.
 type ApproveDeviceRequestBody struct {
-	ExpiresAt *int64    `json:"expires_at,omitempty"`
-	Scopes    *[]string `json:"scopes,omitempty"`
+	ExpiresAt *int64 `json:"expires_at,omitempty"`
+
+	// ExpiryMode requested | custom | never；缺省兼容旧客户端
+	ExpiryMode *string   `json:"expiry_mode,omitempty"`
+	Scopes     *[]string `json:"scopes,omitempty"`
 }
 
 // ApproveDeviceRespBody defines model for ApproveDeviceRespBody.
@@ -2850,7 +2853,6 @@ type KnowledgeItemSummary struct {
 	// DomainPath 主知识域从根到叶的名称路径
 	DomainPath *[]string `json:"domainPath,omitempty"`
 	Id         *string   `json:"id,omitempty"`
-	IsTakeover *bool     `json:"isTakeover,omitempty"`
 
 	// Kind faq | article | file
 	Kind *string `json:"kind,omitempty"`
@@ -2876,6 +2878,15 @@ type KnowledgeItemSummary struct {
 
 	// SyncStatus 聚合载体同步态: synced | pending | failed
 	SyncStatus *string `json:"syncStatus,omitempty"`
+
+	// TagError tag_status=failed 时的失败原因（悬浮查看）
+	TagError *string `json:"tagError,omitempty"`
+
+	// TagRecommend AI 收录建议 recommend/reject（空=未判定）
+	TagRecommend *string `json:"tagRecommend,omitempty"`
+
+	// TagRecommendReason AI 收录建议理由（一句话）
+	TagRecommendReason *string `json:"tagRecommendReason,omitempty"`
 
 	// TagStatus 自动打标态 pending/tagging/tagged/failed/skipped
 	TagStatus *string `json:"tagStatus,omitempty"`
@@ -5837,11 +5848,10 @@ type KnowledgeServiceAdminListItemsParams struct {
 	Authority *string `form:"authority,omitempty" json:"authority,omitempty"`
 
 	// Kind faq | article | file
-	Kind         *string `form:"kind,omitempty" json:"kind,omitempty"`
-	Keyword      *string `form:"keyword,omitempty" json:"keyword,omitempty"`
-	TakeoverOnly *bool   `form:"takeover_only,omitempty" json:"takeover_only,omitempty"`
-	Page         *int32  `form:"page,omitempty" json:"page,omitempty"`
-	Size         *int32  `form:"size,omitempty" json:"size,omitempty"`
+	Kind    *string `form:"kind,omitempty" json:"kind,omitempty"`
+	Keyword *string `form:"keyword,omitempty" json:"keyword,omitempty"`
+	Page    *int32  `form:"page,omitempty" json:"page,omitempty"`
+	Size    *int32  `form:"size,omitempty" json:"size,omitempty"`
 
 	// Deleted 回收站：仅软删条目
 	Deleted *bool `form:"deleted,omitempty" json:"deleted,omitempty"`
@@ -5852,6 +5862,11 @@ type KnowledgeServiceAdminListItemsParams struct {
 
 // KnowledgeServiceAdminUpdateItemParams defines parameters for KnowledgeServiceAdminUpdateItem.
 type KnowledgeServiceAdminUpdateItemParams struct {
+	Id *string `form:"id,omitempty" json:"id,omitempty"`
+}
+
+// KnowledgeServiceAdminApplyUpdateParams defines parameters for KnowledgeServiceAdminApplyUpdate.
+type KnowledgeServiceAdminApplyUpdateParams struct {
 	Id *string `form:"id,omitempty" json:"id,omitempty"`
 }
 
@@ -6503,6 +6518,12 @@ type KnowledgeServiceAdminItemStateJSONRequestBody = ItemStateRequestBody
 // KnowledgeServiceAdminSetQAStrategiesJSONRequestBody defines body for KnowledgeServiceAdminSetQAStrategies for application/json ContentType.
 type KnowledgeServiceAdminSetQAStrategiesJSONRequestBody = SetQAStrategiesRequestBody
 
+// KnowledgeServiceAdminKnowledgeSearchJSONRequestBody defines body for KnowledgeServiceAdminKnowledgeSearch for application/json ContentType.
+type KnowledgeServiceAdminKnowledgeSearchJSONRequestBody = SearchRequestBody
+
+// KnowledgeServiceAdminKnowledgeServiceChatJSONRequestBody defines body for KnowledgeServiceAdminKnowledgeServiceChat for application/json ContentType.
+type KnowledgeServiceAdminKnowledgeServiceChatJSONRequestBody = ServiceChatRequestBody
+
 // KnowledgeServiceAdminCreateSourceJSONRequestBody defines body for KnowledgeServiceAdminCreateSource for application/json ContentType.
 type KnowledgeServiceAdminCreateSourceJSONRequestBody = CreateSourceRequestBody
 
@@ -6697,9 +6718,6 @@ type KnowledgeServiceKnowledgeReportGapJSONRequestBody = ReportGapRequestBody
 
 // KnowledgeServiceKnowledgeRetrieveJSONRequestBody defines body for KnowledgeServiceKnowledgeRetrieve for application/json ContentType.
 type KnowledgeServiceKnowledgeRetrieveJSONRequestBody = RetrieveRequestBody
-
-// KnowledgeServiceKnowledgeSearchJSONRequestBody defines body for KnowledgeServiceKnowledgeSearch for application/json ContentType.
-type KnowledgeServiceKnowledgeSearchJSONRequestBody = SearchRequestBody
 
 // KnowledgeServiceKnowledgeServiceChatJSONRequestBody defines body for KnowledgeServiceKnowledgeServiceChat for application/json ContentType.
 type KnowledgeServiceKnowledgeServiceChatJSONRequestBody = ServiceChatRequestBody

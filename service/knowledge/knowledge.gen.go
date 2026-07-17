@@ -1068,12 +1068,6 @@ func (b *AdminListItemsReqBuilder) Keyword(v string) *AdminListItemsReqBuilder {
 	return b
 }
 
-// TakeoverOnly sets the "takeover_only" query parameter.
-func (b *AdminListItemsReqBuilder) TakeoverOnly(v bool) *AdminListItemsReqBuilder {
-	b.req.queryParams["takeover_only"] = strconv.FormatBool(v)
-	return b
-}
-
 // Page sets the "page" query parameter.
 func (b *AdminListItemsReqBuilder) Page(v int32) *AdminListItemsReqBuilder {
 	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
@@ -1212,6 +1206,52 @@ func (s *Service) AdminUpdateItem(ctx context.Context, req *AdminUpdateItemReq, 
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "PUT",
 		PathTemplate: "/hduhelp-neo/admin/knowledge/items",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminApplyUpdateReq is the request for AdminApplyUpdate.
+type AdminApplyUpdateReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminApplyUpdateReqBuilder builds a AdminApplyUpdateReq with a fluent setter per field.
+type AdminApplyUpdateReqBuilder struct{ req *AdminApplyUpdateReq }
+
+// NewAdminApplyUpdateReqBuilder creates a request builder for AdminApplyUpdate.
+func NewAdminApplyUpdateReqBuilder() *AdminApplyUpdateReqBuilder {
+	return &AdminApplyUpdateReqBuilder{req: &AdminApplyUpdateReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" query parameter.
+func (b *AdminApplyUpdateReqBuilder) Id(v string) *AdminApplyUpdateReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminApplyUpdateReqBuilder) Build() *AdminApplyUpdateReq { return b.req }
+
+// AdminApplyUpdateResp is the response for AdminApplyUpdate.
+type AdminApplyUpdateResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.KnowledgeItemSummary `json:"data"`
+}
+
+// AdminApplyUpdate: 应用更新为草稿
+func (s *Service) AdminApplyUpdate(ctx context.Context, req *AdminApplyUpdateReq, opts ...core.RequestOption) (*AdminApplyUpdateResp, error) {
+	resp := &AdminApplyUpdateResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/knowledge/items/apply-update",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -1578,6 +1618,98 @@ func (s *Service) AdminSetQAStrategies(ctx context.Context, req *AdminSetQAStrat
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "PUT",
 		PathTemplate: "/hduhelp-neo/admin/knowledge/qa-strategies",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminKnowledgeSearchReq is the request for AdminKnowledgeSearch.
+type AdminKnowledgeSearchReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminKnowledgeSearchReqBuilder builds a AdminKnowledgeSearchReq with a fluent setter per field.
+type AdminKnowledgeSearchReqBuilder struct{ req *AdminKnowledgeSearchReq }
+
+// NewAdminKnowledgeSearchReqBuilder creates a request builder for AdminKnowledgeSearch.
+func NewAdminKnowledgeSearchReqBuilder() *AdminKnowledgeSearchReqBuilder {
+	return &AdminKnowledgeSearchReqBuilder{req: &AdminKnowledgeSearchReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *AdminKnowledgeSearchReqBuilder) Body(body *models.SearchRequestBody) *AdminKnowledgeSearchReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminKnowledgeSearchReqBuilder) Build() *AdminKnowledgeSearchReq { return b.req }
+
+// AdminKnowledgeSearchResp is the response for AdminKnowledgeSearch.
+type AdminKnowledgeSearchResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.SearchHit `json:"data"`
+}
+
+// AdminKnowledgeSearch: 知识检索（后台试搜）
+func (s *Service) AdminKnowledgeSearch(ctx context.Context, req *AdminKnowledgeSearchReq, opts ...core.RequestOption) (*AdminKnowledgeSearchResp, error) {
+	resp := &AdminKnowledgeSearchResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/knowledge/search",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminKnowledgeServiceChatReq is the request for AdminKnowledgeServiceChat.
+type AdminKnowledgeServiceChatReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminKnowledgeServiceChatReqBuilder builds a AdminKnowledgeServiceChatReq with a fluent setter per field.
+type AdminKnowledgeServiceChatReqBuilder struct{ req *AdminKnowledgeServiceChatReq }
+
+// NewAdminKnowledgeServiceChatReqBuilder creates a request builder for AdminKnowledgeServiceChat.
+func NewAdminKnowledgeServiceChatReqBuilder() *AdminKnowledgeServiceChatReqBuilder {
+	return &AdminKnowledgeServiceChatReqBuilder{req: &AdminKnowledgeServiceChatReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *AdminKnowledgeServiceChatReqBuilder) Body(body *models.ServiceChatRequestBody) *AdminKnowledgeServiceChatReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminKnowledgeServiceChatReqBuilder) Build() *AdminKnowledgeServiceChatReq { return b.req }
+
+// AdminKnowledgeServiceChatResp is the response for AdminKnowledgeServiceChat.
+type AdminKnowledgeServiceChatResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ServiceChatData `json:"data"`
+}
+
+// AdminKnowledgeServiceChat: 快速问答（后台试搜）
+func (s *Service) AdminKnowledgeServiceChat(ctx context.Context, req *AdminKnowledgeServiceChatReq, opts ...core.RequestOption) (*AdminKnowledgeServiceChatResp, error) {
+	resp := &AdminKnowledgeServiceChatResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/knowledge/service-chat",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -2155,52 +2287,6 @@ func (s *Service) KnowledgeRetrieve(ctx context.Context, req *KnowledgeRetrieveR
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
 		PathTemplate: "/hduhelp-neo/knowledge/retrieve",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// KnowledgeSearchReq is the request for KnowledgeSearch.
-type KnowledgeSearchReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// KnowledgeSearchReqBuilder builds a KnowledgeSearchReq with a fluent setter per field.
-type KnowledgeSearchReqBuilder struct{ req *KnowledgeSearchReq }
-
-// NewKnowledgeSearchReqBuilder creates a request builder for KnowledgeSearch.
-func NewKnowledgeSearchReqBuilder() *KnowledgeSearchReqBuilder {
-	return &KnowledgeSearchReqBuilder{req: &KnowledgeSearchReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *KnowledgeSearchReqBuilder) Body(body *models.SearchRequestBody) *KnowledgeSearchReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *KnowledgeSearchReqBuilder) Build() *KnowledgeSearchReq { return b.req }
-
-// KnowledgeSearchResp is the response for KnowledgeSearch.
-type KnowledgeSearchResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.SearchHit `json:"data"`
-}
-
-// KnowledgeSearch: 知识检索
-func (s *Service) KnowledgeSearch(ctx context.Context, req *KnowledgeSearchReq, opts ...core.RequestOption) (*KnowledgeSearchResp, error) {
-	resp := &KnowledgeSearchResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/knowledge/search",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

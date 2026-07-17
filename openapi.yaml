@@ -2196,10 +2196,6 @@ paths:
                   in: query
                   schema:
                     type: string
-                - name: takeover_only
-                  in: query
-                  schema:
-                    type: boolean
                 - name: page
                   in: query
                   schema:
@@ -2272,6 +2268,27 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ItemMutateResponseBody'
+    /hduhelp-neo/admin/knowledge/items/apply-update:
+        post:
+            tags:
+                - KnowledgeService
+            summary: 应用更新为草稿
+            description: 重抓来源最新正文，写为该条目的未发布草稿，供人工确认后发布；不自动发布
+            operationId: KnowledgeService_AdminApplyUpdate
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ItemStateResponseBody'
     /hduhelp-neo/admin/knowledge/items/attach:
         post:
             tags:
@@ -2377,7 +2394,7 @@ paths:
                   schema:
                     type: string
             requestBody:
-                description: 条目状态流转：submit(提交审核) | approve | publish | archive | filter | restore | delete | takeover | release
+                description: 条目状态流转：approve | filter | mark_stale | restore | delete | resync
                 content:
                     application/json:
                         schema:
@@ -2441,6 +2458,51 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/MutateOkResponseBody'
+    /hduhelp-neo/admin/knowledge/search:
+        post:
+            tags:
+                - KnowledgeService
+            summary: 知识检索（后台试搜）
+            description: 在方舟知识库上做混合检索；支持按域子树、是否官方过滤、rerank 等调参；命中带回溯源信息与最初来源 URL
+            operationId: KnowledgeService_AdminKnowledgeSearch
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SearchRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SearchResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/knowledge/service-chat:
+        post:
+            tags:
+                - KnowledgeService
+            summary: 快速问答（后台试搜）
+            description: 走方舟知识服务的检索/问答：内置 rerank、query 改写与可选 LLM 回答；可选 strategy_name 选策略(知识服务), 空=默认；返回回答与溯源切片
+            operationId: KnowledgeService_AdminKnowledgeServiceChat
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                description: '快速问答(service_chat): 走方舟知识服务(内置 rerank/改写/可选 LLM 回答)'
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ServiceChatRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ServiceChatResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/knowledge/sources:
         get:
             tags:
@@ -5604,7 +5666,7 @@ paths:
             tags:
                 - KnowledgeService
             summary: 知识域树
-            description: 返回启用中的知识域树(含稳定 key 与祖先链)，供问答机器人构造检索过滤
+            description: 返回启用中的知识域树(含稳定 key 与祖先链)，供运营在后台构造检索过滤
             operationId: KnowledgeService_KnowledgeDomains
             security:
                 - OperatorBearerAuth: []
@@ -5646,10 +5708,10 @@ paths:
             tags:
                 - KnowledgeService
             summary: 知识检索
-            description: 对外检索:仅支持标签过滤与返回数量;命中带溯源信息
+            description: 对外检索:仅支持标签过滤与返回数量;命中带溯源信息。一方登录用户直接可用；第三方 token 需携带 knowledge:search:read
             operationId: KnowledgeService_KnowledgeRetrieve
             security:
-                - OperatorBearerAuth: []
+                - BearerAuth: []
             requestBody:
                 description: 对外检索:仅暴露标签过滤 + 返回数量
                 content:
@@ -5663,38 +5725,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SearchResponseBody'
-            x-hduhelp-http: {'auth': 'operator'}
-    /hduhelp-neo/knowledge/search:
-        post:
-            tags:
-                - KnowledgeService
-            summary: 知识检索
-            description: 在方舟知识库上做混合检索；支持按域子树、是否官方过滤；命中带回溯源信息与最初来源 URL
-            operationId: KnowledgeService_KnowledgeSearch
-            security:
-                - OperatorBearerAuth: []
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/SearchRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/SearchResponseBody'
-            x-hduhelp-http: {'auth': 'operator'}
+            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/knowledge/service-chat:
         post:
             tags:
                 - KnowledgeService
             summary: 快速问答
-            description: 走方舟知识服务的检索/问答：内置 rerank、query 改写与可选 LLM 回答；可选 strategy_name 选策略(知识服务), 空=默认；返回回答与溯源切片
+            description: 走方舟知识服务的检索/问答：内置 rerank、query 改写与可选 LLM 回答；可选 strategy_name 选策略(知识服务), 空=默认；返回回答与溯源切片。一方登录用户直接可用；第三方 token 需携带 knowledge:search:read
             operationId: KnowledgeService_KnowledgeServiceChat
             security:
-                - OperatorBearerAuth: []
+                - BearerAuth: []
             requestBody:
                 description: '快速问答(service_chat): 走方舟知识服务(内置 rerank/改写/可选 LLM 回答)'
                 content:
@@ -5708,16 +5748,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ServiceChatResponseBody'
-            x-hduhelp-http: {'auth': 'operator'}
+            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/knowledge/tags:
         get:
             tags:
                 - KnowledgeService
             summary: 可用筛选标签
-            description: 返回知识库当前可用于过滤的标签词表
+            description: 返回知识库当前可用于过滤的标签词表。一方登录用户直接可用；第三方 token 需携带 knowledge:search:read
             operationId: KnowledgeService_KnowledgeTags
             security:
-                - OperatorBearerAuth: []
+                - BearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -5725,7 +5765,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/KnowledgeTagsResponseBody'
-            x-hduhelp-http: {'auth': 'operator'}
+            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/messaging/pigeons:
         get:
             tags:
@@ -6974,6 +7014,9 @@ components:
                 expires_at:
                     type: integer
                     format: int64
+                expiry_mode:
+                    type: string
+                    description: requested | custom | never；缺省兼容旧客户端
         ApproveDeviceRespBody:
             type: object
             properties:
@@ -10526,8 +10569,6 @@ components:
                 originUrl:
                     type: string
                     description: 最初来源 仅对外展示
-                isTakeover:
-                    type: boolean
                 publishedAt:
                     type: integer
                     format: int64
@@ -10563,6 +10604,15 @@ components:
                     type: integer
                     description: 过期时间(ms)，空=长期有效
                     format: int64
+                tagRecommend:
+                    type: string
+                    description: AI 收录建议 recommend/reject（空=未判定）
+                tagRecommendReason:
+                    type: string
+                    description: AI 收录建议理由（一句话）
+                tagError:
+                    type: string
+                    description: tag_status=failed 时的失败原因（悬浮查看）
             description: KnowledgeItemSummary 是列表页展示的知识条目摘要。
         KnowledgeSourceNode:
             type: object
