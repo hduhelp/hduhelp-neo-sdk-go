@@ -5,6 +5,7 @@ package campuslife
 import (
 	"context"
 	"strconv"
+	"strings"
 
 	"github.com/hduhelp/hduhelp-neo-sdk-go/core"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/models"
@@ -15,6 +16,332 @@ type Service struct{ config *core.Config }
 
 // NewService binds the CampusLife service to a client config.
 func NewService(config *core.Config) *Service { return &Service{config: config} }
+
+// ListActivitiesReq is the request for ListActivities.
+type ListActivitiesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListActivitiesReqBuilder builds a ListActivitiesReq with a fluent setter per field.
+type ListActivitiesReqBuilder struct{ req *ListActivitiesReq }
+
+// NewListActivitiesReqBuilder creates a request builder for ListActivities.
+func NewListActivitiesReqBuilder() *ListActivitiesReqBuilder {
+	return &ListActivitiesReqBuilder{req: &ListActivitiesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Status sets the "status" query parameter.
+func (b *ListActivitiesReqBuilder) Status(v int32) *ListActivitiesReqBuilder {
+	b.req.queryParams["status"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Content sets the "content" query parameter.
+func (b *ListActivitiesReqBuilder) Content(v []string) *ListActivitiesReqBuilder {
+	b.req.queryParams["content"] = strings.Join(v, ",")
+	return b
+}
+
+// HostName sets the "hostName" query parameter.
+func (b *ListActivitiesReqBuilder) HostName(v string) *ListActivitiesReqBuilder {
+	b.req.queryParams["hostName"] = v
+	return b
+}
+
+// Page sets the "page" query parameter.
+func (b *ListActivitiesReqBuilder) Page(v int32) *ListActivitiesReqBuilder {
+	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// PageSize sets the "pageSize" query parameter.
+func (b *ListActivitiesReqBuilder) PageSize(v int32) *ListActivitiesReqBuilder {
+	b.req.queryParams["pageSize"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *ListActivitiesReqBuilder) Build() *ListActivitiesReq { return b.req }
+
+// ListActivitiesResp is the response for ListActivities.
+type ListActivitiesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ActivityPage `json:"data"`
+}
+
+// ListActivities: 查询校园活动
+func (s *Service) ListActivities(ctx context.Context, req *ListActivitiesReq, opts ...core.RequestOption) (*ListActivitiesResp, error) {
+	resp := &ListActivitiesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/campuslife/activities",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ListActivityNoticesReq is the request for ListActivityNotices.
+type ListActivityNoticesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListActivityNoticesReqBuilder builds a ListActivityNoticesReq with a fluent setter per field.
+type ListActivityNoticesReqBuilder struct{ req *ListActivityNoticesReq }
+
+// NewListActivityNoticesReqBuilder creates a request builder for ListActivityNotices.
+func NewListActivityNoticesReqBuilder() *ListActivityNoticesReqBuilder {
+	return &ListActivityNoticesReqBuilder{req: &ListActivityNoticesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *ListActivityNoticesReqBuilder) Build() *ListActivityNoticesReq { return b.req }
+
+// ListActivityNoticesResp is the response for ListActivityNotices.
+type ListActivityNoticesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.News `json:"data"`
+}
+
+// ListActivityNotices: 查询校园活动通知
+func (s *Service) ListActivityNotices(ctx context.Context, req *ListActivityNoticesReq, opts ...core.RequestOption) (*ListActivityNoticesResp, error) {
+	resp := &ListActivityNoticesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/campuslife/activities/notices",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ListActivityOrganizersReq is the request for ListActivityOrganizers.
+type ListActivityOrganizersReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListActivityOrganizersReqBuilder builds a ListActivityOrganizersReq with a fluent setter per field.
+type ListActivityOrganizersReqBuilder struct{ req *ListActivityOrganizersReq }
+
+// NewListActivityOrganizersReqBuilder creates a request builder for ListActivityOrganizers.
+func NewListActivityOrganizersReqBuilder() *ListActivityOrganizersReqBuilder {
+	return &ListActivityOrganizersReqBuilder{req: &ListActivityOrganizersReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *ListActivityOrganizersReqBuilder) Build() *ListActivityOrganizersReq { return b.req }
+
+// ListActivityOrganizersResp is the response for ListActivityOrganizers.
+type ListActivityOrganizersResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.Sponsor `json:"data"`
+}
+
+// ListActivityOrganizers: 查询校园活动主办方目录
+func (s *Service) ListActivityOrganizers(ctx context.Context, req *ListActivityOrganizersReq, opts ...core.RequestOption) (*ListActivityOrganizersResp, error) {
+	resp := &ListActivityOrganizersResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/campuslife/activities/organizers",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ListPopularActivitiesReq is the request for ListPopularActivities.
+type ListPopularActivitiesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListPopularActivitiesReqBuilder builds a ListPopularActivitiesReq with a fluent setter per field.
+type ListPopularActivitiesReqBuilder struct{ req *ListPopularActivitiesReq }
+
+// NewListPopularActivitiesReqBuilder creates a request builder for ListPopularActivities.
+func NewListPopularActivitiesReqBuilder() *ListPopularActivitiesReqBuilder {
+	return &ListPopularActivitiesReqBuilder{req: &ListPopularActivitiesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *ListPopularActivitiesReqBuilder) Build() *ListPopularActivitiesReq { return b.req }
+
+// ListPopularActivitiesResp is the response for ListPopularActivities.
+type ListPopularActivitiesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.Activity `json:"data"`
+}
+
+// ListPopularActivities: 查询热门校园活动
+func (s *Service) ListPopularActivities(ctx context.Context, req *ListPopularActivitiesReq, opts ...core.RequestOption) (*ListPopularActivitiesResp, error) {
+	resp := &ListPopularActivitiesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/campuslife/activities/popular",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ListActivityRankingsReq is the request for ListActivityRankings.
+type ListActivityRankingsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListActivityRankingsReqBuilder builds a ListActivityRankingsReq with a fluent setter per field.
+type ListActivityRankingsReqBuilder struct{ req *ListActivityRankingsReq }
+
+// NewListActivityRankingsReqBuilder creates a request builder for ListActivityRankings.
+func NewListActivityRankingsReqBuilder() *ListActivityRankingsReqBuilder {
+	return &ListActivityRankingsReqBuilder{req: &ListActivityRankingsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *ListActivityRankingsReqBuilder) Build() *ListActivityRankingsReq { return b.req }
+
+// ListActivityRankingsResp is the response for ListActivityRankings.
+type ListActivityRankingsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.Ranking `json:"data"`
+}
+
+// ListActivityRankings: 查询校园活动排行榜
+func (s *Service) ListActivityRankings(ctx context.Context, req *ListActivityRankingsReq, opts ...core.RequestOption) (*ListActivityRankingsResp, error) {
+	resp := &ListActivityRankingsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/campuslife/activities/rankings",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// GetActivityReq is the request for GetActivity.
+type GetActivityReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// GetActivityReqBuilder builds a GetActivityReq with a fluent setter per field.
+type GetActivityReqBuilder struct{ req *GetActivityReq }
+
+// NewGetActivityReqBuilder creates a request builder for GetActivity.
+func NewGetActivityReqBuilder() *GetActivityReqBuilder {
+	return &GetActivityReqBuilder{req: &GetActivityReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// ActivityId sets the "activityId" path parameter.
+func (b *GetActivityReqBuilder) ActivityId(v string) *GetActivityReqBuilder {
+	b.req.pathParams["activityId"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *GetActivityReqBuilder) Build() *GetActivityReq { return b.req }
+
+// GetActivityResp is the response for GetActivity.
+type GetActivityResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ActivityDetail `json:"data"`
+}
+
+// GetActivity: 查询校园活动详情
+func (s *Service) GetActivity(ctx context.Context, req *GetActivityReq, opts ...core.RequestOption) (*GetActivityResp, error) {
+	resp := &GetActivityResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/campuslife/activities/{activityId}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// GetActivityApplicationRequirementsReq is the request for GetActivityApplicationRequirements.
+type GetActivityApplicationRequirementsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// GetActivityApplicationRequirementsReqBuilder builds a GetActivityApplicationRequirementsReq with a fluent setter per field.
+type GetActivityApplicationRequirementsReqBuilder struct {
+	req *GetActivityApplicationRequirementsReq
+}
+
+// NewGetActivityApplicationRequirementsReqBuilder creates a request builder for GetActivityApplicationRequirements.
+func NewGetActivityApplicationRequirementsReqBuilder() *GetActivityApplicationRequirementsReqBuilder {
+	return &GetActivityApplicationRequirementsReqBuilder{req: &GetActivityApplicationRequirementsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// ActivityId sets the "activityId" path parameter.
+func (b *GetActivityApplicationRequirementsReqBuilder) ActivityId(v string) *GetActivityApplicationRequirementsReqBuilder {
+	b.req.pathParams["activityId"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *GetActivityApplicationRequirementsReqBuilder) Build() *GetActivityApplicationRequirementsReq {
+	return b.req
+}
+
+// GetActivityApplicationRequirementsResp is the response for GetActivityApplicationRequirements.
+type GetActivityApplicationRequirementsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AuditData `json:"data"`
+}
+
+// GetActivityApplicationRequirements: 查询校园活动报名要求
+func (s *Service) GetActivityApplicationRequirements(ctx context.Context, req *GetActivityApplicationRequirementsReq, opts ...core.RequestOption) (*GetActivityApplicationRequirementsResp, error) {
+	resp := &GetActivityApplicationRequirementsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/campuslife/activities/{activityId}/application-requirements",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
 
 // ListPublicCampusesReq is the request for ListPublicCampuses.
 type ListPublicCampusesReq struct {
@@ -186,6 +513,58 @@ func (s *Service) CardInfo(ctx context.Context, req *CardInfoReq, opts ...core.R
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/campuslife/card/info",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ListCareerRecruitmentReq is the request for ListCareerRecruitment.
+type ListCareerRecruitmentReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListCareerRecruitmentReqBuilder builds a ListCareerRecruitmentReq with a fluent setter per field.
+type ListCareerRecruitmentReqBuilder struct{ req *ListCareerRecruitmentReq }
+
+// NewListCareerRecruitmentReqBuilder creates a request builder for ListCareerRecruitment.
+func NewListCareerRecruitmentReqBuilder() *ListCareerRecruitmentReqBuilder {
+	return &ListCareerRecruitmentReqBuilder{req: &ListCareerRecruitmentReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Section sets the "section" query parameter.
+func (b *ListCareerRecruitmentReqBuilder) Section(v string) *ListCareerRecruitmentReqBuilder {
+	b.req.queryParams["section"] = v
+	return b
+}
+
+// Page sets the "page" query parameter.
+func (b *ListCareerRecruitmentReqBuilder) Page(v int32) *ListCareerRecruitmentReqBuilder {
+	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *ListCareerRecruitmentReqBuilder) Build() *ListCareerRecruitmentReq { return b.req }
+
+// ListCareerRecruitmentResp is the response for ListCareerRecruitment.
+type ListCareerRecruitmentResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.RecruitmentPage `json:"data"`
+}
+
+// ListCareerRecruitment: 查询最近三个月就业信息
+func (s *Service) ListCareerRecruitment(ctx context.Context, req *ListCareerRecruitmentReq, opts ...core.RequestOption) (*ListCareerRecruitmentResp, error) {
+	resp := &ListCareerRecruitmentResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/campuslife/career-guide/recruitment",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -523,6 +902,266 @@ func (s *Service) ListRooms(ctx context.Context, req *ListRoomsReq, opts ...core
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/campuslife/electric/rooms",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ListLostFoundCategoriesReq is the request for ListLostFoundCategories.
+type ListLostFoundCategoriesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListLostFoundCategoriesReqBuilder builds a ListLostFoundCategoriesReq with a fluent setter per field.
+type ListLostFoundCategoriesReqBuilder struct{ req *ListLostFoundCategoriesReq }
+
+// NewListLostFoundCategoriesReqBuilder creates a request builder for ListLostFoundCategories.
+func NewListLostFoundCategoriesReqBuilder() *ListLostFoundCategoriesReqBuilder {
+	return &ListLostFoundCategoriesReqBuilder{req: &ListLostFoundCategoriesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *ListLostFoundCategoriesReqBuilder) StaffID(v string) *ListLostFoundCategoriesReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *ListLostFoundCategoriesReqBuilder) Build() *ListLostFoundCategoriesReq { return b.req }
+
+// ListLostFoundCategoriesResp is the response for ListLostFoundCategories.
+type ListLostFoundCategoriesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.Category `json:"data"`
+}
+
+// ListLostFoundCategories: 失物类型目录
+func (s *Service) ListLostFoundCategories(ctx context.Context, req *ListLostFoundCategoriesReq, opts ...core.RequestOption) (*ListLostFoundCategoriesResp, error) {
+	resp := &ListLostFoundCategoriesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/campuslife/lost-found/categories",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SearchLostItemsReq is the request for SearchLostItems.
+type SearchLostItemsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// SearchLostItemsReqBuilder builds a SearchLostItemsReq with a fluent setter per field.
+type SearchLostItemsReqBuilder struct{ req *SearchLostItemsReq }
+
+// NewSearchLostItemsReqBuilder creates a request builder for SearchLostItems.
+func NewSearchLostItemsReqBuilder() *SearchLostItemsReqBuilder {
+	return &SearchLostItemsReqBuilder{req: &SearchLostItemsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Page sets the "page" query parameter.
+func (b *SearchLostItemsReqBuilder) Page(v int32) *SearchLostItemsReqBuilder {
+	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Keyword sets the "keyword" query parameter.
+func (b *SearchLostItemsReqBuilder) Keyword(v string) *SearchLostItemsReqBuilder {
+	b.req.queryParams["keyword"] = v
+	return b
+}
+
+// Category sets the "category" query parameter.
+func (b *SearchLostItemsReqBuilder) Category(v string) *SearchLostItemsReqBuilder {
+	b.req.queryParams["category"] = v
+	return b
+}
+
+// Scene sets the "scene" query parameter.
+func (b *SearchLostItemsReqBuilder) Scene(v string) *SearchLostItemsReqBuilder {
+	b.req.queryParams["scene"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *SearchLostItemsReqBuilder) StaffID(v string) *SearchLostItemsReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *SearchLostItemsReqBuilder) Build() *SearchLostItemsReq { return b.req }
+
+// SearchLostItemsResp is the response for SearchLostItems.
+type SearchLostItemsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.SearchPage `json:"data"`
+}
+
+// SearchLostItems: 查询校园失物
+func (s *Service) SearchLostItems(ctx context.Context, req *SearchLostItemsReq, opts ...core.RequestOption) (*SearchLostItemsResp, error) {
+	resp := &SearchLostItemsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/campuslife/lost-found/items",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ListLostFoundScenesReq is the request for ListLostFoundScenes.
+type ListLostFoundScenesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListLostFoundScenesReqBuilder builds a ListLostFoundScenesReq with a fluent setter per field.
+type ListLostFoundScenesReqBuilder struct{ req *ListLostFoundScenesReq }
+
+// NewListLostFoundScenesReqBuilder creates a request builder for ListLostFoundScenes.
+func NewListLostFoundScenesReqBuilder() *ListLostFoundScenesReqBuilder {
+	return &ListLostFoundScenesReqBuilder{req: &ListLostFoundScenesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *ListLostFoundScenesReqBuilder) StaffID(v string) *ListLostFoundScenesReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *ListLostFoundScenesReqBuilder) Build() *ListLostFoundScenesReq { return b.req }
+
+// ListLostFoundScenesResp is the response for ListLostFoundScenes.
+type ListLostFoundScenesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.Scene `json:"data"`
+}
+
+// ListLostFoundScenes: 失物场所目录
+func (s *Service) ListLostFoundScenes(ctx context.Context, req *ListLostFoundScenesReq, opts ...core.RequestOption) (*ListLostFoundScenesResp, error) {
+	resp := &ListLostFoundScenesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/campuslife/lost-found/scenes",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// GetVenueAvailabilityReq is the request for GetVenueAvailability.
+type GetVenueAvailabilityReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// GetVenueAvailabilityReqBuilder builds a GetVenueAvailabilityReq with a fluent setter per field.
+type GetVenueAvailabilityReqBuilder struct{ req *GetVenueAvailabilityReq }
+
+// NewGetVenueAvailabilityReqBuilder creates a request builder for GetVenueAvailability.
+func NewGetVenueAvailabilityReqBuilder() *GetVenueAvailabilityReqBuilder {
+	return &GetVenueAvailabilityReqBuilder{req: &GetVenueAvailabilityReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Venue sets the "venue" query parameter: 必填。要查询的球馆，可输入羽毛球、羽毛球馆、综合馆羽毛球、网球、网球馆或穹顶网球场；当前官网个人预约只开放羽毛球和网球。
+func (b *GetVenueAvailabilityReqBuilder) Venue(v string) *GetVenueAvailabilityReqBuilder {
+	b.req.queryParams["venue"] = v
+	return b
+}
+
+// Date sets the "date" query parameter: 必填。用户从 campuslife venues bookable-dates 返回的 dates 中选择的日期，格式为 YYYY-MM-DD。
+func (b *GetVenueAvailabilityReqBuilder) Date(v string) *GetVenueAvailabilityReqBuilder {
+	b.req.queryParams["date"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *GetVenueAvailabilityReqBuilder) Build() *GetVenueAvailabilityReq { return b.req }
+
+// GetVenueAvailabilityResp is the response for GetVenueAvailability.
+type GetVenueAvailabilityResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.VenueAvailabilityData `json:"data"`
+}
+
+// GetVenueAvailability: 查询选定日期的可预约时段
+func (s *Service) GetVenueAvailability(ctx context.Context, req *GetVenueAvailabilityReq, opts ...core.RequestOption) (*GetVenueAvailabilityResp, error) {
+	resp := &GetVenueAvailabilityResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/campuslife/venues/availability",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ListVenueBookableDatesReq is the request for ListVenueBookableDates.
+type ListVenueBookableDatesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListVenueBookableDatesReqBuilder builds a ListVenueBookableDatesReq with a fluent setter per field.
+type ListVenueBookableDatesReqBuilder struct{ req *ListVenueBookableDatesReq }
+
+// NewListVenueBookableDatesReqBuilder creates a request builder for ListVenueBookableDates.
+func NewListVenueBookableDatesReqBuilder() *ListVenueBookableDatesReqBuilder {
+	return &ListVenueBookableDatesReqBuilder{req: &ListVenueBookableDatesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Venue sets the "venue" query parameter: 必填。用户想预约的场馆或运动项目，可输入羽毛球、网球、乒乓球、篮球、足球、排球、击剑或形体。
+func (b *ListVenueBookableDatesReqBuilder) Venue(v string) *ListVenueBookableDatesReqBuilder {
+	b.req.queryParams["venue"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *ListVenueBookableDatesReqBuilder) Build() *ListVenueBookableDatesReq { return b.req }
+
+// ListVenueBookableDatesResp is the response for ListVenueBookableDates.
+type ListVenueBookableDatesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.VenueDatesData `json:"data"`
+}
+
+// ListVenueBookableDates: 查询场馆可预约日期
+func (s *Service) ListVenueBookableDates(ctx context.Context, req *ListVenueBookableDatesReq, opts ...core.RequestOption) (*ListVenueBookableDatesResp, error) {
+	resp := &ListVenueBookableDatesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/campuslife/venues/bookable-dates",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

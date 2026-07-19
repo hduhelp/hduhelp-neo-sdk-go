@@ -16,6 +16,183 @@ type Service struct{ config *core.Config }
 // NewService binds the Messaging service to a client config.
 func NewService(config *core.Config) *Service { return &Service{config: config} }
 
+// DingTalkBlessReviewCallbackReq is the request for DingTalkBlessReviewCallback.
+type DingTalkBlessReviewCallbackReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// DingTalkBlessReviewCallbackReqBuilder builds a DingTalkBlessReviewCallbackReq with a fluent setter per field.
+type DingTalkBlessReviewCallbackReqBuilder struct {
+	req *DingTalkBlessReviewCallbackReq
+}
+
+// NewDingTalkBlessReviewCallbackReqBuilder creates a request builder for DingTalkBlessReviewCallback.
+func NewDingTalkBlessReviewCallbackReqBuilder() *DingTalkBlessReviewCallbackReqBuilder {
+	return &DingTalkBlessReviewCallbackReqBuilder{req: &DingTalkBlessReviewCallbackReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// DdpaasSignatureTimestamp sets the "x-ddpaas-signature-timestamp" header parameter: 钉钉卡片回调签名时间戳
+func (b *DingTalkBlessReviewCallbackReqBuilder) DdpaasSignatureTimestamp(v string) *DingTalkBlessReviewCallbackReqBuilder {
+	b.req.headers["x-ddpaas-signature-timestamp"] = v
+	return b
+}
+
+// DdpaasSignature sets the "x-ddpaas-signature" header parameter: 钉钉卡片回调 HMAC-SHA256 签名
+func (b *DingTalkBlessReviewCallbackReqBuilder) DdpaasSignature(v string) *DingTalkBlessReviewCallbackReqBuilder {
+	b.req.headers["x-ddpaas-signature"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *DingTalkBlessReviewCallbackReqBuilder) Body(body *models.DingTalkReviewCallbackRequestBody) *DingTalkBlessReviewCallbackReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *DingTalkBlessReviewCallbackReqBuilder) Build() *DingTalkBlessReviewCallbackReq { return b.req }
+
+// DingTalkBlessReviewCallbackResp is the response for DingTalkBlessReviewCallback.
+type DingTalkBlessReviewCallbackResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// DingTalkBlessReviewCallback: 钉钉祝福人工审核回调
+func (s *Service) DingTalkBlessReviewCallback(ctx context.Context, req *DingTalkBlessReviewCallbackReq, opts ...core.RequestOption) (*DingTalkBlessReviewCallbackResp, error) {
+	resp := &DingTalkBlessReviewCallbackResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/callbacks/dingtalk/blessing-review",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// DingTalkMessageReviewCallbackReq is the request for DingTalkMessageReviewCallback.
+type DingTalkMessageReviewCallbackReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// DingTalkMessageReviewCallbackReqBuilder builds a DingTalkMessageReviewCallbackReq with a fluent setter per field.
+type DingTalkMessageReviewCallbackReqBuilder struct {
+	req *DingTalkMessageReviewCallbackReq
+}
+
+// NewDingTalkMessageReviewCallbackReqBuilder creates a request builder for DingTalkMessageReviewCallback.
+func NewDingTalkMessageReviewCallbackReqBuilder() *DingTalkMessageReviewCallbackReqBuilder {
+	return &DingTalkMessageReviewCallbackReqBuilder{req: &DingTalkMessageReviewCallbackReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// DdpaasSignatureTimestamp sets the "x-ddpaas-signature-timestamp" header parameter: 钉钉卡片回调签名时间戳
+func (b *DingTalkMessageReviewCallbackReqBuilder) DdpaasSignatureTimestamp(v string) *DingTalkMessageReviewCallbackReqBuilder {
+	b.req.headers["x-ddpaas-signature-timestamp"] = v
+	return b
+}
+
+// DdpaasSignature sets the "x-ddpaas-signature" header parameter: 钉钉卡片回调 HMAC-SHA256 签名
+func (b *DingTalkMessageReviewCallbackReqBuilder) DdpaasSignature(v string) *DingTalkMessageReviewCallbackReqBuilder {
+	b.req.headers["x-ddpaas-signature"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *DingTalkMessageReviewCallbackReqBuilder) Body(body *models.DingTalkReviewCallbackRequestBody) *DingTalkMessageReviewCallbackReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *DingTalkMessageReviewCallbackReqBuilder) Build() *DingTalkMessageReviewCallbackReq {
+	return b.req
+}
+
+// DingTalkMessageReviewCallbackResp is the response for DingTalkMessageReviewCallback.
+type DingTalkMessageReviewCallbackResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// DingTalkMessageReviewCallback: 钉钉传话复核回调
+func (s *Service) DingTalkMessageReviewCallback(ctx context.Context, req *DingTalkMessageReviewCallbackReq, opts ...core.RequestOption) (*DingTalkMessageReviewCallbackResp, error) {
+	resp := &DingTalkMessageReviewCallbackResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/callbacks/dingtalk/message-review",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// DingTalkPigeonCallbackReq is the request for DingTalkPigeonCallback.
+type DingTalkPigeonCallbackReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// DingTalkPigeonCallbackReqBuilder builds a DingTalkPigeonCallbackReq with a fluent setter per field.
+type DingTalkPigeonCallbackReqBuilder struct{ req *DingTalkPigeonCallbackReq }
+
+// NewDingTalkPigeonCallbackReqBuilder creates a request builder for DingTalkPigeonCallback.
+func NewDingTalkPigeonCallbackReqBuilder() *DingTalkPigeonCallbackReqBuilder {
+	return &DingTalkPigeonCallbackReqBuilder{req: &DingTalkPigeonCallbackReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// DdpaasSignatureTimestamp sets the "x-ddpaas-signature-timestamp" header parameter: 钉钉卡片回调签名时间戳
+func (b *DingTalkPigeonCallbackReqBuilder) DdpaasSignatureTimestamp(v string) *DingTalkPigeonCallbackReqBuilder {
+	b.req.headers["x-ddpaas-signature-timestamp"] = v
+	return b
+}
+
+// DdpaasSignature sets the "x-ddpaas-signature" header parameter: 钉钉卡片回调 HMAC-SHA256 签名
+func (b *DingTalkPigeonCallbackReqBuilder) DdpaasSignature(v string) *DingTalkPigeonCallbackReqBuilder {
+	b.req.headers["x-ddpaas-signature"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *DingTalkPigeonCallbackReqBuilder) Body(body *models.DingTalkPigeonCallbackRequestBody) *DingTalkPigeonCallbackReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *DingTalkPigeonCallbackReqBuilder) Build() *DingTalkPigeonCallbackReq { return b.req }
+
+// DingTalkPigeonCallbackResp is the response for DingTalkPigeonCallback.
+type DingTalkPigeonCallbackResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// DingTalkPigeonCallback: 钉钉传话卡片拉黑回调
+func (s *Service) DingTalkPigeonCallback(ctx context.Context, req *DingTalkPigeonCallbackReq, opts ...core.RequestOption) (*DingTalkPigeonCallbackResp, error) {
+	resp := &DingTalkPigeonCallbackResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/callbacks/dingtalk/pigeon",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // ListPigeonsReq is the request for ListPigeons.
 type ListPigeonsReq struct {
 	pathParams  map[string]string
@@ -65,91 +242,6 @@ func (s *Service) ListPigeons(ctx context.Context, req *ListPigeonsReq, opts ...
 	resp := &ListPigeonsResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/messaging/pigeons",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// SendPigeonReq is the request for SendPigeon.
-type SendPigeonReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// SendPigeonReqBuilder builds a SendPigeonReq with a fluent setter per field.
-type SendPigeonReqBuilder struct{ req *SendPigeonReq }
-
-// NewSendPigeonReqBuilder creates a request builder for SendPigeon.
-func NewSendPigeonReqBuilder() *SendPigeonReqBuilder {
-	return &SendPigeonReqBuilder{req: &SendPigeonReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Build finalizes the request.
-func (b *SendPigeonReqBuilder) Build() *SendPigeonReq { return b.req }
-
-// SendPigeonResp is the response for SendPigeon.
-type SendPigeonResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.MessageItem `json:"data"`
-}
-
-// SendPigeon: 发送校友传话
-func (s *Service) SendPigeon(ctx context.Context, req *SendPigeonReq, opts ...core.RequestOption) (*SendPigeonResp, error) {
-	resp := &SendPigeonResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/messaging/pigeons",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// RecallPigeonReq is the request for RecallPigeon.
-type RecallPigeonReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// RecallPigeonReqBuilder builds a RecallPigeonReq with a fluent setter per field.
-type RecallPigeonReqBuilder struct{ req *RecallPigeonReq }
-
-// NewRecallPigeonReqBuilder creates a request builder for RecallPigeon.
-func NewRecallPigeonReqBuilder() *RecallPigeonReqBuilder {
-	return &RecallPigeonReqBuilder{req: &RecallPigeonReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Id sets the "id" query parameter.
-func (b *RecallPigeonReqBuilder) Id(v string) *RecallPigeonReqBuilder {
-	b.req.queryParams["id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *RecallPigeonReqBuilder) Build() *RecallPigeonReq { return b.req }
-
-// RecallPigeonResp is the response for RecallPigeon.
-type RecallPigeonResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-}
-
-// RecallPigeon: 撤回校友传话
-func (s *Service) RecallPigeon(ctx context.Context, req *RecallPigeonReq, opts ...core.RequestOption) (*RecallPigeonResp, error) {
-	resp := &RecallPigeonResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "DELETE",
 		PathTemplate: "/hduhelp-neo/messaging/pigeons",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
@@ -227,6 +319,12 @@ func NewAddBlacklistReqBuilder() *AddBlacklistReqBuilder {
 	return &AddBlacklistReqBuilder{req: &AddBlacklistReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
+// Body sets the request body.
+func (b *AddBlacklistReqBuilder) Body(body *models.BlacklistTargetRequestBody) *AddBlacklistReqBuilder {
+	b.req.body = body
+	return b
+}
+
 // Build finalizes the request.
 func (b *AddBlacklistReqBuilder) Build() *AddBlacklistReq { return b.req }
 
@@ -266,7 +364,7 @@ func NewRemoveBlacklistReqBuilder() *RemoveBlacklistReqBuilder {
 	return &RemoveBlacklistReqBuilder{req: &RemoveBlacklistReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// StaffId sets the "staff-id" query parameter.
+// StaffId sets the "staff-id" query parameter: 必填。要从本人校友传话黑名单移除的学号。
 func (b *RemoveBlacklistReqBuilder) StaffId(v string) *RemoveBlacklistReqBuilder {
 	b.req.queryParams["staff-id"] = v
 	return b
@@ -287,6 +385,103 @@ func (s *Service) RemoveBlacklist(ctx context.Context, req *RemoveBlacklistReq, 
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "DELETE",
 		PathTemplate: "/hduhelp-neo/messaging/pigeons/blacklist",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// RecallPigeonReq is the request for RecallPigeon.
+type RecallPigeonReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// RecallPigeonReqBuilder builds a RecallPigeonReq with a fluent setter per field.
+type RecallPigeonReqBuilder struct{ req *RecallPigeonReq }
+
+// NewRecallPigeonReqBuilder creates a request builder for RecallPigeon.
+func NewRecallPigeonReqBuilder() *RecallPigeonReqBuilder {
+	return &RecallPigeonReqBuilder{req: &RecallPigeonReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" query parameter: 必填。要撤回的校友传话 ID；仅发送者可撤回且发送时间不得超过 24 小时。
+func (b *RecallPigeonReqBuilder) Id(v string) *RecallPigeonReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *RecallPigeonReqBuilder) Build() *RecallPigeonReq { return b.req }
+
+// RecallPigeonResp is the response for RecallPigeon.
+type RecallPigeonResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// RecallPigeon: 撤回24小时内的校友传话
+func (s *Service) RecallPigeon(ctx context.Context, req *RecallPigeonReq, opts ...core.RequestOption) (*RecallPigeonResp, error) {
+	resp := &RecallPigeonResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/messaging/pigeons/recall",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SendPigeonReq is the request for SendPigeon.
+type SendPigeonReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// SendPigeonReqBuilder builds a SendPigeonReq with a fluent setter per field.
+type SendPigeonReqBuilder struct{ req *SendPigeonReq }
+
+// NewSendPigeonReqBuilder creates a request builder for SendPigeon.
+func NewSendPigeonReqBuilder() *SendPigeonReqBuilder {
+	return &SendPigeonReqBuilder{req: &SendPigeonReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// IdempotencyKey sets the "Idempotency-Key" header parameter: 所有调用方必填；客户端或 AI 必须在首次调用前自动生成 UUID v4，不要询问用户；同一次逻辑发送及其全部重试必须复用该值，发送新消息必须生成新值；8-128 位，仅允许字母、数字、-_.:
+func (b *SendPigeonReqBuilder) IdempotencyKey(v string) *SendPigeonReqBuilder {
+	b.req.headers["Idempotency-Key"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *SendPigeonReqBuilder) Body(body *models.SendPigeonRequestBody) *SendPigeonReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *SendPigeonReqBuilder) Build() *SendPigeonReq { return b.req }
+
+// SendPigeonResp is the response for SendPigeon.
+type SendPigeonResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.MessageItem `json:"data"`
+}
+
+// SendPigeon: 发送校友传话
+func (s *Service) SendPigeon(ctx context.Context, req *SendPigeonReq, opts ...core.RequestOption) (*SendPigeonResp, error) {
+	resp := &SendPigeonResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/messaging/pigeons/send",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -353,46 +548,6 @@ func (s *Service) ListWishes(ctx context.Context, req *ListWishesReq, opts ...co
 	return resp, err
 }
 
-// SendWishReq is the request for SendWish.
-type SendWishReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// SendWishReqBuilder builds a SendWishReq with a fluent setter per field.
-type SendWishReqBuilder struct{ req *SendWishReq }
-
-// NewSendWishReqBuilder creates a request builder for SendWish.
-func NewSendWishReqBuilder() *SendWishReqBuilder {
-	return &SendWishReqBuilder{req: &SendWishReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Build finalizes the request.
-func (b *SendWishReqBuilder) Build() *SendWishReq { return b.req }
-
-// SendWishResp is the response for SendWish.
-type SendWishResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.SendWishData `json:"data"`
-}
-
-// SendWish: 发送生日或节日祝福
-func (s *Service) SendWish(ctx context.Context, req *SendWishReq, opts ...core.RequestOption) (*SendWishResp, error) {
-	resp := &SendWishResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/messaging/wishes",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
 // BirthdayBaseReq is the request for BirthdayBase.
 type BirthdayBaseReq struct {
 	pathParams  map[string]string
@@ -425,6 +580,58 @@ func (s *Service) BirthdayBase(ctx context.Context, req *BirthdayBaseReq, opts .
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/messaging/wishes/base",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SendWishReq is the request for SendWish.
+type SendWishReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// SendWishReqBuilder builds a SendWishReq with a fluent setter per field.
+type SendWishReqBuilder struct{ req *SendWishReq }
+
+// NewSendWishReqBuilder creates a request builder for SendWish.
+func NewSendWishReqBuilder() *SendWishReqBuilder {
+	return &SendWishReqBuilder{req: &SendWishReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// IdempotencyKey sets the "Idempotency-Key" header parameter: 所有调用方必填；客户端或 AI 必须在首次调用前自动生成 UUID v4，不要询问用户；同一次逻辑发送及其全部重试必须复用该值，发送新消息必须生成新值；8-128 位，仅允许字母、数字、-_.:
+func (b *SendWishReqBuilder) IdempotencyKey(v string) *SendWishReqBuilder {
+	b.req.headers["Idempotency-Key"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *SendWishReqBuilder) Body(body *models.SendWishRequestBody) *SendWishReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *SendWishReqBuilder) Build() *SendWishReq { return b.req }
+
+// SendWishResp is the response for SendWish.
+type SendWishResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.SendWishData `json:"data"`
+}
+
+// SendWish: 发送生日或节日祝福
+func (s *Service) SendWish(ctx context.Context, req *SendWishReq, opts ...core.RequestOption) (*SendWishResp, error) {
+	resp := &SendWishResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/messaging/wishes/send",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

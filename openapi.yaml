@@ -3222,6 +3222,270 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SetUserDefaultIdentityResponseBody'
+    /hduhelp-neo/callbacks/dingtalk/blessing-review:
+        post:
+            tags:
+                - MessagingService
+            summary: 钉钉祝福人工审核回调
+            description: 仅供祝福审核互动卡片调用；审核通过后激活对应投递，拒绝后保持取消；不属于管理端或 CLI 接口
+            operationId: MessagingService_DingTalkBlessReviewCallback
+            security: []
+            parameters:
+                - name: x-ddpaas-signature-timestamp
+                  in: header
+                  description: 钉钉卡片回调签名时间戳
+                  required: true
+                  schema:
+                    type: string
+                - name: x-ddpaas-signature
+                  in: header
+                  description: 钉钉卡片回调 HMAC-SHA256 签名
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                description: |-
+                    DingTalk sends this payload when an operator acts on a blessing or pigeon
+                    review card, matching happy-birthday-be's original callback envelope.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/DingTalkReviewCallbackRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DingTalkBlessReviewCallbackResponseBody'
+            x-hduhelp-http: {'auth': 'webhook'}
+    /hduhelp-neo/callbacks/dingtalk/message-review:
+        post:
+            tags:
+                - MessagingService
+            summary: 钉钉传话复核回调
+            description: 仅供钉钉互动卡片 callbackRouteKey 调用；校验 x-ddpaas-signature、签名时间戳及 corpId 后处理管理员复核撤回
+            operationId: MessagingService_DingTalkMessageReviewCallback
+            security: []
+            parameters:
+                - name: x-ddpaas-signature-timestamp
+                  in: header
+                  description: 钉钉卡片回调签名时间戳
+                  required: true
+                  schema:
+                    type: string
+                - name: x-ddpaas-signature
+                  in: header
+                  description: 钉钉卡片回调 HMAC-SHA256 签名
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                description: |-
+                    DingTalk sends this payload when an operator acts on a blessing or pigeon
+                    review card, matching happy-birthday-be's original callback envelope.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/DingTalkReviewCallbackRequestBody'
+            responses:
+                "200":
+                    description: This is a DingTalk callback response, not a Neo {code,msg,data} envelope.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DingTalkReviewCallbackResponseBody'
+            x-hduhelp-http: {'auth': 'webhook'}
+    /hduhelp-neo/callbacks/dingtalk/pigeon:
+        post:
+            tags:
+                - MessagingService
+            summary: 钉钉传话卡片拉黑回调
+            description: 收件人从钉钉传话卡将发送人加入黑名单；校验 x-ddpaas-signature、签名时间戳及 corpId 后处理
+            operationId: MessagingService_DingTalkPigeonCallback
+            security: []
+            parameters:
+                - name: x-ddpaas-signature-timestamp
+                  in: header
+                  description: 钉钉卡片回调签名时间戳
+                  required: true
+                  schema:
+                    type: string
+                - name: x-ddpaas-signature
+                  in: header
+                  description: 钉钉卡片回调 HMAC-SHA256 签名
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                description: |-
+                    DingTalk recipient-card callback. The server resolves outTrackId back to the
+                    persisted message and treats userId as the clicking recipient; card value/private
+                    params are deliberately ignored as authorization inputs.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/DingTalkPigeonCallbackRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DingTalkPigeonCallbackResponseBody'
+            x-hduhelp-http: {'auth': 'webhook'}
+    /hduhelp-neo/campuslife/activities:
+        get:
+            tags:
+                - CampusLifeService
+            summary: 查询校园活动
+            description: status=5 为全部，8 报名中，9 即将开始，10 签到中，11 待签退，12 签退中。
+            operationId: CampusLifeService_ListActivities
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: status
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: content
+                  in: query
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - name: hostName
+                  in: query
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ActivityPageResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/campuslife/activities/notices:
+        get:
+            tags:
+                - CampusLifeService
+            summary: 查询校园活动通知
+            operationId: CampusLifeService_ListActivityNotices
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NewsResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/campuslife/activities/organizers:
+        get:
+            tags:
+                - CampusLifeService
+            summary: 查询校园活动主办方目录
+            operationId: CampusLifeService_ListActivityOrganizers
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SponsorResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/campuslife/activities/popular:
+        get:
+            tags:
+                - CampusLifeService
+            summary: 查询热门校园活动
+            operationId: CampusLifeService_ListPopularActivities
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PopularResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/campuslife/activities/rankings:
+        get:
+            tags:
+                - CampusLifeService
+            summary: 查询校园活动排行榜
+            description: 响应排除榜首学号，仅返回榜单名、姓名和类型。
+            operationId: CampusLifeService_ListActivityRankings
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RankingResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/campuslife/activities/{activityId}:
+        get:
+            tags:
+                - CampusLifeService
+            summary: 查询校园活动详情
+            operationId: CampusLifeService_GetActivity
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: activityId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ActivityDetailResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/campuslife/activities/{activityId}/application-requirements:
+        get:
+            tags:
+                - CampusLifeService
+            summary: 查询校园活动报名要求
+            operationId: CampusLifeService_GetActivityApplicationRequirements
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: activityId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AuditResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/campuslife/campuses:
         get:
             tags:
@@ -3300,6 +3564,33 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/CardInfoResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/campuslife/career-guide/recruitment:
+        get:
+            tags:
+                - CampusLifeService
+            summary: 查询最近三个月就业信息
+            description: section 支持 campus(招聘公告)、jobfair(招聘会)、teachin(宣讲会)，按 hasMore/nextPage 翻页。
+            operationId: CampusLifeService_ListCareerRecruitment
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: section
+                  in: query
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RecruitmentResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/campuslife/electric/balance:
         get:
@@ -3445,6 +3736,141 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ElectricRoomListResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/campuslife/lost-found/categories:
+        get:
+            tags:
+                - CampusLifeService
+            summary: 失物类型目录
+            description: 返回失物招领上游的真实类型 ID 和名称。
+            operationId: CampusLifeService_ListLostFoundCategories
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CategoryListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/campuslife/lost-found/items:
+        get:
+            tags:
+                - CampusLifeService
+            summary: 查询校园失物
+            description: category/scene 可使用目录名称或真实数字 ID；空值表示全部。
+            operationId: CampusLifeService_SearchLostItems
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: keyword
+                  in: query
+                  schema:
+                    type: string
+                - name: category
+                  in: query
+                  schema:
+                    type: string
+                - name: scene
+                  in: query
+                  schema:
+                    type: string
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SearchResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/campuslife/lost-found/scenes:
+        get:
+            tags:
+                - CampusLifeService
+            summary: 失物场所目录
+            description: 返回失物招领上游的真实场所 ID 和名称。
+            operationId: CampusLifeService_ListLostFoundScenes
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SceneListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/campuslife/venues/availability:
+        get:
+            tags:
+                - CampusLifeService
+            summary: 查询选定日期的可预约时段
+            description: 仅在用户从可预约日期接口返回的 dates 中选定日期后调用，传入同一场馆和所选日期，返回具体可预约时间段、空闲场地数量及编号。若场馆明确不可预约则直接返回不可预约；查询上游失败时只返回安全提示，引导用户前往场馆预约小程序查看。
+            operationId: CampusLifeService_GetVenueAvailability
+            security: []
+            parameters:
+                - name: venue
+                  in: query
+                  description: 必填。要查询的球馆，可输入羽毛球、羽毛球馆、综合馆羽毛球、网球、网球馆或穹顶网球场；当前官网个人预约只开放羽毛球和网球。
+                  required: true
+                  schema:
+                    type: string
+                - name: date
+                  in: query
+                  description: 必填。用户从 campuslife venues bookable-dates 返回的 dates 中选择的日期，格式为 YYYY-MM-DD。
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/VenueAvailabilityResponseBody'
+            x-hduhelp-http: {'auth': 'public'}
+    /hduhelp-neo/campuslife/venues/bookable-dates:
+        get:
+            tags:
+                - CampusLifeService
+            summary: 查询场馆可预约日期
+            description: 用户询问某个场馆什么时候可以预约时首先调用，只传场馆。venueBookable=false 表示该场馆当前明确不可预约，直接告知用户且不要继续查询；venueBookable=true 时向用户展示 dates 并等待选择，然后再查询所选日期的具体可预约时段。dates 在缓存未命中时根据上游服务器时间、days_can_appoint、开放规则和实时场地占用计算，按上海时区换日；日期汇总最多缓存 1 小时，具体场次仍由时段接口实时查询。
+            operationId: CampusLifeService_ListVenueBookableDates
+            security: []
+            parameters:
+                - name: venue
+                  in: query
+                  description: 必填。用户想预约的场馆或运动项目，可输入羽毛球、网球、乒乓球、篮球、足球、排球、击剑或形体。
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/VenueDatesResponseBody'
+            x-hduhelp-http: {'auth': 'public'}
     /hduhelp-neo/campuslife/weather/forecast:
         get:
             tags:
@@ -4149,7 +4575,7 @@ paths:
             summary: 吊销课表ICS订阅令牌
             operationId: FeedService_RevokeIcsToken
             security:
-                - NativeSessionAuth: []
+                - BearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -4157,7 +4583,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/IcsLinkResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
+            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/feed/ics-link/rotate:
         post:
             tags:
@@ -4165,7 +4591,7 @@ paths:
             summary: 轮换课表ICS订阅令牌(返回新链接)
             operationId: FeedService_RotateIcsToken
             security:
-                - NativeSessionAuth: []
+                - BearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -4173,7 +4599,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/IcsLinkResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
+            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/feed/schedule:
         get:
             tags:
@@ -5098,10 +5524,10 @@ paths:
             tags:
                 - IdentityService
             summary: 查询会话列表
-            description: 获取当前用户的所有活跃会话列表，包括设备信息和登录时间。当前设备由 Bearer access token 对应的会话标记，无需提交 refresh token。需要用户已登录。
+            description: 获取当前用户的所有活跃会话列表，包括设备信息和登录时间。原生会话会标记当前设备，PAT/UAT 调用时无当前会话标记。需要用户 Bearer。
             operationId: IdentityService_ListSessions
             security:
-                - NativeSessionAuth: []
+                - BearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -5109,7 +5535,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ListSessionsResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
+            x-hduhelp-http: {'auth': 'bearer'}
         delete:
             tags:
                 - IdentityService
@@ -5172,10 +5598,10 @@ paths:
             tags:
                 - IdentityService
             summary: 已授权应用列表
-            description: 返回当前登录用户已授权的应用列表（client_id、名称、描述、scope），供用户自助管理已连接应用。需要用户已登录。
+            description: 返回当前用户已授权的应用列表（client_id、名称、描述、scope），供用户自助管理已连接应用。需要用户 Bearer。
             operationId: IdentityService_ListAuthorizedApps
             security:
-                - NativeSessionAuth: []
+                - BearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -5183,7 +5609,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ListAuthorizedAppsResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
+            x-hduhelp-http: {'auth': 'bearer'}
         delete:
             tags:
                 - IdentityService
@@ -5320,10 +5746,10 @@ paths:
             tags:
                 - IdentityService
             summary: 绑定状态汇总
-            description: 返回当前用户各类绑定状态：全部已知 provider 的绑定与否、手机/邮箱是否绑定（脱敏）、是否已设置密码、拥有哪些校园身份类型。需登录。
+            description: 返回当前用户各类绑定状态：全部已知 provider 的绑定与否、手机/邮箱是否绑定（脱敏）、是否已设置密码、拥有哪些校园身份类型。需要用户 Bearer。
             operationId: IdentityService_GetBindStatus
             security:
-                - NativeSessionAuth: []
+                - BearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -5331,16 +5757,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/GetBindStatusResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
+            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/identity/default-identity:
         put:
             tags:
                 - IdentityService
             summary: 设置默认主身份
-            description: 把 base/本科生/研究生/教职工设为当前用户的默认身份；校园身份必须已绑定，同时同步 campus_identities.is_primary。仅原生会话可调用。
+            description: 把 base/本科生/研究生/教职工设为当前用户的默认身份；校园身份必须已绑定，同时同步 campus_identities.is_primary。需要用户 Bearer。
             operationId: IdentityService_SetDefaultIdentity
             security:
-                - NativeSessionAuth: []
+                - BearerAuth: []
             requestBody:
                 description: '---- 设置默认/主身份 ----'
                 content:
@@ -5354,7 +5780,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SetDefaultIdentityResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
+            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/identity/login/bind:
         get:
             tags:
@@ -5643,10 +6069,10 @@ paths:
             tags:
                 - IdentityService
             summary: 设置当前所在校区
-            description: 设置当前用户的当前所在校区(campuses.id)，天气据此解析坐标；campus_id 留空即清除，回落默认校区。仅登录用户可调用。
+            description: 设置当前用户的当前所在校区(campuses.id)，天气据此解析坐标；campus_id 留空即清除，回落默认校区。需要用户 Bearer。
             operationId: IdentityService_SetCurrentCampus
             security:
-                - NativeSessionAuth: []
+                - BearerAuth: []
             requestBody:
                 description: '---- 设置当前所在校区 ----'
                 content:
@@ -5660,7 +6086,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SetCurrentCampusResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
+            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/knowledge/domains:
         get:
             tags:
@@ -5773,7 +6199,7 @@ paths:
             summary: 校友传话收件箱或发件箱
             operationId: MessagingService_ListPigeons
             security:
-                - NativeSessionAuth: []
+                - BearerAuth: []
             parameters:
                 - name: box
                   in: query
@@ -5796,42 +6222,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/MessagePageResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
-        post:
-            tags:
-                - MessagingService
-            summary: 发送校友传话
-            operationId: MessagingService_SendPigeon
-            security:
-                - NativeSessionAuth: []
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/SendPigeonResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
-        delete:
-            tags:
-                - MessagingService
-            summary: 撤回校友传话
-            operationId: MessagingService_RecallPigeon
-            security:
-                - NativeSessionAuth: []
-            parameters:
-                - name: id
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/SimpleResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
+            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/messaging/pigeons/blacklist:
         get:
             tags:
@@ -5839,7 +6230,7 @@ paths:
             summary: 校友传话黑名单
             operationId: MessagingService_ListBlacklist
             security:
-                - NativeSessionAuth: []
+                - BearerAuth: []
             parameters:
                 - name: page
                   in: query
@@ -5858,14 +6249,19 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/BlacklistResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
+            x-hduhelp-http: {'auth': 'bearer'}
         post:
             tags:
                 - MessagingService
             summary: 添加校友传话黑名单
             operationId: MessagingService_AddBlacklist
             security:
-                - NativeSessionAuth: []
+                - BearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/BlacklistTargetRequestBody'
             responses:
                 "200":
                     description: Successful response
@@ -5873,17 +6269,19 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SimpleResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
+            x-hduhelp-http: {'auth': 'bearer'}
         delete:
             tags:
                 - MessagingService
             summary: 移除校友传话黑名单
             operationId: MessagingService_RemoveBlacklist
             security:
-                - NativeSessionAuth: []
+                - BearerAuth: []
             parameters:
                 - name: staff-id
                   in: query
+                  description: 必填。要从本人校友传话黑名单移除的学号。
+                  required: true
                   schema:
                     type: string
             responses:
@@ -5893,7 +6291,58 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SimpleResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/messaging/pigeons/recall:
+        post:
+            tags:
+                - MessagingService
+            summary: 撤回24小时内的校友传话
+            operationId: MessagingService_RecallPigeon
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: query
+                  description: 必填。要撤回的校友传话 ID；仅发送者可撤回且发送时间不得超过 24 小时。
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SimpleResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/messaging/pigeons/send:
+        post:
+            tags:
+                - MessagingService
+            summary: 发送校友传话
+            operationId: MessagingService_SendPigeon
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: Idempotency-Key
+                  in: header
+                  description: '所有调用方必填；客户端或 AI 必须在首次调用前自动生成 UUID v4，不要询问用户；同一次逻辑发送及其全部重试必须复用该值，发送新消息必须生成新值；8-128 位，仅允许字母、数字、-_.:'
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SendPigeonRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SendPigeonResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/messaging/wishes:
         get:
             tags:
@@ -5901,7 +6350,7 @@ paths:
             summary: 祝福历史
             operationId: MessagingService_ListWishes
             security:
-                - NativeSessionAuth: []
+                - BearerAuth: []
             parameters:
                 - name: kind
                   in: query
@@ -5924,22 +6373,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/MessagePageResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
-        post:
-            tags:
-                - MessagingService
-            summary: 发送生日或节日祝福
-            operationId: MessagingService_SendWish
-            security:
-                - NativeSessionAuth: []
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/SendWishResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
+            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/messaging/wishes/base:
         get:
             tags:
@@ -5947,7 +6381,7 @@ paths:
             summary: 生日祝福首页数据
             operationId: MessagingService_BirthdayBase
             security:
-                - NativeSessionAuth: []
+                - BearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -5955,7 +6389,35 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/BirthdayBaseResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/messaging/wishes/send:
+        post:
+            tags:
+                - MessagingService
+            summary: 发送生日或节日祝福
+            operationId: MessagingService_SendWish
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: Idempotency-Key
+                  in: header
+                  description: '所有调用方必填；客户端或 AI 必须在首次调用前自动生成 UUID v4，不要询问用户；同一次逻辑发送及其全部重试必须复用该值，发送新消息必须生成新值；8-128 位，仅允许字母、数字、-_.:'
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SendWishRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SendWishResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/open-apis/auth/app-access-token/internal:
         post:
             tags:
@@ -6544,6 +7006,115 @@ components:
                 semester:
                     type: string
                     description: 学期号 "1"/"2"/"3"（对齐 SchoolTime/SemesterInfo）
+        Activity:
+            type: object
+            properties:
+                activityID:
+                    type: string
+                activityName:
+                    type: string
+                activityContent:
+                    type: string
+                activityType:
+                    type: string
+                activityShape:
+                    type: string
+                activityStatus:
+                    type: string
+                activityStatusName:
+                    type: string
+                activityStartTime:
+                    type: string
+                activityEndTime:
+                    type: string
+                applyEndTime:
+                    type: string
+                position:
+                    type: string
+                posterURL:
+                    type: string
+                description:
+                    type: string
+                materials:
+                    type: string
+                movementArea:
+                    type: string
+                hostName:
+                    type: string
+                cooperativeUnitName:
+                    type: string
+                applyCount:
+                    type: integer
+                    format: int32
+                totalCount:
+                    type: integer
+                    format: int32
+                size:
+                    type: string
+                isNeedApply:
+                    type: string
+                gradeRestricted:
+                    type: string
+                majorsRestricted:
+                    type: string
+                unitRestricted:
+                    type: string
+                unitRestrictedName:
+                    type: string
+                stuOrgRestricted:
+                    type: string
+                stuOrgRestrictedName:
+                    type: string
+                needAudit:
+                    type: string
+                needReport:
+                    type: string
+        ActivityDetail:
+            type: object
+            properties:
+                activity:
+                    $ref: '#/components/schemas/Activity'
+        ActivityDetailResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ActivityDetail'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ActivityPage:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Activity'
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                total:
+                    type: integer
+                    format: int32
+                hasMore:
+                    type: boolean
+                nextPage:
+                    type: integer
+                    format: int32
+        ActivityPageResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ActivityPage'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AddChunkRequestBody:
             type: object
             properties:
@@ -7068,6 +7639,13 @@ components:
                 mostFrequentFloorCount:
                     type: integer
                     format: int32
+        AuditData:
+            type: object
+            properties:
+                activityID:
+                    type: string
+                auditRequired:
+                    type: boolean
         AuditEntry:
             type: object
             properties:
@@ -7099,6 +7677,16 @@ components:
                 ============================================================================
                 管理端：审计历史 与 总览
                 ============================================================================
+        AuditResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AuditData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AuthConfigData:
             type: object
             properties:
@@ -7575,6 +8163,27 @@ components:
                     format: int64
                 msg:
                     type: string
+        BlacklistTargetRequestBody:
+            type: object
+            properties:
+                staffId:
+                    type: string
+        BlessReviewCardData:
+            type: object
+            properties:
+                cardParamMap:
+                    $ref: '#/components/schemas/BlessReviewCardParams'
+                cardMediaIdParamMap:
+                    type: object
+                    additionalProperties:
+                        type: string
+        BlessReviewCardParams:
+            type: object
+            properties:
+                reviewed:
+                    type: string
+                pass:
+                    type: string
         BookItem:
             type: object
             properties:
@@ -7778,11 +8387,38 @@ components:
                     format: int64
                 msg:
                     type: string
+        CardUpdateOptions:
+            type: object
+            properties:
+                updateCardDataByKey:
+                    type: boolean
+                updatePrivateDataByKey:
+                    type: boolean
         CarrierResponseBody:
             type: object
             properties:
                 data:
                     $ref: '#/components/schemas/KnowledgeCarrier'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        Category:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int32
+                name:
+                    type: string
+        CategoryListResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Category'
                 code:
                     type: integer
                     format: int64
@@ -8968,6 +9604,79 @@ components:
                     type: string
                 sensitive:
                     type: boolean
+        DingTalkBlessReviewCallbackResponseBody:
+            type: object
+            properties:
+                cardTemplateId:
+                    type: string
+                outTrackId:
+                    type: string
+                cardOptions:
+                    $ref: '#/components/schemas/CardUpdateOptions'
+                cardData:
+                    $ref: '#/components/schemas/BlessReviewCardData'
+                privateData:
+                    type: object
+                    additionalProperties:
+                        type: object
+                        additionalProperties:
+                            type: string
+        DingTalkPigeonCallbackRequestBody:
+            type: object
+            properties:
+                corpId:
+                    type: string
+                outTrackId:
+                    type: string
+                userId:
+                    type: string
+        DingTalkPigeonCallbackResponseBody:
+            type: object
+            properties:
+                cardTemplateId:
+                    type: string
+                outTrackId:
+                    type: string
+                cardOptions:
+                    $ref: '#/components/schemas/CardUpdateOptions'
+                cardData:
+                    $ref: '#/components/schemas/DingTalkPigeonCardData'
+        DingTalkPigeonCardData:
+            type: object
+            properties:
+                cardParamMap:
+                    $ref: '#/components/schemas/DingTalkPigeonCardParams'
+        DingTalkPigeonCardParams:
+            type: object
+            properties:
+                button_status:
+                    type: string
+                button_content:
+                    type: string
+        DingTalkReviewCallbackRequestBody:
+            type: object
+            properties:
+                corpId:
+                    type: string
+                outTrackId:
+                    type: string
+                userId:
+                    type: string
+                value:
+                    type: string
+        DingTalkReviewCallbackResponseBody:
+            type: object
+            properties:
+                cardTemplateId:
+                    type: string
+                outTrackId:
+                    type: string
+                cardOptions:
+                    $ref: '#/components/schemas/CardUpdateOptions'
+                cardData:
+                    $ref: '#/components/schemas/ReviewCardData'
+                userPrivateData:
+                    $ref: '#/components/schemas/ReviewCardPrivateData'
         DomainDeleteResponseBody:
             type: object
             properties:
@@ -11132,6 +11841,30 @@ components:
                     format: int64
                 msg:
                     type: string
+        LostItem:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int64
+                name:
+                    type: string
+                category:
+                    $ref: '#/components/schemas/Category'
+                scene:
+                    $ref: '#/components/schemas/Scene'
+                pictureURL:
+                    type: string
+                pickedAt:
+                    type: string
+                picker:
+                    type: string
+                departmentName:
+                    type: string
+                cabinetID:
+                    type: string
+                remark:
+                    type: string
         MaxMonth:
             type: object
             properties:
@@ -11477,6 +12210,36 @@ components:
             properties:
                 isNewer:
                     type: boolean
+        News:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int32
+                title:
+                    type: string
+                createTime:
+                    type: string
+                author:
+                    type: string
+                pictureURL:
+                    type: string
+                content:
+                    type: string
+                externalURL:
+                    type: string
+        NewsResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/News'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         OAuthScopeItem:
             type: object
             properties:
@@ -11661,6 +12424,18 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/PersonInfoData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        PopularResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Activity'
                 code:
                     type: integer
                     format: int64
@@ -11877,6 +12652,27 @@ components:
                 service_id:
                     type: string
             description: 快速问答策略配置(知识服务数组 + 默认)
+        Ranking:
+            type: object
+            properties:
+                rankingName:
+                    type: string
+                name:
+                    type: string
+                type:
+                    type: string
+        RankingResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Ranking'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         ReadingSummary:
             type: object
             properties:
@@ -11965,6 +12761,68 @@ components:
                     format: int64
                 msg:
                     type: string
+        RecruitmentItem:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int64
+                section:
+                    type: string
+                category:
+                    type: string
+                title:
+                    type: string
+                mode:
+                    type: string
+                location:
+                    type: string
+                time:
+                    type: string
+                url:
+                    type: string
+        RecruitmentPage:
+            type: object
+            properties:
+                section:
+                    type: string
+                category:
+                    type: string
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/RecruitmentItem'
+                page:
+                    type: integer
+                    format: int32
+                totalPages:
+                    type: integer
+                    format: int32
+                cutoff:
+                    type: string
+                windowMonths:
+                    type: integer
+                    format: int32
+                hasMore:
+                    type: boolean
+                nextPage:
+                    type: integer
+                    format: int32
+                reachedCutoff:
+                    type: boolean
+                excludedCount:
+                    type: integer
+                    format: int32
+        RecruitmentResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/RecruitmentPage'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         RefreshTokenRequestBody:
             type: object
             properties:
@@ -12029,6 +12887,28 @@ components:
                     type: integer
                     description: 返回结果数量
                     format: int32
+        ReviewCardData:
+            type: object
+            properties:
+                cardParamMap:
+                    $ref: '#/components/schemas/ReviewCardParams'
+        ReviewCardParams:
+            type: object
+            properties:
+                button_status:
+                    type: string
+                button_content:
+                    type: string
+        ReviewCardPrivateData:
+            type: object
+            properties:
+                cardParamMap:
+                    $ref: '#/components/schemas/ReviewCardPrivateParams'
+        ReviewCardPrivateParams:
+            type: object
+            properties:
+                popup_prompt:
+                    type: string
         RevokeAuthorizationResponseBody:
             type: object
             properties:
@@ -12133,6 +13013,26 @@ components:
                     type: string
                     description: JSON 字符串
                 note:
+                    type: string
+        Scene:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int32
+                name:
+                    type: string
+        SceneListResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Scene'
+                code:
+                    type: integer
+                    format: int64
+                msg:
                     type: string
         ScheduleCourse:
             type: object
@@ -12401,6 +13301,30 @@ components:
                     items:
                         type: string
             description: SearchHit 是一条检索命中，溯源信息足以回链到我方 DB 与方舟切片。
+        SearchPage:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/LostItem'
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                totalPages:
+                    type: integer
+                    format: int32
+                total:
+                    type: integer
+                    format: int32
+                hasMore:
+                    type: boolean
+                nextPage:
+                    type: integer
+                    format: int32
         SearchRequestBody:
             type: object
             properties:
@@ -12446,9 +13370,7 @@ components:
             type: object
             properties:
                 data:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/SearchHit'
+                    $ref: '#/components/schemas/SearchPage'
                 code:
                     type: integer
                     format: int64
@@ -12572,6 +13494,13 @@ components:
                     format: int64
                 msg:
                     type: string
+        SendPigeonRequestBody:
+            type: object
+            properties:
+                content:
+                    type: string
+                targetStaffId:
+                    type: string
         SendPigeonResponseBody:
             type: object
             properties:
@@ -12599,6 +13528,19 @@ components:
                 id:
                     type: string
                 scheduledAt:
+                    type: string
+        SendWishRequestBody:
+            type: object
+            properties:
+                kind:
+                    type: string
+                nickname:
+                    type: string
+                content:
+                    type: string
+                targetStaffId:
+                    type: string
+                holidayType:
                     type: string
         SendWishResponseBody:
             type: object
@@ -12968,6 +13910,28 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/KnowledgeSourceNode'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        Sponsor:
+            type: object
+            properties:
+                sponsorID:
+                    type: integer
+                    format: int32
+                sponsorName:
+                    type: string
+                sponsorCode:
+                    type: string
+        SponsorResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Sponsor'
                 code:
                     type: integer
                     format: int64
@@ -14172,6 +15136,101 @@ components:
                 avatar:
                     type: string
                 status:
+                    type: string
+        VenueAvailabilityData:
+            type: object
+            properties:
+                venueName:
+                    type: string
+                venueDescription:
+                    type: string
+                venueImageUrl:
+                    type: string
+                date:
+                    type: string
+                queriedAt:
+                    type: string
+                bookableFrom:
+                    type: string
+                bookableThrough:
+                    type: string
+                daysCanAppoint:
+                    type: integer
+                    format: int32
+                totalSiteCount:
+                    type: integer
+                    format: int32
+                basePrice:
+                    type: number
+                    format: double
+                available:
+                    type: boolean
+                slots:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/VenueAvailabilitySlot'
+        VenueAvailabilityResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/VenueAvailabilityData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        VenueAvailabilitySlot:
+            type: object
+            properties:
+                startTime:
+                    type: string
+                endTime:
+                    type: string
+                availableSiteCount:
+                    type: integer
+                    format: int32
+                availableSiteIds:
+                    type: array
+                    items:
+                        type: integer
+                        format: int32
+        VenueDatesData:
+            type: object
+            properties:
+                venueName:
+                    type: string
+                venueDescription:
+                    type: string
+                venueImageUrl:
+                    type: string
+                venueBookable:
+                    type: boolean
+                available:
+                    type: boolean
+                queriedAt:
+                    type: string
+                bookableFrom:
+                    type: string
+                bookableThrough:
+                    type: string
+                daysCanAppoint:
+                    type: integer
+                    format: int32
+                dates:
+                    type: array
+                    items:
+                        type: string
+                message:
+                    type: string
+        VenueDatesResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/VenueDatesData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
                     type: string
         WeatherCard:
             type: object

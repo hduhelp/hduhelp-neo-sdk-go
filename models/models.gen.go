@@ -62,6 +62,68 @@ type AcademicYearTerm struct {
 	Semester *string `json:"semester,omitempty"`
 }
 
+// Activity defines model for Activity.
+type Activity struct {
+	ActivityContent      *string `json:"activityContent,omitempty"`
+	ActivityEndTime      *string `json:"activityEndTime,omitempty"`
+	ActivityID           *string `json:"activityID,omitempty"`
+	ActivityName         *string `json:"activityName,omitempty"`
+	ActivityShape        *string `json:"activityShape,omitempty"`
+	ActivityStartTime    *string `json:"activityStartTime,omitempty"`
+	ActivityStatus       *string `json:"activityStatus,omitempty"`
+	ActivityStatusName   *string `json:"activityStatusName,omitempty"`
+	ActivityType         *string `json:"activityType,omitempty"`
+	ApplyCount           *int32  `json:"applyCount,omitempty"`
+	ApplyEndTime         *string `json:"applyEndTime,omitempty"`
+	CooperativeUnitName  *string `json:"cooperativeUnitName,omitempty"`
+	Description          *string `json:"description,omitempty"`
+	GradeRestricted      *string `json:"gradeRestricted,omitempty"`
+	HostName             *string `json:"hostName,omitempty"`
+	IsNeedApply          *string `json:"isNeedApply,omitempty"`
+	MajorsRestricted     *string `json:"majorsRestricted,omitempty"`
+	Materials            *string `json:"materials,omitempty"`
+	MovementArea         *string `json:"movementArea,omitempty"`
+	NeedAudit            *string `json:"needAudit,omitempty"`
+	NeedReport           *string `json:"needReport,omitempty"`
+	Position             *string `json:"position,omitempty"`
+	PosterURL            *string `json:"posterURL,omitempty"`
+	Size                 *string `json:"size,omitempty"`
+	StuOrgRestricted     *string `json:"stuOrgRestricted,omitempty"`
+	StuOrgRestrictedName *string `json:"stuOrgRestrictedName,omitempty"`
+	TotalCount           *int32  `json:"totalCount,omitempty"`
+	UnitRestricted       *string `json:"unitRestricted,omitempty"`
+	UnitRestrictedName   *string `json:"unitRestrictedName,omitempty"`
+}
+
+// ActivityDetail defines model for ActivityDetail.
+type ActivityDetail struct {
+	Activity *Activity `json:"activity,omitempty"`
+}
+
+// ActivityDetailResponseBody defines model for ActivityDetailResponseBody.
+type ActivityDetailResponseBody struct {
+	Code *int64          `json:"code,omitempty"`
+	Data *ActivityDetail `json:"data,omitempty"`
+	Msg  *string         `json:"msg,omitempty"`
+}
+
+// ActivityPage defines model for ActivityPage.
+type ActivityPage struct {
+	HasMore  *bool       `json:"hasMore,omitempty"`
+	Items    *[]Activity `json:"items,omitempty"`
+	NextPage *int32      `json:"nextPage,omitempty"`
+	Page     *int32      `json:"page,omitempty"`
+	PageSize *int32      `json:"pageSize,omitempty"`
+	Total    *int32      `json:"total,omitempty"`
+}
+
+// ActivityPageResponseBody defines model for ActivityPageResponseBody.
+type ActivityPageResponseBody struct {
+	Code *int64        `json:"code,omitempty"`
+	Data *ActivityPage `json:"data,omitempty"`
+	Msg  *string       `json:"msg,omitempty"`
+}
+
 // AddChunkRequestBody defines model for AddChunkRequestBody.
 type AddChunkRequestBody struct {
 	CarrierId *string `json:"carrier_id,omitempty"`
@@ -380,6 +442,12 @@ type AttendanceStats struct {
 	TotalVisitCount        *int32  `json:"totalVisitCount,omitempty"`
 }
 
+// AuditData defines model for AuditData.
+type AuditData struct {
+	ActivityID    *string `json:"activityID,omitempty"`
+	AuditRequired *bool   `json:"auditRequired,omitempty"`
+}
+
 // AuditEntry ============================================================================
 // 管理端：审计历史 与 总览
 // ============================================================================
@@ -400,6 +468,13 @@ type AuditEntry struct {
 	Note       *string `json:"note,omitempty"`
 	TargetId   *string `json:"targetId,omitempty"`
 	TargetType *string `json:"targetType,omitempty"`
+}
+
+// AuditResponseBody defines model for AuditResponseBody.
+type AuditResponseBody struct {
+	Code *int64     `json:"code,omitempty"`
+	Data *AuditData `json:"data,omitempty"`
+	Msg  *string    `json:"msg,omitempty"`
 }
 
 // AuthConfigData defines model for AuthConfigData.
@@ -746,6 +821,23 @@ type BlacklistResponseBody struct {
 	Msg  *string        `json:"msg,omitempty"`
 }
 
+// BlacklistTargetRequestBody defines model for BlacklistTargetRequestBody.
+type BlacklistTargetRequestBody struct {
+	StaffId *string `json:"staffId,omitempty"`
+}
+
+// BlessReviewCardData defines model for BlessReviewCardData.
+type BlessReviewCardData struct {
+	CardMediaIdParamMap *map[string]string     `json:"cardMediaIdParamMap,omitempty"`
+	CardParamMap        *BlessReviewCardParams `json:"cardParamMap,omitempty"`
+}
+
+// BlessReviewCardParams defines model for BlessReviewCardParams.
+type BlessReviewCardParams struct {
+	Pass     *string `json:"pass,omitempty"`
+	Reviewed *string `json:"reviewed,omitempty"`
+}
+
 // BookItem defines model for BookItem.
 type BookItem struct {
 	BookBarcode *string `json:"bookBarcode,omitempty"`
@@ -896,6 +988,12 @@ type CardInfoResponseBody struct {
 	Msg  *string       `json:"msg,omitempty"`
 }
 
+// CardUpdateOptions defines model for CardUpdateOptions.
+type CardUpdateOptions struct {
+	UpdateCardDataByKey    *bool `json:"updateCardDataByKey,omitempty"`
+	UpdatePrivateDataByKey *bool `json:"updatePrivateDataByKey,omitempty"`
+}
+
 // CarrierResponseBody defines model for CarrierResponseBody.
 type CarrierResponseBody struct {
 	Code *int64 `json:"code,omitempty"`
@@ -904,6 +1002,19 @@ type CarrierResponseBody struct {
 	// (syncStatus/syncError/arkDocId/syncedAt) 来自其 projection。
 	Data *KnowledgeCarrier `json:"data,omitempty"`
 	Msg  *string           `json:"msg,omitempty"`
+}
+
+// Category defines model for Category.
+type Category struct {
+	Id   *int32  `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+}
+
+// CategoryListResponseBody defines model for CategoryListResponseBody.
+type CategoryListResponseBody struct {
+	Code *int64      `json:"code,omitempty"`
+	Data *[]Category `json:"data,omitempty"`
+	Msg  *string     `json:"msg,omitempty"`
 }
 
 // ChangeEmailRequestBody defines model for ChangeEmailRequestBody.
@@ -1734,6 +1845,58 @@ type DeviceScopeItem struct {
 	Domain      *string `json:"domain,omitempty"`
 	Name        *string `json:"name,omitempty"`
 	Sensitive   *bool   `json:"sensitive,omitempty"`
+}
+
+// DingTalkBlessReviewCallbackResponseBody defines model for DingTalkBlessReviewCallbackResponseBody.
+type DingTalkBlessReviewCallbackResponseBody struct {
+	CardData       *BlessReviewCardData          `json:"cardData,omitempty"`
+	CardOptions    *CardUpdateOptions            `json:"cardOptions,omitempty"`
+	CardTemplateId *string                       `json:"cardTemplateId,omitempty"`
+	OutTrackId     *string                       `json:"outTrackId,omitempty"`
+	PrivateData    *map[string]map[string]string `json:"privateData,omitempty"`
+}
+
+// DingTalkPigeonCallbackRequestBody defines model for DingTalkPigeonCallbackRequestBody.
+type DingTalkPigeonCallbackRequestBody struct {
+	CorpId     *string `json:"corpId,omitempty"`
+	OutTrackId *string `json:"outTrackId,omitempty"`
+	UserId     *string `json:"userId,omitempty"`
+}
+
+// DingTalkPigeonCallbackResponseBody defines model for DingTalkPigeonCallbackResponseBody.
+type DingTalkPigeonCallbackResponseBody struct {
+	CardData       *DingTalkPigeonCardData `json:"cardData,omitempty"`
+	CardOptions    *CardUpdateOptions      `json:"cardOptions,omitempty"`
+	CardTemplateId *string                 `json:"cardTemplateId,omitempty"`
+	OutTrackId     *string                 `json:"outTrackId,omitempty"`
+}
+
+// DingTalkPigeonCardData defines model for DingTalkPigeonCardData.
+type DingTalkPigeonCardData struct {
+	CardParamMap *DingTalkPigeonCardParams `json:"cardParamMap,omitempty"`
+}
+
+// DingTalkPigeonCardParams defines model for DingTalkPigeonCardParams.
+type DingTalkPigeonCardParams struct {
+	ButtonContent *string `json:"button_content,omitempty"`
+	ButtonStatus  *string `json:"button_status,omitempty"`
+}
+
+// DingTalkReviewCallbackRequestBody defines model for DingTalkReviewCallbackRequestBody.
+type DingTalkReviewCallbackRequestBody struct {
+	CorpId     *string `json:"corpId,omitempty"`
+	OutTrackId *string `json:"outTrackId,omitempty"`
+	UserId     *string `json:"userId,omitempty"`
+	Value      *string `json:"value,omitempty"`
+}
+
+// DingTalkReviewCallbackResponseBody defines model for DingTalkReviewCallbackResponseBody.
+type DingTalkReviewCallbackResponseBody struct {
+	CardData        *ReviewCardData        `json:"cardData,omitempty"`
+	CardOptions     *CardUpdateOptions     `json:"cardOptions,omitempty"`
+	CardTemplateId  *string                `json:"cardTemplateId,omitempty"`
+	OutTrackId      *string                `json:"outTrackId,omitempty"`
+	UserPrivateData *ReviewCardPrivateData `json:"userPrivateData,omitempty"`
 }
 
 // DomainDeleteResponseBody defines model for DomainDeleteResponseBody.
@@ -3268,6 +3431,20 @@ type LookUpShareResponseBody struct {
 	Msg  *string          `json:"msg,omitempty"`
 }
 
+// LostItem defines model for LostItem.
+type LostItem struct {
+	CabinetID      *string   `json:"cabinetID,omitempty"`
+	Category       *Category `json:"category,omitempty"`
+	DepartmentName *string   `json:"departmentName,omitempty"`
+	Id             *int64    `json:"id,omitempty"`
+	Name           *string   `json:"name,omitempty"`
+	PickedAt       *string   `json:"pickedAt,omitempty"`
+	Picker         *string   `json:"picker,omitempty"`
+	PictureURL     *string   `json:"pictureURL,omitempty"`
+	Remark         *string   `json:"remark,omitempty"`
+	Scene          *Scene    `json:"scene,omitempty"`
+}
+
 // MaxMonth defines model for MaxMonth.
 type MaxMonth struct {
 	Count *int32 `json:"count,omitempty"`
@@ -3511,6 +3688,24 @@ type NewerData struct {
 	IsNewer *bool `json:"isNewer,omitempty"`
 }
 
+// News defines model for News.
+type News struct {
+	Author      *string `json:"author,omitempty"`
+	Content     *string `json:"content,omitempty"`
+	CreateTime  *string `json:"createTime,omitempty"`
+	ExternalURL *string `json:"externalURL,omitempty"`
+	Id          *int32  `json:"id,omitempty"`
+	PictureURL  *string `json:"pictureURL,omitempty"`
+	Title       *string `json:"title,omitempty"`
+}
+
+// NewsResponseBody defines model for NewsResponseBody.
+type NewsResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Data *[]News `json:"data,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
 // OAuthScopeItem defines model for OAuthScopeItem.
 type OAuthScopeItem struct {
 	Description *string `json:"description,omitempty"`
@@ -3631,6 +3826,13 @@ type PersonInfoResponseBody struct {
 	// 判别，仅学生（本科/研究生）填充，教职工为空。
 	Data *PersonInfoData `json:"data,omitempty"`
 	Msg  *string         `json:"msg,omitempty"`
+}
+
+// PopularResponseBody defines model for PopularResponseBody.
+type PopularResponseBody struct {
+	Code *int64      `json:"code,omitempty"`
+	Data *[]Activity `json:"data,omitempty"`
+	Msg  *string     `json:"msg,omitempty"`
 }
 
 // PredictData defines model for PredictData.
@@ -3777,6 +3979,20 @@ type QAStrategyItem struct {
 	ServiceId *string `json:"service_id,omitempty"`
 }
 
+// Ranking defines model for Ranking.
+type Ranking struct {
+	Name        *string `json:"name,omitempty"`
+	RankingName *string `json:"rankingName,omitempty"`
+	Type        *string `json:"type,omitempty"`
+}
+
+// RankingResponseBody defines model for RankingResponseBody.
+type RankingResponseBody struct {
+	Code *int64     `json:"code,omitempty"`
+	Data *[]Ranking `json:"data,omitempty"`
+	Msg  *string    `json:"msg,omitempty"`
+}
+
 // ReadingSummary defines model for ReadingSummary.
 type ReadingSummary struct {
 	HasRecord  *bool    `json:"hasRecord,omitempty"`
@@ -3846,6 +4062,40 @@ type RealTimeResponseBody struct {
 	Msg  *string       `json:"msg,omitempty"`
 }
 
+// RecruitmentItem defines model for RecruitmentItem.
+type RecruitmentItem struct {
+	Category *string `json:"category,omitempty"`
+	Id       *int64  `json:"id,omitempty"`
+	Location *string `json:"location,omitempty"`
+	Mode     *string `json:"mode,omitempty"`
+	Section  *string `json:"section,omitempty"`
+	Time     *string `json:"time,omitempty"`
+	Title    *string `json:"title,omitempty"`
+	Url      *string `json:"url,omitempty"`
+}
+
+// RecruitmentPage defines model for RecruitmentPage.
+type RecruitmentPage struct {
+	Category      *string            `json:"category,omitempty"`
+	Cutoff        *string            `json:"cutoff,omitempty"`
+	ExcludedCount *int32             `json:"excludedCount,omitempty"`
+	HasMore       *bool              `json:"hasMore,omitempty"`
+	Items         *[]RecruitmentItem `json:"items,omitempty"`
+	NextPage      *int32             `json:"nextPage,omitempty"`
+	Page          *int32             `json:"page,omitempty"`
+	ReachedCutoff *bool              `json:"reachedCutoff,omitempty"`
+	Section       *string            `json:"section,omitempty"`
+	TotalPages    *int32             `json:"totalPages,omitempty"`
+	WindowMonths  *int32             `json:"windowMonths,omitempty"`
+}
+
+// RecruitmentResponseBody defines model for RecruitmentResponseBody.
+type RecruitmentResponseBody struct {
+	Code *int64           `json:"code,omitempty"`
+	Data *RecruitmentPage `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
+}
+
 // RefreshTokenRequestBody defines model for RefreshTokenRequestBody.
 type RefreshTokenRequestBody struct {
 	RefreshToken *string `json:"refreshToken,omitempty"`
@@ -3897,6 +4147,27 @@ type RetrieveRequestBody struct {
 
 	// Tags 标签过滤(命中任一)
 	Tags *[]string `json:"tags,omitempty"`
+}
+
+// ReviewCardData defines model for ReviewCardData.
+type ReviewCardData struct {
+	CardParamMap *ReviewCardParams `json:"cardParamMap,omitempty"`
+}
+
+// ReviewCardParams defines model for ReviewCardParams.
+type ReviewCardParams struct {
+	ButtonContent *string `json:"button_content,omitempty"`
+	ButtonStatus  *string `json:"button_status,omitempty"`
+}
+
+// ReviewCardPrivateData defines model for ReviewCardPrivateData.
+type ReviewCardPrivateData struct {
+	CardParamMap *ReviewCardPrivateParams `json:"cardParamMap,omitempty"`
+}
+
+// ReviewCardPrivateParams defines model for ReviewCardPrivateParams.
+type ReviewCardPrivateParams struct {
+	PopupPrompt *string `json:"popup_prompt,omitempty"`
 }
 
 // RevokeAuthorizationResponseBody defines model for RevokeAuthorizationResponseBody.
@@ -3971,6 +4242,19 @@ type SaveDraftRequestBody struct {
 
 	// Payload JSON 字符串
 	Payload *string `json:"payload,omitempty"`
+}
+
+// Scene defines model for Scene.
+type Scene struct {
+	Id   *int32  `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+}
+
+// SceneListResponseBody defines model for SceneListResponseBody.
+type SceneListResponseBody struct {
+	Code *int64   `json:"code,omitempty"`
+	Data *[]Scene `json:"data,omitempty"`
+	Msg  *string  `json:"msg,omitempty"`
 }
 
 // ScheduleCourse ===== 今日/明日课表（now）=====
@@ -4162,6 +4446,17 @@ type SearchHit struct {
 	Title  *string  `json:"title,omitempty"`
 }
 
+// SearchPage defines model for SearchPage.
+type SearchPage struct {
+	HasMore    *bool       `json:"hasMore,omitempty"`
+	Items      *[]LostItem `json:"items,omitempty"`
+	NextPage   *int32      `json:"nextPage,omitempty"`
+	Page       *int32      `json:"page,omitempty"`
+	PageSize   *int32      `json:"pageSize,omitempty"`
+	Total      *int32      `json:"total,omitempty"`
+	TotalPages *int32      `json:"totalPages,omitempty"`
+}
+
 // SearchRequestBody defines model for SearchRequestBody.
 type SearchRequestBody struct {
 	// ChunkGroup 文档聚合排序
@@ -4198,9 +4493,9 @@ type SearchRequestBody struct {
 
 // SearchResponseBody defines model for SearchResponseBody.
 type SearchResponseBody struct {
-	Code *int64       `json:"code,omitempty"`
-	Data *[]SearchHit `json:"data,omitempty"`
-	Msg  *string      `json:"msg,omitempty"`
+	Code *int64      `json:"code,omitempty"`
+	Data *SearchPage `json:"data,omitempty"`
+	Msg  *string     `json:"msg,omitempty"`
 }
 
 // SearchUsersResponseBody defines model for SearchUsersResponseBody.
@@ -4289,6 +4584,12 @@ type SemesterListResponseBody struct {
 	Msg  *string         `json:"msg,omitempty"`
 }
 
+// SendPigeonRequestBody defines model for SendPigeonRequestBody.
+type SendPigeonRequestBody struct {
+	Content       *string `json:"content,omitempty"`
+	TargetStaffId *string `json:"targetStaffId,omitempty"`
+}
+
 // SendPigeonResponseBody defines model for SendPigeonResponseBody.
 type SendPigeonResponseBody struct {
 	Code *int64       `json:"code,omitempty"`
@@ -4310,6 +4611,15 @@ type SendVerificationCodeRequestBody struct {
 type SendWishData struct {
 	Id          *string `json:"id,omitempty"`
 	ScheduledAt *string `json:"scheduledAt,omitempty"`
+}
+
+// SendWishRequestBody defines model for SendWishRequestBody.
+type SendWishRequestBody struct {
+	Content       *string `json:"content,omitempty"`
+	HolidayType   *string `json:"holidayType,omitempty"`
+	Kind          *string `json:"kind,omitempty"`
+	Nickname      *string `json:"nickname,omitempty"`
+	TargetStaffId *string `json:"targetStaffId,omitempty"`
 }
 
 // SendWishResponseBody defines model for SendWishResponseBody.
@@ -4597,6 +4907,20 @@ type SourceMutateResponseBody struct {
 	// Data KnowledgeSourceNode 是扁平「来源」词表的一项。
 	Data *KnowledgeSourceNode `json:"data,omitempty"`
 	Msg  *string              `json:"msg,omitempty"`
+}
+
+// Sponsor defines model for Sponsor.
+type Sponsor struct {
+	SponsorCode *string `json:"sponsorCode,omitempty"`
+	SponsorID   *int32  `json:"sponsorID,omitempty"`
+	SponsorName *string `json:"sponsorName,omitempty"`
+}
+
+// SponsorResponseBody defines model for SponsorResponseBody.
+type SponsorResponseBody struct {
+	Code *int64     `json:"code,omitempty"`
+	Data *[]Sponsor `json:"data,omitempty"`
+	Msg  *string    `json:"msg,omitempty"`
 }
 
 // StatusData defines model for StatusData.
@@ -5421,6 +5745,59 @@ type UserInfo struct {
 	Status   *string `json:"status,omitempty"`
 }
 
+// VenueAvailabilityData defines model for VenueAvailabilityData.
+type VenueAvailabilityData struct {
+	Available        *bool                    `json:"available,omitempty"`
+	BasePrice        *float64                 `json:"basePrice,omitempty"`
+	BookableFrom     *string                  `json:"bookableFrom,omitempty"`
+	BookableThrough  *string                  `json:"bookableThrough,omitempty"`
+	Date             *string                  `json:"date,omitempty"`
+	DaysCanAppoint   *int32                   `json:"daysCanAppoint,omitempty"`
+	QueriedAt        *string                  `json:"queriedAt,omitempty"`
+	Slots            *[]VenueAvailabilitySlot `json:"slots,omitempty"`
+	TotalSiteCount   *int32                   `json:"totalSiteCount,omitempty"`
+	VenueDescription *string                  `json:"venueDescription,omitempty"`
+	VenueImageUrl    *string                  `json:"venueImageUrl,omitempty"`
+	VenueName        *string                  `json:"venueName,omitempty"`
+}
+
+// VenueAvailabilityResponseBody defines model for VenueAvailabilityResponseBody.
+type VenueAvailabilityResponseBody struct {
+	Code *int64                 `json:"code,omitempty"`
+	Data *VenueAvailabilityData `json:"data,omitempty"`
+	Msg  *string                `json:"msg,omitempty"`
+}
+
+// VenueAvailabilitySlot defines model for VenueAvailabilitySlot.
+type VenueAvailabilitySlot struct {
+	AvailableSiteCount *int32   `json:"availableSiteCount,omitempty"`
+	AvailableSiteIds   *[]int32 `json:"availableSiteIds,omitempty"`
+	EndTime            *string  `json:"endTime,omitempty"`
+	StartTime          *string  `json:"startTime,omitempty"`
+}
+
+// VenueDatesData defines model for VenueDatesData.
+type VenueDatesData struct {
+	Available        *bool     `json:"available,omitempty"`
+	BookableFrom     *string   `json:"bookableFrom,omitempty"`
+	BookableThrough  *string   `json:"bookableThrough,omitempty"`
+	Dates            *[]string `json:"dates,omitempty"`
+	DaysCanAppoint   *int32    `json:"daysCanAppoint,omitempty"`
+	Message          *string   `json:"message,omitempty"`
+	QueriedAt        *string   `json:"queriedAt,omitempty"`
+	VenueBookable    *bool     `json:"venueBookable,omitempty"`
+	VenueDescription *string   `json:"venueDescription,omitempty"`
+	VenueImageUrl    *string   `json:"venueImageUrl,omitempty"`
+	VenueName        *string   `json:"venueName,omitempty"`
+}
+
+// VenueDatesResponseBody defines model for VenueDatesResponseBody.
+type VenueDatesResponseBody struct {
+	Code *int64          `json:"code,omitempty"`
+	Data *VenueDatesData `json:"data,omitempty"`
+	Msg  *string         `json:"msg,omitempty"`
+}
+
 // WeatherCard WeatherCard 是信息流天气卡片负载。
 type WeatherCard struct {
 	// Aqi 空气质量指数
@@ -5962,6 +6339,42 @@ type AdminServiceDeleteUserSocialIdentityParams struct {
 	IdentityId *string `form:"identity_id,omitempty" json:"identity_id,omitempty"`
 }
 
+// MessagingServiceDingTalkBlessReviewCallbackParams defines parameters for MessagingServiceDingTalkBlessReviewCallback.
+type MessagingServiceDingTalkBlessReviewCallbackParams struct {
+	// XDdpaasSignatureTimestamp 钉钉卡片回调签名时间戳
+	XDdpaasSignatureTimestamp string `json:"x-ddpaas-signature-timestamp"`
+
+	// XDdpaasSignature 钉钉卡片回调 HMAC-SHA256 签名
+	XDdpaasSignature string `json:"x-ddpaas-signature"`
+}
+
+// MessagingServiceDingTalkMessageReviewCallbackParams defines parameters for MessagingServiceDingTalkMessageReviewCallback.
+type MessagingServiceDingTalkMessageReviewCallbackParams struct {
+	// XDdpaasSignatureTimestamp 钉钉卡片回调签名时间戳
+	XDdpaasSignatureTimestamp string `json:"x-ddpaas-signature-timestamp"`
+
+	// XDdpaasSignature 钉钉卡片回调 HMAC-SHA256 签名
+	XDdpaasSignature string `json:"x-ddpaas-signature"`
+}
+
+// MessagingServiceDingTalkPigeonCallbackParams defines parameters for MessagingServiceDingTalkPigeonCallback.
+type MessagingServiceDingTalkPigeonCallbackParams struct {
+	// XDdpaasSignatureTimestamp 钉钉卡片回调签名时间戳
+	XDdpaasSignatureTimestamp string `json:"x-ddpaas-signature-timestamp"`
+
+	// XDdpaasSignature 钉钉卡片回调 HMAC-SHA256 签名
+	XDdpaasSignature string `json:"x-ddpaas-signature"`
+}
+
+// CampusLifeServiceListActivitiesParams defines parameters for CampusLifeServiceListActivities.
+type CampusLifeServiceListActivitiesParams struct {
+	Status   *int32    `form:"status,omitempty" json:"status,omitempty"`
+	Content  *[]string `form:"content,omitempty" json:"content,omitempty"`
+	HostName *string   `form:"hostName,omitempty" json:"hostName,omitempty"`
+	Page     *int32    `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32    `form:"pageSize,omitempty" json:"pageSize,omitempty"`
+}
+
 // CampusLifeServiceCardBalanceParams defines parameters for CampusLifeServiceCardBalance.
 type CampusLifeServiceCardBalanceParams struct {
 	XStaffId *string `json:"X-Staff-Id,omitempty"`
@@ -5977,6 +6390,12 @@ type CampusLifeServiceCardInfoParams struct {
 	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
+// CampusLifeServiceListCareerRecruitmentParams defines parameters for CampusLifeServiceListCareerRecruitment.
+type CampusLifeServiceListCareerRecruitmentParams struct {
+	Section *string `form:"section,omitempty" json:"section,omitempty"`
+	Page    *int32  `form:"page,omitempty" json:"page,omitempty"`
+}
+
 // CampusLifeServiceListFloorsParams defines parameters for CampusLifeServiceListFloors.
 type CampusLifeServiceListFloorsParams struct {
 	BuildingId *int64 `form:"building_id,omitempty" json:"building_id,omitempty"`
@@ -5985,6 +6404,40 @@ type CampusLifeServiceListFloorsParams struct {
 // CampusLifeServiceListRoomsParams defines parameters for CampusLifeServiceListRooms.
 type CampusLifeServiceListRoomsParams struct {
 	FloorId *int64 `form:"floor_id,omitempty" json:"floor_id,omitempty"`
+}
+
+// CampusLifeServiceListLostFoundCategoriesParams defines parameters for CampusLifeServiceListLostFoundCategories.
+type CampusLifeServiceListLostFoundCategoriesParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// CampusLifeServiceSearchLostItemsParams defines parameters for CampusLifeServiceSearchLostItems.
+type CampusLifeServiceSearchLostItemsParams struct {
+	Page     *int32  `form:"page,omitempty" json:"page,omitempty"`
+	Keyword  *string `form:"keyword,omitempty" json:"keyword,omitempty"`
+	Category *string `form:"category,omitempty" json:"category,omitempty"`
+	Scene    *string `form:"scene,omitempty" json:"scene,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// CampusLifeServiceListLostFoundScenesParams defines parameters for CampusLifeServiceListLostFoundScenes.
+type CampusLifeServiceListLostFoundScenesParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// CampusLifeServiceGetVenueAvailabilityParams defines parameters for CampusLifeServiceGetVenueAvailability.
+type CampusLifeServiceGetVenueAvailabilityParams struct {
+	// Venue 必填。要查询的球馆，可输入羽毛球、羽毛球馆、综合馆羽毛球、网球、网球馆或穹顶网球场；当前官网个人预约只开放羽毛球和网球。
+	Venue string `form:"venue" json:"venue"`
+
+	// Date 必填。用户从 campuslife venues bookable-dates 返回的 dates 中选择的日期，格式为 YYYY-MM-DD。
+	Date string `form:"date" json:"date"`
+}
+
+// CampusLifeServiceListVenueBookableDatesParams defines parameters for CampusLifeServiceListVenueBookableDates.
+type CampusLifeServiceListVenueBookableDatesParams struct {
+	// Venue 必填。用户想预约的场馆或运动项目，可输入羽毛球、网球、乒乓球、篮球、足球、排球、击剑或形体。
+	Venue string `form:"venue" json:"venue"`
 }
 
 // CampusLifeServicePredictParams defines parameters for CampusLifeServicePredict.
@@ -6307,11 +6760,6 @@ type IdentityServiceGetLoginURLParams struct {
 	ReturnTo *string `form:"return_to,omitempty" json:"return_to,omitempty"`
 }
 
-// MessagingServiceRecallPigeonParams defines parameters for MessagingServiceRecallPigeon.
-type MessagingServiceRecallPigeonParams struct {
-	Id *string `form:"id,omitempty" json:"id,omitempty"`
-}
-
 // MessagingServiceListPigeonsParams defines parameters for MessagingServiceListPigeons.
 type MessagingServiceListPigeonsParams struct {
 	Box      *string `form:"box,omitempty" json:"box,omitempty"`
@@ -6321,7 +6769,8 @@ type MessagingServiceListPigeonsParams struct {
 
 // MessagingServiceRemoveBlacklistParams defines parameters for MessagingServiceRemoveBlacklist.
 type MessagingServiceRemoveBlacklistParams struct {
-	StaffId *string `form:"staff-id,omitempty" json:"staff-id,omitempty"`
+	// StaffId 必填。要从本人校友传话黑名单移除的学号。
+	StaffId string `form:"staff-id" json:"staff-id"`
 }
 
 // MessagingServiceListBlacklistParams defines parameters for MessagingServiceListBlacklist.
@@ -6330,11 +6779,29 @@ type MessagingServiceListBlacklistParams struct {
 	PageSize *int32 `form:"page_size,omitempty" json:"page_size,omitempty"`
 }
 
+// MessagingServiceRecallPigeonParams defines parameters for MessagingServiceRecallPigeon.
+type MessagingServiceRecallPigeonParams struct {
+	// Id 必填。要撤回的校友传话 ID；仅发送者可撤回且发送时间不得超过 24 小时。
+	Id string `form:"id" json:"id"`
+}
+
+// MessagingServiceSendPigeonParams defines parameters for MessagingServiceSendPigeon.
+type MessagingServiceSendPigeonParams struct {
+	// IdempotencyKey 所有调用方必填；客户端或 AI 必须在首次调用前自动生成 UUID v4，不要询问用户；同一次逻辑发送及其全部重试必须复用该值，发送新消息必须生成新值；8-128 位，仅允许字母、数字、-_.:
+	IdempotencyKey string `json:"Idempotency-Key"`
+}
+
 // MessagingServiceListWishesParams defines parameters for MessagingServiceListWishes.
 type MessagingServiceListWishesParams struct {
 	Kind     *string `form:"kind,omitempty" json:"kind,omitempty"`
 	Page     *int32  `form:"page,omitempty" json:"page,omitempty"`
 	PageSize *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+}
+
+// MessagingServiceSendWishParams defines parameters for MessagingServiceSendWish.
+type MessagingServiceSendWishParams struct {
+	// IdempotencyKey 所有调用方必填；客户端或 AI 必须在首次调用前自动生成 UUID v4，不要询问用户；同一次逻辑发送及其全部重试必须复用该值，发送新消息必须生成新值；8-128 位，仅允许字母、数字、-_.:
+	IdempotencyKey string `json:"Idempotency-Key"`
 }
 
 // IdentityServiceAuthenAuthorizeParams defines parameters for IdentityServiceAuthenAuthorize.
@@ -6581,6 +7048,15 @@ type AdminServiceUpsertUserSocialIdentityJSONRequestBody = UpsertUserSocialIdent
 // AdminServiceSetUserDefaultIdentityJSONRequestBody defines body for AdminServiceSetUserDefaultIdentity for application/json ContentType.
 type AdminServiceSetUserDefaultIdentityJSONRequestBody = SetUserDefaultIdentityRequestBody
 
+// MessagingServiceDingTalkBlessReviewCallbackJSONRequestBody defines body for MessagingServiceDingTalkBlessReviewCallback for application/json ContentType.
+type MessagingServiceDingTalkBlessReviewCallbackJSONRequestBody = DingTalkReviewCallbackRequestBody
+
+// MessagingServiceDingTalkMessageReviewCallbackJSONRequestBody defines body for MessagingServiceDingTalkMessageReviewCallback for application/json ContentType.
+type MessagingServiceDingTalkMessageReviewCallbackJSONRequestBody = DingTalkReviewCallbackRequestBody
+
+// MessagingServiceDingTalkPigeonCallbackJSONRequestBody defines body for MessagingServiceDingTalkPigeonCallback for application/json ContentType.
+type MessagingServiceDingTalkPigeonCallbackJSONRequestBody = DingTalkPigeonCallbackRequestBody
+
 // CampusLifeServiceBindRoomJSONRequestBody defines body for CampusLifeServiceBindRoom for application/json ContentType.
 type CampusLifeServiceBindRoomJSONRequestBody = BindRoomRequestBody
 
@@ -6721,6 +7197,15 @@ type KnowledgeServiceKnowledgeRetrieveJSONRequestBody = RetrieveRequestBody
 
 // KnowledgeServiceKnowledgeServiceChatJSONRequestBody defines body for KnowledgeServiceKnowledgeServiceChat for application/json ContentType.
 type KnowledgeServiceKnowledgeServiceChatJSONRequestBody = ServiceChatRequestBody
+
+// MessagingServiceAddBlacklistJSONRequestBody defines body for MessagingServiceAddBlacklist for application/json ContentType.
+type MessagingServiceAddBlacklistJSONRequestBody = BlacklistTargetRequestBody
+
+// MessagingServiceSendPigeonJSONRequestBody defines body for MessagingServiceSendPigeon for application/json ContentType.
+type MessagingServiceSendPigeonJSONRequestBody = SendPigeonRequestBody
+
+// MessagingServiceSendWishJSONRequestBody defines body for MessagingServiceSendWish for application/json ContentType.
+type MessagingServiceSendWishJSONRequestBody = SendWishRequestBody
 
 // IdentityServiceAppAccessTokenInternalJSONRequestBody defines body for IdentityServiceAppAccessTokenInternal for application/json ContentType.
 type IdentityServiceAppAccessTokenInternalJSONRequestBody = AppAccessTokenInternalRequestBody

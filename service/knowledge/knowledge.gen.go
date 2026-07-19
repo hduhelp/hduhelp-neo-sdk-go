@@ -1655,7 +1655,7 @@ func (b *AdminKnowledgeSearchReqBuilder) Build() *AdminKnowledgeSearchReq { retu
 type AdminKnowledgeSearchResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data []models.SearchHit `json:"data"`
+	Data *models.SearchPage `json:"data"`
 }
 
 // AdminKnowledgeSearch: 知识检索（后台试搜）
@@ -2278,7 +2278,7 @@ func (b *KnowledgeRetrieveReqBuilder) Build() *KnowledgeRetrieveReq { return b.r
 type KnowledgeRetrieveResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data []models.SearchHit `json:"data"`
+	Data *models.SearchPage `json:"data"`
 }
 
 // KnowledgeRetrieve: 知识检索
