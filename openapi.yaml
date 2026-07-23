@@ -737,7 +737,7 @@ paths:
             tags:
                 - AcademicService
             summary: 创建或获取本人图书馆分享 ID
-            description: 首次调用生成分享 ID，之后幂等返回同一 ID
+            description: 首次调用生成随机分享 ID，之后幂等返回同一 ID；旧版短分享 ID 会自动轮换
             operationId: AcademicService_LibraryShareID
             security:
                 - BearerAuth: []
@@ -753,6 +753,36 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ShareIDResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/academic/library/share/report:
+        get:
+            tags:
+                - AcademicService
+            summary: 根据分享 ID 查询脱敏图书馆报告
+            description: 返回分享人的阅读与到馆汇总，不包含学号、图书条码等身份或馆藏标识
+            operationId: AcademicService_LibrarySharedReport
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: share_id
+                  in: query
+                  schema:
+                    type: string
+                - name: start
+                  in: query
+                  schema:
+                    type: string
+                - name: end
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SharedLibraryReportResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/academic/needy:
         get:
@@ -2690,7 +2720,7 @@ paths:
             tags:
                 - KnowledgeService
             summary: 上传文件
-            description: multipart 表单字段 file；把图片/附件转存到对象存储，返回可访问 url/key，供正文引用
+            description: OSS 环境先以 direct=prepare 获取短期 PUT URL，直传后以 direct=complete 确认；local 环境返回 40025 并回退 multipart 字段 file。返回可访问 url/key，供正文引用
             operationId: KnowledgeService_AdminUploadFile
             security:
                 - OperatorBearerAuth: []
@@ -3222,6 +3252,238 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SetUserDefaultIdentityResponseBody'
+    /hduhelp-neo/admin/volunteer-admin/activities:
+        get:
+            tags:
+                - VolunteerService
+            summary: 志愿活动管理列表
+            description: operator 查看全部状态的志愿活动
+            operationId: VolunteerService_AdminListVolunteerActivities
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: category
+                  in: query
+                  schema:
+                    type: string
+                - name: organization
+                  in: query
+                  schema:
+                    type: string
+                - name: start_at_from
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: start_at_to
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: deadline_at_from
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: deadline_at_to
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: is_urgent
+                  in: query
+                  schema:
+                    type: boolean
+                - name: keyword
+                  in: query
+                  schema:
+                    type: string
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+                - name: created_by_user_id
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ActivityListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/volunteer-admin/activities/{id}:
+        get:
+            tags:
+                - VolunteerService
+            summary: 志愿活动管理详情
+            operationId: VolunteerService_AdminGetVolunteerActivity
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ActivityDetailResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        put:
+            tags:
+                - VolunteerService
+            summary: 管理员编辑志愿活动
+            operationId: VolunteerService_AdminUpdateVolunteerActivity
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateActivityRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ActivityDetailResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        delete:
+            tags:
+                - VolunteerService
+            summary: 管理员下架志愿活动
+            operationId: VolunteerService_AdminOfflineVolunteerActivity
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/MutateResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/volunteer-admin/activities/{id}/urgent:
+        delete:
+            tags:
+                - VolunteerService
+            summary: 取消活动加急
+            description: 保留已通过申请历史并记录 operator 审计
+            operationId: VolunteerService_AdminCancelVolunteerUrgent
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ActivityDetailResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/volunteer-admin/urgent-applications:
+        get:
+            tags:
+                - VolunteerService
+            summary: 加急申请管理列表
+            description: operator 按状态、组织和分类筛选申请
+            operationId: VolunteerService_AdminListVolunteerUrgentApplications
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+                - name: organization
+                  in: query
+                  schema:
+                    type: string
+                - name: category
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UrgentApplicationListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/volunteer-admin/urgent-applications/{id}/review:
+        post:
+            tags:
+                - VolunteerService
+            summary: 审批加急申请
+            description: 审批申请与更新活动必须处于同一事务
+            operationId: VolunteerService_AdminReviewVolunteerUrgentApplication
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ReviewUrgentApplicationRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UrgentApplicationResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/callbacks/dingtalk/blessing-review:
         post:
             tags:
@@ -3338,7 +3600,7 @@ paths:
         get:
             tags:
                 - CampusLifeService
-            summary: 查询校园活动
+            summary: 查询二课活动
             description: status=5 为全部，8 报名中，9 即将开始，10 签到中，11 待签退，12 签退中。
             operationId: CampusLifeService_ListActivities
             security:
@@ -3377,11 +3639,44 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ActivityPageResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/campuslife/activities/mine:
+        get:
+            tags:
+                - CampusLifeService
+            summary: 查询我的二课活动
+            description: status 支持 0 到 3，默认 0；按 hasMore/nextPage 翻页。取消报名前先查询本接口，并使用返回记录中的真实 activityId。
+            operationId: CampusLifeService_ListMyActivities
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: status
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ActivityPageResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/campuslife/activities/notices:
         get:
             tags:
                 - CampusLifeService
-            summary: 查询校园活动通知
+            summary: 查询二课活动通知
             operationId: CampusLifeService_ListActivityNotices
             security:
                 - BearerAuth: []
@@ -3397,7 +3692,7 @@ paths:
         get:
             tags:
                 - CampusLifeService
-            summary: 查询校园活动主办方目录
+            summary: 查询二课活动主办方目录
             operationId: CampusLifeService_ListActivityOrganizers
             security:
                 - BearerAuth: []
@@ -3413,7 +3708,7 @@ paths:
         get:
             tags:
                 - CampusLifeService
-            summary: 查询热门校园活动
+            summary: 查询热门二课活动
             operationId: CampusLifeService_ListPopularActivities
             security:
                 - BearerAuth: []
@@ -3425,28 +3720,11 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/PopularResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
-    /hduhelp-neo/campuslife/activities/rankings:
-        get:
-            tags:
-                - CampusLifeService
-            summary: 查询校园活动排行榜
-            description: 响应排除榜首学号，仅返回榜单名、姓名和类型。
-            operationId: CampusLifeService_ListActivityRankings
-            security:
-                - BearerAuth: []
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/RankingResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/campuslife/activities/{activityId}:
         get:
             tags:
                 - CampusLifeService
-            summary: 查询校园活动详情
+            summary: 查询二课活动详情
             operationId: CampusLifeService_GetActivity
             security:
                 - BearerAuth: []
@@ -3468,7 +3746,7 @@ paths:
         get:
             tags:
                 - CampusLifeService
-            summary: 查询校园活动报名要求
+            summary: 查询二课活动报名要求
             operationId: CampusLifeService_GetActivityApplicationRequirements
             security:
                 - BearerAuth: []
@@ -3485,6 +3763,77 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AuditResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/campuslife/activities/{activityId}/registration:
+        get:
+            tags:
+                - CampusLifeService
+            summary: 查询当前用户的二课活动报名状态
+            description: 只返回当前用户是否已经报名，不返回二课成员记录中的敏感字段。
+            operationId: CampusLifeService_GetActivityRegistration
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: activityId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ActivityRegistrationResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+        post:
+            tags:
+                - CampusLifeService
+            summary: 报名二课活动
+            description: 只允许报名状态为 8（报名中）的活动，并在提交前拦截重复报名。activityId 必须来自最近一次活动查询；调用前应展示活动名称、主办方、时间和报名要求并取得用户明确确认。响应通过 submitted、verified、success、registered 区分请求提交与最终状态。
+            operationId: CampusLifeService_ApplyActivity
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: activityId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ActivityOperationResponseBody'
+            x-hduhelp-http: {'auth': 'bearer', 'confirmation': 'required'}
+        delete:
+            tags:
+                - CampusLifeService
+            summary: 取消二课活动报名
+            description: 取消理由由用户提供，未提供时默认为“取消报名”。取消前必须先查询我的二课活动并取得用户明确确认；CLI 要求 dry-run 和 --yes。响应通过 submitted、verified、success、registered 区分请求提交与最终状态。
+            operationId: CampusLifeService_CancelActivity
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: activityId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: reason
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ActivityOperationResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/campuslife/campuses:
         get:
@@ -5519,6 +5868,119 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/CommonResponseBody'
+    /hduhelp-neo/identity/auth/service-authorizations:
+        get:
+            tags:
+                - IdentityService
+            summary: 查询服务授权状态
+            description: 对当前学号已授权的二课/图书馆执行只读请求，返回是否授权、是否仍有效及失效通知开关；绝不返回已存 token 或 Cookie。仅一方原生会话可调用，不向 CLI/PAT/UAT 暴露。
+            operationId: IdentityService_GetServiceAuthorizationStatus
+            security:
+                - NativeSessionAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ServiceAuthorizationStatusResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/identity/auth/service-authorizations/all:
+        post:
+            tags:
+                - IdentityService
+            summary: 一键授权全部校园服务
+            description: 从前端接收统一身份认证账号与密码；account 必须与当前登录身份解析出的学号一致，否则提示切换身份或重新输入。校验通过后优先复用同一 SOURCEID_TGC 为二课和图书馆分别签发 ticket，并以事务同时保存两项凭据；复用不可用时才执行第二次 SSO。不保存密码，仅一方原生会话可调用。
+            operationId: IdentityService_AuthorizeAllServices
+            security:
+                - NativeSessionAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AuthorizeAllServicesRequestBody'
+            responses:
+                "200":
+                    description: CommonResponse is the common response envelope tail (code/msg) reused across services.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CommonResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/identity/auth/service-authorizations/notification:
+        put:
+            tags:
+                - IdentityService
+            summary: 设置服务授权失效通知
+            description: 按 erke/library 设置当前学号的授权失效钉钉通知；默认关闭，仅一方原生会话可调用，不向 CLI/PAT/UAT 暴露。
+            operationId: IdentityService_UpdateServiceAuthorizationNotification
+            security:
+                - NativeSessionAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateServiceAuthorizationNotificationRequestBody'
+            responses:
+                "200":
+                    description: CommonResponse is the common response envelope tail (code/msg) reused across services.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CommonResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/identity/auth/service-authorizations/{service}:
+        put:
+            tags:
+                - IdentityService
+            summary: 授权单个校园服务
+            description: 从前端接收统一身份认证账号与密码；account 必须与当前登录身份解析出的学号一致，否则提示切换身份或重新输入。校验通过后完成一次 HDU SSO，并保存指定服务的 token 或 Cookie；不保存密码。仅一方原生会话可调用。
+            operationId: IdentityService_AuthorizeService
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: service
+                  in: path
+                  description: erke | library
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AuthorizeServiceRequestBody'
+            responses:
+                "200":
+                    description: CommonResponse is the common response envelope tail (code/msg) reused across services.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CommonResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+        delete:
+            tags:
+                - IdentityService
+            summary: 取消校园服务授权
+            description: 删除当前学号指定服务的已存凭据并清除登录态缓存，操作幂等。仅一方原生会话可调用。
+            operationId: IdentityService_RevokeServiceAuthorization
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: service
+                  in: path
+                  description: erke | library
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: CommonResponse is the common response envelope tail (code/msg) reused across services.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CommonResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/identity/auth/sessions:
         get:
             tags:
@@ -6191,6 +6653,163 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/KnowledgeTagsResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/library-booking/bookings:
+        get:
+            tags:
+                - LibraryBookingService
+            summary: 查询我的图书馆座位预约
+            description: 取消预约前必须先调用本接口，将可取消预约展示给用户并等待用户选择。
+            operationId: LibraryBookingService_ListMyBookings
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BookingListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+        post:
+            tags:
+                - LibraryBookingService
+            summary: 预约选定图书馆座位
+            description: 提交前会再次实时查询并确认房间、座位仍存在且可预约；人数固定为 1。必须使用座位查询结果中的 roomId/seatId。
+            operationId: LibraryBookingService_CreateBooking
+            security:
+                - BearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateBookingRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BookingResultResponseBody'
+            x-hduhelp-http: {'auth': 'bearer', 'confirmation': 'required'}
+    /hduhelp-neo/library-booking/bookings/{bookingId}:
+        delete:
+            tags:
+                - LibraryBookingService
+            summary: 取消选定图书馆座位预约
+            description: 服务端会重新查询我的预约并只允许取消其中当前可取消的一项；CLI 还要求 dry-run 和用户明确确认。
+            operationId: LibraryBookingService_CancelBooking
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: bookingId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CancelBookingResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/library-booking/categories:
+        get:
+            tags:
+                - LibraryBookingService
+            summary: 查询图书馆座位空间分类
+            description: 图书馆预约流程的第一步。用户未给出空间时先调用，展示上游当前返回的空间分类；不要猜测 categoryId/contentId。
+            operationId: LibraryBookingService_ListSpaceCategories
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CategoryListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/library-booking/options:
+        get:
+            tags:
+                - LibraryBookingService
+            summary: 查询空间可预约日期和时间
+            description: 用户选定空间后调用。人数由后端固定为 1；返回每个日期、开始时间以及该开始时间允许的预约时长。
+            operationId: LibraryBookingService_GetBookingOptions
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: categoryId
+                  in: query
+                  description: 空间分类接口返回的 categoryId。
+                  required: true
+                  schema:
+                    type: string
+                - name: contentId
+                  in: query
+                  description: 空间分类接口返回的 contentId。
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BookingOptionsResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/library-booking/seats/search:
+        get:
+            tags:
+                - LibraryBookingService
+            summary: 实时查询图书馆座位
+            description: 仅在空间、日期、开始时间和时长都确定后调用。只返回普通座位；后端在查询后自动释放上游推荐锁。Skill 使用随包模板生成可缩放页面供用户选座。
+            operationId: LibraryBookingService_SearchAvailableSeats
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: categoryId
+                  in: query
+                  description: 空间分类接口返回的 categoryId。
+                  required: true
+                  schema:
+                    type: string
+                - name: contentId
+                  in: query
+                  description: 空间分类接口返回的 contentId。
+                  required: true
+                  schema:
+                    type: string
+                - name: date
+                  in: query
+                  description: options 返回的日期，格式 YYYY-MM-DD。
+                  required: true
+                  schema:
+                    type: string
+                - name: beginTime
+                  in: query
+                  description: options 返回的开始时间，格式 HH:mm。
+                  required: true
+                  schema:
+                    type: string
+                - name: durationHours
+                  in: query
+                  description: 所选开始时间的 durationHours 列表中的一个值。
+                  required: true
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SeatSearchResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/messaging/pigeons:
         get:
@@ -6901,6 +7520,322 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/UploadResponseBody'
             x-hduhelp-cli: {'request_content_type': 'multipart/form-data', 'file_field': 'file', 'auth': 'bearer'}
+    /hduhelp-neo/volunteer/creator-activities:
+        get:
+            tags:
+                - VolunteerService
+            summary: 我的志愿活动
+            description: 按当前 Principal.UserID 查询本人创建的活动
+            operationId: VolunteerService_ListMyVolunteerActivities
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: category
+                  in: query
+                  schema:
+                    type: string
+                - name: organization
+                  in: query
+                  schema:
+                    type: string
+                - name: start_at_from
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: start_at_to
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: deadline_at_from
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: deadline_at_to
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: is_urgent
+                  in: query
+                  schema:
+                    type: boolean
+                - name: keyword
+                  in: query
+                  schema:
+                    type: string
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+                - name: created_by_user_id
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ActivityListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/volunteer/creator-profile:
+        get:
+            tags:
+                - VolunteerService
+            summary: 当前用户 volunteer 权限
+            description: 返回服务端解析的用户身份与发布权限
+            operationId: VolunteerService_GetVolunteerMe
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/VolunteerMeResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/volunteer/creator-urgent-applications:
+        get:
+            tags:
+                - VolunteerService
+            summary: 我的加急申请
+            description: 分页查询当前用户提交的加急申请
+            operationId: VolunteerService_ListMyVolunteerUrgentApplications
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+                - name: organization
+                  in: query
+                  schema:
+                    type: string
+                - name: category
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UrgentApplicationListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/volunteer/volunteer-activities:
+        get:
+            tags:
+                - VolunteerService
+            summary: 志愿活动列表
+            description: 公开分页浏览已发布活动，支持分类、组织、时间、关键词与加急筛选；同分类内加急优先
+            operationId: VolunteerService_ListVolunteerActivities
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: category
+                  in: query
+                  schema:
+                    type: string
+                - name: organization
+                  in: query
+                  schema:
+                    type: string
+                - name: start_at_from
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: start_at_to
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: deadline_at_from
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: deadline_at_to
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: is_urgent
+                  in: query
+                  schema:
+                    type: boolean
+                - name: keyword
+                  in: query
+                  schema:
+                    type: string
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+                - name: created_by_user_id
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ActivityListResponseBody'
+        post:
+            tags:
+                - VolunteerService
+            summary: 创建志愿活动
+            description: 需要原生 session 和 volunteer 发布权限
+            operationId: VolunteerService_CreateVolunteerActivity
+            security:
+                - BearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateActivityRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ActivityDetailResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/volunteer/volunteer-activities/{id}:
+        get:
+            tags:
+                - VolunteerService
+            summary: 志愿活动详情
+            description: 公开返回活动完整信息、岗位和分场次安排
+            operationId: VolunteerService_GetVolunteerActivity
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ActivityDetailResponseBody'
+        put:
+            tags:
+                - VolunteerService
+            summary: 编辑本人志愿活动
+            description: 创建者或授权管理者可编辑；普通发布者不能修改加急字段
+            operationId: VolunteerService_UpdateVolunteerActivity
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateActivityRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ActivityDetailResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+        delete:
+            tags:
+                - VolunteerService
+            summary: 下架本人志愿活动
+            description: 逻辑下架，不物理删除
+            operationId: VolunteerService_OfflineVolunteerActivity
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/MutateResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/volunteer/volunteer-activities/{id}/urgent-applications:
+        post:
+            tags:
+                - VolunteerService
+            summary: 提交活动加急申请
+            description: 只有活动创建者或授权管理者可以提交；同一活动只允许一个待审批申请
+            operationId: VolunteerService_SubmitVolunteerUrgentApplication
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SubmitUrgentApplicationRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UrgentApplicationResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
     /healthz:
         get:
             tags:
@@ -7084,6 +8019,57 @@ components:
                     format: int64
                 msg:
                     type: string
+        ActivityListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ActivitySummary'
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                total:
+                    type: integer
+                    format: int64
+        ActivityListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ActivityListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ActivityOperationData:
+            type: object
+            properties:
+                activityID:
+                    type: string
+                submitted:
+                    type: boolean
+                verified:
+                    type: boolean
+                success:
+                    type: boolean
+                registered:
+                    type: boolean
+                message:
+                    type: string
+        ActivityOperationResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ActivityOperationData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         ActivityPage:
             type: object
             properties:
@@ -7115,6 +8101,85 @@ components:
                     format: int64
                 msg:
                     type: string
+        ActivityPositionInput:
+            type: object
+            properties:
+                name:
+                    type: string
+                description:
+                    type: string
+        ActivityRegistrationData:
+            type: object
+            properties:
+                activityID:
+                    type: string
+                registered:
+                    type: boolean
+        ActivityRegistrationResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ActivityRegistrationData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ActivitySessionInput:
+            type: object
+            properties:
+                name:
+                    type: string
+                start_at:
+                    type: integer
+                    format: int64
+                end_at:
+                    type: integer
+                    format: int64
+                recruitment_count:
+                    type: integer
+                    format: int32
+        ActivitySummary:
+            type: object
+            properties:
+                id:
+                    type: string
+                title:
+                    type: string
+                category:
+                    type: string
+                organization:
+                    type: string
+                startAt:
+                    type: integer
+                    format: int64
+                endAt:
+                    type: integer
+                    format: int64
+                location:
+                    type: string
+                recruitmentCount:
+                    type: integer
+                    format: int32
+                deadlineAt:
+                    type: integer
+                    format: int64
+                status:
+                    type: string
+                isUrgent:
+                    type: boolean
+                urgentAt:
+                    type: integer
+                    format: int64
+                publishedAt:
+                    type: integer
+                    format: int64
+                createdAt:
+                    type: integer
+                    format: int64
+                updatedAt:
+                    type: integer
+                    format: int64
         AddChunkRequestBody:
             type: object
             properties:
@@ -7934,6 +8999,22 @@ components:
                     format: int64
                 msg:
                     type: string
+        AuthorizeAllServicesRequestBody:
+            type: object
+            properties:
+                password:
+                    type: string
+                account:
+                    type: string
+                    description: 前端输入的统一身份认证账号
+        AuthorizeServiceRequestBody:
+            type: object
+            properties:
+                password:
+                    type: string
+                account:
+                    type: string
+                    description: 前端输入的统一身份认证账号
         AuthorizedAppItem:
             type: object
             properties:
@@ -8208,6 +9289,124 @@ components:
                 borrowCount:
                     type: integer
                     format: int32
+        BookingDateOption:
+            type: object
+            properties:
+                date:
+                    type: string
+                times:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/BookingTimeOption'
+        BookingItem:
+            type: object
+            properties:
+                bookingId:
+                    type: string
+                roomName:
+                    type: string
+                seatLabel:
+                    type: string
+                beginAt:
+                    type: string
+                endAt:
+                    type: string
+                orderedAt:
+                    type: string
+                status:
+                    type: integer
+                    format: int32
+                statusLabel:
+                    type: string
+                cancellable:
+                    type: boolean
+        BookingListData:
+            type: object
+            properties:
+                bookings:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/BookingItem'
+        BookingListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/BookingListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        BookingOptionsData:
+            type: object
+            properties:
+                categoryId:
+                    type: string
+                contentId:
+                    type: string
+                people:
+                    type: integer
+                    format: int32
+                defaultDate:
+                    type: string
+                defaultBeginTime:
+                    type: string
+                defaultDurationHours:
+                    type: integer
+                    format: int32
+                dates:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/BookingDateOption'
+        BookingOptionsResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/BookingOptionsData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        BookingResultData:
+            type: object
+            properties:
+                bookingId:
+                    type: string
+                message:
+                    type: string
+                roomId:
+                    type: string
+                roomName:
+                    type: string
+                seatId:
+                    type: string
+                seatLabel:
+                    type: string
+                beginAt:
+                    type: string
+                endAt:
+                    type: string
+        BookingResultResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/BookingResultData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        BookingTimeOption:
+            type: object
+            properties:
+                beginTime:
+                    type: string
+                durationHours:
+                    type: array
+                    items:
+                        type: integer
+                        format: int32
         BorrowList:
             type: object
             properties:
@@ -8300,6 +9499,23 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/AdminCampusInfo'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        CancelBookingData:
+            type: object
+            properties:
+                bookingId:
+                    type: string
+                message:
+                    type: string
+        CancelBookingResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/CancelBookingData'
                 code:
                     type: integer
                     format: int64
@@ -8412,6 +9628,13 @@ components:
                     format: int32
                 name:
                     type: string
+        CategoryListData:
+            type: object
+            properties:
+                categories:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SpaceCategory'
         CategoryListResponseBody:
             type: object
             properties:
@@ -8984,6 +10207,55 @@ components:
                 log:
                     type: string
                     description: JSON 字符串
+        CreateActivityRequestBody:
+            type: object
+            properties:
+                title:
+                    type: string
+                category:
+                    type: string
+                organization:
+                    type: string
+                start_at:
+                    type: integer
+                    format: int64
+                end_at:
+                    type: integer
+                    format: int64
+                location:
+                    type: string
+                description:
+                    type: string
+                recruitment_count:
+                    type: integer
+                    format: int32
+                registration_channel:
+                    type: string
+                training_info:
+                    type: string
+                benefits:
+                    type: string
+                requirements:
+                    type: string
+                deadline_at:
+                    type: integer
+                    format: int64
+                audience:
+                    type: string
+                organizer_background:
+                    type: string
+                hour_rule:
+                    type: string
+                positions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ActivityPositionInput'
+                sessions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ActivitySessionInput'
+                status:
+                    type: string
         CreateAppData:
             type: object
             properties:
@@ -9022,6 +10294,24 @@ components:
                     type: integer
                     format: int64
                 msg:
+                    type: string
+        CreateBookingRequestBody:
+            type: object
+            properties:
+                categoryId:
+                    type: string
+                contentId:
+                    type: string
+                date:
+                    type: string
+                beginTime:
+                    type: string
+                durationHours:
+                    type: integer
+                    format: int32
+                roomId:
+                    type: string
+                seatId:
                     type: string
         CreateCampusRequestBody:
             type: object
@@ -12144,6 +13434,14 @@ components:
                     format: int64
                 msg:
                     type: string
+        MutateResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         MyGroupsResponseBody:
             type: object
             properties:
@@ -12652,27 +13950,6 @@ components:
                 service_id:
                     type: string
             description: 快速问答策略配置(知识服务数组 + 默认)
-        Ranking:
-            type: object
-            properties:
-                rankingName:
-                    type: string
-                name:
-                    type: string
-                type:
-                    type: string
-        RankingResponseBody:
-            type: object
-            properties:
-                data:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/Ranking'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
         ReadingSummary:
             type: object
             properties:
@@ -12908,6 +14185,13 @@ components:
             type: object
             properties:
                 popup_prompt:
+                    type: string
+        ReviewUrgentApplicationRequestBody:
+            type: object
+            properties:
+                decision:
+                    type: string
+                review_comment:
                     type: string
         RevokeAuthorizationResponseBody:
             type: object
@@ -13386,6 +14670,37 @@ components:
                     format: int64
                 msg:
                     type: string
+        Seat:
+            type: object
+            properties:
+                seatId:
+                    type: string
+                label:
+                    type: string
+                x:
+                    type: number
+                    format: double
+                y:
+                    type: number
+                    format: double
+                width:
+                    type: number
+                    format: double
+                height:
+                    type: number
+                    format: double
+                hasSocket:
+                    type: boolean
+                state:
+                    type: integer
+                    format: int32
+                gender:
+                    type: integer
+                    format: int32
+                recommended:
+                    type: boolean
+                available:
+                    type: boolean
         SeatReservationItem:
             type: object
             properties:
@@ -13428,6 +14743,27 @@ components:
                     format: int64
                 msg:
                     type: string
+        SeatRoom:
+            type: object
+            properties:
+                roomId:
+                    type: string
+                name:
+                    type: string
+                storey:
+                    type: string
+                planUrl:
+                    type: string
+                width:
+                    type: number
+                    format: double
+                height:
+                    type: number
+                    format: double
+                seats:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Seat'
         SeatRoomItem:
             type: object
             properties:
@@ -13448,6 +14784,44 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/SeatRoomItem'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        SeatSearchData:
+            type: object
+            properties:
+                categoryId:
+                    type: string
+                contentId:
+                    type: string
+                date:
+                    type: string
+                beginTime:
+                    type: string
+                endTime:
+                    type: string
+                durationHours:
+                    type: integer
+                    format: int32
+                people:
+                    type: integer
+                    format: int32
+                queriedAt:
+                    type: string
+                availableSeatCount:
+                    type: integer
+                    format: int32
+                rooms:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SeatRoom'
+        SeatSearchResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/SeatSearchData'
                 code:
                     type: integer
                     format: int64
@@ -13547,6 +14921,36 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/SendWishData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ServiceAuthorizationItem:
+            type: object
+            properties:
+                type:
+                    type: string
+                    description: erke | library
+                authorized:
+                    type: boolean
+                valid:
+                    type: boolean
+                notify_on_expiry:
+                    type: boolean
+            description: ==== Erke / Library 服务凭据授权（仅一方原生会话，禁止 CLI/PAT/UAT） ====
+        ServiceAuthorizationStatusData:
+            type: object
+            properties:
+                services:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ServiceAuthorizationItem'
+        ServiceAuthorizationStatusResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ServiceAuthorizationStatusData'
                 code:
                     type: integer
                     format: int64
@@ -13861,6 +15265,23 @@ components:
                     format: int64
                 msg:
                     type: string
+        SharedLibraryReportData:
+            type: object
+            properties:
+                reading:
+                    $ref: '#/components/schemas/FlatReadData'
+                attendance:
+                    $ref: '#/components/schemas/AttendanceStats'
+        SharedLibraryReportResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/SharedLibraryReportData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         SimpleResponseBody:
             type: object
             properties:
@@ -13915,6 +15336,25 @@ components:
                     format: int64
                 msg:
                     type: string
+        SpaceCategory:
+            type: object
+            properties:
+                categoryId:
+                    type: string
+                contentId:
+                    type: string
+                name:
+                    type: string
+                englishName:
+                    type: string
+                description:
+                    type: string
+                spaceSummary:
+                    type: string
+                imageUrl:
+                    type: string
+                disabled:
+                    type: boolean
         Sponsor:
             type: object
             properties:
@@ -14237,6 +15677,11 @@ components:
                 ---------------------------------------------------------------------------
                 留校（假期留校）
                 ---------------------------------------------------------------------------
+        SubmitUrgentApplicationRequestBody:
+            type: object
+            properties:
+                reason:
+                    type: string
         SubscribeRequestBody:
             type: object
             properties:
@@ -14671,6 +16116,55 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/BookItem'
+        UpdateActivityRequestBody:
+            type: object
+            properties:
+                title:
+                    type: string
+                category:
+                    type: string
+                organization:
+                    type: string
+                start_at:
+                    type: integer
+                    format: int64
+                end_at:
+                    type: integer
+                    format: int64
+                location:
+                    type: string
+                description:
+                    type: string
+                recruitment_count:
+                    type: integer
+                    format: int32
+                registration_channel:
+                    type: string
+                training_info:
+                    type: string
+                benefits:
+                    type: string
+                requirements:
+                    type: string
+                deadline_at:
+                    type: integer
+                    format: int64
+                audience:
+                    type: string
+                organizer_background:
+                    type: string
+                hour_rule:
+                    type: string
+                positions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ActivityPositionInput'
+                sessions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ActivitySessionInput'
+                status:
+                    type: string
         UpdateAppRequestBody:
             type: object
             properties:
@@ -14857,6 +16351,14 @@ components:
                     format: int64
                 msg:
                     type: string
+        UpdateServiceAuthorizationNotificationRequestBody:
+            type: object
+            properties:
+                type:
+                    type: string
+                    description: erke | library
+                enabled:
+                    type: boolean
         UpdateSourceRequestBody:
             type: object
             properties:
@@ -14899,7 +16401,7 @@ components:
                     format: int64
                 contentType:
                     type: string
-            description: 文件上传（图片/附件转存）：multipart 表单字段 file
+            description: 文件上传（图片/附件转存）：OSS 前端直传，local 环境回退 multipart
         UploadFileResponseBody:
             type: object
             properties:
@@ -14972,6 +16474,69 @@ components:
         UpsertUserSocialIdentityResponseBody:
             type: object
             properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        UrgentApplication:
+            type: object
+            properties:
+                id:
+                    type: string
+                activityId:
+                    type: string
+                activityTitle:
+                    type: string
+                applicantUserId:
+                    type: string
+                applicantStaffId:
+                    type: string
+                reason:
+                    type: string
+                status:
+                    type: string
+                reviewerOperatorId:
+                    type: string
+                reviewComment:
+                    type: string
+                createdAt:
+                    type: integer
+                    format: int64
+                reviewedAt:
+                    type: integer
+                    format: int64
+        UrgentApplicationListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/UrgentApplication'
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                total:
+                    type: integer
+                    format: int64
+        UrgentApplicationListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/UrgentApplicationListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        UrgentApplicationResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/UrgentApplication'
                 code:
                     type: integer
                     format: int64
@@ -15232,6 +16797,29 @@ components:
                     format: int64
                 msg:
                     type: string
+        VolunteerMe:
+            type: object
+            properties:
+                userId:
+                    type: string
+                staffId:
+                    type: string
+                roles:
+                    type: array
+                    items:
+                        type: string
+                canPublish:
+                    type: boolean
+        VolunteerMeResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/VolunteerMe'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         WeatherCard:
             type: object
             properties:
@@ -15266,6 +16854,8 @@ tags:
         ============================================================================
         Service
         ============================================================================
+    - name: LibraryBookingService
     - name: MessagingService
     - name: SubscriptionService
     - name: UploadService
+    - name: VolunteerService

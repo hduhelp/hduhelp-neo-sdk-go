@@ -1500,6 +1500,64 @@ func (s *Service) LibraryShareID(ctx context.Context, req *LibraryShareIDReq, op
 	return resp, err
 }
 
+// LibrarySharedReportReq is the request for LibrarySharedReport.
+type LibrarySharedReportReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// LibrarySharedReportReqBuilder builds a LibrarySharedReportReq with a fluent setter per field.
+type LibrarySharedReportReqBuilder struct{ req *LibrarySharedReportReq }
+
+// NewLibrarySharedReportReqBuilder creates a request builder for LibrarySharedReport.
+func NewLibrarySharedReportReqBuilder() *LibrarySharedReportReqBuilder {
+	return &LibrarySharedReportReqBuilder{req: &LibrarySharedReportReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// ShareId sets the "share_id" query parameter.
+func (b *LibrarySharedReportReqBuilder) ShareId(v string) *LibrarySharedReportReqBuilder {
+	b.req.queryParams["share_id"] = v
+	return b
+}
+
+// Start sets the "start" query parameter.
+func (b *LibrarySharedReportReqBuilder) Start(v string) *LibrarySharedReportReqBuilder {
+	b.req.queryParams["start"] = v
+	return b
+}
+
+// End sets the "end" query parameter.
+func (b *LibrarySharedReportReqBuilder) End(v string) *LibrarySharedReportReqBuilder {
+	b.req.queryParams["end"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *LibrarySharedReportReqBuilder) Build() *LibrarySharedReportReq { return b.req }
+
+// LibrarySharedReportResp is the response for LibrarySharedReport.
+type LibrarySharedReportResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.SharedLibraryReportData `json:"data"`
+}
+
+// LibrarySharedReport: 根据分享 ID 查询脱敏图书馆报告
+func (s *Service) LibrarySharedReport(ctx context.Context, req *LibrarySharedReportReq, opts ...core.RequestOption) (*LibrarySharedReportResp, error) {
+	resp := &LibrarySharedReportResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/library/share/report",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // NeedyListReq is the request for NeedyList.
 type NeedyListReq struct {
 	pathParams  map[string]string

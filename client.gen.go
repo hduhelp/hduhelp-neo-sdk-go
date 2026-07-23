@@ -15,9 +15,11 @@ import (
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/health"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/identity"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/knowledge"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/librarybooking"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/messaging"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/subscription"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/upload"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/volunteer"
 )
 
 // Client is a fully configured hduhelp-neo API client. Each field is a
@@ -25,19 +27,21 @@ import (
 type Client struct {
 	config *core.Config
 
-	Academic      *academic.Service
-	Admin         *admin.Service
-	CampusLife    *campuslife.Service
-	EmptySchedule *emptyschedule.Service
-	Feed          *feed.Service
-	Graduate      *graduate.Service
-	GroupChat     *groupchat.Service
-	Health        *health.Service
-	Identity      *identity.Service
-	Knowledge     *knowledge.Service
-	Messaging     *messaging.Service
-	Subscription  *subscription.Service
-	Upload        *upload.Service
+	Academic       *academic.Service
+	Admin          *admin.Service
+	CampusLife     *campuslife.Service
+	EmptySchedule  *emptyschedule.Service
+	Feed           *feed.Service
+	Graduate       *graduate.Service
+	GroupChat      *groupchat.Service
+	Health         *health.Service
+	Identity       *identity.Service
+	Knowledge      *knowledge.Service
+	LibraryBooking *librarybooking.Service
+	Messaging      *messaging.Service
+	Subscription   *subscription.Service
+	Upload         *upload.Service
+	Volunteer      *volunteer.Service
 }
 
 // attachServices wires every generated service to the client config.
@@ -52,7 +56,9 @@ func attachServices(c *Client) {
 	c.Health = health.NewService(c.config)
 	c.Identity = identity.NewService(c.config)
 	c.Knowledge = knowledge.NewService(c.config)
+	c.LibraryBooking = librarybooking.NewService(c.config)
 	c.Messaging = messaging.NewService(c.config)
 	c.Subscription = subscription.NewService(c.config)
 	c.Upload = upload.NewService(c.config)
+	c.Volunteer = volunteer.NewService(c.config)
 }

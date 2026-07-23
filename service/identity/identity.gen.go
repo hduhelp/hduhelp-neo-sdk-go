@@ -1126,6 +1126,242 @@ func (s *Service) ResetPassword(ctx context.Context, req *ResetPasswordReq, opts
 	return resp, err
 }
 
+// GetServiceAuthorizationStatusReq is the request for GetServiceAuthorizationStatus.
+type GetServiceAuthorizationStatusReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// GetServiceAuthorizationStatusReqBuilder builds a GetServiceAuthorizationStatusReq with a fluent setter per field.
+type GetServiceAuthorizationStatusReqBuilder struct {
+	req *GetServiceAuthorizationStatusReq
+}
+
+// NewGetServiceAuthorizationStatusReqBuilder creates a request builder for GetServiceAuthorizationStatus.
+func NewGetServiceAuthorizationStatusReqBuilder() *GetServiceAuthorizationStatusReqBuilder {
+	return &GetServiceAuthorizationStatusReqBuilder{req: &GetServiceAuthorizationStatusReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *GetServiceAuthorizationStatusReqBuilder) Build() *GetServiceAuthorizationStatusReq {
+	return b.req
+}
+
+// GetServiceAuthorizationStatusResp is the response for GetServiceAuthorizationStatus.
+type GetServiceAuthorizationStatusResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ServiceAuthorizationStatusData `json:"data"`
+}
+
+// GetServiceAuthorizationStatus: 查询服务授权状态
+func (s *Service) GetServiceAuthorizationStatus(ctx context.Context, req *GetServiceAuthorizationStatusReq, opts ...core.RequestOption) (*GetServiceAuthorizationStatusResp, error) {
+	resp := &GetServiceAuthorizationStatusResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/identity/auth/service-authorizations",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AuthorizeAllServicesReq is the request for AuthorizeAllServices.
+type AuthorizeAllServicesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AuthorizeAllServicesReqBuilder builds a AuthorizeAllServicesReq with a fluent setter per field.
+type AuthorizeAllServicesReqBuilder struct{ req *AuthorizeAllServicesReq }
+
+// NewAuthorizeAllServicesReqBuilder creates a request builder for AuthorizeAllServices.
+func NewAuthorizeAllServicesReqBuilder() *AuthorizeAllServicesReqBuilder {
+	return &AuthorizeAllServicesReqBuilder{req: &AuthorizeAllServicesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *AuthorizeAllServicesReqBuilder) Body(body *models.AuthorizeAllServicesRequestBody) *AuthorizeAllServicesReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AuthorizeAllServicesReqBuilder) Build() *AuthorizeAllServicesReq { return b.req }
+
+// AuthorizeAllServicesResp is the response for AuthorizeAllServices.
+type AuthorizeAllServicesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// AuthorizeAllServices: 一键授权全部校园服务
+func (s *Service) AuthorizeAllServices(ctx context.Context, req *AuthorizeAllServicesReq, opts ...core.RequestOption) (*AuthorizeAllServicesResp, error) {
+	resp := &AuthorizeAllServicesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/identity/auth/service-authorizations/all",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// UpdateServiceAuthorizationNotificationReq is the request for UpdateServiceAuthorizationNotification.
+type UpdateServiceAuthorizationNotificationReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// UpdateServiceAuthorizationNotificationReqBuilder builds a UpdateServiceAuthorizationNotificationReq with a fluent setter per field.
+type UpdateServiceAuthorizationNotificationReqBuilder struct {
+	req *UpdateServiceAuthorizationNotificationReq
+}
+
+// NewUpdateServiceAuthorizationNotificationReqBuilder creates a request builder for UpdateServiceAuthorizationNotification.
+func NewUpdateServiceAuthorizationNotificationReqBuilder() *UpdateServiceAuthorizationNotificationReqBuilder {
+	return &UpdateServiceAuthorizationNotificationReqBuilder{req: &UpdateServiceAuthorizationNotificationReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *UpdateServiceAuthorizationNotificationReqBuilder) Body(body *models.UpdateServiceAuthorizationNotificationRequestBody) *UpdateServiceAuthorizationNotificationReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *UpdateServiceAuthorizationNotificationReqBuilder) Build() *UpdateServiceAuthorizationNotificationReq {
+	return b.req
+}
+
+// UpdateServiceAuthorizationNotificationResp is the response for UpdateServiceAuthorizationNotification.
+type UpdateServiceAuthorizationNotificationResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// UpdateServiceAuthorizationNotification: 设置服务授权失效通知
+func (s *Service) UpdateServiceAuthorizationNotification(ctx context.Context, req *UpdateServiceAuthorizationNotificationReq, opts ...core.RequestOption) (*UpdateServiceAuthorizationNotificationResp, error) {
+	resp := &UpdateServiceAuthorizationNotificationResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/identity/auth/service-authorizations/notification",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AuthorizeServiceReq is the request for AuthorizeService.
+type AuthorizeServiceReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AuthorizeServiceReqBuilder builds a AuthorizeServiceReq with a fluent setter per field.
+type AuthorizeServiceReqBuilder struct{ req *AuthorizeServiceReq }
+
+// NewAuthorizeServiceReqBuilder creates a request builder for AuthorizeService.
+func NewAuthorizeServiceReqBuilder() *AuthorizeServiceReqBuilder {
+	return &AuthorizeServiceReqBuilder{req: &AuthorizeServiceReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Service sets the "service" path parameter: erke | library
+func (b *AuthorizeServiceReqBuilder) Service(v string) *AuthorizeServiceReqBuilder {
+	b.req.pathParams["service"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AuthorizeServiceReqBuilder) Body(body *models.AuthorizeServiceRequestBody) *AuthorizeServiceReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AuthorizeServiceReqBuilder) Build() *AuthorizeServiceReq { return b.req }
+
+// AuthorizeServiceResp is the response for AuthorizeService.
+type AuthorizeServiceResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// AuthorizeService: 授权单个校园服务
+func (s *Service) AuthorizeService(ctx context.Context, req *AuthorizeServiceReq, opts ...core.RequestOption) (*AuthorizeServiceResp, error) {
+	resp := &AuthorizeServiceResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/identity/auth/service-authorizations/{service}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// RevokeServiceAuthorizationReq is the request for RevokeServiceAuthorization.
+type RevokeServiceAuthorizationReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// RevokeServiceAuthorizationReqBuilder builds a RevokeServiceAuthorizationReq with a fluent setter per field.
+type RevokeServiceAuthorizationReqBuilder struct {
+	req *RevokeServiceAuthorizationReq
+}
+
+// NewRevokeServiceAuthorizationReqBuilder creates a request builder for RevokeServiceAuthorization.
+func NewRevokeServiceAuthorizationReqBuilder() *RevokeServiceAuthorizationReqBuilder {
+	return &RevokeServiceAuthorizationReqBuilder{req: &RevokeServiceAuthorizationReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Service sets the "service" path parameter: erke | library
+func (b *RevokeServiceAuthorizationReqBuilder) Service(v string) *RevokeServiceAuthorizationReqBuilder {
+	b.req.pathParams["service"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *RevokeServiceAuthorizationReqBuilder) Build() *RevokeServiceAuthorizationReq { return b.req }
+
+// RevokeServiceAuthorizationResp is the response for RevokeServiceAuthorization.
+type RevokeServiceAuthorizationResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// RevokeServiceAuthorization: 取消校园服务授权
+func (s *Service) RevokeServiceAuthorization(ctx context.Context, req *RevokeServiceAuthorizationReq, opts ...core.RequestOption) (*RevokeServiceAuthorizationResp, error) {
+	resp := &RevokeServiceAuthorizationResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/identity/auth/service-authorizations/{service}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // ListSessionsReq is the request for ListSessions.
 type ListSessionsReq struct {
 	pathParams  map[string]string

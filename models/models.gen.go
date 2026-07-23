@@ -107,6 +107,38 @@ type ActivityDetailResponseBody struct {
 	Msg  *string         `json:"msg,omitempty"`
 }
 
+// ActivityListData defines model for ActivityListData.
+type ActivityListData struct {
+	List     *[]ActivitySummary `json:"list,omitempty"`
+	Page     *int32             `json:"page,omitempty"`
+	PageSize *int32             `json:"pageSize,omitempty"`
+	Total    *int64             `json:"total,omitempty"`
+}
+
+// ActivityListResponseBody defines model for ActivityListResponseBody.
+type ActivityListResponseBody struct {
+	Code *int64            `json:"code,omitempty"`
+	Data *ActivityListData `json:"data,omitempty"`
+	Msg  *string           `json:"msg,omitempty"`
+}
+
+// ActivityOperationData defines model for ActivityOperationData.
+type ActivityOperationData struct {
+	ActivityID *string `json:"activityID,omitempty"`
+	Message    *string `json:"message,omitempty"`
+	Registered *bool   `json:"registered,omitempty"`
+	Submitted  *bool   `json:"submitted,omitempty"`
+	Success    *bool   `json:"success,omitempty"`
+	Verified   *bool   `json:"verified,omitempty"`
+}
+
+// ActivityOperationResponseBody defines model for ActivityOperationResponseBody.
+type ActivityOperationResponseBody struct {
+	Code *int64                 `json:"code,omitempty"`
+	Data *ActivityOperationData `json:"data,omitempty"`
+	Msg  *string                `json:"msg,omitempty"`
+}
+
 // ActivityPage defines model for ActivityPage.
 type ActivityPage struct {
 	HasMore  *bool       `json:"hasMore,omitempty"`
@@ -122,6 +154,52 @@ type ActivityPageResponseBody struct {
 	Code *int64        `json:"code,omitempty"`
 	Data *ActivityPage `json:"data,omitempty"`
 	Msg  *string       `json:"msg,omitempty"`
+}
+
+// ActivityPositionInput defines model for ActivityPositionInput.
+type ActivityPositionInput struct {
+	Description *string `json:"description,omitempty"`
+	Name        *string `json:"name,omitempty"`
+}
+
+// ActivityRegistrationData defines model for ActivityRegistrationData.
+type ActivityRegistrationData struct {
+	ActivityID *string `json:"activityID,omitempty"`
+	Registered *bool   `json:"registered,omitempty"`
+}
+
+// ActivityRegistrationResponseBody defines model for ActivityRegistrationResponseBody.
+type ActivityRegistrationResponseBody struct {
+	Code *int64                    `json:"code,omitempty"`
+	Data *ActivityRegistrationData `json:"data,omitempty"`
+	Msg  *string                   `json:"msg,omitempty"`
+}
+
+// ActivitySessionInput defines model for ActivitySessionInput.
+type ActivitySessionInput struct {
+	EndAt            *int64  `json:"end_at,omitempty"`
+	Name             *string `json:"name,omitempty"`
+	RecruitmentCount *int32  `json:"recruitment_count,omitempty"`
+	StartAt          *int64  `json:"start_at,omitempty"`
+}
+
+// ActivitySummary defines model for ActivitySummary.
+type ActivitySummary struct {
+	Category         *string `json:"category,omitempty"`
+	CreatedAt        *int64  `json:"createdAt,omitempty"`
+	DeadlineAt       *int64  `json:"deadlineAt,omitempty"`
+	EndAt            *int64  `json:"endAt,omitempty"`
+	Id               *string `json:"id,omitempty"`
+	IsUrgent         *bool   `json:"isUrgent,omitempty"`
+	Location         *string `json:"location,omitempty"`
+	Organization     *string `json:"organization,omitempty"`
+	PublishedAt      *int64  `json:"publishedAt,omitempty"`
+	RecruitmentCount *int32  `json:"recruitmentCount,omitempty"`
+	StartAt          *int64  `json:"startAt,omitempty"`
+	Status           *string `json:"status,omitempty"`
+	Title            *string `json:"title,omitempty"`
+	UpdatedAt        *int64  `json:"updatedAt,omitempty"`
+	UrgentAt         *int64  `json:"urgentAt,omitempty"`
 }
 
 // AddChunkRequestBody defines model for AddChunkRequestBody.
@@ -664,6 +742,20 @@ type AuthorizationListResponseBody struct {
 	Msg  *string                   `json:"msg,omitempty"`
 }
 
+// AuthorizeAllServicesRequestBody defines model for AuthorizeAllServicesRequestBody.
+type AuthorizeAllServicesRequestBody struct {
+	// Account 前端输入的统一身份认证账号
+	Account  *string `json:"account,omitempty"`
+	Password *string `json:"password,omitempty"`
+}
+
+// AuthorizeServiceRequestBody defines model for AuthorizeServiceRequestBody.
+type AuthorizeServiceRequestBody struct {
+	// Account 前端输入的统一身份认证账号
+	Account  *string `json:"account,omitempty"`
+	Password *string `json:"password,omitempty"`
+}
+
 // AuthorizedAppItem 当前用户已授权的应用列表 / 撤销对某应用的授权（用户自助的"已连接应用"管理）。
 type AuthorizedAppItem struct {
 	ClientId    *string   `json:"clientId,omitempty"`
@@ -853,6 +945,80 @@ type BookStat struct {
 	BorrowCount *int32  `json:"borrowCount,omitempty"`
 }
 
+// BookingDateOption defines model for BookingDateOption.
+type BookingDateOption struct {
+	Date  *string              `json:"date,omitempty"`
+	Times *[]BookingTimeOption `json:"times,omitempty"`
+}
+
+// BookingItem defines model for BookingItem.
+type BookingItem struct {
+	BeginAt     *string `json:"beginAt,omitempty"`
+	BookingId   *string `json:"bookingId,omitempty"`
+	Cancellable *bool   `json:"cancellable,omitempty"`
+	EndAt       *string `json:"endAt,omitempty"`
+	OrderedAt   *string `json:"orderedAt,omitempty"`
+	RoomName    *string `json:"roomName,omitempty"`
+	SeatLabel   *string `json:"seatLabel,omitempty"`
+	Status      *int32  `json:"status,omitempty"`
+	StatusLabel *string `json:"statusLabel,omitempty"`
+}
+
+// BookingListData defines model for BookingListData.
+type BookingListData struct {
+	Bookings *[]BookingItem `json:"bookings,omitempty"`
+}
+
+// BookingListResponseBody defines model for BookingListResponseBody.
+type BookingListResponseBody struct {
+	Code *int64           `json:"code,omitempty"`
+	Data *BookingListData `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
+}
+
+// BookingOptionsData defines model for BookingOptionsData.
+type BookingOptionsData struct {
+	CategoryId           *string              `json:"categoryId,omitempty"`
+	ContentId            *string              `json:"contentId,omitempty"`
+	Dates                *[]BookingDateOption `json:"dates,omitempty"`
+	DefaultBeginTime     *string              `json:"defaultBeginTime,omitempty"`
+	DefaultDate          *string              `json:"defaultDate,omitempty"`
+	DefaultDurationHours *int32               `json:"defaultDurationHours,omitempty"`
+	People               *int32               `json:"people,omitempty"`
+}
+
+// BookingOptionsResponseBody defines model for BookingOptionsResponseBody.
+type BookingOptionsResponseBody struct {
+	Code *int64              `json:"code,omitempty"`
+	Data *BookingOptionsData `json:"data,omitempty"`
+	Msg  *string             `json:"msg,omitempty"`
+}
+
+// BookingResultData defines model for BookingResultData.
+type BookingResultData struct {
+	BeginAt   *string `json:"beginAt,omitempty"`
+	BookingId *string `json:"bookingId,omitempty"`
+	EndAt     *string `json:"endAt,omitempty"`
+	Message   *string `json:"message,omitempty"`
+	RoomId    *string `json:"roomId,omitempty"`
+	RoomName  *string `json:"roomName,omitempty"`
+	SeatId    *string `json:"seatId,omitempty"`
+	SeatLabel *string `json:"seatLabel,omitempty"`
+}
+
+// BookingResultResponseBody defines model for BookingResultResponseBody.
+type BookingResultResponseBody struct {
+	Code *int64             `json:"code,omitempty"`
+	Data *BookingResultData `json:"data,omitempty"`
+	Msg  *string            `json:"msg,omitempty"`
+}
+
+// BookingTimeOption defines model for BookingTimeOption.
+type BookingTimeOption struct {
+	BeginTime     *string  `json:"beginTime,omitempty"`
+	DurationHours *[]int32 `json:"durationHours,omitempty"`
+}
+
 // BorrowList defines model for BorrowList.
 type BorrowList struct {
 	Books   *[]BookItem `json:"books,omitempty"`
@@ -925,6 +1091,19 @@ type CampusMutateResponseBody struct {
 	// Data -------------------- 校区地理位置管理（campuses） --------------------
 	Data *AdminCampusInfo `json:"data,omitempty"`
 	Msg  *string          `json:"msg,omitempty"`
+}
+
+// CancelBookingData defines model for CancelBookingData.
+type CancelBookingData struct {
+	BookingId *string `json:"bookingId,omitempty"`
+	Message   *string `json:"message,omitempty"`
+}
+
+// CancelBookingResponseBody defines model for CancelBookingResponseBody.
+type CancelBookingResponseBody struct {
+	Code *int64             `json:"code,omitempty"`
+	Data *CancelBookingData `json:"data,omitempty"`
+	Msg  *string            `json:"msg,omitempty"`
 }
 
 // CardBalanceData defines model for CardBalanceData.
@@ -1008,6 +1187,11 @@ type CarrierResponseBody struct {
 type Category struct {
 	Id   *int32  `json:"id,omitempty"`
 	Name *string `json:"name,omitempty"`
+}
+
+// CategoryListData defines model for CategoryListData.
+type CategoryListData struct {
+	Categories *[]SpaceCategory `json:"categories,omitempty"`
 }
 
 // CategoryListResponseBody defines model for CategoryListResponseBody.
@@ -1388,6 +1572,29 @@ type CrawlRunInfo struct {
 	StartedAt *int64  `json:"startedAt,omitempty"`
 }
 
+// CreateActivityRequestBody defines model for CreateActivityRequestBody.
+type CreateActivityRequestBody struct {
+	Audience            *string                  `json:"audience,omitempty"`
+	Benefits            *string                  `json:"benefits,omitempty"`
+	Category            *string                  `json:"category,omitempty"`
+	DeadlineAt          *int64                   `json:"deadline_at,omitempty"`
+	Description         *string                  `json:"description,omitempty"`
+	EndAt               *int64                   `json:"end_at,omitempty"`
+	HourRule            *string                  `json:"hour_rule,omitempty"`
+	Location            *string                  `json:"location,omitempty"`
+	Organization        *string                  `json:"organization,omitempty"`
+	OrganizerBackground *string                  `json:"organizer_background,omitempty"`
+	Positions           *[]ActivityPositionInput `json:"positions,omitempty"`
+	RecruitmentCount    *int32                   `json:"recruitment_count,omitempty"`
+	RegistrationChannel *string                  `json:"registration_channel,omitempty"`
+	Requirements        *string                  `json:"requirements,omitempty"`
+	Sessions            *[]ActivitySessionInput  `json:"sessions,omitempty"`
+	StartAt             *int64                   `json:"start_at,omitempty"`
+	Status              *string                  `json:"status,omitempty"`
+	Title               *string                  `json:"title,omitempty"`
+	TrainingInfo        *string                  `json:"training_info,omitempty"`
+}
+
 // CreateAppData defines model for CreateAppData.
 type CreateAppData struct {
 	// App 应用详情：应用权限供 TAT/App + X-Staff-Id 使用；用户权限供 UAT
@@ -1413,6 +1620,17 @@ type CreateAppResponseBody struct {
 	Code *int64         `json:"code,omitempty"`
 	Data *CreateAppData `json:"data,omitempty"`
 	Msg  *string        `json:"msg,omitempty"`
+}
+
+// CreateBookingRequestBody defines model for CreateBookingRequestBody.
+type CreateBookingRequestBody struct {
+	BeginTime     *string `json:"beginTime,omitempty"`
+	CategoryId    *string `json:"categoryId,omitempty"`
+	ContentId     *string `json:"contentId,omitempty"`
+	Date          *string `json:"date,omitempty"`
+	DurationHours *int32  `json:"durationHours,omitempty"`
+	RoomId        *string `json:"roomId,omitempty"`
+	SeatId        *string `json:"seatId,omitempty"`
 }
 
 // CreateCampusRequestBody defines model for CreateCampusRequestBody.
@@ -3645,6 +3863,12 @@ type MutateOkResponseBody struct {
 	Msg  *string `json:"msg,omitempty"`
 }
 
+// MutateResponseBody defines model for MutateResponseBody.
+type MutateResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
 // MyGroupsResponseBody defines model for MyGroupsResponseBody.
 type MyGroupsResponseBody struct {
 	Code *int64       `json:"code,omitempty"`
@@ -3979,20 +4203,6 @@ type QAStrategyItem struct {
 	ServiceId *string `json:"service_id,omitempty"`
 }
 
-// Ranking defines model for Ranking.
-type Ranking struct {
-	Name        *string `json:"name,omitempty"`
-	RankingName *string `json:"rankingName,omitempty"`
-	Type        *string `json:"type,omitempty"`
-}
-
-// RankingResponseBody defines model for RankingResponseBody.
-type RankingResponseBody struct {
-	Code *int64     `json:"code,omitempty"`
-	Data *[]Ranking `json:"data,omitempty"`
-	Msg  *string    `json:"msg,omitempty"`
-}
-
 // ReadingSummary defines model for ReadingSummary.
 type ReadingSummary struct {
 	HasRecord  *bool    `json:"hasRecord,omitempty"`
@@ -4168,6 +4378,12 @@ type ReviewCardPrivateData struct {
 // ReviewCardPrivateParams defines model for ReviewCardPrivateParams.
 type ReviewCardPrivateParams struct {
 	PopupPrompt *string `json:"popup_prompt,omitempty"`
+}
+
+// ReviewUrgentApplicationRequestBody defines model for ReviewUrgentApplicationRequestBody.
+type ReviewUrgentApplicationRequestBody struct {
+	Decision      *string `json:"decision,omitempty"`
+	ReviewComment *string `json:"review_comment,omitempty"`
 }
 
 // RevokeAuthorizationResponseBody defines model for RevokeAuthorizationResponseBody.
@@ -4508,6 +4724,21 @@ type SearchUsersResponseBody struct {
 	Msg  *string         `json:"msg,omitempty"`
 }
 
+// Seat defines model for Seat.
+type Seat struct {
+	Available   *bool    `json:"available,omitempty"`
+	Gender      *int32   `json:"gender,omitempty"`
+	HasSocket   *bool    `json:"hasSocket,omitempty"`
+	Height      *float64 `json:"height,omitempty"`
+	Label       *string  `json:"label,omitempty"`
+	Recommended *bool    `json:"recommended,omitempty"`
+	SeatId      *string  `json:"seatId,omitempty"`
+	State       *int32   `json:"state,omitempty"`
+	Width       *float64 `json:"width,omitempty"`
+	X           *float64 `json:"x,omitempty"`
+	Y           *float64 `json:"y,omitempty"`
+}
+
 // SeatReservationItem defines model for SeatReservationItem.
 type SeatReservationItem struct {
 	// Duration 时长（小时）
@@ -4537,6 +4768,17 @@ type SeatReservationListResponseBody struct {
 	Msg  *string                `json:"msg,omitempty"`
 }
 
+// SeatRoom defines model for SeatRoom.
+type SeatRoom struct {
+	Height  *float64 `json:"height,omitempty"`
+	Name    *string  `json:"name,omitempty"`
+	PlanUrl *string  `json:"planUrl,omitempty"`
+	RoomId  *string  `json:"roomId,omitempty"`
+	Seats   *[]Seat  `json:"seats,omitempty"`
+	Storey  *string  `json:"storey,omitempty"`
+	Width   *float64 `json:"width,omitempty"`
+}
+
 // SeatRoomItem defines model for SeatRoomItem.
 type SeatRoomItem struct {
 	// Room 房间名
@@ -4553,6 +4795,27 @@ type SeatRoomItem struct {
 type SeatRoomListResponseBody struct {
 	Code *int64          `json:"code,omitempty"`
 	Data *[]SeatRoomItem `json:"data,omitempty"`
+	Msg  *string         `json:"msg,omitempty"`
+}
+
+// SeatSearchData defines model for SeatSearchData.
+type SeatSearchData struct {
+	AvailableSeatCount *int32      `json:"availableSeatCount,omitempty"`
+	BeginTime          *string     `json:"beginTime,omitempty"`
+	CategoryId         *string     `json:"categoryId,omitempty"`
+	ContentId          *string     `json:"contentId,omitempty"`
+	Date               *string     `json:"date,omitempty"`
+	DurationHours      *int32      `json:"durationHours,omitempty"`
+	EndTime            *string     `json:"endTime,omitempty"`
+	People             *int32      `json:"people,omitempty"`
+	QueriedAt          *string     `json:"queriedAt,omitempty"`
+	Rooms              *[]SeatRoom `json:"rooms,omitempty"`
+}
+
+// SeatSearchResponseBody defines model for SeatSearchResponseBody.
+type SeatSearchResponseBody struct {
+	Code *int64          `json:"code,omitempty"`
+	Data *SeatSearchData `json:"data,omitempty"`
 	Msg  *string         `json:"msg,omitempty"`
 }
 
@@ -4627,6 +4890,28 @@ type SendWishResponseBody struct {
 	Code *int64        `json:"code,omitempty"`
 	Data *SendWishData `json:"data,omitempty"`
 	Msg  *string       `json:"msg,omitempty"`
+}
+
+// ServiceAuthorizationItem ==== Erke / Library 服务凭据授权（仅一方原生会话，禁止 CLI/PAT/UAT） ====
+type ServiceAuthorizationItem struct {
+	Authorized     *bool `json:"authorized,omitempty"`
+	NotifyOnExpiry *bool `json:"notify_on_expiry,omitempty"`
+
+	// Type erke | library
+	Type  *string `json:"type,omitempty"`
+	Valid *bool   `json:"valid,omitempty"`
+}
+
+// ServiceAuthorizationStatusData defines model for ServiceAuthorizationStatusData.
+type ServiceAuthorizationStatusData struct {
+	Services *[]ServiceAuthorizationItem `json:"services,omitempty"`
+}
+
+// ServiceAuthorizationStatusResponseBody defines model for ServiceAuthorizationStatusResponseBody.
+type ServiceAuthorizationStatusResponseBody struct {
+	Code *int64                          `json:"code,omitempty"`
+	Data *ServiceAuthorizationStatusData `json:"data,omitempty"`
+	Msg  *string                         `json:"msg,omitempty"`
 }
 
 // ServiceChatData defines model for ServiceChatData.
@@ -4870,6 +5155,19 @@ type ShareStaffResponseBody struct {
 	Msg  *string         `json:"msg,omitempty"`
 }
 
+// SharedLibraryReportData defines model for SharedLibraryReportData.
+type SharedLibraryReportData struct {
+	Attendance *AttendanceStats `json:"attendance,omitempty"`
+	Reading    *FlatReadData    `json:"reading,omitempty"`
+}
+
+// SharedLibraryReportResponseBody defines model for SharedLibraryReportResponseBody.
+type SharedLibraryReportResponseBody struct {
+	Code *int64                   `json:"code,omitempty"`
+	Data *SharedLibraryReportData `json:"data,omitempty"`
+	Msg  *string                  `json:"msg,omitempty"`
+}
+
 // SimpleResponseBody defines model for SimpleResponseBody.
 type SimpleResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
@@ -4907,6 +5205,18 @@ type SourceMutateResponseBody struct {
 	// Data KnowledgeSourceNode 是扁平「来源」词表的一项。
 	Data *KnowledgeSourceNode `json:"data,omitempty"`
 	Msg  *string              `json:"msg,omitempty"`
+}
+
+// SpaceCategory defines model for SpaceCategory.
+type SpaceCategory struct {
+	CategoryId   *string `json:"categoryId,omitempty"`
+	ContentId    *string `json:"contentId,omitempty"`
+	Description  *string `json:"description,omitempty"`
+	Disabled     *bool   `json:"disabled,omitempty"`
+	EnglishName  *string `json:"englishName,omitempty"`
+	ImageUrl     *string `json:"imageUrl,omitempty"`
+	Name         *string `json:"name,omitempty"`
+	SpaceSummary *string `json:"spaceSummary,omitempty"`
 }
 
 // Sponsor defines model for Sponsor.
@@ -5123,6 +5433,11 @@ type StudentStaySchoolInfo struct {
 	// UnitReviewTime 学院审批时间
 	UnitReviewTime *string `json:"unitReviewTime,omitempty"`
 	UnitStatus     *string `json:"unitStatus,omitempty"`
+}
+
+// SubmitUrgentApplicationRequestBody defines model for SubmitUrgentApplicationRequestBody.
+type SubmitUrgentApplicationRequestBody struct {
+	Reason *string `json:"reason,omitempty"`
 }
 
 // SubscribeRequestBody defines model for SubscribeRequestBody.
@@ -5423,6 +5738,29 @@ type UnreturnedBatchItem struct {
 	Total   *int64      `json:"total,omitempty"`
 }
 
+// UpdateActivityRequestBody defines model for UpdateActivityRequestBody.
+type UpdateActivityRequestBody struct {
+	Audience            *string                  `json:"audience,omitempty"`
+	Benefits            *string                  `json:"benefits,omitempty"`
+	Category            *string                  `json:"category,omitempty"`
+	DeadlineAt          *int64                   `json:"deadline_at,omitempty"`
+	Description         *string                  `json:"description,omitempty"`
+	EndAt               *int64                   `json:"end_at,omitempty"`
+	HourRule            *string                  `json:"hour_rule,omitempty"`
+	Location            *string                  `json:"location,omitempty"`
+	Organization        *string                  `json:"organization,omitempty"`
+	OrganizerBackground *string                  `json:"organizer_background,omitempty"`
+	Positions           *[]ActivityPositionInput `json:"positions,omitempty"`
+	RecruitmentCount    *int32                   `json:"recruitment_count,omitempty"`
+	RegistrationChannel *string                  `json:"registration_channel,omitempty"`
+	Requirements        *string                  `json:"requirements,omitempty"`
+	Sessions            *[]ActivitySessionInput  `json:"sessions,omitempty"`
+	StartAt             *int64                   `json:"start_at,omitempty"`
+	Status              *string                  `json:"status,omitempty"`
+	Title               *string                  `json:"title,omitempty"`
+	TrainingInfo        *string                  `json:"training_info,omitempty"`
+}
+
 // UpdateAppRequestBody defines model for UpdateAppRequestBody.
 type UpdateAppRequestBody struct {
 	Description  *string   `json:"description,omitempty"`
@@ -5549,6 +5887,14 @@ type UpdateLoginClientResponseBody struct {
 	Msg  *string               `json:"msg,omitempty"`
 }
 
+// UpdateServiceAuthorizationNotificationRequestBody defines model for UpdateServiceAuthorizationNotificationRequestBody.
+type UpdateServiceAuthorizationNotificationRequestBody struct {
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Type erke | library
+	Type *string `json:"type,omitempty"`
+}
+
 // UpdateSourceRequestBody defines model for UpdateSourceRequestBody.
 type UpdateSourceRequestBody struct {
 	Name      *string `json:"name,omitempty"`
@@ -5571,7 +5917,7 @@ type UploadData struct {
 	Url         *string `json:"url,omitempty"`
 }
 
-// UploadFileData 文件上传（图片/附件转存）：multipart 表单字段 file
+// UploadFileData 文件上传（图片/附件转存）：OSS 前端直传，local 环境回退 multipart
 type UploadFileData struct {
 	ContentType *string `json:"contentType,omitempty"`
 	Key         *string `json:"key,omitempty"`
@@ -5583,7 +5929,7 @@ type UploadFileData struct {
 type UploadFileResponseBody struct {
 	Code *int64 `json:"code,omitempty"`
 
-	// Data 文件上传（图片/附件转存）：multipart 表单字段 file
+	// Data 文件上传（图片/附件转存）：OSS 前端直传，local 环境回退 multipart
 	Data *UploadFileData `json:"data,omitempty"`
 	Msg  *string         `json:"msg,omitempty"`
 }
@@ -5639,6 +5985,43 @@ type UpsertUserSocialIdentityRequestBody struct {
 type UpsertUserSocialIdentityResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
+}
+
+// UrgentApplication defines model for UrgentApplication.
+type UrgentApplication struct {
+	ActivityId         *string `json:"activityId,omitempty"`
+	ActivityTitle      *string `json:"activityTitle,omitempty"`
+	ApplicantStaffId   *string `json:"applicantStaffId,omitempty"`
+	ApplicantUserId    *string `json:"applicantUserId,omitempty"`
+	CreatedAt          *int64  `json:"createdAt,omitempty"`
+	Id                 *string `json:"id,omitempty"`
+	Reason             *string `json:"reason,omitempty"`
+	ReviewComment      *string `json:"reviewComment,omitempty"`
+	ReviewedAt         *int64  `json:"reviewedAt,omitempty"`
+	ReviewerOperatorId *string `json:"reviewerOperatorId,omitempty"`
+	Status             *string `json:"status,omitempty"`
+}
+
+// UrgentApplicationListData defines model for UrgentApplicationListData.
+type UrgentApplicationListData struct {
+	List     *[]UrgentApplication `json:"list,omitempty"`
+	Page     *int32               `json:"page,omitempty"`
+	PageSize *int32               `json:"pageSize,omitempty"`
+	Total    *int64               `json:"total,omitempty"`
+}
+
+// UrgentApplicationListResponseBody defines model for UrgentApplicationListResponseBody.
+type UrgentApplicationListResponseBody struct {
+	Code *int64                     `json:"code,omitempty"`
+	Data *UrgentApplicationListData `json:"data,omitempty"`
+	Msg  *string                    `json:"msg,omitempty"`
+}
+
+// UrgentApplicationResponseBody defines model for UrgentApplicationResponseBody.
+type UrgentApplicationResponseBody struct {
+	Code *int64             `json:"code,omitempty"`
+	Data *UrgentApplication `json:"data,omitempty"`
+	Msg  *string            `json:"msg,omitempty"`
 }
 
 // UserDetailAuthorization defines model for UserDetailAuthorization.
@@ -5796,6 +6179,21 @@ type VenueDatesResponseBody struct {
 	Code *int64          `json:"code,omitempty"`
 	Data *VenueDatesData `json:"data,omitempty"`
 	Msg  *string         `json:"msg,omitempty"`
+}
+
+// VolunteerMe defines model for VolunteerMe.
+type VolunteerMe struct {
+	CanPublish *bool     `json:"canPublish,omitempty"`
+	Roles      *[]string `json:"roles,omitempty"`
+	StaffId    *string   `json:"staffId,omitempty"`
+	UserId     *string   `json:"userId,omitempty"`
+}
+
+// VolunteerMeResponseBody defines model for VolunteerMeResponseBody.
+type VolunteerMeResponseBody struct {
+	Code *int64       `json:"code,omitempty"`
+	Data *VolunteerMe `json:"data,omitempty"`
+	Msg  *string      `json:"msg,omitempty"`
 }
 
 // WeatherCard WeatherCard 是信息流天气卡片负载。
@@ -5987,6 +6385,13 @@ type AcademicServiceLibraryShareStaffParams struct {
 // AcademicServiceLibraryShareIDParams defines parameters for AcademicServiceLibraryShareID.
 type AcademicServiceLibraryShareIDParams struct {
 	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServiceLibrarySharedReportParams defines parameters for AcademicServiceLibrarySharedReport.
+type AcademicServiceLibrarySharedReportParams struct {
+	ShareId *string `form:"share_id,omitempty" json:"share_id,omitempty"`
+	Start   *string `form:"start,omitempty" json:"start,omitempty"`
+	End     *string `form:"end,omitempty" json:"end,omitempty"`
 }
 
 // AcademicServiceNeedyListParams defines parameters for AcademicServiceNeedyList.
@@ -6339,6 +6744,31 @@ type AdminServiceDeleteUserSocialIdentityParams struct {
 	IdentityId *string `form:"identity_id,omitempty" json:"identity_id,omitempty"`
 }
 
+// VolunteerServiceAdminListVolunteerActivitiesParams defines parameters for VolunteerServiceAdminListVolunteerActivities.
+type VolunteerServiceAdminListVolunteerActivitiesParams struct {
+	Page            *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize        *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+	Category        *string `form:"category,omitempty" json:"category,omitempty"`
+	Organization    *string `form:"organization,omitempty" json:"organization,omitempty"`
+	StartAtFrom     *int64  `form:"start_at_from,omitempty" json:"start_at_from,omitempty"`
+	StartAtTo       *int64  `form:"start_at_to,omitempty" json:"start_at_to,omitempty"`
+	DeadlineAtFrom  *int64  `form:"deadline_at_from,omitempty" json:"deadline_at_from,omitempty"`
+	DeadlineAtTo    *int64  `form:"deadline_at_to,omitempty" json:"deadline_at_to,omitempty"`
+	IsUrgent        *bool   `form:"is_urgent,omitempty" json:"is_urgent,omitempty"`
+	Keyword         *string `form:"keyword,omitempty" json:"keyword,omitempty"`
+	Status          *string `form:"status,omitempty" json:"status,omitempty"`
+	CreatedByUserId *string `form:"created_by_user_id,omitempty" json:"created_by_user_id,omitempty"`
+}
+
+// VolunteerServiceAdminListVolunteerUrgentApplicationsParams defines parameters for VolunteerServiceAdminListVolunteerUrgentApplications.
+type VolunteerServiceAdminListVolunteerUrgentApplicationsParams struct {
+	Page         *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize     *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+	Status       *string `form:"status,omitempty" json:"status,omitempty"`
+	Organization *string `form:"organization,omitempty" json:"organization,omitempty"`
+	Category     *string `form:"category,omitempty" json:"category,omitempty"`
+}
+
 // MessagingServiceDingTalkBlessReviewCallbackParams defines parameters for MessagingServiceDingTalkBlessReviewCallback.
 type MessagingServiceDingTalkBlessReviewCallbackParams struct {
 	// XDdpaasSignatureTimestamp 钉钉卡片回调签名时间戳
@@ -6373,6 +6803,18 @@ type CampusLifeServiceListActivitiesParams struct {
 	HostName *string   `form:"hostName,omitempty" json:"hostName,omitempty"`
 	Page     *int32    `form:"page,omitempty" json:"page,omitempty"`
 	PageSize *int32    `form:"pageSize,omitempty" json:"pageSize,omitempty"`
+}
+
+// CampusLifeServiceListMyActivitiesParams defines parameters for CampusLifeServiceListMyActivities.
+type CampusLifeServiceListMyActivitiesParams struct {
+	Status   *int32 `form:"status,omitempty" json:"status,omitempty"`
+	Page     *int32 `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32 `form:"pageSize,omitempty" json:"pageSize,omitempty"`
+}
+
+// CampusLifeServiceCancelActivityParams defines parameters for CampusLifeServiceCancelActivity.
+type CampusLifeServiceCancelActivityParams struct {
+	Reason *string `form:"reason,omitempty" json:"reason,omitempty"`
 }
 
 // CampusLifeServiceCardBalanceParams defines parameters for CampusLifeServiceCardBalance.
@@ -6760,6 +7202,33 @@ type IdentityServiceGetLoginURLParams struct {
 	ReturnTo *string `form:"return_to,omitempty" json:"return_to,omitempty"`
 }
 
+// LibraryBookingServiceGetBookingOptionsParams defines parameters for LibraryBookingServiceGetBookingOptions.
+type LibraryBookingServiceGetBookingOptionsParams struct {
+	// CategoryId 空间分类接口返回的 categoryId。
+	CategoryId string `form:"categoryId" json:"categoryId"`
+
+	// ContentId 空间分类接口返回的 contentId。
+	ContentId string `form:"contentId" json:"contentId"`
+}
+
+// LibraryBookingServiceSearchAvailableSeatsParams defines parameters for LibraryBookingServiceSearchAvailableSeats.
+type LibraryBookingServiceSearchAvailableSeatsParams struct {
+	// CategoryId 空间分类接口返回的 categoryId。
+	CategoryId string `form:"categoryId" json:"categoryId"`
+
+	// ContentId 空间分类接口返回的 contentId。
+	ContentId string `form:"contentId" json:"contentId"`
+
+	// Date options 返回的日期，格式 YYYY-MM-DD。
+	Date string `form:"date" json:"date"`
+
+	// BeginTime options 返回的开始时间，格式 HH:mm。
+	BeginTime string `form:"beginTime" json:"beginTime"`
+
+	// DurationHours 所选开始时间的 durationHours 列表中的一个值。
+	DurationHours int32 `form:"durationHours" json:"durationHours"`
+}
+
 // MessagingServiceListPigeonsParams defines parameters for MessagingServiceListPigeons.
 type MessagingServiceListPigeonsParams struct {
 	Box      *string `form:"box,omitempty" json:"box,omitempty"`
@@ -6893,6 +7362,47 @@ type UploadServiceDownloadParams struct {
 type UploadServiceUploadParams struct {
 	// Usage 可选业务分组(仅记录/审计)
 	Usage *string `form:"usage,omitempty" json:"usage,omitempty"`
+}
+
+// VolunteerServiceListMyVolunteerActivitiesParams defines parameters for VolunteerServiceListMyVolunteerActivities.
+type VolunteerServiceListMyVolunteerActivitiesParams struct {
+	Page            *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize        *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+	Category        *string `form:"category,omitempty" json:"category,omitempty"`
+	Organization    *string `form:"organization,omitempty" json:"organization,omitempty"`
+	StartAtFrom     *int64  `form:"start_at_from,omitempty" json:"start_at_from,omitempty"`
+	StartAtTo       *int64  `form:"start_at_to,omitempty" json:"start_at_to,omitempty"`
+	DeadlineAtFrom  *int64  `form:"deadline_at_from,omitempty" json:"deadline_at_from,omitempty"`
+	DeadlineAtTo    *int64  `form:"deadline_at_to,omitempty" json:"deadline_at_to,omitempty"`
+	IsUrgent        *bool   `form:"is_urgent,omitempty" json:"is_urgent,omitempty"`
+	Keyword         *string `form:"keyword,omitempty" json:"keyword,omitempty"`
+	Status          *string `form:"status,omitempty" json:"status,omitempty"`
+	CreatedByUserId *string `form:"created_by_user_id,omitempty" json:"created_by_user_id,omitempty"`
+}
+
+// VolunteerServiceListMyVolunteerUrgentApplicationsParams defines parameters for VolunteerServiceListMyVolunteerUrgentApplications.
+type VolunteerServiceListMyVolunteerUrgentApplicationsParams struct {
+	Page         *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize     *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+	Status       *string `form:"status,omitempty" json:"status,omitempty"`
+	Organization *string `form:"organization,omitempty" json:"organization,omitempty"`
+	Category     *string `form:"category,omitempty" json:"category,omitempty"`
+}
+
+// VolunteerServiceListVolunteerActivitiesParams defines parameters for VolunteerServiceListVolunteerActivities.
+type VolunteerServiceListVolunteerActivitiesParams struct {
+	Page            *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize        *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+	Category        *string `form:"category,omitempty" json:"category,omitempty"`
+	Organization    *string `form:"organization,omitempty" json:"organization,omitempty"`
+	StartAtFrom     *int64  `form:"start_at_from,omitempty" json:"start_at_from,omitempty"`
+	StartAtTo       *int64  `form:"start_at_to,omitempty" json:"start_at_to,omitempty"`
+	DeadlineAtFrom  *int64  `form:"deadline_at_from,omitempty" json:"deadline_at_from,omitempty"`
+	DeadlineAtTo    *int64  `form:"deadline_at_to,omitempty" json:"deadline_at_to,omitempty"`
+	IsUrgent        *bool   `form:"is_urgent,omitempty" json:"is_urgent,omitempty"`
+	Keyword         *string `form:"keyword,omitempty" json:"keyword,omitempty"`
+	Status          *string `form:"status,omitempty" json:"status,omitempty"`
+	CreatedByUserId *string `form:"created_by_user_id,omitempty" json:"created_by_user_id,omitempty"`
 }
 
 // AcademicServiceClassQueryFavSetJSONRequestBody defines body for AcademicServiceClassQueryFavSet for application/json ContentType.
@@ -7048,6 +7558,12 @@ type AdminServiceUpsertUserSocialIdentityJSONRequestBody = UpsertUserSocialIdent
 // AdminServiceSetUserDefaultIdentityJSONRequestBody defines body for AdminServiceSetUserDefaultIdentity for application/json ContentType.
 type AdminServiceSetUserDefaultIdentityJSONRequestBody = SetUserDefaultIdentityRequestBody
 
+// VolunteerServiceAdminUpdateVolunteerActivityJSONRequestBody defines body for VolunteerServiceAdminUpdateVolunteerActivity for application/json ContentType.
+type VolunteerServiceAdminUpdateVolunteerActivityJSONRequestBody = UpdateActivityRequestBody
+
+// VolunteerServiceAdminReviewVolunteerUrgentApplicationJSONRequestBody defines body for VolunteerServiceAdminReviewVolunteerUrgentApplication for application/json ContentType.
+type VolunteerServiceAdminReviewVolunteerUrgentApplicationJSONRequestBody = ReviewUrgentApplicationRequestBody
+
 // MessagingServiceDingTalkBlessReviewCallbackJSONRequestBody defines body for MessagingServiceDingTalkBlessReviewCallback for application/json ContentType.
 type MessagingServiceDingTalkBlessReviewCallbackJSONRequestBody = DingTalkReviewCallbackRequestBody
 
@@ -7165,6 +7681,15 @@ type IdentityServiceChangePasswordJSONRequestBody = ChangePasswordRequestBody
 // IdentityServiceResetPasswordJSONRequestBody defines body for IdentityServiceResetPassword for application/json ContentType.
 type IdentityServiceResetPasswordJSONRequestBody = ResetPasswordRequestBody
 
+// IdentityServiceAuthorizeAllServicesJSONRequestBody defines body for IdentityServiceAuthorizeAllServices for application/json ContentType.
+type IdentityServiceAuthorizeAllServicesJSONRequestBody = AuthorizeAllServicesRequestBody
+
+// IdentityServiceUpdateServiceAuthorizationNotificationJSONRequestBody defines body for IdentityServiceUpdateServiceAuthorizationNotification for application/json ContentType.
+type IdentityServiceUpdateServiceAuthorizationNotificationJSONRequestBody = UpdateServiceAuthorizationNotificationRequestBody
+
+// IdentityServiceAuthorizeServiceJSONRequestBody defines body for IdentityServiceAuthorizeService for application/json ContentType.
+type IdentityServiceAuthorizeServiceJSONRequestBody = AuthorizeServiceRequestBody
+
 // IdentityServiceAuthRefreshTokenJSONRequestBody defines body for IdentityServiceAuthRefreshToken for application/json ContentType.
 type IdentityServiceAuthRefreshTokenJSONRequestBody = RefreshTokenRequestBody
 
@@ -7197,6 +7722,9 @@ type KnowledgeServiceKnowledgeRetrieveJSONRequestBody = RetrieveRequestBody
 
 // KnowledgeServiceKnowledgeServiceChatJSONRequestBody defines body for KnowledgeServiceKnowledgeServiceChat for application/json ContentType.
 type KnowledgeServiceKnowledgeServiceChatJSONRequestBody = ServiceChatRequestBody
+
+// LibraryBookingServiceCreateBookingJSONRequestBody defines body for LibraryBookingServiceCreateBooking for application/json ContentType.
+type LibraryBookingServiceCreateBookingJSONRequestBody = CreateBookingRequestBody
 
 // MessagingServiceAddBlacklistJSONRequestBody defines body for MessagingServiceAddBlacklist for application/json ContentType.
 type MessagingServiceAddBlacklistJSONRequestBody = BlacklistTargetRequestBody
@@ -7233,3 +7761,12 @@ type SubscriptionServiceSubscribeJSONRequestBody = SubscribeRequestBody
 
 // SubscriptionServiceUpdateSubscriptionJSONRequestBody defines body for SubscriptionServiceUpdateSubscription for application/json ContentType.
 type SubscriptionServiceUpdateSubscriptionJSONRequestBody = UpdateSubscriptionRequestBody
+
+// VolunteerServiceCreateVolunteerActivityJSONRequestBody defines body for VolunteerServiceCreateVolunteerActivity for application/json ContentType.
+type VolunteerServiceCreateVolunteerActivityJSONRequestBody = CreateActivityRequestBody
+
+// VolunteerServiceUpdateVolunteerActivityJSONRequestBody defines body for VolunteerServiceUpdateVolunteerActivity for application/json ContentType.
+type VolunteerServiceUpdateVolunteerActivityJSONRequestBody = UpdateActivityRequestBody
+
+// VolunteerServiceSubmitVolunteerUrgentApplicationJSONRequestBody defines body for VolunteerServiceSubmitVolunteerUrgentApplication for application/json ContentType.
+type VolunteerServiceSubmitVolunteerUrgentApplicationJSONRequestBody = SubmitUrgentApplicationRequestBody
