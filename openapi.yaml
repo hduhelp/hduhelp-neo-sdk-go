@@ -2886,6 +2886,559 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AdminLogoutResponseBody'
+    /hduhelp-neo/admin/notices:
+        get:
+            tags:
+                - AdminNoticeService
+            operationId: AdminNoticeService_ListAdminNotices
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminNoticePageResponseBody'
+        post:
+            tags:
+                - AdminNoticeService
+            operationId: AdminNoticeService_CreateAdminNotice
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateAdminNoticeRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminNoticeResponseBody'
+    /hduhelp-neo/admin/notices/{id}:
+        get:
+            tags:
+                - AdminNoticeService
+            operationId: AdminNoticeService_GetAdminNotice
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminNoticeResponseBody'
+        put:
+            tags:
+                - AdminNoticeService
+            operationId: AdminNoticeService_UpdateAdminNotice
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateAdminNoticeRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminNoticeResponseBody'
+    /hduhelp-neo/admin/notices/{id}/cancel:
+        post:
+            tags:
+                - AdminNoticeService
+            operationId: AdminNoticeService_CancelAdminNotice
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CancelAdminNoticeRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminNoticeResponseBody'
+    /hduhelp-neo/admin/notices/{id}/retry-dispatch:
+        post:
+            tags:
+                - AdminNoticeService
+            operationId: AdminNoticeService_RetryAdminNoticeDispatch
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminNoticeResponseBody'
+    /hduhelp-neo/admin/notices/{id}/review:
+        post:
+            tags:
+                - AdminNoticeService
+            operationId: AdminNoticeService_ReviewAdminNotice
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ReviewAdminNoticeRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminNoticeResponseBody'
+    /hduhelp-neo/admin/notices/{id}/submit:
+        post:
+            tags:
+                - AdminNoticeService
+            operationId: AdminNoticeService_SubmitAdminNotice
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AdminNoticeVersionRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminNoticeResponseBody'
+    /hduhelp-neo/admin/notifications/deliveries/{id}:
+        get:
+            tags:
+                - NotificationService
+            operationId: NotificationService_GetNotificationDelivery
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeliveryResponseBody'
+    /hduhelp-neo/admin/notifications/policy-profiles:
+        get:
+            tags:
+                - NotificationService
+            operationId: NotificationService_ListNotificationPolicyProfiles
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: topic_key
+                  in: query
+                  schema:
+                    type: string
+                - name: include_disabled
+                  in: query
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PolicyProfilesResponseBody'
+        post:
+            tags:
+                - NotificationService
+            operationId: NotificationService_CreateNotificationPolicyProfile
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreatePolicyProfileRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PolicyProfileResponseBody'
+    /hduhelp-neo/admin/notifications/policy-profiles/{id}:
+        get:
+            tags:
+                - NotificationService
+            operationId: NotificationService_GetNotificationPolicyProfile
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PolicyProfileResponseBody'
+        delete:
+            tags:
+                - NotificationService
+            operationId: NotificationService_DisableNotificationPolicyProfile
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: expected_updated_at
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PolicyProfileResponseBody'
+    /hduhelp-neo/admin/notifications/policy-profiles/{id}/default:
+        put:
+            tags:
+                - NotificationService
+            operationId: NotificationService_SetDefaultNotificationPolicyProfile
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SetDefaultPolicyProfileRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PolicyProfileResponseBody'
+    /hduhelp-neo/admin/notifications/policy-profiles/{id}/name:
+        put:
+            tags:
+                - NotificationService
+            operationId: NotificationService_RenameNotificationPolicyProfile
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RenamePolicyProfileRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PolicyProfileResponseBody'
+    /hduhelp-neo/admin/notifications/policy-profiles/{id}/policy:
+        put:
+            tags:
+                - NotificationService
+            operationId: NotificationService_UpdateNotificationPolicyProfile
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdatePolicyProfileRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PolicyProfileResponseBody'
+    /hduhelp-neo/admin/notifications/runtime:
+        get:
+            tags:
+                - NotificationService
+            operationId: NotificationService_GetNotificationRuntimeStatus
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RuntimeStatusResponseBody'
+    /hduhelp-neo/admin/notifications/tasks:
+        get:
+            tags:
+                - NotificationService
+            operationId: NotificationService_ListNotificationTasks
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: topic_key
+                  in: query
+                  schema:
+                    type: string
+                - name: source_type
+                  in: query
+                  schema:
+                    type: string
+                - name: source_id
+                  in: query
+                  schema:
+                    type: string
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+                - name: result
+                  in: query
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TaskPageResponseBody'
+    /hduhelp-neo/admin/notifications/tasks/{id}:
+        get:
+            tags:
+                - NotificationService
+            operationId: NotificationService_GetNotificationTask
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TaskResponseBody'
+    /hduhelp-neo/admin/notifications/tasks/{id}/replay:
+        post:
+            tags:
+                - NotificationService
+            operationId: NotificationService_ReplayNotificationTaskFailures
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ReplayTaskRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ReplayTaskResponseBody'
+    /hduhelp-neo/admin/notifications/tasks/{taskId}/deliveries:
+        get:
+            tags:
+                - NotificationService
+            operationId: NotificationService_ListNotificationTaskDeliveries
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: taskId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+                - name: failure_kind
+                  in: query
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeliveryPageResponseBody'
+    /hduhelp-neo/admin/notifications/topics/{topicKey}/capabilities:
+        get:
+            tags:
+                - NotificationService
+            operationId: NotificationService_GetNotificationTopicCapabilities
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: topicKey
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TopicCapabilitiesResponseBody'
+    /hduhelp-neo/admin/notifications/topics/{topicKey}/validate-policy:
+        post:
+            tags:
+                - NotificationService
+            operationId: NotificationService_ValidateNotificationDeliveryPolicy
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: topicKey
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ValidatePolicyRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidatePolicyResponseBody'
     /hduhelp-neo/admin/operators:
         get:
             tags:
@@ -6549,6 +7102,119 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/SetCurrentCampusResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/inbox:
+        get:
+            tags:
+                - InboxService
+            summary: 通知收件箱
+            operationId: InboxService_ListInbox
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: history
+                  in: query
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InboxPageResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/inbox/counters:
+        get:
+            tags:
+                - InboxService
+            summary: 收件箱计数
+            operationId: InboxService_GetInboxCounters
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InboxCountersResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/inbox/{id}:
+        get:
+            tags:
+                - InboxService
+            summary: 通知详情
+            operationId: InboxService_GetInboxEntry
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InboxEntryResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/inbox/{id}/acknowledge:
+        post:
+            tags:
+                - InboxService
+            summary: 确认通知
+            operationId: InboxService_AcknowledgeInboxEntry
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InboxMutationResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/inbox/{id}/read:
+        post:
+            tags:
+                - InboxService
+            summary: 标记通知已读
+            operationId: InboxService_MarkInboxRead
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InboxMutationResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/knowledge/domains:
         get:
             tags:
@@ -8441,6 +9107,133 @@ components:
                     format: int64
                 msg:
                     type: string
+        AdminNotice:
+            type: object
+            properties:
+                id:
+                    type: string
+                version:
+                    type: integer
+                    format: int32
+                status:
+                    type: string
+                title:
+                    type: string
+                summary:
+                    type: string
+                body:
+                    type: string
+                action:
+                    $ref: '#/components/schemas/NoticeAction'
+                requiresAck:
+                    type: boolean
+                targetUserIds:
+                    type: array
+                    items:
+                        type: string
+                targetCount:
+                    type: integer
+                    format: int32
+                policySelection:
+                    $ref: '#/components/schemas/PolicySelection'
+                publishAt:
+                    type: integer
+                    format: int64
+                expiresAt:
+                    type: integer
+                    format: int64
+                createdById:
+                    type: string
+                submittedById:
+                    type: string
+                submittedAt:
+                    type: integer
+                    format: int64
+                reviewedById:
+                    type: string
+                reviewedAt:
+                    type: integer
+                    format: int64
+                reviewComment:
+                    type: string
+                notificationTaskId:
+                    type: string
+                dispatchAttempts:
+                    type: integer
+                    format: int32
+                nextDispatchAt:
+                    type: integer
+                    format: int64
+                lastErrorCode:
+                    type: string
+                lastErrorDetail:
+                    type: string
+                createdAt:
+                    type: integer
+                    format: int64
+                updatedAt:
+                    type: integer
+                    format: int64
+                events:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AdminNoticeEvent'
+        AdminNoticeEvent:
+            type: object
+            properties:
+                id:
+                    type: string
+                eventType:
+                    type: string
+                actorId:
+                    type: string
+                detail:
+                    type: string
+                createdAt:
+                    type: integer
+                    format: int64
+        AdminNoticePage:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AdminNotice'
+                total:
+                    type: integer
+                    format: int64
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+        AdminNoticePageResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminNoticePage'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AdminNoticeResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminNotice'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AdminNoticeVersionRequestBody:
+            type: object
+            properties:
+                expected_version:
+                    type: integer
+                    format: int32
         AdminRefreshRequestBody:
             type: object
             properties:
@@ -9504,6 +10297,14 @@ components:
                     format: int64
                 msg:
                     type: string
+        CancelAdminNoticeRequestBody:
+            type: object
+            properties:
+                expected_version:
+                    type: integer
+                    format: int32
+                reason:
+                    type: string
         CancelBookingData:
             type: object
             properties:
@@ -10256,6 +11057,11 @@ components:
                         $ref: '#/components/schemas/ActivitySessionInput'
                 status:
                     type: string
+        CreateAdminNoticeRequestBody:
+            type: object
+            properties:
+                notice:
+                    $ref: '#/components/schemas/EditableNotice'
         CreateAppData:
             type: object
             properties:
@@ -10563,6 +11369,19 @@ components:
                     format: int64
                 msg:
                     type: string
+        CreatePolicyProfileRequestBody:
+            type: object
+            properties:
+                topic_key:
+                    type: string
+                name:
+                    type: string
+                owner_type:
+                    type: string
+                policy:
+                    $ref: '#/components/schemas/DeliveryPolicy'
+                is_default:
+                    type: boolean
         CreatePreviousSchoolChatGroupRequestBody:
             type: object
             properties:
@@ -10772,6 +11591,67 @@ components:
         DeleteUserSocialIdentityResponseBody:
             type: object
             properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        DeliveryGroup:
+            type: object
+            properties:
+                key:
+                    type: string
+                mode:
+                    type: string
+                required:
+                    type: boolean
+                providers:
+                    type: array
+                    items:
+                        type: string
+        DeliveryPage:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/NotificationDelivery'
+                total:
+                    type: integer
+                    format: int64
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+        DeliveryPageResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/DeliveryPage'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        DeliveryPolicy:
+            type: object
+            properties:
+                schemaVersion:
+                    type: integer
+                    format: int32
+                groups:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/DeliveryGroup'
+                retry:
+                    $ref: '#/components/schemas/RetryPolicy'
+        DeliveryResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/NotificationDelivery'
                 code:
                     type: integer
                     format: int64
@@ -11028,6 +11908,31 @@ components:
                     format: int64
                 msg:
                     type: string
+        EditableNotice:
+            type: object
+            properties:
+                title:
+                    type: string
+                summary:
+                    type: string
+                body:
+                    type: string
+                action:
+                    $ref: '#/components/schemas/NoticeAction'
+                requires_ack:
+                    type: boolean
+                target_user_ids:
+                    type: array
+                    items:
+                        type: string
+                policy_selection:
+                    $ref: '#/components/schemas/PolicySelection'
+                publish_at:
+                    type: integer
+                    format: int64
+                expires_at:
+                    type: integer
+                    format: int64
         ElectricBalanceData:
             type: object
             properties:
@@ -12232,6 +13137,115 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/IcsLinkData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        InboxAction:
+            type: object
+            properties:
+                type:
+                    type: string
+                label:
+                    type: string
+                route:
+                    type: string
+                params:
+                    type: object
+                    additionalProperties:
+                        type: string
+                url:
+                    type: string
+        InboxCounters:
+            type: object
+            properties:
+                unread:
+                    type: integer
+                    format: int64
+                pendingAck:
+                    type: integer
+                    format: int64
+        InboxCountersResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/InboxCounters'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        InboxEntry:
+            type: object
+            properties:
+                id:
+                    type: string
+                title:
+                    type: string
+                summary:
+                    type: string
+                body:
+                    type: string
+                action:
+                    $ref: '#/components/schemas/InboxAction'
+                requiresAck:
+                    type: boolean
+                readAt:
+                    type: integer
+                    format: int64
+                acknowledgedAt:
+                    type: integer
+                    format: int64
+                publishedAt:
+                    type: integer
+                    format: int64
+                expiresAt:
+                    type: integer
+                    format: int64
+                expired:
+                    type: boolean
+                recalled:
+                    type: boolean
+        InboxEntryResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/InboxEntry'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        InboxMutationResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        InboxPage:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/InboxEntry'
+                total:
+                    type: integer
+                    format: int64
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+        InboxPageResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/InboxPage'
                 code:
                     type: integer
                     format: int64
@@ -13538,6 +14552,175 @@ components:
                     format: int64
                 msg:
                     type: string
+        NoticeAction:
+            type: object
+            properties:
+                type:
+                    type: string
+                label:
+                    type: string
+                route:
+                    type: string
+                params:
+                    type: object
+                    additionalProperties:
+                        type: string
+                url:
+                    type: string
+        NotificationDelivery:
+            type: object
+            properties:
+                id:
+                    type: string
+                taskId:
+                    type: string
+                targetType:
+                    type: string
+                targetId:
+                    type: string
+                status:
+                    type: string
+                nextAction:
+                    type: string
+                availableAt:
+                    type: integer
+                    format: int64
+                currentGroupKey:
+                    type: string
+                currentProviderKey:
+                    type: string
+                currentRetryCount:
+                    type: integer
+                    format: int32
+                reconcileAttemptCount:
+                    type: integer
+                    format: int32
+                providerResults:
+                    type: string
+                failureKind:
+                    type: string
+                errorCode:
+                    type: string
+                dispatchVersion:
+                    type: integer
+                    format: int32
+                sentAt:
+                    type: integer
+                    format: int64
+                finalizedAt:
+                    type: integer
+                    format: int64
+                replayable:
+                    type: boolean
+                replayBlockReason:
+                    type: string
+                createdAt:
+                    type: integer
+                    format: int64
+                updatedAt:
+                    type: integer
+                    format: int64
+        NotificationLimits:
+            type: object
+            properties:
+                maxTargetsPerTask:
+                    type: integer
+                    format: int32
+                maxPayloadBytes:
+                    type: integer
+                    format: int32
+                maxContentBytes:
+                    type: integer
+                    format: int32
+                maxPersonalizationBytesPerTarget:
+                    type: integer
+                    format: int32
+                maxTotalPersonalizationBytes:
+                    type: integer
+                    format: int32
+                maxGroups:
+                    type: integer
+                    format: int32
+                maxProvidersPerGroup:
+                    type: integer
+                    format: int32
+                maxProviderRefs:
+                    type: integer
+                    format: int32
+                maxRetriesPerProvider:
+                    type: integer
+                    format: int32
+                maxReconcileAttemptsPerProvider:
+                    type: integer
+                    format: int32
+                maxReconcileDurationSeconds:
+                    type: integer
+                    format: int32
+                maxPlannedProviderActionsPerTask:
+                    type: integer
+                    format: int32
+                maxEnabledPolicyProfilesPerOwnerPerTopic:
+                    type: integer
+                    format: int32
+                maxPolicyVersionsPerProfile:
+                    type: integer
+                    format: int32
+                maxPolicyProfileBytes:
+                    type: integer
+                    format: int32
+                maxDueOutboxBacklog:
+                    type: integer
+                    format: int32
+        NotificationTask:
+            type: object
+            properties:
+                id:
+                    type: string
+                topicKey:
+                    type: string
+                sourceType:
+                    type: string
+                sourceId:
+                    type: string
+                businessEventKey:
+                    type: string
+                replayOfTaskId:
+                    type: string
+                scheduledAt:
+                    type: integer
+                    format: int64
+                expiresAt:
+                    type: integer
+                    format: int64
+                status:
+                    type: string
+                result:
+                    type: string
+                deliveryTotal:
+                    type: integer
+                    format: int32
+                deliverySucceeded:
+                    type: integer
+                    format: int32
+                deliveryFailed:
+                    type: integer
+                    format: int32
+                deliverySkipped:
+                    type: integer
+                    format: int32
+                createdByType:
+                    type: string
+                createdById:
+                    type: string
+                finalizedAt:
+                    type: integer
+                    format: int64
+                createdAt:
+                    type: integer
+                    format: int64
+                updatedAt:
+                    type: integer
+                    format: int64
         OAuthScopeItem:
             type: object
             properties:
@@ -13727,6 +14910,71 @@ components:
                     format: int64
                 msg:
                     type: string
+        PolicyProfile:
+            type: object
+            properties:
+                id:
+                    type: string
+                topicKey:
+                    type: string
+                name:
+                    type: string
+                ownerType:
+                    type: string
+                ownerId:
+                    type: string
+                isDefault:
+                    type: boolean
+                latestVersion:
+                    type: integer
+                    format: int32
+                disabledAt:
+                    type: integer
+                    format: int64
+                createdAt:
+                    type: integer
+                    format: int64
+                updatedAt:
+                    type: integer
+                    format: int64
+                policy:
+                    $ref: '#/components/schemas/DeliveryPolicy'
+                valid:
+                    type: boolean
+                validationError:
+                    type: string
+        PolicyProfileResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/PolicyProfile'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        PolicyProfilesResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PolicyProfile'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        PolicySelection:
+            type: object
+            properties:
+                profileId:
+                    type: string
+                profileVersion:
+                    type: integer
+                    format: int32
+                inlinePolicy:
+                    $ref: '#/components/schemas/DeliveryPolicy'
         PopularResponseBody:
             type: object
             properties:
@@ -14105,6 +15353,40 @@ components:
             properties:
                 refreshToken:
                     type: string
+        RenamePolicyProfileRequestBody:
+            type: object
+            properties:
+                name:
+                    type: string
+                expected_updated_at:
+                    type: integer
+                    format: int64
+        ReplayTaskData:
+            type: object
+            properties:
+                task:
+                    $ref: '#/components/schemas/NotificationTask'
+                replayed:
+                    type: boolean
+        ReplayTaskRequestBody:
+            type: object
+            properties:
+                replay_request_key:
+                    type: string
+                delivery_ids:
+                    type: array
+                    items:
+                        type: string
+        ReplayTaskResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ReplayTaskData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         ReportGapRequestBody:
             type: object
             properties:
@@ -14164,6 +15446,27 @@ components:
                     type: integer
                     description: 返回结果数量
                     format: int32
+        RetryPolicy:
+            type: object
+            properties:
+                maxRetries:
+                    type: integer
+                    format: int32
+                backoffSeconds:
+                    type: array
+                    items:
+                        type: integer
+                        format: int32
+        ReviewAdminNoticeRequestBody:
+            type: object
+            properties:
+                expected_version:
+                    type: integer
+                    format: int32
+                approve:
+                    type: boolean
+                comment:
+                    type: string
         ReviewCardData:
             type: object
             properties:
@@ -14285,6 +15588,37 @@ components:
         RunCronTaskResponseBody:
             type: object
             properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        RuntimeStatus:
+            type: object
+            properties:
+                component:
+                    type: string
+                dueOutboxCount:
+                    type: integer
+                    format: int64
+                oldestDueOutboxAgeSeconds:
+                    type: integer
+                    format: int64
+                maxPublishCount:
+                    type: integer
+                    format: int32
+                lastSanitizedPublishError:
+                    type: string
+                mqConnectionState:
+                    type: string
+                checkedAt:
+                    type: integer
+                    format: int64
+        RuntimeStatusResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/RuntimeStatus'
                 code:
                     type: integer
                     format: int64
@@ -15113,6 +16447,12 @@ components:
                     format: int64
                 msg:
                     type: string
+        SetDefaultPolicyProfileRequestBody:
+            type: object
+            properties:
+                expected_updated_at:
+                    type: integer
+                    format: int64
         SetLoginMethodsRequestBody:
             type: object
             properties:
@@ -15961,6 +17301,42 @@ components:
                 description:
                     type: string
             description: AI 打标提示词编辑
+        TaskPage:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/NotificationTask'
+                total:
+                    type: integer
+                    format: int64
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+        TaskPageResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/TaskPage'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        TaskResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/NotificationTask'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         TeachingClassData:
             type: object
             properties:
@@ -16079,6 +17455,41 @@ components:
                 count:
                     type: integer
                     format: int32
+        TopicCapabilities:
+            type: object
+            properties:
+                topicKey:
+                    type: string
+                allowedProviders:
+                    type: array
+                    items:
+                        type: string
+                allowedModes:
+                    type: array
+                    items:
+                        type: string
+                codeDefaultPolicy:
+                    $ref: '#/components/schemas/DeliveryPolicy'
+                limits:
+                    $ref: '#/components/schemas/NotificationLimits'
+                profiles:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PolicyProfile'
+                defaultSelection:
+                    $ref: '#/components/schemas/PolicySelection'
+                defaultValidationError:
+                    type: string
+        TopicCapabilitiesResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/TopicCapabilities'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         TotalTime:
             type: object
             properties:
@@ -16165,6 +17576,14 @@ components:
                         $ref: '#/components/schemas/ActivitySessionInput'
                 status:
                     type: string
+        UpdateAdminNoticeRequestBody:
+            type: object
+            properties:
+                expected_version:
+                    type: integer
+                    format: int32
+                notice:
+                    $ref: '#/components/schemas/EditableNotice'
         UpdateAppRequestBody:
             type: object
             properties:
@@ -16351,6 +17770,14 @@ components:
                     format: int64
                 msg:
                     type: string
+        UpdatePolicyProfileRequestBody:
+            type: object
+            properties:
+                expected_latest_version:
+                    type: integer
+                    format: int32
+                policy:
+                    $ref: '#/components/schemas/DeliveryPolicy'
         UpdateServiceAuthorizationNotificationRequestBody:
             type: object
             properties:
@@ -16702,6 +18129,29 @@ components:
                     type: string
                 status:
                     type: string
+        ValidatePolicyData:
+            type: object
+            properties:
+                valid:
+                    type: boolean
+        ValidatePolicyRequestBody:
+            type: object
+            properties:
+                selection:
+                    $ref: '#/components/schemas/PolicySelection'
+                target_count:
+                    type: integer
+                    format: int32
+        ValidatePolicyResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ValidatePolicyData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         VenueAvailabilityData:
             type: object
             properties:
@@ -16837,6 +18287,7 @@ components:
             description: WeatherCard 是信息流天气卡片负载。
 tags:
     - name: AcademicService
+    - name: AdminNoticeService
     - name: AdminService
     - name: CampusLifeService
     - name: EmptyScheduleService
@@ -16849,6 +18300,7 @@ tags:
     - name: HealthService
       description: HealthService exposes an unauthenticated liveness endpoint for container probes.
     - name: IdentityService
+    - name: InboxService
     - name: KnowledgeService
       description: |-
         ============================================================================
@@ -16856,6 +18308,7 @@ tags:
         ============================================================================
     - name: LibraryBookingService
     - name: MessagingService
+    - name: NotificationService
     - name: SubscriptionService
     - name: UploadService
     - name: VolunteerService

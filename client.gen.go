@@ -7,6 +7,7 @@ import (
 
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/academic"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/admin"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/adminnotice"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/campuslife"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/emptyschedule"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/feed"
@@ -14,9 +15,11 @@ import (
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/groupchat"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/health"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/identity"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/inbox"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/knowledge"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/librarybooking"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/messaging"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/notification"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/subscription"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/upload"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/volunteer"
@@ -29,6 +32,7 @@ type Client struct {
 
 	Academic       *academic.Service
 	Admin          *admin.Service
+	AdminNotice    *adminnotice.Service
 	CampusLife     *campuslife.Service
 	EmptySchedule  *emptyschedule.Service
 	Feed           *feed.Service
@@ -36,9 +40,11 @@ type Client struct {
 	GroupChat      *groupchat.Service
 	Health         *health.Service
 	Identity       *identity.Service
+	Inbox          *inbox.Service
 	Knowledge      *knowledge.Service
 	LibraryBooking *librarybooking.Service
 	Messaging      *messaging.Service
+	Notification   *notification.Service
 	Subscription   *subscription.Service
 	Upload         *upload.Service
 	Volunteer      *volunteer.Service
@@ -48,6 +54,7 @@ type Client struct {
 func attachServices(c *Client) {
 	c.Academic = academic.NewService(c.config)
 	c.Admin = admin.NewService(c.config)
+	c.AdminNotice = adminnotice.NewService(c.config)
 	c.CampusLife = campuslife.NewService(c.config)
 	c.EmptySchedule = emptyschedule.NewService(c.config)
 	c.Feed = feed.NewService(c.config)
@@ -55,9 +62,11 @@ func attachServices(c *Client) {
 	c.GroupChat = groupchat.NewService(c.config)
 	c.Health = health.NewService(c.config)
 	c.Identity = identity.NewService(c.config)
+	c.Inbox = inbox.NewService(c.config)
 	c.Knowledge = knowledge.NewService(c.config)
 	c.LibraryBooking = librarybooking.NewService(c.config)
 	c.Messaging = messaging.NewService(c.config)
+	c.Notification = notification.NewService(c.config)
 	c.Subscription = subscription.NewService(c.config)
 	c.Upload = upload.NewService(c.config)
 	c.Volunteer = volunteer.NewService(c.config)

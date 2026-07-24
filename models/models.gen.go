@@ -359,6 +359,73 @@ type AdminMeResponseBody struct {
 	Msg  *string       `json:"msg,omitempty"`
 }
 
+// AdminNotice defines model for AdminNotice.
+type AdminNotice struct {
+	Action             *NoticeAction       `json:"action,omitempty"`
+	Body               *string             `json:"body,omitempty"`
+	CreatedAt          *int64              `json:"createdAt,omitempty"`
+	CreatedById        *string             `json:"createdById,omitempty"`
+	DispatchAttempts   *int32              `json:"dispatchAttempts,omitempty"`
+	Events             *[]AdminNoticeEvent `json:"events,omitempty"`
+	ExpiresAt          *int64              `json:"expiresAt,omitempty"`
+	Id                 *string             `json:"id,omitempty"`
+	LastErrorCode      *string             `json:"lastErrorCode,omitempty"`
+	LastErrorDetail    *string             `json:"lastErrorDetail,omitempty"`
+	NextDispatchAt     *int64              `json:"nextDispatchAt,omitempty"`
+	NotificationTaskId *string             `json:"notificationTaskId,omitempty"`
+	PolicySelection    *PolicySelection    `json:"policySelection,omitempty"`
+	PublishAt          *int64              `json:"publishAt,omitempty"`
+	RequiresAck        *bool               `json:"requiresAck,omitempty"`
+	ReviewComment      *string             `json:"reviewComment,omitempty"`
+	ReviewedAt         *int64              `json:"reviewedAt,omitempty"`
+	ReviewedById       *string             `json:"reviewedById,omitempty"`
+	Status             *string             `json:"status,omitempty"`
+	SubmittedAt        *int64              `json:"submittedAt,omitempty"`
+	SubmittedById      *string             `json:"submittedById,omitempty"`
+	Summary            *string             `json:"summary,omitempty"`
+	TargetCount        *int32              `json:"targetCount,omitempty"`
+	TargetUserIds      *[]string           `json:"targetUserIds,omitempty"`
+	Title              *string             `json:"title,omitempty"`
+	UpdatedAt          *int64              `json:"updatedAt,omitempty"`
+	Version            *int32              `json:"version,omitempty"`
+}
+
+// AdminNoticeEvent defines model for AdminNoticeEvent.
+type AdminNoticeEvent struct {
+	ActorId   *string `json:"actorId,omitempty"`
+	CreatedAt *int64  `json:"createdAt,omitempty"`
+	Detail    *string `json:"detail,omitempty"`
+	EventType *string `json:"eventType,omitempty"`
+	Id        *string `json:"id,omitempty"`
+}
+
+// AdminNoticePage defines model for AdminNoticePage.
+type AdminNoticePage struct {
+	Items    *[]AdminNotice `json:"items,omitempty"`
+	Page     *int32         `json:"page,omitempty"`
+	PageSize *int32         `json:"pageSize,omitempty"`
+	Total    *int64         `json:"total,omitempty"`
+}
+
+// AdminNoticePageResponseBody defines model for AdminNoticePageResponseBody.
+type AdminNoticePageResponseBody struct {
+	Code *int64           `json:"code,omitempty"`
+	Data *AdminNoticePage `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
+}
+
+// AdminNoticeResponseBody defines model for AdminNoticeResponseBody.
+type AdminNoticeResponseBody struct {
+	Code *int64       `json:"code,omitempty"`
+	Data *AdminNotice `json:"data,omitempty"`
+	Msg  *string      `json:"msg,omitempty"`
+}
+
+// AdminNoticeVersionRequestBody defines model for AdminNoticeVersionRequestBody.
+type AdminNoticeVersionRequestBody struct {
+	ExpectedVersion *int32 `json:"expected_version,omitempty"`
+}
+
 // AdminRefreshRequestBody defines model for AdminRefreshRequestBody.
 type AdminRefreshRequestBody struct {
 	RefreshToken *string `json:"refresh_token,omitempty"`
@@ -1093,6 +1160,12 @@ type CampusMutateResponseBody struct {
 	Msg  *string          `json:"msg,omitempty"`
 }
 
+// CancelAdminNoticeRequestBody defines model for CancelAdminNoticeRequestBody.
+type CancelAdminNoticeRequestBody struct {
+	ExpectedVersion *int32  `json:"expected_version,omitempty"`
+	Reason          *string `json:"reason,omitempty"`
+}
+
 // CancelBookingData defines model for CancelBookingData.
 type CancelBookingData struct {
 	BookingId *string `json:"bookingId,omitempty"`
@@ -1595,6 +1668,11 @@ type CreateActivityRequestBody struct {
 	TrainingInfo        *string                  `json:"training_info,omitempty"`
 }
 
+// CreateAdminNoticeRequestBody defines model for CreateAdminNoticeRequestBody.
+type CreateAdminNoticeRequestBody struct {
+	Notice *EditableNotice `json:"notice,omitempty"`
+}
+
 // CreateAppData defines model for CreateAppData.
 type CreateAppData struct {
 	// App 应用详情：应用权限供 TAT/App + X-Staff-Id 使用；用户权限供 UAT
@@ -1821,6 +1899,15 @@ type CreatePATResponseBody struct {
 	Msg  *string        `json:"msg,omitempty"`
 }
 
+// CreatePolicyProfileRequestBody defines model for CreatePolicyProfileRequestBody.
+type CreatePolicyProfileRequestBody struct {
+	IsDefault *bool           `json:"is_default,omitempty"`
+	Name      *string         `json:"name,omitempty"`
+	OwnerType *string         `json:"owner_type,omitempty"`
+	Policy    *DeliveryPolicy `json:"policy,omitempty"`
+	TopicKey  *string         `json:"topic_key,omitempty"`
+}
+
 // CreatePreviousSchoolChatGroupRequestBody defines model for CreatePreviousSchoolChatGroupRequestBody.
 type CreatePreviousSchoolChatGroupRequestBody struct {
 	Grade      *string `json:"grade,omitempty"`
@@ -1986,6 +2073,43 @@ type DeleteUserCampusIdentityResponseBody struct {
 type DeleteUserSocialIdentityResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
+}
+
+// DeliveryGroup defines model for DeliveryGroup.
+type DeliveryGroup struct {
+	Key       *string   `json:"key,omitempty"`
+	Mode      *string   `json:"mode,omitempty"`
+	Providers *[]string `json:"providers,omitempty"`
+	Required  *bool     `json:"required,omitempty"`
+}
+
+// DeliveryPage defines model for DeliveryPage.
+type DeliveryPage struct {
+	Items    *[]NotificationDelivery `json:"items,omitempty"`
+	Page     *int32                  `json:"page,omitempty"`
+	PageSize *int32                  `json:"pageSize,omitempty"`
+	Total    *int64                  `json:"total,omitempty"`
+}
+
+// DeliveryPageResponseBody defines model for DeliveryPageResponseBody.
+type DeliveryPageResponseBody struct {
+	Code *int64        `json:"code,omitempty"`
+	Data *DeliveryPage `json:"data,omitempty"`
+	Msg  *string       `json:"msg,omitempty"`
+}
+
+// DeliveryPolicy defines model for DeliveryPolicy.
+type DeliveryPolicy struct {
+	Groups        *[]DeliveryGroup `json:"groups,omitempty"`
+	Retry         *RetryPolicy     `json:"retry,omitempty"`
+	SchemaVersion *int32           `json:"schemaVersion,omitempty"`
+}
+
+// DeliveryResponseBody defines model for DeliveryResponseBody.
+type DeliveryResponseBody struct {
+	Code *int64                `json:"code,omitempty"`
+	Data *NotificationDelivery `json:"data,omitempty"`
+	Msg  *string               `json:"msg,omitempty"`
 }
 
 // DenyDeviceRespBody defines model for DenyDeviceRespBody.
@@ -2164,6 +2288,19 @@ type DormInfoResponseBody struct {
 type DownloadResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
+}
+
+// EditableNotice defines model for EditableNotice.
+type EditableNotice struct {
+	Action          *NoticeAction    `json:"action,omitempty"`
+	Body            *string          `json:"body,omitempty"`
+	ExpiresAt       *int64           `json:"expires_at,omitempty"`
+	PolicySelection *PolicySelection `json:"policy_selection,omitempty"`
+	PublishAt       *int64           `json:"publish_at,omitempty"`
+	RequiresAck     *bool            `json:"requires_ack,omitempty"`
+	Summary         *string          `json:"summary,omitempty"`
+	TargetUserIds   *[]string        `json:"target_user_ids,omitempty"`
+	Title           *string          `json:"title,omitempty"`
 }
 
 // ElectricBalanceData ---- 电费余额（当前绑定电表 + 寝室归属） ----
@@ -3001,6 +3138,72 @@ type IcsLinkResponseBody struct {
 	// 无法回显既有令牌);hasToken 表示当前是否已有有效令牌。
 	Data *IcsLinkData `json:"data,omitempty"`
 	Msg  *string      `json:"msg,omitempty"`
+}
+
+// InboxAction defines model for InboxAction.
+type InboxAction struct {
+	Label  *string            `json:"label,omitempty"`
+	Params *map[string]string `json:"params,omitempty"`
+	Route  *string            `json:"route,omitempty"`
+	Type   *string            `json:"type,omitempty"`
+	Url    *string            `json:"url,omitempty"`
+}
+
+// InboxCounters defines model for InboxCounters.
+type InboxCounters struct {
+	PendingAck *int64 `json:"pendingAck,omitempty"`
+	Unread     *int64 `json:"unread,omitempty"`
+}
+
+// InboxCountersResponseBody defines model for InboxCountersResponseBody.
+type InboxCountersResponseBody struct {
+	Code *int64         `json:"code,omitempty"`
+	Data *InboxCounters `json:"data,omitempty"`
+	Msg  *string        `json:"msg,omitempty"`
+}
+
+// InboxEntry defines model for InboxEntry.
+type InboxEntry struct {
+	AcknowledgedAt *int64       `json:"acknowledgedAt,omitempty"`
+	Action         *InboxAction `json:"action,omitempty"`
+	Body           *string      `json:"body,omitempty"`
+	Expired        *bool        `json:"expired,omitempty"`
+	ExpiresAt      *int64       `json:"expiresAt,omitempty"`
+	Id             *string      `json:"id,omitempty"`
+	PublishedAt    *int64       `json:"publishedAt,omitempty"`
+	ReadAt         *int64       `json:"readAt,omitempty"`
+	Recalled       *bool        `json:"recalled,omitempty"`
+	RequiresAck    *bool        `json:"requiresAck,omitempty"`
+	Summary        *string      `json:"summary,omitempty"`
+	Title          *string      `json:"title,omitempty"`
+}
+
+// InboxEntryResponseBody defines model for InboxEntryResponseBody.
+type InboxEntryResponseBody struct {
+	Code *int64      `json:"code,omitempty"`
+	Data *InboxEntry `json:"data,omitempty"`
+	Msg  *string     `json:"msg,omitempty"`
+}
+
+// InboxMutationResponseBody defines model for InboxMutationResponseBody.
+type InboxMutationResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
+// InboxPage defines model for InboxPage.
+type InboxPage struct {
+	Items    *[]InboxEntry `json:"items,omitempty"`
+	Page     *int32        `json:"page,omitempty"`
+	PageSize *int32        `json:"pageSize,omitempty"`
+	Total    *int64        `json:"total,omitempty"`
+}
+
+// InboxPageResponseBody defines model for InboxPageResponseBody.
+type InboxPageResponseBody struct {
+	Code *int64     `json:"code,omitempty"`
+	Data *InboxPage `json:"data,omitempty"`
+	Msg  *string    `json:"msg,omitempty"`
 }
 
 // InfoCard 信息流卡片(AQI / 温度 / 停雨)
@@ -3930,6 +4133,83 @@ type NewsResponseBody struct {
 	Msg  *string `json:"msg,omitempty"`
 }
 
+// NoticeAction defines model for NoticeAction.
+type NoticeAction struct {
+	Label  *string            `json:"label,omitempty"`
+	Params *map[string]string `json:"params,omitempty"`
+	Route  *string            `json:"route,omitempty"`
+	Type   *string            `json:"type,omitempty"`
+	Url    *string            `json:"url,omitempty"`
+}
+
+// NotificationDelivery defines model for NotificationDelivery.
+type NotificationDelivery struct {
+	AvailableAt           *int64  `json:"availableAt,omitempty"`
+	CreatedAt             *int64  `json:"createdAt,omitempty"`
+	CurrentGroupKey       *string `json:"currentGroupKey,omitempty"`
+	CurrentProviderKey    *string `json:"currentProviderKey,omitempty"`
+	CurrentRetryCount     *int32  `json:"currentRetryCount,omitempty"`
+	DispatchVersion       *int32  `json:"dispatchVersion,omitempty"`
+	ErrorCode             *string `json:"errorCode,omitempty"`
+	FailureKind           *string `json:"failureKind,omitempty"`
+	FinalizedAt           *int64  `json:"finalizedAt,omitempty"`
+	Id                    *string `json:"id,omitempty"`
+	NextAction            *string `json:"nextAction,omitempty"`
+	ProviderResults       *string `json:"providerResults,omitempty"`
+	ReconcileAttemptCount *int32  `json:"reconcileAttemptCount,omitempty"`
+	ReplayBlockReason     *string `json:"replayBlockReason,omitempty"`
+	Replayable            *bool   `json:"replayable,omitempty"`
+	SentAt                *int64  `json:"sentAt,omitempty"`
+	Status                *string `json:"status,omitempty"`
+	TargetId              *string `json:"targetId,omitempty"`
+	TargetType            *string `json:"targetType,omitempty"`
+	TaskId                *string `json:"taskId,omitempty"`
+	UpdatedAt             *int64  `json:"updatedAt,omitempty"`
+}
+
+// NotificationLimits defines model for NotificationLimits.
+type NotificationLimits struct {
+	MaxContentBytes                          *int32 `json:"maxContentBytes,omitempty"`
+	MaxDueOutboxBacklog                      *int32 `json:"maxDueOutboxBacklog,omitempty"`
+	MaxEnabledPolicyProfilesPerOwnerPerTopic *int32 `json:"maxEnabledPolicyProfilesPerOwnerPerTopic,omitempty"`
+	MaxGroups                                *int32 `json:"maxGroups,omitempty"`
+	MaxPayloadBytes                          *int32 `json:"maxPayloadBytes,omitempty"`
+	MaxPersonalizationBytesPerTarget         *int32 `json:"maxPersonalizationBytesPerTarget,omitempty"`
+	MaxPlannedProviderActionsPerTask         *int32 `json:"maxPlannedProviderActionsPerTask,omitempty"`
+	MaxPolicyProfileBytes                    *int32 `json:"maxPolicyProfileBytes,omitempty"`
+	MaxPolicyVersionsPerProfile              *int32 `json:"maxPolicyVersionsPerProfile,omitempty"`
+	MaxProviderRefs                          *int32 `json:"maxProviderRefs,omitempty"`
+	MaxProvidersPerGroup                     *int32 `json:"maxProvidersPerGroup,omitempty"`
+	MaxReconcileAttemptsPerProvider          *int32 `json:"maxReconcileAttemptsPerProvider,omitempty"`
+	MaxReconcileDurationSeconds              *int32 `json:"maxReconcileDurationSeconds,omitempty"`
+	MaxRetriesPerProvider                    *int32 `json:"maxRetriesPerProvider,omitempty"`
+	MaxTargetsPerTask                        *int32 `json:"maxTargetsPerTask,omitempty"`
+	MaxTotalPersonalizationBytes             *int32 `json:"maxTotalPersonalizationBytes,omitempty"`
+}
+
+// NotificationTask defines model for NotificationTask.
+type NotificationTask struct {
+	BusinessEventKey  *string `json:"businessEventKey,omitempty"`
+	CreatedAt         *int64  `json:"createdAt,omitempty"`
+	CreatedById       *string `json:"createdById,omitempty"`
+	CreatedByType     *string `json:"createdByType,omitempty"`
+	DeliveryFailed    *int32  `json:"deliveryFailed,omitempty"`
+	DeliverySkipped   *int32  `json:"deliverySkipped,omitempty"`
+	DeliverySucceeded *int32  `json:"deliverySucceeded,omitempty"`
+	DeliveryTotal     *int32  `json:"deliveryTotal,omitempty"`
+	ExpiresAt         *int64  `json:"expiresAt,omitempty"`
+	FinalizedAt       *int64  `json:"finalizedAt,omitempty"`
+	Id                *string `json:"id,omitempty"`
+	ReplayOfTaskId    *string `json:"replayOfTaskId,omitempty"`
+	Result            *string `json:"result,omitempty"`
+	ScheduledAt       *int64  `json:"scheduledAt,omitempty"`
+	SourceId          *string `json:"sourceId,omitempty"`
+	SourceType        *string `json:"sourceType,omitempty"`
+	Status            *string `json:"status,omitempty"`
+	TopicKey          *string `json:"topicKey,omitempty"`
+	UpdatedAt         *int64  `json:"updatedAt,omitempty"`
+}
+
 // OAuthScopeItem defines model for OAuthScopeItem.
 type OAuthScopeItem struct {
 	Description *string `json:"description,omitempty"`
@@ -4050,6 +4330,44 @@ type PersonInfoResponseBody struct {
 	// 判别，仅学生（本科/研究生）填充，教职工为空。
 	Data *PersonInfoData `json:"data,omitempty"`
 	Msg  *string         `json:"msg,omitempty"`
+}
+
+// PolicyProfile defines model for PolicyProfile.
+type PolicyProfile struct {
+	CreatedAt       *int64          `json:"createdAt,omitempty"`
+	DisabledAt      *int64          `json:"disabledAt,omitempty"`
+	Id              *string         `json:"id,omitempty"`
+	IsDefault       *bool           `json:"isDefault,omitempty"`
+	LatestVersion   *int32          `json:"latestVersion,omitempty"`
+	Name            *string         `json:"name,omitempty"`
+	OwnerId         *string         `json:"ownerId,omitempty"`
+	OwnerType       *string         `json:"ownerType,omitempty"`
+	Policy          *DeliveryPolicy `json:"policy,omitempty"`
+	TopicKey        *string         `json:"topicKey,omitempty"`
+	UpdatedAt       *int64          `json:"updatedAt,omitempty"`
+	Valid           *bool           `json:"valid,omitempty"`
+	ValidationError *string         `json:"validationError,omitempty"`
+}
+
+// PolicyProfileResponseBody defines model for PolicyProfileResponseBody.
+type PolicyProfileResponseBody struct {
+	Code *int64         `json:"code,omitempty"`
+	Data *PolicyProfile `json:"data,omitempty"`
+	Msg  *string        `json:"msg,omitempty"`
+}
+
+// PolicyProfilesResponseBody defines model for PolicyProfilesResponseBody.
+type PolicyProfilesResponseBody struct {
+	Code *int64           `json:"code,omitempty"`
+	Data *[]PolicyProfile `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
+}
+
+// PolicySelection defines model for PolicySelection.
+type PolicySelection struct {
+	InlinePolicy   *DeliveryPolicy `json:"inlinePolicy,omitempty"`
+	ProfileId      *string         `json:"profileId,omitempty"`
+	ProfileVersion *int32          `json:"profileVersion,omitempty"`
 }
 
 // PopularResponseBody defines model for PopularResponseBody.
@@ -4311,6 +4629,31 @@ type RefreshTokenRequestBody struct {
 	RefreshToken *string `json:"refreshToken,omitempty"`
 }
 
+// RenamePolicyProfileRequestBody defines model for RenamePolicyProfileRequestBody.
+type RenamePolicyProfileRequestBody struct {
+	ExpectedUpdatedAt *int64  `json:"expected_updated_at,omitempty"`
+	Name              *string `json:"name,omitempty"`
+}
+
+// ReplayTaskData defines model for ReplayTaskData.
+type ReplayTaskData struct {
+	Replayed *bool             `json:"replayed,omitempty"`
+	Task     *NotificationTask `json:"task,omitempty"`
+}
+
+// ReplayTaskRequestBody defines model for ReplayTaskRequestBody.
+type ReplayTaskRequestBody struct {
+	DeliveryIds      *[]string `json:"delivery_ids,omitempty"`
+	ReplayRequestKey *string   `json:"replay_request_key,omitempty"`
+}
+
+// ReplayTaskResponseBody defines model for ReplayTaskResponseBody.
+type ReplayTaskResponseBody struct {
+	Code *int64          `json:"code,omitempty"`
+	Data *ReplayTaskData `json:"data,omitempty"`
+	Msg  *string         `json:"msg,omitempty"`
+}
+
 // ReportGapRequestBody defines model for ReportGapRequestBody.
 type ReportGapRequestBody struct {
 	Question  *string `json:"question,omitempty"`
@@ -4357,6 +4700,19 @@ type RetrieveRequestBody struct {
 
 	// Tags 标签过滤(命中任一)
 	Tags *[]string `json:"tags,omitempty"`
+}
+
+// RetryPolicy defines model for RetryPolicy.
+type RetryPolicy struct {
+	BackoffSeconds *[]int32 `json:"backoffSeconds,omitempty"`
+	MaxRetries     *int32   `json:"maxRetries,omitempty"`
+}
+
+// ReviewAdminNoticeRequestBody defines model for ReviewAdminNoticeRequestBody.
+type ReviewAdminNoticeRequestBody struct {
+	Approve         *bool   `json:"approve,omitempty"`
+	Comment         *string `json:"comment,omitempty"`
+	ExpectedVersion *int32  `json:"expected_version,omitempty"`
 }
 
 // ReviewCardData defines model for ReviewCardData.
@@ -4450,6 +4806,24 @@ type RunCronTaskRequestBody struct {
 type RunCronTaskResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
+}
+
+// RuntimeStatus defines model for RuntimeStatus.
+type RuntimeStatus struct {
+	CheckedAt                 *int64  `json:"checkedAt,omitempty"`
+	Component                 *string `json:"component,omitempty"`
+	DueOutboxCount            *int64  `json:"dueOutboxCount,omitempty"`
+	LastSanitizedPublishError *string `json:"lastSanitizedPublishError,omitempty"`
+	MaxPublishCount           *int32  `json:"maxPublishCount,omitempty"`
+	MqConnectionState         *string `json:"mqConnectionState,omitempty"`
+	OldestDueOutboxAgeSeconds *int64  `json:"oldestDueOutboxAgeSeconds,omitempty"`
+}
+
+// RuntimeStatusResponseBody defines model for RuntimeStatusResponseBody.
+type RuntimeStatusResponseBody struct {
+	Code *int64         `json:"code,omitempty"`
+	Data *RuntimeStatus `json:"data,omitempty"`
+	Msg  *string        `json:"msg,omitempty"`
 }
 
 // SaveDraftRequestBody defines model for SaveDraftRequestBody.
@@ -5028,6 +5402,11 @@ type SetDefaultIdentityRequestBody struct {
 type SetDefaultIdentityResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
+}
+
+// SetDefaultPolicyProfileRequestBody defines model for SetDefaultPolicyProfileRequestBody.
+type SetDefaultPolicyProfileRequestBody struct {
+	ExpectedUpdatedAt *int64 `json:"expected_updated_at,omitempty"`
 }
 
 // SetLoginMethodsRequestBody defines model for SetLoginMethodsRequestBody.
@@ -5634,6 +6013,28 @@ type TaggingVariableItem struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// TaskPage defines model for TaskPage.
+type TaskPage struct {
+	Items    *[]NotificationTask `json:"items,omitempty"`
+	Page     *int32              `json:"page,omitempty"`
+	PageSize *int32              `json:"pageSize,omitempty"`
+	Total    *int64              `json:"total,omitempty"`
+}
+
+// TaskPageResponseBody defines model for TaskPageResponseBody.
+type TaskPageResponseBody struct {
+	Code *int64    `json:"code,omitempty"`
+	Data *TaskPage `json:"data,omitempty"`
+	Msg  *string   `json:"msg,omitempty"`
+}
+
+// TaskResponseBody defines model for TaskResponseBody.
+type TaskResponseBody struct {
+	Code *int64            `json:"code,omitempty"`
+	Data *NotificationTask `json:"data,omitempty"`
+	Msg  *string           `json:"msg,omitempty"`
+}
+
 // TeachingClassData defines model for TeachingClassData.
 type TeachingClassData struct {
 	Detail *TeachingClassDetail `json:"detail,omitempty"`
@@ -5713,6 +6114,25 @@ type TimeSlotStat struct {
 	Hour  *int32 `json:"hour,omitempty"`
 }
 
+// TopicCapabilities defines model for TopicCapabilities.
+type TopicCapabilities struct {
+	AllowedModes           *[]string           `json:"allowedModes,omitempty"`
+	AllowedProviders       *[]string           `json:"allowedProviders,omitempty"`
+	CodeDefaultPolicy      *DeliveryPolicy     `json:"codeDefaultPolicy,omitempty"`
+	DefaultSelection       *PolicySelection    `json:"defaultSelection,omitempty"`
+	DefaultValidationError *string             `json:"defaultValidationError,omitempty"`
+	Limits                 *NotificationLimits `json:"limits,omitempty"`
+	Profiles               *[]PolicyProfile    `json:"profiles,omitempty"`
+	TopicKey               *string             `json:"topicKey,omitempty"`
+}
+
+// TopicCapabilitiesResponseBody defines model for TopicCapabilitiesResponseBody.
+type TopicCapabilitiesResponseBody struct {
+	Code *int64             `json:"code,omitempty"`
+	Data *TopicCapabilities `json:"data,omitempty"`
+	Msg  *string            `json:"msg,omitempty"`
+}
+
 // TotalTime defines model for TotalTime.
 type TotalTime struct {
 	Days  *int32 `json:"days,omitempty"`
@@ -5759,6 +6179,12 @@ type UpdateActivityRequestBody struct {
 	Status              *string                  `json:"status,omitempty"`
 	Title               *string                  `json:"title,omitempty"`
 	TrainingInfo        *string                  `json:"training_info,omitempty"`
+}
+
+// UpdateAdminNoticeRequestBody defines model for UpdateAdminNoticeRequestBody.
+type UpdateAdminNoticeRequestBody struct {
+	ExpectedVersion *int32          `json:"expected_version,omitempty"`
+	Notice          *EditableNotice `json:"notice,omitempty"`
 }
 
 // UpdateAppRequestBody defines model for UpdateAppRequestBody.
@@ -5885,6 +6311,12 @@ type UpdateLoginClientResponseBody struct {
 	// Neo 原生会话 handoff。与 OAuth apps.redirect_uris（外部应用授权码回调）严格分离。
 	Data *AdminLoginClientInfo `json:"data,omitempty"`
 	Msg  *string               `json:"msg,omitempty"`
+}
+
+// UpdatePolicyProfileRequestBody defines model for UpdatePolicyProfileRequestBody.
+type UpdatePolicyProfileRequestBody struct {
+	ExpectedLatestVersion *int32          `json:"expected_latest_version,omitempty"`
+	Policy                *DeliveryPolicy `json:"policy,omitempty"`
 }
 
 // UpdateServiceAuthorizationNotificationRequestBody defines model for UpdateServiceAuthorizationNotificationRequestBody.
@@ -6126,6 +6558,24 @@ type UserInfo struct {
 	Id       *string `json:"id,omitempty"`
 	NickName *string `json:"nickName,omitempty"`
 	Status   *string `json:"status,omitempty"`
+}
+
+// ValidatePolicyData defines model for ValidatePolicyData.
+type ValidatePolicyData struct {
+	Valid *bool `json:"valid,omitempty"`
+}
+
+// ValidatePolicyRequestBody defines model for ValidatePolicyRequestBody.
+type ValidatePolicyRequestBody struct {
+	Selection   *PolicySelection `json:"selection,omitempty"`
+	TargetCount *int32           `json:"target_count,omitempty"`
+}
+
+// ValidatePolicyResponseBody defines model for ValidatePolicyResponseBody.
+type ValidatePolicyResponseBody struct {
+	Code *int64              `json:"code,omitempty"`
+	Data *ValidatePolicyData `json:"data,omitempty"`
+	Msg  *string             `json:"msg,omitempty"`
 }
 
 // VenueAvailabilityData defines model for VenueAvailabilityData.
@@ -6701,6 +7151,43 @@ type AdminServiceListLoginClientsParams struct {
 	Id *string `form:"id,omitempty" json:"id,omitempty"`
 }
 
+// AdminNoticeServiceListAdminNoticesParams defines parameters for AdminNoticeServiceListAdminNotices.
+type AdminNoticeServiceListAdminNoticesParams struct {
+	Status   *string `form:"status,omitempty" json:"status,omitempty"`
+	Page     *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+}
+
+// NotificationServiceListNotificationPolicyProfilesParams defines parameters for NotificationServiceListNotificationPolicyProfiles.
+type NotificationServiceListNotificationPolicyProfilesParams struct {
+	TopicKey        *string `form:"topic_key,omitempty" json:"topic_key,omitempty"`
+	IncludeDisabled *bool   `form:"include_disabled,omitempty" json:"include_disabled,omitempty"`
+}
+
+// NotificationServiceDisableNotificationPolicyProfileParams defines parameters for NotificationServiceDisableNotificationPolicyProfile.
+type NotificationServiceDisableNotificationPolicyProfileParams struct {
+	ExpectedUpdatedAt *int64 `form:"expected_updated_at,omitempty" json:"expected_updated_at,omitempty"`
+}
+
+// NotificationServiceListNotificationTasksParams defines parameters for NotificationServiceListNotificationTasks.
+type NotificationServiceListNotificationTasksParams struct {
+	TopicKey   *string `form:"topic_key,omitempty" json:"topic_key,omitempty"`
+	SourceType *string `form:"source_type,omitempty" json:"source_type,omitempty"`
+	SourceId   *string `form:"source_id,omitempty" json:"source_id,omitempty"`
+	Status     *string `form:"status,omitempty" json:"status,omitempty"`
+	Result     *string `form:"result,omitempty" json:"result,omitempty"`
+	Page       *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize   *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+}
+
+// NotificationServiceListNotificationTaskDeliveriesParams defines parameters for NotificationServiceListNotificationTaskDeliveries.
+type NotificationServiceListNotificationTaskDeliveriesParams struct {
+	Status      *string `form:"status,omitempty" json:"status,omitempty"`
+	FailureKind *string `form:"failure_kind,omitempty" json:"failure_kind,omitempty"`
+	Page        *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize    *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+}
+
 // AdminServiceSetOperatorEnabledParams defines parameters for AdminServiceSetOperatorEnabled.
 type AdminServiceSetOperatorEnabledParams struct {
 	Id *string `form:"id,omitempty" json:"id,omitempty"`
@@ -7202,6 +7689,13 @@ type IdentityServiceGetLoginURLParams struct {
 	ReturnTo *string `form:"return_to,omitempty" json:"return_to,omitempty"`
 }
 
+// InboxServiceListInboxParams defines parameters for InboxServiceListInbox.
+type InboxServiceListInboxParams struct {
+	Page     *int32 `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32 `form:"page_size,omitempty" json:"page_size,omitempty"`
+	History  *bool  `form:"history,omitempty" json:"history,omitempty"`
+}
+
 // LibraryBookingServiceGetBookingOptionsParams defines parameters for LibraryBookingServiceGetBookingOptions.
 type LibraryBookingServiceGetBookingOptionsParams struct {
 	// CategoryId 空间分类接口返回的 categoryId。
@@ -7527,6 +8021,39 @@ type AdminServiceUpdateLoginClientJSONRequestBody = UpdateLoginClientRequestBody
 
 // AdminServiceSetLoginMethodsJSONRequestBody defines body for AdminServiceSetLoginMethods for application/json ContentType.
 type AdminServiceSetLoginMethodsJSONRequestBody = SetLoginMethodsRequestBody
+
+// AdminNoticeServiceCreateAdminNoticeJSONRequestBody defines body for AdminNoticeServiceCreateAdminNotice for application/json ContentType.
+type AdminNoticeServiceCreateAdminNoticeJSONRequestBody = CreateAdminNoticeRequestBody
+
+// AdminNoticeServiceUpdateAdminNoticeJSONRequestBody defines body for AdminNoticeServiceUpdateAdminNotice for application/json ContentType.
+type AdminNoticeServiceUpdateAdminNoticeJSONRequestBody = UpdateAdminNoticeRequestBody
+
+// AdminNoticeServiceCancelAdminNoticeJSONRequestBody defines body for AdminNoticeServiceCancelAdminNotice for application/json ContentType.
+type AdminNoticeServiceCancelAdminNoticeJSONRequestBody = CancelAdminNoticeRequestBody
+
+// AdminNoticeServiceReviewAdminNoticeJSONRequestBody defines body for AdminNoticeServiceReviewAdminNotice for application/json ContentType.
+type AdminNoticeServiceReviewAdminNoticeJSONRequestBody = ReviewAdminNoticeRequestBody
+
+// AdminNoticeServiceSubmitAdminNoticeJSONRequestBody defines body for AdminNoticeServiceSubmitAdminNotice for application/json ContentType.
+type AdminNoticeServiceSubmitAdminNoticeJSONRequestBody = AdminNoticeVersionRequestBody
+
+// NotificationServiceCreateNotificationPolicyProfileJSONRequestBody defines body for NotificationServiceCreateNotificationPolicyProfile for application/json ContentType.
+type NotificationServiceCreateNotificationPolicyProfileJSONRequestBody = CreatePolicyProfileRequestBody
+
+// NotificationServiceSetDefaultNotificationPolicyProfileJSONRequestBody defines body for NotificationServiceSetDefaultNotificationPolicyProfile for application/json ContentType.
+type NotificationServiceSetDefaultNotificationPolicyProfileJSONRequestBody = SetDefaultPolicyProfileRequestBody
+
+// NotificationServiceRenameNotificationPolicyProfileJSONRequestBody defines body for NotificationServiceRenameNotificationPolicyProfile for application/json ContentType.
+type NotificationServiceRenameNotificationPolicyProfileJSONRequestBody = RenamePolicyProfileRequestBody
+
+// NotificationServiceUpdateNotificationPolicyProfileJSONRequestBody defines body for NotificationServiceUpdateNotificationPolicyProfile for application/json ContentType.
+type NotificationServiceUpdateNotificationPolicyProfileJSONRequestBody = UpdatePolicyProfileRequestBody
+
+// NotificationServiceReplayNotificationTaskFailuresJSONRequestBody defines body for NotificationServiceReplayNotificationTaskFailures for application/json ContentType.
+type NotificationServiceReplayNotificationTaskFailuresJSONRequestBody = ReplayTaskRequestBody
+
+// NotificationServiceValidateNotificationDeliveryPolicyJSONRequestBody defines body for NotificationServiceValidateNotificationDeliveryPolicy for application/json ContentType.
+type NotificationServiceValidateNotificationDeliveryPolicyJSONRequestBody = ValidatePolicyRequestBody
 
 // AdminServiceSetOperatorEnabledJSONRequestBody defines body for AdminServiceSetOperatorEnabled for application/json ContentType.
 type AdminServiceSetOperatorEnabledJSONRequestBody = SetOperatorEnabledRequestBody
