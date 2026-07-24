@@ -1244,7 +1244,7 @@ func NewLibraryReadingReqBuilder() *LibraryReadingReqBuilder {
 	return &LibraryReadingReqBuilder{req: &LibraryReadingReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// Metric sets the "metric" query parameter: summary | first-book | months | max-month | least-popular | preference | total-time | borrows | newer | all | unreturned
+// Metric sets the "metric" query parameter: summary | first-book | months | max-month | least-popular | preference | total-time | borrows | keywords | newer | all | unreturned
 func (b *LibraryReadingReqBuilder) Metric(v string) *LibraryReadingReqBuilder {
 	b.req.queryParams["metric"] = v
 	return b
@@ -1408,52 +1408,6 @@ func (s *Service) LibrarySeatRooms(ctx context.Context, req *LibrarySeatRoomsReq
 	return resp, err
 }
 
-// LibraryShareStaffReq is the request for LibraryShareStaff.
-type LibraryShareStaffReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// LibraryShareStaffReqBuilder builds a LibraryShareStaffReq with a fluent setter per field.
-type LibraryShareStaffReqBuilder struct{ req *LibraryShareStaffReq }
-
-// NewLibraryShareStaffReqBuilder creates a request builder for LibraryShareStaff.
-func NewLibraryShareStaffReqBuilder() *LibraryShareStaffReqBuilder {
-	return &LibraryShareStaffReqBuilder{req: &LibraryShareStaffReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// ShareId sets the "share_id" query parameter.
-func (b *LibraryShareStaffReqBuilder) ShareId(v string) *LibraryShareStaffReqBuilder {
-	b.req.queryParams["share_id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *LibraryShareStaffReqBuilder) Build() *LibraryShareStaffReq { return b.req }
-
-// LibraryShareStaffResp is the response for LibraryShareStaff.
-type LibraryShareStaffResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ShareStaffData `json:"data"`
-}
-
-// LibraryShareStaff: 根据分享 ID 解析学号
-func (s *Service) LibraryShareStaff(ctx context.Context, req *LibraryShareStaffReq, opts ...core.RequestOption) (*LibraryShareStaffResp, error) {
-	resp := &LibraryShareStaffResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/academic/library/share",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
 // LibraryShareIDReq is the request for LibraryShareID.
 type LibraryShareIDReq struct {
 	pathParams  map[string]string
@@ -1468,12 +1422,6 @@ type LibraryShareIDReqBuilder struct{ req *LibraryShareIDReq }
 // NewLibraryShareIDReqBuilder creates a request builder for LibraryShareID.
 func NewLibraryShareIDReqBuilder() *LibraryShareIDReqBuilder {
 	return &LibraryShareIDReqBuilder{req: &LibraryShareIDReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// StaffID sets the "X-Staff-Id" header parameter.
-func (b *LibraryShareIDReqBuilder) StaffID(v string) *LibraryShareIDReqBuilder {
-	b.req.headers["X-Staff-Id"] = v
-	return b
 }
 
 // Build finalizes the request.
@@ -1500,6 +1448,46 @@ func (s *Service) LibraryShareID(ctx context.Context, req *LibraryShareIDReq, op
 	return resp, err
 }
 
+// LibraryRevokeShareIDReq is the request for LibraryRevokeShareID.
+type LibraryRevokeShareIDReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// LibraryRevokeShareIDReqBuilder builds a LibraryRevokeShareIDReq with a fluent setter per field.
+type LibraryRevokeShareIDReqBuilder struct{ req *LibraryRevokeShareIDReq }
+
+// NewLibraryRevokeShareIDReqBuilder creates a request builder for LibraryRevokeShareID.
+func NewLibraryRevokeShareIDReqBuilder() *LibraryRevokeShareIDReqBuilder {
+	return &LibraryRevokeShareIDReqBuilder{req: &LibraryRevokeShareIDReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *LibraryRevokeShareIDReqBuilder) Build() *LibraryRevokeShareIDReq { return b.req }
+
+// LibraryRevokeShareIDResp is the response for LibraryRevokeShareID.
+type LibraryRevokeShareIDResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ShareRevokeData `json:"data"`
+}
+
+// LibraryRevokeShareID: 关闭本人图书馆分享
+func (s *Service) LibraryRevokeShareID(ctx context.Context, req *LibraryRevokeShareIDReq, opts ...core.RequestOption) (*LibraryRevokeShareIDResp, error) {
+	resp := &LibraryRevokeShareIDResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/academic/library/share",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // LibrarySharedReportReq is the request for LibrarySharedReport.
 type LibrarySharedReportReq struct {
 	pathParams  map[string]string
@@ -1516,7 +1504,7 @@ func NewLibrarySharedReportReqBuilder() *LibrarySharedReportReqBuilder {
 	return &LibrarySharedReportReqBuilder{req: &LibrarySharedReportReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// ShareId sets the "share_id" query parameter.
+// ShareId sets the "share_id" query parameter: 必填。图书馆报告分享 ID。
 func (b *LibrarySharedReportReqBuilder) ShareId(v string) *LibrarySharedReportReqBuilder {
 	b.req.queryParams["share_id"] = v
 	return b
@@ -1550,6 +1538,46 @@ func (s *Service) LibrarySharedReport(ctx context.Context, req *LibrarySharedRep
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/academic/library/share/report",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// LibraryRotateShareIDReq is the request for LibraryRotateShareID.
+type LibraryRotateShareIDReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// LibraryRotateShareIDReqBuilder builds a LibraryRotateShareIDReq with a fluent setter per field.
+type LibraryRotateShareIDReqBuilder struct{ req *LibraryRotateShareIDReq }
+
+// NewLibraryRotateShareIDReqBuilder creates a request builder for LibraryRotateShareID.
+func NewLibraryRotateShareIDReqBuilder() *LibraryRotateShareIDReqBuilder {
+	return &LibraryRotateShareIDReqBuilder{req: &LibraryRotateShareIDReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *LibraryRotateShareIDReqBuilder) Build() *LibraryRotateShareIDReq { return b.req }
+
+// LibraryRotateShareIDResp is the response for LibraryRotateShareID.
+type LibraryRotateShareIDResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ShareIDData `json:"data"`
+}
+
+// LibraryRotateShareID: 重新生成本人图书馆分享 ID
+func (s *Service) LibraryRotateShareID(ctx context.Context, req *LibraryRotateShareIDReq, opts ...core.RequestOption) (*LibraryRotateShareIDResp, error) {
+	resp := &LibraryRotateShareIDResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/academic/library/share/rotate",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

@@ -2693,6 +2693,7 @@ type FlatReadData struct {
 	HasRecord               *bool       `json:"hasRecord,omitempty"`
 	Hours                   *int32      `json:"hours,omitempty"`
 	IsNewer                 *bool       `json:"isNewer,omitempty"`
+	Keywords                *[]Keyword  `json:"keywords,omitempty"`
 	LeastPopularBook        *string     `json:"leastPopularBook,omitempty"`
 	LeastPopularBorrowCount *int32      `json:"leastPopularBorrowCount,omitempty"`
 	LongestBook             *string     `json:"longestBook,omitempty"`
@@ -3303,6 +3304,18 @@ type JoinResponseBody struct {
 	Msg  *string   `json:"msg,omitempty"`
 }
 
+// Keyword defines model for Keyword.
+type Keyword struct {
+	Weight int32  `json:"weight"`
+	Word   string `json:"word"`
+}
+
+// KeywordResult defines model for KeywordResult.
+type KeywordResult struct {
+	Keywords []Keyword `json:"keywords"`
+	StaffId  string    `json:"staffId"`
+}
+
 // KnowledgeCarrier KnowledgeCarrier 是 item 下一个可独立索引/编辑的内容载体（= 一个方舟 doc）。方舟对账态
 // (syncStatus/syncError/arkDocId/syncedAt) 来自其 projection。
 type KnowledgeCarrier struct {
@@ -3542,6 +3555,7 @@ type LibraryReadingData struct {
 	All             *FlatReadData          `json:"all,omitempty"`
 	Borrows         *BorrowList            `json:"borrows,omitempty"`
 	FirstBook       *FirstBook             `json:"firstBook,omitempty"`
+	Keywords        *KeywordResult         `json:"keywords,omitempty"`
 	LeastPopular    *[]BookStat            `json:"leastPopular,omitempty"`
 	MaxMonth        *MaxMonth              `json:"maxMonth,omitempty"`
 	Months          *[]MonthStat           `json:"months,omitempty"`
@@ -5497,16 +5511,16 @@ type ShareData struct {
 
 // ShareIDData ==================== 图书馆 · 分享 ====================
 type ShareIDData struct {
-	ShareId *string `json:"shareId,omitempty"`
+	ShareId string `json:"shareId"`
 }
 
 // ShareIDResponseBody defines model for ShareIDResponseBody.
 type ShareIDResponseBody struct {
-	Code *int64 `json:"code,omitempty"`
+	Code int64 `json:"code"`
 
 	// Data ==================== 图书馆 · 分享 ====================
 	Data *ShareIDData `json:"data,omitempty"`
-	Msg  *string      `json:"msg,omitempty"`
+	Msg  string       `json:"msg"`
 }
 
 // ShareRequestBody defines model for ShareRequestBody.
@@ -5522,29 +5536,74 @@ type ShareResponseBody struct {
 	Msg  *string    `json:"msg,omitempty"`
 }
 
-// ShareStaffData defines model for ShareStaffData.
-type ShareStaffData struct {
-	StaffId *string `json:"staffId,omitempty"`
+// ShareRevokeData defines model for ShareRevokeData.
+type ShareRevokeData struct {
+	// Revoked true=本次删除了既有分享；false=此前已经关闭
+	Revoked bool `json:"revoked"`
 }
 
-// ShareStaffResponseBody defines model for ShareStaffResponseBody.
-type ShareStaffResponseBody struct {
-	Code *int64          `json:"code,omitempty"`
-	Data *ShareStaffData `json:"data,omitempty"`
-	Msg  *string         `json:"msg,omitempty"`
+// ShareRevokeResponseBody defines model for ShareRevokeResponseBody.
+type ShareRevokeResponseBody struct {
+	Code int64            `json:"code"`
+	Data *ShareRevokeData `json:"data,omitempty"`
+	Msg  string           `json:"msg"`
+}
+
+// SharedAttendanceStats defines model for SharedAttendanceStats.
+type SharedAttendanceStats struct {
+	EarliestTime           int64  `json:"earliestTime"`
+	FirstVisitTime         int64  `json:"firstVisitTime"`
+	LatestTime             int64  `json:"latestTime"`
+	MostFrequentFloor      string `json:"mostFrequentFloor"`
+	MostFrequentFloorCount int32  `json:"mostFrequentFloorCount"`
+	MostFrequentTimeSlot   string `json:"mostFrequentTimeSlot"`
+	MostVisitedMonth       string `json:"mostVisitedMonth"`
+	MostVisitedMonthCount  int32  `json:"mostVisitedMonthCount"`
+	TotalStayDays          int32  `json:"totalStayDays"`
+	TotalStayHours         int32  `json:"totalStayHours"`
+	TotalVisitCount        int32  `json:"totalVisitCount"`
+}
+
+// SharedBookItem defines model for SharedBookItem.
+type SharedBookItem struct {
+	BookName string `json:"bookName"`
+}
+
+// SharedFlatReadData defines model for SharedFlatReadData.
+type SharedFlatReadData struct {
+	BookName                string           `json:"bookName"`
+	Books                   []SharedBookItem `json:"books"`
+	BorrowTime              int64            `json:"borrowTime"`
+	BorrowedCount           int32            `json:"borrowedCount"`
+	Days                    int32            `json:"days"`
+	FavoriteCategory        string           `json:"favoriteCategory"`
+	HasRecord               bool             `json:"hasRecord"`
+	Hours                   int32            `json:"hours"`
+	IsNewer                 bool             `json:"isNewer"`
+	Keywords                []Keyword        `json:"keywords"`
+	LeastPopularBook        string           `json:"leastPopularBook"`
+	LeastPopularBorrowCount int32            `json:"leastPopularBorrowCount"`
+	LongestBook             string           `json:"longestBook"`
+	MaxMonth                int32            `json:"maxMonth"`
+	MaxMonthCount           int32            `json:"maxMonthCount"`
+	Percentile              float64          `json:"percentile"`
+	Rank                    int32            `json:"rank"`
+	TopPublisher            string           `json:"topPublisher"`
+	Total                   int64            `json:"total"`
+	TotalBooks              int64            `json:"totalBooks"`
 }
 
 // SharedLibraryReportData defines model for SharedLibraryReportData.
 type SharedLibraryReportData struct {
-	Attendance *AttendanceStats `json:"attendance,omitempty"`
-	Reading    *FlatReadData    `json:"reading,omitempty"`
+	Attendance SharedAttendanceStats `json:"attendance"`
+	Reading    SharedFlatReadData    `json:"reading"`
 }
 
 // SharedLibraryReportResponseBody defines model for SharedLibraryReportResponseBody.
 type SharedLibraryReportResponseBody struct {
-	Code *int64                   `json:"code,omitempty"`
+	Code int64                    `json:"code"`
 	Data *SharedLibraryReportData `json:"data,omitempty"`
-	Msg  *string                  `json:"msg,omitempty"`
+	Msg  string                   `json:"msg"`
 }
 
 // SimpleResponseBody defines model for SimpleResponseBody.
@@ -6797,7 +6856,7 @@ type AcademicServiceLibraryAttendanceParams struct {
 
 // AcademicServiceLibraryReadingParams defines parameters for AcademicServiceLibraryReading.
 type AcademicServiceLibraryReadingParams struct {
-	// Metric summary | first-book | months | max-month | least-popular | preference | total-time | borrows | newer | all | unreturned
+	// Metric summary | first-book | months | max-month | least-popular | preference | total-time | borrows | keywords | newer | all | unreturned
 	Metric *string `form:"metric,omitempty" json:"metric,omitempty"`
 
 	// Start yyyy-MM-dd
@@ -6827,19 +6886,10 @@ type AcademicServiceLibrarySeatReservationsParams struct {
 	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
-// AcademicServiceLibraryShareStaffParams defines parameters for AcademicServiceLibraryShareStaff.
-type AcademicServiceLibraryShareStaffParams struct {
-	ShareId *string `form:"share_id,omitempty" json:"share_id,omitempty"`
-}
-
-// AcademicServiceLibraryShareIDParams defines parameters for AcademicServiceLibraryShareID.
-type AcademicServiceLibraryShareIDParams struct {
-	XStaffId *string `json:"X-Staff-Id,omitempty"`
-}
-
 // AcademicServiceLibrarySharedReportParams defines parameters for AcademicServiceLibrarySharedReport.
 type AcademicServiceLibrarySharedReportParams struct {
-	ShareId *string `form:"share_id,omitempty" json:"share_id,omitempty"`
+	// ShareId 必填。图书馆报告分享 ID。
+	ShareId string  `form:"share_id" json:"share_id"`
 	Start   *string `form:"start,omitempty" json:"start,omitempty"`
 	End     *string `form:"end,omitempty" json:"end,omitempty"`
 }

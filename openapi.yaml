@@ -611,14 +611,14 @@ paths:
             tags:
                 - AcademicService
             summary: 按指标查询本人阅读数据
-            description: metric=summary|first-book|months|max-month|least-popular|preference|total-time|borrows|newer|all|unreturned 选择返回指标，响应 data 仅填对应字段；metric=unreturned 且 batch=true 时按 staffIds 批量查询多名学生未归还图书
+            description: metric=summary|first-book|months|max-month|least-popular|preference|total-time|borrows|keywords|newer|all|unreturned 选择返回指标，响应 data 仅填对应字段；metric=unreturned 且 batch=true 时按 staffIds 批量查询多名学生未归还图书
             operationId: AcademicService_LibraryReading
             security:
                 - BearerAuth: []
             parameters:
                 - name: metric
                   in: query
-                  description: summary | first-book | months | max-month | least-popular | preference | total-time | borrows | newer | all | unreturned
+                  description: summary | first-book | months | max-month | least-popular | preference | total-time | borrows | keywords | newer | all | unreturned
                   schema:
                     type: string
                 - name: start
@@ -713,26 +713,6 @@ paths:
                                 $ref: '#/components/schemas/SeatRoomListResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/academic/library/share:
-        get:
-            tags:
-                - AcademicService
-            summary: 根据分享 ID 解析学号
-            operationId: AcademicService_LibraryShareStaff
-            security:
-                - BearerAuth: []
-            parameters:
-                - name: share_id
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ShareStaffResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
         post:
             tags:
                 - AcademicService
@@ -741,11 +721,6 @@ paths:
             operationId: AcademicService_LibraryShareID
             security:
                 - BearerAuth: []
-            parameters:
-                - name: X-Staff-Id
-                  in: header
-                  schema:
-                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -754,18 +729,36 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ShareIDResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
+        delete:
+            tags:
+                - AcademicService
+            summary: 关闭本人图书馆分享
+            description: 删除当前分享 ID；操作幂等，关闭后旧分享链接立即失效。revoked=true 表示本次删除了既有分享，false 表示此前已经关闭，两者都表示成功
+            operationId: AcademicService_LibraryRevokeShareID
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ShareRevokeResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/academic/library/share/report:
         get:
             tags:
                 - AcademicService
             summary: 根据分享 ID 查询脱敏图书馆报告
-            description: 返回分享人的阅读与到馆汇总，不包含学号、图书条码等身份或馆藏标识
+            description: 返回分享人的阅读与到馆汇总，不包含学号、图书条码和逐笔借还日期等身份或馆藏标识；旧版短分享 ID 已失效，需联系分享者重新生成
             operationId: AcademicService_LibrarySharedReport
             security:
                 - BearerAuth: []
             parameters:
                 - name: share_id
                   in: query
+                  description: 必填。图书馆报告分享 ID。
+                  required: true
                   schema:
                     type: string
                 - name: start
@@ -784,6 +777,23 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/SharedLibraryReportResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/academic/library/share/rotate:
+        post:
+            tags:
+                - AcademicService
+            summary: 重新生成本人图书馆分享 ID
+            description: 每次调用都会生成新的随机分享 ID，并立即使旧分享链接失效；客户端不得自动重试
+            operationId: AcademicService_LibraryRotateShareID
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ShareIDResponseBody'
+            x-hduhelp-http: {'auth': 'bearer', 'confirmation': 'required'}
     /hduhelp-neo/academic/needy:
         get:
             tags:
@@ -12549,6 +12559,10 @@ components:
                         $ref: '#/components/schemas/BookItem'
                 isNewer:
                     type: boolean
+                keywords:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Keyword'
         FloorStat:
             type: object
             properties:
@@ -13373,6 +13387,29 @@ components:
                     format: int64
                 msg:
                     type: string
+        Keyword:
+            required:
+                - word
+                - weight
+            type: object
+            properties:
+                word:
+                    type: string
+                weight:
+                    type: integer
+                    format: int32
+        KeywordResult:
+            required:
+                - staffId
+                - keywords
+            type: object
+            properties:
+                staffId:
+                    type: string
+                keywords:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Keyword'
         KnowledgeCarrier:
             type: object
             properties:
@@ -13740,6 +13777,8 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/UnreturnedBatchItem'
+                keywords:
+                    $ref: '#/components/schemas/KeywordResult'
         LibraryReadingResponseBody:
             type: object
             properties:
@@ -16558,12 +16597,17 @@ components:
                 share_code:
                     type: string
         ShareIDData:
+            required:
+                - shareId
             type: object
             properties:
                 shareId:
                     type: string
             description: ==================== 图书馆 · 分享 ====================
         ShareIDResponseBody:
+            required:
+                - code
+                - msg
             type: object
             properties:
                 data:
@@ -16590,29 +16634,172 @@ components:
                     format: int64
                 msg:
                     type: string
-        ShareStaffData:
+        ShareRevokeData:
+            required:
+                - revoked
             type: object
             properties:
-                staffId:
-                    type: string
-        ShareStaffResponseBody:
+                revoked:
+                    type: boolean
+                    description: true=本次删除了既有分享；false=此前已经关闭
+        ShareRevokeResponseBody:
+            required:
+                - code
+                - msg
             type: object
             properties:
                 data:
-                    $ref: '#/components/schemas/ShareStaffData'
+                    $ref: '#/components/schemas/ShareRevokeData'
                 code:
                     type: integer
                     format: int64
                 msg:
                     type: string
+        SharedAttendanceStats:
+            required:
+                - firstVisitTime
+                - totalStayDays
+                - totalStayHours
+                - totalVisitCount
+                - earliestTime
+                - latestTime
+                - mostFrequentTimeSlot
+                - mostVisitedMonth
+                - mostVisitedMonthCount
+                - mostFrequentFloor
+                - mostFrequentFloorCount
+            type: object
+            properties:
+                firstVisitTime:
+                    type: integer
+                    format: int64
+                totalStayDays:
+                    type: integer
+                    format: int32
+                totalStayHours:
+                    type: integer
+                    format: int32
+                totalVisitCount:
+                    type: integer
+                    format: int32
+                earliestTime:
+                    type: integer
+                    format: int64
+                latestTime:
+                    type: integer
+                    format: int64
+                mostFrequentTimeSlot:
+                    type: string
+                mostVisitedMonth:
+                    type: string
+                mostVisitedMonthCount:
+                    type: integer
+                    format: int32
+                mostFrequentFloor:
+                    type: string
+                mostFrequentFloorCount:
+                    type: integer
+                    format: int32
+        SharedBookItem:
+            required:
+                - bookName
+            type: object
+            properties:
+                bookName:
+                    type: string
+        SharedFlatReadData:
+            required:
+                - rank
+                - totalBooks
+                - percentile
+                - hasRecord
+                - bookName
+                - borrowTime
+                - maxMonth
+                - maxMonthCount
+                - leastPopularBook
+                - leastPopularBorrowCount
+                - longestBook
+                - favoriteCategory
+                - topPublisher
+                - borrowedCount
+                - days
+                - hours
+                - total
+                - books
+                - isNewer
+                - keywords
+            type: object
+            properties:
+                rank:
+                    type: integer
+                    format: int32
+                totalBooks:
+                    type: integer
+                    format: int64
+                percentile:
+                    type: number
+                    format: double
+                hasRecord:
+                    type: boolean
+                bookName:
+                    type: string
+                borrowTime:
+                    type: integer
+                    format: int64
+                maxMonth:
+                    type: integer
+                    format: int32
+                maxMonthCount:
+                    type: integer
+                    format: int32
+                leastPopularBook:
+                    type: string
+                leastPopularBorrowCount:
+                    type: integer
+                    format: int32
+                longestBook:
+                    type: string
+                favoriteCategory:
+                    type: string
+                topPublisher:
+                    type: string
+                borrowedCount:
+                    type: integer
+                    format: int32
+                days:
+                    type: integer
+                    format: int32
+                hours:
+                    type: integer
+                    format: int32
+                total:
+                    type: integer
+                    format: int64
+                books:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SharedBookItem'
+                isNewer:
+                    type: boolean
+                keywords:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Keyword'
         SharedLibraryReportData:
+            required:
+                - reading
+                - attendance
             type: object
             properties:
                 reading:
-                    $ref: '#/components/schemas/FlatReadData'
+                    $ref: '#/components/schemas/SharedFlatReadData'
                 attendance:
-                    $ref: '#/components/schemas/AttendanceStats'
+                    $ref: '#/components/schemas/SharedAttendanceStats'
         SharedLibraryReportResponseBody:
+            required:
+                - code
+                - msg
             type: object
             properties:
                 data:
