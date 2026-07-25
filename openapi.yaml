@@ -3229,11 +3229,6 @@ paths:
                   required: true
                   schema:
                     type: string
-                - name: expected_updated_at
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
             responses:
                 "200":
                     description: Successful response
@@ -3254,11 +3249,6 @@ paths:
                   required: true
                   schema:
                     type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/SetDefaultPolicyProfileRequestBody'
             responses:
                 "200":
                     description: Successful response
@@ -14847,9 +14837,6 @@ components:
                 maxEnabledPolicyProfilesPerOwnerPerTopic:
                     type: integer
                     format: int32
-                maxPolicyVersionsPerProfile:
-                    type: integer
-                    format: int32
                 maxPolicyProfileBytes:
                     type: integer
                     format: int32
@@ -15110,9 +15097,6 @@ components:
                     type: string
                 isDefault:
                     type: boolean
-                latestVersion:
-                    type: integer
-                    format: int32
                 disabledAt:
                     type: integer
                     format: int64
@@ -15155,9 +15139,6 @@ components:
             properties:
                 profileId:
                     type: string
-                profileVersion:
-                    type: integer
-                    format: int32
                 inlinePolicy:
                     $ref: '#/components/schemas/DeliveryPolicy'
         PopularResponseBody:
@@ -15579,9 +15560,6 @@ components:
             properties:
                 name:
                     type: string
-                expected_updated_at:
-                    type: integer
-                    format: int64
         ReplayTaskData:
             type: object
             properties:
@@ -16668,12 +16646,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        SetDefaultPolicyProfileRequestBody:
-            type: object
-            properties:
-                expected_updated_at:
-                    type: integer
-                    format: int64
         SetLoginMethodsRequestBody:
             type: object
             properties:
@@ -18142,9 +18114,8 @@ components:
         UpdatePolicyProfileRequestBody:
             type: object
             properties:
-                expected_latest_version:
-                    type: integer
-                    format: int32
+                name:
+                    type: string
                 policy:
                     $ref: '#/components/schemas/DeliveryPolicy'
         UpdateServiceAuthorizationNotificationRequestBody:

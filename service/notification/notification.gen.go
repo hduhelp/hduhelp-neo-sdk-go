@@ -242,12 +242,6 @@ func (b *DisableNotificationPolicyProfileReqBuilder) Id(v string) *DisableNotifi
 	return b
 }
 
-// ExpectedUpdatedAt sets the "expected_updated_at" query parameter.
-func (b *DisableNotificationPolicyProfileReqBuilder) ExpectedUpdatedAt(v int64) *DisableNotificationPolicyProfileReqBuilder {
-	b.req.queryParams["expected_updated_at"] = strconv.FormatInt(v, 10)
-	return b
-}
-
 // Build finalizes the request.
 func (b *DisableNotificationPolicyProfileReqBuilder) Build() *DisableNotificationPolicyProfileReq {
 	return b.req
@@ -295,12 +289,6 @@ func NewSetDefaultNotificationPolicyProfileReqBuilder() *SetDefaultNotificationP
 // Id sets the "id" path parameter.
 func (b *SetDefaultNotificationPolicyProfileReqBuilder) Id(v string) *SetDefaultNotificationPolicyProfileReqBuilder {
 	b.req.pathParams["id"] = v
-	return b
-}
-
-// Body sets the request body.
-func (b *SetDefaultNotificationPolicyProfileReqBuilder) Body(body *models.SetDefaultPolicyProfileRequestBody) *SetDefaultNotificationPolicyProfileReqBuilder {
-	b.req.body = body
 	return b
 }
 

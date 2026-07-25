@@ -4235,7 +4235,6 @@ type NotificationLimits struct {
 	MaxPersonalizationBytesPerTarget         *int32 `json:"maxPersonalizationBytesPerTarget,omitempty"`
 	MaxPlannedProviderActionsPerTask         *int32 `json:"maxPlannedProviderActionsPerTask,omitempty"`
 	MaxPolicyProfileBytes                    *int32 `json:"maxPolicyProfileBytes,omitempty"`
-	MaxPolicyVersionsPerProfile              *int32 `json:"maxPolicyVersionsPerProfile,omitempty"`
 	MaxProviderRefs                          *int32 `json:"maxProviderRefs,omitempty"`
 	MaxProvidersPerGroup                     *int32 `json:"maxProvidersPerGroup,omitempty"`
 	MaxReconcileAttemptsPerProvider          *int32 `json:"maxReconcileAttemptsPerProvider,omitempty"`
@@ -4396,7 +4395,6 @@ type PolicyProfile struct {
 	DisabledAt      *int64          `json:"disabledAt,omitempty"`
 	Id              *string         `json:"id,omitempty"`
 	IsDefault       *bool           `json:"isDefault,omitempty"`
-	LatestVersion   *int32          `json:"latestVersion,omitempty"`
 	Name            *string         `json:"name,omitempty"`
 	OwnerId         *string         `json:"ownerId,omitempty"`
 	OwnerType       *string         `json:"ownerType,omitempty"`
@@ -4423,9 +4421,8 @@ type PolicyProfilesResponseBody struct {
 
 // PolicySelection defines model for PolicySelection.
 type PolicySelection struct {
-	InlinePolicy   *DeliveryPolicy `json:"inlinePolicy,omitempty"`
-	ProfileId      *string         `json:"profileId,omitempty"`
-	ProfileVersion *int32          `json:"profileVersion,omitempty"`
+	InlinePolicy *DeliveryPolicy `json:"inlinePolicy,omitempty"`
+	ProfileId    *string         `json:"profileId,omitempty"`
 }
 
 // PopularResponseBody defines model for PopularResponseBody.
@@ -4714,8 +4711,7 @@ type RefreshTokenRequestBody struct {
 
 // RenamePolicyProfileRequestBody defines model for RenamePolicyProfileRequestBody.
 type RenamePolicyProfileRequestBody struct {
-	ExpectedUpdatedAt *int64  `json:"expected_updated_at,omitempty"`
-	Name              *string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 }
 
 // ReplayTaskData defines model for ReplayTaskData.
@@ -5485,11 +5481,6 @@ type SetDefaultIdentityRequestBody struct {
 type SetDefaultIdentityResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
-}
-
-// SetDefaultPolicyProfileRequestBody defines model for SetDefaultPolicyProfileRequestBody.
-type SetDefaultPolicyProfileRequestBody struct {
-	ExpectedUpdatedAt *int64 `json:"expected_updated_at,omitempty"`
 }
 
 // SetLoginMethodsRequestBody defines model for SetLoginMethodsRequestBody.
@@ -6443,8 +6434,8 @@ type UpdateLoginClientResponseBody struct {
 
 // UpdatePolicyProfileRequestBody defines model for UpdatePolicyProfileRequestBody.
 type UpdatePolicyProfileRequestBody struct {
-	ExpectedLatestVersion *int32          `json:"expected_latest_version,omitempty"`
-	Policy                *DeliveryPolicy `json:"policy,omitempty"`
+	Name   *string         `json:"name,omitempty"`
+	Policy *DeliveryPolicy `json:"policy,omitempty"`
 }
 
 // UpdateServiceAuthorizationNotificationRequestBody defines model for UpdateServiceAuthorizationNotificationRequestBody.
@@ -7288,11 +7279,6 @@ type AdminNoticeServiceListAdminNoticesParams struct {
 type NotificationServiceListNotificationPolicyProfilesParams struct {
 	TopicKey        *string `form:"topic_key,omitempty" json:"topic_key,omitempty"`
 	IncludeDisabled *bool   `form:"include_disabled,omitempty" json:"include_disabled,omitempty"`
-}
-
-// NotificationServiceDisableNotificationPolicyProfileParams defines parameters for NotificationServiceDisableNotificationPolicyProfile.
-type NotificationServiceDisableNotificationPolicyProfileParams struct {
-	ExpectedUpdatedAt *int64 `form:"expected_updated_at,omitempty" json:"expected_updated_at,omitempty"`
 }
 
 // NotificationServiceListNotificationTasksParams defines parameters for NotificationServiceListNotificationTasks.
@@ -8168,9 +8154,6 @@ type AdminNoticeServiceSubmitAdminNoticeJSONRequestBody = AdminNoticeVersionRequ
 
 // NotificationServiceCreateNotificationPolicyProfileJSONRequestBody defines body for NotificationServiceCreateNotificationPolicyProfile for application/json ContentType.
 type NotificationServiceCreateNotificationPolicyProfileJSONRequestBody = CreatePolicyProfileRequestBody
-
-// NotificationServiceSetDefaultNotificationPolicyProfileJSONRequestBody defines body for NotificationServiceSetDefaultNotificationPolicyProfile for application/json ContentType.
-type NotificationServiceSetDefaultNotificationPolicyProfileJSONRequestBody = SetDefaultPolicyProfileRequestBody
 
 // NotificationServiceRenameNotificationPolicyProfileJSONRequestBody defines body for NotificationServiceRenameNotificationPolicyProfile for application/json ContentType.
 type NotificationServiceRenameNotificationPolicyProfileJSONRequestBody = RenamePolicyProfileRequestBody
