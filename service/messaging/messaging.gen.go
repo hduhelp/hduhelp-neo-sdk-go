@@ -16,6 +16,116 @@ type Service struct{ config *core.Config }
 // NewService binds the Messaging service to a client config.
 func NewService(config *core.Config) *Service { return &Service{config: config} }
 
+// ListAdminWishReviewsReq is the request for ListAdminWishReviews.
+type ListAdminWishReviewsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListAdminWishReviewsReqBuilder builds a ListAdminWishReviewsReq with a fluent setter per field.
+type ListAdminWishReviewsReqBuilder struct{ req *ListAdminWishReviewsReq }
+
+// NewListAdminWishReviewsReqBuilder creates a request builder for ListAdminWishReviews.
+func NewListAdminWishReviewsReqBuilder() *ListAdminWishReviewsReqBuilder {
+	return &ListAdminWishReviewsReqBuilder{req: &ListAdminWishReviewsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Status sets the "status" query parameter.
+func (b *ListAdminWishReviewsReqBuilder) Status(v string) *ListAdminWishReviewsReqBuilder {
+	b.req.queryParams["status"] = v
+	return b
+}
+
+// Page sets the "page" query parameter.
+func (b *ListAdminWishReviewsReqBuilder) Page(v int32) *ListAdminWishReviewsReqBuilder {
+	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// PageSize sets the "page_size" query parameter.
+func (b *ListAdminWishReviewsReqBuilder) PageSize(v int32) *ListAdminWishReviewsReqBuilder {
+	b.req.queryParams["page_size"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *ListAdminWishReviewsReqBuilder) Build() *ListAdminWishReviewsReq { return b.req }
+
+// ListAdminWishReviewsResp is the response for ListAdminWishReviews.
+type ListAdminWishReviewsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AdminWishReviewPage `json:"data"`
+}
+
+// ListAdminWishReviews calls GET /hduhelp-neo/admin/messaging/wish-reviews.
+func (s *Service) ListAdminWishReviews(ctx context.Context, req *ListAdminWishReviewsReq, opts ...core.RequestOption) (*ListAdminWishReviewsResp, error) {
+	resp := &ListAdminWishReviewsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/messaging/wish-reviews",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ReviewAdminWishReq is the request for ReviewAdminWish.
+type ReviewAdminWishReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ReviewAdminWishReqBuilder builds a ReviewAdminWishReq with a fluent setter per field.
+type ReviewAdminWishReqBuilder struct{ req *ReviewAdminWishReq }
+
+// NewReviewAdminWishReqBuilder creates a request builder for ReviewAdminWish.
+func NewReviewAdminWishReqBuilder() *ReviewAdminWishReqBuilder {
+	return &ReviewAdminWishReqBuilder{req: &ReviewAdminWishReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *ReviewAdminWishReqBuilder) Id(v string) *ReviewAdminWishReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *ReviewAdminWishReqBuilder) Body(body *models.AdminWishReviewRequestBody) *ReviewAdminWishReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *ReviewAdminWishReqBuilder) Build() *ReviewAdminWishReq { return b.req }
+
+// ReviewAdminWishResp is the response for ReviewAdminWish.
+type ReviewAdminWishResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AdminWishReviewItem `json:"data"`
+}
+
+// ReviewAdminWish calls POST /hduhelp-neo/admin/messaging/wish-reviews/{id}/review.
+func (s *Service) ReviewAdminWish(ctx context.Context, req *ReviewAdminWishReq, opts ...core.RequestOption) (*ReviewAdminWishResp, error) {
+	resp := &ReviewAdminWishResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/messaging/wish-reviews/{id}/review",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // DingTalkBlessReviewCallbackReq is the request for DingTalkBlessReviewCallback.
 type DingTalkBlessReviewCallbackReq struct {
 	pathParams  map[string]string

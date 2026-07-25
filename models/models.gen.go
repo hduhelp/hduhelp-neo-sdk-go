@@ -509,6 +509,50 @@ type AdminUsersData struct {
 	User  *AdminUserDetail `json:"user,omitempty"`
 }
 
+// AdminWishReviewItem defines model for AdminWishReviewItem.
+type AdminWishReviewItem struct {
+	Alias         *string `json:"alias,omitempty"`
+	Content       *string `json:"content,omitempty"`
+	CreatedAt     *int64  `json:"createdAt,omitempty"`
+	DeliverAt     *int64  `json:"deliverAt,omitempty"`
+	Id            *string `json:"id,omitempty"`
+	Kind          *string `json:"kind,omitempty"`
+	ReviewReason  *string `json:"reviewReason,omitempty"`
+	ReviewedAt    *int64  `json:"reviewedAt,omitempty"`
+	ReviewedBy    *string `json:"reviewedBy,omitempty"`
+	SenderStaffId *string `json:"senderStaffId,omitempty"`
+	Status        *string `json:"status,omitempty"`
+	TargetStaffId *string `json:"targetStaffId,omitempty"`
+}
+
+// AdminWishReviewPage defines model for AdminWishReviewPage.
+type AdminWishReviewPage struct {
+	Items    *[]AdminWishReviewItem `json:"items,omitempty"`
+	Page     *int32                 `json:"page,omitempty"`
+	PageSize *int32                 `json:"pageSize,omitempty"`
+	Total    *int64                 `json:"total,omitempty"`
+}
+
+// AdminWishReviewPageResponseBody defines model for AdminWishReviewPageResponseBody.
+type AdminWishReviewPageResponseBody struct {
+	Code *int64               `json:"code,omitempty"`
+	Data *AdminWishReviewPage `json:"data,omitempty"`
+	Msg  *string              `json:"msg,omitempty"`
+}
+
+// AdminWishReviewRequestBody defines model for AdminWishReviewRequestBody.
+type AdminWishReviewRequestBody struct {
+	Action *string `json:"action,omitempty"`
+	Reason *string `json:"reason,omitempty"`
+}
+
+// AdminWishReviewResponseBody defines model for AdminWishReviewResponseBody.
+type AdminWishReviewResponseBody struct {
+	Code *int64               `json:"code,omitempty"`
+	Data *AdminWishReviewItem `json:"data,omitempty"`
+	Msg  *string              `json:"msg,omitempty"`
+}
+
 // AllPersonInfoResponseBody defines model for AllPersonInfoResponseBody.
 type AllPersonInfoResponseBody struct {
 	Code *int64        `json:"code,omitempty"`
@@ -4501,6 +4545,31 @@ type PreviousSchoolResponseBody struct {
 	Msg  *string             `json:"msg,omitempty"`
 }
 
+// ProviderTestRequestBody defines model for ProviderTestRequestBody.
+type ProviderTestRequestBody struct {
+	Body        *string `json:"body,omitempty"`
+	ProviderKey *string `json:"provider_key,omitempty"`
+	Summary     *string `json:"summary,omitempty"`
+	Title       *string `json:"title,omitempty"`
+}
+
+// ProviderTestResponseBody defines model for ProviderTestResponseBody.
+type ProviderTestResponseBody struct {
+	Code *int64              `json:"code,omitempty"`
+	Data *ProviderTestResult `json:"data,omitempty"`
+	Msg  *string             `json:"msg,omitempty"`
+}
+
+// ProviderTestResult defines model for ProviderTestResult.
+type ProviderTestResult struct {
+	ErrorCode         *string `json:"errorCode,omitempty"`
+	FailureKind       *string `json:"failureKind,omitempty"`
+	Message           *string `json:"message,omitempty"`
+	ProviderKey       *string `json:"providerKey,omitempty"`
+	ProviderMessageId *string `json:"providerMessageId,omitempty"`
+	Status            *string `json:"status,omitempty"`
+}
+
 // PublicCampusItem ---- 校区列表(公开：id/名称/坐标) ----
 type PublicCampusItem struct {
 	Id   *string  `json:"id,omitempty"`
@@ -7201,6 +7270,13 @@ type AdminServiceListLoginClientsParams struct {
 	Id *string `form:"id,omitempty" json:"id,omitempty"`
 }
 
+// MessagingServiceListAdminWishReviewsParams defines parameters for MessagingServiceListAdminWishReviews.
+type MessagingServiceListAdminWishReviewsParams struct {
+	Status   *string `form:"status,omitempty" json:"status,omitempty"`
+	Page     *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+}
+
 // AdminNoticeServiceListAdminNoticesParams defines parameters for AdminNoticeServiceListAdminNotices.
 type AdminNoticeServiceListAdminNoticesParams struct {
 	Status   *string `form:"status,omitempty" json:"status,omitempty"`
@@ -8072,6 +8148,9 @@ type AdminServiceUpdateLoginClientJSONRequestBody = UpdateLoginClientRequestBody
 // AdminServiceSetLoginMethodsJSONRequestBody defines body for AdminServiceSetLoginMethods for application/json ContentType.
 type AdminServiceSetLoginMethodsJSONRequestBody = SetLoginMethodsRequestBody
 
+// MessagingServiceReviewAdminWishJSONRequestBody defines body for MessagingServiceReviewAdminWish for application/json ContentType.
+type MessagingServiceReviewAdminWishJSONRequestBody = AdminWishReviewRequestBody
+
 // AdminNoticeServiceCreateAdminNoticeJSONRequestBody defines body for AdminNoticeServiceCreateAdminNotice for application/json ContentType.
 type AdminNoticeServiceCreateAdminNoticeJSONRequestBody = CreateAdminNoticeRequestBody
 
@@ -8098,6 +8177,9 @@ type NotificationServiceRenameNotificationPolicyProfileJSONRequestBody = RenameP
 
 // NotificationServiceUpdateNotificationPolicyProfileJSONRequestBody defines body for NotificationServiceUpdateNotificationPolicyProfile for application/json ContentType.
 type NotificationServiceUpdateNotificationPolicyProfileJSONRequestBody = UpdatePolicyProfileRequestBody
+
+// NotificationServiceTestNotificationProviderJSONRequestBody defines body for NotificationServiceTestNotificationProvider for application/json ContentType.
+type NotificationServiceTestNotificationProviderJSONRequestBody = ProviderTestRequestBody
 
 // NotificationServiceReplayNotificationTaskFailuresJSONRequestBody defines body for NotificationServiceReplayNotificationTaskFailures for application/json ContentType.
 type NotificationServiceReplayNotificationTaskFailuresJSONRequestBody = ReplayTaskRequestBody

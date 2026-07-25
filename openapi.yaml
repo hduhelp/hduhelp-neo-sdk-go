@@ -2896,6 +2896,60 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AdminLogoutResponseBody'
+    /hduhelp-neo/admin/messaging/wish-reviews:
+        get:
+            tags:
+                - MessagingService
+            operationId: MessagingService_ListAdminWishReviews
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminWishReviewPageResponseBody'
+    /hduhelp-neo/admin/messaging/wish-reviews/{id}/review:
+        post:
+            tags:
+                - MessagingService
+            operationId: MessagingService_ReviewAdminWish
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AdminWishReviewRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminWishReviewResponseBody'
     /hduhelp-neo/admin/notices:
         get:
             tags:
@@ -3262,6 +3316,25 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PolicyProfileResponseBody'
+    /hduhelp-neo/admin/notifications/providers/test:
+        post:
+            tags:
+                - NotificationService
+            operationId: NotificationService_TestNotificationProvider
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ProviderTestRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProviderTestResponseBody'
     /hduhelp-neo/admin/notifications/runtime:
         get:
             tags:
@@ -9393,6 +9466,79 @@ components:
             description: |-
                 GET admin/users 的载荷：不带 id 返回搜索结果列表，带 id 返回单用户富详情。
                 两个字段按请求形态二选一填充。
+        AdminWishReviewItem:
+            type: object
+            properties:
+                id:
+                    type: string
+                status:
+                    type: string
+                kind:
+                    type: string
+                alias:
+                    type: string
+                senderStaffId:
+                    type: string
+                targetStaffId:
+                    type: string
+                content:
+                    type: string
+                deliverAt:
+                    type: integer
+                    format: int64
+                createdAt:
+                    type: integer
+                    format: int64
+                reviewedBy:
+                    type: string
+                reviewReason:
+                    type: string
+                reviewedAt:
+                    type: integer
+                    format: int64
+        AdminWishReviewPage:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AdminWishReviewItem'
+                total:
+                    type: integer
+                    format: int64
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+        AdminWishReviewPageResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminWishReviewPage'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AdminWishReviewRequestBody:
+            type: object
+            properties:
+                action:
+                    type: string
+                reason:
+                    type: string
+        AdminWishReviewResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminWishReviewItem'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AllPersonInfoResponseBody:
             type: object
             properties:
@@ -15183,6 +15329,42 @@ components:
                     type: integer
                     format: int64
                 msg:
+                    type: string
+        ProviderTestRequestBody:
+            type: object
+            properties:
+                provider_key:
+                    type: string
+                title:
+                    type: string
+                summary:
+                    type: string
+                body:
+                    type: string
+        ProviderTestResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ProviderTestResult'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ProviderTestResult:
+            type: object
+            properties:
+                providerKey:
+                    type: string
+                status:
+                    type: string
+                failureKind:
+                    type: string
+                errorCode:
+                    type: string
+                message:
+                    type: string
+                providerMessageId:
                     type: string
         PublicCampusItem:
             type: object

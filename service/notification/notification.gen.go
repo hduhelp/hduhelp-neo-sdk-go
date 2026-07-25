@@ -442,6 +442,52 @@ func (s *Service) UpdateNotificationPolicyProfile(ctx context.Context, req *Upda
 	return resp, err
 }
 
+// TestNotificationProviderReq is the request for TestNotificationProvider.
+type TestNotificationProviderReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// TestNotificationProviderReqBuilder builds a TestNotificationProviderReq with a fluent setter per field.
+type TestNotificationProviderReqBuilder struct{ req *TestNotificationProviderReq }
+
+// NewTestNotificationProviderReqBuilder creates a request builder for TestNotificationProvider.
+func NewTestNotificationProviderReqBuilder() *TestNotificationProviderReqBuilder {
+	return &TestNotificationProviderReqBuilder{req: &TestNotificationProviderReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *TestNotificationProviderReqBuilder) Body(body *models.ProviderTestRequestBody) *TestNotificationProviderReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *TestNotificationProviderReqBuilder) Build() *TestNotificationProviderReq { return b.req }
+
+// TestNotificationProviderResp is the response for TestNotificationProvider.
+type TestNotificationProviderResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ProviderTestResult `json:"data"`
+}
+
+// TestNotificationProvider calls POST /hduhelp-neo/admin/notifications/providers/test.
+func (s *Service) TestNotificationProvider(ctx context.Context, req *TestNotificationProviderReq, opts ...core.RequestOption) (*TestNotificationProviderResp, error) {
+	resp := &TestNotificationProviderResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/notifications/providers/test",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // GetNotificationRuntimeStatusReq is the request for GetNotificationRuntimeStatus.
 type GetNotificationRuntimeStatusReq struct {
 	pathParams  map[string]string
