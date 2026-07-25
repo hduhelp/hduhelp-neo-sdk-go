@@ -5016,10 +5016,23 @@ paths:
             tags:
                 - IdentityService
             summary: 列出个人访问令牌
-            description: 返回当前登录用户的全部个人访问令牌元数据(名称/scope/前缀/最近使用/过期/吊销时间)。绝不返回明文或哈希。仅原生会话可调用。
+            description: 分页返回当前登录用户的个人访问令牌元数据(名称/scope/前缀/最近使用/过期/吊销时间)；同时省略 page 和 page_size 时，为兼容旧客户端返回全部令牌。绝不返回明文或哈希。仅原生会话可调用。
             operationId: IdentityService_ListPATs
             security:
                 - NativeSessionAuth: []
+            parameters:
+                - name: page
+                  in: query
+                  description: 分页页码，从 1 开始；传入任一分页参数时默认 1。两个分页参数均省略时，为兼容旧客户端返回全部令牌。
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  description: 每页数量；传入任一分页参数时默认 5，最大 100。两个分页参数均省略时，为兼容旧客户端返回全部令牌。
+                  schema:
+                    type: integer
+                    format: int32
             responses:
                 "200":
                     description: Successful response
@@ -14042,6 +14055,20 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/PATItem'
+                total:
+                    type: integer
+                    format: int64
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                totalPages:
+                    type: integer
+                    format: int32
+                hasNextPage:
+                    type: boolean
         ListPATResponseBody:
             type: object
             properties:

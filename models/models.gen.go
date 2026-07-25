@@ -3683,7 +3683,12 @@ type ListItemsResponseBody struct {
 
 // ListPATData defines model for ListPATData.
 type ListPATData struct {
-	Tokens *[]PATItem `json:"tokens,omitempty"`
+	HasNextPage *bool      `json:"hasNextPage,omitempty"`
+	Page        *int32     `json:"page,omitempty"`
+	PageSize    *int32     `json:"pageSize,omitempty"`
+	Tokens      *[]PATItem `json:"tokens,omitempty"`
+	Total       *int64     `json:"total,omitempty"`
+	TotalPages  *int32     `json:"totalPages,omitempty"`
 }
 
 // ListPATResponseBody defines model for ListPATResponseBody.
@@ -7524,6 +7529,15 @@ type IdentityServiceDenyDeviceParams struct {
 // IdentityServiceRevokePATParams defines parameters for IdentityServiceRevokePAT.
 type IdentityServiceRevokePATParams struct {
 	Id *string `form:"id,omitempty" json:"id,omitempty"`
+}
+
+// IdentityServiceListPATsParams defines parameters for IdentityServiceListPATs.
+type IdentityServiceListPATsParams struct {
+	// Page 分页页码，从 1 开始；传入任一分页参数时默认 1。两个分页参数均省略时，为兼容旧客户端返回全部令牌。
+	Page *int32 `form:"page,omitempty" json:"page,omitempty"`
+
+	// PageSize 每页数量；传入任一分页参数时默认 5，最大 100。两个分页参数均省略时，为兼容旧客户端返回全部令牌。
+	PageSize *int32 `form:"page_size,omitempty" json:"page_size,omitempty"`
 }
 
 // EmptyScheduleServiceDeleteEventParams defines parameters for EmptyScheduleServiceDeleteEvent.

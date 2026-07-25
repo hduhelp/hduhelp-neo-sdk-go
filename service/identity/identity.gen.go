@@ -214,6 +214,18 @@ func NewListPATsReqBuilder() *ListPATsReqBuilder {
 	return &ListPATsReqBuilder{req: &ListPATsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
+// Page sets the "page" query parameter: 分页页码，从 1 开始；传入任一分页参数时默认 1。两个分页参数均省略时，为兼容旧客户端返回全部令牌。
+func (b *ListPATsReqBuilder) Page(v int32) *ListPATsReqBuilder {
+	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// PageSize sets the "page_size" query parameter: 每页数量；传入任一分页参数时默认 5，最大 100。两个分页参数均省略时，为兼容旧客户端返回全部令牌。
+func (b *ListPATsReqBuilder) PageSize(v int32) *ListPATsReqBuilder {
+	b.req.queryParams["page_size"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
 // Build finalizes the request.
 func (b *ListPATsReqBuilder) Build() *ListPATsReq { return b.req }
 
