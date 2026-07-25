@@ -9736,6 +9736,9 @@ components:
                 loginPath:
                     type: string
                     description: 前端跳转的授权入口 /hduhelp-neo/identity/login/url?grant-key=<grantKey>
+                trustedIdentitySource:
+                    type: boolean
+                    description: 该 Provider 建立的绑定可满足平台可信身份策略
         AuthStatusData:
             type: object
             properties:
@@ -14193,6 +14196,9 @@ components:
                 enabled:
                     type: boolean
                     description: 是否启用
+                trustedIdentitySource:
+                    type: boolean
+                    description: Provider 是否为可信身份来源；原生登录固定 false
             description: '-------------------- 登录方式启用/停用（平台配置） --------------------'
         LoginMethodListResponseBody:
             type: object

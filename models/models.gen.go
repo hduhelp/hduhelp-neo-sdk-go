@@ -708,6 +708,9 @@ type AuthProviderEntry struct {
 
 	// Name 人类可读名（provider.Desc()）
 	Name *string `json:"name,omitempty"`
+
+	// TrustedIdentitySource 该 Provider 建立的绑定可满足平台可信身份策略
+	TrustedIdentitySource *bool `json:"trustedIdentitySource,omitempty"`
 }
 
 // AuthStatusData defines model for AuthStatusData.
@@ -3798,6 +3801,9 @@ type LoginMethodItem struct {
 
 	// Name 中文显示名
 	Name *string `json:"name,omitempty"`
+
+	// TrustedIdentitySource Provider 是否为可信身份来源；原生登录固定 false
+	TrustedIdentitySource *bool `json:"trustedIdentitySource,omitempty"`
 }
 
 // LoginMethodListResponseBody defines model for LoginMethodListResponseBody.
