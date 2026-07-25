@@ -520,6 +520,162 @@ func (s *Service) GetNotificationRuntimeStatus(ctx context.Context, req *GetNoti
 	return resp, err
 }
 
+// ListNotificationServiceConfigurationsReq is the request for ListNotificationServiceConfigurations.
+type ListNotificationServiceConfigurationsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListNotificationServiceConfigurationsReqBuilder builds a ListNotificationServiceConfigurationsReq with a fluent setter per field.
+type ListNotificationServiceConfigurationsReqBuilder struct {
+	req *ListNotificationServiceConfigurationsReq
+}
+
+// NewListNotificationServiceConfigurationsReqBuilder creates a request builder for ListNotificationServiceConfigurations.
+func NewListNotificationServiceConfigurationsReqBuilder() *ListNotificationServiceConfigurationsReqBuilder {
+	return &ListNotificationServiceConfigurationsReqBuilder{req: &ListNotificationServiceConfigurationsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *ListNotificationServiceConfigurationsReqBuilder) Build() *ListNotificationServiceConfigurationsReq {
+	return b.req
+}
+
+// ListNotificationServiceConfigurationsResp is the response for ListNotificationServiceConfigurations.
+type ListNotificationServiceConfigurationsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.NotificationServiceConfiguration `json:"data"`
+}
+
+// ListNotificationServiceConfigurations calls GET /hduhelp-neo/admin/notifications/services.
+func (s *Service) ListNotificationServiceConfigurations(ctx context.Context, req *ListNotificationServiceConfigurationsReq, opts ...core.RequestOption) (*ListNotificationServiceConfigurationsResp, error) {
+	resp := &ListNotificationServiceConfigurationsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/notifications/services",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SaveNotificationServiceConfigurationReq is the request for SaveNotificationServiceConfiguration.
+type SaveNotificationServiceConfigurationReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// SaveNotificationServiceConfigurationReqBuilder builds a SaveNotificationServiceConfigurationReq with a fluent setter per field.
+type SaveNotificationServiceConfigurationReqBuilder struct {
+	req *SaveNotificationServiceConfigurationReq
+}
+
+// NewSaveNotificationServiceConfigurationReqBuilder creates a request builder for SaveNotificationServiceConfiguration.
+func NewSaveNotificationServiceConfigurationReqBuilder() *SaveNotificationServiceConfigurationReqBuilder {
+	return &SaveNotificationServiceConfigurationReqBuilder{req: &SaveNotificationServiceConfigurationReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// ServiceKey sets the "serviceKey" path parameter.
+func (b *SaveNotificationServiceConfigurationReqBuilder) ServiceKey(v string) *SaveNotificationServiceConfigurationReqBuilder {
+	b.req.pathParams["serviceKey"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *SaveNotificationServiceConfigurationReqBuilder) Body(body *models.SaveNotificationServiceConfigurationRequestBody) *SaveNotificationServiceConfigurationReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *SaveNotificationServiceConfigurationReqBuilder) Build() *SaveNotificationServiceConfigurationReq {
+	return b.req
+}
+
+// SaveNotificationServiceConfigurationResp is the response for SaveNotificationServiceConfiguration.
+type SaveNotificationServiceConfigurationResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.NotificationServiceConfiguration `json:"data"`
+}
+
+// SaveNotificationServiceConfiguration calls PUT /hduhelp-neo/admin/notifications/services/{serviceKey}/config.
+func (s *Service) SaveNotificationServiceConfiguration(ctx context.Context, req *SaveNotificationServiceConfigurationReq, opts ...core.RequestOption) (*SaveNotificationServiceConfigurationResp, error) {
+	resp := &SaveNotificationServiceConfigurationResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/notifications/services/{serviceKey}/config",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// TestNotificationServiceChainReq is the request for TestNotificationServiceChain.
+type TestNotificationServiceChainReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// TestNotificationServiceChainReqBuilder builds a TestNotificationServiceChainReq with a fluent setter per field.
+type TestNotificationServiceChainReqBuilder struct {
+	req *TestNotificationServiceChainReq
+}
+
+// NewTestNotificationServiceChainReqBuilder creates a request builder for TestNotificationServiceChain.
+func NewTestNotificationServiceChainReqBuilder() *TestNotificationServiceChainReqBuilder {
+	return &TestNotificationServiceChainReqBuilder{req: &TestNotificationServiceChainReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// ServiceKey sets the "serviceKey" path parameter.
+func (b *TestNotificationServiceChainReqBuilder) ServiceKey(v string) *TestNotificationServiceChainReqBuilder {
+	b.req.pathParams["serviceKey"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *TestNotificationServiceChainReqBuilder) Body(body *models.NotificationServiceTestRequestBody) *TestNotificationServiceChainReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *TestNotificationServiceChainReqBuilder) Build() *TestNotificationServiceChainReq {
+	return b.req
+}
+
+// TestNotificationServiceChainResp is the response for TestNotificationServiceChain.
+type TestNotificationServiceChainResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.NotificationServiceTestResult `json:"data"`
+}
+
+// TestNotificationServiceChain calls POST /hduhelp-neo/admin/notifications/services/{serviceKey}/test.
+func (s *Service) TestNotificationServiceChain(ctx context.Context, req *TestNotificationServiceChainReq, opts ...core.RequestOption) (*TestNotificationServiceChainResp, error) {
+	resp := &TestNotificationServiceChainResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/notifications/services/{serviceKey}/test",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // ListNotificationTasksReq is the request for ListNotificationTasks.
 type ListNotificationTasksReq struct {
 	pathParams  map[string]string

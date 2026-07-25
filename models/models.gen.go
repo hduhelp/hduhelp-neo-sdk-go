@@ -2339,15 +2339,14 @@ type DownloadResponseBody struct {
 
 // EditableNotice defines model for EditableNotice.
 type EditableNotice struct {
-	Action          *NoticeAction    `json:"action,omitempty"`
-	Body            *string          `json:"body,omitempty"`
-	ExpiresAt       *int64           `json:"expires_at,omitempty"`
-	PolicySelection *PolicySelection `json:"policy_selection,omitempty"`
-	PublishAt       *int64           `json:"publish_at,omitempty"`
-	RequiresAck     *bool            `json:"requires_ack,omitempty"`
-	Summary         *string          `json:"summary,omitempty"`
-	TargetUserIds   *[]string        `json:"target_user_ids,omitempty"`
-	Title           *string          `json:"title,omitempty"`
+	Action        *NoticeAction `json:"action,omitempty"`
+	Body          *string       `json:"body,omitempty"`
+	ExpiresAt     *int64        `json:"expires_at,omitempty"`
+	PublishAt     *int64        `json:"publish_at,omitempty"`
+	RequiresAck   *bool         `json:"requires_ack,omitempty"`
+	Summary       *string       `json:"summary,omitempty"`
+	TargetUserIds *[]string     `json:"target_user_ids,omitempty"`
+	Title         *string       `json:"title,omitempty"`
 }
 
 // ElectricBalanceData ---- 电费余额（当前绑定电表 + 寝室归属） ----
@@ -4255,6 +4254,77 @@ type NotificationLimits struct {
 	MaxTotalPersonalizationBytes             *int32 `json:"maxTotalPersonalizationBytes,omitempty"`
 }
 
+// NotificationServiceConfiguration defines model for NotificationServiceConfiguration.
+type NotificationServiceConfiguration struct {
+	AllowedModes     *[]string                    `json:"allowedModes,omitempty"`
+	AllowedProviders *[]string                    `json:"allowedProviders,omitempty"`
+	Configured       *bool                        `json:"configured,omitempty"`
+	Modules          *[]NotificationServiceModule `json:"modules,omitempty"`
+	Policy           *DeliveryPolicy              `json:"policy,omitempty"`
+	ServiceKey       *string                      `json:"serviceKey,omitempty"`
+	ServiceName      *string                      `json:"serviceName,omitempty"`
+	UpdatedAt        *int64                       `json:"updatedAt,omitempty"`
+	UpdatedById      *string                      `json:"updatedById,omitempty"`
+	Valid            *bool                        `json:"valid,omitempty"`
+	ValidationError  *string                      `json:"validationError,omitempty"`
+}
+
+// NotificationServiceConfigurationResponseBody defines model for NotificationServiceConfigurationResponseBody.
+type NotificationServiceConfigurationResponseBody struct {
+	Code *int64                            `json:"code,omitempty"`
+	Data *NotificationServiceConfiguration `json:"data,omitempty"`
+	Msg  *string                           `json:"msg,omitempty"`
+}
+
+// NotificationServiceConfigurationsResponseBody defines model for NotificationServiceConfigurationsResponseBody.
+type NotificationServiceConfigurationsResponseBody struct {
+	Code *int64                              `json:"code,omitempty"`
+	Data *[]NotificationServiceConfiguration `json:"data,omitempty"`
+	Msg  *string                             `json:"msg,omitempty"`
+}
+
+// NotificationServiceModule defines model for NotificationServiceModule.
+type NotificationServiceModule struct {
+	Name     *string `json:"name,omitempty"`
+	TopicKey *string `json:"topicKey,omitempty"`
+}
+
+// NotificationServiceTestRequestBody defines model for NotificationServiceTestRequestBody.
+type NotificationServiceTestRequestBody struct {
+	Body            *string            `json:"body,omitempty"`
+	Mode            *string            `json:"mode,omitempty"`
+	Personalization *map[string]string `json:"personalization,omitempty"`
+	Summary         *string            `json:"summary,omitempty"`
+	TargetUserId    *string            `json:"target_user_id,omitempty"`
+	Title           *string            `json:"title,omitempty"`
+	TopicKey        *string            `json:"topic_key,omitempty"`
+}
+
+// NotificationServiceTestResponseBody defines model for NotificationServiceTestResponseBody.
+type NotificationServiceTestResponseBody struct {
+	Code *int64                         `json:"code,omitempty"`
+	Data *NotificationServiceTestResult `json:"data,omitempty"`
+	Msg  *string                        `json:"msg,omitempty"`
+}
+
+// NotificationServiceTestResult defines model for NotificationServiceTestResult.
+type NotificationServiceTestResult struct {
+	Mode       *string                         `json:"mode,omitempty"`
+	ServiceKey *string                         `json:"serviceKey,omitempty"`
+	Stages     *[]NotificationServiceTestStage `json:"stages,omitempty"`
+	Status     *string                         `json:"status,omitempty"`
+	TaskId     *string                         `json:"taskId,omitempty"`
+	TopicKey   *string                         `json:"topicKey,omitempty"`
+}
+
+// NotificationServiceTestStage defines model for NotificationServiceTestStage.
+type NotificationServiceTestStage struct {
+	Key     *string `json:"key,omitempty"`
+	Message *string `json:"message,omitempty"`
+	Name    *string `json:"name,omitempty"`
+	Status  *string `json:"status,omitempty"`
+}
+
 // NotificationTask defines model for NotificationTask.
 type NotificationTask struct {
 	BusinessEventKey  *string `json:"businessEventKey,omitempty"`
@@ -4922,6 +4992,11 @@ type SaveDraftRequestBody struct {
 
 	// Payload JSON 字符串
 	Payload *string `json:"payload,omitempty"`
+}
+
+// SaveNotificationServiceConfigurationRequestBody defines model for SaveNotificationServiceConfigurationRequestBody.
+type SaveNotificationServiceConfigurationRequestBody struct {
+	Policy *DeliveryPolicy `json:"policy,omitempty"`
 }
 
 // Scene defines model for Scene.
@@ -6248,7 +6323,6 @@ type TimeSlotStat struct {
 type TopicCapabilities struct {
 	AllowedModes           *[]string           `json:"allowedModes,omitempty"`
 	AllowedProviders       *[]string           `json:"allowedProviders,omitempty"`
-	CodeDefaultPolicy      *DeliveryPolicy     `json:"codeDefaultPolicy,omitempty"`
 	DefaultSelection       *PolicySelection    `json:"defaultSelection,omitempty"`
 	DefaultValidationError *string             `json:"defaultValidationError,omitempty"`
 	Limits                 *NotificationLimits `json:"limits,omitempty"`
@@ -8183,6 +8257,12 @@ type NotificationServiceUpdateNotificationPolicyProfileJSONRequestBody = UpdateP
 
 // NotificationServiceTestNotificationProviderJSONRequestBody defines body for NotificationServiceTestNotificationProvider for application/json ContentType.
 type NotificationServiceTestNotificationProviderJSONRequestBody = ProviderTestRequestBody
+
+// NotificationServiceSaveNotificationServiceConfigurationJSONRequestBody defines body for NotificationServiceSaveNotificationServiceConfiguration for application/json ContentType.
+type NotificationServiceSaveNotificationServiceConfigurationJSONRequestBody = SaveNotificationServiceConfigurationRequestBody
+
+// NotificationServiceTestNotificationServiceChainJSONRequestBody defines body for NotificationServiceTestNotificationServiceChain for application/json ContentType.
+type NotificationServiceTestNotificationServiceChainJSONRequestBody = NotificationServiceTestRequestBody
 
 // NotificationServiceReplayNotificationTaskFailuresJSONRequestBody defines body for NotificationServiceReplayNotificationTaskFailures for application/json ContentType.
 type NotificationServiceReplayNotificationTaskFailuresJSONRequestBody = ReplayTaskRequestBody
