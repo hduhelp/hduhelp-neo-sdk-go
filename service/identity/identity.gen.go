@@ -1459,6 +1459,52 @@ func (s *Service) RevokeSession(ctx context.Context, req *RevokeSessionReq, opts
 	return resp, err
 }
 
+// SwitchSessionIdentityReq is the request for SwitchSessionIdentity.
+type SwitchSessionIdentityReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// SwitchSessionIdentityReqBuilder builds a SwitchSessionIdentityReq with a fluent setter per field.
+type SwitchSessionIdentityReqBuilder struct{ req *SwitchSessionIdentityReq }
+
+// NewSwitchSessionIdentityReqBuilder creates a request builder for SwitchSessionIdentity.
+func NewSwitchSessionIdentityReqBuilder() *SwitchSessionIdentityReqBuilder {
+	return &SwitchSessionIdentityReqBuilder{req: &SwitchSessionIdentityReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *SwitchSessionIdentityReqBuilder) Body(body *models.SwitchSessionIdentityRequestBody) *SwitchSessionIdentityReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *SwitchSessionIdentityReqBuilder) Build() *SwitchSessionIdentityReq { return b.req }
+
+// SwitchSessionIdentityResp is the response for SwitchSessionIdentity.
+type SwitchSessionIdentityResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.SwitchSessionIdentityData `json:"data"`
+}
+
+// SwitchSessionIdentity: 切换当前会话身份
+func (s *Service) SwitchSessionIdentity(ctx context.Context, req *SwitchSessionIdentityReq, opts ...core.RequestOption) (*SwitchSessionIdentityResp, error) {
+	resp := &SwitchSessionIdentityResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/identity/auth/sessions/current/identity",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // GetAuthStatusReq is the request for GetAuthStatus.
 type GetAuthStatusReq struct {
 	pathParams  map[string]string
@@ -1918,6 +1964,12 @@ type SetDefaultIdentityReqBuilder struct{ req *SetDefaultIdentityReq }
 // NewSetDefaultIdentityReqBuilder creates a request builder for SetDefaultIdentity.
 func NewSetDefaultIdentityReqBuilder() *SetDefaultIdentityReqBuilder {
 	return &SetDefaultIdentityReqBuilder{req: &SetDefaultIdentityReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// HDUHelpDefaultOnly sets the "X-HDUHelp-Default-Only" header parameter: 新版仅修改默认身份，不兼容切换当前 session
+func (b *SetDefaultIdentityReqBuilder) HDUHelpDefaultOnly(v bool) *SetDefaultIdentityReqBuilder {
+	b.req.headers["X-HDUHelp-Default-Only"] = strconv.FormatBool(v)
+	return b
 }
 
 // Body sets the request body.

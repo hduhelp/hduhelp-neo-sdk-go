@@ -6671,6 +6671,29 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/CommonResponseBody'
+    /hduhelp-neo/identity/auth/sessions/current/identity:
+        put:
+            tags:
+                - IdentityService
+            summary: 切换当前会话身份
+            description: 把当前原生 session 固定切换到 base/本科生/研究生/教职工身份；非 base 身份必须已绑定。只影响当前设备，不修改默认身份，也不轮换 token。
+            operationId: IdentityService_SwitchSessionIdentity
+            security:
+                - NativeSessionAuth: []
+            requestBody:
+                description: '---- 切换当前原生 session 的固定身份 ----'
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SwitchSessionIdentityRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SwitchSessionIdentityResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/identity/auth/status:
         get:
             tags:
@@ -6880,10 +6903,16 @@ paths:
             tags:
                 - IdentityService
             summary: 设置默认主身份
-            description: 把 base/本科生/研究生/教职工设为当前用户的默认身份；校园身份必须已绑定，同时同步 campus_identities.is_primary。需要用户 Bearer。
+            description: 把 base/本科生/研究生/教职工设为当前用户的默认身份；校园身份必须已绑定，同时同步 campus_identities.is_primary。为兼容旧版客户端，原生 session 调用默认同时切换当前 session；新版仅设置默认时发送 X-HDUHelp-Default-Only:true。需要用户 Bearer。
             operationId: IdentityService_SetDefaultIdentity
             security:
                 - BearerAuth: []
+            parameters:
+                - name: X-HDUHelp-Default-Only
+                  in: header
+                  description: 新版仅修改默认身份，不兼容切换当前 session
+                  schema:
+                    type: boolean
             requestBody:
                 description: '---- 设置默认/主身份 ----'
                 content:
@@ -9335,6 +9364,12 @@ components:
                     type: boolean
                 supportsTat:
                     type: boolean
+                supportsSession:
+                    type: boolean
+                sessionIdentityTypes:
+                    type: array
+                    items:
+                        type: string
             description: '-------------------- scope 目录（能力级；pkg/scope.Catalog） --------------------'
         AdminSourceTreeResponseBody:
             type: object
@@ -16675,6 +16710,8 @@ components:
                 lastActiveAt:
                     type: integer
                     format: int64
+                identityType:
+                    type: string
             description: 会话信息
         SetAppEnabledRequestBody:
             type: object
@@ -17691,6 +17728,31 @@ components:
                 comment:
                     type: string
             description: 阳光长跑单条跑步记录
+        SwitchSessionIdentityData:
+            type: object
+            properties:
+                identityType:
+                    type: string
+                scopes:
+                    type: array
+                    items:
+                        type: string
+        SwitchSessionIdentityRequestBody:
+            type: object
+            properties:
+                identity_type:
+                    type: string
+                    description: base|undergraduate|graduate|staff
+        SwitchSessionIdentityResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/SwitchSessionIdentityData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         SyncChatGroupResponseBody:
             type: object
             properties:

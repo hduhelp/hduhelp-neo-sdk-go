@@ -422,15 +422,17 @@ type AdminRefreshResponseBody struct {
 
 // AdminScopeDef -------------------- scope 目录（能力级；pkg/scope.Catalog） --------------------
 type AdminScopeDef struct {
-	Action      *string `json:"action,omitempty"`
-	Description *string `json:"description,omitempty"`
-	Domain      *string `json:"domain,omitempty"`
-	Name        *string `json:"name,omitempty"`
-	Resource    *string `json:"resource,omitempty"`
-	Sensitive   *bool   `json:"sensitive,omitempty"`
-	SupportsPat *bool   `json:"supportsPat,omitempty"`
-	SupportsTat *bool   `json:"supportsTat,omitempty"`
-	SupportsUat *bool   `json:"supportsUat,omitempty"`
+	Action               *string   `json:"action,omitempty"`
+	Description          *string   `json:"description,omitempty"`
+	Domain               *string   `json:"domain,omitempty"`
+	Name                 *string   `json:"name,omitempty"`
+	Resource             *string   `json:"resource,omitempty"`
+	Sensitive            *bool     `json:"sensitive,omitempty"`
+	SessionIdentityTypes *[]string `json:"sessionIdentityTypes,omitempty"`
+	SupportsPat          *bool     `json:"supportsPat,omitempty"`
+	SupportsSession      *bool     `json:"supportsSession,omitempty"`
+	SupportsTat          *bool     `json:"supportsTat,omitempty"`
+	SupportsUat          *bool     `json:"supportsUat,omitempty"`
 }
 
 // AdminSourceTreeResponseBody defines model for AdminSourceTreeResponseBody.
@@ -5466,6 +5468,7 @@ type SessionInfo struct {
 	DeviceName   *string `json:"deviceName,omitempty"`
 	ExpiredAt    *int64  `json:"expiredAt,omitempty"`
 	Id           *string `json:"id,omitempty"`
+	IdentityType *string `json:"identityType,omitempty"`
 	Ip           *string `json:"ip,omitempty"`
 	IsCurrent    *bool   `json:"isCurrent,omitempty"`
 	LastActiveAt *int64  `json:"lastActiveAt,omitempty"`
@@ -6131,6 +6134,25 @@ type SunrunRecord struct {
 	Mileage    *int32   `json:"mileage,omitempty"`
 	Speed      *float64 `json:"speed,omitempty"`
 	TimeDomain *string  `json:"timeDomain,omitempty"`
+}
+
+// SwitchSessionIdentityData defines model for SwitchSessionIdentityData.
+type SwitchSessionIdentityData struct {
+	IdentityType *string   `json:"identityType,omitempty"`
+	Scopes       *[]string `json:"scopes,omitempty"`
+}
+
+// SwitchSessionIdentityRequestBody defines model for SwitchSessionIdentityRequestBody.
+type SwitchSessionIdentityRequestBody struct {
+	// IdentityType base|undergraduate|graduate|staff
+	IdentityType *string `json:"identity_type,omitempty"`
+}
+
+// SwitchSessionIdentityResponseBody defines model for SwitchSessionIdentityResponseBody.
+type SwitchSessionIdentityResponseBody struct {
+	Code *int64                     `json:"code,omitempty"`
+	Data *SwitchSessionIdentityData `json:"data,omitempty"`
+	Msg  *string                    `json:"msg,omitempty"`
 }
 
 // SyncChatGroupResponseBody defines model for SyncChatGroupResponseBody.
@@ -7803,6 +7825,12 @@ type IdentityServiceUnbindSocialParams struct {
 	Provider *string `form:"provider,omitempty" json:"provider,omitempty"`
 }
 
+// IdentityServiceSetDefaultIdentityParams defines parameters for IdentityServiceSetDefaultIdentity.
+type IdentityServiceSetDefaultIdentityParams struct {
+	// XHDUHelpDefaultOnly 新版仅修改默认身份，不兼容切换当前 session
+	XHDUHelpDefaultOnly *bool `json:"X-HDUHelp-Default-Only,omitempty"`
+}
+
 // IdentityServiceBindPageParams defines parameters for IdentityServiceBindPage.
 type IdentityServiceBindPageParams struct {
 	// State 关联登录态
@@ -8401,6 +8429,9 @@ type IdentityServiceUpdateServiceAuthorizationNotificationJSONRequestBody = Upda
 
 // IdentityServiceAuthorizeServiceJSONRequestBody defines body for IdentityServiceAuthorizeService for application/json ContentType.
 type IdentityServiceAuthorizeServiceJSONRequestBody = AuthorizeServiceRequestBody
+
+// IdentityServiceSwitchSessionIdentityJSONRequestBody defines body for IdentityServiceSwitchSessionIdentity for application/json ContentType.
+type IdentityServiceSwitchSessionIdentityJSONRequestBody = SwitchSessionIdentityRequestBody
 
 // IdentityServiceAuthRefreshTokenJSONRequestBody defines body for IdentityServiceAuthRefreshToken for application/json ContentType.
 type IdentityServiceAuthRefreshTokenJSONRequestBody = RefreshTokenRequestBody
