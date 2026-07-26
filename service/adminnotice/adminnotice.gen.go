@@ -32,12 +32,6 @@ func NewListAdminNoticesReqBuilder() *ListAdminNoticesReqBuilder {
 	return &ListAdminNoticesReqBuilder{req: &ListAdminNoticesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// Status sets the "status" query parameter.
-func (b *ListAdminNoticesReqBuilder) Status(v string) *ListAdminNoticesReqBuilder {
-	b.req.queryParams["status"] = v
-	return b
-}
-
 // Page sets the "page" query parameter.
 func (b *ListAdminNoticesReqBuilder) Page(v int32) *ListAdminNoticesReqBuilder {
 	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
@@ -218,50 +212,43 @@ func (s *Service) UpdateAdminNotice(ctx context.Context, req *UpdateAdminNoticeR
 	return resp, err
 }
 
-// CancelAdminNoticeReq is the request for CancelAdminNotice.
-type CancelAdminNoticeReq struct {
+// DeleteAdminNoticeReq is the request for DeleteAdminNotice.
+type DeleteAdminNoticeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// CancelAdminNoticeReqBuilder builds a CancelAdminNoticeReq with a fluent setter per field.
-type CancelAdminNoticeReqBuilder struct{ req *CancelAdminNoticeReq }
+// DeleteAdminNoticeReqBuilder builds a DeleteAdminNoticeReq with a fluent setter per field.
+type DeleteAdminNoticeReqBuilder struct{ req *DeleteAdminNoticeReq }
 
-// NewCancelAdminNoticeReqBuilder creates a request builder for CancelAdminNotice.
-func NewCancelAdminNoticeReqBuilder() *CancelAdminNoticeReqBuilder {
-	return &CancelAdminNoticeReqBuilder{req: &CancelAdminNoticeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewDeleteAdminNoticeReqBuilder creates a request builder for DeleteAdminNotice.
+func NewDeleteAdminNoticeReqBuilder() *DeleteAdminNoticeReqBuilder {
+	return &DeleteAdminNoticeReqBuilder{req: &DeleteAdminNoticeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Id sets the "id" path parameter.
-func (b *CancelAdminNoticeReqBuilder) Id(v string) *CancelAdminNoticeReqBuilder {
+func (b *DeleteAdminNoticeReqBuilder) Id(v string) *DeleteAdminNoticeReqBuilder {
 	b.req.pathParams["id"] = v
 	return b
 }
 
-// Body sets the request body.
-func (b *CancelAdminNoticeReqBuilder) Body(body *models.CancelAdminNoticeRequestBody) *CancelAdminNoticeReqBuilder {
-	b.req.body = body
-	return b
-}
-
 // Build finalizes the request.
-func (b *CancelAdminNoticeReqBuilder) Build() *CancelAdminNoticeReq { return b.req }
+func (b *DeleteAdminNoticeReqBuilder) Build() *DeleteAdminNoticeReq { return b.req }
 
-// CancelAdminNoticeResp is the response for CancelAdminNotice.
-type CancelAdminNoticeResp struct {
+// DeleteAdminNoticeResp is the response for DeleteAdminNotice.
+type DeleteAdminNoticeResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.AdminNotice `json:"data"`
 }
 
-// CancelAdminNotice calls POST /hduhelp-neo/admin/notices/{id}/cancel.
-func (s *Service) CancelAdminNotice(ctx context.Context, req *CancelAdminNoticeReq, opts ...core.RequestOption) (*CancelAdminNoticeResp, error) {
-	resp := &CancelAdminNoticeResp{}
+// DeleteAdminNotice calls DELETE /hduhelp-neo/admin/notices/{id}.
+func (s *Service) DeleteAdminNotice(ctx context.Context, req *DeleteAdminNoticeReq, opts ...core.RequestOption) (*DeleteAdminNoticeResp, error) {
+	resp := &DeleteAdminNoticeResp{}
 	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/admin/notices/{id}/cancel",
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/admin/notices/{id}",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -270,148 +257,44 @@ func (s *Service) CancelAdminNotice(ctx context.Context, req *CancelAdminNoticeR
 	return resp, err
 }
 
-// RetryAdminNoticeDispatchReq is the request for RetryAdminNoticeDispatch.
-type RetryAdminNoticeDispatchReq struct {
+// PublishAdminNoticeReq is the request for PublishAdminNotice.
+type PublishAdminNoticeReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// RetryAdminNoticeDispatchReqBuilder builds a RetryAdminNoticeDispatchReq with a fluent setter per field.
-type RetryAdminNoticeDispatchReqBuilder struct{ req *RetryAdminNoticeDispatchReq }
+// PublishAdminNoticeReqBuilder builds a PublishAdminNoticeReq with a fluent setter per field.
+type PublishAdminNoticeReqBuilder struct{ req *PublishAdminNoticeReq }
 
-// NewRetryAdminNoticeDispatchReqBuilder creates a request builder for RetryAdminNoticeDispatch.
-func NewRetryAdminNoticeDispatchReqBuilder() *RetryAdminNoticeDispatchReqBuilder {
-	return &RetryAdminNoticeDispatchReqBuilder{req: &RetryAdminNoticeDispatchReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewPublishAdminNoticeReqBuilder creates a request builder for PublishAdminNotice.
+func NewPublishAdminNoticeReqBuilder() *PublishAdminNoticeReqBuilder {
+	return &PublishAdminNoticeReqBuilder{req: &PublishAdminNoticeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Id sets the "id" path parameter.
-func (b *RetryAdminNoticeDispatchReqBuilder) Id(v string) *RetryAdminNoticeDispatchReqBuilder {
+func (b *PublishAdminNoticeReqBuilder) Id(v string) *PublishAdminNoticeReqBuilder {
 	b.req.pathParams["id"] = v
 	return b
 }
 
 // Build finalizes the request.
-func (b *RetryAdminNoticeDispatchReqBuilder) Build() *RetryAdminNoticeDispatchReq { return b.req }
+func (b *PublishAdminNoticeReqBuilder) Build() *PublishAdminNoticeReq { return b.req }
 
-// RetryAdminNoticeDispatchResp is the response for RetryAdminNoticeDispatch.
-type RetryAdminNoticeDispatchResp struct {
+// PublishAdminNoticeResp is the response for PublishAdminNotice.
+type PublishAdminNoticeResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.AdminNotice `json:"data"`
+	Data *models.NotificationTask `json:"data"`
 }
 
-// RetryAdminNoticeDispatch calls POST /hduhelp-neo/admin/notices/{id}/retry-dispatch.
-func (s *Service) RetryAdminNoticeDispatch(ctx context.Context, req *RetryAdminNoticeDispatchReq, opts ...core.RequestOption) (*RetryAdminNoticeDispatchResp, error) {
-	resp := &RetryAdminNoticeDispatchResp{}
+// PublishAdminNotice calls POST /hduhelp-neo/admin/notices/{id}/publish.
+func (s *Service) PublishAdminNotice(ctx context.Context, req *PublishAdminNoticeReq, opts ...core.RequestOption) (*PublishAdminNoticeResp, error) {
+	resp := &PublishAdminNoticeResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/admin/notices/{id}/retry-dispatch",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ReviewAdminNoticeReq is the request for ReviewAdminNotice.
-type ReviewAdminNoticeReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ReviewAdminNoticeReqBuilder builds a ReviewAdminNoticeReq with a fluent setter per field.
-type ReviewAdminNoticeReqBuilder struct{ req *ReviewAdminNoticeReq }
-
-// NewReviewAdminNoticeReqBuilder creates a request builder for ReviewAdminNotice.
-func NewReviewAdminNoticeReqBuilder() *ReviewAdminNoticeReqBuilder {
-	return &ReviewAdminNoticeReqBuilder{req: &ReviewAdminNoticeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Id sets the "id" path parameter.
-func (b *ReviewAdminNoticeReqBuilder) Id(v string) *ReviewAdminNoticeReqBuilder {
-	b.req.pathParams["id"] = v
-	return b
-}
-
-// Body sets the request body.
-func (b *ReviewAdminNoticeReqBuilder) Body(body *models.ReviewAdminNoticeRequestBody) *ReviewAdminNoticeReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *ReviewAdminNoticeReqBuilder) Build() *ReviewAdminNoticeReq { return b.req }
-
-// ReviewAdminNoticeResp is the response for ReviewAdminNotice.
-type ReviewAdminNoticeResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.AdminNotice `json:"data"`
-}
-
-// ReviewAdminNotice calls POST /hduhelp-neo/admin/notices/{id}/review.
-func (s *Service) ReviewAdminNotice(ctx context.Context, req *ReviewAdminNoticeReq, opts ...core.RequestOption) (*ReviewAdminNoticeResp, error) {
-	resp := &ReviewAdminNoticeResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/admin/notices/{id}/review",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// SubmitAdminNoticeReq is the request for SubmitAdminNotice.
-type SubmitAdminNoticeReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// SubmitAdminNoticeReqBuilder builds a SubmitAdminNoticeReq with a fluent setter per field.
-type SubmitAdminNoticeReqBuilder struct{ req *SubmitAdminNoticeReq }
-
-// NewSubmitAdminNoticeReqBuilder creates a request builder for SubmitAdminNotice.
-func NewSubmitAdminNoticeReqBuilder() *SubmitAdminNoticeReqBuilder {
-	return &SubmitAdminNoticeReqBuilder{req: &SubmitAdminNoticeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Id sets the "id" path parameter.
-func (b *SubmitAdminNoticeReqBuilder) Id(v string) *SubmitAdminNoticeReqBuilder {
-	b.req.pathParams["id"] = v
-	return b
-}
-
-// Body sets the request body.
-func (b *SubmitAdminNoticeReqBuilder) Body(body *models.AdminNoticeVersionRequestBody) *SubmitAdminNoticeReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *SubmitAdminNoticeReqBuilder) Build() *SubmitAdminNoticeReq { return b.req }
-
-// SubmitAdminNoticeResp is the response for SubmitAdminNotice.
-type SubmitAdminNoticeResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.AdminNotice `json:"data"`
-}
-
-// SubmitAdminNotice calls POST /hduhelp-neo/admin/notices/{id}/submit.
-func (s *Service) SubmitAdminNotice(ctx context.Context, req *SubmitAdminNoticeReq, opts ...core.RequestOption) (*SubmitAdminNoticeResp, error) {
-	resp := &SubmitAdminNoticeResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/admin/notices/{id}/submit",
+		PathTemplate: "/hduhelp-neo/admin/notices/{id}/publish",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

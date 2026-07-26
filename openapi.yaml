@@ -2958,10 +2958,6 @@ paths:
             security:
                 - OperatorBearerAuth: []
             parameters:
-                - name: status
-                  in: query
-                  schema:
-                    type: string
                 - name: page
                   in: query
                   schema:
@@ -3041,36 +3037,10 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AdminNoticeResponseBody'
-    /hduhelp-neo/admin/notices/{id}/cancel:
-        post:
+        delete:
             tags:
                 - AdminNoticeService
-            operationId: AdminNoticeService_CancelAdminNotice
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/CancelAdminNoticeRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/AdminNoticeResponseBody'
-    /hduhelp-neo/admin/notices/{id}/retry-dispatch:
-        post:
-            tags:
-                - AdminNoticeService
-            operationId: AdminNoticeService_RetryAdminNoticeDispatch
+            operationId: AdminNoticeService_DeleteAdminNotice
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -3085,12 +3055,12 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/AdminNoticeResponseBody'
-    /hduhelp-neo/admin/notices/{id}/review:
+                                $ref: '#/components/schemas/DeleteAdminNoticeResponseBody'
+    /hduhelp-neo/admin/notices/{id}/publish:
         post:
             tags:
                 - AdminNoticeService
-            operationId: AdminNoticeService_ReviewAdminNotice
+            operationId: AdminNoticeService_PublishAdminNotice
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -3099,43 +3069,13 @@ paths:
                   required: true
                   schema:
                     type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/ReviewAdminNoticeRequestBody'
             responses:
                 "200":
                     description: Successful response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/AdminNoticeResponseBody'
-    /hduhelp-neo/admin/notices/{id}/submit:
-        post:
-            tags:
-                - AdminNoticeService
-            operationId: AdminNoticeService_SubmitAdminNotice
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/AdminNoticeVersionRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/AdminNoticeResponseBody'
+                                $ref: '#/components/schemas/PublishAdminNoticeResponseBody'
     /hduhelp-neo/admin/notifications/deliveries/{id}:
         get:
             tags:
@@ -3339,70 +3279,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/RuntimeStatusResponseBody'
-    /hduhelp-neo/admin/notifications/services:
-        get:
-            tags:
-                - NotificationService
-            operationId: NotificationService_ListNotificationServiceConfigurations
-            security:
-                - OperatorBearerAuth: []
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/NotificationServiceConfigurationsResponseBody'
-    /hduhelp-neo/admin/notifications/services/{serviceKey}/config:
-        put:
-            tags:
-                - NotificationService
-            operationId: NotificationService_SaveNotificationServiceConfiguration
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: serviceKey
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/SaveNotificationServiceConfigurationRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/NotificationServiceConfigurationResponseBody'
-    /hduhelp-neo/admin/notifications/services/{serviceKey}/test:
-        post:
-            tags:
-                - NotificationService
-            operationId: NotificationService_TestNotificationServiceChain
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: serviceKey
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/NotificationServiceTestRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/NotificationServiceTestResponseBody'
     /hduhelp-neo/admin/notifications/tasks:
         get:
             tags:
@@ -3441,6 +3317,24 @@ paths:
                   schema:
                     type: integer
                     format: int32
+                - name: service_key
+                  in: query
+                  schema:
+                    type: string
+                - name: provider_key
+                  in: query
+                  schema:
+                    type: string
+                - name: created_from
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: created_to
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
             responses:
                 "200":
                     description: Successful response
@@ -3531,6 +3425,39 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/DeliveryPageResponseBody'
+    /hduhelp-neo/admin/notifications/test:
+        post:
+            tags:
+                - NotificationService
+            operationId: NotificationService_TestNotificationChain
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/NotificationChainTestRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NotificationChainTestResponseBody'
+    /hduhelp-neo/admin/notifications/topics/configurations:
+        get:
+            tags:
+                - NotificationService
+            operationId: NotificationService_ListNotificationTopicConfigurations
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NotificationTopicConfigurationsResponseBody'
     /hduhelp-neo/admin/notifications/topics/{topicKey}/capabilities:
         get:
             tags:
@@ -3551,6 +3478,31 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/TopicCapabilitiesResponseBody'
+    /hduhelp-neo/admin/notifications/topics/{topicKey}/config:
+        put:
+            tags:
+                - NotificationService
+            operationId: NotificationService_SaveNotificationTopicConfiguration
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: topicKey
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SaveNotificationTopicConfigurationRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NotificationTopicConfigurationResponseBody'
     /hduhelp-neo/admin/notifications/topics/{topicKey}/validate-policy:
         post:
             tags:
@@ -9262,11 +9214,6 @@ components:
             properties:
                 id:
                     type: string
-                version:
-                    type: integer
-                    format: int32
-                status:
-                    type: string
                 title:
                     type: string
                 summary:
@@ -9284,8 +9231,6 @@ components:
                 targetCount:
                     type: integer
                     format: int32
-                policySelection:
-                    $ref: '#/components/schemas/PolicySelection'
                 publishAt:
                     type: integer
                     format: int64
@@ -9293,30 +9238,6 @@ components:
                     type: integer
                     format: int64
                 createdById:
-                    type: string
-                submittedById:
-                    type: string
-                submittedAt:
-                    type: integer
-                    format: int64
-                reviewedById:
-                    type: string
-                reviewedAt:
-                    type: integer
-                    format: int64
-                reviewComment:
-                    type: string
-                notificationTaskId:
-                    type: string
-                dispatchAttempts:
-                    type: integer
-                    format: int32
-                nextDispatchAt:
-                    type: integer
-                    format: int64
-                lastErrorCode:
-                    type: string
-                lastErrorDetail:
                     type: string
                 createdAt:
                     type: integer
@@ -9378,12 +9299,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        AdminNoticeVersionRequestBody:
-            type: object
-            properties:
-                expected_version:
-                    type: integer
-                    format: int32
         AdminRefreshRequestBody:
             type: object
             properties:
@@ -10522,14 +10437,6 @@ components:
                     type: integer
                     format: int64
                 msg:
-                    type: string
-        CancelAdminNoticeRequestBody:
-            type: object
-            properties:
-                expected_version:
-                    type: integer
-                    format: int32
-                reason:
                     type: string
         CancelBookingData:
             type: object
@@ -11753,6 +11660,14 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/CronTaskInfo'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        DeleteAdminNoticeResponseBody:
+            type: object
+            properties:
                 code:
                     type: integer
                     format: int64
@@ -14837,6 +14752,63 @@ components:
                         type: string
                 url:
                     type: string
+        NotificationChainTestRequestBody:
+            type: object
+            properties:
+                topic_key:
+                    type: string
+                mode:
+                    type: string
+                target_user_id:
+                    type: string
+                title:
+                    type: string
+                summary:
+                    type: string
+                body:
+                    type: string
+                personalization:
+                    type: object
+                    additionalProperties:
+                        type: string
+        NotificationChainTestResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/NotificationChainTestResult'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        NotificationChainTestResult:
+            type: object
+            properties:
+                serviceKey:
+                    type: string
+                topicKey:
+                    type: string
+                mode:
+                    type: string
+                status:
+                    type: string
+                taskId:
+                    type: string
+                stages:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/NotificationChainTestStage'
+        NotificationChainTestStage:
+            type: object
+            properties:
+                key:
+                    type: string
+                name:
+                    type: string
+                status:
+                    type: string
+                message:
+                    type: string
         NotificationDelivery:
             type: object
             properties:
@@ -14938,124 +14910,6 @@ components:
                 maxDueOutboxBacklog:
                     type: integer
                     format: int32
-        NotificationServiceConfiguration:
-            type: object
-            properties:
-                serviceKey:
-                    type: string
-                serviceName:
-                    type: string
-                modules:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/NotificationServiceModule'
-                allowedProviders:
-                    type: array
-                    items:
-                        type: string
-                allowedModes:
-                    type: array
-                    items:
-                        type: string
-                configured:
-                    type: boolean
-                valid:
-                    type: boolean
-                validationError:
-                    type: string
-                policy:
-                    $ref: '#/components/schemas/DeliveryPolicy'
-                updatedById:
-                    type: string
-                updatedAt:
-                    type: integer
-                    format: int64
-        NotificationServiceConfigurationResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/NotificationServiceConfiguration'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        NotificationServiceConfigurationsResponseBody:
-            type: object
-            properties:
-                data:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/NotificationServiceConfiguration'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        NotificationServiceModule:
-            type: object
-            properties:
-                topicKey:
-                    type: string
-                name:
-                    type: string
-        NotificationServiceTestRequestBody:
-            type: object
-            properties:
-                topic_key:
-                    type: string
-                mode:
-                    type: string
-                target_user_id:
-                    type: string
-                title:
-                    type: string
-                summary:
-                    type: string
-                body:
-                    type: string
-                personalization:
-                    type: object
-                    additionalProperties:
-                        type: string
-        NotificationServiceTestResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/NotificationServiceTestResult'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        NotificationServiceTestResult:
-            type: object
-            properties:
-                serviceKey:
-                    type: string
-                topicKey:
-                    type: string
-                mode:
-                    type: string
-                status:
-                    type: string
-                taskId:
-                    type: string
-                stages:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/NotificationServiceTestStage'
-        NotificationServiceTestStage:
-            type: object
-            properties:
-                key:
-                    type: string
-                name:
-                    type: string
-                status:
-                    type: string
-                message:
-                    type: string
         NotificationTask:
             type: object
             properties:
@@ -15106,6 +14960,60 @@ components:
                 updatedAt:
                     type: integer
                     format: int64
+        NotificationTopicConfiguration:
+            type: object
+            properties:
+                topicKey:
+                    type: string
+                topicName:
+                    type: string
+                serviceKey:
+                    type: string
+                serviceName:
+                    type: string
+                allowedProviders:
+                    type: array
+                    items:
+                        type: string
+                allowedModes:
+                    type: array
+                    items:
+                        type: string
+                configured:
+                    type: boolean
+                valid:
+                    type: boolean
+                validationError:
+                    type: string
+                policy:
+                    $ref: '#/components/schemas/DeliveryPolicy'
+                updatedById:
+                    type: string
+                updatedAt:
+                    type: integer
+                    format: int64
+        NotificationTopicConfigurationResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/NotificationTopicConfiguration'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        NotificationTopicConfigurationsResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/NotificationTopicConfiguration'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         OAuthScopeItem:
             type: object
             properties:
@@ -15586,6 +15494,16 @@ components:
                     format: int64
                 msg:
                     type: string
+        PublishAdminNoticeResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/NotificationTask'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         QAStrategiesData:
             type: object
             properties:
@@ -15869,16 +15787,6 @@ components:
                     items:
                         type: integer
                         format: int32
-        ReviewAdminNoticeRequestBody:
-            type: object
-            properties:
-                expected_version:
-                    type: integer
-                    format: int32
-                approve:
-                    type: boolean
-                comment:
-                    type: string
         ReviewCardData:
             type: object
             properties:
@@ -16044,7 +15952,7 @@ components:
                     description: JSON 字符串
                 note:
                     type: string
-        SaveNotificationServiceConfigurationRequestBody:
+        SaveNotificationTopicConfigurationRequestBody:
             type: object
             properties:
                 policy:
@@ -18136,9 +18044,6 @@ components:
         UpdateAdminNoticeRequestBody:
             type: object
             properties:
-                expected_version:
-                    type: integer
-                    format: int32
                 notice:
                     $ref: '#/components/schemas/EditableNotice'
         UpdateAppRequestBody:
