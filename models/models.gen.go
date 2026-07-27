@@ -3500,7 +3500,7 @@ type KnowledgeItemSummary struct {
 	SourceName      *string `json:"sourceName,omitempty"`
 	SourceUpdatedAt *int64  `json:"sourceUpdatedAt,omitempty"`
 
-	// Status pending | normal | filtered | maybe_stale | archived | deleted
+	// Status pending | normal | offline | maybe_stale | deleted
 	Status *string `json:"status,omitempty"`
 
 	// SyncStatus 聚合载体同步态: synced | pending | failed

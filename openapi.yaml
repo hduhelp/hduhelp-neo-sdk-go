@@ -13775,7 +13775,7 @@ components:
                     description: 来源词表项 id（knowledge_sources）
                 status:
                     type: string
-                    description: pending | normal | filtered | maybe_stale | archived | deleted
+                    description: pending | normal | offline | maybe_stale | deleted
                 primaryDomainId:
                     type: string
                 primaryDomainName:
