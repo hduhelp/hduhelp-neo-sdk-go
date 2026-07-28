@@ -31,7 +31,7 @@ func NewDownloadReqBuilder() *DownloadReqBuilder {
 	return &DownloadReqBuilder{req: &DownloadReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// Key sets the "key" query parameter.
+// Key sets the "key" query parameter: Required server-generated upload object key.
 func (b *DownloadReqBuilder) Key(v string) *DownloadReqBuilder {
 	b.req.queryParams["key"] = v
 	return b

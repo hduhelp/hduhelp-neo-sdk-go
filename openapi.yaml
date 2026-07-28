@@ -1014,7 +1014,7 @@ paths:
             description: 按周次与星期返回全校课程占用，仅供内部推送使用
             operationId: AcademicService_GlobalSchedule
             security:
-                - BearerAuth: []
+                - OperatorBearerAuth: []
             parameters:
                 - name: week
                   in: query
@@ -1033,7 +1033,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/GlobalScheduleResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/academic/schedule/now:
         get:
             tags:
@@ -4483,8 +4483,7 @@ paths:
                 - CampusLifeService
             summary: 校区列表(公开：id/名称/坐标)
             operationId: CampusLifeService_ListPublicCampuses
-            security:
-                - BearerAuth: []
+            security: []
             responses:
                 "200":
                     description: Successful response
@@ -4492,7 +4491,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PublicCampusListResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
+            x-hduhelp-http: {'auth': 'public'}
     /hduhelp-neo/campuslife/card/balance:
         get:
             tags:
@@ -7240,7 +7239,7 @@ paths:
             summary: 通知收件箱
             operationId: InboxService_ListInbox
             security:
-                - BearerAuth: []
+                - NativeSessionAuth: []
             parameters:
                 - name: page
                   in: query
@@ -7263,7 +7262,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/InboxPageResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/inbox/counters:
         get:
             tags:
@@ -7271,7 +7270,7 @@ paths:
             summary: 收件箱计数
             operationId: InboxService_GetInboxCounters
             security:
-                - BearerAuth: []
+                - NativeSessionAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -7279,7 +7278,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/InboxCountersResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/inbox/{id}:
         get:
             tags:
@@ -7287,7 +7286,7 @@ paths:
             summary: 通知详情
             operationId: InboxService_GetInboxEntry
             security:
-                - BearerAuth: []
+                - NativeSessionAuth: []
             parameters:
                 - name: id
                   in: path
@@ -7301,7 +7300,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/InboxEntryResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/inbox/{id}/acknowledge:
         post:
             tags:
@@ -7309,7 +7308,7 @@ paths:
             summary: 确认通知
             operationId: InboxService_AcknowledgeInboxEntry
             security:
-                - BearerAuth: []
+                - NativeSessionAuth: []
             parameters:
                 - name: id
                   in: path
@@ -7323,7 +7322,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/InboxMutationResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/inbox/{id}/read:
         post:
             tags:
@@ -7331,7 +7330,7 @@ paths:
             summary: 标记通知已读
             operationId: InboxService_MarkInboxRead
             security:
-                - BearerAuth: []
+                - NativeSessionAuth: []
             parameters:
                 - name: id
                   in: path
@@ -7345,7 +7344,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/InboxMutationResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/knowledge/domains:
         get:
             tags:
@@ -8284,6 +8283,8 @@ paths:
             parameters:
                 - name: key
                   in: query
+                  description: Required server-generated upload object key.
+                  required: true
                   schema:
                     type: string
             responses:
@@ -8309,6 +8310,17 @@ paths:
                   description: 可选业务分组(仅记录/审计)
                   schema:
                     type: string
+            requestBody:
+                required: true
+                description: |-
+                    UploadRequest keeps the runtime query value and the multipart contract in one
+                    source of truth. The handler reads the file with c.FormFile because Hertz's
+                    generated string binding does not represent a multipart.FileHeader; the
+                    OpenAPI override correctly publishes the field as a binary upload.
+                content:
+                    multipart/form-data:
+                        schema:
+                            $ref: '#/components/schemas/UploadRequestBody'
             responses:
                 "200":
                     description: Successful response
@@ -8325,7 +8337,7 @@ paths:
             description: 按当前 Principal.UserID 查询本人创建的活动
             operationId: VolunteerService_ListMyVolunteerActivities
             security:
-                - BearerAuth: []
+                - NativeSessionAuth: []
             parameters:
                 - name: page
                   in: query
@@ -8388,7 +8400,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ActivityListResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/volunteer/creator-profile:
         get:
             tags:
@@ -8397,7 +8409,7 @@ paths:
             description: 返回服务端解析的用户身份与发布权限
             operationId: VolunteerService_GetVolunteerMe
             security:
-                - BearerAuth: []
+                - NativeSessionAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -8405,7 +8417,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/VolunteerMeResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/volunteer/creator-urgent-applications:
         get:
             tags:
@@ -8414,7 +8426,7 @@ paths:
             description: 分页查询当前用户提交的加急申请
             operationId: VolunteerService_ListMyVolunteerUrgentApplications
             security:
-                - BearerAuth: []
+                - NativeSessionAuth: []
             parameters:
                 - name: page
                   in: query
@@ -8445,7 +8457,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/UrgentApplicationListResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/volunteer/volunteer-activities:
         get:
             tags:
@@ -8522,7 +8534,7 @@ paths:
             description: 需要原生 session 和 volunteer 发布权限
             operationId: VolunteerService_CreateVolunteerActivity
             security:
-                - BearerAuth: []
+                - NativeSessionAuth: []
             requestBody:
                 content:
                     application/json:
@@ -8535,7 +8547,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ActivityDetailResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/volunteer/volunteer-activities/{id}:
         get:
             tags:
@@ -8563,7 +8575,7 @@ paths:
             description: 创建者或授权管理者可编辑；普通发布者不能修改加急字段
             operationId: VolunteerService_UpdateVolunteerActivity
             security:
-                - BearerAuth: []
+                - NativeSessionAuth: []
             parameters:
                 - name: id
                   in: path
@@ -8582,7 +8594,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ActivityDetailResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
+            x-hduhelp-http: {'auth': 'native_session'}
         delete:
             tags:
                 - VolunteerService
@@ -8590,7 +8602,7 @@ paths:
             description: 逻辑下架，不物理删除
             operationId: VolunteerService_OfflineVolunteerActivity
             security:
-                - BearerAuth: []
+                - NativeSessionAuth: []
             parameters:
                 - name: id
                   in: path
@@ -8604,7 +8616,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/MutateResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/volunteer/volunteer-activities/{id}/urgent-applications:
         post:
             tags:
@@ -8613,7 +8625,7 @@ paths:
             description: 只有活动创建者或授权管理者可以提交；同一活动只允许一个待审批申请
             operationId: VolunteerService_SubmitVolunteerUrgentApplication
             security:
-                - BearerAuth: []
+                - NativeSessionAuth: []
             parameters:
                 - name: id
                   in: path
@@ -8632,7 +8644,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/UrgentApplicationResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
+            x-hduhelp-http: {'auth': 'native_session'}
     /healthz:
         get:
             tags:
@@ -18362,6 +18374,15 @@ components:
                     format: int64
                 msg:
                     type: string
+        UploadRequestBody:
+            required:
+                - file
+            type: object
+            properties:
+                file:
+                    type: string
+                    description: File bytes uploaded as multipart field file.
+                    format: binary
         UploadResponseBody:
             type: object
             properties:

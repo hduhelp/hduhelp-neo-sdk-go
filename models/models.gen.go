@@ -6568,6 +6568,12 @@ type UploadFileResponseBody struct {
 	Msg  *string         `json:"msg,omitempty"`
 }
 
+// UploadRequestBody defines model for UploadRequestBody.
+type UploadRequestBody struct {
+	// File File bytes uploaded as multipart field file.
+	File string `json:"file"`
+}
+
 // UploadResponseBody defines model for UploadResponseBody.
 type UploadResponseBody struct {
 	Code *int64 `json:"code,omitempty"`
@@ -8062,7 +8068,8 @@ type SubscriptionServiceUpdateSubscriptionParams struct {
 
 // UploadServiceDownloadParams defines parameters for UploadServiceDownload.
 type UploadServiceDownloadParams struct {
-	Key *string `form:"key,omitempty" json:"key,omitempty"`
+	// Key Required server-generated upload object key.
+	Key string `form:"key" json:"key"`
 }
 
 // UploadServiceUploadParams defines parameters for UploadServiceUpload.
@@ -8504,6 +8511,9 @@ type SubscriptionServiceSubscribeJSONRequestBody = SubscribeRequestBody
 
 // SubscriptionServiceUpdateSubscriptionJSONRequestBody defines body for SubscriptionServiceUpdateSubscription for application/json ContentType.
 type SubscriptionServiceUpdateSubscriptionJSONRequestBody = UpdateSubscriptionRequestBody
+
+// UploadServiceUploadMultipartRequestBody defines body for UploadServiceUpload for multipart/form-data ContentType.
+type UploadServiceUploadMultipartRequestBody = UploadRequestBody
 
 // VolunteerServiceCreateVolunteerActivityJSONRequestBody defines body for VolunteerServiceCreateVolunteerActivity for application/json ContentType.
 type VolunteerServiceCreateVolunteerActivityJSONRequestBody = CreateActivityRequestBody
