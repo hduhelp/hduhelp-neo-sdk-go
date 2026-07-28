@@ -2009,6 +2009,39 @@ type CreateTenantResponseBody struct {
 	Msg  *string          `json:"msg,omitempty"`
 }
 
+// CreateWeChatQRLoginData defines model for CreateWeChatQRLoginData.
+type CreateWeChatQRLoginData struct {
+	// AuthorizeURL 仅放入二维码的服务号 OAuth URL
+	AuthorizeURL *string `json:"authorizeURL,omitempty"`
+
+	// ExpiresAt 配对过期时间（Unix 秒）
+	ExpiresAt *int64 `json:"expiresAt,omitempty"`
+
+	// Flow login / bind
+	Flow *string `json:"flow,omitempty"`
+
+	// PollToken 仅原桌面浏览器持有，不得放入二维码
+	PollToken *string `json:"pollToken,omitempty"`
+}
+
+// CreateWeChatQRLoginRequestBody defines model for CreateWeChatQRLoginRequestBody.
+type CreateWeChatQRLoginRequestBody struct {
+	ClientId *string `json:"client_id,omitempty"`
+
+	// Flow login（默认）/ bind
+	Flow        *string `json:"flow,omitempty"`
+	RedirectUri *string `json:"redirect_uri,omitempty"`
+	Remember    *string `json:"remember,omitempty"`
+	ReturnTo    *string `json:"return_to,omitempty"`
+}
+
+// CreateWeChatQRLoginResponseBody defines model for CreateWeChatQRLoginResponseBody.
+type CreateWeChatQRLoginResponseBody struct {
+	Code *int64                   `json:"code,omitempty"`
+	Data *CreateWeChatQRLoginData `json:"data,omitempty"`
+	Msg  *string                  `json:"msg,omitempty"`
+}
+
 // CronTaskInfo -------------------- 定时任务（cron_tasks） --------------------
 type CronTaskInfo struct {
 	// Config 当前任务配置(JSON 字符串)
@@ -4485,6 +4518,33 @@ type PolicySelection struct {
 	ProfileId    *string         `json:"profileId,omitempty"`
 }
 
+// PollWeChatQRLoginData defines model for PollWeChatQRLoginData.
+type PollWeChatQRLoginData struct {
+	// Code authorized 时一次性返回 login handoff code
+	Code *string `json:"code,omitempty"`
+
+	// Flow login / bind / merge
+	Flow *string `json:"flow,omitempty"`
+
+	// Reason failed 时的安全失败原因
+	Reason *string `json:"reason,omitempty"`
+
+	// Status pending / authorized / failed / expired
+	Status *string `json:"status,omitempty"`
+}
+
+// PollWeChatQRLoginRequestBody defines model for PollWeChatQRLoginRequestBody.
+type PollWeChatQRLoginRequestBody struct {
+	PollToken *string `json:"poll_token,omitempty"`
+}
+
+// PollWeChatQRLoginResponseBody defines model for PollWeChatQRLoginResponseBody.
+type PollWeChatQRLoginResponseBody struct {
+	Code *int64                 `json:"code,omitempty"`
+	Data *PollWeChatQRLoginData `json:"data,omitempty"`
+	Msg  *string                `json:"msg,omitempty"`
+}
+
 // PopularResponseBody defines model for PopularResponseBody.
 type PopularResponseBody struct {
 	Code *int64      `json:"code,omitempty"`
@@ -5747,7 +5807,7 @@ type Slot struct {
 
 // SocialBinding defines model for SocialBinding.
 type SocialBinding struct {
-	// GrantKey 具体登录来源：wxmp/wxmini/dingtalk/...
+	// GrantKey 具体登录来源：wxmp/dingtalk/...；旧数据可能为 wxmini
 	GrantKey  *string `json:"grantKey,omitempty"`
 	Id        *string `json:"id,omitempty"`
 	IsPrimary *bool   `json:"isPrimary,omitempty"`
@@ -6738,7 +6798,7 @@ type UserDetailSession struct {
 type UserDetailSocialBinding struct {
 	CreatedAt *int64 `json:"createdAt,omitempty"`
 
-	// GrantKey 具体登录来源 wxmp/wxmini/dingtalk/...
+	// GrantKey 具体登录来源 wxmp/dingtalk/...；旧数据可能为 wxmini
 	GrantKey  *string `json:"grantKey,omitempty"`
 	Id        *string `json:"id,omitempty"`
 	IsPrimary *bool   `json:"isPrimary,omitempty"`
@@ -7892,7 +7952,7 @@ type IdentityServiceSSOStateCallbackParams struct {
 
 // IdentityServiceGetLoginURLParams defines parameters for IdentityServiceGetLoginURL.
 type IdentityServiceGetLoginURLParams struct {
-	// GrantKey 登录来源: cas/wxmp/wxmini/dingtalk/...
+	// GrantKey 登录来源: cas/wxmp/dingtalk/...
 	GrantKey *string `form:"grant-key,omitempty" json:"grant-key,omitempty"`
 
 	// ClientId 运营平台注册的第一方登录客户端
@@ -8460,6 +8520,12 @@ type IdentityServiceLoginExchangeJSONRequestBody = LoginExchangeRequestBody
 
 // IdentityServiceLoginFlowExchangeJSONRequestBody defines body for IdentityServiceLoginFlowExchange for application/json ContentType.
 type IdentityServiceLoginFlowExchangeJSONRequestBody = LoginFlowExchangeRequestBody
+
+// IdentityServiceCreateWeChatQRLoginJSONRequestBody defines body for IdentityServiceCreateWeChatQRLogin for application/json ContentType.
+type IdentityServiceCreateWeChatQRLoginJSONRequestBody = CreateWeChatQRLoginRequestBody
+
+// IdentityServicePollWeChatQRLoginJSONRequestBody defines body for IdentityServicePollWeChatQRLogin for application/json ContentType.
+type IdentityServicePollWeChatQRLoginJSONRequestBody = PollWeChatQRLoginRequestBody
 
 // IdentityServiceSetCurrentCampusJSONRequestBody defines body for IdentityServiceSetCurrentCampus for application/json ContentType.
 type IdentityServiceSetCurrentCampusJSONRequestBody = SetCurrentCampusRequestBody

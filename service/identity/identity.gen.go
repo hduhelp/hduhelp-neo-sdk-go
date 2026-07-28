@@ -2475,7 +2475,7 @@ func NewGetLoginURLReqBuilder() *GetLoginURLReqBuilder {
 	return &GetLoginURLReqBuilder{req: &GetLoginURLReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// GrantKey sets the "grant-key" query parameter: 登录来源: cas/wxmp/wxmini/dingtalk/...
+// GrantKey sets the "grant-key" query parameter: 登录来源: cas/wxmp/dingtalk/...
 func (b *GetLoginURLReqBuilder) GrantKey(v string) *GetLoginURLReqBuilder {
 	b.req.queryParams["grant-key"] = v
 	return b
@@ -2521,6 +2521,98 @@ func (s *Service) GetLoginURL(ctx context.Context, req *GetLoginURLReq, opts ...
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/identity/login/url",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// CreateWeChatQRLoginReq is the request for CreateWeChatQRLogin.
+type CreateWeChatQRLoginReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// CreateWeChatQRLoginReqBuilder builds a CreateWeChatQRLoginReq with a fluent setter per field.
+type CreateWeChatQRLoginReqBuilder struct{ req *CreateWeChatQRLoginReq }
+
+// NewCreateWeChatQRLoginReqBuilder creates a request builder for CreateWeChatQRLogin.
+func NewCreateWeChatQRLoginReqBuilder() *CreateWeChatQRLoginReqBuilder {
+	return &CreateWeChatQRLoginReqBuilder{req: &CreateWeChatQRLoginReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *CreateWeChatQRLoginReqBuilder) Body(body *models.CreateWeChatQRLoginRequestBody) *CreateWeChatQRLoginReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *CreateWeChatQRLoginReqBuilder) Build() *CreateWeChatQRLoginReq { return b.req }
+
+// CreateWeChatQRLoginResp is the response for CreateWeChatQRLogin.
+type CreateWeChatQRLoginResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.CreateWeChatQRLoginData `json:"data"`
+}
+
+// CreateWeChatQRLogin: 创建微信公众号扫码登录或绑定
+func (s *Service) CreateWeChatQRLogin(ctx context.Context, req *CreateWeChatQRLoginReq, opts ...core.RequestOption) (*CreateWeChatQRLoginResp, error) {
+	resp := &CreateWeChatQRLoginResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/identity/login/wechat/qr",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// PollWeChatQRLoginReq is the request for PollWeChatQRLogin.
+type PollWeChatQRLoginReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// PollWeChatQRLoginReqBuilder builds a PollWeChatQRLoginReq with a fluent setter per field.
+type PollWeChatQRLoginReqBuilder struct{ req *PollWeChatQRLoginReq }
+
+// NewPollWeChatQRLoginReqBuilder creates a request builder for PollWeChatQRLogin.
+func NewPollWeChatQRLoginReqBuilder() *PollWeChatQRLoginReqBuilder {
+	return &PollWeChatQRLoginReqBuilder{req: &PollWeChatQRLoginReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *PollWeChatQRLoginReqBuilder) Body(body *models.PollWeChatQRLoginRequestBody) *PollWeChatQRLoginReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *PollWeChatQRLoginReqBuilder) Build() *PollWeChatQRLoginReq { return b.req }
+
+// PollWeChatQRLoginResp is the response for PollWeChatQRLogin.
+type PollWeChatQRLoginResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.PollWeChatQRLoginData `json:"data"`
+}
+
+// PollWeChatQRLogin: 轮询微信公众号扫码登录
+func (s *Service) PollWeChatQRLogin(ctx context.Context, req *PollWeChatQRLoginReq, opts ...core.RequestOption) (*PollWeChatQRLoginResp, error) {
+	resp := &PollWeChatQRLoginResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/identity/login/wechat/qr/status",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

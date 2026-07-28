@@ -7162,7 +7162,7 @@ paths:
             parameters:
                 - name: grant-key
                   in: query
-                  description: '登录来源: cas/wxmp/wxmini/dingtalk/...'
+                  description: '登录来源: cas/wxmp/dingtalk/...'
                   schema:
                     type: string
                 - name: client_id
@@ -7192,6 +7192,46 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/LoginURLResponseBody'
+    /hduhelp-neo/identity/login/wechat/qr:
+        post:
+            tags:
+                - IdentityService
+            summary: 创建微信公众号扫码登录或绑定
+            description: 桌面浏览器创建短时扫码配对；flow=bind 时要求当前原生会话和 binding:write 权限。二维码只包含服务号 OAuth 地址，poll_token 仅由原浏览器保存。微信内授权完成后，结果通过一次性 handoff code 交还原浏览器。
+            operationId: IdentityService_CreateWeChatQRLogin
+            requestBody:
+                description: POST /hduhelp-neo/identity/login/wechat/qr —— 桌面浏览器创建公众号扫码配对
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateWeChatQRLoginRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateWeChatQRLoginResponseBody'
+    /hduhelp-neo/identity/login/wechat/qr/status:
+        post:
+            tags:
+                - IdentityService
+            summary: 轮询微信公众号扫码登录
+            description: 原桌面浏览器使用私有 poll_token 查询配对状态；authorized 时一次性取得 handoff code，login 结果通过 /identity/login/exchange 建立本机登录态，bind/merge 结果通过 /identity/login/flow/exchange 由当前会话交换。
+            operationId: IdentityService_PollWeChatQRLogin
+            requestBody:
+                description: POST /hduhelp-neo/identity/login/wechat/qr/status —— 原浏览器轮询扫码结果
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PollWeChatQRLoginRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PollWeChatQRLoginResponseBody'
     /hduhelp-neo/identity/me:
         get:
             tags:
@@ -11662,6 +11702,46 @@ components:
                     format: int64
                 msg:
                     type: string
+        CreateWeChatQRLoginData:
+            type: object
+            properties:
+                authorizeURL:
+                    type: string
+                    description: 仅放入二维码的服务号 OAuth URL
+                pollToken:
+                    type: string
+                    description: 仅原桌面浏览器持有，不得放入二维码
+                expiresAt:
+                    type: integer
+                    description: 配对过期时间（Unix 秒）
+                    format: int64
+                flow:
+                    type: string
+                    description: login / bind
+        CreateWeChatQRLoginRequestBody:
+            type: object
+            properties:
+                client_id:
+                    type: string
+                redirect_uri:
+                    type: string
+                remember:
+                    type: string
+                return_to:
+                    type: string
+                flow:
+                    type: string
+                    description: login（默认）/ bind
+        CreateWeChatQRLoginResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/CreateWeChatQRLoginData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         CronTaskInfo:
             type: object
             properties:
@@ -15309,6 +15389,36 @@ components:
                     type: string
                 inlinePolicy:
                     $ref: '#/components/schemas/DeliveryPolicy'
+        PollWeChatQRLoginData:
+            type: object
+            properties:
+                status:
+                    type: string
+                    description: pending / authorized / failed / expired
+                code:
+                    type: string
+                    description: authorized 时一次性返回 login handoff code
+                flow:
+                    type: string
+                    description: login / bind / merge
+                reason:
+                    type: string
+                    description: failed 时的安全失败原因
+        PollWeChatQRLoginRequestBody:
+            type: object
+            properties:
+                poll_token:
+                    type: string
+        PollWeChatQRLoginResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/PollWeChatQRLoginData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         PopularResponseBody:
             type: object
             properties:
@@ -17173,7 +17283,7 @@ components:
                     type: boolean
                 grantKey:
                     type: string
-                    description: 具体登录来源：wxmp/wxmini/dingtalk/...
+                    description: 具体登录来源：wxmp/dingtalk/...；旧数据可能为 wxmini
         SourceDeleteResponseBody:
             type: object
             properties:
@@ -18651,7 +18761,7 @@ components:
                     format: int64
                 grantKey:
                     type: string
-                    description: 具体登录来源 wxmp/wxmini/dingtalk/...
+                    description: 具体登录来源 wxmp/dingtalk/...；旧数据可能为 wxmini
         UserDetailSubscription:
             type: object
             properties:
