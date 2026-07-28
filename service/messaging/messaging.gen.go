@@ -16,6 +16,110 @@ type Service struct{ config *core.Config }
 // NewService binds the Messaging service to a client config.
 func NewService(config *core.Config) *Service { return &Service{config: config} }
 
+// ListAdminPigeonReviewsReq is the request for ListAdminPigeonReviews.
+type ListAdminPigeonReviewsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListAdminPigeonReviewsReqBuilder builds a ListAdminPigeonReviewsReq with a fluent setter per field.
+type ListAdminPigeonReviewsReqBuilder struct{ req *ListAdminPigeonReviewsReq }
+
+// NewListAdminPigeonReviewsReqBuilder creates a request builder for ListAdminPigeonReviews.
+func NewListAdminPigeonReviewsReqBuilder() *ListAdminPigeonReviewsReqBuilder {
+	return &ListAdminPigeonReviewsReqBuilder{req: &ListAdminPigeonReviewsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Status sets the "status" query parameter.
+func (b *ListAdminPigeonReviewsReqBuilder) Status(v string) *ListAdminPigeonReviewsReqBuilder {
+	b.req.queryParams["status"] = v
+	return b
+}
+
+// Page sets the "page" query parameter.
+func (b *ListAdminPigeonReviewsReqBuilder) Page(v int32) *ListAdminPigeonReviewsReqBuilder {
+	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// PageSize sets the "page_size" query parameter.
+func (b *ListAdminPigeonReviewsReqBuilder) PageSize(v int32) *ListAdminPigeonReviewsReqBuilder {
+	b.req.queryParams["page_size"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *ListAdminPigeonReviewsReqBuilder) Build() *ListAdminPigeonReviewsReq { return b.req }
+
+// ListAdminPigeonReviewsResp is the response for ListAdminPigeonReviews.
+type ListAdminPigeonReviewsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AdminPigeonReviewPage `json:"data"`
+}
+
+// ListAdminPigeonReviews calls GET /hduhelp-neo/admin/messaging/pigeon-reviews.
+func (s *Service) ListAdminPigeonReviews(ctx context.Context, req *ListAdminPigeonReviewsReq, opts ...core.RequestOption) (*ListAdminPigeonReviewsResp, error) {
+	resp := &ListAdminPigeonReviewsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/messaging/pigeon-reviews",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// RecallAdminPigeonReq is the request for RecallAdminPigeon.
+type RecallAdminPigeonReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// RecallAdminPigeonReqBuilder builds a RecallAdminPigeonReq with a fluent setter per field.
+type RecallAdminPigeonReqBuilder struct{ req *RecallAdminPigeonReq }
+
+// NewRecallAdminPigeonReqBuilder creates a request builder for RecallAdminPigeon.
+func NewRecallAdminPigeonReqBuilder() *RecallAdminPigeonReqBuilder {
+	return &RecallAdminPigeonReqBuilder{req: &RecallAdminPigeonReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *RecallAdminPigeonReqBuilder) Id(v string) *RecallAdminPigeonReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *RecallAdminPigeonReqBuilder) Build() *RecallAdminPigeonReq { return b.req }
+
+// RecallAdminPigeonResp is the response for RecallAdminPigeon.
+type RecallAdminPigeonResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AdminPigeonReviewItem `json:"data"`
+}
+
+// RecallAdminPigeon calls POST /hduhelp-neo/admin/messaging/pigeon-reviews/{id}/recall.
+func (s *Service) RecallAdminPigeon(ctx context.Context, req *RecallAdminPigeonReq, opts ...core.RequestOption) (*RecallAdminPigeonResp, error) {
+	resp := &RecallAdminPigeonResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/messaging/pigeon-reviews/{id}/recall",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // ListAdminWishReviewsReq is the request for ListAdminWishReviews.
 type ListAdminWishReviewsReq struct {
 	pathParams  map[string]string

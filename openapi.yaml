@@ -2896,6 +2896,55 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AdminLogoutResponseBody'
+    /hduhelp-neo/admin/messaging/pigeon-reviews:
+        get:
+            tags:
+                - MessagingService
+            operationId: MessagingService_ListAdminPigeonReviews
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminPigeonReviewPageResponseBody'
+    /hduhelp-neo/admin/messaging/pigeon-reviews/{id}/recall:
+        post:
+            tags:
+                - MessagingService
+            operationId: MessagingService_RecallAdminPigeon
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminPigeonRecallResponseBody'
     /hduhelp-neo/admin/messaging/wish-reviews:
         get:
             tags:
@@ -9375,6 +9424,63 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/AdminNotice'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AdminPigeonRecallResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminPigeonReviewItem'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AdminPigeonReviewItem:
+            type: object
+            properties:
+                id:
+                    type: string
+                status:
+                    type: string
+                senderName:
+                    type: string
+                senderStaffId:
+                    type: string
+                targetStaffId:
+                    type: string
+                content:
+                    type: string
+                createdAt:
+                    type: integer
+                    format: int64
+                reviewExpiresAt:
+                    type: integer
+                    format: int64
+        AdminPigeonReviewPage:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AdminPigeonReviewItem'
+                total:
+                    type: integer
+                    format: int64
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+        AdminPigeonReviewPageResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminPigeonReviewPage'
                 code:
                     type: integer
                     format: int64

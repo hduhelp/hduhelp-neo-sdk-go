@@ -408,6 +408,40 @@ type AdminNoticeResponseBody struct {
 	Msg  *string      `json:"msg,omitempty"`
 }
 
+// AdminPigeonRecallResponseBody defines model for AdminPigeonRecallResponseBody.
+type AdminPigeonRecallResponseBody struct {
+	Code *int64                 `json:"code,omitempty"`
+	Data *AdminPigeonReviewItem `json:"data,omitempty"`
+	Msg  *string                `json:"msg,omitempty"`
+}
+
+// AdminPigeonReviewItem defines model for AdminPigeonReviewItem.
+type AdminPigeonReviewItem struct {
+	Content         *string `json:"content,omitempty"`
+	CreatedAt       *int64  `json:"createdAt,omitempty"`
+	Id              *string `json:"id,omitempty"`
+	ReviewExpiresAt *int64  `json:"reviewExpiresAt,omitempty"`
+	SenderName      *string `json:"senderName,omitempty"`
+	SenderStaffId   *string `json:"senderStaffId,omitempty"`
+	Status          *string `json:"status,omitempty"`
+	TargetStaffId   *string `json:"targetStaffId,omitempty"`
+}
+
+// AdminPigeonReviewPage defines model for AdminPigeonReviewPage.
+type AdminPigeonReviewPage struct {
+	Items    *[]AdminPigeonReviewItem `json:"items,omitempty"`
+	Page     *int32                   `json:"page,omitempty"`
+	PageSize *int32                   `json:"pageSize,omitempty"`
+	Total    *int64                   `json:"total,omitempty"`
+}
+
+// AdminPigeonReviewPageResponseBody defines model for AdminPigeonReviewPageResponseBody.
+type AdminPigeonReviewPageResponseBody struct {
+	Code *int64                 `json:"code,omitempty"`
+	Data *AdminPigeonReviewPage `json:"data,omitempty"`
+	Msg  *string                `json:"msg,omitempty"`
+}
+
 // AdminRefreshRequestBody defines model for AdminRefreshRequestBody.
 type AdminRefreshRequestBody struct {
 	RefreshToken *string `json:"refresh_token,omitempty"`
@@ -7408,6 +7442,13 @@ type AdminServiceDeleteLoginClientParams struct {
 type AdminServiceListLoginClientsParams struct {
 	// Id 传入时仅返回该客户端（单元素列表）
 	Id *string `form:"id,omitempty" json:"id,omitempty"`
+}
+
+// MessagingServiceListAdminPigeonReviewsParams defines parameters for MessagingServiceListAdminPigeonReviews.
+type MessagingServiceListAdminPigeonReviewsParams struct {
+	Status   *string `form:"status,omitempty" json:"status,omitempty"`
+	Page     *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
 }
 
 // MessagingServiceListAdminWishReviewsParams defines parameters for MessagingServiceListAdminWishReviews.
