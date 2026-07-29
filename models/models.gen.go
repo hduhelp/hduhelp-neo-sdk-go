@@ -1577,15 +1577,21 @@ type ClassroomsResponseBody struct {
 // 管理端：采集器（cron 支撑）与抓取运行
 // ============================================================================
 type CollectorInfo struct {
-	// Config JSON 字符串(站点/栏目/凭据)
+	// Config JSON 字符串(采集器自有配置)
 	Config  *string `json:"config,omitempty"`
 	Enabled *bool   `json:"enabled,omitempty"`
-	Key     *string `json:"key,omitempty"`
+
+	// Engine 该采集器运行在哪个采集引擎上
+	Engine *string `json:"engine,omitempty"`
+	Key    *string `json:"key,omitempty"`
 
 	// LastResult success | partial | failed
 	LastResult *string `json:"lastResult,omitempty"`
 	LastRunAt  *int64  `json:"lastRunAt,omitempty"`
-	Name       *string `json:"name,omitempty"`
+
+	// MaxItems 单次运行条目上限
+	MaxItems *int32  `json:"maxItems,omitempty"`
+	Name     *string `json:"name,omitempty"`
 
 	// Spec cron 表达式
 	Spec *string `json:"spec,omitempty"`
@@ -1892,6 +1898,9 @@ type CreateItemRequestBody struct {
 	Tags       *[]string `json:"tags,omitempty"`
 	Title      *string   `json:"title,omitempty"`
 	ValidUntil *int64    `json:"valid_until,omitempty"`
+
+	// Visibility public | internal；空=internal
+	Visibility *string `json:"visibility,omitempty"`
 }
 
 // CreateLoginClientRequestBody defines model for CreateLoginClientRequestBody.
@@ -3592,6 +3601,9 @@ type KnowledgeItemSummary struct {
 
 	// ValidUntil 过期时间(ms)，空=长期有效
 	ValidUntil *int64 `json:"validUntil,omitempty"`
+
+	// Visibility public=任何人可检索 | internal=需已绑定校园身份
+	Visibility *string `json:"visibility,omitempty"`
 }
 
 // KnowledgeSourceNode KnowledgeSourceNode 是扁平「来源」词表的一项。
@@ -5268,6 +5280,9 @@ type SearchHit struct {
 	// RerankScore 重排得分
 	RerankScore *float64 `json:"rerankScore,omitempty"`
 
+	// Restricted 该命中是否为受限(校内)内容，供客户端加标
+	Restricted *bool `json:"restricted,omitempty"`
+
 	// Score 向量语义得分
 	Score  *float64 `json:"score,omitempty"`
 	Source *string  `json:"source,omitempty"`
@@ -6522,9 +6537,15 @@ type UpdateChunkRequestBody struct {
 // UpdateCollectorRequestBody defines model for UpdateCollectorRequestBody.
 type UpdateCollectorRequestBody struct {
 	// Config JSON 字符串
-	Config  *string `json:"config,omitempty"`
-	Enabled *bool   `json:"enabled,omitempty"`
-	Spec    *string `json:"spec,omitempty"`
+	Config *string `json:"config,omitempty"`
+
+	// DisplayName 运营自定义名称；留空沿用代码登记名
+	DisplayName *string `json:"displayName,omitempty"`
+	Enabled     *bool   `json:"enabled,omitempty"`
+
+	// MaxItems 单次运行条目上限，与排程并列的一等设置
+	MaxItems *int32  `json:"maxItems,omitempty"`
+	Spec     *string `json:"spec,omitempty"`
 }
 
 // UpdateCronTaskRequestBody defines model for UpdateCronTaskRequestBody.
@@ -6586,6 +6607,9 @@ type UpdateItemRequestBody struct {
 	Tags            *[]string `json:"tags,omitempty"`
 	Title           *string   `json:"title,omitempty"`
 	ValidUntil      *int64    `json:"valid_until,omitempty"`
+
+	// Visibility public | internal
+	Visibility *string `json:"visibility,omitempty"`
 }
 
 // UpdateLoginClientRequestBody defines model for UpdateLoginClientRequestBody.
@@ -7383,6 +7407,9 @@ type KnowledgeServiceAdminListItemsParams struct {
 
 	// SyncStatus 收录态过滤: synced | pending | failed
 	SyncStatus *string `form:"sync_status,omitempty" json:"sync_status,omitempty"`
+
+	// Visibility 检索范围过滤: public | internal
+	Visibility *string `form:"visibility,omitempty" json:"visibility,omitempty"`
 }
 
 // KnowledgeServiceAdminUpdateItemParams defines parameters for KnowledgeServiceAdminUpdateItem.
@@ -7426,6 +7453,9 @@ type KnowledgeServiceAdminDeleteSourceParams struct {
 
 	// MergeIntoId 把条目并入目标来源后删除
 	MergeIntoId *string `form:"merge_into_id,omitempty" json:"merge_into_id,omitempty"`
+
+	// Cascade 设为 true 时连带删除条目（不可逆）
+	Cascade *bool `form:"cascade,omitempty" json:"cascade,omitempty"`
 }
 
 // KnowledgeServiceAdminUpdateSourceParams defines parameters for KnowledgeServiceAdminUpdateSource.

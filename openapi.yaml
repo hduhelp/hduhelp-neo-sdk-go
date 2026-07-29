@@ -1888,7 +1888,7 @@ paths:
             tags:
                 - KnowledgeService
             summary: 立即运行采集器
-            description: 手动触发一次抓取，返回抓取运行 ID 以便追踪
+            description: 手动触发一次抓取，条数上限取任务上的 max_items 设置；立即返回，进度见抓取运行记录
             operationId: KnowledgeService_AdminRunCollector
             security:
                 - OperatorBearerAuth: []
@@ -2256,6 +2256,11 @@ paths:
                   description: '收录态过滤: synced | pending | failed'
                   schema:
                     type: string
+                - name: visibility
+                  in: query
+                  description: '检索范围过滤: public | internal'
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -2611,7 +2616,7 @@ paths:
             tags:
                 - KnowledgeService
             summary: 删除来源
-            description: 删除空来源；传 merge_into_id 时先把条目并入目标来源再删除
+            description: 删除空来源；传 merge_into_id 时先把条目并入目标来源再删除；传 cascade=true 时连带条目一起删（不可逆）
             operationId: KnowledgeService_AdminDeleteSource
             security:
                 - OperatorBearerAuth: []
@@ -2625,6 +2630,11 @@ paths:
                   description: 把条目并入目标来源后删除
                   schema:
                     type: string
+                - name: cascade
+                  in: query
+                  description: 设为 true 时连带删除条目（不可逆）
+                  schema:
+                    type: boolean
             responses:
                 "200":
                     description: Successful response
@@ -11136,13 +11146,20 @@ components:
                     description: cron 表达式
                 config:
                     type: string
-                    description: JSON 字符串(站点/栏目/凭据)
+                    description: JSON 字符串(采集器自有配置)
                 lastRunAt:
                     type: integer
                     format: int64
                 lastResult:
                     type: string
                     description: success | partial | failed
+                maxItems:
+                    type: integer
+                    description: 单次运行条目上限
+                    format: int32
+                engine:
+                    type: string
+                    description: 该采集器运行在哪个采集引擎上
             description: |-
                 ============================================================================
                 管理端：采集器（cron 支撑）与抓取运行
@@ -11601,6 +11618,9 @@ components:
                     items:
                         type: string
                     description: 主题标签
+                visibility:
+                    type: string
+                    description: public | internal；空=internal
         CreateLoginClientRequestBody:
             type: object
             properties:
@@ -14025,6 +14045,9 @@ components:
                 tagError:
                     type: string
                     description: tag_status=failed 时的失败原因（悬浮查看）
+                visibility:
+                    type: string
+                    description: public=任何人可检索 | internal=需已绑定校园身份
             description: KnowledgeItemSummary 是列表页展示的知识条目摘要。
         KnowledgeSourceNode:
             type: object
@@ -16506,6 +16529,9 @@ components:
                     type: array
                     items:
                         type: string
+                restricted:
+                    type: boolean
+                    description: 该命中是否为受限(校内)内容，供客户端加标
             description: SearchHit 是一条检索命中，溯源信息足以回链到我方 DB 与方舟切片。
         SearchPage:
             type: object
@@ -18399,6 +18425,13 @@ components:
                 config:
                     type: string
                     description: JSON 字符串
+                displayName:
+                    type: string
+                    description: 运营自定义名称；留空沿用代码登记名
+                maxItems:
+                    type: integer
+                    description: 单次运行条目上限，与排程并列的一等设置
+                    format: int32
         UpdateCronTaskRequestBody:
             type: object
             properties:
@@ -18492,6 +18525,9 @@ components:
                         type: string
                 source_id:
                     type: string
+                visibility:
+                    type: string
+                    description: public | internal
         UpdateLoginClientRequestBody:
             type: object
             properties:

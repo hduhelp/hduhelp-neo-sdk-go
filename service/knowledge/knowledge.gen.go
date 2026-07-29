@@ -1092,6 +1092,12 @@ func (b *AdminListItemsReqBuilder) SyncStatus(v string) *AdminListItemsReqBuilde
 	return b
 }
 
+// Visibility sets the "visibility" query parameter: 检索范围过滤: public | internal
+func (b *AdminListItemsReqBuilder) Visibility(v string) *AdminListItemsReqBuilder {
+	b.req.queryParams["visibility"] = v
+	return b
+}
+
 // Build finalizes the request.
 func (b *AdminListItemsReqBuilder) Build() *AdminListItemsReq { return b.req }
 
@@ -1881,6 +1887,12 @@ func (b *AdminDeleteSourceReqBuilder) Id(v string) *AdminDeleteSourceReqBuilder 
 // MergeIntoId sets the "merge_into_id" query parameter: 把条目并入目标来源后删除
 func (b *AdminDeleteSourceReqBuilder) MergeIntoId(v string) *AdminDeleteSourceReqBuilder {
 	b.req.queryParams["merge_into_id"] = v
+	return b
+}
+
+// Cascade sets the "cascade" query parameter: 设为 true 时连带删除条目（不可逆）
+func (b *AdminDeleteSourceReqBuilder) Cascade(v bool) *AdminDeleteSourceReqBuilder {
+	b.req.queryParams["cascade"] = strconv.FormatBool(v)
 	return b
 }
 
