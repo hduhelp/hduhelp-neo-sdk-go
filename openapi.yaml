@@ -4345,7 +4345,7 @@ paths:
             tags:
                 - CampusLifeService
             summary: 查询我的二课活动
-            description: status 支持 0 到 3，默认 0；按 hasMore/nextPage 翻页。取消报名前先查询本接口，并使用返回记录中的真实 activityId。
+            description: status=0 为全部活动，1 为已参与（已完成签到签退），2 为未参与（未完成签到签退），3 为已完成（已完成签到签退且活动负责人已完结活动），默认 0；按 hasMore/nextPage 翻页。取消报名前先查询本接口，并使用返回记录中的真实 activityId。
             operationId: CampusLifeService_ListMyActivities
             security:
                 - BearerAuth: []
@@ -4677,6 +4677,7 @@ paths:
             tags:
                 - CampusLifeService
             summary: 按真实寝室绑定宿舍电表
+            description: 请求体字段必须使用 rooms 接口返回的数字 room_id；禁止使用 roomId、寝室号或 meter_id 代替。
             operationId: CampusLifeService_BindRoom
             security:
                 - BearerAuth: []
@@ -10252,6 +10253,8 @@ components:
                 bound:
                     type: boolean
         BindRoomRequestBody:
+            required:
+                - room_id
             type: object
             properties:
                 room_id:

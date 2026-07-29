@@ -965,7 +965,7 @@ type BindProviderStatus struct {
 
 // BindRoomRequestBody defines model for BindRoomRequestBody.
 type BindRoomRequestBody struct {
-	RoomId *int64 `json:"room_id,omitempty"`
+	RoomId int64 `json:"room_id"`
 }
 
 // BindSocialRequestBody defines model for BindSocialRequestBody.
