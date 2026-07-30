@@ -15452,11 +15452,21 @@ components:
                 unitName:
                     type: string
                     description: 学院名称
-                student:
-                    $ref: '#/components/schemas/StudentInfo'
+                classId:
+                    type: string
+                    description: 学籍字段：仅学生填充
+                majorId:
+                    type: string
+                majorName:
+                    type: string
+                teacherId:
+                    type: string
+                teacherName:
+                    type: string
             description: |-
-                PersonInfoData 伞形人员信息：基础字段全员返回；student 学籍视图按 staff_type
-                判别，仅学生（本科/研究生）填充，教职工为空。
+                PersonInfoData 伞形人员信息：单层平铺。基础字段全员返回；学籍字段（班级/专业/
+                辅导员）按 staff_type 判别，仅学生（本科/研究生）填充，教职工留空。
+                学院用 unitCode + unitName 一对表示，不再有同物异名的 unitId。
         PersonInfoResponseBody:
             type: object
             properties:
@@ -17678,30 +17688,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        StudentInfo:
-            type: object
-            properties:
-                staffId:
-                    type: string
-                staffName:
-                    type: string
-                classId:
-                    type: string
-                unitId:
-                    type: string
-                unitName:
-                    type: string
-                majorId:
-                    type: string
-                majorName:
-                    type: string
-                teacherId:
-                    type: string
-                teacherName:
-                    type: string
-            description: |-
-                StudentInfo 学籍视图（班级/学院/专业/辅导员），仅当人员类别为学生时随伞形
-                PersonInfoData 返回。
         StudentNeedyInfo:
             type: object
             properties:

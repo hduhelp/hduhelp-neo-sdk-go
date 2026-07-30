@@ -4504,19 +4504,22 @@ type PersonInfo struct {
 	UnitName *string `json:"unitName,omitempty"`
 }
 
-// PersonInfoData PersonInfoData 伞形人员信息：基础字段全员返回；student 学籍视图按 staff_type
-// 判别，仅学生（本科/研究生）填充，教职工为空。
+// PersonInfoData PersonInfoData 伞形人员信息：单层平铺。基础字段全员返回；学籍字段（班级/专业/
+// 辅导员）按 staff_type 判别，仅学生（本科/研究生）填充，教职工留空。
+// 学院用 unitCode + unitName 一对表示，不再有同物异名的 unitId。
 type PersonInfoData struct {
-	Grade      *string `json:"grade,omitempty"`
-	StaffId    *string `json:"staffId,omitempty"`
-	StaffName  *string `json:"staffName,omitempty"`
-	StaffState *string `json:"staffState,omitempty"`
-	StaffType  *string `json:"staffType,omitempty"`
-
-	// Student StudentInfo 学籍视图（班级/学院/专业/辅导员），仅当人员类别为学生时随伞形
-	// PersonInfoData 返回。
-	Student  *StudentInfo `json:"student,omitempty"`
-	UnitCode *string      `json:"unitCode,omitempty"`
+	// ClassId 学籍字段：仅学生填充
+	ClassId     *string `json:"classId,omitempty"`
+	Grade       *string `json:"grade,omitempty"`
+	MajorId     *string `json:"majorId,omitempty"`
+	MajorName   *string `json:"majorName,omitempty"`
+	StaffId     *string `json:"staffId,omitempty"`
+	StaffName   *string `json:"staffName,omitempty"`
+	StaffState  *string `json:"staffState,omitempty"`
+	StaffType   *string `json:"staffType,omitempty"`
+	TeacherId   *string `json:"teacherId,omitempty"`
+	TeacherName *string `json:"teacherName,omitempty"`
+	UnitCode    *string `json:"unitCode,omitempty"`
 
 	// UnitName 学院名称
 	UnitName *string `json:"unitName,omitempty"`
@@ -4526,8 +4529,9 @@ type PersonInfoData struct {
 type PersonInfoResponseBody struct {
 	Code *int64 `json:"code,omitempty"`
 
-	// Data PersonInfoData 伞形人员信息：基础字段全员返回；student 学籍视图按 staff_type
-	// 判别，仅学生（本科/研究生）填充，教职工为空。
+	// Data PersonInfoData 伞形人员信息：单层平铺。基础字段全员返回；学籍字段（班级/专业/
+	// 辅导员）按 staff_type 判别，仅学生（本科/研究生）填充，教职工留空。
+	// 学院用 unitCode + unitName 一对表示，不再有同物异名的 unitId。
 	Data *PersonInfoData `json:"data,omitempty"`
 	Msg  *string         `json:"msg,omitempty"`
 }
@@ -6043,20 +6047,6 @@ type StudentGradeResponseBody struct {
 	Code *int64            `json:"code,omitempty"`
 	Data *StudentGradeData `json:"data,omitempty"`
 	Msg  *string           `json:"msg,omitempty"`
-}
-
-// StudentInfo StudentInfo 学籍视图（班级/学院/专业/辅导员），仅当人员类别为学生时随伞形
-// PersonInfoData 返回。
-type StudentInfo struct {
-	ClassId     *string `json:"classId,omitempty"`
-	MajorId     *string `json:"majorId,omitempty"`
-	MajorName   *string `json:"majorName,omitempty"`
-	StaffId     *string `json:"staffId,omitempty"`
-	StaffName   *string `json:"staffName,omitempty"`
-	TeacherId   *string `json:"teacherId,omitempty"`
-	TeacherName *string `json:"teacherName,omitempty"`
-	UnitId      *string `json:"unitId,omitempty"`
-	UnitName    *string `json:"unitName,omitempty"`
 }
 
 // StudentNeedyInfo defines model for StudentNeedyInfo.
