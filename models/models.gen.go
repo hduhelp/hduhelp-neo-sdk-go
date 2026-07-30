@@ -1631,7 +1631,11 @@ type ConfigItem struct {
 	IsSecret    *bool     `json:"isSecret,omitempty"`
 	Key         *string   `json:"key,omitempty"`
 	Name        *string   `json:"name,omitempty"`
-	Value       *string   `json:"value,omitempty"`
+
+	// RequiresRestart requiresRestart 为 true 时，改动只有在后端重启后才生效——该配置在启动阶段读取一次。
+	// 前端必须显著提示，否则运营会以为保存即生效。
+	RequiresRestart *bool   `json:"requiresRestart,omitempty"`
+	Value           *string `json:"value,omitempty"`
 
 	// ValueType string|secret|bool|enum|json 渲染类型
 	ValueType *string `json:"valueType,omitempty"`
