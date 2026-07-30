@@ -1648,6 +1648,18 @@ type ConfigListResponseBody struct {
 	Msg  *string       `json:"msg,omitempty"`
 }
 
+// Course defines model for Course.
+type Course struct {
+	Classroom    *string `json:"classroom,omitempty"`
+	CourseName   *string `json:"course_name,omitempty"`
+	Duration     *string `json:"duration,omitempty"`
+	EndSection   *int32  `json:"end_section,omitempty"`
+	EndTime      *string `json:"end_time,omitempty"`
+	StartSection *int32  `json:"start_section,omitempty"`
+	StartTime    *string `json:"start_time,omitempty"`
+	Teacher      *string `json:"teacher,omitempty"`
+}
+
 // CourseGroupItem 某教学班的课程信息（含排课段）+ 内嵌该班已建的群；供课程群页面一次取全，
 // 替代"拉整张课表 + 逐班查群"。
 type CourseGroupItem struct {
@@ -2608,6 +2620,18 @@ type EventResultResponseBody struct {
 	Msg  *string          `json:"msg,omitempty"`
 }
 
+// Exam defines model for Exam.
+type Exam struct {
+	Classroom      *string `json:"classroom,omitempty"`
+	Course         *string `json:"course,omitempty"`
+	MonthAndDay    *string `json:"monthAndDay,omitempty"`
+	Seat           *string `json:"seat,omitempty"`
+	StartTimestamp *int64  `json:"startTimestamp,omitempty"`
+	Status         *string `json:"status,omitempty"`
+	Time           *string `json:"time,omitempty"`
+	Year           *string `json:"year,omitempty"`
+}
+
 // ExamItem ExamItem 是信息流考试卡片中的一场考试。
 type ExamItem struct {
 	Classroom  *string `json:"classroom,omitempty"`
@@ -2619,6 +2643,13 @@ type ExamItem struct {
 	SelectCode *string `json:"selectCode,omitempty"`
 	Semester   *string `json:"semester,omitempty"`
 	StaffId    *string `json:"staffId,omitempty"`
+}
+
+// ExamResponseBody defines model for ExamResponseBody.
+type ExamResponseBody struct {
+	Code    *int64  `json:"code,omitempty"`
+	Data    *[]Exam `json:"data,omitempty"`
+	Message *string `json:"message,omitempty"`
 }
 
 // FaqEntry FAQ 单条录入结构。
@@ -3074,6 +3105,25 @@ type GlobalStudentGradeResponseBody struct {
 	Code *int64                `json:"code,omitempty"`
 	Data *[]GlobalStudentGrade `json:"data,omitempty"`
 	Msg  *string               `json:"msg,omitempty"`
+}
+
+// Grade defines model for Grade.
+type Grade struct {
+	GPA             *string `json:"GPA,omitempty"`
+	Course          *string `json:"course,omitempty"`
+	CourseCode      *string `json:"courseCode,omitempty"`
+	Credit          *string `json:"credit,omitempty"`
+	SchoolYear      *string `json:"schoolYear,omitempty"`
+	Score           *string `json:"score,omitempty"`
+	ScoreDaily      *string `json:"scoreDaily,omitempty"`
+	ScoreFinal      *string `json:"scoreFinal,omitempty"`
+	ScoreMidTerm    *string `json:"scoreMidTerm,omitempty"`
+	ScorePractice   *string `json:"scorePractice,omitempty"`
+	ScoreSubstitute *string `json:"scoreSubstitute,omitempty"`
+	SelectCode      *string `json:"selectCode,omitempty"`
+	Semester        *string `json:"semester,omitempty"`
+	StaffId         *string `json:"staffId,omitempty"`
+	StaffName       *string `json:"staffName,omitempty"`
 }
 
 // GradeCount GradeCount 单个年级前缀的学生人数。
@@ -4536,6 +4586,12 @@ type PersonInfoResponseBody struct {
 	Msg  *string         `json:"msg,omitempty"`
 }
 
+// PingResponseBody defines model for PingResponseBody.
+type PingResponseBody struct {
+	Code    *int64  `json:"code,omitempty"`
+	Message *string `json:"message,omitempty"`
+}
+
 // PolicyProfile defines model for PolicyProfile.
 type PolicyProfile struct {
 	CreatedAt       *int64          `json:"createdAt,omitempty"`
@@ -5118,6 +5174,12 @@ type ScheduleCourse struct {
 	Teacher      *string `json:"teacher,omitempty"`
 }
 
+// ScheduleData defines model for ScheduleData.
+type ScheduleData struct {
+	Today    *[]Course `json:"today,omitempty"`
+	Tomorrow *[]Course `json:"tomorrow,omitempty"`
+}
+
 // ScheduleIcsResponseBody defines model for ScheduleIcsResponseBody.
 type ScheduleIcsResponseBody struct {
 	Calendar *string `json:"calendar,omitempty"`
@@ -5228,6 +5290,14 @@ type SchoolRollStatusResponseBody struct {
 	Msg  *string           `json:"msg,omitempty"`
 }
 
+// SchoolTime defines model for SchoolTime.
+type SchoolTime struct {
+	SchoolYear *string `json:"schoolYear,omitempty"`
+	Semester   *string `json:"semester,omitempty"`
+	WeekDayNow *string `json:"weekDayNow,omitempty"`
+	WeekNow    *string `json:"weekNow,omitempty"`
+}
+
 // SchoolTimeData ==================== 校历时间（公开，无需学号） ====================
 type SchoolTimeData struct {
 	// SchoolYear 学年全称，如 2025-2026
@@ -5263,6 +5333,13 @@ type ScopeListResponseBody struct {
 	Code *int64           `json:"code,omitempty"`
 	Data *[]AdminScopeDef `json:"data,omitempty"`
 	Msg  *string          `json:"msg,omitempty"`
+}
+
+// ScoreResponseBody defines model for ScoreResponseBody.
+type ScoreResponseBody struct {
+	Code    *int64   `json:"code,omitempty"`
+	Data    *[]Grade `json:"data,omitempty"`
+	Message *string  `json:"message,omitempty"`
 }
 
 // ScoresCard ScoresCard 是信息流成绩卡片负载。
@@ -6413,6 +6490,13 @@ type TestConnectionRequestBody struct {
 type TestConnectionResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
+}
+
+// TimeResponseBody defines model for TimeResponseBody.
+type TimeResponseBody struct {
+	Code    *int64      `json:"code,omitempty"`
+	Data    *SchoolTime `json:"data,omitempty"`
+	Message *string     `json:"message,omitempty"`
 }
 
 // TimeSlotStat defines model for TimeSlotStat.

@@ -7,6 +7,200 @@ info:
     description: API description
     version: 0.0.1
 paths:
+    /dingtalk/exam:
+        get:
+            tags:
+                - DingTalkWorkbenchService
+            summary: 钉钉工作台考试（旧契约兼容）
+            operationId: DingTalkWorkbenchService_DingTalkExam
+            security: []
+            parameters:
+                - name: userId
+                  in: query
+                  schema:
+                    type: string
+                - name: corpId
+                  in: query
+                  schema:
+                    type: string
+                - name: x-ddpaas-signature-timestamp
+                  in: header
+                  schema:
+                    type: string
+                - name: x-ddpaas-signature
+                  in: header
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExamResponseBody'
+            x-hduhelp-http: {'auth': 'webhook', 'catalog': 'exclude'}
+    /dingtalk/infoStream:
+        get:
+            tags:
+                - DingTalkWorkbenchService
+            summary: 钉钉工作台聚合信息流（旧契约兼容）
+            description: 聚合未来六天课表、电费、校园卡和校历；单个数据源失败时省略对应字段。
+            operationId: DingTalkWorkbenchService_DingTalkInfoStream
+            security: []
+            parameters:
+                - name: userId
+                  in: query
+                  schema:
+                    type: string
+                - name: corpId
+                  in: query
+                  schema:
+                    type: string
+                - name: x-ddpaas-signature-timestamp
+                  in: header
+                  schema:
+                    type: string
+                - name: x-ddpaas-signature
+                  in: header
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InfoStreamResponseBody'
+            x-hduhelp-http: {'auth': 'webhook', 'catalog': 'exclude'}
+    /dingtalk/ping:
+        get:
+            tags:
+                - DingTalkWorkbenchService
+            summary: 钉钉工作台数据源探活（旧契约兼容）
+            description: 使用 x-ddpaas-signature-timestamp 与 x-ddpaas-signature 验签。
+            operationId: DingTalkWorkbenchService_DingTalkPing
+            security: []
+            parameters:
+                - name: userId
+                  in: query
+                  schema:
+                    type: string
+                - name: corpId
+                  in: query
+                  schema:
+                    type: string
+                - name: x-ddpaas-signature-timestamp
+                  in: header
+                  schema:
+                    type: string
+                - name: x-ddpaas-signature
+                  in: header
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PingResponseBody'
+            x-hduhelp-http: {'auth': 'webhook', 'catalog': 'exclude'}
+    /dingtalk/schedule/now:
+        get:
+            tags:
+                - DingTalkWorkbenchService
+            summary: 钉钉工作台今明课表（旧契约兼容）
+            operationId: DingTalkWorkbenchService_DingTalkScheduleNow
+            security: []
+            parameters:
+                - name: userId
+                  in: query
+                  schema:
+                    type: string
+                - name: corpId
+                  in: query
+                  schema:
+                    type: string
+                - name: x-ddpaas-signature-timestamp
+                  in: header
+                  schema:
+                    type: string
+                - name: x-ddpaas-signature
+                  in: header
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ScheduleResponseBody'
+            x-hduhelp-http: {'auth': 'webhook', 'catalog': 'exclude'}
+    /dingtalk/score:
+        get:
+            tags:
+                - DingTalkWorkbenchService
+            summary: 钉钉工作台成绩（旧契约兼容）
+            operationId: DingTalkWorkbenchService_DingTalkScore
+            security: []
+            parameters:
+                - name: userId
+                  in: query
+                  schema:
+                    type: string
+                - name: corpId
+                  in: query
+                  schema:
+                    type: string
+                - name: x-ddpaas-signature-timestamp
+                  in: header
+                  schema:
+                    type: string
+                - name: x-ddpaas-signature
+                  in: header
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ScoreResponseBody'
+            x-hduhelp-http: {'auth': 'webhook', 'catalog': 'exclude'}
+    /dingtalk/time:
+        get:
+            tags:
+                - DingTalkWorkbenchService
+            summary: 钉钉工作台校历时间（旧契约兼容）
+            operationId: DingTalkWorkbenchService_DingTalkSchoolTime
+            security: []
+            parameters:
+                - name: userId
+                  in: query
+                  schema:
+                    type: string
+                - name: corpId
+                  in: query
+                  schema:
+                    type: string
+                - name: x-ddpaas-signature-timestamp
+                  in: header
+                  schema:
+                    type: string
+                - name: x-ddpaas-signature
+                  in: header
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TimeResponseBody'
+            x-hduhelp-http: {'auth': 'webhook', 'catalog': 'exclude'}
     /hduhelp-neo/academic/city-code:
         get:
             tags:
@@ -11235,6 +11429,27 @@ components:
                     format: int64
                 msg:
                     type: string
+        Course:
+            type: object
+            properties:
+                start_section:
+                    type: integer
+                    format: int32
+                end_section:
+                    type: integer
+                    format: int32
+                start_time:
+                    type: string
+                end_time:
+                    type: string
+                course_name:
+                    type: string
+                classroom:
+                    type: string
+                teacher:
+                    type: string
+                duration:
+                    type: string
         CourseGroupItem:
             type: object
             properties:
@@ -12618,6 +12833,26 @@ components:
                     format: int64
                 msg:
                     type: string
+        Exam:
+            type: object
+            properties:
+                course:
+                    type: string
+                classroom:
+                    type: string
+                seat:
+                    type: string
+                year:
+                    type: string
+                monthAndDay:
+                    type: string
+                time:
+                    type: string
+                startTimestamp:
+                    type: integer
+                    format: int64
+                status:
+                    type: string
         ExamItem:
             type: object
             properties:
@@ -12640,6 +12875,18 @@ components:
                 seat:
                     type: string
             description: ExamItem 是信息流考试卡片中的一场考试。
+        ExamResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Exam'
+                code:
+                    type: integer
+                    format: int64
+                message:
+                    type: string
         FaqEntry:
             type: object
             properties:
@@ -13318,6 +13565,39 @@ components:
                     type: integer
                     format: int64
                 msg:
+                    type: string
+        Grade:
+            type: object
+            properties:
+                schoolYear:
+                    type: string
+                semester:
+                    type: string
+                selectCode:
+                    type: string
+                score:
+                    type: string
+                scoreDaily:
+                    type: string
+                scoreMidTerm:
+                    type: string
+                scoreFinal:
+                    type: string
+                scoreSubstitute:
+                    type: string
+                scorePractice:
+                    type: string
+                courseCode:
+                    type: string
+                course:
+                    type: string
+                staffId:
+                    type: string
+                staffName:
+                    type: string
+                credit:
+                    type: string
+                GPA:
                     type: string
         GradeCount:
             type: object
@@ -15477,6 +15757,14 @@ components:
                     format: int64
                 msg:
                     type: string
+        PingResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                message:
+                    type: string
         PolicyProfile:
             type: object
             properties:
@@ -16305,6 +16593,17 @@ components:
             description: |-
                 ===== 今日/明日课表（now）=====
                 ScheduleCourse 单节课，含节次与上下课时间。
+        ScheduleData:
+            type: object
+            properties:
+                today:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Course'
+                tomorrow:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Course'
         ScheduleIcsResponseBody:
             type: object
             properties:
@@ -16454,6 +16753,17 @@ components:
                     format: int64
                 msg:
                     type: string
+        SchoolTime:
+            type: object
+            properties:
+                schoolYear:
+                    type: string
+                semester:
+                    type: string
+                weekDayNow:
+                    type: string
+                weekNow:
+                    type: string
         SchoolTimeData:
             type: object
             properties:
@@ -16501,6 +16811,18 @@ components:
                     type: integer
                     format: int64
                 msg:
+                    type: string
+        ScoreResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Grade'
+                code:
+                    type: integer
+                    format: int64
+                message:
                     type: string
         ScoresCard:
             type: object
@@ -18223,6 +18545,16 @@ components:
                     format: int64
                 msg:
                     type: string
+        TimeResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/SchoolTime'
+                code:
+                    type: integer
+                    format: int64
+                message:
+                    type: string
         TimeSlotStat:
             type: object
             properties:
@@ -19080,6 +19412,7 @@ tags:
     - name: AdminNoticeService
     - name: AdminService
     - name: CampusLifeService
+    - name: DingTalkWorkbenchService
     - name: EmptyScheduleService
     - name: FeedService
     - name: GraduateService
