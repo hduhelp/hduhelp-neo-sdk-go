@@ -1946,6 +1946,27 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ListAuditResponseBody'
+    /hduhelp-neo/admin/knowledge/carriers/download-url:
+        get:
+            tags:
+                - KnowledgeService
+            summary: 获取文件下载地址
+            description: 按载体中保存的稳定对象 key 即时生成短期下载 URL；每次下载前重新请求
+            operationId: KnowledgeService_AdminCarrierDownloadURL
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: carrier_id
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CarrierDownloadURLResponseBody'
     /hduhelp-neo/admin/knowledge/chunks:
         get:
             tags:
@@ -2929,22 +2950,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/MutateOkResponseBody'
-    /hduhelp-neo/admin/knowledge/upload:
-        post:
-            tags:
-                - KnowledgeService
-            summary: 上传文件
-            description: OSS 环境先以 direct=prepare 获取短期 PUT URL，直传后以 direct=complete 确认；local 环境返回 40025 并回退 multipart 字段 file。返回可访问 url/key，供正文引用
-            operationId: KnowledgeService_AdminUploadFile
-            security:
-                - OperatorBearerAuth: []
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/UploadFileResponseBody'
     /hduhelp-neo/admin/login:
         post:
             tags:
@@ -3969,6 +3974,64 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SetTenantEnabledResponseBody'
+    /hduhelp-neo/admin/upload:
+        post:
+            tags:
+                - UploadService
+            summary: 上传文件(运营兜底)
+            description: multipart 表单字段 file；用于本地 fs 等不支持签名直传的存储。
+            operationId: UploadService_AdminUpload
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: usage
+                  in: query
+                  description: 可选业务分组(仅记录/审计)
+                  schema:
+                    type: string
+            requestBody:
+                description: |-
+                    UploadRequest keeps the runtime query value and the multipart contract in one
+                    source of truth. The handler reads the file with c.FormFile because Hertz's
+                    generated string binding does not represent a multipart.FileHeader; the
+                    OpenAPI override correctly publishes the field as a binary upload.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UploadRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UploadResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/upload/sign:
+        post:
+            tags:
+                - UploadService
+            summary: 签发直传地址(运营)
+            description: operator 版签发直传地址，语义同 /upload/sign。
+            operationId: UploadService_AdminSignUpload
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                description: |-
+                    签名直传：sign 校验元数据、为后端生成对象 key、签发短期 PUT URL，并同时预登记元数据行。
+                    客户端不得自行指定 key；PUT 到 uploadUrl 完成后即可用 key 引用，无需二次回调。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SignUploadRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SignUploadResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/users:
         get:
             tags:
@@ -4131,7 +4194,7 @@ paths:
             tags:
                 - AdminService
             summary: 设置用户主身份
-            description: 管理员把用户默认身份切换为游客或其已绑定的本科生/研究生/教职工身份
+            description: 管理员把用户默认身份切换为游客或其已绑定的本科生/第二学位/研究生/教职工身份
             operationId: AdminService_SetUserDefaultIdentity
             security:
                 - OperatorBearerAuth: []
@@ -6929,7 +6992,7 @@ paths:
             tags:
                 - IdentityService
             summary: 切换当前会话身份
-            description: 把当前原生 session 固定切换到 base/本科生/研究生/教职工身份；非 base 身份必须已绑定。只影响当前设备，不修改默认身份，也不轮换 token。
+            description: 把当前原生 session 固定切换到 base/本科生/第二学位/研究生/教职工身份；非 base 身份必须已绑定。只影响当前设备，不修改默认身份，也不轮换 token。
             operationId: IdentityService_SwitchSessionIdentity
             security:
                 - NativeSessionAuth: []
@@ -7068,14 +7131,14 @@ paths:
             tags:
                 - IdentityService
             summary: 解绑校园身份
-            description: 解绑当前用户指定类型（本科/研究生/教职工）的校园身份。staff_type 唯一定位该用户的一条校园身份。解绑最后一种登录方式时拒绝。仅原生会话可调用。
+            description: 解绑当前用户指定类型（本科/第二学位/研究生/教职工）的校园身份。staff_type 唯一定位该用户的一条校园身份。解绑最后一种登录方式时拒绝。仅原生会话可调用。
             operationId: IdentityService_UnbindCampus
             security:
                 - NativeSessionAuth: []
             parameters:
                 - name: staff_type
                   in: query
-                  description: base 除外的校园身份类型：undergraduate|graduate|staff 或数字码 1|2|3
+                  description: base 除外的校园身份类型：undergraduate|undergraduate_second_degree|graduate|staff 或数字码 1|2|3|4
                   schema:
                     type: string
             responses:
@@ -7156,7 +7219,7 @@ paths:
             tags:
                 - IdentityService
             summary: 设置默认主身份
-            description: 把 base/本科生/研究生/教职工设为当前用户的默认身份；校园身份必须已绑定，同时同步 campus_identities.is_primary。为兼容旧版客户端，原生 session 调用默认同时切换当前 session；新版仅设置默认时发送 X-HDUHelp-Default-Only:true。需要用户 Bearer。
+            description: 把 base/本科生/第二学位/研究生/教职工设为当前用户的默认身份；校园身份必须已绑定，同时同步 campus_identities.is_primary。为兼容旧版客户端，原生 session 调用默认同时切换当前 session；新版仅设置默认时发送 X-HDUHelp-Default-Only:true。需要用户 Bearer。
             operationId: IdentityService_SetDefaultIdentity
             security:
                 - BearerAuth: []
@@ -8590,39 +8653,31 @@ paths:
                                 type: string
                                 format: binary
             x-hduhelp-cli: {'response_content_type': 'application/octet-stream'}
+    /hduhelp-neo/upload/sign:
         post:
             tags:
                 - UploadService
-            summary: 上传文件
-            description: multipart 表单字段 file(兼容 content);返回 url/key/size/contentType。需用户身份(session 或 UAT), 第三方需 upload:file:write。
-            operationId: UploadService_Upload
+            summary: 签发直传地址
+            description: 校验 filename/size/content_type 后生成对象 key 与短期 PUT URL，并预登记元数据行；客户端 PUT 到该 URL 即可用 key 引用，无需回调。第三方用户令牌需携带 upload:file:write。
+            operationId: UploadService_SignUpload
             security:
                 - BearerAuth: []
-            parameters:
-                - name: usage
-                  in: query
-                  description: 可选业务分组(仅记录/审计)
-                  schema:
-                    type: string
             requestBody:
-                required: true
                 description: |-
-                    UploadRequest keeps the runtime query value and the multipart contract in one
-                    source of truth. The handler reads the file with c.FormFile because Hertz's
-                    generated string binding does not represent a multipart.FileHeader; the
-                    OpenAPI override correctly publishes the field as a binary upload.
+                    签名直传：sign 校验元数据、为后端生成对象 key、签发短期 PUT URL，并同时预登记元数据行。
+                    客户端不得自行指定 key；PUT 到 uploadUrl 完成后即可用 key 引用，无需二次回调。
                 content:
-                    multipart/form-data:
+                    application/json:
                         schema:
-                            $ref: '#/components/schemas/UploadRequestBody'
+                            $ref: '#/components/schemas/SignUploadRequestBody'
             responses:
                 "200":
                     description: Successful response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/UploadResponseBody'
-            x-hduhelp-cli: {'request_content_type': 'multipart/form-data', 'file_field': 'file', 'auth': 'bearer'}
+                                $ref: '#/components/schemas/SignUploadResponseBody'
+            x-hduhelp-cli: {'auth': 'bearer'}
     /hduhelp-neo/volunteer/creator-activities:
         get:
             tags:
@@ -9993,7 +10048,7 @@ components:
         AttachFileRequestBody:
             type: object
             properties:
-                file_url:
+                upload_key:
                     type: string
                 file_name:
                     type: string
@@ -10944,6 +10999,21 @@ components:
                     type: boolean
                 updatePrivateDataByKey:
                     type: boolean
+        CarrierDownloadURLData:
+            type: object
+            properties:
+                url:
+                    type: string
+        CarrierDownloadURLResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/CarrierDownloadURLData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         CarrierResponseBody:
             type: object
             properties:
@@ -11844,6 +11914,9 @@ components:
                 visibility:
                     type: string
                     description: public | internal；空=internal
+                upload_key:
+                    type: string
+                    description: 'kind=file: 上传接口返回的稳定对象Key'
         CreateLoginClientRequestBody:
             type: object
             properties:
@@ -17394,7 +17467,7 @@ components:
             properties:
                 identity_type:
                     type: string
-                    description: base|undergraduate|graduate|staff
+                    description: base|undergraduate|undergraduate_second_degree|graduate|staff
         SetDefaultIdentityResponseBody:
             type: object
             properties:
@@ -17476,7 +17549,7 @@ components:
                     type: string
                 identity_type:
                     type: string
-                    description: base|undergraduate|graduate|staff
+                    description: base|undergraduate|undergraduate_second_degree|graduate|staff
         SetUserDefaultIdentityResponseBody:
             type: object
             properties:
@@ -17715,6 +17788,39 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/SharedLibraryReportData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        SignUploadData:
+            type: object
+            properties:
+                upload_url:
+                    type: string
+                key:
+                    type: string
+                expires_at:
+                    type: integer
+                    format: int64
+        SignUploadRequestBody:
+            type: object
+            properties:
+                filename:
+                    type: string
+                size:
+                    type: integer
+                    format: int64
+                content_type:
+                    type: string
+                usage:
+                    type: string
+                    description: 可选业务分组(仅记录/审计)
+        SignUploadResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/SignUploadData'
                 code:
                     type: integer
                     format: int64
@@ -18312,7 +18418,7 @@ components:
             properties:
                 identity_type:
                     type: string
-                    description: base|undergraduate|graduate|staff
+                    description: base|undergraduate|undergraduate_second_degree|graduate|staff
         SwitchSessionIdentityResponseBody:
             type: object
             properties:
@@ -18929,29 +19035,6 @@ components:
                 UploadData mirrors the legacy lemon_api_gateway image-upload response
                 ({URL, Size}) extended with the server-generated object key and sniffed
                 content type.
-        UploadFileData:
-            type: object
-            properties:
-                url:
-                    type: string
-                key:
-                    type: string
-                size:
-                    type: integer
-                    format: int64
-                contentType:
-                    type: string
-            description: 文件上传（图片/附件转存）：OSS 前端直传，local 环境回退 multipart
-        UploadFileResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/UploadFileData'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
         UploadRequestBody:
             required:
                 - file
@@ -18982,7 +19065,7 @@ components:
                     type: string
                 staff_type:
                     type: string
-                    description: undergraduate|graduate|staff 或 1|2|3
+                    description: undergraduate|undergraduate_second_degree|graduate|staff 或 1|2|3|4
                 staff_name:
                     type: string
                 school:
@@ -19120,7 +19203,7 @@ components:
                     description: 学号/工号
                 staffType:
                     type: string
-                    description: base|undergraduate|graduate|staff
+                    description: base|undergraduate|undergraduate_second_degree|graduate|staff
                 staffName:
                     type: string
                     description: 姓名

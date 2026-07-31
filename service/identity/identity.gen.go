@@ -1784,7 +1784,7 @@ func NewUnbindCampusReqBuilder() *UnbindCampusReqBuilder {
 	return &UnbindCampusReqBuilder{req: &UnbindCampusReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// StaffType sets the "staff_type" query parameter: base 除外的校园身份类型：undergraduate|graduate|staff 或数字码 1|2|3
+// StaffType sets the "staff_type" query parameter: base 除外的校园身份类型：undergraduate|undergraduate_second_degree|graduate|staff 或数字码 1|2|3|4
 func (b *UnbindCampusReqBuilder) StaffType(v string) *UnbindCampusReqBuilder {
 	b.req.queryParams["staff_type"] = v
 	return b

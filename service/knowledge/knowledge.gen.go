@@ -86,6 +86,52 @@ func (s *Service) AdminListAudit(ctx context.Context, req *AdminListAuditReq, op
 	return resp, err
 }
 
+// AdminCarrierDownloadURLReq is the request for AdminCarrierDownloadURL.
+type AdminCarrierDownloadURLReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminCarrierDownloadURLReqBuilder builds a AdminCarrierDownloadURLReq with a fluent setter per field.
+type AdminCarrierDownloadURLReqBuilder struct{ req *AdminCarrierDownloadURLReq }
+
+// NewAdminCarrierDownloadURLReqBuilder creates a request builder for AdminCarrierDownloadURL.
+func NewAdminCarrierDownloadURLReqBuilder() *AdminCarrierDownloadURLReqBuilder {
+	return &AdminCarrierDownloadURLReqBuilder{req: &AdminCarrierDownloadURLReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// CarrierId sets the "carrier_id" query parameter.
+func (b *AdminCarrierDownloadURLReqBuilder) CarrierId(v string) *AdminCarrierDownloadURLReqBuilder {
+	b.req.queryParams["carrier_id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminCarrierDownloadURLReqBuilder) Build() *AdminCarrierDownloadURLReq { return b.req }
+
+// AdminCarrierDownloadURLResp is the response for AdminCarrierDownloadURL.
+type AdminCarrierDownloadURLResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.CarrierDownloadURLData `json:"data"`
+}
+
+// AdminCarrierDownloadURL: 获取文件下载地址
+func (s *Service) AdminCarrierDownloadURL(ctx context.Context, req *AdminCarrierDownloadURLReq, opts ...core.RequestOption) (*AdminCarrierDownloadURLResp, error) {
+	resp := &AdminCarrierDownloadURLResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/knowledge/carriers/download-url",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // AdminListChunksReq is the request for AdminListChunks.
 type AdminListChunksReq struct {
 	pathParams  map[string]string
@@ -2128,46 +2174,6 @@ func (s *Service) AdminSetTaggingTarget(ctx context.Context, req *AdminSetTaggin
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "PUT",
 		PathTemplate: "/hduhelp-neo/admin/knowledge/tagging-target",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// AdminUploadFileReq is the request for AdminUploadFile.
-type AdminUploadFileReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// AdminUploadFileReqBuilder builds a AdminUploadFileReq with a fluent setter per field.
-type AdminUploadFileReqBuilder struct{ req *AdminUploadFileReq }
-
-// NewAdminUploadFileReqBuilder creates a request builder for AdminUploadFile.
-func NewAdminUploadFileReqBuilder() *AdminUploadFileReqBuilder {
-	return &AdminUploadFileReqBuilder{req: &AdminUploadFileReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Build finalizes the request.
-func (b *AdminUploadFileReqBuilder) Build() *AdminUploadFileReq { return b.req }
-
-// AdminUploadFileResp is the response for AdminUploadFile.
-type AdminUploadFileResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.UploadFileData `json:"data"`
-}
-
-// AdminUploadFile: 上传文件
-func (s *Service) AdminUploadFile(ctx context.Context, req *AdminUploadFileReq, opts ...core.RequestOption) (*AdminUploadFileResp, error) {
-	resp := &AdminUploadFileResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/admin/knowledge/upload",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

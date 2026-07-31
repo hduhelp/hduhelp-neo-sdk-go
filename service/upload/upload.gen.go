@@ -15,6 +15,104 @@ type Service struct{ config *core.Config }
 // NewService binds the Upload service to a client config.
 func NewService(config *core.Config) *Service { return &Service{config: config} }
 
+// AdminUploadReq is the request for AdminUpload.
+type AdminUploadReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminUploadReqBuilder builds a AdminUploadReq with a fluent setter per field.
+type AdminUploadReqBuilder struct{ req *AdminUploadReq }
+
+// NewAdminUploadReqBuilder creates a request builder for AdminUpload.
+func NewAdminUploadReqBuilder() *AdminUploadReqBuilder {
+	return &AdminUploadReqBuilder{req: &AdminUploadReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Usage sets the "usage" query parameter: 可选业务分组(仅记录/审计)
+func (b *AdminUploadReqBuilder) Usage(v string) *AdminUploadReqBuilder {
+	b.req.queryParams["usage"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AdminUploadReqBuilder) Body(body *models.UploadRequestBody) *AdminUploadReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminUploadReqBuilder) Build() *AdminUploadReq { return b.req }
+
+// AdminUploadResp is the response for AdminUpload.
+type AdminUploadResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.UploadData `json:"data"`
+}
+
+// AdminUpload: 上传文件(运营兜底)
+func (s *Service) AdminUpload(ctx context.Context, req *AdminUploadReq, opts ...core.RequestOption) (*AdminUploadResp, error) {
+	resp := &AdminUploadResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/upload",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminSignUploadReq is the request for AdminSignUpload.
+type AdminSignUploadReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminSignUploadReqBuilder builds a AdminSignUploadReq with a fluent setter per field.
+type AdminSignUploadReqBuilder struct{ req *AdminSignUploadReq }
+
+// NewAdminSignUploadReqBuilder creates a request builder for AdminSignUpload.
+func NewAdminSignUploadReqBuilder() *AdminSignUploadReqBuilder {
+	return &AdminSignUploadReqBuilder{req: &AdminSignUploadReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *AdminSignUploadReqBuilder) Body(body *models.SignUploadRequestBody) *AdminSignUploadReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminSignUploadReqBuilder) Build() *AdminSignUploadReq { return b.req }
+
+// AdminSignUploadResp is the response for AdminSignUpload.
+type AdminSignUploadResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.SignUploadData `json:"data"`
+}
+
+// AdminSignUpload: 签发直传地址(运营)
+func (s *Service) AdminSignUpload(ctx context.Context, req *AdminSignUploadReq, opts ...core.RequestOption) (*AdminSignUploadResp, error) {
+	resp := &AdminSignUploadResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/upload/sign",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // DownloadReq is the request for Download.
 type DownloadReq struct {
 	pathParams  map[string]string
@@ -60,44 +158,44 @@ func (s *Service) Download(ctx context.Context, req *DownloadReq, opts ...core.R
 	return resp, err
 }
 
-// UploadReq is the request for Upload.
-type UploadReq struct {
+// SignUploadReq is the request for SignUpload.
+type SignUploadReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// UploadReqBuilder builds a UploadReq with a fluent setter per field.
-type UploadReqBuilder struct{ req *UploadReq }
+// SignUploadReqBuilder builds a SignUploadReq with a fluent setter per field.
+type SignUploadReqBuilder struct{ req *SignUploadReq }
 
-// NewUploadReqBuilder creates a request builder for Upload.
-func NewUploadReqBuilder() *UploadReqBuilder {
-	return &UploadReqBuilder{req: &UploadReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewSignUploadReqBuilder creates a request builder for SignUpload.
+func NewSignUploadReqBuilder() *SignUploadReqBuilder {
+	return &SignUploadReqBuilder{req: &SignUploadReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// Usage sets the "usage" query parameter: 可选业务分组(仅记录/审计)
-func (b *UploadReqBuilder) Usage(v string) *UploadReqBuilder {
-	b.req.queryParams["usage"] = v
+// Body sets the request body.
+func (b *SignUploadReqBuilder) Body(body *models.SignUploadRequestBody) *SignUploadReqBuilder {
+	b.req.body = body
 	return b
 }
 
 // Build finalizes the request.
-func (b *UploadReqBuilder) Build() *UploadReq { return b.req }
+func (b *SignUploadReqBuilder) Build() *SignUploadReq { return b.req }
 
-// UploadResp is the response for Upload.
-type UploadResp struct {
+// SignUploadResp is the response for SignUpload.
+type SignUploadResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.UploadData `json:"data"`
+	Data *models.SignUploadData `json:"data"`
 }
 
-// Upload: 上传文件
-func (s *Service) Upload(ctx context.Context, req *UploadReq, opts ...core.RequestOption) (*UploadResp, error) {
-	resp := &UploadResp{}
+// SignUpload: 签发直传地址
+func (s *Service) SignUpload(ctx context.Context, req *SignUploadReq, opts ...core.RequestOption) (*SignUploadResp, error) {
+	resp := &SignUploadResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/upload",
+		PathTemplate: "/hduhelp-neo/upload/sign",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

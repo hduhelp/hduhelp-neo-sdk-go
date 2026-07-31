@@ -627,8 +627,8 @@ type ApproveDeviceRespBody struct {
 
 // AttachFileRequestBody defines model for AttachFileRequestBody.
 type AttachFileRequestBody struct {
-	FileName *string `json:"file_name,omitempty"`
-	FileUrl  *string `json:"file_url,omitempty"`
+	FileName  *string `json:"file_name,omitempty"`
+	UploadKey *string `json:"upload_key,omitempty"`
 }
 
 // AttendanceStats defines model for AttendanceStats.
@@ -1305,6 +1305,18 @@ type CardUpdateOptions struct {
 	UpdatePrivateDataByKey *bool `json:"updatePrivateDataByKey,omitempty"`
 }
 
+// CarrierDownloadURLData defines model for CarrierDownloadURLData.
+type CarrierDownloadURLData struct {
+	Url *string `json:"url,omitempty"`
+}
+
+// CarrierDownloadURLResponseBody defines model for CarrierDownloadURLResponseBody.
+type CarrierDownloadURLResponseBody struct {
+	Code *int64                  `json:"code,omitempty"`
+	Data *CarrierDownloadURLData `json:"data,omitempty"`
+	Msg  *string                 `json:"msg,omitempty"`
+}
+
 // CarrierResponseBody defines model for CarrierResponseBody.
 type CarrierResponseBody struct {
 	Code *int64 `json:"code,omitempty"`
@@ -1911,9 +1923,12 @@ type CreateItemRequestBody struct {
 	SourceId *string `json:"source_id,omitempty"`
 
 	// Tags 主题标签
-	Tags       *[]string `json:"tags,omitempty"`
-	Title      *string   `json:"title,omitempty"`
-	ValidUntil *int64    `json:"valid_until,omitempty"`
+	Tags  *[]string `json:"tags,omitempty"`
+	Title *string   `json:"title,omitempty"`
+
+	// UploadKey kind=file: 上传接口返回的稳定对象Key
+	UploadKey  *string `json:"upload_key,omitempty"`
+	ValidUntil *int64  `json:"valid_until,omitempty"`
 
 	// Visibility public | internal；空=internal
 	Visibility *string `json:"visibility,omitempty"`
@@ -5733,7 +5748,7 @@ type SetCurrentCampusResponseBody struct {
 
 // SetDefaultIdentityRequestBody defines model for SetDefaultIdentityRequestBody.
 type SetDefaultIdentityRequestBody struct {
-	// IdentityType base|undergraduate|graduate|staff
+	// IdentityType base|undergraduate|undergraduate_second_degree|graduate|staff
 	IdentityType *string `json:"identity_type,omitempty"`
 }
 
@@ -5798,7 +5813,7 @@ type SetTenantEnabledResponseBody struct {
 
 // SetUserDefaultIdentityRequestBody defines model for SetUserDefaultIdentityRequestBody.
 type SetUserDefaultIdentityRequestBody struct {
-	// IdentityType base|undergraduate|graduate|staff
+	// IdentityType base|undergraduate|undergraduate_second_degree|graduate|staff
 	IdentityType *string `json:"identity_type,omitempty"`
 	UserId       *string `json:"user_id,omitempty"`
 }
@@ -5924,6 +5939,30 @@ type SharedLibraryReportResponseBody struct {
 	Code int64                    `json:"code"`
 	Data *SharedLibraryReportData `json:"data,omitempty"`
 	Msg  string                   `json:"msg"`
+}
+
+// SignUploadData defines model for SignUploadData.
+type SignUploadData struct {
+	ExpiresAt *int64  `json:"expires_at,omitempty"`
+	Key       *string `json:"key,omitempty"`
+	UploadUrl *string `json:"upload_url,omitempty"`
+}
+
+// SignUploadRequestBody defines model for SignUploadRequestBody.
+type SignUploadRequestBody struct {
+	ContentType *string `json:"content_type,omitempty"`
+	Filename    *string `json:"filename,omitempty"`
+	Size        *int64  `json:"size,omitempty"`
+
+	// Usage 可选业务分组(仅记录/审计)
+	Usage *string `json:"usage,omitempty"`
+}
+
+// SignUploadResponseBody defines model for SignUploadResponseBody.
+type SignUploadResponseBody struct {
+	Code *int64          `json:"code,omitempty"`
+	Data *SignUploadData `json:"data,omitempty"`
+	Msg  *string         `json:"msg,omitempty"`
 }
 
 // SimpleResponseBody defines model for SimpleResponseBody.
@@ -6324,7 +6363,7 @@ type SwitchSessionIdentityData struct {
 
 // SwitchSessionIdentityRequestBody defines model for SwitchSessionIdentityRequestBody.
 type SwitchSessionIdentityRequestBody struct {
-	// IdentityType base|undergraduate|graduate|staff
+	// IdentityType base|undergraduate|undergraduate_second_degree|graduate|staff
 	IdentityType *string `json:"identity_type,omitempty"`
 }
 
@@ -6747,23 +6786,6 @@ type UploadData struct {
 	Url         *string `json:"url,omitempty"`
 }
 
-// UploadFileData 文件上传（图片/附件转存）：OSS 前端直传，local 环境回退 multipart
-type UploadFileData struct {
-	ContentType *string `json:"contentType,omitempty"`
-	Key         *string `json:"key,omitempty"`
-	Size        *int64  `json:"size,omitempty"`
-	Url         *string `json:"url,omitempty"`
-}
-
-// UploadFileResponseBody defines model for UploadFileResponseBody.
-type UploadFileResponseBody struct {
-	Code *int64 `json:"code,omitempty"`
-
-	// Data 文件上传（图片/附件转存）：OSS 前端直传，local 环境回退 multipart
-	Data *UploadFileData `json:"data,omitempty"`
-	Msg  *string         `json:"msg,omitempty"`
-}
-
 // UploadRequestBody defines model for UploadRequestBody.
 type UploadRequestBody struct {
 	// File File bytes uploaded as multipart field file.
@@ -6792,7 +6814,7 @@ type UpsertUserCampusIdentityRequestBody struct {
 	StaffId         *string `json:"staff_id,omitempty"`
 	StaffName       *string `json:"staff_name,omitempty"`
 
-	// StaffType undergraduate|graduate|staff 或 1|2|3
+	// StaffType undergraduate|undergraduate_second_degree|graduate|staff 或 1|2|3|4
 	StaffType *string `json:"staff_type,omitempty"`
 	UserId    *string `json:"user_id,omitempty"`
 }
@@ -6883,7 +6905,7 @@ type UserDetailCampusIdentity struct {
 	// StaffName 姓名
 	StaffName *string `json:"staffName,omitempty"`
 
-	// StaffType base|undergraduate|graduate|staff
+	// StaffType base|undergraduate|undergraduate_second_degree|graduate|staff
 	StaffType *string `json:"staffType,omitempty"`
 }
 
@@ -7387,6 +7409,11 @@ type KnowledgeServiceAdminListAuditParams struct {
 	Size       *int32  `form:"size,omitempty" json:"size,omitempty"`
 }
 
+// KnowledgeServiceAdminCarrierDownloadURLParams defines parameters for KnowledgeServiceAdminCarrierDownloadURL.
+type KnowledgeServiceAdminCarrierDownloadURLParams struct {
+	CarrierId *string `form:"carrier_id,omitempty" json:"carrier_id,omitempty"`
+}
+
 // KnowledgeServiceAdminDeleteChunkParams defines parameters for KnowledgeServiceAdminDeleteChunk.
 type KnowledgeServiceAdminDeleteChunkParams struct {
 	CarrierId *string `form:"carrier_id,omitempty" json:"carrier_id,omitempty"`
@@ -7614,6 +7641,12 @@ type AdminServiceResetOperatorPasswordParams struct {
 // AdminServiceSetTenantEnabledParams defines parameters for AdminServiceSetTenantEnabled.
 type AdminServiceSetTenantEnabledParams struct {
 	Id *string `form:"id,omitempty" json:"id,omitempty"`
+}
+
+// UploadServiceAdminUploadParams defines parameters for UploadServiceAdminUpload.
+type UploadServiceAdminUploadParams struct {
+	// Usage 可选业务分组(仅记录/审计)
+	Usage *string `form:"usage,omitempty" json:"usage,omitempty"`
 }
 
 // AdminServiceSearchUsersParams defines parameters for AdminServiceSearchUsers.
@@ -8028,7 +8061,7 @@ type IdentityServiceRevokeAuthorizedAppParams struct {
 
 // IdentityServiceUnbindCampusParams defines parameters for IdentityServiceUnbindCampus.
 type IdentityServiceUnbindCampusParams struct {
-	// StaffType base 除外的校园身份类型：undergraduate|graduate|staff 或数字码 1|2|3
+	// StaffType base 除外的校园身份类型：undergraduate|undergraduate_second_degree|graduate|staff 或数字码 1|2|3|4
 	StaffType *string `form:"staff_type,omitempty" json:"staff_type,omitempty"`
 }
 
@@ -8281,12 +8314,6 @@ type UploadServiceDownloadParams struct {
 	Key string `form:"key" json:"key"`
 }
 
-// UploadServiceUploadParams defines parameters for UploadServiceUpload.
-type UploadServiceUploadParams struct {
-	// Usage 可选业务分组(仅记录/审计)
-	Usage *string `form:"usage,omitempty" json:"usage,omitempty"`
-}
-
 // VolunteerServiceListMyVolunteerActivitiesParams defines parameters for VolunteerServiceListMyVolunteerActivities.
 type VolunteerServiceListMyVolunteerActivitiesParams struct {
 	Page            *int32  `form:"page,omitempty" json:"page,omitempty"`
@@ -8501,6 +8528,12 @@ type AdminServiceSetTenantEnabledJSONRequestBody = SetTenantEnabledRequestBody
 
 // AdminServiceCreateTenantJSONRequestBody defines body for AdminServiceCreateTenant for application/json ContentType.
 type AdminServiceCreateTenantJSONRequestBody = CreateTenantRequestBody
+
+// UploadServiceAdminUploadJSONRequestBody defines body for UploadServiceAdminUpload for application/json ContentType.
+type UploadServiceAdminUploadJSONRequestBody = UploadRequestBody
+
+// UploadServiceAdminSignUploadJSONRequestBody defines body for UploadServiceAdminSignUpload for application/json ContentType.
+type UploadServiceAdminSignUploadJSONRequestBody = SignUploadRequestBody
 
 // AdminServiceSetUserStatusJSONRequestBody defines body for AdminServiceSetUserStatus for application/json ContentType.
 type AdminServiceSetUserStatusJSONRequestBody = SetUserStatusRequestBody
@@ -8727,8 +8760,8 @@ type SubscriptionServiceSubscribeJSONRequestBody = SubscribeRequestBody
 // SubscriptionServiceUpdateSubscriptionJSONRequestBody defines body for SubscriptionServiceUpdateSubscription for application/json ContentType.
 type SubscriptionServiceUpdateSubscriptionJSONRequestBody = UpdateSubscriptionRequestBody
 
-// UploadServiceUploadMultipartRequestBody defines body for UploadServiceUpload for multipart/form-data ContentType.
-type UploadServiceUploadMultipartRequestBody = UploadRequestBody
+// UploadServiceSignUploadJSONRequestBody defines body for UploadServiceSignUpload for application/json ContentType.
+type UploadServiceSignUploadJSONRequestBody = SignUploadRequestBody
 
 // VolunteerServiceCreateVolunteerActivityJSONRequestBody defines body for VolunteerServiceCreateVolunteerActivity for application/json ContentType.
 type VolunteerServiceCreateVolunteerActivityJSONRequestBody = CreateActivityRequestBody
