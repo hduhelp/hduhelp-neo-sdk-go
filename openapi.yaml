@@ -3912,6 +3912,156 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ScopeListResponseBody'
+    /hduhelp-neo/admin/site-announcements:
+        get:
+            tags:
+                - SiteAnnouncementService
+            operationId: SiteAnnouncementService_ListSiteAnnouncements
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SiteAnnouncementPageResponseBody'
+        post:
+            tags:
+                - SiteAnnouncementService
+            operationId: SiteAnnouncementService_CreateSiteAnnouncement
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateSiteAnnouncementRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SiteAnnouncementResponseBody'
+    /hduhelp-neo/admin/site-announcements/{id}:
+        get:
+            tags:
+                - SiteAnnouncementService
+            operationId: SiteAnnouncementService_GetSiteAnnouncement
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SiteAnnouncementResponseBody'
+        put:
+            tags:
+                - SiteAnnouncementService
+            operationId: SiteAnnouncementService_UpdateSiteAnnouncement
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateSiteAnnouncementRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SiteAnnouncementResponseBody'
+        delete:
+            tags:
+                - SiteAnnouncementService
+            operationId: SiteAnnouncementService_DeleteSiteAnnouncement
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SiteAnnouncementMutationResponseBody'
+    /hduhelp-neo/admin/site-announcements/{id}/archive:
+        post:
+            tags:
+                - SiteAnnouncementService
+            operationId: SiteAnnouncementService_ArchiveSiteAnnouncement
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SiteAnnouncementResponseBody'
+    /hduhelp-neo/admin/site-announcements/{id}/publish:
+        post:
+            tags:
+                - SiteAnnouncementService
+            operationId: SiteAnnouncementService_PublishSiteAnnouncement
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SiteAnnouncementResponseBody'
     /hduhelp-neo/admin/tenants:
         get:
             tags:
@@ -8461,6 +8611,22 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/AuthenUserInfoRespBody'
             x-hduhelp-http: {'auth': 'uat'}
+    /hduhelp-neo/site-announcements/active:
+        get:
+            tags:
+                - SiteAnnouncementService
+            summary: 当前全站公告
+            operationId: SiteAnnouncementService_GetActiveSiteAnnouncement
+            security:
+                - NativeSessionAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SiteAnnouncementResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/subscription/sunrun/detail:
         get:
             tags:
@@ -12096,6 +12262,11 @@ components:
                     format: int64
                 msg:
                     type: string
+        CreateSiteAnnouncementRequestBody:
+            type: object
+            properties:
+                announcement:
+                    $ref: '#/components/schemas/EditableSiteAnnouncement'
         CreateSourceRequestBody:
             type: object
             properties:
@@ -12619,6 +12790,16 @@ components:
                     type: integer
                     format: int64
                 expires_at:
+                    type: integer
+                    format: int64
+        EditableSiteAnnouncement:
+            type: object
+            properties:
+                title:
+                    type: string
+                body:
+                    type: string
+                expired_at:
                     type: integer
                     format: int64
         ElectricBalanceData:
@@ -17834,6 +18015,72 @@ components:
                     format: int64
                 msg:
                     type: string
+        SiteAnnouncement:
+            type: object
+            properties:
+                id:
+                    type: string
+                title:
+                    type: string
+                body:
+                    type: string
+                status:
+                    type: string
+                expiredAt:
+                    type: integer
+                    format: int64
+                createdBy:
+                    type: string
+                createdAt:
+                    type: integer
+                    format: int64
+                updatedAt:
+                    type: integer
+                    format: int64
+        SiteAnnouncementMutationResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        SiteAnnouncementPage:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SiteAnnouncement'
+                total:
+                    type: integer
+                    format: int64
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+        SiteAnnouncementPageResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/SiteAnnouncementPage'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        SiteAnnouncementResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/SiteAnnouncement'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         Slot:
             type: object
             properties:
@@ -19005,6 +19252,11 @@ components:
                     description: erke | library
                 enabled:
                     type: boolean
+        UpdateSiteAnnouncementRequestBody:
+            type: object
+            properties:
+                announcement:
+                    $ref: '#/components/schemas/EditableSiteAnnouncement'
         UpdateSourceRequestBody:
             type: object
             properties:
@@ -19515,6 +19767,7 @@ tags:
     - name: LibraryBookingService
     - name: MessagingService
     - name: NotificationService
+    - name: SiteAnnouncementService
     - name: SubscriptionService
     - name: UploadService
     - name: VolunteerService

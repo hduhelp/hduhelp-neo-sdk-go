@@ -20,6 +20,7 @@ import (
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/librarybooking"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/messaging"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/notification"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/siteannouncement"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/subscription"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/upload"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/volunteer"
@@ -30,24 +31,25 @@ import (
 type Client struct {
 	config *core.Config
 
-	Academic       *academic.Service
-	Admin          *admin.Service
-	AdminNotice    *adminnotice.Service
-	CampusLife     *campuslife.Service
-	EmptySchedule  *emptyschedule.Service
-	Feed           *feed.Service
-	Graduate       *graduate.Service
-	GroupChat      *groupchat.Service
-	Health         *health.Service
-	Identity       *identity.Service
-	Inbox          *inbox.Service
-	Knowledge      *knowledge.Service
-	LibraryBooking *librarybooking.Service
-	Messaging      *messaging.Service
-	Notification   *notification.Service
-	Subscription   *subscription.Service
-	Upload         *upload.Service
-	Volunteer      *volunteer.Service
+	Academic         *academic.Service
+	Admin            *admin.Service
+	AdminNotice      *adminnotice.Service
+	CampusLife       *campuslife.Service
+	EmptySchedule    *emptyschedule.Service
+	Feed             *feed.Service
+	Graduate         *graduate.Service
+	GroupChat        *groupchat.Service
+	Health           *health.Service
+	Identity         *identity.Service
+	Inbox            *inbox.Service
+	Knowledge        *knowledge.Service
+	LibraryBooking   *librarybooking.Service
+	Messaging        *messaging.Service
+	Notification     *notification.Service
+	SiteAnnouncement *siteannouncement.Service
+	Subscription     *subscription.Service
+	Upload           *upload.Service
+	Volunteer        *volunteer.Service
 }
 
 // attachServices wires every generated service to the client config.
@@ -67,6 +69,7 @@ func attachServices(c *Client) {
 	c.LibraryBooking = librarybooking.NewService(c.config)
 	c.Messaging = messaging.NewService(c.config)
 	c.Notification = notification.NewService(c.config)
+	c.SiteAnnouncement = siteannouncement.NewService(c.config)
 	c.Subscription = subscription.NewService(c.config)
 	c.Upload = upload.NewService(c.config)
 	c.Volunteer = volunteer.NewService(c.config)

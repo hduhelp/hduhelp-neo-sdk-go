@@ -2060,6 +2060,11 @@ type CreateRoomResponseBody struct {
 	Msg  *string   `json:"msg,omitempty"`
 }
 
+// CreateSiteAnnouncementRequestBody defines model for CreateSiteAnnouncementRequestBody.
+type CreateSiteAnnouncementRequestBody struct {
+	Announcement *EditableSiteAnnouncement `json:"announcement,omitempty"`
+}
+
 // CreateSourceRequestBody defines model for CreateSourceRequestBody.
 type CreateSourceRequestBody struct {
 	// Key 稳定 key，创建后不可改
@@ -2438,6 +2443,13 @@ type EditableNotice struct {
 	Summary       *string       `json:"summary,omitempty"`
 	TargetUserIds *[]string     `json:"target_user_ids,omitempty"`
 	Title         *string       `json:"title,omitempty"`
+}
+
+// EditableSiteAnnouncement defines model for EditableSiteAnnouncement.
+type EditableSiteAnnouncement struct {
+	Body      *string `json:"body,omitempty"`
+	ExpiredAt *int64  `json:"expired_at,omitempty"`
+	Title     *string `json:"title,omitempty"`
 }
 
 // ElectricBalanceData ---- 电费余额（当前绑定电表 + 寝室归属） ----
@@ -5971,6 +5983,46 @@ type SimpleResponseBody struct {
 	Msg  *string `json:"msg,omitempty"`
 }
 
+// SiteAnnouncement defines model for SiteAnnouncement.
+type SiteAnnouncement struct {
+	Body      *string `json:"body,omitempty"`
+	CreatedAt *int64  `json:"createdAt,omitempty"`
+	CreatedBy *string `json:"createdBy,omitempty"`
+	ExpiredAt *int64  `json:"expiredAt,omitempty"`
+	Id        *string `json:"id,omitempty"`
+	Status    *string `json:"status,omitempty"`
+	Title     *string `json:"title,omitempty"`
+	UpdatedAt *int64  `json:"updatedAt,omitempty"`
+}
+
+// SiteAnnouncementMutationResponseBody defines model for SiteAnnouncementMutationResponseBody.
+type SiteAnnouncementMutationResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
+// SiteAnnouncementPage defines model for SiteAnnouncementPage.
+type SiteAnnouncementPage struct {
+	Items    *[]SiteAnnouncement `json:"items,omitempty"`
+	Page     *int32              `json:"page,omitempty"`
+	PageSize *int32              `json:"pageSize,omitempty"`
+	Total    *int64              `json:"total,omitempty"`
+}
+
+// SiteAnnouncementPageResponseBody defines model for SiteAnnouncementPageResponseBody.
+type SiteAnnouncementPageResponseBody struct {
+	Code *int64                `json:"code,omitempty"`
+	Data *SiteAnnouncementPage `json:"data,omitempty"`
+	Msg  *string               `json:"msg,omitempty"`
+}
+
+// SiteAnnouncementResponseBody defines model for SiteAnnouncementResponseBody.
+type SiteAnnouncementResponseBody struct {
+	Code *int64            `json:"code,omitempty"`
+	Data *SiteAnnouncement `json:"data,omitempty"`
+	Msg  *string           `json:"msg,omitempty"`
+}
+
 // Slot defines model for Slot.
 type Slot struct {
 	Day    *int32 `json:"day,omitempty"`
@@ -6762,6 +6814,11 @@ type UpdateServiceAuthorizationNotificationRequestBody struct {
 
 	// Type erke | library
 	Type *string `json:"type,omitempty"`
+}
+
+// UpdateSiteAnnouncementRequestBody defines model for UpdateSiteAnnouncementRequestBody.
+type UpdateSiteAnnouncementRequestBody struct {
+	Announcement *EditableSiteAnnouncement `json:"announcement,omitempty"`
 }
 
 // UpdateSourceRequestBody defines model for UpdateSourceRequestBody.
@@ -7636,6 +7693,13 @@ type AdminServiceSetOperatorEnabledParams struct {
 // AdminServiceResetOperatorPasswordParams defines parameters for AdminServiceResetOperatorPassword.
 type AdminServiceResetOperatorPasswordParams struct {
 	Id *string `form:"id,omitempty" json:"id,omitempty"`
+}
+
+// SiteAnnouncementServiceListSiteAnnouncementsParams defines parameters for SiteAnnouncementServiceListSiteAnnouncements.
+type SiteAnnouncementServiceListSiteAnnouncementsParams struct {
+	Page     *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+	Status   *string `form:"status,omitempty" json:"status,omitempty"`
 }
 
 // AdminServiceSetTenantEnabledParams defines parameters for AdminServiceSetTenantEnabled.
@@ -8522,6 +8586,12 @@ type AdminServiceResetOperatorPasswordJSONRequestBody = ResetOperatorPasswordReq
 
 // AdminServiceAdminRefreshJSONRequestBody defines body for AdminServiceAdminRefresh for application/json ContentType.
 type AdminServiceAdminRefreshJSONRequestBody = AdminRefreshRequestBody
+
+// SiteAnnouncementServiceCreateSiteAnnouncementJSONRequestBody defines body for SiteAnnouncementServiceCreateSiteAnnouncement for application/json ContentType.
+type SiteAnnouncementServiceCreateSiteAnnouncementJSONRequestBody = CreateSiteAnnouncementRequestBody
+
+// SiteAnnouncementServiceUpdateSiteAnnouncementJSONRequestBody defines body for SiteAnnouncementServiceUpdateSiteAnnouncement for application/json ContentType.
+type SiteAnnouncementServiceUpdateSiteAnnouncementJSONRequestBody = UpdateSiteAnnouncementRequestBody
 
 // AdminServiceSetTenantEnabledJSONRequestBody defines body for AdminServiceSetTenantEnabled for application/json ContentType.
 type AdminServiceSetTenantEnabledJSONRequestBody = SetTenantEnabledRequestBody
