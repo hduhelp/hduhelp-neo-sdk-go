@@ -6217,6 +6217,41 @@ type StudentGradeResponseBody struct {
 	Msg  *string           `json:"msg,omitempty"`
 }
 
+// StudentHistoryClassMemberItem defines model for StudentHistoryClassMemberItem.
+type StudentHistoryClassMemberItem struct {
+	ClassNo     *string `json:"classNo,omitempty"`
+	StudentId   *string `json:"studentId,omitempty"`
+	StudentName *string `json:"studentName,omitempty"`
+}
+
+// StudentHistoryClassMembersResponseBody defines model for StudentHistoryClassMembersResponseBody.
+type StudentHistoryClassMembersResponseBody struct {
+	Code *int64                           `json:"code,omitempty"`
+	Data *[]StudentHistoryClassMemberItem `json:"data,omitempty"`
+	Msg  *string                          `json:"msg,omitempty"`
+}
+
+// StudentHistoryMajorInfoItem defines model for StudentHistoryMajorInfoItem.
+type StudentHistoryMajorInfoItem struct {
+	ClassNo     *string `json:"classNo,omitempty"`
+	Grade       *string `json:"grade,omitempty"`
+	Major       *string `json:"major,omitempty"`
+	MajorCode   *string `json:"majorCode,omitempty"`
+	SchoolYear  *string `json:"schoolYear,omitempty"`
+	Semester    *string `json:"semester,omitempty"`
+	StudentId   *string `json:"studentId,omitempty"`
+	StudentName *string `json:"studentName,omitempty"`
+	UnitId      *string `json:"unitId,omitempty"`
+	UnitName    *string `json:"unitName,omitempty"`
+}
+
+// StudentHistoryMajorInfoResponseBody defines model for StudentHistoryMajorInfoResponseBody.
+type StudentHistoryMajorInfoResponseBody struct {
+	Code *int64                         `json:"code,omitempty"`
+	Data *[]StudentHistoryMajorInfoItem `json:"data,omitempty"`
+	Msg  *string                        `json:"msg,omitempty"`
+}
+
 // StudentNeedyInfo defines model for StudentNeedyInfo.
 type StudentNeedyInfo struct {
 	Items        *[]NeedyItem `json:"items,omitempty"`
@@ -7386,6 +7421,18 @@ type AcademicServiceStudentSchoolRollStatusParams struct {
 type AcademicServiceSemesterListByDateParams struct {
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
 	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
+}
+
+// AcademicServiceStudentHistoryClassMembersParams defines parameters for AcademicServiceStudentHistoryClassMembers.
+type AcademicServiceStudentHistoryClassMembersParams struct {
+	SchoolYear *string   `form:"school_year,omitempty" json:"school_year,omitempty"`
+	Semester   *string   `form:"semester,omitempty" json:"semester,omitempty"`
+	ClassNo    *[]string `form:"class_no,omitempty" json:"class_no,omitempty"`
+}
+
+// AcademicServiceStudentHistoryMajorInfoParams defines parameters for AcademicServiceStudentHistoryMajorInfo.
+type AcademicServiceStudentHistoryMajorInfoParams struct {
+	StudentId *string `form:"student_id,omitempty" json:"student_id,omitempty"`
 }
 
 // AcademicServiceTeachingClassParams defines parameters for AcademicServiceTeachingClass.

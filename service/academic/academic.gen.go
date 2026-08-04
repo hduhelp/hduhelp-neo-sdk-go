@@ -2243,6 +2243,112 @@ func (s *Service) SchoolTime(ctx context.Context, req *SchoolTimeReq, opts ...co
 	return resp, err
 }
 
+// StudentHistoryClassMembersReq is the request for StudentHistoryClassMembers.
+type StudentHistoryClassMembersReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// StudentHistoryClassMembersReqBuilder builds a StudentHistoryClassMembersReq with a fluent setter per field.
+type StudentHistoryClassMembersReqBuilder struct {
+	req *StudentHistoryClassMembersReq
+}
+
+// NewStudentHistoryClassMembersReqBuilder creates a request builder for StudentHistoryClassMembers.
+func NewStudentHistoryClassMembersReqBuilder() *StudentHistoryClassMembersReqBuilder {
+	return &StudentHistoryClassMembersReqBuilder{req: &StudentHistoryClassMembersReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// SchoolYear sets the "school_year" query parameter.
+func (b *StudentHistoryClassMembersReqBuilder) SchoolYear(v string) *StudentHistoryClassMembersReqBuilder {
+	b.req.queryParams["school_year"] = v
+	return b
+}
+
+// Semester sets the "semester" query parameter.
+func (b *StudentHistoryClassMembersReqBuilder) Semester(v string) *StudentHistoryClassMembersReqBuilder {
+	b.req.queryParams["semester"] = v
+	return b
+}
+
+// ClassNo sets the "class_no" query parameter.
+func (b *StudentHistoryClassMembersReqBuilder) ClassNo(v []string) *StudentHistoryClassMembersReqBuilder {
+	b.req.queryParams["class_no"] = strings.Join(v, ",")
+	return b
+}
+
+// Build finalizes the request.
+func (b *StudentHistoryClassMembersReqBuilder) Build() *StudentHistoryClassMembersReq { return b.req }
+
+// StudentHistoryClassMembersResp is the response for StudentHistoryClassMembers.
+type StudentHistoryClassMembersResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.StudentHistoryClassMemberItem `json:"data"`
+}
+
+// StudentHistoryClassMembers: 按班级查询历史学生名单
+func (s *Service) StudentHistoryClassMembers(ctx context.Context, req *StudentHistoryClassMembersReq, opts ...core.RequestOption) (*StudentHistoryClassMembersResp, error) {
+	resp := &StudentHistoryClassMembersResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/student-history/class-members",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// StudentHistoryMajorInfoReq is the request for StudentHistoryMajorInfo.
+type StudentHistoryMajorInfoReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// StudentHistoryMajorInfoReqBuilder builds a StudentHistoryMajorInfoReq with a fluent setter per field.
+type StudentHistoryMajorInfoReqBuilder struct{ req *StudentHistoryMajorInfoReq }
+
+// NewStudentHistoryMajorInfoReqBuilder creates a request builder for StudentHistoryMajorInfo.
+func NewStudentHistoryMajorInfoReqBuilder() *StudentHistoryMajorInfoReqBuilder {
+	return &StudentHistoryMajorInfoReqBuilder{req: &StudentHistoryMajorInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StudentId sets the "student_id" query parameter.
+func (b *StudentHistoryMajorInfoReqBuilder) StudentId(v string) *StudentHistoryMajorInfoReqBuilder {
+	b.req.queryParams["student_id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *StudentHistoryMajorInfoReqBuilder) Build() *StudentHistoryMajorInfoReq { return b.req }
+
+// StudentHistoryMajorInfoResp is the response for StudentHistoryMajorInfo.
+type StudentHistoryMajorInfoResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.StudentHistoryMajorInfoItem `json:"data"`
+}
+
+// StudentHistoryMajorInfo: 获取学生历史专业信息
+func (s *Service) StudentHistoryMajorInfo(ctx context.Context, req *StudentHistoryMajorInfoReq, opts ...core.RequestOption) (*StudentHistoryMajorInfoResp, error) {
+	resp := &StudentHistoryMajorInfoResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/student-history/major-info",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // TeachingClassReq is the request for TeachingClass.
 type TeachingClassReq struct {
 	pathParams  map[string]string
