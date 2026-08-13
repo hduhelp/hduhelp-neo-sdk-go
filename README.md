@@ -63,7 +63,7 @@ the rest:
 ### App / tenant token (automatic)
 
 With app credentials the client fetches, caches, and auto-refreshes the
-`tenant_access_token` (via `/hduhelp-neo/open-apis/auth/v3/tenant_access_token/internal`)
+`tenant_access_token` (via `/hduhelp-neo/open-apis/auth/tenant-access-token/internal`)
 and injects it as `Authorization: Bearer <token>`. You never touch the token
 endpoint.
 
@@ -97,7 +97,9 @@ resp, err = client.Academic.Schedule(ctx, req, hduhelp.WithPAT(pat))
 
 Build an authorize URL with an S256 PKCE challenge, redirect the user, then
 exchange the returned `code` with the saved `code_verifier`. `UserTokenSource`
-auto-refreshes and rotates the refresh token.
+auto-refreshes and rotates the refresh token. `RedirectURI` is optional: when
+omitted, Neo uses the first redirect URI registered for the application. The
+authorization-code exchange follows Neo's form-encoded token contract.
 
 ```go
 auth := client.UserAuth()
@@ -131,9 +133,12 @@ identity from the token and does not need it. Each call returns a typed
 - `resp.Data` — the typed payload (`*models.X`, `[]models.X`, or a scalar).
 - `resp.StatusCode`, `resp.Header`, `resp.RawBody` — the raw transport result.
 
-Services: `client.Academic`, `client.Identity`, `client.Admin`,
-`client.CampusLife`, `client.EmptySchedule`, `client.GroupChat`, `client.Feed`,
-`client.Subscription`, `client.Graduate`, `client.Health`, `client.Upload`.
+Services: `client.Academic`, `client.Admin`, `client.AdminNotice`,
+`client.CampusLife`, `client.EmptySchedule`, `client.Feed`, `client.Graduate`,
+`client.GroupChat`, `client.Health`, `client.Identity`, `client.Inbox`,
+`client.Knowledge`, `client.LibraryBooking`, `client.Messaging`,
+`client.Notification`, `client.SiteAnnouncement`, `client.Subscription`, and
+`client.Upload`.
 
 ## Regenerating
 
@@ -148,16 +153,18 @@ edited in this repo by hand.
 
 ## Releasing
 
-This repository is a generated mirror; releases are driven from the upstream
-`hduhelp-neo` repository. Bump the `sdk` key in its `release.yml` and push to
-`main`: that pipeline regenerates the SDK from the upstream
-`swagger/openapi.yaml`, pushes the vendored `openapi.yaml` and generated client
-here, and creates the annotated tag `v<version>`. Tagging is the entire publish
-step for a Go module — consumers then run
+Generated SDK releases are driven from the upstream `hduhelp-neo` repository.
+Bump the `backend` key in its `release.yml` and push to `main`: the backend
+version also drives the Go SDK version. That pipeline clones this repository's
+current `main`, regenerates the SDK from the upstream `swagger/openapi.yaml`,
+commits any generated-file changes, and creates the annotated tag `v<version>`.
+Tagging is the entire publish step for a Go module — consumers then run
 `go get github.com/hduhelp/hduhelp-neo-sdk-go@v<version>`.
 
-The vendored `openapi.yaml`, the generated files, the version, and the tags are
-all owned by that pipeline. Do not edit them here by hand.
+The hand-written `core`, tests, and documentation are maintained in this
+repository. The vendored `openapi.yaml`, generated files, versions, and tags are
+owned by the upstream pipeline; do not edit those generated artifacts here by
+hand.
 
 ## License
 

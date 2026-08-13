@@ -10,9 +10,9 @@ import (
 )
 
 const (
-	pathAuthorize   = "/hduhelp-neo/open-apis/authen/v1/authorize"
-	pathAccessToken = "/hduhelp-neo/open-apis/authen/v1/access_token"
-	pathRefreshUser = "/hduhelp-neo/open-apis/authen/v1/refresh_access_token"
+	pathAuthorize   = "/hduhelp-neo/open-apis/authen/authorize"
+	pathAccessToken = "/hduhelp-neo/open-apis/authen/access-token"
+	pathRefreshUser = "/hduhelp-neo/open-apis/authen/refresh-access-token"
 )
 
 // AuthorizeParams configures the OAuth2 authorize URL.
@@ -49,7 +49,7 @@ type userTokenData struct {
 }
 
 // UserAuth drives the OAuth2 + PKCE user flow against the current
-// /hduhelp-neo/open-apis/authen/v1/* surface.
+// /hduhelp-neo/open-apis/authen/* surface.
 type UserAuth struct {
 	cfg *Config
 }
@@ -62,13 +62,12 @@ func (u *UserAuth) AuthorizeURL(p AuthorizeParams) (string, error) {
 	if u.cfg.AppID == "" {
 		return "", fmt.Errorf("hduhelp: AppID is required")
 	}
-	if p.RedirectURI == "" {
-		return "", fmt.Errorf("hduhelp: RedirectURI is required")
-	}
 	q := url.Values{}
 	q.Set("app_id", u.cfg.AppID)
-	q.Set("redirect_uri", p.RedirectURI)
 	q.Set("response_type", "code")
+	if p.RedirectURI != "" {
+		q.Set("redirect_uri", p.RedirectURI)
+	}
 	if p.PKCE.Challenge != "" {
 		method := p.PKCE.Method
 		if method == "" {
@@ -89,13 +88,13 @@ func (u *UserAuth) AuthorizeURL(p AuthorizeParams) (string, error) {
 // ExchangeCode swaps an authorization code plus its PKCE verifier for a user
 // token (RFC 7636 §4.5: the server recomputes the challenge from the verifier).
 func (u *UserAuth) ExchangeCode(ctx context.Context, code, codeVerifier string) (UserToken, error) {
-	return u.post(ctx, pathAccessToken, map[string]string{
-		"grant_type":    "authorization_code",
-		"app_id":        u.cfg.AppID,
-		"app_secret":    u.cfg.AppSecret,
-		"code":          code,
-		"code_verifier": codeVerifier,
-	})
+	payload := url.Values{}
+	payload.Set("grant_type", "authorization_code")
+	payload.Set("app_id", u.cfg.AppID)
+	payload.Set("app_secret", u.cfg.AppSecret)
+	payload.Set("code", code)
+	payload.Set("code_verifier", codeVerifier)
+	return u.postForm(ctx, pathAccessToken, payload)
 }
 
 // Refresh rotates a user token using its refresh token.
@@ -113,6 +112,18 @@ func (u *UserAuth) post(ctx context.Context, path string, payload map[string]str
 	if err != nil {
 		return UserToken{}, err
 	}
+	return decodeUserToken(data, path)
+}
+
+func (u *UserAuth) postForm(ctx context.Context, path string, payload url.Values) (UserToken, error) {
+	data, err := postFormEnvelope(ctx, u.cfg.httpClient(), u.cfg.baseURL()+path, payload)
+	if err != nil {
+		return UserToken{}, err
+	}
+	return decodeUserToken(data, path)
+}
+
+func decodeUserToken(data json.RawMessage, path string) (UserToken, error) {
 	var d userTokenData
 	if err := json.Unmarshal(data, &d); err != nil {
 		return UserToken{}, fmt.Errorf("hduhelp: decode user token data: %w", err)

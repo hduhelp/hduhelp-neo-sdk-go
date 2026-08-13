@@ -2,6 +2,7 @@ package core
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -11,8 +12,45 @@ import (
 	"time"
 )
 
-func tokenServer(hits *int64, expire int64, delay time.Duration) *httptest.Server {
+func TestApplicationTokenPathsMatchNeo(t *testing.T) {
+	if pathTenantToken != "/hduhelp-neo/open-apis/auth/tenant-access-token/internal" {
+		t.Fatalf("tenant token path = %q", pathTenantToken)
+	}
+	if pathAppToken != "/hduhelp-neo/open-apis/auth/app-access-token/internal" {
+		t.Fatalf("app token path = %q", pathAppToken)
+	}
+}
+
+func tokenServer(t *testing.T, hits *int64, expire int64, delay time.Duration) *httptest.Server {
+	t.Helper()
 	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			t.Errorf("tenant token method = %s, want POST", r.Method)
+			http.Error(w, "wrong method", http.StatusMethodNotAllowed)
+			return
+		}
+		const wantPath = "/hduhelp-neo/open-apis/auth/tenant-access-token/internal"
+		if r.URL.Path != wantPath {
+			t.Errorf("tenant token path = %q, want %q", r.URL.Path, wantPath)
+			http.NotFound(w, r)
+			return
+		}
+		if got := r.Header.Get("Content-Type"); got != "application/json" {
+			t.Errorf("tenant token Content-Type = %q, want application/json", got)
+			http.Error(w, "wrong content type", http.StatusUnsupportedMediaType)
+			return
+		}
+		var payload map[string]string
+		if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
+			t.Errorf("decode tenant token request: %v", err)
+			http.Error(w, "bad request", http.StatusBadRequest)
+			return
+		}
+		if payload["app_id"] != "a" || payload["app_secret"] != "s" {
+			t.Errorf("tenant token credentials = %#v", payload)
+			http.Error(w, "wrong credentials", http.StatusBadRequest)
+			return
+		}
 		if delay > 0 {
 			time.Sleep(delay)
 		}
@@ -24,7 +62,7 @@ func tokenServer(hits *int64, expire int64, delay time.Duration) *httptest.Serve
 
 func TestTenantTokenCachesUntilExpiry(t *testing.T) {
 	var hits int64
-	srv := tokenServer(&hits, 7200, 0)
+	srv := tokenServer(t, &hits, 7200, 0)
 	defer srv.Close()
 
 	cfg := NewConfig("a", "s", WithBaseURL(srv.URL))
@@ -44,7 +82,7 @@ func TestTenantTokenCachesUntilExpiry(t *testing.T) {
 
 func TestTenantTokenRefreshesAfterExpiry(t *testing.T) {
 	var hits int64
-	srv := tokenServer(&hits, 7200, 0)
+	srv := tokenServer(t, &hits, 7200, 0)
 	defer srv.Close()
 
 	cfg := NewConfig("a", "s", WithBaseURL(srv.URL))
@@ -68,7 +106,7 @@ func TestTenantTokenRefreshesAfterExpiry(t *testing.T) {
 
 func TestTenantTokenSingleFlight(t *testing.T) {
 	var hits int64
-	srv := tokenServer(&hits, 7200, 30*time.Millisecond)
+	srv := tokenServer(t, &hits, 7200, 30*time.Millisecond)
 	defer srv.Close()
 
 	cfg := NewConfig("a", "s", WithBaseURL(srv.URL))
@@ -135,7 +173,7 @@ func TestTokenContextHonoredWhileRefreshing(t *testing.T) {
 	// A slow endpoint: a caller with an already-cancelled context must not block
 	// on the in-flight refresh.
 	var hits int64
-	srv := tokenServer(&hits, 7200, 200*time.Millisecond)
+	srv := tokenServer(t, &hits, 7200, 200*time.Millisecond)
 	defer srv.Close()
 
 	cfg := NewConfig("a", "s", WithBaseURL(srv.URL))

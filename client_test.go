@@ -16,8 +16,13 @@ import (
 func fakeGateway(t *testing.T, gotAuth *string) *httptest.Server {
 	t.Helper()
 	mux := http.NewServeMux()
-	mux.HandleFunc("/hduhelp-neo/open-apis/auth/v3/tenant_access_token/internal",
+	mux.HandleFunc("/hduhelp-neo/open-apis/auth/tenant-access-token/internal",
 		func(w http.ResponseWriter, r *http.Request) {
+			if r.Method != http.MethodPost {
+				t.Errorf("tenant token method = %s, want POST", r.Method)
+				http.Error(w, "wrong method", http.StatusMethodNotAllowed)
+				return
+			}
 			w.Header().Set("Content-Type", "application/json")
 			_, _ = w.Write([]byte(`{"code":0,"msg":"ok","data":{"tenantAccessToken":"tat-xyz","expire":7200}}`))
 		})

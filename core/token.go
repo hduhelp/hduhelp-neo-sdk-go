@@ -7,14 +7,15 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"strings"
 	"sync"
 	"time"
 )
 
 const (
-	pathTenantToken = "/hduhelp-neo/open-apis/auth/v3/tenant_access_token/internal"
-	pathAppToken    = "/hduhelp-neo/open-apis/auth/v3/app_access_token/internal"
+	pathTenantToken = "/hduhelp-neo/open-apis/auth/tenant-access-token/internal"
+	pathAppToken    = "/hduhelp-neo/open-apis/auth/app-access-token/internal"
 
 	// earlyRefresh is how long before the server-reported expiry a cached token
 	// is proactively refreshed, absorbing clock skew and request latency.
@@ -85,11 +86,21 @@ func postEnvelope(ctx context.Context, hc *http.Client, url string, payload any)
 	if err != nil {
 		return nil, fmt.Errorf("hduhelp: marshal request: %w", err)
 	}
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(body))
+	return postEnvelopeBody(ctx, hc, url, "application/json", bytes.NewReader(body))
+}
+
+// postFormEnvelope POSTs an application/x-www-form-urlencoded payload and
+// decodes the same response envelope as postEnvelope.
+func postFormEnvelope(ctx context.Context, hc *http.Client, url string, payload url.Values) (json.RawMessage, error) {
+	return postEnvelopeBody(ctx, hc, url, "application/x-www-form-urlencoded", strings.NewReader(payload.Encode()))
+}
+
+func postEnvelopeBody(ctx context.Context, hc *http.Client, url, contentType string, body io.Reader) (json.RawMessage, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, body)
 	if err != nil {
 		return nil, fmt.Errorf("hduhelp: build request: %w", err)
 	}
-	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Content-Type", contentType)
 
 	resp, err := hc.Do(req)
 	if err != nil {
