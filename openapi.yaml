@@ -652,6 +652,28 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/StudentExamResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/academic/freshman/admission/query:
+        post:
+            tags:
+                - AcademicService
+            summary: 按考生号查询新生录取结果
+            description: 仅供持有 academic:freshmanadmission:read 的 tenant_access_token 调用；考生号与入学年份通过 JSON body 提交，返回公众号入口所需的最小录取字段，不建立任何 OpenID 或用户绑定
+            operationId: AcademicService_FreshmanAdmissionQuery
+            security:
+                - BearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/FreshmanAdmissionQueryRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FreshmanAdmissionQueryResponseBody'
+            x-hduhelp-http: {'auth': 'bearer', 'catalog': 'exclude'}
     /hduhelp-neo/academic/freshman/info:
         get:
             tags:
@@ -4417,10 +4439,10 @@ paths:
     /hduhelp-neo/admin/volunteer-admin/activities:
         get:
             tags:
-                - VolunteerService
+                - CampusLifeService
             summary: 志愿活动管理列表
             description: operator 查看全部状态的志愿活动
-            operationId: VolunteerService_AdminListVolunteerActivities
+            operationId: CampusLifeService_AdminListVolunteerActivities
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -4489,9 +4511,9 @@ paths:
     /hduhelp-neo/admin/volunteer-admin/activities/{id}:
         get:
             tags:
-                - VolunteerService
+                - CampusLifeService
             summary: 志愿活动管理详情
-            operationId: VolunteerService_AdminGetVolunteerActivity
+            operationId: CampusLifeService_AdminGetVolunteerActivity
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -4510,9 +4532,9 @@ paths:
             x-hduhelp-http: {'auth': 'operator'}
         put:
             tags:
-                - VolunteerService
+                - CampusLifeService
             summary: 管理员编辑志愿活动
-            operationId: VolunteerService_AdminUpdateVolunteerActivity
+            operationId: CampusLifeService_AdminUpdateVolunteerActivity
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -4536,9 +4558,9 @@ paths:
             x-hduhelp-http: {'auth': 'operator'}
         delete:
             tags:
-                - VolunteerService
+                - CampusLifeService
             summary: 管理员下架志愿活动
-            operationId: VolunteerService_AdminOfflineVolunteerActivity
+            operationId: CampusLifeService_AdminOfflineVolunteerActivity
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -4556,12 +4578,12 @@ paths:
                                 $ref: '#/components/schemas/MutateResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/volunteer-admin/activities/{id}/urgent:
-        delete:
+        post:
             tags:
-                - VolunteerService
-            summary: 取消活动加急
-            description: 保留已通过申请历史并记录 operator 审计
-            operationId: VolunteerService_AdminCancelVolunteerUrgent
+                - CampusLifeService
+            summary: 设置活动加急
+            description: Neo 后台管理员直接将活动设置为加急并记录审计
+            operationId: CampusLifeService_AdminSetVolunteerUrgent
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -4578,53 +4600,12 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ActivityDetailResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
-    /hduhelp-neo/admin/volunteer-admin/urgent-applications:
-        get:
+        delete:
             tags:
-                - VolunteerService
-            summary: 加急申请管理列表
-            description: operator 按状态、组织和分类筛选申请
-            operationId: VolunteerService_AdminListVolunteerUrgentApplications
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: page
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-                - name: page_size
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-                - name: status
-                  in: query
-                  schema:
-                    type: string
-                - name: organization
-                  in: query
-                  schema:
-                    type: string
-                - name: category
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/UrgentApplicationListResponseBody'
-            x-hduhelp-http: {'auth': 'operator'}
-    /hduhelp-neo/admin/volunteer-admin/urgent-applications/{id}/review:
-        post:
-            tags:
-                - VolunteerService
-            summary: 审批加急申请
-            description: 审批申请与更新活动必须处于同一事务
-            operationId: VolunteerService_AdminReviewVolunteerUrgentApplication
+                - CampusLifeService
+            summary: 取消活动加急
+            description: Neo 后台管理员直接取消活动加急并记录审计
+            operationId: CampusLifeService_AdminCancelVolunteerUrgent
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -4633,18 +4614,13 @@ paths:
                   required: true
                   schema:
                     type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/ReviewUrgentApplicationRequestBody'
             responses:
                 "200":
                     description: Successful response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/UrgentApplicationResponseBody'
+                                $ref: '#/components/schemas/ActivityDetailResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/callbacks/dingtalk/blessing-review:
         post:
@@ -8898,142 +8874,13 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/SignUploadResponseBody'
             x-hduhelp-cli: {'auth': 'bearer'}
-    /hduhelp-neo/volunteer/creator-activities:
-        get:
-            tags:
-                - VolunteerService
-            summary: 我的志愿活动
-            description: 按当前 Principal.UserID 查询本人创建的活动
-            operationId: VolunteerService_ListMyVolunteerActivities
-            security:
-                - NativeSessionAuth: []
-            parameters:
-                - name: page
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-                - name: page_size
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-                - name: category
-                  in: query
-                  schema:
-                    type: string
-                - name: organization
-                  in: query
-                  schema:
-                    type: string
-                - name: start_at_from
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: start_at_to
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: deadline_at_from
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: deadline_at_to
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: is_urgent
-                  in: query
-                  schema:
-                    type: boolean
-                - name: keyword
-                  in: query
-                  schema:
-                    type: string
-                - name: status
-                  in: query
-                  schema:
-                    type: string
-                - name: created_by_user_id
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ActivityListResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
-    /hduhelp-neo/volunteer/creator-profile:
-        get:
-            tags:
-                - VolunteerService
-            summary: 当前用户 volunteer 权限
-            description: 返回服务端解析的用户身份与发布权限
-            operationId: VolunteerService_GetVolunteerMe
-            security:
-                - NativeSessionAuth: []
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/VolunteerMeResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
-    /hduhelp-neo/volunteer/creator-urgent-applications:
-        get:
-            tags:
-                - VolunteerService
-            summary: 我的加急申请
-            description: 分页查询当前用户提交的加急申请
-            operationId: VolunteerService_ListMyVolunteerUrgentApplications
-            security:
-                - NativeSessionAuth: []
-            parameters:
-                - name: page
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-                - name: page_size
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-                - name: status
-                  in: query
-                  schema:
-                    type: string
-                - name: organization
-                  in: query
-                  schema:
-                    type: string
-                - name: category
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/UrgentApplicationListResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/volunteer/volunteer-activities:
         get:
             tags:
-                - VolunteerService
+                - CampusLifeService
             summary: 志愿活动列表
             description: 公开分页浏览已发布活动，支持分类、组织、时间、关键词与加急筛选；同分类内加急优先
-            operationId: VolunteerService_ListVolunteerActivities
+            operationId: CampusLifeService_ListVolunteerActivities
             parameters:
                 - name: page
                   in: query
@@ -9096,34 +8943,13 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ActivityListResponseBody'
-        post:
-            tags:
-                - VolunteerService
-            summary: 创建志愿活动
-            description: 需要原生 session 和 volunteer 发布权限
-            operationId: VolunteerService_CreateVolunteerActivity
-            security:
-                - NativeSessionAuth: []
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/CreateActivityRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ActivityDetailResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/volunteer/volunteer-activities/{id}:
         get:
             tags:
-                - VolunteerService
+                - CampusLifeService
             summary: 志愿活动详情
             description: 公开返回活动完整信息、岗位和分场次安排
-            operationId: VolunteerService_GetVolunteerActivity
+            operationId: CampusLifeService_GetVolunteerActivity
             parameters:
                 - name: id
                   in: path
@@ -9137,83 +8963,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ActivityDetailResponseBody'
-        put:
-            tags:
-                - VolunteerService
-            summary: 编辑本人志愿活动
-            description: 创建者或授权管理者可编辑；普通发布者不能修改加急字段
-            operationId: VolunteerService_UpdateVolunteerActivity
-            security:
-                - NativeSessionAuth: []
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/UpdateActivityRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ActivityDetailResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
-        delete:
-            tags:
-                - VolunteerService
-            summary: 下架本人志愿活动
-            description: 逻辑下架，不物理删除
-            operationId: VolunteerService_OfflineVolunteerActivity
-            security:
-                - NativeSessionAuth: []
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/MutateResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
-    /hduhelp-neo/volunteer/volunteer-activities/{id}/urgent-applications:
-        post:
-            tags:
-                - VolunteerService
-            summary: 提交活动加急申请
-            description: 只有活动创建者或授权管理者可以提交；同一活动只允许一个待审批申请
-            operationId: VolunteerService_SubmitVolunteerUrgentApplication
-            security:
-                - NativeSessionAuth: []
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/SubmitUrgentApplicationRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/UrgentApplicationResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
     /healthz:
         get:
             tags:
@@ -9385,8 +9134,72 @@ components:
         ActivityDetail:
             type: object
             properties:
-                activity:
-                    $ref: '#/components/schemas/Activity'
+                id:
+                    type: string
+                title:
+                    type: string
+                category:
+                    type: string
+                organization:
+                    type: string
+                startAt:
+                    type: integer
+                    format: int64
+                endAt:
+                    type: integer
+                    format: int64
+                location:
+                    type: string
+                description:
+                    type: string
+                recruitmentCount:
+                    type: integer
+                    format: int32
+                registrationChannel:
+                    type: string
+                trainingInfo:
+                    type: string
+                benefits:
+                    type: string
+                requirements:
+                    type: string
+                deadlineAt:
+                    type: integer
+                    format: int64
+                audience:
+                    type: string
+                organizerBackground:
+                    type: string
+                hourRule:
+                    type: string
+                positions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ActivityPosition'
+                sessions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ActivitySession'
+                status:
+                    type: string
+                isUrgent:
+                    type: boolean
+                urgentAt:
+                    type: integer
+                    format: int64
+                createdByUserId:
+                    type: string
+                createdByStaffId:
+                    type: string
+                publishedAt:
+                    type: integer
+                    format: int64
+                createdAt:
+                    type: integer
+                    format: int64
+                updatedAt:
+                    type: integer
+                    format: int64
         ActivityDetailResponseBody:
             type: object
             properties:
@@ -9479,6 +9292,21 @@ components:
                     format: int64
                 msg:
                     type: string
+        ActivityPosition:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                sortOrder:
+                    type: integer
+                    format: int32
+            description: |-
+                All timestamps are Unix milliseconds. Status/category values are stable strings
+                so generated OpenAPI clients keep readable JSON instead of numeric Thrift enums.
         ActivityPositionInput:
             type: object
             properties:
@@ -9503,6 +9331,25 @@ components:
                     format: int64
                 msg:
                     type: string
+        ActivitySession:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                startAt:
+                    type: integer
+                    format: int64
+                endAt:
+                    type: integer
+                    format: int64
+                recruitmentCount:
+                    type: integer
+                    format: int32
+                sortOrder:
+                    type: integer
+                    format: int32
         ActivitySessionInput:
             type: object
             properties:
@@ -11864,55 +11711,6 @@ components:
                 log:
                     type: string
                     description: JSON 字符串
-        CreateActivityRequestBody:
-            type: object
-            properties:
-                title:
-                    type: string
-                category:
-                    type: string
-                organization:
-                    type: string
-                start_at:
-                    type: integer
-                    format: int64
-                end_at:
-                    type: integer
-                    format: int64
-                location:
-                    type: string
-                description:
-                    type: string
-                recruitment_count:
-                    type: integer
-                    format: int32
-                registration_channel:
-                    type: string
-                training_info:
-                    type: string
-                benefits:
-                    type: string
-                requirements:
-                    type: string
-                deadline_at:
-                    type: integer
-                    format: int64
-                audience:
-                    type: string
-                organizer_background:
-                    type: string
-                hour_rule:
-                    type: string
-                positions:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ActivityPositionInput'
-                sessions:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ActivitySessionInput'
-                status:
-                    type: string
         CreateAdminNoticeRequestBody:
             type: object
             properties:
@@ -13516,6 +13314,38 @@ components:
                 count:
                     type: integer
                     format: int32
+        FreshmanAdmissionQueryRequestBody:
+            type: object
+            properties:
+                admissionCode:
+                    type: string
+                enrollmentYear:
+                    type: integer
+                    format: int32
+        FreshmanAdmissionQueryResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/FreshmanAdmissionResult'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        FreshmanAdmissionResult:
+            type: object
+            properties:
+                admissionCode:
+                    type: string
+                staffId:
+                    type: string
+                name:
+                    type: string
+                classNo:
+                    type: string
+            description: |-
+                FreshmanAdmissionResult is deliberately minimal for the restricted legacy
+                public query. It must not grow to expose private迎新 fields.
         FreshmanDetail:
             type: object
             properties:
@@ -16709,13 +16539,6 @@ components:
             properties:
                 popup_prompt:
                     type: string
-        ReviewUrgentApplicationRequestBody:
-            type: object
-            properties:
-                decision:
-                    type: string
-                review_comment:
-                    type: string
         RevokeAuthorizationResponseBody:
             type: object
             properties:
@@ -18554,11 +18377,6 @@ components:
                 ---------------------------------------------------------------------------
                 留校（假期留校）
                 ---------------------------------------------------------------------------
-        SubmitUrgentApplicationRequestBody:
-            type: object
-            properties:
-                reason:
-                    type: string
         SubscribeRequestBody:
             type: object
             properties:
@@ -19473,69 +19291,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        UrgentApplication:
-            type: object
-            properties:
-                id:
-                    type: string
-                activityId:
-                    type: string
-                activityTitle:
-                    type: string
-                applicantUserId:
-                    type: string
-                applicantStaffId:
-                    type: string
-                reason:
-                    type: string
-                status:
-                    type: string
-                reviewerOperatorId:
-                    type: string
-                reviewComment:
-                    type: string
-                createdAt:
-                    type: integer
-                    format: int64
-                reviewedAt:
-                    type: integer
-                    format: int64
-        UrgentApplicationListData:
-            type: object
-            properties:
-                list:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/UrgentApplication'
-                page:
-                    type: integer
-                    format: int32
-                pageSize:
-                    type: integer
-                    format: int32
-                total:
-                    type: integer
-                    format: int64
-        UrgentApplicationListResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/UrgentApplicationListData'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        UrgentApplicationResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/UrgentApplication'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
         UserDetailAuthorization:
             type: object
             properties:
@@ -19814,29 +19569,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        VolunteerMe:
-            type: object
-            properties:
-                userId:
-                    type: string
-                staffId:
-                    type: string
-                roles:
-                    type: array
-                    items:
-                        type: string
-                canPublish:
-                    type: boolean
-        VolunteerMeResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/VolunteerMe'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
         WeatherCard:
             type: object
             properties:
@@ -19880,4 +19612,3 @@ tags:
     - name: SiteAnnouncementService
     - name: SubscriptionService
     - name: UploadService
-    - name: VolunteerService

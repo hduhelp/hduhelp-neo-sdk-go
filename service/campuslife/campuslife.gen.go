@@ -17,6 +17,367 @@ type Service struct{ config *core.Config }
 // NewService binds the CampusLife service to a client config.
 func NewService(config *core.Config) *Service { return &Service{config: config} }
 
+// AdminListVolunteerActivitiesReq is the request for AdminListVolunteerActivities.
+type AdminListVolunteerActivitiesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminListVolunteerActivitiesReqBuilder builds a AdminListVolunteerActivitiesReq with a fluent setter per field.
+type AdminListVolunteerActivitiesReqBuilder struct {
+	req *AdminListVolunteerActivitiesReq
+}
+
+// NewAdminListVolunteerActivitiesReqBuilder creates a request builder for AdminListVolunteerActivities.
+func NewAdminListVolunteerActivitiesReqBuilder() *AdminListVolunteerActivitiesReqBuilder {
+	return &AdminListVolunteerActivitiesReqBuilder{req: &AdminListVolunteerActivitiesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Page sets the "page" query parameter.
+func (b *AdminListVolunteerActivitiesReqBuilder) Page(v int32) *AdminListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// PageSize sets the "page_size" query parameter.
+func (b *AdminListVolunteerActivitiesReqBuilder) PageSize(v int32) *AdminListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["page_size"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Category sets the "category" query parameter.
+func (b *AdminListVolunteerActivitiesReqBuilder) Category(v string) *AdminListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["category"] = v
+	return b
+}
+
+// Organization sets the "organization" query parameter.
+func (b *AdminListVolunteerActivitiesReqBuilder) Organization(v string) *AdminListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["organization"] = v
+	return b
+}
+
+// StartAtFrom sets the "start_at_from" query parameter.
+func (b *AdminListVolunteerActivitiesReqBuilder) StartAtFrom(v int64) *AdminListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["start_at_from"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// StartAtTo sets the "start_at_to" query parameter.
+func (b *AdminListVolunteerActivitiesReqBuilder) StartAtTo(v int64) *AdminListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["start_at_to"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// DeadlineAtFrom sets the "deadline_at_from" query parameter.
+func (b *AdminListVolunteerActivitiesReqBuilder) DeadlineAtFrom(v int64) *AdminListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["deadline_at_from"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// DeadlineAtTo sets the "deadline_at_to" query parameter.
+func (b *AdminListVolunteerActivitiesReqBuilder) DeadlineAtTo(v int64) *AdminListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["deadline_at_to"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// IsUrgent sets the "is_urgent" query parameter.
+func (b *AdminListVolunteerActivitiesReqBuilder) IsUrgent(v bool) *AdminListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["is_urgent"] = strconv.FormatBool(v)
+	return b
+}
+
+// Keyword sets the "keyword" query parameter.
+func (b *AdminListVolunteerActivitiesReqBuilder) Keyword(v string) *AdminListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["keyword"] = v
+	return b
+}
+
+// Status sets the "status" query parameter.
+func (b *AdminListVolunteerActivitiesReqBuilder) Status(v string) *AdminListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["status"] = v
+	return b
+}
+
+// CreatedByUserId sets the "created_by_user_id" query parameter.
+func (b *AdminListVolunteerActivitiesReqBuilder) CreatedByUserId(v string) *AdminListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["created_by_user_id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminListVolunteerActivitiesReqBuilder) Build() *AdminListVolunteerActivitiesReq {
+	return b.req
+}
+
+// AdminListVolunteerActivitiesResp is the response for AdminListVolunteerActivities.
+type AdminListVolunteerActivitiesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ActivityListData `json:"data"`
+}
+
+// AdminListVolunteerActivities: 志愿活动管理列表
+func (s *Service) AdminListVolunteerActivities(ctx context.Context, req *AdminListVolunteerActivitiesReq, opts ...core.RequestOption) (*AdminListVolunteerActivitiesResp, error) {
+	resp := &AdminListVolunteerActivitiesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/volunteer-admin/activities",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminGetVolunteerActivityReq is the request for AdminGetVolunteerActivity.
+type AdminGetVolunteerActivityReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminGetVolunteerActivityReqBuilder builds a AdminGetVolunteerActivityReq with a fluent setter per field.
+type AdminGetVolunteerActivityReqBuilder struct{ req *AdminGetVolunteerActivityReq }
+
+// NewAdminGetVolunteerActivityReqBuilder creates a request builder for AdminGetVolunteerActivity.
+func NewAdminGetVolunteerActivityReqBuilder() *AdminGetVolunteerActivityReqBuilder {
+	return &AdminGetVolunteerActivityReqBuilder{req: &AdminGetVolunteerActivityReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AdminGetVolunteerActivityReqBuilder) Id(v string) *AdminGetVolunteerActivityReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminGetVolunteerActivityReqBuilder) Build() *AdminGetVolunteerActivityReq { return b.req }
+
+// AdminGetVolunteerActivityResp is the response for AdminGetVolunteerActivity.
+type AdminGetVolunteerActivityResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ActivityDetail `json:"data"`
+}
+
+// AdminGetVolunteerActivity: 志愿活动管理详情
+func (s *Service) AdminGetVolunteerActivity(ctx context.Context, req *AdminGetVolunteerActivityReq, opts ...core.RequestOption) (*AdminGetVolunteerActivityResp, error) {
+	resp := &AdminGetVolunteerActivityResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/volunteer-admin/activities/{id}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminUpdateVolunteerActivityReq is the request for AdminUpdateVolunteerActivity.
+type AdminUpdateVolunteerActivityReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminUpdateVolunteerActivityReqBuilder builds a AdminUpdateVolunteerActivityReq with a fluent setter per field.
+type AdminUpdateVolunteerActivityReqBuilder struct {
+	req *AdminUpdateVolunteerActivityReq
+}
+
+// NewAdminUpdateVolunteerActivityReqBuilder creates a request builder for AdminUpdateVolunteerActivity.
+func NewAdminUpdateVolunteerActivityReqBuilder() *AdminUpdateVolunteerActivityReqBuilder {
+	return &AdminUpdateVolunteerActivityReqBuilder{req: &AdminUpdateVolunteerActivityReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AdminUpdateVolunteerActivityReqBuilder) Id(v string) *AdminUpdateVolunteerActivityReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AdminUpdateVolunteerActivityReqBuilder) Body(body *models.UpdateActivityRequestBody) *AdminUpdateVolunteerActivityReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminUpdateVolunteerActivityReqBuilder) Build() *AdminUpdateVolunteerActivityReq {
+	return b.req
+}
+
+// AdminUpdateVolunteerActivityResp is the response for AdminUpdateVolunteerActivity.
+type AdminUpdateVolunteerActivityResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ActivityDetail `json:"data"`
+}
+
+// AdminUpdateVolunteerActivity: 管理员编辑志愿活动
+func (s *Service) AdminUpdateVolunteerActivity(ctx context.Context, req *AdminUpdateVolunteerActivityReq, opts ...core.RequestOption) (*AdminUpdateVolunteerActivityResp, error) {
+	resp := &AdminUpdateVolunteerActivityResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/volunteer-admin/activities/{id}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminOfflineVolunteerActivityReq is the request for AdminOfflineVolunteerActivity.
+type AdminOfflineVolunteerActivityReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminOfflineVolunteerActivityReqBuilder builds a AdminOfflineVolunteerActivityReq with a fluent setter per field.
+type AdminOfflineVolunteerActivityReqBuilder struct {
+	req *AdminOfflineVolunteerActivityReq
+}
+
+// NewAdminOfflineVolunteerActivityReqBuilder creates a request builder for AdminOfflineVolunteerActivity.
+func NewAdminOfflineVolunteerActivityReqBuilder() *AdminOfflineVolunteerActivityReqBuilder {
+	return &AdminOfflineVolunteerActivityReqBuilder{req: &AdminOfflineVolunteerActivityReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AdminOfflineVolunteerActivityReqBuilder) Id(v string) *AdminOfflineVolunteerActivityReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminOfflineVolunteerActivityReqBuilder) Build() *AdminOfflineVolunteerActivityReq {
+	return b.req
+}
+
+// AdminOfflineVolunteerActivityResp is the response for AdminOfflineVolunteerActivity.
+type AdminOfflineVolunteerActivityResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// AdminOfflineVolunteerActivity: 管理员下架志愿活动
+func (s *Service) AdminOfflineVolunteerActivity(ctx context.Context, req *AdminOfflineVolunteerActivityReq, opts ...core.RequestOption) (*AdminOfflineVolunteerActivityResp, error) {
+	resp := &AdminOfflineVolunteerActivityResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/admin/volunteer-admin/activities/{id}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminSetVolunteerUrgentReq is the request for AdminSetVolunteerUrgent.
+type AdminSetVolunteerUrgentReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminSetVolunteerUrgentReqBuilder builds a AdminSetVolunteerUrgentReq with a fluent setter per field.
+type AdminSetVolunteerUrgentReqBuilder struct{ req *AdminSetVolunteerUrgentReq }
+
+// NewAdminSetVolunteerUrgentReqBuilder creates a request builder for AdminSetVolunteerUrgent.
+func NewAdminSetVolunteerUrgentReqBuilder() *AdminSetVolunteerUrgentReqBuilder {
+	return &AdminSetVolunteerUrgentReqBuilder{req: &AdminSetVolunteerUrgentReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AdminSetVolunteerUrgentReqBuilder) Id(v string) *AdminSetVolunteerUrgentReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminSetVolunteerUrgentReqBuilder) Build() *AdminSetVolunteerUrgentReq { return b.req }
+
+// AdminSetVolunteerUrgentResp is the response for AdminSetVolunteerUrgent.
+type AdminSetVolunteerUrgentResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ActivityDetail `json:"data"`
+}
+
+// AdminSetVolunteerUrgent: 设置活动加急
+func (s *Service) AdminSetVolunteerUrgent(ctx context.Context, req *AdminSetVolunteerUrgentReq, opts ...core.RequestOption) (*AdminSetVolunteerUrgentResp, error) {
+	resp := &AdminSetVolunteerUrgentResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/volunteer-admin/activities/{id}/urgent",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminCancelVolunteerUrgentReq is the request for AdminCancelVolunteerUrgent.
+type AdminCancelVolunteerUrgentReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminCancelVolunteerUrgentReqBuilder builds a AdminCancelVolunteerUrgentReq with a fluent setter per field.
+type AdminCancelVolunteerUrgentReqBuilder struct {
+	req *AdminCancelVolunteerUrgentReq
+}
+
+// NewAdminCancelVolunteerUrgentReqBuilder creates a request builder for AdminCancelVolunteerUrgent.
+func NewAdminCancelVolunteerUrgentReqBuilder() *AdminCancelVolunteerUrgentReqBuilder {
+	return &AdminCancelVolunteerUrgentReqBuilder{req: &AdminCancelVolunteerUrgentReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AdminCancelVolunteerUrgentReqBuilder) Id(v string) *AdminCancelVolunteerUrgentReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminCancelVolunteerUrgentReqBuilder) Build() *AdminCancelVolunteerUrgentReq { return b.req }
+
+// AdminCancelVolunteerUrgentResp is the response for AdminCancelVolunteerUrgent.
+type AdminCancelVolunteerUrgentResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ActivityDetail `json:"data"`
+}
+
+// AdminCancelVolunteerUrgent: 取消活动加急
+func (s *Service) AdminCancelVolunteerUrgent(ctx context.Context, req *AdminCancelVolunteerUrgentReq, opts ...core.RequestOption) (*AdminCancelVolunteerUrgentResp, error) {
+	resp := &AdminCancelVolunteerUrgentResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/admin/volunteer-admin/activities/{id}/urgent",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // ListActivitiesReq is the request for ListActivities.
 type ListActivitiesReq struct {
 	pathParams  map[string]string
@@ -1486,6 +1847,164 @@ func (s *Service) RealTime(ctx context.Context, req *RealTimeReq, opts ...core.R
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/campuslife/weather/real-time",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ListVolunteerActivitiesReq is the request for ListVolunteerActivities.
+type ListVolunteerActivitiesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListVolunteerActivitiesReqBuilder builds a ListVolunteerActivitiesReq with a fluent setter per field.
+type ListVolunteerActivitiesReqBuilder struct{ req *ListVolunteerActivitiesReq }
+
+// NewListVolunteerActivitiesReqBuilder creates a request builder for ListVolunteerActivities.
+func NewListVolunteerActivitiesReqBuilder() *ListVolunteerActivitiesReqBuilder {
+	return &ListVolunteerActivitiesReqBuilder{req: &ListVolunteerActivitiesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Page sets the "page" query parameter.
+func (b *ListVolunteerActivitiesReqBuilder) Page(v int32) *ListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// PageSize sets the "page_size" query parameter.
+func (b *ListVolunteerActivitiesReqBuilder) PageSize(v int32) *ListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["page_size"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Category sets the "category" query parameter.
+func (b *ListVolunteerActivitiesReqBuilder) Category(v string) *ListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["category"] = v
+	return b
+}
+
+// Organization sets the "organization" query parameter.
+func (b *ListVolunteerActivitiesReqBuilder) Organization(v string) *ListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["organization"] = v
+	return b
+}
+
+// StartAtFrom sets the "start_at_from" query parameter.
+func (b *ListVolunteerActivitiesReqBuilder) StartAtFrom(v int64) *ListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["start_at_from"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// StartAtTo sets the "start_at_to" query parameter.
+func (b *ListVolunteerActivitiesReqBuilder) StartAtTo(v int64) *ListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["start_at_to"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// DeadlineAtFrom sets the "deadline_at_from" query parameter.
+func (b *ListVolunteerActivitiesReqBuilder) DeadlineAtFrom(v int64) *ListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["deadline_at_from"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// DeadlineAtTo sets the "deadline_at_to" query parameter.
+func (b *ListVolunteerActivitiesReqBuilder) DeadlineAtTo(v int64) *ListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["deadline_at_to"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// IsUrgent sets the "is_urgent" query parameter.
+func (b *ListVolunteerActivitiesReqBuilder) IsUrgent(v bool) *ListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["is_urgent"] = strconv.FormatBool(v)
+	return b
+}
+
+// Keyword sets the "keyword" query parameter.
+func (b *ListVolunteerActivitiesReqBuilder) Keyword(v string) *ListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["keyword"] = v
+	return b
+}
+
+// Status sets the "status" query parameter.
+func (b *ListVolunteerActivitiesReqBuilder) Status(v string) *ListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["status"] = v
+	return b
+}
+
+// CreatedByUserId sets the "created_by_user_id" query parameter.
+func (b *ListVolunteerActivitiesReqBuilder) CreatedByUserId(v string) *ListVolunteerActivitiesReqBuilder {
+	b.req.queryParams["created_by_user_id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *ListVolunteerActivitiesReqBuilder) Build() *ListVolunteerActivitiesReq { return b.req }
+
+// ListVolunteerActivitiesResp is the response for ListVolunteerActivities.
+type ListVolunteerActivitiesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ActivityListData `json:"data"`
+}
+
+// ListVolunteerActivities: 志愿活动列表
+func (s *Service) ListVolunteerActivities(ctx context.Context, req *ListVolunteerActivitiesReq, opts ...core.RequestOption) (*ListVolunteerActivitiesResp, error) {
+	resp := &ListVolunteerActivitiesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/volunteer/volunteer-activities",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// GetVolunteerActivityReq is the request for GetVolunteerActivity.
+type GetVolunteerActivityReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// GetVolunteerActivityReqBuilder builds a GetVolunteerActivityReq with a fluent setter per field.
+type GetVolunteerActivityReqBuilder struct{ req *GetVolunteerActivityReq }
+
+// NewGetVolunteerActivityReqBuilder creates a request builder for GetVolunteerActivity.
+func NewGetVolunteerActivityReqBuilder() *GetVolunteerActivityReqBuilder {
+	return &GetVolunteerActivityReqBuilder{req: &GetVolunteerActivityReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *GetVolunteerActivityReqBuilder) Id(v string) *GetVolunteerActivityReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *GetVolunteerActivityReqBuilder) Build() *GetVolunteerActivityReq { return b.req }
+
+// GetVolunteerActivityResp is the response for GetVolunteerActivity.
+type GetVolunteerActivityResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ActivityDetail `json:"data"`
+}
+
+// GetVolunteerActivity: 志愿活动详情
+func (s *Service) GetVolunteerActivity(ctx context.Context, req *GetVolunteerActivityReq, opts ...core.RequestOption) (*GetVolunteerActivityResp, error) {
+	resp := &GetVolunteerActivityResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/volunteer/volunteer-activities/{id}",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

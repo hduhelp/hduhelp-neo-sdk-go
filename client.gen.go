@@ -23,7 +23,6 @@ import (
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/siteannouncement"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/subscription"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/upload"
-	"github.com/hduhelp/hduhelp-neo-sdk-go/service/volunteer"
 )
 
 // Client is a fully configured hduhelp-neo API client. Each field is a
@@ -49,7 +48,6 @@ type Client struct {
 	SiteAnnouncement *siteannouncement.Service
 	Subscription     *subscription.Service
 	Upload           *upload.Service
-	Volunteer        *volunteer.Service
 }
 
 // attachServices wires every generated service to the client config.
@@ -72,5 +70,4 @@ func attachServices(c *Client) {
 	c.SiteAnnouncement = siteannouncement.NewService(c.config)
 	c.Subscription = subscription.NewService(c.config)
 	c.Upload = upload.NewService(c.config)
-	c.Volunteer = volunteer.NewService(c.config)
 }
