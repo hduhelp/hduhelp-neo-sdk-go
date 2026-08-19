@@ -15061,6 +15061,8 @@ components:
                     type: string
                 displayName:
                     type: string
+                staffName:
+                    type: string
             description: '---- Room detail: room + members + history events + favorite flags ----'
         MergeClassChatGroupRequestBody:
             type: object

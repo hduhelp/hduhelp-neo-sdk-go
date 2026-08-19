@@ -4144,6 +4144,7 @@ type MeResponseBody struct {
 // MemberInfo ---- Room detail: room + members + history events + favorite flags ----
 type MemberInfo struct {
 	DisplayName *string `json:"displayName,omitempty"`
+	StaffName   *string `json:"staffName,omitempty"`
 	UserId      *string `json:"userId,omitempty"`
 }
 
