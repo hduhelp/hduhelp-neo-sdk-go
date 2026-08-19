@@ -254,7 +254,7 @@ type AddChunkRequestBody struct {
 	Title     *string `json:"title,omitempty"`
 }
 
-// AdminAppDetail 应用详情：应用权限供 TAT/App + X-Staff-Id 使用；用户权限供 UAT
+// AdminAppDetail 应用详情：应用权限供 TAT/App + 受信请求目标使用；用户权限供 UAT
 // 授权码流程请求和用户同意。
 type AdminAppDetail struct {
 	ApplicationScopes *[]string `json:"applicationScopes,omitempty"`
@@ -284,7 +284,7 @@ type AdminAppInfo struct {
 // AdminAppsData GET admin/apps 的载荷：不带 id 返回应用列表，带 id 返回单应用详情。
 // 两个字段按请求形态二选一填充。
 type AdminAppsData struct {
-	// App 应用详情：应用权限供 TAT/App + X-Staff-Id 使用；用户权限供 UAT
+	// App 应用详情：应用权限供 TAT/App + 受信请求目标使用；用户权限供 UAT
 	// 授权码流程请求和用户同意。
 	App   *AdminAppDetail `json:"app,omitempty"`
 	Items *[]AdminAppInfo `json:"items,omitempty"`
@@ -928,7 +928,7 @@ type AuthorizeAllServicesRequestBody struct {
 
 // AuthorizeServiceRequestBody defines model for AuthorizeServiceRequestBody.
 type AuthorizeServiceRequestBody struct {
-	// Account 前端输入的统一身份认证账号
+	// Account 前端输入的服务登录账号；二课/图书馆必须与当前学号一致，阳光长跑可为独立账号
 	Account  *string `json:"account,omitempty"`
 	Password *string `json:"password,omitempty"`
 }
@@ -1790,7 +1790,7 @@ type CreateAdminNoticeRequestBody struct {
 
 // CreateAppData defines model for CreateAppData.
 type CreateAppData struct {
-	// App 应用详情：应用权限供 TAT/App + X-Staff-Id 使用；用户权限供 UAT
+	// App 应用详情：应用权限供 TAT/App + 受信请求目标使用；用户权限供 UAT
 	// 授权码流程请求和用户同意。
 	App          *AdminAppDetail `json:"app,omitempty"`
 	ClientSecret *string         `json:"clientSecret,omitempty"`
@@ -2905,8 +2905,7 @@ type FloorStat struct {
 
 // FreshmanAdmissionQueryRequestBody defines model for FreshmanAdmissionQueryRequestBody.
 type FreshmanAdmissionQueryRequestBody struct {
-	AdmissionCode  *string `json:"admissionCode,omitempty"`
-	EnrollmentYear *int32  `json:"enrollmentYear,omitempty"`
+	AdmissionCode *string `json:"admissionCode,omitempty"`
 }
 
 // FreshmanAdmissionQueryResponseBody defines model for FreshmanAdmissionQueryResponseBody.
@@ -5672,12 +5671,12 @@ type SendWishResponseBody struct {
 	Msg  *string       `json:"msg,omitempty"`
 }
 
-// ServiceAuthorizationItem ==== Erke / Library 服务凭据授权（仅一方原生会话，禁止 CLI/PAT/UAT） ====
+// ServiceAuthorizationItem ==== Erke / Library / Sunrun 服务凭据授权（仅一方原生会话，禁止 CLI/PAT/UAT） ====
 type ServiceAuthorizationItem struct {
 	Authorized     *bool `json:"authorized,omitempty"`
 	NotifyOnExpiry *bool `json:"notify_on_expiry,omitempty"`
 
-	// Type erke | library
+	// Type erke | library | sunrun
 	Type  *string `json:"type,omitempty"`
 	Valid *bool   `json:"valid,omitempty"`
 }
@@ -6750,7 +6749,7 @@ type UpdateAppRequestBody struct {
 type UpdateAppResponseBody struct {
 	Code *int64 `json:"code,omitempty"`
 
-	// Data 应用详情：应用权限供 TAT/App + X-Staff-Id 使用；用户权限供 UAT
+	// Data 应用详情：应用权限供 TAT/App + 受信请求目标使用；用户权限供 UAT
 	// 授权码流程请求和用户同意。
 	Data *AdminAppDetail `json:"data,omitempty"`
 	Msg  *string         `json:"msg,omitempty"`
@@ -6883,7 +6882,7 @@ type UpdatePolicyProfileRequestBody struct {
 type UpdateServiceAuthorizationNotificationRequestBody struct {
 	Enabled *bool `json:"enabled,omitempty"`
 
-	// Type erke | library
+	// Type erke | library | sunrun
 	Type *string `json:"type,omitempty"`
 }
 
@@ -8360,10 +8359,10 @@ type IdentityServiceAuthenAuthorizePreviewParams struct {
 
 // SubscriptionServiceSunrunDetailParams defines parameters for SubscriptionServiceSunrunDetail.
 type SubscriptionServiceSunrunDetailParams struct {
-	// Start 起始序号(默认 1)
+	// Start 起始序号(默认 1，必须大于等于 1)
 	Start *int32 `form:"start,omitempty" json:"start,omitempty"`
 
-	// End 结束序号(默认 20)
+	// End 结束序号(默认 20，必须不小于 start，单次最多 100 条)
 	End      *int32  `form:"end,omitempty" json:"end,omitempty"`
 	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }

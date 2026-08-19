@@ -32,13 +32,13 @@ func NewSunrunDetailReqBuilder() *SunrunDetailReqBuilder {
 	return &SunrunDetailReqBuilder{req: &SunrunDetailReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// Start sets the "start" query parameter: 起始序号(默认 1)
+// Start sets the "start" query parameter: 起始序号(默认 1，必须大于等于 1)
 func (b *SunrunDetailReqBuilder) Start(v int32) *SunrunDetailReqBuilder {
 	b.req.queryParams["start"] = strconv.FormatInt(int64(v), 10)
 	return b
 }
 
-// End sets the "end" query parameter: 结束序号(默认 20)
+// End sets the "end" query parameter: 结束序号(默认 20，必须不小于 start，单次最多 100 条)
 func (b *SunrunDetailReqBuilder) End(v int32) *SunrunDetailReqBuilder {
 	b.req.queryParams["end"] = strconv.FormatInt(int64(v), 10)
 	return b

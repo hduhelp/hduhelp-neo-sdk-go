@@ -1213,7 +1213,7 @@ type AuthorizeAllServicesResp struct {
 	core.CodeMsg
 }
 
-// AuthorizeAllServices: 一键授权全部校园服务
+// AuthorizeAllServices: 一键授权二课和图书馆
 func (s *Service) AuthorizeAllServices(ctx context.Context, req *AuthorizeAllServicesReq, opts ...core.RequestOption) (*AuthorizeAllServicesResp, error) {
 	resp := &AuthorizeAllServicesResp{}
 	err := s.config.Do(ctx, &core.APIReq{
@@ -1292,7 +1292,7 @@ func NewAuthorizeServiceReqBuilder() *AuthorizeServiceReqBuilder {
 	return &AuthorizeServiceReqBuilder{req: &AuthorizeServiceReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// Service sets the "service" path parameter: erke | library
+// Service sets the "service" path parameter: erke | library | sunrun
 func (b *AuthorizeServiceReqBuilder) Service(v string) *AuthorizeServiceReqBuilder {
 	b.req.pathParams["service"] = v
 	return b
@@ -1345,7 +1345,7 @@ func NewRevokeServiceAuthorizationReqBuilder() *RevokeServiceAuthorizationReqBui
 	return &RevokeServiceAuthorizationReqBuilder{req: &RevokeServiceAuthorizationReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// Service sets the "service" path parameter: erke | library
+// Service sets the "service" path parameter: erke | library | sunrun
 func (b *RevokeServiceAuthorizationReqBuilder) Service(v string) *RevokeServiceAuthorizationReqBuilder {
 	b.req.pathParams["service"] = v
 	return b
