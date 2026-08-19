@@ -921,15 +921,19 @@ type AuthorizationListResponseBody struct {
 
 // AuthorizeAllServicesRequestBody defines model for AuthorizeAllServicesRequestBody.
 type AuthorizeAllServicesRequestBody struct {
-	// Account 前端输入的统一身份认证账号
-	Account  *string `json:"account,omitempty"`
+	// Account 缺省时使用当前登录身份的学号
+	Account *string `json:"account,omitempty"`
+
+	// Password 缺省时先复用已有两项有效授权；需要重认时返回 40934
 	Password *string `json:"password,omitempty"`
 }
 
 // AuthorizeServiceRequestBody defines model for AuthorizeServiceRequestBody.
 type AuthorizeServiceRequestBody struct {
-	// Account 前端输入的服务登录账号；二课/图书馆必须与当前学号一致，阳光长跑可为独立账号
-	Account  *string `json:"account,omitempty"`
+	// Account 二课/图书馆缺省时使用当前学号；阳光长跑必须提交独立账号
+	Account *string `json:"account,omitempty"`
+
+	// Password 二课/图书馆缺省时优先复用已有有效授权；需要重认时返回 40934
 	Password *string `json:"password,omitempty"`
 }
 

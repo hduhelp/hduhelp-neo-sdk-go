@@ -7041,7 +7041,7 @@ paths:
             tags:
                 - IdentityService
             summary: 一键授权二课和图书馆
-            description: 从前端接收统一身份认证账号与密码；account 必须与当前登录身份解析出的学号一致，否则提示切换身份或重新输入。校验通过后优先复用同一 SOURCEID_TGC 为二课和图书馆分别签发 ticket，并以事务同时保存两项凭据；复用不可用时才执行第二次 SSO。不保存密码，仅一方原生会话可调用。
+            description: 不带密码时优先复用二课和图书馆的已有有效授权，无法复用则返回 40934；重新验证时账号缺省为当前学号。校验通过后优先复用同一 SOURCEID_TGC 为两个服务分别签发 ticket，并以事务保存凭据。不保存密码，仅一方原生会话可调用。
             operationId: IdentityService_AuthorizeAllServices
             security:
                 - NativeSessionAuth: []
@@ -7085,7 +7085,7 @@ paths:
             tags:
                 - IdentityService
             summary: 授权单个校园服务
-            description: 从前端接收指定服务账号与密码；二课与图书馆的 account 必须与当前登录身份解析出的学号精确一致。阳光长跑的 account 直接用于 Sportmeta 登录，可与当前学号不同；登录后仍校验 Sportmeta 学生身份属于当前学号，保存 token 并加密保存续期所需密码。仅一方原生会话可调用。
+            description: 二课与图书馆不带密码时优先复用已有有效授权，无法复用则返回 40934；重新验证时账号缺省为当前学号。阳光长跑仍需提交独立 Sportmeta 账号与密码，登录后校验学生身份属于当前学号。仅一方原生会话可调用。
             operationId: IdentityService_AuthorizeService
             security:
                 - NativeSessionAuth: []
@@ -10458,17 +10458,19 @@ components:
             properties:
                 password:
                     type: string
+                    description: 缺省时先复用已有两项有效授权；需要重认时返回 40934
                 account:
                     type: string
-                    description: 前端输入的统一身份认证账号
+                    description: 缺省时使用当前登录身份的学号
         AuthorizeServiceRequestBody:
             type: object
             properties:
                 password:
                     type: string
+                    description: 二课/图书馆缺省时优先复用已有有效授权；需要重认时返回 40934
                 account:
                     type: string
-                    description: 前端输入的服务登录账号；二课/图书馆必须与当前学号一致，阳光长跑可为独立账号
+                    description: 二课/图书馆缺省时使用当前学号；阳光长跑必须提交独立账号
         AuthorizedAppItem:
             type: object
             properties:
