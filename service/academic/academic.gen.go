@@ -862,7 +862,7 @@ type StudentExamResp struct {
 	Data []models.StudentExam `json:"data"`
 }
 
-// StudentExam: 查询本人考试安排
+// StudentExam: 查询本人学期考试安排
 func (s *Service) StudentExam(ctx context.Context, req *StudentExamReq, opts ...core.RequestOption) (*StudentExamResp, error) {
 	resp := &StudentExamResp{}
 	err := s.config.Do(ctx, &core.APIReq{
@@ -914,7 +914,7 @@ type DailyExamResp struct {
 	Data []models.StudentExam `json:"data"`
 }
 
-// DailyExam: 查询本人指定日期的考试安排
+// DailyExam: 查询本人指定日期考试安排
 func (s *Service) DailyExam(ctx context.Context, req *DailyExamReq, opts ...core.RequestOption) (*DailyExamResp, error) {
 	resp := &DailyExamResp{}
 	err := s.config.Do(ctx, &core.APIReq{
@@ -1104,7 +1104,7 @@ type StudentGradeResp struct {
 	Data *models.StudentGradeData `json:"data"`
 }
 
-// StudentGrade: 查询本人成绩与绩点
+// StudentGrade: 查询本人本科成绩与绩点
 func (s *Service) StudentGrade(ctx context.Context, req *StudentGradeReq, opts ...core.RequestOption) (*StudentGradeResp, error) {
 	resp := &StudentGradeResp{}
 	err := s.config.Do(ctx, &core.APIReq{
@@ -1993,7 +1993,7 @@ type ScheduleResp struct {
 	Data []models.ScheduleItem `json:"data"`
 }
 
-// Schedule: 获取学期课表
+// Schedule: 查询本人学期完整课表
 func (s *Service) Schedule(ctx context.Context, req *ScheduleReq, opts ...core.RequestOption) (*ScheduleResp, error) {
 	resp := &ScheduleResp{}
 	err := s.config.Do(ctx, &core.APIReq{
@@ -2091,7 +2091,7 @@ type ScheduleNowResp struct {
 	Data *models.ScheduleNowData `json:"data"`
 }
 
-// ScheduleNow: 获取今明课表
+// ScheduleNow: 查询本人今明课程
 func (s *Service) ScheduleNow(ctx context.Context, req *ScheduleNowReq, opts ...core.RequestOption) (*ScheduleNowResp, error) {
 	resp := &ScheduleNowResp{}
 	err := s.config.Do(ctx, &core.APIReq{

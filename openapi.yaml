@@ -602,7 +602,8 @@ paths:
         get:
             tags:
                 - AcademicService
-            summary: 查询本人考试安排
+            summary: 查询本人学期考试安排
+            description: 返回本人当前或指定学期的全部考试科目、时间和考场
             operationId: AcademicService_StudentExam
             security:
                 - BearerAuth: []
@@ -631,7 +632,8 @@ paths:
         get:
             tags:
                 - AcademicService
-            summary: 查询本人指定日期的考试安排
+            summary: 查询本人指定日期考试安排
+            description: 返回本人某个明确日期的考试科目、时间和考场
             operationId: AcademicService_DailyExam
             security:
                 - BearerAuth: []
@@ -738,8 +740,8 @@ paths:
         get:
             tags:
                 - AcademicService
-            summary: 查询本人成绩与绩点
-            description: 返回当前登录学生的成绩明细与基于同一筛选条件聚合的 GPA，支持 schoolYear 与 semester 过滤；未传时返回全部历史成绩聚合结果
+            summary: 查询本人本科成绩与绩点
+            description: 返回本人本科教务课程成绩明细与聚合绩点（GPA），支持按学年与学期过滤，未传时返回全部历史成绩
             operationId: AcademicService_StudentGrade
             security:
                 - BearerAuth: []
@@ -1185,8 +1187,8 @@ paths:
         get:
             tags:
                 - AcademicService
-            summary: 获取学期课表
-            description: 返回当前登录学生的课表条目（读自学校教务库），支持按时间戳/学年+学期/周次过滤
+            summary: 查询本人学期完整课表
+            description: 返回本人当前或指定学期的完整课表和每周课程，可按时间戳、学年+学期或周次过滤，数据来自学校教务库
             operationId: AcademicService_Schedule
             security:
                 - BearerAuth: []
@@ -1254,8 +1256,8 @@ paths:
         get:
             tags:
                 - AcademicService
-            summary: 获取今明课表
-            description: 返回当前登录学生今天与明天的课程安排
+            summary: 查询本人今明课程
+            description: 返回本人今天与明天的课程、上课节次和教室
             operationId: AcademicService_ScheduleNow
             security:
                 - BearerAuth: []
@@ -6104,7 +6106,8 @@ paths:
         get:
             tags:
                 - FeedService
-            summary: 课表iCalendar订阅
+            summary: 生成课表 iCalendar 数据
+            description: 返回供日历软件订阅和同步课程使用的 iCalendar 数据
             operationId: FeedService_ScheduleIcs
             parameters:
                 - name: token
@@ -6123,7 +6126,7 @@ paths:
             tags:
                 - GraduateService
             summary: 查询本人研究生成绩
-            description: 按学号返回研究生课程成绩(课程/学分/最终成绩/绩点/是否学位课);可选按学年(schoolYear)+学期(semester)过滤, 留空返回全部
+            description: 返回本人研究生课程成绩、学分、绩点和是否学位课，支持按学年与学期过滤
             operationId: GraduateService_GraduateGrades
             security:
                 - BearerAuth: []

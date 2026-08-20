@@ -218,7 +218,7 @@ type ScheduleIcsResp struct {
 	core.CodeMsg
 }
 
-// ScheduleIcs: 课表iCalendar订阅
+// ScheduleIcs: 生成课表 iCalendar 数据
 func (s *Service) ScheduleIcs(ctx context.Context, req *ScheduleIcsReq, opts ...core.RequestOption) (*ScheduleIcsResp, error) {
 	resp := &ScheduleIcsResp{}
 	err := s.config.Do(ctx, &core.APIReq{
