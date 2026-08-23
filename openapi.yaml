@@ -8829,6 +8829,100 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/SimpleResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/subscriptions/delivery-preferences:
+        put:
+            tags:
+                - SubscriptionService
+            summary: 批量设置订阅通知渠道偏好
+            description: 在一个事务中统一设置或恢复当前用户全部订阅 Topic 的通知渠道偏好
+            operationId: SubscriptionService_BatchSetDeliveryPreferences
+            security:
+                - BearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/BatchDeliveryPreferenceRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SimpleResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/subscriptions/{channel}/delivery-preference:
+        get:
+            tags:
+                - SubscriptionService
+            summary: 查询订阅通知渠道偏好
+            description: 返回当前用户指定订阅 Topic 的渠道覆盖、绑定状态和最终生效策略
+            operationId: SubscriptionService_GetDeliveryPreference
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: channel
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeliveryPreferenceResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+        put:
+            tags:
+                - SubscriptionService
+            summary: 设置订阅通知渠道偏好
+            description: 为当前用户指定订阅 Topic 设置微信公众号或钉钉工作通知覆盖
+            operationId: SubscriptionService_SetDeliveryPreference
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: channel
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SetDeliveryPreferenceRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeliveryPreferenceResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+        delete:
+            tags:
+                - SubscriptionService
+            summary: 恢复订阅通知系统默认
+            description: 删除当前用户指定订阅 Topic 的渠道覆盖并恢复管理员默认策略
+            operationId: SubscriptionService_ResetDeliveryPreference
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: channel
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SimpleResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/upload:
         get:
             tags:
@@ -10488,6 +10582,13 @@ components:
                     items:
                         type: string
             description: 当前用户已授权的应用列表 / 撤销对某应用的授权（用户自助的"已连接应用"管理）。
+        BatchDeliveryPreferenceRequestBody:
+            type: object
+            properties:
+                updates:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/DeliveryPreferenceUpdate'
         BindCampusRequestBody:
             type: object
             properties:
@@ -12365,6 +12466,55 @@ components:
                         $ref: '#/components/schemas/DeliveryGroup'
                 retry:
                     $ref: '#/components/schemas/RetryPolicy'
+        DeliveryPreference:
+            type: object
+            properties:
+                channel:
+                    type: string
+                availableProviders:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/DeliveryProviderOption'
+                selectedProvider:
+                    type: string
+                effectiveProvider:
+                    type: string
+                effectivePolicy:
+                    type: string
+                effectiveSummary:
+                    type: string
+                inherited:
+                    type: boolean
+        DeliveryPreferenceResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/DeliveryPreference'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        DeliveryPreferenceUpdate:
+            type: object
+            properties:
+                channel:
+                    type: string
+                provider:
+                    type: string
+        DeliveryProviderOption:
+            type: object
+            properties:
+                key:
+                    type: string
+                name:
+                    type: string
+                bound:
+                    type: boolean
+                available:
+                    type: boolean
+                unavailableReason:
+                    type: string
         DeliveryResponseBody:
             type: object
             properties:
@@ -17537,6 +17687,11 @@ components:
                     type: integer
                     format: int64
                 msg:
+                    type: string
+        SetDeliveryPreferenceRequestBody:
+            type: object
+            properties:
+                provider:
                     type: string
         SetLoginMethodsRequestBody:
             type: object

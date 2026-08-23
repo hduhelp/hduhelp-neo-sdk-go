@@ -945,6 +945,11 @@ type AuthorizedAppItem struct {
 	Scopes      *[]string `json:"scopes,omitempty"`
 }
 
+// BatchDeliveryPreferenceRequestBody defines model for BatchDeliveryPreferenceRequestBody.
+type BatchDeliveryPreferenceRequestBody struct {
+	Updates *[]DeliveryPreferenceUpdate `json:"updates,omitempty"`
+}
+
 // BindCampusRequestBody defines model for BindCampusRequestBody.
 type BindCampusRequestBody struct {
 	Primary   *bool   `json:"primary,omitempty"`
@@ -2272,6 +2277,39 @@ type DeliveryPolicy struct {
 	Groups        *[]DeliveryGroup `json:"groups,omitempty"`
 	Retry         *RetryPolicy     `json:"retry,omitempty"`
 	SchemaVersion *int32           `json:"schemaVersion,omitempty"`
+}
+
+// DeliveryPreference defines model for DeliveryPreference.
+type DeliveryPreference struct {
+	AvailableProviders *[]DeliveryProviderOption `json:"availableProviders,omitempty"`
+	Channel            *string                   `json:"channel,omitempty"`
+	EffectivePolicy    *string                   `json:"effectivePolicy,omitempty"`
+	EffectiveProvider  *string                   `json:"effectiveProvider,omitempty"`
+	EffectiveSummary   *string                   `json:"effectiveSummary,omitempty"`
+	Inherited          *bool                     `json:"inherited,omitempty"`
+	SelectedProvider   *string                   `json:"selectedProvider,omitempty"`
+}
+
+// DeliveryPreferenceResponseBody defines model for DeliveryPreferenceResponseBody.
+type DeliveryPreferenceResponseBody struct {
+	Code *int64              `json:"code,omitempty"`
+	Data *DeliveryPreference `json:"data,omitempty"`
+	Msg  *string             `json:"msg,omitempty"`
+}
+
+// DeliveryPreferenceUpdate defines model for DeliveryPreferenceUpdate.
+type DeliveryPreferenceUpdate struct {
+	Channel  *string `json:"channel,omitempty"`
+	Provider *string `json:"provider,omitempty"`
+}
+
+// DeliveryProviderOption defines model for DeliveryProviderOption.
+type DeliveryProviderOption struct {
+	Available         *bool   `json:"available,omitempty"`
+	Bound             *bool   `json:"bound,omitempty"`
+	Key               *string `json:"key,omitempty"`
+	Name              *string `json:"name,omitempty"`
+	UnavailableReason *string `json:"unavailableReason,omitempty"`
 }
 
 // DeliveryResponseBody defines model for DeliveryResponseBody.
@@ -5815,6 +5853,11 @@ type SetDefaultIdentityResponseBody struct {
 	Msg  *string `json:"msg,omitempty"`
 }
 
+// SetDeliveryPreferenceRequestBody defines model for SetDeliveryPreferenceRequestBody.
+type SetDeliveryPreferenceRequestBody struct {
+	Provider *string `json:"provider,omitempty"`
+}
+
 // SetLoginMethodsRequestBody defines model for SetLoginMethodsRequestBody.
 type SetLoginMethodsRequestBody struct {
 	// Disabled 被停用的方式 key 列表
@@ -8827,6 +8870,12 @@ type SubscriptionServiceSubscribeJSONRequestBody = SubscribeRequestBody
 
 // SubscriptionServiceUpdateSubscriptionJSONRequestBody defines body for SubscriptionServiceUpdateSubscription for application/json ContentType.
 type SubscriptionServiceUpdateSubscriptionJSONRequestBody = UpdateSubscriptionRequestBody
+
+// SubscriptionServiceBatchSetDeliveryPreferencesJSONRequestBody defines body for SubscriptionServiceBatchSetDeliveryPreferences for application/json ContentType.
+type SubscriptionServiceBatchSetDeliveryPreferencesJSONRequestBody = BatchDeliveryPreferenceRequestBody
+
+// SubscriptionServiceSetDeliveryPreferenceJSONRequestBody defines body for SubscriptionServiceSetDeliveryPreference for application/json ContentType.
+type SubscriptionServiceSetDeliveryPreferenceJSONRequestBody = SetDeliveryPreferenceRequestBody
 
 // UploadServiceSignUploadJSONRequestBody defines body for UploadServiceSignUpload for application/json ContentType.
 type UploadServiceSignUploadJSONRequestBody = SignUploadRequestBody

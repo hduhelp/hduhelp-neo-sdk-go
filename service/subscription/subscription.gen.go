@@ -352,3 +352,193 @@ func (s *Service) Unsubscribe(ctx context.Context, req *UnsubscribeReq, opts ...
 	}, resp, opts...)
 	return resp, err
 }
+
+// BatchSetDeliveryPreferencesReq is the request for BatchSetDeliveryPreferences.
+type BatchSetDeliveryPreferencesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// BatchSetDeliveryPreferencesReqBuilder builds a BatchSetDeliveryPreferencesReq with a fluent setter per field.
+type BatchSetDeliveryPreferencesReqBuilder struct {
+	req *BatchSetDeliveryPreferencesReq
+}
+
+// NewBatchSetDeliveryPreferencesReqBuilder creates a request builder for BatchSetDeliveryPreferences.
+func NewBatchSetDeliveryPreferencesReqBuilder() *BatchSetDeliveryPreferencesReqBuilder {
+	return &BatchSetDeliveryPreferencesReqBuilder{req: &BatchSetDeliveryPreferencesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *BatchSetDeliveryPreferencesReqBuilder) Body(body *models.BatchDeliveryPreferenceRequestBody) *BatchSetDeliveryPreferencesReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *BatchSetDeliveryPreferencesReqBuilder) Build() *BatchSetDeliveryPreferencesReq { return b.req }
+
+// BatchSetDeliveryPreferencesResp is the response for BatchSetDeliveryPreferences.
+type BatchSetDeliveryPreferencesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// BatchSetDeliveryPreferences: 批量设置订阅通知渠道偏好
+func (s *Service) BatchSetDeliveryPreferences(ctx context.Context, req *BatchSetDeliveryPreferencesReq, opts ...core.RequestOption) (*BatchSetDeliveryPreferencesResp, error) {
+	resp := &BatchSetDeliveryPreferencesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/subscriptions/delivery-preferences",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// GetDeliveryPreferenceReq is the request for GetDeliveryPreference.
+type GetDeliveryPreferenceReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// GetDeliveryPreferenceReqBuilder builds a GetDeliveryPreferenceReq with a fluent setter per field.
+type GetDeliveryPreferenceReqBuilder struct{ req *GetDeliveryPreferenceReq }
+
+// NewGetDeliveryPreferenceReqBuilder creates a request builder for GetDeliveryPreference.
+func NewGetDeliveryPreferenceReqBuilder() *GetDeliveryPreferenceReqBuilder {
+	return &GetDeliveryPreferenceReqBuilder{req: &GetDeliveryPreferenceReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Channel sets the "channel" path parameter.
+func (b *GetDeliveryPreferenceReqBuilder) Channel(v string) *GetDeliveryPreferenceReqBuilder {
+	b.req.pathParams["channel"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *GetDeliveryPreferenceReqBuilder) Build() *GetDeliveryPreferenceReq { return b.req }
+
+// GetDeliveryPreferenceResp is the response for GetDeliveryPreference.
+type GetDeliveryPreferenceResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.DeliveryPreference `json:"data"`
+}
+
+// GetDeliveryPreference: 查询订阅通知渠道偏好
+func (s *Service) GetDeliveryPreference(ctx context.Context, req *GetDeliveryPreferenceReq, opts ...core.RequestOption) (*GetDeliveryPreferenceResp, error) {
+	resp := &GetDeliveryPreferenceResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/subscriptions/{channel}/delivery-preference",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SetDeliveryPreferenceReq is the request for SetDeliveryPreference.
+type SetDeliveryPreferenceReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// SetDeliveryPreferenceReqBuilder builds a SetDeliveryPreferenceReq with a fluent setter per field.
+type SetDeliveryPreferenceReqBuilder struct{ req *SetDeliveryPreferenceReq }
+
+// NewSetDeliveryPreferenceReqBuilder creates a request builder for SetDeliveryPreference.
+func NewSetDeliveryPreferenceReqBuilder() *SetDeliveryPreferenceReqBuilder {
+	return &SetDeliveryPreferenceReqBuilder{req: &SetDeliveryPreferenceReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Channel sets the "channel" path parameter.
+func (b *SetDeliveryPreferenceReqBuilder) Channel(v string) *SetDeliveryPreferenceReqBuilder {
+	b.req.pathParams["channel"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *SetDeliveryPreferenceReqBuilder) Body(body *models.SetDeliveryPreferenceRequestBody) *SetDeliveryPreferenceReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *SetDeliveryPreferenceReqBuilder) Build() *SetDeliveryPreferenceReq { return b.req }
+
+// SetDeliveryPreferenceResp is the response for SetDeliveryPreference.
+type SetDeliveryPreferenceResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.DeliveryPreference `json:"data"`
+}
+
+// SetDeliveryPreference: 设置订阅通知渠道偏好
+func (s *Service) SetDeliveryPreference(ctx context.Context, req *SetDeliveryPreferenceReq, opts ...core.RequestOption) (*SetDeliveryPreferenceResp, error) {
+	resp := &SetDeliveryPreferenceResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/subscriptions/{channel}/delivery-preference",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ResetDeliveryPreferenceReq is the request for ResetDeliveryPreference.
+type ResetDeliveryPreferenceReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ResetDeliveryPreferenceReqBuilder builds a ResetDeliveryPreferenceReq with a fluent setter per field.
+type ResetDeliveryPreferenceReqBuilder struct{ req *ResetDeliveryPreferenceReq }
+
+// NewResetDeliveryPreferenceReqBuilder creates a request builder for ResetDeliveryPreference.
+func NewResetDeliveryPreferenceReqBuilder() *ResetDeliveryPreferenceReqBuilder {
+	return &ResetDeliveryPreferenceReqBuilder{req: &ResetDeliveryPreferenceReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Channel sets the "channel" path parameter.
+func (b *ResetDeliveryPreferenceReqBuilder) Channel(v string) *ResetDeliveryPreferenceReqBuilder {
+	b.req.pathParams["channel"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *ResetDeliveryPreferenceReqBuilder) Build() *ResetDeliveryPreferenceReq { return b.req }
+
+// ResetDeliveryPreferenceResp is the response for ResetDeliveryPreference.
+type ResetDeliveryPreferenceResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// ResetDeliveryPreference: 恢复订阅通知系统默认
+func (s *Service) ResetDeliveryPreference(ctx context.Context, req *ResetDeliveryPreferenceReq, opts ...core.RequestOption) (*ResetDeliveryPreferenceResp, error) {
+	resp := &ResetDeliveryPreferenceResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/subscriptions/{channel}/delivery-preference",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
