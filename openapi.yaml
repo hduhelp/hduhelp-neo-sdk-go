@@ -44,7 +44,7 @@ paths:
             tags:
                 - DingTalkWorkbenchService
             summary: 钉钉工作台聚合信息流（旧契约兼容）
-            description: 聚合未来六天课表、电费、校园卡和校历；单个数据源失败时省略对应字段。
+            description: 聚合未来六天课表、电费、校园卡、阳光长跑和校历；单个数据源失败时省略对应字段。
             operationId: DingTalkWorkbenchService_DingTalkInfoStream
             security: []
             parameters:
