@@ -3286,6 +3286,874 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AdminWishReviewResponseBody'
+    /hduhelp-neo/admin/moments-admin/appeals:
+        get:
+            tags:
+                - MomentsService
+            summary: 申诉队列
+            operationId: MomentsService_AdminListAppeals
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminAppealListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/appeals/{appeal_id}/resolve:
+        post:
+            tags:
+                - MomentsService
+            summary: 处置申诉
+            description: 受理或驳回。受理不自动恢复内容，恢复走各自的恢复接口，两者分开留痕
+            operationId: MomentsService_AdminResolveAppeal
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: appeal_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ResolveAppealRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AppealResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/audits:
+        get:
+            tags:
+                - MomentsService
+            summary: 运营处置记录
+            description: 按时间倒排，可按动作、经办人与目标筛选。供交接与复核
+            operationId: MomentsService_AdminListAudits
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: action
+                  in: query
+                  schema:
+                    type: string
+                - name: operator_id
+                  in: query
+                  schema:
+                    type: string
+                - name: target_id
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminAuditListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/categories:
+        get:
+            tags:
+                - MomentsService
+            summary: 板块管理列表
+            description: '----- 管理面：板块 -----'
+            operationId: MomentsService_AdminListCategories
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CategoryListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        post:
+            tags:
+                - MomentsService
+            summary: 新建板块
+            description: 返回新建的板块
+            operationId: MomentsService_AdminCreateCategory
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateCategoryRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CategoryResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/categories/{id}:
+        put:
+            tags:
+                - MomentsService
+            summary: 编辑板块
+            description: 返回编辑后的板块
+            operationId: MomentsService_AdminUpdateCategory
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateCategoryRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CategoryResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        delete:
+            tags:
+                - MomentsService
+            summary: 删除板块
+            description: 返回删除后的完整板块列表（集合小且需重排序号）
+            operationId: MomentsService_AdminDeleteCategory
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CategoryListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/comments:
+        get:
+            tags:
+                - MomentsService
+            summary: 评论管理列表
+            description: '----- 管理面：评论 -----'
+            operationId: MomentsService_AdminListComments
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+                - name: post_id
+                  in: query
+                  schema:
+                    type: string
+                - name: reported_only
+                  in: query
+                  schema:
+                    type: boolean
+                - name: author_user_id
+                  in: query
+                  description: 按作者收窄
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminCommentListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/comments/{id}/takedown:
+        post:
+            tags:
+                - MomentsService
+            summary: 下架评论
+            description: 返回变更后的评论
+            operationId: MomentsService_AdminTakedownComment
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/TakedownRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CommentResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        delete:
+            tags:
+                - MomentsService
+            summary: 恢复评论
+            description: 返回变更后的评论
+            operationId: MomentsService_AdminRestoreComment
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CommentResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/hashtags/{name}/block:
+        post:
+            tags:
+                - MomentsService
+            summary: 关停话题
+            description: 关停后该话题从补全、搜索与话题页消失。已有帖子不受影响
+            operationId: MomentsService_AdminBlockHashtag
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HashtagBlockResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        delete:
+            tags:
+                - MomentsService
+            summary: 解除话题关停
+            operationId: MomentsService_AdminUnblockHashtag
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HashtagBlockResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/posts:
+        get:
+            tags:
+                - MomentsService
+            summary: 帖子管理列表
+            description: 支持状态、作者类型、板块、关键词与仅看被举报筛选；附待审与待处理举报角标
+            operationId: MomentsService_AdminListPosts
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+                - name: author_kind
+                  in: query
+                  description: user | app
+                  schema:
+                    type: string
+                - name: category_id
+                  in: query
+                  schema:
+                    type: string
+                - name: keyword
+                  in: query
+                  schema:
+                    type: string
+                - name: reported_only
+                  in: query
+                  schema:
+                    type: boolean
+                - name: author_user_id
+                  in: query
+                  description: authorUserId 按作者收窄，供追查同一个人的全部内容（含非 published 状态）。
+                  schema:
+                    type: string
+                - name: min_report_count
+                  in: query
+                  description: minReportCount 只取举报数不低于它的内容，供优先处理被大量举报的内容。
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminPostListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        post:
+            tags:
+                - MomentsService
+            summary: 运营代官方号发帖
+            description: 覆盖人工运营场景，帖子作者为指定应用并记录操作运营
+            operationId: MomentsService_AdminPublishPost
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                description: |-
+                    ---------- 管理面 ----------
+                    AdminPublishPostRequest 让运营以某官方号（应用）身份发帖，覆盖人工运营场景；
+                    应用自带令牌直接发布走用户面的 PublishPost。两条路径产出的帖子作者一致
+                    （kind=app），但本接口额外记录操作运营，供审计。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AdminPublishPostRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PublishPostResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/posts/{id}:
+        get:
+            tags:
+                - MomentsService
+            summary: 帖子管理详情
+            description: 额外返回官方号帖的操作运营与处置理由
+            operationId: MomentsService_AdminGetPost
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminPostDetailResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/posts/{id}/takedown:
+        post:
+            tags:
+                - MomentsService
+            summary: 下架帖子
+            description: 返回变更后的帖子行，供后台表格就地更新状态
+            operationId: MomentsService_AdminTakedownPost
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/TakedownRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminPostSummaryResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        delete:
+            tags:
+                - MomentsService
+            summary: 恢复帖子
+            description: 返回变更后的帖子行
+            operationId: MomentsService_AdminRestorePost
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminPostSummaryResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/posts/{id}/versions:
+        get:
+            tags:
+                - MomentsService
+            summary: 帖子正文版本历史
+            operationId: MomentsService_AdminListPostVersions
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PostVersionListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/posts/{post_id}/feature:
+        post:
+            tags:
+                - MomentsService
+            summary: 加精帖子
+            operationId: MomentsService_AdminFeaturePost
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: post_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CurationResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        delete:
+            tags:
+                - MomentsService
+            summary: 取消加精
+            operationId: MomentsService_AdminUnfeaturePost
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: post_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CurationResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/posts/{post_id}/pin:
+        post:
+            tags:
+                - MomentsService
+            summary: 置顶帖子
+            description: '----- 运营：分发干预 -----'
+            operationId: MomentsService_AdminPinPost
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: post_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CurationResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        delete:
+            tags:
+                - MomentsService
+            summary: 取消置顶
+            operationId: MomentsService_AdminUnpinPost
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: post_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CurationResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/posts/{post_id}/purge:
+        post:
+            tags:
+                - MomentsService
+            summary: 永久删除帖子
+            description: 级联清除正文版本、图片关联、话题关联、收藏、表情与评论。不可撤销，必须带理由并写审计
+            operationId: MomentsService_AdminPurgePost
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: post_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PurgePostRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PurgePostResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/posts/{post_id}/rank-boost:
+        put:
+            tags:
+                - MomentsService
+            summary: 设置人工权重
+            description: 打分的乘性权重。1 为不干预，小于 1 降权，大于 1 加权
+            operationId: MomentsService_AdminSetRankBoost
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: post_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SetRankBoostRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CurationResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/reports:
+        get:
+            tags:
+                - MomentsService
+            summary: 举报队列
+            description: 附待处理总数角标
+            operationId: MomentsService_AdminListReports
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+                - name: target_kind
+                  in: query
+                  schema:
+                    type: string
+                - name: target_id
+                  in: query
+                  description: targetId 按被举报目标收窄。同一条内容被多人举报时，处置需要一次看齐全部举报。
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminReportListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/reports/{id}/resolve:
+        post:
+            tags:
+                - MomentsService
+            summary: 处置举报
+            description: resolution 取 takedown、dismiss 或 ban；返回处置后的举报与剩余待处理数
+            operationId: MomentsService_AdminResolveReport
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ResolveReportRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ResolveReportResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/sensitive-words:
+        get:
+            tags:
+                - MomentsService
+            summary: 敏感词列表
+            description: '----- 管理面：敏感词 -----'
+            operationId: MomentsService_AdminListSensitiveWords
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: keyword
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SensitiveWordListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        post:
+            tags:
+                - MomentsService
+            summary: 新增敏感词
+            description: action 取 block（拦截发布）或 review（转人工审核）；返回新增记录
+            operationId: MomentsService_AdminCreateSensitiveWord
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateSensitiveWordRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SensitiveWordResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/sensitive-words/{id}:
+        delete:
+            tags:
+                - MomentsService
+            summary: 删除敏感词
+            description: 返回被删 id 与剩余总数
+            operationId: MomentsService_AdminDeleteSensitiveWord
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SensitiveWordDeletedResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/users/{user_id}/ban:
+        post:
+            tags:
+                - MomentsService
+            summary: 禁言用户
+            description: until 缺省为永久；返回变更后的禁言状态
+            operationId: MomentsService_AdminBanUser
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/BanUserRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BanStateResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        delete:
+            tags:
+                - MomentsService
+            summary: 解除禁言
+            description: 返回变更后的禁言状态
+            operationId: MomentsService_AdminUnbanUser
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BanStateResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/users/{user_id}/state:
+        get:
+            tags:
+                - MomentsService
+            summary: 用户处置态
+            description: 禁言态与历史处置计数，供判断是否惯犯
+            operationId: MomentsService_AdminGetUserState
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminUserStateResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/notices:
         get:
             tags:
@@ -7772,6 +8640,32 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/SetCurrentCampusResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/identity/me/profile:
+        put:
+            tags:
+                - IdentityService
+            summary: 修改昵称与头像
+            description: 字段省略即不改动。昵称是平台级展示身份，社区与第三方应用都读它；头像传 upload 对象 key（usage=avatar），传空串即清除。返回更新后的用户基本信息。
+            operationId: IdentityService_UpdateMyProfile
+            security:
+                - BearerAuth: []
+            requestBody:
+                description: |-
+                    UpdateMyProfileRequest 修改本人昵称与头像。字段省略即不改动，两者可分别更新。
+                    // 昵称是平台级展示身份：它出现在社区卡片、评论与关系列表里，也是第三方应用拿到的
+                    用户名。因此它归 identity 管，不由某个业务模块各自维护一份。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateMyProfileRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UpdateMyProfileResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/inbox:
         get:
             tags:
@@ -8372,6 +9266,1123 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SendWishResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/appeals:
+        post:
+            tags:
+                - MomentsService
+            summary: 提交申诉
+            description: 对被下架的内容或被禁言提出异议。同一目标重复提交返回既有申诉
+            operationId: MomentsService_SubmitAppeal
+            security:
+                - BearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SubmitAppealRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AppealResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/categories:
+        get:
+            tags:
+                - MomentsService
+            summary: 板块列表
+            description: 运营配置的固定集合，一帖可属多个板块
+            operationId: MomentsService_ListCategories
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CategoryListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/comments/{id}:
+        delete:
+            tags:
+                - MomentsService
+            summary: 撤回本人评论
+            description: 返回受影响的帖子评论总数与父评论回复数
+            operationId: MomentsService_WithdrawComment
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CommentWithdrawResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/comments/{id}/reactions:
+        post:
+            tags:
+                - MomentsService
+            summary: 为评论添加表情回复
+            description: 幂等；返回变更后的表情聚合
+            operationId: MomentsService_ReactComment
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                description: |-
+                    ---------- 表情回复 / 收藏 / 关注 ----------
+                    三者均为幂等开关：POST 建立、DELETE 取消，重复调用不报错，
+                    且都返回变更后的开关状态与计数。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ReactRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ReactionMutationResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+        delete:
+            tags:
+                - MomentsService
+            summary: 取消评论表情回复
+            description: 幂等；返回变更后的表情聚合
+            operationId: MomentsService_UnreactComment
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: type
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ReactionMutationResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/comments/{id}/replies:
+        get:
+            tags:
+                - MomentsService
+            summary: 二级评论列表
+            operationId: MomentsService_ListReplies
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: cursor
+                  in: query
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CursorCommentListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+        post:
+            tags:
+                - MomentsService
+            summary: 回复评论
+            description: 返回新评论、帖子评论总数与父评论的回复数
+            operationId: MomentsService_PublishReply
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                description: PublishCommentRequest 的 content 不接受 hashtag 节点。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PublishCommentRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CommentMutationResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/emojis:
+        get:
+            tags:
+                - MomentsService
+            summary: 可用表情集合
+            description: 供表情选择器渲染
+            operationId: MomentsService_ListEmojis
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/EmojiListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/feed:
+        get:
+            tags:
+                - MomentsService
+            summary: 信息流
+            description: tab=recommend 为发现流（按时间倒序），tab=following 为关注流；可叠加板块或话题筛选。cursor 分页
+            operationId: MomentsService_GetFeed
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: tab
+                  in: query
+                  description: recommend | following；缺省 recommend
+                  schema:
+                    type: string
+                - name: category_id
+                  in: query
+                  schema:
+                    type: string
+                - name: hashtag
+                  in: query
+                  schema:
+                    type: string
+                - name: cursor
+                  in: query
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CursorPostListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/hashtags/suggest:
+        get:
+            tags:
+                - MomentsService
+            summary: 话题补全
+            description: '发布器输入 # 时按前缀匹配已有话题'
+            operationId: MomentsService_SuggestHashtags
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: q
+                  in: query
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HashtagListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/hashtags/{name}:
+        get:
+            tags:
+                - MomentsService
+            summary: 话题详情
+            description: 话题下的帖子经 feed 接口的 hashtag 参数获取
+            operationId: MomentsService_GetHashtag
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HashtagResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/me/collections:
+        get:
+            tags:
+                - MomentsService
+            summary: 我的收藏
+            operationId: MomentsService_ListMyCollections
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: cursor
+                  in: query
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CursorPostListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/me/inbox/likes:
+        get:
+            tags:
+                - MomentsService
+            summary: 赞和收藏清单
+            description: 按时间倒排。表情回复与收藏在这一条清单里
+            operationId: MomentsService_ListMomentsInboxLikes
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: cursor
+                  in: query
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InboxListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/me/inbox/mentions:
+        get:
+            tags:
+                - MomentsService
+            summary: '@和评论清单'
+            description: 按时间倒排。评论、回复与被 @ 在这一条清单里
+            operationId: MomentsService_ListMomentsInboxMentions
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: cursor
+                  in: query
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InboxListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/me/inbox/read:
+        post:
+            tags:
+                - MomentsService
+            summary: 标记收件箱已读
+            description: kind 为空表示两条清单全部已读。返回变更后的未读数
+            operationId: MomentsService_MarkMomentsInboxRead
+            security:
+                - BearerAuth: []
+            requestBody:
+                description: InboxMarkReadRequest 的 kind 为空表示两条清单全部标记已读。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/InboxMarkReadRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InboxMarkReadResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/me/inbox/unread:
+        get:
+            tags:
+                - MomentsService
+            summary: 收件箱未读数
+            description: 两条清单各自的未读数，供页签红点一次取齐
+            operationId: MomentsService_GetMomentsInboxUnread
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InboxUnreadResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/me/posting-identities:
+        get:
+            tags:
+                - MomentsService
+            summary: 可用发布身份
+            description: 供发布器渲染身份下拉：本人，以及本人有权代表的官方号
+            operationId: MomentsService_GetPostingIdentities
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PostingIdentityResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/me/posts:
+        get:
+            tags:
+                - MomentsService
+            summary: 我的帖子
+            description: 包含本人被撤回与被下架的帖子
+            operationId: MomentsService_ListMyPosts
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: cursor
+                  in: query
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: status
+                  in: query
+                  description: published | under_review | taken_down
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CursorPostListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/me/profile:
+        get:
+            tags:
+                - MomentsService
+            summary: 我的社区状态
+            description: 只读。昵称与头像在 PUT /identity/me/profile 修改
+            operationId: MomentsService_GetMyProfile
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/MyProfileResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/me/reactions:
+        get:
+            tags:
+                - MomentsService
+            summary: 我表情回复过的帖子
+            operationId: MomentsService_ListMyReactions
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: cursor
+                  in: query
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CursorPostListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/official-accounts/{app_id}:
+        get:
+            tags:
+                - MomentsService
+            summary: 官方号信息
+            description: 由应用记录投影；持有 moments:post:publish 应用权限的应用即为官方号
+            operationId: MomentsService_GetOfficialAccount
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: app_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OfficialAccountResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/official-accounts/{app_id}/following:
+        post:
+            tags:
+                - MomentsService
+            summary: 关注官方号
+            description: 幂等；返回变更后的关注状态与计数
+            operationId: MomentsService_FollowOfficialAccount
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: app_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FollowStateResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+        delete:
+            tags:
+                - MomentsService
+            summary: 取消关注官方号
+            description: 幂等；返回变更后的关注状态与计数
+            operationId: MomentsService_UnfollowOfficialAccount
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: app_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FollowStateResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/official-accounts/{app_id}/posts:
+        get:
+            tags:
+                - MomentsService
+            summary: 官方号主页帖子
+            operationId: MomentsService_ListOfficialAccountPosts
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: app_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: cursor
+                  in: query
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CursorPostListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/posts:
+        post:
+            tags:
+                - MomentsService
+            summary: 发布帖子
+            description: 用户令牌以本人昵称署名发布；应用令牌（不带 X-Staff-Id）以官方号身份发布。图片先经 upload/sign 直传后传 key。返回新帖与作者帖子总数
+            operationId: MomentsService_PublishPost
+            security:
+                - BearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PublishPostRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PublishPostResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/posts/{id}:
+        get:
+            tags:
+                - MomentsService
+            summary: 帖子详情
+            description: 返回正文节点、图片、聚合表情与观察者态；读取即累加浏览数
+            operationId: MomentsService_GetPost
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PostDetailResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+        put:
+            tags:
+                - MomentsService
+            summary: 编辑本人帖子
+            description: 正文按版本追加，保留历史版本供审核回溯；返回编辑后的完整帖子
+            operationId: MomentsService_UpdatePost
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdatePostRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PostDetailResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+        delete:
+            tags:
+                - MomentsService
+            summary: 撤回本人帖子
+            description: 返回被撤回的帖子 id 与作者帖子总数，供前端移除卡片并同步计数
+            operationId: MomentsService_WithdrawPost
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PostWithdrawResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/posts/{id}/collection:
+        post:
+            tags:
+                - MomentsService
+            summary: 收藏帖子
+            description: 幂等。收藏是个人书签，官方号不具备该能力。返回收藏开关、帖子收藏数与我的收藏总数
+            operationId: MomentsService_CollectPost
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CollectStateResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+        delete:
+            tags:
+                - MomentsService
+            summary: 取消收藏
+            description: 幂等；返回变更后的收藏状态与计数
+            operationId: MomentsService_UncollectPost
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CollectStateResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/posts/{id}/comments:
+        get:
+            tags:
+                - MomentsService
+            summary: 一级评论列表
+            description: '----- 评论 -----'
+            operationId: MomentsService_ListComments
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: cursor
+                  in: query
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CursorCommentListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+        post:
+            tags:
+                - MomentsService
+            summary: 发布一级评论
+            description: 正文不接受 hashtag 节点；返回新评论与帖子评论总数
+            operationId: MomentsService_PublishComment
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                description: PublishCommentRequest 的 content 不接受 hashtag 节点。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PublishCommentRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CommentMutationResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/posts/{id}/reactions:
+        post:
+            tags:
+                - MomentsService
+            summary: 为帖子添加表情回复
+            description: 幂等；返回变更后的表情聚合，前端据此重绘表情条
+            operationId: MomentsService_ReactPost
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                description: |-
+                    ---------- 表情回复 / 收藏 / 关注 ----------
+                    三者均为幂等开关：POST 建立、DELETE 取消，重复调用不报错，
+                    且都返回变更后的开关状态与计数。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ReactRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ReactionMutationResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+        delete:
+            tags:
+                - MomentsService
+            summary: 取消帖子表情回复
+            description: 幂等；返回变更后的表情聚合
+            operationId: MomentsService_UnreactPost
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: type
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ReactionMutationResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/posts/{id}/share:
+        post:
+            tags:
+                - MomentsService
+            summary: 上报分享
+            description: 前端完成分享动作后调用，返回累加后的帖子计数
+            operationId: MomentsService_SharePost
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PostCountersResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/report-reasons:
+        get:
+            tags:
+                - MomentsService
+            summary: 举报原因枚举
+            description: '----- 举报 -----'
+            operationId: MomentsService_ListReportReasons
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ReportReasonListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/reports:
+        post:
+            tags:
+                - MomentsService
+            summary: 提交举报
+            description: 返回举报状态，使举报入口立即切到已举报
+            operationId: MomentsService_SubmitReport
+            security:
+                - BearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SubmitReportRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ReportStateResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/search:
+        get:
+            tags:
+                - MomentsService
+            summary: 搜索
+            description: type 决定返回帖子、用户、话题或官方号，对应搜索页的四个 tab
+            operationId: MomentsService_Search
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: q
+                  in: query
+                  schema:
+                    type: string
+                - name: type
+                  in: query
+                  description: post | user | hashtag | official
+                  schema:
+                    type: string
+                - name: cursor
+                  in: query
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SearchResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/users/{user_id}:
+        get:
+            tags:
+                - MomentsService
+            summary: 用户主页
+            description: 展示实名与昵称、计数与关注态。应用令牌调用不返回 followed_by_me
+            operationId: MomentsService_GetUserProfile
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UserProfileResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/users/{user_id}/followers:
+        get:
+            tags:
+                - MomentsService
+            summary: 粉丝列表
+            operationId: MomentsService_ListFollowers
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RelationListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/users/{user_id}/following:
+        post:
+            tags:
+                - MomentsService
+            summary: 关注用户
+            description: 幂等；返回关注开关、对方粉丝数与我的关注数
+            operationId: MomentsService_FollowUser
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FollowStateResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+        delete:
+            tags:
+                - MomentsService
+            summary: 取消关注用户
+            description: 幂等；返回变更后的关注状态与计数
+            operationId: MomentsService_UnfollowUser
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FollowStateResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/users/{user_id}/followings:
+        get:
+            tags:
+                - MomentsService
+            summary: 关注列表
+            description: 混合用户与官方号，kind 字段区分
+            operationId: MomentsService_ListFollowings
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RelationListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/moments/users/{user_id}/posts:
+        get:
+            tags:
+                - MomentsService
+            summary: 用户主页帖子
+            description: 只含已发布内容；作者本人的全部帖子走 /moments/me/posts
+            operationId: MomentsService_ListUserPosts
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: cursor
+                  in: query
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CursorPostListResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/open-apis/auth/app-access-token/internal:
         post:
@@ -9566,6 +11577,35 @@ components:
                     format: int64
                 tenantKey:
                     type: string
+        AdminAppealListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Appeal'
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                total:
+                    type: integer
+                    format: int64
+                pending_total:
+                    type: integer
+                    format: int64
+        AdminAppealListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminAppealListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AdminAppsData:
             type: object
             properties:
@@ -9578,6 +11618,32 @@ components:
             description: |-
                 GET admin/apps 的载荷：不带 id 返回应用列表，带 id 返回单应用详情。
                 两个字段按请求形态二选一填充。
+        AdminAuditListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AuditEntry'
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                total:
+                    type: integer
+                    format: int64
+        AdminAuditListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminAuditListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AdminAuthorizationInfo:
             type: object
             properties:
@@ -9633,6 +11699,32 @@ components:
                     description: 创建时间(unix 毫秒)
                     format: int64
             description: '-------------------- 校区地理位置管理（campuses） --------------------'
+        AdminCommentListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Comment'
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                total:
+                    type: integer
+                    format: int64
+        AdminCommentListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminCommentListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AdminDomainTreeResponseBody:
             type: object
             properties:
@@ -9910,6 +12002,126 @@ components:
                     format: int64
                 msg:
                     type: string
+        AdminPostDetailData:
+            type: object
+            properties:
+                post:
+                    $ref: '#/components/schemas/PostDetail'
+                real_author_user_id:
+                    type: string
+                published_by_operator_id:
+                    type: string
+                report_count:
+                    type: integer
+                    format: int32
+        AdminPostDetailResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminPostDetailData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AdminPostListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AdminPostSummary'
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                total:
+                    type: integer
+                    format: int64
+                pending_review_total:
+                    type: integer
+                    description: 待审角标
+                    format: int64
+                pending_report_total:
+                    type: integer
+                    format: int64
+        AdminPostListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminPostListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AdminPostSummary:
+            type: object
+            properties:
+                id:
+                    type: string
+                author:
+                    $ref: '#/components/schemas/Author'
+                title:
+                    type: string
+                brief:
+                    type: string
+                status:
+                    type: string
+                counters:
+                    $ref: '#/components/schemas/PostCounters'
+                real_author_user_id:
+                    type: string
+                published_by_operator_id:
+                    type: string
+                report_count:
+                    type: integer
+                    format: int32
+                takedown_reason:
+                    type: string
+                takedown_by_operator_id:
+                    type: string
+                created_at:
+                    type: integer
+                    format: int64
+            description: |-
+                AdminPostSummary 额外暴露官方号帖背后的操作运营。
+                该字段只在管理面出现，用户面的 Author 永不携带。
+        AdminPostSummaryResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminPostSummary'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AdminPublishPostRequestBody:
+            type: object
+            properties:
+                publish_as_app_id:
+                    type: string
+                title:
+                    type: string
+                content:
+                    type: array
+                    items:
+                        type: array
+                        items:
+                            $ref: '#/components/schemas/RichTextNode'
+                images:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PostImageInput'
+                location:
+                    $ref: '#/components/schemas/PostLocation'
+                category_ids:
+                    type: array
+                    items:
+                        type: string
         AdminRefreshRequestBody:
             type: object
             properties:
@@ -9920,6 +12132,36 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/AdminLoginData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AdminReportListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Report'
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                total:
+                    type: integer
+                    format: int64
+                pending_total:
+                    type: integer
+                    description: 队列角标
+                    format: int64
+        AdminReportListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminReportListData'
                 code:
                     type: integer
                     format: int64
@@ -10053,6 +12295,43 @@ components:
                 createdAt:
                     type: integer
                     format: int64
+        AdminUserState:
+            type: object
+            properties:
+                user_id:
+                    type: string
+                nickname:
+                    type: string
+                banned:
+                    type: boolean
+                banned_until:
+                    type: integer
+                    format: int64
+                ban_reason:
+                    type: string
+                post_count:
+                    type: integer
+                    format: int64
+                taken_down_post_count:
+                    type: integer
+                    format: int64
+                taken_down_comment_count:
+                    type: integer
+                    format: int64
+                reported_against_count:
+                    type: integer
+                    format: int64
+            description: AdminUserState 汇总一个用户在社区里的处置历史，供审核员判断是否惯犯。
+        AdminUserStateResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminUserState'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AdminUsersData:
             type: object
             properties:
@@ -10183,6 +12462,45 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/AdminAppsData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        Appeal:
+            type: object
+            properties:
+                id:
+                    type: string
+                user_id:
+                    type: string
+                target_kind:
+                    type: string
+                    description: post | comment | ban
+                target_id:
+                    type: string
+                    description: 禁言申诉为空
+                reason:
+                    type: string
+                status:
+                    type: string
+                    description: pending | accepted | rejected
+                resolution:
+                    type: string
+                resolved_by_operator_id:
+                    type: string
+                resolved_at:
+                    type: integer
+                    format: int64
+                created_at:
+                    type: integer
+                    format: int64
+            description: '---------- 申诉 ----------'
+        AppealResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/Appeal'
                 code:
                     type: integer
                     format: int64
@@ -10538,6 +12856,25 @@ components:
                     format: int64
                 msg:
                     type: string
+        Author:
+            type: object
+            properties:
+                kind:
+                    type: string
+                    description: user | app
+                id:
+                    type: string
+                display_name:
+                    type: string
+                avatar_url:
+                    type: string
+                verified:
+                    type: boolean
+                    description: 官方号认证标识
+            description: |-
+                Author 是作者的展示投影。
+                // id 对用户作者是平台用户主键、对应用作者是应用 ID，两者都可直接用于对应的主页路径。
+                用户不以学号标识：学号可枚举，其编码本身还泄露学院与年级。
         AuthorizationListResponseBody:
             type: object
             properties:
@@ -10582,6 +12919,37 @@ components:
                     items:
                         type: string
             description: 当前用户已授权的应用列表 / 撤销对某应用的授权（用户自助的"已连接应用"管理）。
+        BanStateData:
+            type: object
+            properties:
+                user_id:
+                    type: string
+                banned:
+                    type: boolean
+                until:
+                    type: integer
+                    format: int64
+                reason:
+                    type: string
+        BanStateResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/BanStateData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        BanUserRequestBody:
+            type: object
+            properties:
+                until:
+                    type: integer
+                    description: 缺省为永久禁言
+                    format: int64
+                reason:
+                    type: string
         BatchDeliveryPreferenceRequestBody:
             type: object
             properties:
@@ -11224,6 +13592,16 @@ components:
                     format: int64
                 msg:
                     type: string
+        CategoryResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/Category'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         ChangeEmailRequestBody:
             type: object
             properties:
@@ -11572,6 +13950,30 @@ components:
                     format: int64
                 msg:
                     type: string
+        CollectStateData:
+            type: object
+            properties:
+                post_id:
+                    type: string
+                collected:
+                    type: boolean
+                collect_count:
+                    type: integer
+                    format: int32
+                my_collect_count:
+                    type: integer
+                    description: 「我的收藏」入口的角标
+                    format: int64
+        CollectStateResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/CollectStateData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         CollectorInfo:
             type: object
             properties:
@@ -11609,6 +14011,101 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/CollectorInfo'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        Comment:
+            type: object
+            properties:
+                id:
+                    type: string
+                post_id:
+                    type: string
+                parent_id:
+                    type: string
+                author:
+                    $ref: '#/components/schemas/Author'
+                content:
+                    type: array
+                    items:
+                        type: array
+                        items:
+                            $ref: '#/components/schemas/RichTextNode'
+                reactions:
+                    $ref: '#/components/schemas/ReactionSummary'
+                reply_count:
+                    type: integer
+                    format: int32
+                can_withdraw:
+                    type: boolean
+                reported_by_me:
+                    type: boolean
+                status:
+                    type: string
+                    description: published | taken_down
+                takedown_reason:
+                    type: string
+                    description: 同 PostDetail
+                created_at:
+                    type: integer
+                    format: int64
+            description: '---------- 评论 ----------'
+        CommentMutationData:
+            type: object
+            properties:
+                comment:
+                    $ref: '#/components/schemas/Comment'
+                post_comment_count:
+                    type: integer
+                    format: int32
+                parent_reply_count:
+                    type: integer
+                    format: int32
+            description: |-
+                CommentMutationData 带回所属帖子的评论总数与父评论的回复数，
+                使帖子头部与被回复的那条评论同时就地更新。
+        CommentMutationResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/CommentMutationData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        CommentResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/Comment'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        CommentWithdrawData:
+            type: object
+            properties:
+                id:
+                    type: string
+                post_id:
+                    type: string
+                parent_id:
+                    type: string
+                post_comment_count:
+                    type: integer
+                    format: int32
+                parent_reply_count:
+                    type: integer
+                    format: int32
+        CommentWithdrawResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/CommentWithdrawData'
                 code:
                     type: integer
                     format: int64
@@ -11895,6 +14392,16 @@ components:
                 is_default:
                     type: boolean
                 sort:
+                    type: integer
+                    format: int32
+        CreateCategoryRequestBody:
+            type: object
+            properties:
+                name:
+                    type: string
+                description:
+                    type: string
+                sort_order:
                     type: integer
                     format: int32
         CreateCityChatGroupRequestBody:
@@ -12220,6 +14727,13 @@ components:
                     format: int64
                 msg:
                     type: string
+        CreateSensitiveWordRequestBody:
+            type: object
+            properties:
+                word:
+                    type: string
+                action:
+                    type: string
         CreateSiteAnnouncementRequestBody:
             type: object
             properties:
@@ -12338,6 +14852,73 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/CronTaskInfo'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        CurationData:
+            type: object
+            properties:
+                post_id:
+                    type: string
+                pinned_at:
+                    type: integer
+                    format: int64
+                featured_at:
+                    type: integer
+                    format: int64
+                rank_boost:
+                    type: number
+                    format: double
+            description: CurationData 带回三个运营标记的当前值，供后台就地更新而不必重拉列表。
+        CurationResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/CurationData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        CursorCommentListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Comment'
+                next_cursor:
+                    type: string
+                has_more:
+                    type: boolean
+        CursorCommentListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/CursorCommentListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        CursorPostListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PostCard'
+                next_cursor:
+                    type: string
+                has_more:
+                    type: boolean
+        CursorPostListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/CursorPostListData'
                 code:
                     type: integer
                     format: int64
@@ -13006,6 +15587,35 @@ components:
                 size:
                     type: integer
                     format: int32
+        Emoji:
+            type: object
+            properties:
+                type:
+                    type: string
+                label:
+                    type: string
+                char:
+                    type: string
+            description: |-
+                Emoji 的 char 是 Unicode 字符本身，前端按文本渲染即可，不涉及静态资源。
+                type 是稳定标识，计数按它聚合，也是 reactions 接口的入参。
+        EmojiListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Emoji'
+        EmojiListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/EmojiListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         EnrollData:
             type: object
             properties:
@@ -13469,6 +16079,35 @@ components:
                 count:
                     type: integer
                     format: int32
+        FollowStateData:
+            type: object
+            properties:
+                target_kind:
+                    type: string
+                    description: user | app
+                target_id:
+                    type: string
+                followed_by_me:
+                    type: boolean
+                target_follower_count:
+                    type: integer
+                    format: int64
+                my_following_count:
+                    type: integer
+                    format: int64
+            description: |-
+                FollowStateData 同时带回对方的粉丝数与我的关注数，
+                关注按钮、对方主页与我的主页三处可一并更新。
+        FollowStateResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/FollowStateData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         FreshmanAdmissionQueryRequestBody:
             type: object
             properties:
@@ -14089,6 +16728,58 @@ components:
                     type: string
                 inviteUrl:
                     type: string
+        Hashtag:
+            type: object
+            properties:
+                name:
+                    type: string
+                post_count:
+                    type: integer
+                    format: int64
+        HashtagBlockData:
+            type: object
+            properties:
+                name:
+                    type: string
+                blocked:
+                    type: boolean
+        HashtagBlockResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/HashtagBlockData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        HashtagListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Hashtag'
+        HashtagListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/HashtagListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        HashtagResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/Hashtag'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         HealthResponseBody:
             type: object
             properties:
@@ -14191,6 +16882,43 @@ components:
                     format: int64
                 msg:
                     type: string
+        InboxListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/InboxEntry'
+                next_cursor:
+                    type: string
+                has_more:
+                    type: boolean
+        InboxListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/InboxListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        InboxMarkReadRequestBody:
+            type: object
+            properties:
+                kind:
+                    type: string
+                    description: like_collect | mention_comment
+        InboxMarkReadResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/InboxUnread'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         InboxMutationResponseBody:
             type: object
             properties:
@@ -14220,6 +16948,26 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/InboxPage'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        InboxUnread:
+            type: object
+            properties:
+                like_collect:
+                    type: integer
+                    format: int64
+                mention_comment:
+                    type: integer
+                    format: int64
+            description: InboxUnread 是两条清单各自的未读数，供底部页签与红点一次取齐。
+        InboxUnreadResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/InboxUnread'
                 code:
                     type: integer
                     format: int64
@@ -15489,6 +18237,52 @@ components:
                     format: int64
                 msg:
                     type: string
+        MyProfile:
+            type: object
+            properties:
+                user_id:
+                    type: string
+                nickname:
+                    type: string
+                avatar_url:
+                    type: string
+                nickname_is_default:
+                    type: boolean
+                    description: nicknameIsDefault 为真表示昵称仍是注册时生成的占位值，前端据此引导用户去设置。
+                post_count:
+                    type: integer
+                    format: int64
+                follower_count:
+                    type: integer
+                    format: int64
+                following_count:
+                    type: integer
+                    format: int64
+                collect_count:
+                    type: integer
+                    format: int64
+                banned:
+                    type: boolean
+                banned_until:
+                    type: integer
+                    format: int64
+                ban_reason:
+                    type: string
+                    description: banReason 让被禁言者知道原因。只告知不说明等于无从申辩。
+            description: |-
+                ---------- 我的社区状态与发布身份 ----------
+                MyProfile 是本人社区状态。昵称与头像归平台身份管理（PUT /identity/me/profile），
+                社区侧只读：一个人在社区里与在别处是同一个名字，读者才能把两处的行为对应起来。
+        MyProfileResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/MyProfile'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         MyRoomsResponseBody:
             type: object
             properties:
@@ -15859,6 +18653,40 @@ components:
                     type: string
                 sensitive:
                     type: boolean
+        OfficialAccount:
+            type: object
+            properties:
+                app_id:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                avatar_url:
+                    type: string
+                verified:
+                    type: boolean
+                post_count:
+                    type: integer
+                    format: int64
+                follower_count:
+                    type: integer
+                    format: int64
+                followed_by_me:
+                    type: boolean
+            description: |-
+                ---------- 官方号 ----------
+                OfficialAccount 由应用记录投影而来，不是独立实体。
+        OfficialAccountResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/OfficialAccount'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         OperatorInfo:
             type: object
             properties:
@@ -16158,6 +18986,278 @@ components:
                     format: int64
                 msg:
                     type: string
+        PostCard:
+            type: object
+            properties:
+                id:
+                    type: string
+                author:
+                    $ref: '#/components/schemas/Author'
+                title:
+                    type: string
+                brief:
+                    type: string
+                cover:
+                    $ref: '#/components/schemas/PostImage'
+                counters:
+                    $ref: '#/components/schemas/PostCounters'
+                category_ids:
+                    type: array
+                    items:
+                        type: string
+                hashtags:
+                    type: array
+                    items:
+                        type: string
+                location:
+                    $ref: '#/components/schemas/PostLocation'
+                created_at:
+                    type: integer
+                    format: int64
+            description: |-
+                ---------- 帖子 ----------
+                PostCard 是瀑布流卡片投影：只带封面与摘要，不含正文节点，使列表页不必拉全文。
+        PostCounters:
+            type: object
+            properties:
+                view_count:
+                    type: integer
+                    format: int64
+                comment_count:
+                    type: integer
+                    format: int32
+                collect_count:
+                    type: integer
+                    format: int32
+                share_count:
+                    type: integer
+                    format: int32
+                reaction_count:
+                    type: integer
+                    format: int32
+            description: PostCounters 是全局计数，与调用者无关，可缓存。
+        PostCountersData:
+            type: object
+            properties:
+                id:
+                    type: string
+                counters:
+                    $ref: '#/components/schemas/PostCounters'
+        PostCountersResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/PostCountersData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        PostDetail:
+            type: object
+            properties:
+                id:
+                    type: string
+                author:
+                    $ref: '#/components/schemas/Author'
+                title:
+                    type: string
+                content:
+                    type: array
+                    items:
+                        type: array
+                        items:
+                            $ref: '#/components/schemas/RichTextNode'
+                images:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PostImage'
+                location:
+                    $ref: '#/components/schemas/PostLocation'
+                category_ids:
+                    type: array
+                    items:
+                        type: string
+                hashtags:
+                    type: array
+                    items:
+                        type: string
+                counters:
+                    $ref: '#/components/schemas/PostCounters'
+                reactions:
+                    $ref: '#/components/schemas/ReactionSummary'
+                viewer_state:
+                    $ref: '#/components/schemas/PostViewerState'
+                status:
+                    type: string
+                    description: published | under_review | taken_down | withdrawn（withdrawn 只对作者本人可见）
+                version:
+                    type: integer
+                    description: 正文版本号，编辑后递增
+                    format: int32
+                takedown_reason:
+                    type: string
+                    description: |-
+                        takedownReason 只在被下架时有值，且只投给作者本人与运营。
+                        处置必须告知理由：只告知结果不说明原因，被处置者无从申辩。
+                created_at:
+                    type: integer
+                    format: int64
+                updated_at:
+                    type: integer
+                    format: int64
+        PostDetailResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/PostDetail'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        PostImage:
+            type: object
+            properties:
+                key:
+                    type: string
+                    description: upload 对象 key
+                url:
+                    type: string
+                width:
+                    type: integer
+                    format: int32
+                height:
+                    type: integer
+                    format: int32
+            description: |-
+                PostImage 携带宽高，供双列瀑布流在图片加载前占位，避免布局跳动。
+                上传不限图片比例，展示按定宽等比缩放。
+        PostImageInput:
+            type: object
+            properties:
+                key:
+                    type: string
+                    description: 取自 upload/sign（usage=moments）
+                width:
+                    type: integer
+                    format: int32
+                height:
+                    type: integer
+                    format: int32
+            description: |-
+                PostImageInput 是发布与编辑时提交的一张图片。宽高由客户端提供——服务端不解码图片，
+                而瀑布流必须在图片加载前就知道比例才能占位；不提供则前端只能等图片加载完再回填布局。
+        PostLocation:
+            type: object
+            properties:
+                longitude:
+                    type: number
+                    format: double
+                latitude:
+                    type: number
+                    format: double
+                description:
+                    type: string
+        PostVersion:
+            type: object
+            properties:
+                version:
+                    type: integer
+                    format: int32
+                content:
+                    type: array
+                    items:
+                        type: array
+                        items:
+                            $ref: '#/components/schemas/RichTextNode'
+                created_at:
+                    type: integer
+                    format: int64
+        PostVersionListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PostVersion'
+        PostVersionListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/PostVersionListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        PostViewerState:
+            type: object
+            properties:
+                collected:
+                    type: boolean
+                following_author:
+                    type: boolean
+                can_withdraw:
+                    type: boolean
+                can_edit:
+                    type: boolean
+                reported_by_me:
+                    type: boolean
+            description: PostViewerState 是观察者态，随调用者变化，不可跨用户缓存。
+        PostWithdrawData:
+            type: object
+            properties:
+                id:
+                    type: string
+                status:
+                    type: string
+                    description: withdrawn
+                author_post_count:
+                    type: integer
+                    format: int64
+            description: PostWithdrawData 让前端从流里移除卡片并同步作者帖子数，无需重新拉流。
+        PostWithdrawResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/PostWithdrawData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        PostingIdentity:
+            type: object
+            properties:
+                kind:
+                    type: string
+                    description: user | app
+                app_id:
+                    type: string
+                    description: 仅 kind=app 有值
+                display_name:
+                    type: string
+                avatar_url:
+                    type: string
+            description: PostingIdentity 是发布器身份下拉的一项：本人，或本人有权代表的某个官方号。
+        PostingIdentityData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PostingIdentity'
+        PostingIdentityResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/PostingIdentityData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         PredictData:
             type: object
             properties:
@@ -16388,6 +19488,82 @@ components:
                     format: int64
                 msg:
                     type: string
+        PublishCommentRequestBody:
+            type: object
+            properties:
+                content:
+                    type: array
+                    items:
+                        type: array
+                        items:
+                            $ref: '#/components/schemas/RichTextNode'
+        PublishPostData:
+            type: object
+            properties:
+                post:
+                    $ref: '#/components/schemas/PostDetail'
+                author_post_count:
+                    type: integer
+                    format: int64
+            description: PublishPostData 除新帖本身外带回作者的帖子总数，供个人主页与「我的」页就地加一。
+        PublishPostRequestBody:
+            type: object
+            properties:
+                title:
+                    type: string
+                content:
+                    type: array
+                    items:
+                        type: array
+                        items:
+                            $ref: '#/components/schemas/RichTextNode'
+                images:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PostImageInput'
+                    description: |-
+                        图片先经 POST /hduhelp-neo/upload/sign 直传，这里传返回的 key 与像素尺寸。
+                        签名时必须带 usage=moments：社区图片自成一个上传分组，其他分组的 key 会被拒绝。
+                location:
+                    $ref: '#/components/schemas/PostLocation'
+                category_ids:
+                    type: array
+                    items:
+                        type: string
+                    description: 一帖可属多个板块
+        PublishPostResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/PublishPostData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        PurgePostData:
+            type: object
+            properties:
+                post_id:
+                    type: string
+                purged:
+                    type: boolean
+        PurgePostRequestBody:
+            type: object
+            properties:
+                reason:
+                    type: string
+                    description: reason 写入审计。永久删除不可撤销，必须留下为什么。
+        PurgePostResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/PurgePostData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         QAStrategiesData:
             type: object
             properties:
@@ -16415,6 +19591,53 @@ components:
                 service_id:
                     type: string
             description: 快速问答策略配置(知识服务数组 + 默认)
+        ReactRequestBody:
+            type: object
+            properties:
+                type:
+                    type: string
+        ReactionBucket:
+            type: object
+            properties:
+                type:
+                    type: string
+                count:
+                    type: integer
+                    format: int32
+                reacted_by_me:
+                    type: boolean
+            description: ReactionBucket 是单个表情的聚合。reactedByMe 属于观察者态，随调用者变化。
+        ReactionMutationData:
+            type: object
+            properties:
+                entity_kind:
+                    type: string
+                    description: post | comment
+                entity_id:
+                    type: string
+                reactions:
+                    $ref: '#/components/schemas/ReactionSummary'
+            description: ReactionMutationData 同时带回聚合与总量，前端据此重绘表情条。
+        ReactionMutationResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ReactionMutationData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ReactionSummary:
+            type: object
+            properties:
+                buckets:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ReactionBucket'
+                total_count:
+                    type: integer
+                    format: int32
         ReadingSummary:
             type: object
             properties:
@@ -16570,6 +19793,48 @@ components:
             properties:
                 refreshToken:
                     type: string
+        RelationListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/RelationUser'
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                total:
+                    type: integer
+                    format: int64
+        RelationListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/RelationListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        RelationUser:
+            type: object
+            properties:
+                kind:
+                    type: string
+                    description: user | app
+                id:
+                    type: string
+                display_name:
+                    type: string
+                avatar_url:
+                    type: string
+                verified:
+                    type: boolean
+                followed_by_me:
+                    type: boolean
         RenamePolicyProfileRequestBody:
             type: object
             properties:
@@ -16601,6 +19866,37 @@ components:
                     format: int64
                 msg:
                     type: string
+        Report:
+            type: object
+            properties:
+                id:
+                    type: string
+                target_kind:
+                    type: string
+                target_id:
+                    type: string
+                reason:
+                    type: string
+                detail:
+                    type: string
+                reporter_user_id:
+                    type: string
+                status:
+                    type: string
+                    description: pending | resolved | rejected
+                resolution:
+                    type: string
+                note:
+                    type: string
+                    description: 处置的经办人与时间。审核员交接与复核都要能看到是谁在何时结的案。
+                resolved_by_operator_id:
+                    type: string
+                resolved_at:
+                    type: integer
+                    format: int64
+                created_at:
+                    type: integer
+                    format: int64
         ReportGapRequestBody:
             type: object
             properties:
@@ -16611,6 +19907,55 @@ components:
         ReportGapResponseBody:
             type: object
             properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ReportReason:
+            type: object
+            properties:
+                code:
+                    type: string
+                label:
+                    type: string
+            description: '---------- 举报 ----------'
+        ReportReasonListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ReportReason'
+        ReportReasonListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ReportReasonListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ReportStateData:
+            type: object
+            properties:
+                id:
+                    type: string
+                target_kind:
+                    type: string
+                target_id:
+                    type: string
+                status:
+                    type: string
+                reported_by_me:
+                    type: boolean
+            description: ReportStateData 让举报入口立即切到「已举报」，无需重新拉帖子详情。
+        ReportStateResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ReportStateData'
                 code:
                     type: integer
                     format: int64
@@ -16641,6 +19986,41 @@ components:
                 type:
                     type: string
                     description: '"sms" | "email"'
+        ResolveAppealRequestBody:
+            type: object
+            properties:
+                status:
+                    type: string
+                    description: accepted | rejected
+                resolution:
+                    type: string
+        ResolveReportData:
+            type: object
+            properties:
+                report:
+                    $ref: '#/components/schemas/Report'
+                pending_total:
+                    type: integer
+                    format: int64
+            description: ResolveReportData 带回剩余待处理数，处置一条后队列角标可就地递减。
+        ResolveReportRequestBody:
+            type: object
+            properties:
+                resolution:
+                    type: string
+                    description: takedown | dismiss | ban
+                note:
+                    type: string
+        ResolveReportResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ResolveReportData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         RestoreVersionRequestBody:
             type: object
             properties:
@@ -16729,6 +20109,26 @@ components:
                     format: int64
                 msg:
                     type: string
+        RichTextNode:
+            type: object
+            properties:
+                tag:
+                    type: string
+                text:
+                    type: string
+                href:
+                    type: string
+                user_id:
+                    type: string
+                display_name:
+                    type: string
+            description: |-
+                RichTextNode 是正文的行内节点。正文整体是段落数组、每段是节点数组，即
+                list<list<RichTextNode>>。四种 tag：
+                text     纯文本，取 text
+                a        超链接，取 text 与 href
+                at       @提及，取 userId 与 displayName
+                hashtag  话题，取 text（形如 #话题名）。仅帖子正文支持，评论不支持。
         RoomDetailData:
             type: object
             properties:
@@ -17117,6 +20517,29 @@ components:
                     items:
                         $ref: '#/components/schemas/GradeItem'
             description: ScoresCard 是信息流成绩卡片负载。
+        SearchData:
+            type: object
+            properties:
+                posts:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PostCard'
+                users:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/RelationUser'
+                hashtags:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Hashtag'
+                official_accounts:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/RelationUser'
+                next_cursor:
+                    type: string
+                has_more:
+                    type: boolean
         SearchHit:
             type: object
             properties:
@@ -17499,6 +20922,73 @@ components:
                     format: int64
                 msg:
                     type: string
+        SensitiveWord:
+            type: object
+            properties:
+                id:
+                    type: string
+                word:
+                    type: string
+                action:
+                    type: string
+                    description: block | review
+                created_at:
+                    type: integer
+                    format: int64
+        SensitiveWordDeletedData:
+            type: object
+            properties:
+                id:
+                    type: string
+                total:
+                    type: integer
+                    format: int64
+        SensitiveWordDeletedResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/SensitiveWordDeletedData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        SensitiveWordListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SensitiveWord'
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                total:
+                    type: integer
+                    format: int64
+        SensitiveWordListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/SensitiveWordListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        SensitiveWordResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/SensitiveWord'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         ServiceAuthorizationItem:
             type: object
             properties:
@@ -17731,6 +21221,13 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/QAStrategyItem'
+        SetRankBoostRequestBody:
+            type: object
+            properties:
+                rank_boost:
+                    type: number
+                    description: rankBoost 是打分的乘性人工权重。1 为不干预，小于 1 降权，大于 1 加权。
+                    format: double
         SetTaggingPromptRequestBody:
             type: object
             properties:
@@ -18536,6 +22033,27 @@ components:
                 ---------------------------------------------------------------------------
                 留校（假期留校）
                 ---------------------------------------------------------------------------
+        SubmitAppealRequestBody:
+            type: object
+            properties:
+                target_kind:
+                    type: string
+                target_id:
+                    type: string
+                reason:
+                    type: string
+        SubmitReportRequestBody:
+            type: object
+            properties:
+                target_kind:
+                    type: string
+                    description: post | comment | user
+                target_id:
+                    type: string
+                reason:
+                    type: string
+                detail:
+                    type: string
         SubscribeRequestBody:
             type: object
             properties:
@@ -18840,6 +22358,11 @@ components:
                 description:
                     type: string
             description: AI 打标提示词编辑
+        TakedownRequestBody:
+            type: object
+            properties:
+                reason:
+                    type: string
         TaskPage:
             type: object
             properties:
@@ -19172,6 +22695,16 @@ components:
                 sort:
                     type: integer
                     format: int32
+        UpdateCategoryRequestBody:
+            type: object
+            properties:
+                name:
+                    type: string
+                description:
+                    type: string
+                sort_order:
+                    type: integer
+                    format: int32
         UpdateChunkRequestBody:
             type: object
             properties:
@@ -19324,6 +22857,26 @@ components:
                     format: int64
                 msg:
                     type: string
+        UpdateMyProfileRequestBody:
+            type: object
+            properties:
+                nick_name:
+                    type: string
+                avatar_key:
+                    type: string
+                    description: |-
+                        avatarKey 是 upload 对象 key（先经 POST /upload/sign 直传，签名时带 usage=avatar）。
+                        传空串即清除头像。
+        UpdateMyProfileResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/UserInfo'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         UpdatePolicyProfileRequestBody:
             type: object
             properties:
@@ -19331,6 +22884,27 @@ components:
                     type: string
                 policy:
                     $ref: '#/components/schemas/DeliveryPolicy'
+        UpdatePostRequestBody:
+            type: object
+            properties:
+                title:
+                    type: string
+                content:
+                    type: array
+                    items:
+                        type: array
+                        items:
+                            $ref: '#/components/schemas/RichTextNode'
+                images:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PostImageInput'
+                location:
+                    $ref: '#/components/schemas/PostLocation'
+                category_ids:
+                    type: array
+                    items:
+                        type: string
         UpdateServiceAuthorizationNotificationRequestBody:
             type: object
             properties:
@@ -19610,6 +23184,43 @@ components:
                     type: string
                 status:
                     type: string
+        UserProfile:
+            type: object
+            properties:
+                user_id:
+                    type: string
+                real_name:
+                    type: string
+                nickname:
+                    type: string
+                avatar_url:
+                    type: string
+                post_count:
+                    type: integer
+                    format: int64
+                follower_count:
+                    type: integer
+                    format: int64
+                following_count:
+                    type: integer
+                    format: int64
+                followed_by_me:
+                    type: boolean
+            description: |-
+                ---------- 用户主页 ----------
+                UserProfile 是他人视角的用户主页头部。
+                // 展示实名而非昵称：主页是「这个人是谁」的页面，实名才让人能对上号；
+                卡片与互动处用昵称，那里要的是简短可辨。
+        UserProfileResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/UserProfile'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         ValidatePolicyData:
             type: object
             properties:
@@ -19767,6 +23378,7 @@ tags:
         ============================================================================
     - name: LibraryBookingService
     - name: MessagingService
+    - name: MomentsService
     - name: NotificationService
     - name: SiteAnnouncementService
     - name: SubscriptionService

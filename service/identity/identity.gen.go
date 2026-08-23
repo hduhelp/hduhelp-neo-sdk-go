@@ -2706,6 +2706,52 @@ func (s *Service) SetCurrentCampus(ctx context.Context, req *SetCurrentCampusReq
 	return resp, err
 }
 
+// UpdateMyProfileReq is the request for UpdateMyProfile.
+type UpdateMyProfileReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// UpdateMyProfileReqBuilder builds a UpdateMyProfileReq with a fluent setter per field.
+type UpdateMyProfileReqBuilder struct{ req *UpdateMyProfileReq }
+
+// NewUpdateMyProfileReqBuilder creates a request builder for UpdateMyProfile.
+func NewUpdateMyProfileReqBuilder() *UpdateMyProfileReqBuilder {
+	return &UpdateMyProfileReqBuilder{req: &UpdateMyProfileReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *UpdateMyProfileReqBuilder) Body(body *models.UpdateMyProfileRequestBody) *UpdateMyProfileReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *UpdateMyProfileReqBuilder) Build() *UpdateMyProfileReq { return b.req }
+
+// UpdateMyProfileResp is the response for UpdateMyProfile.
+type UpdateMyProfileResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.UserInfo `json:"data"`
+}
+
+// UpdateMyProfile: 修改昵称与头像
+func (s *Service) UpdateMyProfile(ctx context.Context, req *UpdateMyProfileReq, opts ...core.RequestOption) (*UpdateMyProfileResp, error) {
+	resp := &UpdateMyProfileResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/identity/me/profile",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // AppAccessTokenInternalReq is the request for AppAccessTokenInternal.
 type AppAccessTokenInternalReq struct {
 	pathParams  map[string]string

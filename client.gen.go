@@ -19,6 +19,7 @@ import (
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/knowledge"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/librarybooking"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/messaging"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/moments"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/notification"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/siteannouncement"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/subscription"
@@ -44,6 +45,7 @@ type Client struct {
 	Knowledge        *knowledge.Service
 	LibraryBooking   *librarybooking.Service
 	Messaging        *messaging.Service
+	Moments          *moments.Service
 	Notification     *notification.Service
 	SiteAnnouncement *siteannouncement.Service
 	Subscription     *subscription.Service
@@ -66,6 +68,7 @@ func attachServices(c *Client) {
 	c.Knowledge = knowledge.NewService(c.config)
 	c.LibraryBooking = librarybooking.NewService(c.config)
 	c.Messaging = messaging.NewService(c.config)
+	c.Moments = moments.NewService(c.config)
 	c.Notification = notification.NewService(c.config)
 	c.SiteAnnouncement = siteannouncement.NewService(c.config)
 	c.Subscription = subscription.NewService(c.config)

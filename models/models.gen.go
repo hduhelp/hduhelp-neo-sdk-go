@@ -281,6 +281,22 @@ type AdminAppInfo struct {
 	TenantKey   *string `json:"tenantKey,omitempty"`
 }
 
+// AdminAppealListData defines model for AdminAppealListData.
+type AdminAppealListData struct {
+	List         *[]Appeal `json:"list,omitempty"`
+	Page         *int32    `json:"page,omitempty"`
+	PageSize     *int32    `json:"pageSize,omitempty"`
+	PendingTotal *int64    `json:"pending_total,omitempty"`
+	Total        *int64    `json:"total,omitempty"`
+}
+
+// AdminAppealListResponseBody defines model for AdminAppealListResponseBody.
+type AdminAppealListResponseBody struct {
+	Code *int64               `json:"code,omitempty"`
+	Data *AdminAppealListData `json:"data,omitempty"`
+	Msg  *string              `json:"msg,omitempty"`
+}
+
 // AdminAppsData GET admin/apps 的载荷：不带 id 返回应用列表，带 id 返回单应用详情。
 // 两个字段按请求形态二选一填充。
 type AdminAppsData struct {
@@ -288,6 +304,21 @@ type AdminAppsData struct {
 	// 授权码流程请求和用户同意。
 	App   *AdminAppDetail `json:"app,omitempty"`
 	Items *[]AdminAppInfo `json:"items,omitempty"`
+}
+
+// AdminAuditListData defines model for AdminAuditListData.
+type AdminAuditListData struct {
+	List     *[]AuditEntry `json:"list,omitempty"`
+	Page     *int32        `json:"page,omitempty"`
+	PageSize *int32        `json:"pageSize,omitempty"`
+	Total    *int64        `json:"total,omitempty"`
+}
+
+// AdminAuditListResponseBody defines model for AdminAuditListResponseBody.
+type AdminAuditListResponseBody struct {
+	Code *int64              `json:"code,omitempty"`
+	Data *AdminAuditListData `json:"data,omitempty"`
+	Msg  *string             `json:"msg,omitempty"`
 }
 
 // AdminAuthorizationInfo -------------------- 用户授权（app_authorizations） --------------------
@@ -323,6 +354,21 @@ type AdminCampusInfo struct {
 
 	// Sort 排序(升序)
 	Sort *int32 `json:"sort,omitempty"`
+}
+
+// AdminCommentListData defines model for AdminCommentListData.
+type AdminCommentListData struct {
+	List     *[]Comment `json:"list,omitempty"`
+	Page     *int32     `json:"page,omitempty"`
+	PageSize *int32     `json:"pageSize,omitempty"`
+	Total    *int64     `json:"total,omitempty"`
+}
+
+// AdminCommentListResponseBody defines model for AdminCommentListResponseBody.
+type AdminCommentListResponseBody struct {
+	Code *int64                `json:"code,omitempty"`
+	Data *AdminCommentListData `json:"data,omitempty"`
+	Msg  *string               `json:"msg,omitempty"`
 }
 
 // AdminDomainTreeResponseBody defines model for AdminDomainTreeResponseBody.
@@ -487,6 +533,82 @@ type AdminPigeonReviewPageResponseBody struct {
 	Msg  *string                `json:"msg,omitempty"`
 }
 
+// AdminPostDetailData defines model for AdminPostDetailData.
+type AdminPostDetailData struct {
+	Post                  *PostDetail `json:"post,omitempty"`
+	PublishedByOperatorId *string     `json:"published_by_operator_id,omitempty"`
+	RealAuthorUserId      *string     `json:"real_author_user_id,omitempty"`
+	ReportCount           *int32      `json:"report_count,omitempty"`
+}
+
+// AdminPostDetailResponseBody defines model for AdminPostDetailResponseBody.
+type AdminPostDetailResponseBody struct {
+	Code *int64               `json:"code,omitempty"`
+	Data *AdminPostDetailData `json:"data,omitempty"`
+	Msg  *string              `json:"msg,omitempty"`
+}
+
+// AdminPostListData defines model for AdminPostListData.
+type AdminPostListData struct {
+	List               *[]AdminPostSummary `json:"list,omitempty"`
+	Page               *int32              `json:"page,omitempty"`
+	PageSize           *int32              `json:"pageSize,omitempty"`
+	PendingReportTotal *int64              `json:"pending_report_total,omitempty"`
+
+	// PendingReviewTotal 待审角标
+	PendingReviewTotal *int64 `json:"pending_review_total,omitempty"`
+	Total              *int64 `json:"total,omitempty"`
+}
+
+// AdminPostListResponseBody defines model for AdminPostListResponseBody.
+type AdminPostListResponseBody struct {
+	Code *int64             `json:"code,omitempty"`
+	Data *AdminPostListData `json:"data,omitempty"`
+	Msg  *string            `json:"msg,omitempty"`
+}
+
+// AdminPostSummary AdminPostSummary 额外暴露官方号帖背后的操作运营。
+// 该字段只在管理面出现，用户面的 Author 永不携带。
+type AdminPostSummary struct {
+	// Author Author 是作者的展示投影。
+	// // id 对用户作者是平台用户主键、对应用作者是应用 ID，两者都可直接用于对应的主页路径。
+	// 用户不以学号标识：学号可枚举，其编码本身还泄露学院与年级。
+	Author *Author `json:"author,omitempty"`
+	Brief  *string `json:"brief,omitempty"`
+
+	// Counters PostCounters 是全局计数，与调用者无关，可缓存。
+	Counters              *PostCounters `json:"counters,omitempty"`
+	CreatedAt             *int64        `json:"created_at,omitempty"`
+	Id                    *string       `json:"id,omitempty"`
+	PublishedByOperatorId *string       `json:"published_by_operator_id,omitempty"`
+	RealAuthorUserId      *string       `json:"real_author_user_id,omitempty"`
+	ReportCount           *int32        `json:"report_count,omitempty"`
+	Status                *string       `json:"status,omitempty"`
+	TakedownByOperatorId  *string       `json:"takedown_by_operator_id,omitempty"`
+	TakedownReason        *string       `json:"takedown_reason,omitempty"`
+	Title                 *string       `json:"title,omitempty"`
+}
+
+// AdminPostSummaryResponseBody defines model for AdminPostSummaryResponseBody.
+type AdminPostSummaryResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data AdminPostSummary 额外暴露官方号帖背后的操作运营。
+	// 该字段只在管理面出现，用户面的 Author 永不携带。
+	Data *AdminPostSummary `json:"data,omitempty"`
+	Msg  *string           `json:"msg,omitempty"`
+}
+
+// AdminPublishPostRequestBody defines model for AdminPublishPostRequestBody.
+type AdminPublishPostRequestBody struct {
+	CategoryIds    *[]string         `json:"category_ids,omitempty"`
+	Content        *[][]RichTextNode `json:"content,omitempty"`
+	Images         *[]PostImageInput `json:"images,omitempty"`
+	Location       *PostLocation     `json:"location,omitempty"`
+	PublishAsAppId *string           `json:"publish_as_app_id,omitempty"`
+	Title          *string           `json:"title,omitempty"`
+}
+
 // AdminRefreshRequestBody defines model for AdminRefreshRequestBody.
 type AdminRefreshRequestBody struct {
 	RefreshToken *string `json:"refresh_token,omitempty"`
@@ -497,6 +619,24 @@ type AdminRefreshResponseBody struct {
 	Code *int64          `json:"code,omitempty"`
 	Data *AdminLoginData `json:"data,omitempty"`
 	Msg  *string         `json:"msg,omitempty"`
+}
+
+// AdminReportListData defines model for AdminReportListData.
+type AdminReportListData struct {
+	List     *[]Report `json:"list,omitempty"`
+	Page     *int32    `json:"page,omitempty"`
+	PageSize *int32    `json:"pageSize,omitempty"`
+
+	// PendingTotal 队列角标
+	PendingTotal *int64 `json:"pending_total,omitempty"`
+	Total        *int64 `json:"total,omitempty"`
+}
+
+// AdminReportListResponseBody defines model for AdminReportListResponseBody.
+type AdminReportListResponseBody struct {
+	Code *int64               `json:"code,omitempty"`
+	Data *AdminReportListData `json:"data,omitempty"`
+	Msg  *string              `json:"msg,omitempty"`
 }
 
 // AdminScopeDef -------------------- scope 目录（能力级；pkg/scope.Catalog） --------------------
@@ -563,6 +703,28 @@ type AdminUserInfo struct {
 	Id        *string `json:"id,omitempty"`
 	NickName  *string `json:"nickName,omitempty"`
 	Status    *string `json:"status,omitempty"`
+}
+
+// AdminUserState AdminUserState 汇总一个用户在社区里的处置历史，供审核员判断是否惯犯。
+type AdminUserState struct {
+	BanReason             *string `json:"ban_reason,omitempty"`
+	Banned                *bool   `json:"banned,omitempty"`
+	BannedUntil           *int64  `json:"banned_until,omitempty"`
+	Nickname              *string `json:"nickname,omitempty"`
+	PostCount             *int64  `json:"post_count,omitempty"`
+	ReportedAgainstCount  *int64  `json:"reported_against_count,omitempty"`
+	TakenDownCommentCount *int64  `json:"taken_down_comment_count,omitempty"`
+	TakenDownPostCount    *int64  `json:"taken_down_post_count,omitempty"`
+	UserId                *string `json:"user_id,omitempty"`
+}
+
+// AdminUserStateResponseBody defines model for AdminUserStateResponseBody.
+type AdminUserStateResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data AdminUserState 汇总一个用户在社区里的处置历史，供审核员判断是否惯犯。
+	Data *AdminUserState `json:"data,omitempty"`
+	Msg  *string         `json:"msg,omitempty"`
 }
 
 // AdminUsersData GET admin/users 的载荷：不带 id 返回搜索结果列表，带 id 返回单用户富详情。
@@ -653,6 +815,35 @@ type AppListResponseBody struct {
 	// 两个字段按请求形态二选一填充。
 	Data *AdminAppsData `json:"data,omitempty"`
 	Msg  *string        `json:"msg,omitempty"`
+}
+
+// Appeal ---------- 申诉 ----------
+type Appeal struct {
+	CreatedAt            *int64  `json:"created_at,omitempty"`
+	Id                   *string `json:"id,omitempty"`
+	Reason               *string `json:"reason,omitempty"`
+	Resolution           *string `json:"resolution,omitempty"`
+	ResolvedAt           *int64  `json:"resolved_at,omitempty"`
+	ResolvedByOperatorId *string `json:"resolved_by_operator_id,omitempty"`
+
+	// Status pending | accepted | rejected
+	Status *string `json:"status,omitempty"`
+
+	// TargetId 禁言申诉为空
+	TargetId *string `json:"target_id,omitempty"`
+
+	// TargetKind post | comment | ban
+	TargetKind *string `json:"target_kind,omitempty"`
+	UserId     *string `json:"user_id,omitempty"`
+}
+
+// AppealResponseBody defines model for AppealResponseBody.
+type AppealResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data ---------- 申诉 ----------
+	Data *Appeal `json:"data,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
 }
 
 // ApproveDeviceRequestBody defines model for ApproveDeviceRequestBody.
@@ -912,6 +1103,21 @@ type AuthenUserInfoRespBody struct {
 	Msg  *string             `json:"msg,omitempty"`
 }
 
+// Author Author 是作者的展示投影。
+// // id 对用户作者是平台用户主键、对应用作者是应用 ID，两者都可直接用于对应的主页路径。
+// 用户不以学号标识：学号可枚举，其编码本身还泄露学院与年级。
+type Author struct {
+	AvatarUrl   *string `json:"avatar_url,omitempty"`
+	DisplayName *string `json:"display_name,omitempty"`
+	Id          *string `json:"id,omitempty"`
+
+	// Kind user | app
+	Kind *string `json:"kind,omitempty"`
+
+	// Verified 官方号认证标识
+	Verified *bool `json:"verified,omitempty"`
+}
+
 // AuthorizationListResponseBody defines model for AuthorizationListResponseBody.
 type AuthorizationListResponseBody struct {
 	Code *int64                    `json:"code,omitempty"`
@@ -943,6 +1149,29 @@ type AuthorizedAppItem struct {
 	Description *string   `json:"description,omitempty"`
 	Name        *string   `json:"name,omitempty"`
 	Scopes      *[]string `json:"scopes,omitempty"`
+}
+
+// BanStateData defines model for BanStateData.
+type BanStateData struct {
+	Banned *bool   `json:"banned,omitempty"`
+	Reason *string `json:"reason,omitempty"`
+	Until  *int64  `json:"until,omitempty"`
+	UserId *string `json:"user_id,omitempty"`
+}
+
+// BanStateResponseBody defines model for BanStateResponseBody.
+type BanStateResponseBody struct {
+	Code *int64        `json:"code,omitempty"`
+	Data *BanStateData `json:"data,omitempty"`
+	Msg  *string       `json:"msg,omitempty"`
+}
+
+// BanUserRequestBody defines model for BanUserRequestBody.
+type BanUserRequestBody struct {
+	Reason *string `json:"reason,omitempty"`
+
+	// Until 缺省为永久禁言
+	Until *int64 `json:"until,omitempty"`
 }
 
 // BatchDeliveryPreferenceRequestBody defines model for BatchDeliveryPreferenceRequestBody.
@@ -1399,6 +1628,13 @@ type CategoryListResponseBody struct {
 	Msg  *string     `json:"msg,omitempty"`
 }
 
+// CategoryResponseBody defines model for CategoryResponseBody.
+type CategoryResponseBody struct {
+	Code *int64    `json:"code,omitempty"`
+	Data *Category `json:"data,omitempty"`
+	Msg  *string   `json:"msg,omitempty"`
+}
+
 // ChangeEmailRequestBody defines model for ChangeEmailRequestBody.
 type ChangeEmailRequestBody struct {
 	NewCode  *string `json:"newCode,omitempty"`
@@ -1639,6 +1875,23 @@ type ClassroomsResponseBody struct {
 	Msg  *string          `json:"msg,omitempty"`
 }
 
+// CollectStateData defines model for CollectStateData.
+type CollectStateData struct {
+	CollectCount *int32 `json:"collect_count,omitempty"`
+	Collected    *bool  `json:"collected,omitempty"`
+
+	// MyCollectCount 「我的收藏」入口的角标
+	MyCollectCount *int64  `json:"my_collect_count,omitempty"`
+	PostId         *string `json:"post_id,omitempty"`
+}
+
+// CollectStateResponseBody defines model for CollectStateResponseBody.
+type CollectStateResponseBody struct {
+	Code *int64            `json:"code,omitempty"`
+	Data *CollectStateData `json:"data,omitempty"`
+	Msg  *string           `json:"msg,omitempty"`
+}
+
 // CollectorInfo ============================================================================
 // 管理端：采集器（cron 支撑）与抓取运行
 // ============================================================================
@@ -1672,6 +1925,73 @@ type CollectorMutateResponseBody struct {
 	// ============================================================================
 	Data *CollectorInfo `json:"data,omitempty"`
 	Msg  *string        `json:"msg,omitempty"`
+}
+
+// Comment ---------- 评论 ----------
+type Comment struct {
+	// Author Author 是作者的展示投影。
+	// // id 对用户作者是平台用户主键、对应用作者是应用 ID，两者都可直接用于对应的主页路径。
+	// 用户不以学号标识：学号可枚举，其编码本身还泄露学院与年级。
+	Author       *Author           `json:"author,omitempty"`
+	CanWithdraw  *bool             `json:"can_withdraw,omitempty"`
+	Content      *[][]RichTextNode `json:"content,omitempty"`
+	CreatedAt    *int64            `json:"created_at,omitempty"`
+	Id           *string           `json:"id,omitempty"`
+	ParentId     *string           `json:"parent_id,omitempty"`
+	PostId       *string           `json:"post_id,omitempty"`
+	Reactions    *ReactionSummary  `json:"reactions,omitempty"`
+	ReplyCount   *int32            `json:"reply_count,omitempty"`
+	ReportedByMe *bool             `json:"reported_by_me,omitempty"`
+
+	// Status published | taken_down
+	Status *string `json:"status,omitempty"`
+
+	// TakedownReason 同 PostDetail
+	TakedownReason *string `json:"takedown_reason,omitempty"`
+}
+
+// CommentMutationData CommentMutationData 带回所属帖子的评论总数与父评论的回复数，
+// 使帖子头部与被回复的那条评论同时就地更新。
+type CommentMutationData struct {
+	// Comment ---------- 评论 ----------
+	Comment          *Comment `json:"comment,omitempty"`
+	ParentReplyCount *int32   `json:"parent_reply_count,omitempty"`
+	PostCommentCount *int32   `json:"post_comment_count,omitempty"`
+}
+
+// CommentMutationResponseBody defines model for CommentMutationResponseBody.
+type CommentMutationResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data CommentMutationData 带回所属帖子的评论总数与父评论的回复数，
+	// 使帖子头部与被回复的那条评论同时就地更新。
+	Data *CommentMutationData `json:"data,omitempty"`
+	Msg  *string              `json:"msg,omitempty"`
+}
+
+// CommentResponseBody defines model for CommentResponseBody.
+type CommentResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data ---------- 评论 ----------
+	Data *Comment `json:"data,omitempty"`
+	Msg  *string  `json:"msg,omitempty"`
+}
+
+// CommentWithdrawData defines model for CommentWithdrawData.
+type CommentWithdrawData struct {
+	Id               *string `json:"id,omitempty"`
+	ParentId         *string `json:"parent_id,omitempty"`
+	ParentReplyCount *int32  `json:"parent_reply_count,omitempty"`
+	PostCommentCount *int32  `json:"post_comment_count,omitempty"`
+	PostId           *string `json:"post_id,omitempty"`
+}
+
+// CommentWithdrawResponseBody defines model for CommentWithdrawResponseBody.
+type CommentWithdrawResponseBody struct {
+	Code *int64               `json:"code,omitempty"`
+	Data *CommentWithdrawData `json:"data,omitempty"`
+	Msg  *string              `json:"msg,omitempty"`
 }
 
 // CommonResponseBody defines model for CommonResponseBody.
@@ -1843,6 +2163,13 @@ type CreateCampusRequestBody struct {
 	Lng       *float64 `json:"lng,omitempty"`
 	Name      *string  `json:"name,omitempty"`
 	Sort      *int32   `json:"sort,omitempty"`
+}
+
+// CreateCategoryRequestBody defines model for CreateCategoryRequestBody.
+type CreateCategoryRequestBody struct {
+	Description *string `json:"description,omitempty"`
+	Name        *string `json:"name,omitempty"`
+	SortOrder   *int32  `json:"sort_order,omitempty"`
 }
 
 // CreateCityChatGroupRequestBody defines model for CreateCityChatGroupRequestBody.
@@ -2091,6 +2418,12 @@ type CreateRoomResponseBody struct {
 	Msg  *string   `json:"msg,omitempty"`
 }
 
+// CreateSensitiveWordRequestBody defines model for CreateSensitiveWordRequestBody.
+type CreateSensitiveWordRequestBody struct {
+	Action *string `json:"action,omitempty"`
+	Word   *string `json:"word,omitempty"`
+}
+
 // CreateSiteAnnouncementRequestBody defines model for CreateSiteAnnouncementRequestBody.
 type CreateSiteAnnouncementRequestBody struct {
 	Announcement *EditableSiteAnnouncement `json:"announcement,omitempty"`
@@ -2193,6 +2526,51 @@ type CronTaskListResponseBody struct {
 	Code *int64          `json:"code,omitempty"`
 	Data *[]CronTaskInfo `json:"data,omitempty"`
 	Msg  *string         `json:"msg,omitempty"`
+}
+
+// CurationData CurationData 带回三个运营标记的当前值，供后台就地更新而不必重拉列表。
+type CurationData struct {
+	FeaturedAt *int64   `json:"featured_at,omitempty"`
+	PinnedAt   *int64   `json:"pinned_at,omitempty"`
+	PostId     *string  `json:"post_id,omitempty"`
+	RankBoost  *float64 `json:"rank_boost,omitempty"`
+}
+
+// CurationResponseBody defines model for CurationResponseBody.
+type CurationResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data CurationData 带回三个运营标记的当前值，供后台就地更新而不必重拉列表。
+	Data *CurationData `json:"data,omitempty"`
+	Msg  *string       `json:"msg,omitempty"`
+}
+
+// CursorCommentListData defines model for CursorCommentListData.
+type CursorCommentListData struct {
+	HasMore    *bool      `json:"has_more,omitempty"`
+	List       *[]Comment `json:"list,omitempty"`
+	NextCursor *string    `json:"next_cursor,omitempty"`
+}
+
+// CursorCommentListResponseBody defines model for CursorCommentListResponseBody.
+type CursorCommentListResponseBody struct {
+	Code *int64                 `json:"code,omitempty"`
+	Data *CursorCommentListData `json:"data,omitempty"`
+	Msg  *string                `json:"msg,omitempty"`
+}
+
+// CursorPostListData defines model for CursorPostListData.
+type CursorPostListData struct {
+	HasMore    *bool       `json:"has_more,omitempty"`
+	List       *[]PostCard `json:"list,omitempty"`
+	NextCursor *string     `json:"next_cursor,omitempty"`
+}
+
+// CursorPostListResponseBody defines model for CursorPostListResponseBody.
+type CursorPostListResponseBody struct {
+	Code *int64              `json:"code,omitempty"`
+	Data *CursorPostListData `json:"data,omitempty"`
+	Msg  *string             `json:"msg,omitempty"`
 }
 
 // DeleteAdminNoticeResponseBody defines model for DeleteAdminNoticeResponseBody.
@@ -2651,6 +3029,26 @@ type ElectricityMeterPage struct {
 	Total *int64                   `json:"total,omitempty"`
 }
 
+// Emoji Emoji 的 char 是 Unicode 字符本身，前端按文本渲染即可，不涉及静态资源。
+// type 是稳定标识，计数按它聚合，也是 reactions 接口的入参。
+type Emoji struct {
+	Char  *string `json:"char,omitempty"`
+	Label *string `json:"label,omitempty"`
+	Type  *string `json:"type,omitempty"`
+}
+
+// EmojiListData defines model for EmojiListData.
+type EmojiListData struct {
+	List *[]Emoji `json:"list,omitempty"`
+}
+
+// EmojiListResponseBody defines model for EmojiListResponseBody.
+type EmojiListResponseBody struct {
+	Code *int64         `json:"code,omitempty"`
+	Data *EmojiListData `json:"data,omitempty"`
+	Msg  *string        `json:"msg,omitempty"`
+}
+
 // EnrollData defines model for EnrollData.
 type EnrollData struct {
 	Count      *int32          `json:"count,omitempty"`
@@ -2943,6 +3341,28 @@ type FlatReadData struct {
 type FloorStat struct {
 	Count *int32  `json:"count,omitempty"`
 	Floor *string `json:"floor,omitempty"`
+}
+
+// FollowStateData FollowStateData 同时带回对方的粉丝数与我的关注数，
+// 关注按钮、对方主页与我的主页三处可一并更新。
+type FollowStateData struct {
+	FollowedByMe        *bool   `json:"followed_by_me,omitempty"`
+	MyFollowingCount    *int64  `json:"my_following_count,omitempty"`
+	TargetFollowerCount *int64  `json:"target_follower_count,omitempty"`
+	TargetId            *string `json:"target_id,omitempty"`
+
+	// TargetKind user | app
+	TargetKind *string `json:"target_kind,omitempty"`
+}
+
+// FollowStateResponseBody defines model for FollowStateResponseBody.
+type FollowStateResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data FollowStateData 同时带回对方的粉丝数与我的关注数，
+	// 关注按钮、对方主页与我的主页三处可一并更新。
+	Data *FollowStateData `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
 }
 
 // FreshmanAdmissionQueryRequestBody defines model for FreshmanAdmissionQueryRequestBody.
@@ -3393,6 +3813,44 @@ type GroupInfo struct {
 	Type      *string `json:"type,omitempty"`
 }
 
+// Hashtag defines model for Hashtag.
+type Hashtag struct {
+	Name      *string `json:"name,omitempty"`
+	PostCount *int64  `json:"post_count,omitempty"`
+}
+
+// HashtagBlockData defines model for HashtagBlockData.
+type HashtagBlockData struct {
+	Blocked *bool   `json:"blocked,omitempty"`
+	Name    *string `json:"name,omitempty"`
+}
+
+// HashtagBlockResponseBody defines model for HashtagBlockResponseBody.
+type HashtagBlockResponseBody struct {
+	Code *int64            `json:"code,omitempty"`
+	Data *HashtagBlockData `json:"data,omitempty"`
+	Msg  *string           `json:"msg,omitempty"`
+}
+
+// HashtagListData defines model for HashtagListData.
+type HashtagListData struct {
+	List *[]Hashtag `json:"list,omitempty"`
+}
+
+// HashtagListResponseBody defines model for HashtagListResponseBody.
+type HashtagListResponseBody struct {
+	Code *int64           `json:"code,omitempty"`
+	Data *HashtagListData `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
+}
+
+// HashtagResponseBody defines model for HashtagResponseBody.
+type HashtagResponseBody struct {
+	Code *int64   `json:"code,omitempty"`
+	Data *Hashtag `json:"data,omitempty"`
+	Msg  *string  `json:"msg,omitempty"`
+}
+
 // HealthResponseBody defines model for HealthResponseBody.
 type HealthResponseBody struct {
 	Service *string `json:"service,omitempty"`
@@ -3461,6 +3919,35 @@ type InboxEntryResponseBody struct {
 	Msg  *string     `json:"msg,omitempty"`
 }
 
+// InboxListData defines model for InboxListData.
+type InboxListData struct {
+	HasMore    *bool         `json:"has_more,omitempty"`
+	List       *[]InboxEntry `json:"list,omitempty"`
+	NextCursor *string       `json:"next_cursor,omitempty"`
+}
+
+// InboxListResponseBody defines model for InboxListResponseBody.
+type InboxListResponseBody struct {
+	Code *int64         `json:"code,omitempty"`
+	Data *InboxListData `json:"data,omitempty"`
+	Msg  *string        `json:"msg,omitempty"`
+}
+
+// InboxMarkReadRequestBody defines model for InboxMarkReadRequestBody.
+type InboxMarkReadRequestBody struct {
+	// Kind like_collect | mention_comment
+	Kind *string `json:"kind,omitempty"`
+}
+
+// InboxMarkReadResponseBody defines model for InboxMarkReadResponseBody.
+type InboxMarkReadResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data InboxUnread 是两条清单各自的未读数，供底部页签与红点一次取齐。
+	Data *InboxUnread `json:"data,omitempty"`
+	Msg  *string      `json:"msg,omitempty"`
+}
+
 // InboxMutationResponseBody defines model for InboxMutationResponseBody.
 type InboxMutationResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
@@ -3480,6 +3967,21 @@ type InboxPageResponseBody struct {
 	Code *int64     `json:"code,omitempty"`
 	Data *InboxPage `json:"data,omitempty"`
 	Msg  *string    `json:"msg,omitempty"`
+}
+
+// InboxUnread InboxUnread 是两条清单各自的未读数，供底部页签与红点一次取齐。
+type InboxUnread struct {
+	LikeCollect    *int64 `json:"like_collect,omitempty"`
+	MentionComment *int64 `json:"mention_comment,omitempty"`
+}
+
+// InboxUnreadResponseBody defines model for InboxUnreadResponseBody.
+type InboxUnreadResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data InboxUnread 是两条清单各自的未读数，供底部页签与红点一次取齐。
+	Data *InboxUnread `json:"data,omitempty"`
+	Msg  *string      `json:"msg,omitempty"`
 }
 
 // InfoCard 信息流卡片(AQI / 温度 / 停雨)
@@ -4380,6 +4882,38 @@ type MyGroupsResponseBody struct {
 	Msg  *string      `json:"msg,omitempty"`
 }
 
+// MyProfile ---------- 我的社区状态与发布身份 ----------
+// MyProfile 是本人社区状态。昵称与头像归平台身份管理（PUT /identity/me/profile），
+// 社区侧只读：一个人在社区里与在别处是同一个名字，读者才能把两处的行为对应起来。
+type MyProfile struct {
+	AvatarUrl *string `json:"avatar_url,omitempty"`
+
+	// BanReason banReason 让被禁言者知道原因。只告知不说明等于无从申辩。
+	BanReason      *string `json:"ban_reason,omitempty"`
+	Banned         *bool   `json:"banned,omitempty"`
+	BannedUntil    *int64  `json:"banned_until,omitempty"`
+	CollectCount   *int64  `json:"collect_count,omitempty"`
+	FollowerCount  *int64  `json:"follower_count,omitempty"`
+	FollowingCount *int64  `json:"following_count,omitempty"`
+	Nickname       *string `json:"nickname,omitempty"`
+
+	// NicknameIsDefault nicknameIsDefault 为真表示昵称仍是注册时生成的占位值，前端据此引导用户去设置。
+	NicknameIsDefault *bool   `json:"nickname_is_default,omitempty"`
+	PostCount         *int64  `json:"post_count,omitempty"`
+	UserId            *string `json:"user_id,omitempty"`
+}
+
+// MyProfileResponseBody defines model for MyProfileResponseBody.
+type MyProfileResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data ---------- 我的社区状态与发布身份 ----------
+	// MyProfile 是本人社区状态。昵称与头像归平台身份管理（PUT /identity/me/profile），
+	// 社区侧只读：一个人在社区里与在别处是同一个名字，读者才能把两处的行为对应起来。
+	Data *MyProfile `json:"data,omitempty"`
+	Msg  *string    `json:"msg,omitempty"`
+}
+
 // MyRoomsResponseBody defines model for MyRoomsResponseBody.
 type MyRoomsResponseBody struct {
 	Code *int64      `json:"code,omitempty"`
@@ -4583,6 +5117,29 @@ type OAuthScopeItem struct {
 	Sensitive   *bool   `json:"sensitive,omitempty"`
 }
 
+// OfficialAccount ---------- 官方号 ----------
+// OfficialAccount 由应用记录投影而来，不是独立实体。
+type OfficialAccount struct {
+	AppId         *string `json:"app_id,omitempty"`
+	AvatarUrl     *string `json:"avatar_url,omitempty"`
+	Description   *string `json:"description,omitempty"`
+	FollowedByMe  *bool   `json:"followed_by_me,omitempty"`
+	FollowerCount *int64  `json:"follower_count,omitempty"`
+	Name          *string `json:"name,omitempty"`
+	PostCount     *int64  `json:"post_count,omitempty"`
+	Verified      *bool   `json:"verified,omitempty"`
+}
+
+// OfficialAccountResponseBody defines model for OfficialAccountResponseBody.
+type OfficialAccountResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data ---------- 官方号 ----------
+	// OfficialAccount 由应用记录投影而来，不是独立实体。
+	Data *OfficialAccount `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
+}
+
 // OperatorInfo defines model for OperatorInfo.
 type OperatorInfo struct {
 	DisplayName        *string `json:"displayName,omitempty"`
@@ -4778,6 +5335,190 @@ type PopularResponseBody struct {
 	Msg  *string     `json:"msg,omitempty"`
 }
 
+// PostCard ---------- 帖子 ----------
+// PostCard 是瀑布流卡片投影：只带封面与摘要，不含正文节点，使列表页不必拉全文。
+type PostCard struct {
+	// Author Author 是作者的展示投影。
+	// // id 对用户作者是平台用户主键、对应用作者是应用 ID，两者都可直接用于对应的主页路径。
+	// 用户不以学号标识：学号可枚举，其编码本身还泄露学院与年级。
+	Author      *Author   `json:"author,omitempty"`
+	Brief       *string   `json:"brief,omitempty"`
+	CategoryIds *[]string `json:"category_ids,omitempty"`
+
+	// Counters PostCounters 是全局计数，与调用者无关，可缓存。
+	Counters *PostCounters `json:"counters,omitempty"`
+
+	// Cover PostImage 携带宽高，供双列瀑布流在图片加载前占位，避免布局跳动。
+	// 上传不限图片比例，展示按定宽等比缩放。
+	Cover     *PostImage    `json:"cover,omitempty"`
+	CreatedAt *int64        `json:"created_at,omitempty"`
+	Hashtags  *[]string     `json:"hashtags,omitempty"`
+	Id        *string       `json:"id,omitempty"`
+	Location  *PostLocation `json:"location,omitempty"`
+	Title     *string       `json:"title,omitempty"`
+}
+
+// PostCounters PostCounters 是全局计数，与调用者无关，可缓存。
+type PostCounters struct {
+	CollectCount  *int32 `json:"collect_count,omitempty"`
+	CommentCount  *int32 `json:"comment_count,omitempty"`
+	ReactionCount *int32 `json:"reaction_count,omitempty"`
+	ShareCount    *int32 `json:"share_count,omitempty"`
+	ViewCount     *int64 `json:"view_count,omitempty"`
+}
+
+// PostCountersData defines model for PostCountersData.
+type PostCountersData struct {
+	// Counters PostCounters 是全局计数，与调用者无关，可缓存。
+	Counters *PostCounters `json:"counters,omitempty"`
+	Id       *string       `json:"id,omitempty"`
+}
+
+// PostCountersResponseBody defines model for PostCountersResponseBody.
+type PostCountersResponseBody struct {
+	Code *int64            `json:"code,omitempty"`
+	Data *PostCountersData `json:"data,omitempty"`
+	Msg  *string           `json:"msg,omitempty"`
+}
+
+// PostDetail defines model for PostDetail.
+type PostDetail struct {
+	// Author Author 是作者的展示投影。
+	// // id 对用户作者是平台用户主键、对应用作者是应用 ID，两者都可直接用于对应的主页路径。
+	// 用户不以学号标识：学号可枚举，其编码本身还泄露学院与年级。
+	Author      *Author           `json:"author,omitempty"`
+	CategoryIds *[]string         `json:"category_ids,omitempty"`
+	Content     *[][]RichTextNode `json:"content,omitempty"`
+
+	// Counters PostCounters 是全局计数，与调用者无关，可缓存。
+	Counters  *PostCounters    `json:"counters,omitempty"`
+	CreatedAt *int64           `json:"created_at,omitempty"`
+	Hashtags  *[]string        `json:"hashtags,omitempty"`
+	Id        *string          `json:"id,omitempty"`
+	Images    *[]PostImage     `json:"images,omitempty"`
+	Location  *PostLocation    `json:"location,omitempty"`
+	Reactions *ReactionSummary `json:"reactions,omitempty"`
+
+	// Status published | under_review | taken_down | withdrawn（withdrawn 只对作者本人可见）
+	Status *string `json:"status,omitempty"`
+
+	// TakedownReason takedownReason 只在被下架时有值，且只投给作者本人与运营。
+	// 处置必须告知理由：只告知结果不说明原因，被处置者无从申辩。
+	TakedownReason *string `json:"takedown_reason,omitempty"`
+	Title          *string `json:"title,omitempty"`
+	UpdatedAt      *int64  `json:"updated_at,omitempty"`
+
+	// Version 正文版本号，编辑后递增
+	Version *int32 `json:"version,omitempty"`
+
+	// ViewerState PostViewerState 是观察者态，随调用者变化，不可跨用户缓存。
+	ViewerState *PostViewerState `json:"viewer_state,omitempty"`
+}
+
+// PostDetailResponseBody defines model for PostDetailResponseBody.
+type PostDetailResponseBody struct {
+	Code *int64      `json:"code,omitempty"`
+	Data *PostDetail `json:"data,omitempty"`
+	Msg  *string     `json:"msg,omitempty"`
+}
+
+// PostImage PostImage 携带宽高，供双列瀑布流在图片加载前占位，避免布局跳动。
+// 上传不限图片比例，展示按定宽等比缩放。
+type PostImage struct {
+	Height *int32 `json:"height,omitempty"`
+
+	// Key upload 对象 key
+	Key   *string `json:"key,omitempty"`
+	Url   *string `json:"url,omitempty"`
+	Width *int32  `json:"width,omitempty"`
+}
+
+// PostImageInput PostImageInput 是发布与编辑时提交的一张图片。宽高由客户端提供——服务端不解码图片，
+// 而瀑布流必须在图片加载前就知道比例才能占位；不提供则前端只能等图片加载完再回填布局。
+type PostImageInput struct {
+	Height *int32 `json:"height,omitempty"`
+
+	// Key 取自 upload/sign（usage=moments）
+	Key   *string `json:"key,omitempty"`
+	Width *int32  `json:"width,omitempty"`
+}
+
+// PostLocation defines model for PostLocation.
+type PostLocation struct {
+	Description *string  `json:"description,omitempty"`
+	Latitude    *float64 `json:"latitude,omitempty"`
+	Longitude   *float64 `json:"longitude,omitempty"`
+}
+
+// PostVersion defines model for PostVersion.
+type PostVersion struct {
+	Content   *[][]RichTextNode `json:"content,omitempty"`
+	CreatedAt *int64            `json:"created_at,omitempty"`
+	Version   *int32            `json:"version,omitempty"`
+}
+
+// PostVersionListData defines model for PostVersionListData.
+type PostVersionListData struct {
+	List *[]PostVersion `json:"list,omitempty"`
+}
+
+// PostVersionListResponseBody defines model for PostVersionListResponseBody.
+type PostVersionListResponseBody struct {
+	Code *int64               `json:"code,omitempty"`
+	Data *PostVersionListData `json:"data,omitempty"`
+	Msg  *string              `json:"msg,omitempty"`
+}
+
+// PostViewerState PostViewerState 是观察者态，随调用者变化，不可跨用户缓存。
+type PostViewerState struct {
+	CanEdit         *bool `json:"can_edit,omitempty"`
+	CanWithdraw     *bool `json:"can_withdraw,omitempty"`
+	Collected       *bool `json:"collected,omitempty"`
+	FollowingAuthor *bool `json:"following_author,omitempty"`
+	ReportedByMe    *bool `json:"reported_by_me,omitempty"`
+}
+
+// PostWithdrawData PostWithdrawData 让前端从流里移除卡片并同步作者帖子数，无需重新拉流。
+type PostWithdrawData struct {
+	AuthorPostCount *int64  `json:"author_post_count,omitempty"`
+	Id              *string `json:"id,omitempty"`
+
+	// Status withdrawn
+	Status *string `json:"status,omitempty"`
+}
+
+// PostWithdrawResponseBody defines model for PostWithdrawResponseBody.
+type PostWithdrawResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data PostWithdrawData 让前端从流里移除卡片并同步作者帖子数，无需重新拉流。
+	Data *PostWithdrawData `json:"data,omitempty"`
+	Msg  *string           `json:"msg,omitempty"`
+}
+
+// PostingIdentity PostingIdentity 是发布器身份下拉的一项：本人，或本人有权代表的某个官方号。
+type PostingIdentity struct {
+	// AppId 仅 kind=app 有值
+	AppId       *string `json:"app_id,omitempty"`
+	AvatarUrl   *string `json:"avatar_url,omitempty"`
+	DisplayName *string `json:"display_name,omitempty"`
+
+	// Kind user | app
+	Kind *string `json:"kind,omitempty"`
+}
+
+// PostingIdentityData defines model for PostingIdentityData.
+type PostingIdentityData struct {
+	List *[]PostingIdentity `json:"list,omitempty"`
+}
+
+// PostingIdentityResponseBody defines model for PostingIdentityResponseBody.
+type PostingIdentityResponseBody struct {
+	Code *int64               `json:"code,omitempty"`
+	Data *PostingIdentityData `json:"data,omitempty"`
+	Msg  *string              `json:"msg,omitempty"`
+}
+
 // PredictData defines model for PredictData.
 type PredictData struct {
 	Daily  *[]PredictDay  `json:"daily,omitempty"`
@@ -4935,6 +5676,58 @@ type PublishAdminNoticeResponseBody struct {
 	Msg  *string           `json:"msg,omitempty"`
 }
 
+// PublishCommentRequestBody defines model for PublishCommentRequestBody.
+type PublishCommentRequestBody struct {
+	Content *[][]RichTextNode `json:"content,omitempty"`
+}
+
+// PublishPostData PublishPostData 除新帖本身外带回作者的帖子总数，供个人主页与「我的」页就地加一。
+type PublishPostData struct {
+	AuthorPostCount *int64      `json:"author_post_count,omitempty"`
+	Post            *PostDetail `json:"post,omitempty"`
+}
+
+// PublishPostRequestBody defines model for PublishPostRequestBody.
+type PublishPostRequestBody struct {
+	// CategoryIds 一帖可属多个板块
+	CategoryIds *[]string         `json:"category_ids,omitempty"`
+	Content     *[][]RichTextNode `json:"content,omitempty"`
+
+	// Images 图片先经 POST /hduhelp-neo/upload/sign 直传，这里传返回的 key 与像素尺寸。
+	// 签名时必须带 usage=moments：社区图片自成一个上传分组，其他分组的 key 会被拒绝。
+	Images   *[]PostImageInput `json:"images,omitempty"`
+	Location *PostLocation     `json:"location,omitempty"`
+	Title    *string           `json:"title,omitempty"`
+}
+
+// PublishPostResponseBody defines model for PublishPostResponseBody.
+type PublishPostResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data PublishPostData 除新帖本身外带回作者的帖子总数，供个人主页与「我的」页就地加一。
+	Data *PublishPostData `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
+}
+
+// PurgePostData defines model for PurgePostData.
+type PurgePostData struct {
+	PostId *string `json:"post_id,omitempty"`
+	Purged *bool   `json:"purged,omitempty"`
+}
+
+// PurgePostRequestBody defines model for PurgePostRequestBody.
+type PurgePostRequestBody struct {
+	// Reason reason 写入审计。永久删除不可撤销，必须留下为什么。
+	Reason *string `json:"reason,omitempty"`
+}
+
+// PurgePostResponseBody defines model for PurgePostResponseBody.
+type PurgePostResponseBody struct {
+	Code *int64         `json:"code,omitempty"`
+	Data *PurgePostData `json:"data,omitempty"`
+	Msg  *string        `json:"msg,omitempty"`
+}
+
 // QAStrategiesData defines model for QAStrategiesData.
 type QAStrategiesData struct {
 	DefaultName *string           `json:"defaultName,omitempty"`
@@ -4952,6 +5745,42 @@ type QAStrategiesResponseBody struct {
 type QAStrategyItem struct {
 	Name      *string `json:"name,omitempty"`
 	ServiceId *string `json:"service_id,omitempty"`
+}
+
+// ReactRequestBody defines model for ReactRequestBody.
+type ReactRequestBody struct {
+	Type *string `json:"type,omitempty"`
+}
+
+// ReactionBucket ReactionBucket 是单个表情的聚合。reactedByMe 属于观察者态，随调用者变化。
+type ReactionBucket struct {
+	Count       *int32  `json:"count,omitempty"`
+	ReactedByMe *bool   `json:"reacted_by_me,omitempty"`
+	Type        *string `json:"type,omitempty"`
+}
+
+// ReactionMutationData ReactionMutationData 同时带回聚合与总量，前端据此重绘表情条。
+type ReactionMutationData struct {
+	EntityId *string `json:"entity_id,omitempty"`
+
+	// EntityKind post | comment
+	EntityKind *string          `json:"entity_kind,omitempty"`
+	Reactions  *ReactionSummary `json:"reactions,omitempty"`
+}
+
+// ReactionMutationResponseBody defines model for ReactionMutationResponseBody.
+type ReactionMutationResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data ReactionMutationData 同时带回聚合与总量，前端据此重绘表情条。
+	Data *ReactionMutationData `json:"data,omitempty"`
+	Msg  *string               `json:"msg,omitempty"`
+}
+
+// ReactionSummary defines model for ReactionSummary.
+type ReactionSummary struct {
+	Buckets    *[]ReactionBucket `json:"buckets,omitempty"`
+	TotalCount *int32            `json:"total_count,omitempty"`
 }
 
 // ReadingSummary defines model for ReadingSummary.
@@ -5062,6 +5891,33 @@ type RefreshTokenRequestBody struct {
 	RefreshToken *string `json:"refreshToken,omitempty"`
 }
 
+// RelationListData defines model for RelationListData.
+type RelationListData struct {
+	List     *[]RelationUser `json:"list,omitempty"`
+	Page     *int32          `json:"page,omitempty"`
+	PageSize *int32          `json:"pageSize,omitempty"`
+	Total    *int64          `json:"total,omitempty"`
+}
+
+// RelationListResponseBody defines model for RelationListResponseBody.
+type RelationListResponseBody struct {
+	Code *int64            `json:"code,omitempty"`
+	Data *RelationListData `json:"data,omitempty"`
+	Msg  *string           `json:"msg,omitempty"`
+}
+
+// RelationUser defines model for RelationUser.
+type RelationUser struct {
+	AvatarUrl    *string `json:"avatar_url,omitempty"`
+	DisplayName  *string `json:"display_name,omitempty"`
+	FollowedByMe *bool   `json:"followed_by_me,omitempty"`
+	Id           *string `json:"id,omitempty"`
+
+	// Kind user | app
+	Kind     *string `json:"kind,omitempty"`
+	Verified *bool   `json:"verified,omitempty"`
+}
+
 // RenamePolicyProfileRequestBody defines model for RenamePolicyProfileRequestBody.
 type RenamePolicyProfileRequestBody struct {
 	Name *string `json:"name,omitempty"`
@@ -5086,6 +5942,26 @@ type ReplayTaskResponseBody struct {
 	Msg  *string         `json:"msg,omitempty"`
 }
 
+// Report defines model for Report.
+type Report struct {
+	CreatedAt *int64  `json:"created_at,omitempty"`
+	Detail    *string `json:"detail,omitempty"`
+	Id        *string `json:"id,omitempty"`
+
+	// Note 处置的经办人与时间。审核员交接与复核都要能看到是谁在何时结的案。
+	Note                 *string `json:"note,omitempty"`
+	Reason               *string `json:"reason,omitempty"`
+	ReporterUserId       *string `json:"reporter_user_id,omitempty"`
+	Resolution           *string `json:"resolution,omitempty"`
+	ResolvedAt           *int64  `json:"resolved_at,omitempty"`
+	ResolvedByOperatorId *string `json:"resolved_by_operator_id,omitempty"`
+
+	// Status pending | resolved | rejected
+	Status     *string `json:"status,omitempty"`
+	TargetId   *string `json:"target_id,omitempty"`
+	TargetKind *string `json:"target_kind,omitempty"`
+}
+
 // ReportGapRequestBody defines model for ReportGapRequestBody.
 type ReportGapRequestBody struct {
 	Question  *string `json:"question,omitempty"`
@@ -5096,6 +5972,42 @@ type ReportGapRequestBody struct {
 type ReportGapResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
+}
+
+// ReportReason ---------- 举报 ----------
+type ReportReason struct {
+	Code  *string `json:"code,omitempty"`
+	Label *string `json:"label,omitempty"`
+}
+
+// ReportReasonListData defines model for ReportReasonListData.
+type ReportReasonListData struct {
+	List *[]ReportReason `json:"list,omitempty"`
+}
+
+// ReportReasonListResponseBody defines model for ReportReasonListResponseBody.
+type ReportReasonListResponseBody struct {
+	Code *int64                `json:"code,omitempty"`
+	Data *ReportReasonListData `json:"data,omitempty"`
+	Msg  *string               `json:"msg,omitempty"`
+}
+
+// ReportStateData ReportStateData 让举报入口立即切到「已举报」，无需重新拉帖子详情。
+type ReportStateData struct {
+	Id           *string `json:"id,omitempty"`
+	ReportedByMe *bool   `json:"reported_by_me,omitempty"`
+	Status       *string `json:"status,omitempty"`
+	TargetId     *string `json:"target_id,omitempty"`
+	TargetKind   *string `json:"target_kind,omitempty"`
+}
+
+// ReportStateResponseBody defines model for ReportStateResponseBody.
+type ReportStateResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data ReportStateData 让举报入口立即切到「已举报」，无需重新拉帖子详情。
+	Data *ReportStateData `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
 }
 
 // ResetOperatorPasswordRequestBody defines model for ResetOperatorPasswordRequestBody.
@@ -5117,6 +6029,37 @@ type ResetPasswordRequestBody struct {
 
 	// Type "sms" | "email"
 	Type *string `json:"type,omitempty"`
+}
+
+// ResolveAppealRequestBody defines model for ResolveAppealRequestBody.
+type ResolveAppealRequestBody struct {
+	Resolution *string `json:"resolution,omitempty"`
+
+	// Status accepted | rejected
+	Status *string `json:"status,omitempty"`
+}
+
+// ResolveReportData ResolveReportData 带回剩余待处理数，处置一条后队列角标可就地递减。
+type ResolveReportData struct {
+	PendingTotal *int64  `json:"pending_total,omitempty"`
+	Report       *Report `json:"report,omitempty"`
+}
+
+// ResolveReportRequestBody defines model for ResolveReportRequestBody.
+type ResolveReportRequestBody struct {
+	Note *string `json:"note,omitempty"`
+
+	// Resolution takedown | dismiss | ban
+	Resolution *string `json:"resolution,omitempty"`
+}
+
+// ResolveReportResponseBody defines model for ResolveReportResponseBody.
+type ResolveReportResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data ResolveReportData 带回剩余待处理数，处置一条后队列角标可就地递减。
+	Data *ResolveReportData `json:"data,omitempty"`
+	Msg  *string            `json:"msg,omitempty"`
 }
 
 // RestoreVersionRequestBody defines model for RestoreVersionRequestBody.
@@ -5184,6 +6127,20 @@ type RewardsResponseBody struct {
 	Code *int64           `json:"code,omitempty"`
 	Data *[]StudentReward `json:"data,omitempty"`
 	Msg  *string          `json:"msg,omitempty"`
+}
+
+// RichTextNode RichTextNode 是正文的行内节点。正文整体是段落数组、每段是节点数组，即
+// list<list<RichTextNode>>。四种 tag：
+// text     纯文本，取 text
+// a        超链接，取 text 与 href
+// at       @提及，取 userId 与 displayName
+// hashtag  话题，取 text（形如 #话题名）。仅帖子正文支持，评论不支持。
+type RichTextNode struct {
+	DisplayName *string `json:"display_name,omitempty"`
+	Href        *string `json:"href,omitempty"`
+	Tag         *string `json:"tag,omitempty"`
+	Text        *string `json:"text,omitempty"`
+	UserId      *string `json:"user_id,omitempty"`
 }
 
 // RoomDetailData defines model for RoomDetailData.
@@ -5457,6 +6414,16 @@ type ScoresCard struct {
 	Grades *[]GradeItem `json:"grades,omitempty"`
 }
 
+// SearchData defines model for SearchData.
+type SearchData struct {
+	HasMore          *bool           `json:"has_more,omitempty"`
+	Hashtags         *[]Hashtag      `json:"hashtags,omitempty"`
+	NextCursor       *string         `json:"next_cursor,omitempty"`
+	OfficialAccounts *[]RelationUser `json:"official_accounts,omitempty"`
+	Posts            *[]PostCard     `json:"posts,omitempty"`
+	Users            *[]RelationUser `json:"users,omitempty"`
+}
+
 // SearchHit SearchHit 是一条检索命中，溯源信息足以回链到我方 DB 与方舟切片。
 type SearchHit struct {
 	// Authority human | official_school | official_hduhelp
@@ -5714,6 +6681,50 @@ type SendWishResponseBody struct {
 	Msg  *string       `json:"msg,omitempty"`
 }
 
+// SensitiveWord defines model for SensitiveWord.
+type SensitiveWord struct {
+	// Action block | review
+	Action    *string `json:"action,omitempty"`
+	CreatedAt *int64  `json:"created_at,omitempty"`
+	Id        *string `json:"id,omitempty"`
+	Word      *string `json:"word,omitempty"`
+}
+
+// SensitiveWordDeletedData defines model for SensitiveWordDeletedData.
+type SensitiveWordDeletedData struct {
+	Id    *string `json:"id,omitempty"`
+	Total *int64  `json:"total,omitempty"`
+}
+
+// SensitiveWordDeletedResponseBody defines model for SensitiveWordDeletedResponseBody.
+type SensitiveWordDeletedResponseBody struct {
+	Code *int64                    `json:"code,omitempty"`
+	Data *SensitiveWordDeletedData `json:"data,omitempty"`
+	Msg  *string                   `json:"msg,omitempty"`
+}
+
+// SensitiveWordListData defines model for SensitiveWordListData.
+type SensitiveWordListData struct {
+	List     *[]SensitiveWord `json:"list,omitempty"`
+	Page     *int32           `json:"page,omitempty"`
+	PageSize *int32           `json:"pageSize,omitempty"`
+	Total    *int64           `json:"total,omitempty"`
+}
+
+// SensitiveWordListResponseBody defines model for SensitiveWordListResponseBody.
+type SensitiveWordListResponseBody struct {
+	Code *int64                 `json:"code,omitempty"`
+	Data *SensitiveWordListData `json:"data,omitempty"`
+	Msg  *string                `json:"msg,omitempty"`
+}
+
+// SensitiveWordResponseBody defines model for SensitiveWordResponseBody.
+type SensitiveWordResponseBody struct {
+	Code *int64         `json:"code,omitempty"`
+	Data *SensitiveWord `json:"data,omitempty"`
+	Msg  *string        `json:"msg,omitempty"`
+}
+
 // ServiceAuthorizationItem ==== Erke / Library / Sunrun 服务凭据授权（仅一方原生会话，禁止 CLI/PAT/UAT） ====
 type ServiceAuthorizationItem struct {
 	Authorized     *bool `json:"authorized,omitempty"`
@@ -5885,6 +6896,12 @@ type SetOperatorEnabledResponseBody struct {
 type SetQAStrategiesRequestBody struct {
 	Default    *string           `json:"default,omitempty"`
 	Strategies *[]QAStrategyItem `json:"strategies,omitempty"`
+}
+
+// SetRankBoostRequestBody defines model for SetRankBoostRequestBody.
+type SetRankBoostRequestBody struct {
+	// RankBoost rankBoost 是打分的乘性人工权重。1 为不干预，小于 1 降权，大于 1 加权。
+	RankBoost *float64 `json:"rank_boost,omitempty"`
 }
 
 // SetTaggingPromptRequestBody defines model for SetTaggingPromptRequestBody.
@@ -6393,6 +7410,23 @@ type StudentStaySchoolInfo struct {
 	UnitStatus     *string `json:"unitStatus,omitempty"`
 }
 
+// SubmitAppealRequestBody defines model for SubmitAppealRequestBody.
+type SubmitAppealRequestBody struct {
+	Reason     *string `json:"reason,omitempty"`
+	TargetId   *string `json:"target_id,omitempty"`
+	TargetKind *string `json:"target_kind,omitempty"`
+}
+
+// SubmitReportRequestBody defines model for SubmitReportRequestBody.
+type SubmitReportRequestBody struct {
+	Detail   *string `json:"detail,omitempty"`
+	Reason   *string `json:"reason,omitempty"`
+	TargetId *string `json:"target_id,omitempty"`
+
+	// TargetKind post | comment | user
+	TargetKind *string `json:"target_kind,omitempty"`
+}
+
 // SubscribeRequestBody defines model for SubscribeRequestBody.
 type SubscribeRequestBody struct {
 	Channel *string `json:"channel,omitempty"`
@@ -6606,6 +7640,11 @@ type TaggingVariableItem struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// TakedownRequestBody defines model for TakedownRequestBody.
+type TakedownRequestBody struct {
+	Reason *string `json:"reason,omitempty"`
+}
+
 // TaskPage defines model for TaskPage.
 type TaskPage struct {
 	Items    *[]NotificationTask `json:"items,omitempty"`
@@ -6814,6 +7853,13 @@ type UpdateCampusRequestBody struct {
 	Sort      *int32   `json:"sort,omitempty"`
 }
 
+// UpdateCategoryRequestBody defines model for UpdateCategoryRequestBody.
+type UpdateCategoryRequestBody struct {
+	Description *string `json:"description,omitempty"`
+	Name        *string `json:"name,omitempty"`
+	SortOrder   *int32  `json:"sort_order,omitempty"`
+}
+
 // UpdateChunkRequestBody defines model for UpdateChunkRequestBody.
 type UpdateChunkRequestBody struct {
 	Content *string `json:"content,omitempty"`
@@ -6920,10 +7966,34 @@ type UpdateLoginClientResponseBody struct {
 	Msg  *string               `json:"msg,omitempty"`
 }
 
+// UpdateMyProfileRequestBody defines model for UpdateMyProfileRequestBody.
+type UpdateMyProfileRequestBody struct {
+	// AvatarKey avatarKey 是 upload 对象 key（先经 POST /upload/sign 直传，签名时带 usage=avatar）。
+	// 传空串即清除头像。
+	AvatarKey *string `json:"avatar_key,omitempty"`
+	NickName  *string `json:"nick_name,omitempty"`
+}
+
+// UpdateMyProfileResponseBody defines model for UpdateMyProfileResponseBody.
+type UpdateMyProfileResponseBody struct {
+	Code *int64    `json:"code,omitempty"`
+	Data *UserInfo `json:"data,omitempty"`
+	Msg  *string   `json:"msg,omitempty"`
+}
+
 // UpdatePolicyProfileRequestBody defines model for UpdatePolicyProfileRequestBody.
 type UpdatePolicyProfileRequestBody struct {
 	Name   *string         `json:"name,omitempty"`
 	Policy *DeliveryPolicy `json:"policy,omitempty"`
+}
+
+// UpdatePostRequestBody defines model for UpdatePostRequestBody.
+type UpdatePostRequestBody struct {
+	CategoryIds *[]string         `json:"category_ids,omitempty"`
+	Content     *[][]RichTextNode `json:"content,omitempty"`
+	Images      *[]PostImageInput `json:"images,omitempty"`
+	Location    *PostLocation     `json:"location,omitempty"`
+	Title       *string           `json:"title,omitempty"`
 }
 
 // UpdateServiceAuthorizationNotificationRequestBody defines model for UpdateServiceAuthorizationNotificationRequestBody.
@@ -7122,6 +8192,33 @@ type UserInfo struct {
 	Id       *string `json:"id,omitempty"`
 	NickName *string `json:"nickName,omitempty"`
 	Status   *string `json:"status,omitempty"`
+}
+
+// UserProfile ---------- 用户主页 ----------
+// UserProfile 是他人视角的用户主页头部。
+// // 展示实名而非昵称：主页是「这个人是谁」的页面，实名才让人能对上号；
+// 卡片与互动处用昵称，那里要的是简短可辨。
+type UserProfile struct {
+	AvatarUrl      *string `json:"avatar_url,omitempty"`
+	FollowedByMe   *bool   `json:"followed_by_me,omitempty"`
+	FollowerCount  *int64  `json:"follower_count,omitempty"`
+	FollowingCount *int64  `json:"following_count,omitempty"`
+	Nickname       *string `json:"nickname,omitempty"`
+	PostCount      *int64  `json:"post_count,omitempty"`
+	RealName       *string `json:"real_name,omitempty"`
+	UserId         *string `json:"user_id,omitempty"`
+}
+
+// UserProfileResponseBody defines model for UserProfileResponseBody.
+type UserProfileResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data ---------- 用户主页 ----------
+	// UserProfile 是他人视角的用户主页头部。
+	// // 展示实名而非昵称：主页是「这个人是谁」的页面，实名才让人能对上号；
+	// 卡片与互动处用昵称，那里要的是简短可辨。
+	Data *UserProfile `json:"data,omitempty"`
+	Msg  *string      `json:"msg,omitempty"`
 }
 
 // ValidatePolicyData defines model for ValidatePolicyData.
@@ -7726,6 +8823,71 @@ type MessagingServiceListAdminWishReviewsParams struct {
 	Status   *string `form:"status,omitempty" json:"status,omitempty"`
 	Page     *int32  `form:"page,omitempty" json:"page,omitempty"`
 	PageSize *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+}
+
+// MomentsServiceAdminListAppealsParams defines parameters for MomentsServiceAdminListAppeals.
+type MomentsServiceAdminListAppealsParams struct {
+	Page     *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+	Status   *string `form:"status,omitempty" json:"status,omitempty"`
+}
+
+// MomentsServiceAdminListAuditsParams defines parameters for MomentsServiceAdminListAudits.
+type MomentsServiceAdminListAuditsParams struct {
+	Page       *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize   *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+	Action     *string `form:"action,omitempty" json:"action,omitempty"`
+	OperatorId *string `form:"operator_id,omitempty" json:"operator_id,omitempty"`
+	TargetId   *string `form:"target_id,omitempty" json:"target_id,omitempty"`
+}
+
+// MomentsServiceAdminListCommentsParams defines parameters for MomentsServiceAdminListComments.
+type MomentsServiceAdminListCommentsParams struct {
+	Page         *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize     *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+	Status       *string `form:"status,omitempty" json:"status,omitempty"`
+	PostId       *string `form:"post_id,omitempty" json:"post_id,omitempty"`
+	ReportedOnly *bool   `form:"reported_only,omitempty" json:"reported_only,omitempty"`
+
+	// AuthorUserId 按作者收窄
+	AuthorUserId *string `form:"author_user_id,omitempty" json:"author_user_id,omitempty"`
+}
+
+// MomentsServiceAdminListPostsParams defines parameters for MomentsServiceAdminListPosts.
+type MomentsServiceAdminListPostsParams struct {
+	Page     *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+	Status   *string `form:"status,omitempty" json:"status,omitempty"`
+
+	// AuthorKind user | app
+	AuthorKind   *string `form:"author_kind,omitempty" json:"author_kind,omitempty"`
+	CategoryId   *string `form:"category_id,omitempty" json:"category_id,omitempty"`
+	Keyword      *string `form:"keyword,omitempty" json:"keyword,omitempty"`
+	ReportedOnly *bool   `form:"reported_only,omitempty" json:"reported_only,omitempty"`
+
+	// AuthorUserId authorUserId 按作者收窄，供追查同一个人的全部内容（含非 published 状态）。
+	AuthorUserId *string `form:"author_user_id,omitempty" json:"author_user_id,omitempty"`
+
+	// MinReportCount minReportCount 只取举报数不低于它的内容，供优先处理被大量举报的内容。
+	MinReportCount *int32 `form:"min_report_count,omitempty" json:"min_report_count,omitempty"`
+}
+
+// MomentsServiceAdminListReportsParams defines parameters for MomentsServiceAdminListReports.
+type MomentsServiceAdminListReportsParams struct {
+	Page       *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize   *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+	Status     *string `form:"status,omitempty" json:"status,omitempty"`
+	TargetKind *string `form:"target_kind,omitempty" json:"target_kind,omitempty"`
+
+	// TargetId targetId 按被举报目标收窄。同一条内容被多人举报时，处置需要一次看齐全部举报。
+	TargetId *string `form:"target_id,omitempty" json:"target_id,omitempty"`
+}
+
+// MomentsServiceAdminListSensitiveWordsParams defines parameters for MomentsServiceAdminListSensitiveWords.
+type MomentsServiceAdminListSensitiveWordsParams struct {
+	Page     *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+	Keyword  *string `form:"keyword,omitempty" json:"keyword,omitempty"`
 }
 
 // AdminNoticeServiceListAdminNoticesParams defines parameters for AdminNoticeServiceListAdminNotices.
@@ -8361,6 +9523,111 @@ type MessagingServiceSendWishParams struct {
 	IdempotencyKey string `json:"Idempotency-Key"`
 }
 
+// MomentsServiceUnreactCommentParams defines parameters for MomentsServiceUnreactComment.
+type MomentsServiceUnreactCommentParams struct {
+	Type *string `form:"type,omitempty" json:"type,omitempty"`
+}
+
+// MomentsServiceListRepliesParams defines parameters for MomentsServiceListReplies.
+type MomentsServiceListRepliesParams struct {
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit  *int32  `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// MomentsServiceGetFeedParams defines parameters for MomentsServiceGetFeed.
+type MomentsServiceGetFeedParams struct {
+	// Tab recommend | following；缺省 recommend
+	Tab        *string `form:"tab,omitempty" json:"tab,omitempty"`
+	CategoryId *string `form:"category_id,omitempty" json:"category_id,omitempty"`
+	Hashtag    *string `form:"hashtag,omitempty" json:"hashtag,omitempty"`
+	Cursor     *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit      *int32  `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// MomentsServiceSuggestHashtagsParams defines parameters for MomentsServiceSuggestHashtags.
+type MomentsServiceSuggestHashtagsParams struct {
+	Q     *string `form:"q,omitempty" json:"q,omitempty"`
+	Limit *int32  `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// MomentsServiceListMyCollectionsParams defines parameters for MomentsServiceListMyCollections.
+type MomentsServiceListMyCollectionsParams struct {
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit  *int32  `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// MomentsServiceListMomentsInboxLikesParams defines parameters for MomentsServiceListMomentsInboxLikes.
+type MomentsServiceListMomentsInboxLikesParams struct {
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit  *int32  `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// MomentsServiceListMomentsInboxMentionsParams defines parameters for MomentsServiceListMomentsInboxMentions.
+type MomentsServiceListMomentsInboxMentionsParams struct {
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit  *int32  `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// MomentsServiceListMyPostsParams defines parameters for MomentsServiceListMyPosts.
+type MomentsServiceListMyPostsParams struct {
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit  *int32  `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Status published | under_review | taken_down
+	Status *string `form:"status,omitempty" json:"status,omitempty"`
+}
+
+// MomentsServiceListMyReactionsParams defines parameters for MomentsServiceListMyReactions.
+type MomentsServiceListMyReactionsParams struct {
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit  *int32  `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// MomentsServiceListOfficialAccountPostsParams defines parameters for MomentsServiceListOfficialAccountPosts.
+type MomentsServiceListOfficialAccountPostsParams struct {
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit  *int32  `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// MomentsServiceListCommentsParams defines parameters for MomentsServiceListComments.
+type MomentsServiceListCommentsParams struct {
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit  *int32  `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// MomentsServiceUnreactPostParams defines parameters for MomentsServiceUnreactPost.
+type MomentsServiceUnreactPostParams struct {
+	Type *string `form:"type,omitempty" json:"type,omitempty"`
+}
+
+// MomentsServiceSearchParams defines parameters for MomentsServiceSearch.
+type MomentsServiceSearchParams struct {
+	Q *string `form:"q,omitempty" json:"q,omitempty"`
+
+	// Type post | user | hashtag | official
+	Type   *string `form:"type,omitempty" json:"type,omitempty"`
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit  *int32  `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// MomentsServiceListFollowersParams defines parameters for MomentsServiceListFollowers.
+type MomentsServiceListFollowersParams struct {
+	Page     *int32 `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32 `form:"page_size,omitempty" json:"page_size,omitempty"`
+}
+
+// MomentsServiceListFollowingsParams defines parameters for MomentsServiceListFollowings.
+type MomentsServiceListFollowingsParams struct {
+	Page     *int32 `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32 `form:"page_size,omitempty" json:"page_size,omitempty"`
+}
+
+// MomentsServiceListUserPostsParams defines parameters for MomentsServiceListUserPosts.
+type MomentsServiceListUserPostsParams struct {
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit  *int32  `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
 // IdentityServiceAuthenAuthorizeParams defines parameters for IdentityServiceAuthenAuthorize.
 type IdentityServiceAuthenAuthorizeParams struct {
 	AppId       *string `form:"app_id,omitempty" json:"app_id,omitempty"`
@@ -8588,6 +9855,39 @@ type AdminServiceSetLoginMethodsJSONRequestBody = SetLoginMethodsRequestBody
 
 // MessagingServiceReviewAdminWishJSONRequestBody defines body for MessagingServiceReviewAdminWish for application/json ContentType.
 type MessagingServiceReviewAdminWishJSONRequestBody = AdminWishReviewRequestBody
+
+// MomentsServiceAdminResolveAppealJSONRequestBody defines body for MomentsServiceAdminResolveAppeal for application/json ContentType.
+type MomentsServiceAdminResolveAppealJSONRequestBody = ResolveAppealRequestBody
+
+// MomentsServiceAdminCreateCategoryJSONRequestBody defines body for MomentsServiceAdminCreateCategory for application/json ContentType.
+type MomentsServiceAdminCreateCategoryJSONRequestBody = CreateCategoryRequestBody
+
+// MomentsServiceAdminUpdateCategoryJSONRequestBody defines body for MomentsServiceAdminUpdateCategory for application/json ContentType.
+type MomentsServiceAdminUpdateCategoryJSONRequestBody = UpdateCategoryRequestBody
+
+// MomentsServiceAdminTakedownCommentJSONRequestBody defines body for MomentsServiceAdminTakedownComment for application/json ContentType.
+type MomentsServiceAdminTakedownCommentJSONRequestBody = TakedownRequestBody
+
+// MomentsServiceAdminPublishPostJSONRequestBody defines body for MomentsServiceAdminPublishPost for application/json ContentType.
+type MomentsServiceAdminPublishPostJSONRequestBody = AdminPublishPostRequestBody
+
+// MomentsServiceAdminTakedownPostJSONRequestBody defines body for MomentsServiceAdminTakedownPost for application/json ContentType.
+type MomentsServiceAdminTakedownPostJSONRequestBody = TakedownRequestBody
+
+// MomentsServiceAdminPurgePostJSONRequestBody defines body for MomentsServiceAdminPurgePost for application/json ContentType.
+type MomentsServiceAdminPurgePostJSONRequestBody = PurgePostRequestBody
+
+// MomentsServiceAdminSetRankBoostJSONRequestBody defines body for MomentsServiceAdminSetRankBoost for application/json ContentType.
+type MomentsServiceAdminSetRankBoostJSONRequestBody = SetRankBoostRequestBody
+
+// MomentsServiceAdminResolveReportJSONRequestBody defines body for MomentsServiceAdminResolveReport for application/json ContentType.
+type MomentsServiceAdminResolveReportJSONRequestBody = ResolveReportRequestBody
+
+// MomentsServiceAdminCreateSensitiveWordJSONRequestBody defines body for MomentsServiceAdminCreateSensitiveWord for application/json ContentType.
+type MomentsServiceAdminCreateSensitiveWordJSONRequestBody = CreateSensitiveWordRequestBody
+
+// MomentsServiceAdminBanUserJSONRequestBody defines body for MomentsServiceAdminBanUser for application/json ContentType.
+type MomentsServiceAdminBanUserJSONRequestBody = BanUserRequestBody
 
 // AdminNoticeServiceCreateAdminNoticeJSONRequestBody defines body for AdminNoticeServiceCreateAdminNotice for application/json ContentType.
 type AdminNoticeServiceCreateAdminNoticeJSONRequestBody = CreateAdminNoticeRequestBody
@@ -8823,6 +10123,9 @@ type IdentityServicePollWeChatQRLoginJSONRequestBody = PollWeChatQRLoginRequestB
 // IdentityServiceSetCurrentCampusJSONRequestBody defines body for IdentityServiceSetCurrentCampus for application/json ContentType.
 type IdentityServiceSetCurrentCampusJSONRequestBody = SetCurrentCampusRequestBody
 
+// IdentityServiceUpdateMyProfileJSONRequestBody defines body for IdentityServiceUpdateMyProfile for application/json ContentType.
+type IdentityServiceUpdateMyProfileJSONRequestBody = UpdateMyProfileRequestBody
+
 // KnowledgeServiceKnowledgeReportGapJSONRequestBody defines body for KnowledgeServiceKnowledgeReportGap for application/json ContentType.
 type KnowledgeServiceKnowledgeReportGapJSONRequestBody = ReportGapRequestBody
 
@@ -8843,6 +10146,33 @@ type MessagingServiceSendPigeonJSONRequestBody = SendPigeonRequestBody
 
 // MessagingServiceSendWishJSONRequestBody defines body for MessagingServiceSendWish for application/json ContentType.
 type MessagingServiceSendWishJSONRequestBody = SendWishRequestBody
+
+// MomentsServiceSubmitAppealJSONRequestBody defines body for MomentsServiceSubmitAppeal for application/json ContentType.
+type MomentsServiceSubmitAppealJSONRequestBody = SubmitAppealRequestBody
+
+// MomentsServiceReactCommentJSONRequestBody defines body for MomentsServiceReactComment for application/json ContentType.
+type MomentsServiceReactCommentJSONRequestBody = ReactRequestBody
+
+// MomentsServicePublishReplyJSONRequestBody defines body for MomentsServicePublishReply for application/json ContentType.
+type MomentsServicePublishReplyJSONRequestBody = PublishCommentRequestBody
+
+// MomentsServiceMarkMomentsInboxReadJSONRequestBody defines body for MomentsServiceMarkMomentsInboxRead for application/json ContentType.
+type MomentsServiceMarkMomentsInboxReadJSONRequestBody = InboxMarkReadRequestBody
+
+// MomentsServicePublishPostJSONRequestBody defines body for MomentsServicePublishPost for application/json ContentType.
+type MomentsServicePublishPostJSONRequestBody = PublishPostRequestBody
+
+// MomentsServiceUpdatePostJSONRequestBody defines body for MomentsServiceUpdatePost for application/json ContentType.
+type MomentsServiceUpdatePostJSONRequestBody = UpdatePostRequestBody
+
+// MomentsServicePublishCommentJSONRequestBody defines body for MomentsServicePublishComment for application/json ContentType.
+type MomentsServicePublishCommentJSONRequestBody = PublishCommentRequestBody
+
+// MomentsServiceReactPostJSONRequestBody defines body for MomentsServiceReactPost for application/json ContentType.
+type MomentsServiceReactPostJSONRequestBody = ReactRequestBody
+
+// MomentsServiceSubmitReportJSONRequestBody defines body for MomentsServiceSubmitReport for application/json ContentType.
+type MomentsServiceSubmitReportJSONRequestBody = SubmitReportRequestBody
 
 // IdentityServiceAppAccessTokenInternalJSONRequestBody defines body for IdentityServiceAppAccessTokenInternal for application/json ContentType.
 type IdentityServiceAppAccessTokenInternalJSONRequestBody = AppAccessTokenInternalRequestBody
