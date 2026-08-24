@@ -4814,14 +4814,15 @@ type MergeStartResponseBody struct {
 
 // MessageItem defines model for MessageItem.
 type MessageItem struct {
-	Content    *string `json:"content,omitempty"`
-	Date       *string `json:"date,omitempty"`
-	From       *string `json:"from,omitempty"`
-	Id         *string `json:"id,omitempty"`
-	ReviewId   *string `json:"reviewId,omitempty"`
-	SpecialFor *string `json:"specialFor,omitempty"`
-	StaffId    *string `json:"staffId,omitempty"`
-	Status     *string `json:"status,omitempty"`
+	Content     *string `json:"content,omitempty"`
+	Date        *string `json:"date,omitempty"`
+	From        *string `json:"from,omitempty"`
+	HolidayType *string `json:"holidayType,omitempty"`
+	Id          *string `json:"id,omitempty"`
+	ReviewId    *string `json:"reviewId,omitempty"`
+	SpecialFor  *string `json:"specialFor,omitempty"`
+	StaffId     *string `json:"staffId,omitempty"`
+	Status      *string `json:"status,omitempty"`
 }
 
 // MessagePageData defines model for MessagePageData.

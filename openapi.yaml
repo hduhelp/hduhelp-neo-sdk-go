@@ -18150,6 +18150,8 @@ components:
                     type: string
                 specialFor:
                     type: string
+                holidayType:
+                    type: string
         MessagePageData:
             type: object
             properties:
