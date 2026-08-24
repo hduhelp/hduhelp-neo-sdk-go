@@ -10495,7 +10495,7 @@ paths:
             tags:
                 - IdentityService
             summary: 授权码（用户同意）
-            description: 已登录用户同意授权某应用后返回一次性授权码 code，用于换取 user_access_token。scope 为逗号分隔的用户权限子集。
+            description: 已登录用户在一方同意页明确选择本次授权身份并同意授权某应用后，返回一次性授权码 code，用于换取 user_access_token。base 始终可选；非 base 身份必须已绑定。scope 为逗号分隔的用户权限子集。
             operationId: IdentityService_AuthenAuthorize
             security: []
             parameters:
@@ -10536,6 +10536,11 @@ paths:
                   description: true=用户已在一方页面明确同意
                   schema:
                     type: boolean
+                - name: identity_type
+                  in: query
+                  description: consent=true 时由一方授权页提交；base 或当前用户已绑定的校园身份
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -10549,7 +10554,7 @@ paths:
             tags:
                 - IdentityService
             summary: OAuth 授权预览
-            description: 校验客户端、回调、scope 与 PKCE，但不签发授权码；供一方同意页展示。
+            description: 校验客户端、回调、scope 与 PKCE，并返回可授权身份列表，但不签发授权码；供一方同意页展示。
             operationId: IdentityService_AuthenAuthorizePreview
             security:
                 - NativeSessionAuth: []
@@ -10591,6 +10596,11 @@ paths:
                   description: true=用户已在一方页面明确同意
                   schema:
                     type: boolean
+                - name: identity_type
+                  in: query
+                  description: consent=true 时由一方授权页提交；base 或当前用户已绑定的校园身份
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -10643,7 +10653,7 @@ paths:
             tags:
                 - IdentityService
             summary: 获取用户信息（UAT）
-            description: 凭 Authorization:Bearer <user_access_token> 返回用户基本信息，受令牌 scope 约束。
+            description: 凭 Authorization:Bearer <user_access_token> 返回用户基本信息及授权时选择的 identity_type，受令牌 scope 约束。base 身份不会返回学号或校园身份数据。
             operationId: IdentityService_AuthenUserInfo
             security:
                 - UATBearerAuth: []
@@ -12754,6 +12764,14 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/OAuthScopeItem'
+                currentIdentityType:
+                    type: string
+                identities:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/OAuthIdentityOption'
+                requiresIdentitySelection:
+                    type: boolean
         AuthenAuthorizePreviewRespBody:
             type: object
             properties:
@@ -12846,6 +12864,8 @@ components:
                     type: array
                     items:
                         type: string
+                identityType:
+                    type: string
         AuthenUserInfoRespBody:
             type: object
             properties:
@@ -18646,6 +18666,17 @@ components:
                     format: int64
                 msg:
                     type: string
+        OAuthIdentityOption:
+            type: object
+            properties:
+                identityType:
+                    type: string
+                staffId:
+                    type: string
+                staffName:
+                    type: string
+                current:
+                    type: boolean
         OAuthScopeItem:
             type: object
             properties:

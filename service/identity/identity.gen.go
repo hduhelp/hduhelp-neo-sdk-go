@@ -3032,6 +3032,12 @@ func (b *AuthenAuthorizeReqBuilder) Consent(v bool) *AuthenAuthorizeReqBuilder {
 	return b
 }
 
+// IdentityType sets the "identity_type" query parameter: consent=true 时由一方授权页提交；base 或当前用户已绑定的校园身份
+func (b *AuthenAuthorizeReqBuilder) IdentityType(v string) *AuthenAuthorizeReqBuilder {
+	b.req.queryParams["identity_type"] = v
+	return b
+}
+
 // Build finalizes the request.
 func (b *AuthenAuthorizeReqBuilder) Build() *AuthenAuthorizeReq { return b.req }
 
@@ -3117,6 +3123,12 @@ func (b *AuthenAuthorizePreviewReqBuilder) CodeChallengeMethod(v string) *Authen
 // Consent sets the "consent" query parameter: true=用户已在一方页面明确同意
 func (b *AuthenAuthorizePreviewReqBuilder) Consent(v bool) *AuthenAuthorizePreviewReqBuilder {
 	b.req.queryParams["consent"] = strconv.FormatBool(v)
+	return b
+}
+
+// IdentityType sets the "identity_type" query parameter: consent=true 时由一方授权页提交；base 或当前用户已绑定的校园身份
+func (b *AuthenAuthorizePreviewReqBuilder) IdentityType(v string) *AuthenAuthorizePreviewReqBuilder {
+	b.req.queryParams["identity_type"] = v
 	return b
 }
 

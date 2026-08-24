@@ -1020,12 +1020,15 @@ type AuthenAuthorizeData struct {
 
 // AuthenAuthorizePreviewData defines model for AuthenAuthorizePreviewData.
 type AuthenAuthorizePreviewData struct {
-	AppId       *string           `json:"appId,omitempty"`
-	AppName     *string           `json:"appName,omitempty"`
-	Description *string           `json:"description,omitempty"`
-	RedirectUri *string           `json:"redirectUri,omitempty"`
-	Scopes      *[]OAuthScopeItem `json:"scopes,omitempty"`
-	State       *string           `json:"state,omitempty"`
+	AppId                     *string                `json:"appId,omitempty"`
+	AppName                   *string                `json:"appName,omitempty"`
+	CurrentIdentityType       *string                `json:"currentIdentityType,omitempty"`
+	Description               *string                `json:"description,omitempty"`
+	Identities                *[]OAuthIdentityOption `json:"identities,omitempty"`
+	RedirectUri               *string                `json:"redirectUri,omitempty"`
+	RequiresIdentitySelection *bool                  `json:"requiresIdentitySelection,omitempty"`
+	Scopes                    *[]OAuthScopeItem      `json:"scopes,omitempty"`
+	State                     *string                `json:"state,omitempty"`
 }
 
 // AuthenAuthorizePreviewRespBody defines model for AuthenAuthorizePreviewRespBody.
@@ -1088,12 +1091,13 @@ type AuthenTokenData struct {
 
 // AuthenUserInfoData defines model for AuthenUserInfoData.
 type AuthenUserInfoData struct {
-	Avatar  *string   `json:"avatar,omitempty"`
-	Name    *string   `json:"name,omitempty"`
-	School  *string   `json:"school,omitempty"`
-	Scopes  *[]string `json:"scopes,omitempty"`
-	StaffId *string   `json:"staffId,omitempty"`
-	UserId  *string   `json:"userId,omitempty"`
+	Avatar       *string   `json:"avatar,omitempty"`
+	IdentityType *string   `json:"identityType,omitempty"`
+	Name         *string   `json:"name,omitempty"`
+	School       *string   `json:"school,omitempty"`
+	Scopes       *[]string `json:"scopes,omitempty"`
+	StaffId      *string   `json:"staffId,omitempty"`
+	UserId       *string   `json:"userId,omitempty"`
 }
 
 // AuthenUserInfoRespBody defines model for AuthenUserInfoRespBody.
@@ -5109,6 +5113,14 @@ type NotificationTopicConfigurationsResponseBody struct {
 	Code *int64                            `json:"code,omitempty"`
 	Data *[]NotificationTopicConfiguration `json:"data,omitempty"`
 	Msg  *string                           `json:"msg,omitempty"`
+}
+
+// OAuthIdentityOption defines model for OAuthIdentityOption.
+type OAuthIdentityOption struct {
+	Current      *bool   `json:"current,omitempty"`
+	IdentityType *string `json:"identityType,omitempty"`
+	StaffId      *string `json:"staffId,omitempty"`
+	StaffName    *string `json:"staffName,omitempty"`
 }
 
 // OAuthScopeItem defines model for OAuthScopeItem.
@@ -9649,6 +9661,9 @@ type IdentityServiceAuthenAuthorizeParams struct {
 
 	// Consent true=用户已在一方页面明确同意
 	Consent *bool `form:"consent,omitempty" json:"consent,omitempty"`
+
+	// IdentityType consent=true 时由一方授权页提交；base 或当前用户已绑定的校园身份
+	IdentityType *string `form:"identity_type,omitempty" json:"identity_type,omitempty"`
 }
 
 // IdentityServiceAuthenAuthorizePreviewParams defines parameters for IdentityServiceAuthenAuthorizePreview.
@@ -9671,6 +9686,9 @@ type IdentityServiceAuthenAuthorizePreviewParams struct {
 
 	// Consent true=用户已在一方页面明确同意
 	Consent *bool `form:"consent,omitempty" json:"consent,omitempty"`
+
+	// IdentityType consent=true 时由一方授权页提交；base 或当前用户已绑定的校园身份
+	IdentityType *string `form:"identity_type,omitempty" json:"identity_type,omitempty"`
 }
 
 // SubscriptionServiceSunrunDetailParams defines parameters for SubscriptionServiceSunrunDetail.
