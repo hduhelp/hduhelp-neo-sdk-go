@@ -3177,7 +3177,7 @@ type FeedCardData struct {
 	// Scores ScoresCard 是信息流成绩卡片负载。
 	Scores *ScoresCard `json:"scores,omitempty"`
 
-	// Sunrun SunrunCard 是信息流阳光长跑卡片负载（上游 mini-student-info）。
+	// Sunrun SunrunCard 是信息流阳光长跑卡片负载（上游 mini-student-info 与 mini-student-group）。
 	Sunrun *SunrunCard `json:"sunrun,omitempty"`
 
 	// Weather WeatherCard 是信息流天气卡片负载。
@@ -7168,12 +7168,15 @@ type SubscriptionsResponseBody struct {
 	Msg  *string             `json:"msg,omitempty"`
 }
 
-// SunrunCard SunrunCard 是信息流阳光长跑卡片负载（上游 mini-student-info）。
+// SunrunCard SunrunCard 是信息流阳光长跑卡片负载（上游 mini-student-info 与 mini-student-group）。
 type SunrunCard struct {
 	// Code 学号
-	Code          *string  `json:"code,omitempty"`
-	Days          *int32   `json:"days,omitempty"`
-	FinalTimes    *int32   `json:"finalTimes,omitempty"`
+	Code       *string `json:"code,omitempty"`
+	Days       *int32  `json:"days,omitempty"`
+	FinalTimes *int32  `json:"finalTimes,omitempty"`
+
+	// MinimumTimes 最低达标次数（上游 mini-student-group.times）
+	MinimumTimes  *int32   `json:"minimumTimes,omitempty"`
 	Name          *string  `json:"name,omitempty"`
 	Sex           *string  `json:"sex,omitempty"`
 	Speed         *float64 `json:"speed,omitempty"`

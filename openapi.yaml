@@ -21308,7 +21308,11 @@ components:
                 todaySpeed:
                     type: number
                     format: double
-            description: SunrunCard 是信息流阳光长跑卡片负载（上游 mini-student-info）。
+                minimumTimes:
+                    type: integer
+                    description: 最低达标次数（上游 mini-student-group.times）
+                    format: int32
+            description: SunrunCard 是信息流阳光长跑卡片负载（上游 mini-student-info 与 mini-student-group）。
         SunrunDetailResponseBody:
             type: object
             properties:
