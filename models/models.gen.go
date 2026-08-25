@@ -1094,9 +1094,7 @@ type AuthenUserInfoData struct {
 	Avatar       *string   `json:"avatar,omitempty"`
 	IdentityType *string   `json:"identityType,omitempty"`
 	Name         *string   `json:"name,omitempty"`
-	School       *string   `json:"school,omitempty"`
 	Scopes       *[]string `json:"scopes,omitempty"`
-	StaffId      *string   `json:"staffId,omitempty"`
 	UserId       *string   `json:"userId,omitempty"`
 }
 
@@ -1665,17 +1663,15 @@ type ChangePhoneRequestBody struct {
 }
 
 // ChatGroup ============================================================================
-// 典型群 DTO：班级/年级/校友/城市群统一返回结构
+// 典型群 DTO：班级/年级群统一返回结构
 // ============================================================================
 type ChatGroup struct {
 	ChatId             *string `json:"chatId,omitempty"`
 	ChatName           *string `json:"chatName,omitempty"`
-	City               *string `json:"city,omitempty"`
 	CreatedAt          *int64  `json:"createdAt,omitempty"`
 	Grade              *string `json:"grade,omitempty"`
 	InviteUrl          *string `json:"inviteUrl,omitempty"`
 	OpenConversationId *string `json:"openConversationId,omitempty"`
-	SchoolName         *string `json:"schoolName,omitempty"`
 }
 
 // CheckUpdateData defines model for CheckUpdateData.
@@ -1709,37 +1705,6 @@ type ChunkMutateResponseBody struct {
 	// ============================================================================
 	Data *KnowledgeChunk `json:"data,omitempty"`
 	Msg  *string         `json:"msg,omitempty"`
-}
-
-// CityByCodeData defines model for CityByCodeData.
-type CityByCodeData struct {
-	City *string `json:"city,omitempty"`
-}
-
-// CityByCodeResponseBody defines model for CityByCodeResponseBody.
-type CityByCodeResponseBody struct {
-	Code *int64          `json:"code,omitempty"`
-	Data *CityByCodeData `json:"data,omitempty"`
-	Msg  *string         `json:"msg,omitempty"`
-}
-
-// CityInfo ---------------------------------------------------------------------------
-// 城市（生源地）
-// ---------------------------------------------------------------------------
-type CityInfo struct {
-	City         *string `json:"city,omitempty"`
-	ModifiedCity *string `json:"modifiedCity,omitempty"`
-}
-
-// CityInfoResponseBody defines model for CityInfoResponseBody.
-type CityInfoResponseBody struct {
-	Code *int64 `json:"code,omitempty"`
-
-	// Data ---------------------------------------------------------------------------
-	// 城市（生源地）
-	// ---------------------------------------------------------------------------
-	Data *CityInfo `json:"data,omitempty"`
-	Msg  *string   `json:"msg,omitempty"`
 }
 
 // ClassInfo ===== 选课查询（搜索 / 映射 / 批量 / 详情 / 收藏）=====
@@ -2176,22 +2141,6 @@ type CreateCategoryRequestBody struct {
 	SortOrder   *int32  `json:"sort_order,omitempty"`
 }
 
-// CreateCityChatGroupRequestBody defines model for CreateCityChatGroupRequestBody.
-type CreateCityChatGroupRequestBody struct {
-	City *string `json:"city,omitempty"`
-}
-
-// CreateCityChatGroupResponseBody defines model for CreateCityChatGroupResponseBody.
-type CreateCityChatGroupResponseBody struct {
-	Code *int64 `json:"code,omitempty"`
-
-	// Data ============================================================================
-	// 典型群 DTO：班级/年级/校友/城市群统一返回结构
-	// ============================================================================
-	Data *ChatGroup `json:"data,omitempty"`
-	Msg  *string    `json:"msg,omitempty"`
-}
-
 // CreateClassChatGroupRequestBody defines model for CreateClassChatGroupRequestBody.
 type CreateClassChatGroupRequestBody struct {
 	ClassId *string `json:"class_id,omitempty"`
@@ -2203,7 +2152,7 @@ type CreateClassChatGroupResponseBody struct {
 	Code *int64 `json:"code,omitempty"`
 
 	// Data ============================================================================
-	// 典型群 DTO：班级/年级/校友/城市群统一返回结构
+	// 典型群 DTO：班级/年级群统一返回结构
 	// ============================================================================
 	Data *ChatGroup `json:"data,omitempty"`
 	Msg  *string    `json:"msg,omitempty"`
@@ -2243,7 +2192,7 @@ type CreateGradeChatGroupResponseBody struct {
 	Code *int64 `json:"code,omitempty"`
 
 	// Data ============================================================================
-	// 典型群 DTO：班级/年级/校友/城市群统一返回结构
+	// 典型群 DTO：班级/年级群统一返回结构
 	// ============================================================================
 	Data *ChatGroup `json:"data,omitempty"`
 	Msg  *string    `json:"msg,omitempty"`
@@ -2253,7 +2202,7 @@ type CreateGradeChatGroupResponseBody struct {
 type CreateGroupRequestBody struct {
 	Name *string `json:"name,omitempty"`
 
-	// Type class|grade|recruit|alumni|city
+	// Type class|grade|recruit
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2367,23 +2316,6 @@ type CreatePolicyProfileRequestBody struct {
 	OwnerType *string         `json:"owner_type,omitempty"`
 	Policy    *DeliveryPolicy `json:"policy,omitempty"`
 	TopicKey  *string         `json:"topic_key,omitempty"`
-}
-
-// CreatePreviousSchoolChatGroupRequestBody defines model for CreatePreviousSchoolChatGroupRequestBody.
-type CreatePreviousSchoolChatGroupRequestBody struct {
-	Grade      *string `json:"grade,omitempty"`
-	SchoolName *string `json:"school_name,omitempty"`
-}
-
-// CreatePreviousSchoolChatGroupResponseBody defines model for CreatePreviousSchoolChatGroupResponseBody.
-type CreatePreviousSchoolChatGroupResponseBody struct {
-	Code *int64 `json:"code,omitempty"`
-
-	// Data ============================================================================
-	// 典型群 DTO：班级/年级/校友/城市群统一返回结构
-	// ============================================================================
-	Data *ChatGroup `json:"data,omitempty"`
-	Msg  *string    `json:"msg,omitempty"`
 }
 
 // CreateRecruitChatGroupData defines model for CreateRecruitChatGroupData.
@@ -2851,26 +2783,6 @@ type DomainTreeResponseBody struct {
 	Code *int64                 `json:"code,omitempty"`
 	Data *[]KnowledgeDomainNode `json:"data,omitempty"`
 	Msg  *string                `json:"msg,omitempty"`
-}
-
-// DormInfo ---------------------------------------------------------------------------
-// 宿舍
-// ---------------------------------------------------------------------------
-type DormInfo struct {
-	Building *string `json:"building,omitempty"`
-	Room     *string `json:"room,omitempty"`
-	StaffId  *string `json:"staffId,omitempty"`
-}
-
-// DormInfoResponseBody defines model for DormInfoResponseBody.
-type DormInfoResponseBody struct {
-	Code *int64 `json:"code,omitempty"`
-
-	// Data ---------------------------------------------------------------------------
-	// 宿舍
-	// ---------------------------------------------------------------------------
-	Data *DormInfo `json:"data,omitempty"`
-	Msg  *string   `json:"msg,omitempty"`
 }
 
 // DownloadResponseBody defines model for DownloadResponseBody.
@@ -3378,87 +3290,25 @@ type FreshmanAdmissionQueryRequestBody struct {
 type FreshmanAdmissionQueryResponseBody struct {
 	Code *int64 `json:"code,omitempty"`
 
-	// Data FreshmanAdmissionResult is deliberately minimal for the restricted legacy
+	// Data ---------------------------------------------------------------------------
+	// 新生（迎新）
+	// ---------------------------------------------------------------------------
+	// FreshmanAdmissionResult is deliberately minimal for the restricted legacy
 	// public query. It must not grow to expose private迎新 fields.
 	Data *FreshmanAdmissionResult `json:"data,omitempty"`
 	Msg  *string                  `json:"msg,omitempty"`
 }
 
-// FreshmanAdmissionResult FreshmanAdmissionResult is deliberately minimal for the restricted legacy
+// FreshmanAdmissionResult ---------------------------------------------------------------------------
+// 新生（迎新）
+// ---------------------------------------------------------------------------
+// FreshmanAdmissionResult is deliberately minimal for the restricted legacy
 // public query. It must not grow to expose private迎新 fields.
 type FreshmanAdmissionResult struct {
 	AdmissionCode *string `json:"admissionCode,omitempty"`
 	ClassNo       *string `json:"classNo,omitempty"`
 	Name          *string `json:"name,omitempty"`
 	StaffId       *string `json:"staffId,omitempty"`
-}
-
-// FreshmanDetail ---------------------------------------------------------------------------
-// 新生（迎新）
-// ---------------------------------------------------------------------------
-// FreshmanDetail 新生信息，含录取基础信息（录取号/身份证/录取时间/省份）与迎新详细信息。
-type FreshmanDetail struct {
-	AssistantName  *string `json:"assistantName,omitempty"`
-	AssistantPhone *string `json:"assistantPhone,omitempty"`
-	CardId         *string `json:"cardId,omitempty"`
-	ClassName      *string `json:"className,omitempty"`
-	ComeDate       *string `json:"comeDate,omitempty"`
-	HasPaid        *string `json:"hasPaid,omitempty"`
-	High           *string `json:"high,omitempty"`
-	IdCardNo       *string `json:"idCardNo,omitempty"`
-
-	// Lstd 绿色通道(学费缓缴)
-	Lstd *string `json:"lstd,omitempty"`
-
-	// Lstdxy 绿色通道-学院
-	Lstdxy *string `json:"lstdxy,omitempty"`
-
-	// Lstdzx 绿色通道-资助中心
-	Lstdzx       *string `json:"lstdzx,omitempty"`
-	MajorName    *string `json:"majorName,omitempty"`
-	OfferId      *string `json:"offerId,omitempty"`
-	OfferTime    *string `json:"offerTime,omitempty"`
-	Phone        *string `json:"phone,omitempty"`
-	Province     *string `json:"province,omitempty"`
-	Qq           *string `json:"qq,omitempty"`
-	RegStatus    *string `json:"regStatus,omitempty"`
-	RoomBed      *string `json:"roomBed,omitempty"`
-	RoomBuilding *string `json:"roomBuilding,omitempty"`
-	RoomName     *string `json:"roomName,omitempty"`
-	RoomRoom     *string `json:"roomRoom,omitempty"`
-	SchoolId     *string `json:"schoolId,omitempty"`
-	SchoolName   *string `json:"schoolName,omitempty"`
-	StaffId      *string `json:"staffId,omitempty"`
-	StaffName    *string `json:"staffName,omitempty"`
-	Station      *string `json:"station,omitempty"`
-	TeacherName  *string `json:"teacherName,omitempty"`
-	TeacherPhone *string `json:"teacherPhone,omitempty"`
-}
-
-// FreshmanDetailResponseBody defines model for FreshmanDetailResponseBody.
-type FreshmanDetailResponseBody struct {
-	Code *int64 `json:"code,omitempty"`
-
-	// Data ---------------------------------------------------------------------------
-	// 新生（迎新）
-	// ---------------------------------------------------------------------------
-	// FreshmanDetail 新生信息，含录取基础信息（录取号/身份证/录取时间/省份）与迎新详细信息。
-	Data *FreshmanDetail `json:"data,omitempty"`
-	Msg  *string         `json:"msg,omitempty"`
-}
-
-// FreshmanRoommate defines model for FreshmanRoommate.
-type FreshmanRoommate struct {
-	Phone     *string `json:"phone,omitempty"`
-	Qq        *string `json:"qq,omitempty"`
-	StaffName *string `json:"staffName,omitempty"`
-}
-
-// FreshmanRoommatesResponseBody defines model for FreshmanRoommatesResponseBody.
-type FreshmanRoommatesResponseBody struct {
-	Code *int64              `json:"code,omitempty"`
-	Data *[]FreshmanRoommate `json:"data,omitempty"`
-	Msg  *string             `json:"msg,omitempty"`
 }
 
 // FriendWishItem defines model for FriendWishItem.
@@ -3568,17 +3418,6 @@ type GetBindStatusResponseBody struct {
 	Msg  *string         `json:"msg,omitempty"`
 }
 
-// GetCityChatGroupResponseBody defines model for GetCityChatGroupResponseBody.
-type GetCityChatGroupResponseBody struct {
-	Code *int64 `json:"code,omitempty"`
-
-	// Data ============================================================================
-	// 典型群 DTO：班级/年级/校友/城市群统一返回结构
-	// ============================================================================
-	Data *ChatGroup `json:"data,omitempty"`
-	Msg  *string    `json:"msg,omitempty"`
-}
-
 // GetClassChatGroupResponseBody defines model for GetClassChatGroupResponseBody.
 type GetClassChatGroupResponseBody struct {
 	Code *int64       `json:"code,omitempty"`
@@ -3588,13 +3427,6 @@ type GetClassChatGroupResponseBody struct {
 
 // GetGradeChatGroupResponseBody defines model for GetGradeChatGroupResponseBody.
 type GetGradeChatGroupResponseBody struct {
-	Code *int64       `json:"code,omitempty"`
-	Data *[]ChatGroup `json:"data,omitempty"`
-	Msg  *string      `json:"msg,omitempty"`
-}
-
-// GetPreviousSchoolChatGroupResponseBody defines model for GetPreviousSchoolChatGroupResponseBody.
-type GetPreviousSchoolChatGroupResponseBody struct {
 	Code *int64       `json:"code,omitempty"`
 	Data *[]ChatGroup `json:"data,omitempty"`
 	Msg  *string      `json:"msg,omitempty"`
@@ -3702,13 +3534,6 @@ type GradeItem struct {
 	Semester   *int32  `json:"semester,omitempty"`
 	StaffId    *string `json:"staffId,omitempty"`
 	StaffName  *string `json:"staffName,omitempty"`
-}
-
-// GradeSchoolInfo defines model for GradeSchoolInfo.
-type GradeSchoolInfo struct {
-	Grade        *string `json:"grade,omitempty"`
-	SchoolName   *string `json:"schoolName,omitempty"`
-	StudentCount *int64  `json:"studentCount,omitempty"`
 }
 
 // GraduateGradeItem ===== 研究生成绩 =====
@@ -4058,17 +3883,6 @@ type ItemStateResponseBody struct {
 	// Data KnowledgeItemSummary 是列表页展示的知识条目摘要。
 	Data *KnowledgeItemSummary `json:"data,omitempty"`
 	Msg  *string               `json:"msg,omitempty"`
-}
-
-// JoinPreviousSchoolChatGroupRequestBody defines model for JoinPreviousSchoolChatGroupRequestBody.
-type JoinPreviousSchoolChatGroupRequestBody struct {
-	OpenConversationId *string `json:"open_conversation_id,omitempty"`
-}
-
-// JoinPreviousSchoolChatGroupResponseBody defines model for JoinPreviousSchoolChatGroupResponseBody.
-type JoinPreviousSchoolChatGroupResponseBody struct {
-	Code *int64  `json:"code,omitempty"`
-	Msg  *string `json:"msg,omitempty"`
 }
 
 // JoinRequestBody defines model for JoinRequestBody.
@@ -4845,17 +4659,6 @@ type MessagePageResponseBody struct {
 	Msg  *string          `json:"msg,omitempty"`
 }
 
-// ModifyCityResponseBody defines model for ModifyCityResponseBody.
-type ModifyCityResponseBody struct {
-	Code *int64  `json:"code,omitempty"`
-	Msg  *string `json:"msg,omitempty"`
-}
-
-// ModifyPreviousSchoolCityRequestBody defines model for ModifyPreviousSchoolCityRequestBody.
-type ModifyPreviousSchoolCityRequestBody struct {
-	CityCode *string `json:"cityCode,omitempty"`
-}
-
 // MonthStat defines model for MonthStat.
 type MonthStat struct {
 	Count *int32 `json:"count,omitempty"`
@@ -4924,30 +4727,6 @@ type MyRoomsResponseBody struct {
 	Code *int64      `json:"code,omitempty"`
 	Data *[]RoomInfo `json:"data,omitempty"`
 	Msg  *string     `json:"msg,omitempty"`
-}
-
-// NeedyItem ==================== 困难生 ====================
-type NeedyItem struct {
-	// Level 困难档次(DANGCI)
-	Level        *string `json:"level,omitempty"`
-	NeedyStudent *bool   `json:"needyStudent,omitempty"`
-	SchoolYear   *int32  `json:"schoolYear,omitempty"`
-}
-
-// NeedyListResponseBody defines model for NeedyListResponseBody.
-type NeedyListResponseBody struct {
-	Code *int64         `json:"code,omitempty"`
-	Data *[]NeedyRecord `json:"data,omitempty"`
-	Msg  *string        `json:"msg,omitempty"`
-}
-
-// NeedyRecord defines model for NeedyRecord.
-type NeedyRecord struct {
-	Id      *string `json:"id,omitempty"`
-	Level   *string `json:"level,omitempty"`
-	Name    *string `json:"name,omitempty"`
-	Reason  *string `json:"reason,omitempty"`
-	StaffId *string `json:"staffId,omitempty"`
 }
 
 // NewerData defines model for NewerData.
@@ -5229,33 +5008,44 @@ type PATScopeItem struct {
 // 人员 / 学生基本信息
 // ---------------------------------------------------------------------------
 type PersonInfo struct {
-	Grade      *string `json:"grade,omitempty"`
-	StaffId    *string `json:"staffId,omitempty"`
-	StaffName  *string `json:"staffName,omitempty"`
+	Grade     *string `json:"grade,omitempty"`
+	StaffId   *string `json:"staffId,omitempty"`
+	StaffName *string `json:"staffName,omitempty"`
+
+	// StaffState 学籍状态代码
 	StaffState *string `json:"staffState,omitempty"`
-	StaffType  *string `json:"staffType,omitempty"`
-	UnitCode   *string `json:"unitCode,omitempty"`
+
+	// StaffType 学生类别代码
+	StaffType *string `json:"staffType,omitempty"`
+	UnitCode  *string `json:"unitCode,omitempty"`
 
 	// UnitName 学院名称
 	UnitName *string `json:"unitName,omitempty"`
 }
 
-// PersonInfoData PersonInfoData 伞形人员信息：单层平铺。基础字段全员返回；学籍字段（班级/专业/
-// 辅导员）按 staff_type 判别，仅学生（本科/研究生）填充，教职工留空。
-// 学院用 unitCode + unitName 一对表示，不再有同物异名的 unitId。
+// PersonInfoData PersonInfoData 在校生人员信息：单层平铺，逐字段读自教务 Oracle 学籍明细视图
+// (STUDENT_DETAIL)，学院名/专业名读自 STUDENT_INFO。学院用 unitCode + unitName
+// 一对表示。staffState 为学籍状态代码，staffType 为学生类别代码。
 type PersonInfoData struct {
-	// ClassId 学籍字段：仅学生填充
-	ClassId     *string `json:"classId,omitempty"`
-	Grade       *string `json:"grade,omitempty"`
-	MajorId     *string `json:"majorId,omitempty"`
-	MajorName   *string `json:"majorName,omitempty"`
-	StaffId     *string `json:"staffId,omitempty"`
-	StaffName   *string `json:"staffName,omitempty"`
-	StaffState  *string `json:"staffState,omitempty"`
-	StaffType   *string `json:"staffType,omitempty"`
-	TeacherId   *string `json:"teacherId,omitempty"`
-	TeacherName *string `json:"teacherName,omitempty"`
-	UnitCode    *string `json:"unitCode,omitempty"`
+	ClassId   *string `json:"classId,omitempty"`
+	Grade     *string `json:"grade,omitempty"`
+	MajorId   *string `json:"majorId,omitempty"`
+	MajorName *string `json:"majorName,omitempty"`
+	StaffId   *string `json:"staffId,omitempty"`
+	StaffName *string `json:"staffName,omitempty"`
+
+	// StaffState 学籍状态代码
+	StaffState *string `json:"staffState,omitempty"`
+
+	// StaffStateName 学籍状态中文描述(字典未收录的代码回落为代码本身)
+	StaffStateName *string `json:"staffStateName,omitempty"`
+
+	// StaffType 学生类别代码
+	StaffType *string `json:"staffType,omitempty"`
+
+	// StaffTypeName 学生类别中文名(字典未收录的代码回落为代码本身)
+	StaffTypeName *string `json:"staffTypeName,omitempty"`
+	UnitCode      *string `json:"unitCode,omitempty"`
 
 	// UnitName 学院名称
 	UnitName *string `json:"unitName,omitempty"`
@@ -5265,9 +5055,9 @@ type PersonInfoData struct {
 type PersonInfoResponseBody struct {
 	Code *int64 `json:"code,omitempty"`
 
-	// Data PersonInfoData 伞形人员信息：单层平铺。基础字段全员返回；学籍字段（班级/专业/
-	// 辅导员）按 staff_type 判别，仅学生（本科/研究生）填充，教职工留空。
-	// 学院用 unitCode + unitName 一对表示，不再有同物异名的 unitId。
+	// Data PersonInfoData 在校生人员信息：单层平铺，逐字段读自教务 Oracle 学籍明细视图
+	// (STUDENT_DETAIL)，学院名/专业名读自 STUDENT_INFO。学院用 unitCode + unitName
+	// 一对表示。staffState 为学籍状态代码，staffType 为学生类别代码。
 	Data *PersonInfoData `json:"data,omitempty"`
 	Msg  *string         `json:"msg,omitempty"`
 }
@@ -5615,31 +5405,6 @@ type PreviewTaggingPromptResponseBody struct {
 	Code *int64       `json:"code,omitempty"`
 	Data *PreviewData `json:"data,omitempty"`
 	Msg  *string      `json:"msg,omitempty"`
-}
-
-// PreviousSchoolData PreviousSchoolData 本人生源中学信息与同校邻近年级、同城人数统计。
-type PreviousSchoolData struct {
-	// City 本人生源地城市
-	City *string `json:"city,omitempty"`
-
-	// CityCount 同城人数
-	CityCount *string `json:"cityCount,omitempty"`
-	Grade     *string `json:"grade,omitempty"`
-
-	// GradeSchoolInfo 同校邻近年级人数
-	GradeSchoolInfo    *[]GradeSchoolInfo `json:"gradeSchoolInfo,omitempty"`
-	PreviousSchoolName *string            `json:"previousSchoolName,omitempty"`
-	StaffId            *string            `json:"staffId,omitempty"`
-	StaffName          *string            `json:"staffName,omitempty"`
-}
-
-// PreviousSchoolResponseBody defines model for PreviousSchoolResponseBody.
-type PreviousSchoolResponseBody struct {
-	Code *int64 `json:"code,omitempty"`
-
-	// Data PreviousSchoolData 本人生源中学信息与同校邻近年级、同城人数统计。
-	Data *PreviousSchoolData `json:"data,omitempty"`
-	Msg  *string             `json:"msg,omitempty"`
 }
 
 // ProviderTestRequestBody defines model for ProviderTestRequestBody.
@@ -6135,13 +5900,6 @@ type RevokePATResponseBody struct {
 	Msg  *string `json:"msg,omitempty"`
 }
 
-// RewardsResponseBody defines model for RewardsResponseBody.
-type RewardsResponseBody struct {
-	Code *int64           `json:"code,omitempty"`
-	Data *[]StudentReward `json:"data,omitempty"`
-	Msg  *string          `json:"msg,omitempty"`
-}
-
 // RichTextNode RichTextNode 是正文的行内节点。正文整体是段落数组、每段是节点数组，即
 // list<list<RichTextNode>>。四种 tag：
 // text     纯文本，取 text
@@ -6354,7 +6112,7 @@ type SchoolRollStatus struct {
 	StaffId   *string `json:"staffId,omitempty"`
 	StaffName *string `json:"staffName,omitempty"`
 
-	// StatusCode 学籍状态代码(原样透传 Oracle ACADEMIC_STATUS)
+	// StatusCode 学籍状态代码(原样透传 Oracle ACADEMIC_STATUS_CODE)
 	StatusCode *string `json:"statusCode,omitempty"`
 
 	// StatusDesc 学籍状态中文描述
@@ -6619,13 +6377,6 @@ type SeatSearchResponseBody struct {
 	Code *int64          `json:"code,omitempty"`
 	Data *SeatSearchData `json:"data,omitempty"`
 	Msg  *string         `json:"msg,omitempty"`
-}
-
-// SelectResponseBody defines model for SelectResponseBody.
-type SelectResponseBody struct {
-	Code *int64                    `json:"code,omitempty"`
-	Data *[]StudentCourseSelection `json:"data,omitempty"`
-	Msg  *string                   `json:"msg,omitempty"`
 }
 
 // SemesterInfo defines model for SemesterInfo.
@@ -7214,17 +6965,6 @@ type StatusResponseBody struct {
 	Msg  *string     `json:"msg,omitempty"`
 }
 
-// StaySchoolResponseBody defines model for StaySchoolResponseBody.
-type StaySchoolResponseBody struct {
-	Code *int64 `json:"code,omitempty"`
-
-	// Data ---------------------------------------------------------------------------
-	// 留校（假期留校）
-	// ---------------------------------------------------------------------------
-	Data *StudentStaySchoolInfo `json:"data,omitempty"`
-	Msg  *string                `json:"msg,omitempty"`
-}
-
 // StudentBirthdayInfo ---------------------------------------------------------------------------
 // 生日
 // ---------------------------------------------------------------------------
@@ -7245,21 +6985,6 @@ type StudentCountResponseBody struct {
 	Code *int64            `json:"code,omitempty"`
 	Data *StudentCountData `json:"data,omitempty"`
 	Msg  *string           `json:"msg,omitempty"`
-}
-
-// StudentCourseSelection defines model for StudentCourseSelection.
-type StudentCourseSelection struct {
-	ClassRoom   *string `json:"classRoom,omitempty"`
-	ClassTime   *string `json:"classTime,omitempty"`
-	CourseCode  *string `json:"courseCode,omitempty"`
-	CourseName  *string `json:"courseName,omitempty"`
-	SchoolYear  *string `json:"schoolYear,omitempty"`
-	SelectCode  *string `json:"selectCode,omitempty"`
-	Semester    *string `json:"semester,omitempty"`
-	StaffId     *string `json:"staffId,omitempty"`
-	StaffName   *string `json:"staffName,omitempty"`
-	TeacherId   *string `json:"teacherId,omitempty"`
-	TeacherName *string `json:"teacherName,omitempty"`
 }
 
 // StudentExam defines model for StudentExam.
@@ -7368,59 +7093,6 @@ type StudentHistoryMajorInfoResponseBody struct {
 	Code *int64                         `json:"code,omitempty"`
 	Data *[]StudentHistoryMajorInfoItem `json:"data,omitempty"`
 	Msg  *string                        `json:"msg,omitempty"`
-}
-
-// StudentNeedyInfo defines model for StudentNeedyInfo.
-type StudentNeedyInfo struct {
-	Items        *[]NeedyItem `json:"items,omitempty"`
-	NeedyStudent *bool        `json:"needyStudent,omitempty"`
-
-	// Sex 性别(1男 2女 0未知)
-	Sex       *int32  `json:"sex,omitempty"`
-	StaffId   *string `json:"staffId,omitempty"`
-	StaffName *string `json:"staffName,omitempty"`
-}
-
-// StudentNeedyInfoResponseBody defines model for StudentNeedyInfoResponseBody.
-type StudentNeedyInfoResponseBody struct {
-	Code *int64            `json:"code,omitempty"`
-	Data *StudentNeedyInfo `json:"data,omitempty"`
-	Msg  *string           `json:"msg,omitempty"`
-}
-
-// StudentReward defines model for StudentReward.
-type StudentReward struct {
-	RewardLevel *string `json:"rewardLevel,omitempty"`
-	RewardName  *string `json:"rewardName,omitempty"`
-	SchoolYear  *string `json:"schoolYear,omitempty"`
-	Semester    *string `json:"semester,omitempty"`
-	StaffId     *string `json:"staffId,omitempty"`
-	StaffName   *string `json:"staffName,omitempty"`
-}
-
-// StudentStaySchoolInfo ---------------------------------------------------------------------------
-// 留校（假期留校）
-// ---------------------------------------------------------------------------
-type StudentStaySchoolInfo struct {
-	CancelStatus  *string `json:"cancelStatus,omitempty"`
-	Reason        *string `json:"reason,omitempty"`
-	ReportTime    *string `json:"reportTime,omitempty"`
-	StaffId       *string `json:"staffId,omitempty"`
-	StaffName     *string `json:"staffName,omitempty"`
-	TeacherRemark *string `json:"teacherRemark,omitempty"`
-
-	// TeacherReviewTime 辅导员审批时间
-	TeacherReviewTime *string `json:"teacherReviewTime,omitempty"`
-	TeacherStatus     *string `json:"teacherStatus,omitempty"`
-	Time1End          *string `json:"time1End,omitempty"`
-	Time1Start        *string `json:"time1Start,omitempty"`
-	Time2End          *string `json:"time2End,omitempty"`
-	Time2Start        *string `json:"time2Start,omitempty"`
-	UnitRemark        *string `json:"unitRemark,omitempty"`
-
-	// UnitReviewTime 学院审批时间
-	UnitReviewTime *string `json:"unitReviewTime,omitempty"`
-	UnitStatus     *string `json:"unitStatus,omitempty"`
 }
 
 // SubmitAppealRequestBody defines model for SubmitAppealRequestBody.
@@ -8332,11 +8004,6 @@ type pATBearerAuthContextKey string
 // uATBearerAuthContextKey is the context key for UATBearerAuth security scheme
 type uATBearerAuthContextKey string
 
-// AcademicServiceCityByCodeParams defines parameters for AcademicServiceCityByCode.
-type AcademicServiceCityByCodeParams struct {
-	Code *string `form:"code,omitempty" json:"code,omitempty"`
-}
-
 // AcademicServiceClassQueryFavGetParams defines parameters for AcademicServiceClassQueryFavGet.
 type AcademicServiceClassQueryFavGetParams struct {
 	XStaffId *string `json:"X-Staff-Id,omitempty"`
@@ -8377,13 +8044,6 @@ type AcademicServiceCourseParams struct {
 	Id *[]string `form:"id,omitempty" json:"id,omitempty"`
 }
 
-// AcademicServiceStudentSelectionsParams defines parameters for AcademicServiceStudentSelections.
-type AcademicServiceStudentSelectionsParams struct {
-	SchoolYear *string `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
-	Semester   *string `form:"semester,omitempty" json:"semester,omitempty"`
-	XStaffId   *string `json:"X-Staff-Id,omitempty"`
-}
-
 // AcademicServiceStudentBirthdaysParams defines parameters for AcademicServiceStudentBirthdays.
 type AcademicServiceStudentBirthdaysParams struct {
 	Month *int32 `form:"month,omitempty" json:"month,omitempty"`
@@ -8401,11 +8061,6 @@ type AcademicServiceGlobalStudentGradeParams struct {
 	Semester   *string `form:"semester,omitempty" json:"semester,omitempty"`
 }
 
-// AcademicServiceStudentDormParams defines parameters for AcademicServiceStudentDorm.
-type AcademicServiceStudentDormParams struct {
-	XStaffId *string `json:"X-Staff-Id,omitempty"`
-}
-
 // AcademicServiceStudentExamParams defines parameters for AcademicServiceStudentExam.
 type AcademicServiceStudentExamParams struct {
 	SchoolYear *string `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
@@ -8419,26 +8074,11 @@ type AcademicServiceDailyExamParams struct {
 	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
-// AcademicServiceFreshmanDetailParams defines parameters for AcademicServiceFreshmanDetail.
-type AcademicServiceFreshmanDetailParams struct {
-	XStaffId *string `json:"X-Staff-Id,omitempty"`
-}
-
-// AcademicServiceFreshmanRoommatesParams defines parameters for AcademicServiceFreshmanRoommates.
-type AcademicServiceFreshmanRoommatesParams struct {
-	XStaffId *string `json:"X-Staff-Id,omitempty"`
-}
-
 // AcademicServiceStudentGradeParams defines parameters for AcademicServiceStudentGrade.
 type AcademicServiceStudentGradeParams struct {
 	SchoolYear *string `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
 	Semester   *string `form:"semester,omitempty" json:"semester,omitempty"`
 	XStaffId   *string `json:"X-Staff-Id,omitempty"`
-}
-
-// AcademicServiceStudentStaySchoolParams defines parameters for AcademicServiceStudentStaySchool.
-type AcademicServiceStudentStaySchoolParams struct {
-	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceLibraryAttendanceParams defines parameters for AcademicServiceLibraryAttendance.
@@ -8494,43 +8134,9 @@ type AcademicServiceLibrarySharedReportParams struct {
 	End     *string `form:"end,omitempty" json:"end,omitempty"`
 }
 
-// AcademicServiceNeedyListParams defines parameters for AcademicServiceNeedyList.
-type AcademicServiceNeedyListParams struct {
-	XStaffId *string `json:"X-Staff-Id,omitempty"`
-}
-
-// AcademicServiceNeedyStudentInfoParams defines parameters for AcademicServiceNeedyStudentInfo.
-type AcademicServiceNeedyStudentInfoParams struct {
-	XStaffId *string `json:"X-Staff-Id,omitempty"`
-}
-
-// AcademicServiceStudentCityParams defines parameters for AcademicServiceStudentCity.
-type AcademicServiceStudentCityParams struct {
-	XStaffId *string `json:"X-Staff-Id,omitempty"`
-}
-
 // AcademicServicePersonInfoParams defines parameters for AcademicServicePersonInfo.
 type AcademicServicePersonInfoParams struct {
 	XStaffId *string `json:"X-Staff-Id,omitempty"`
-}
-
-// AcademicServicePreviousSchoolParams defines parameters for AcademicServicePreviousSchool.
-type AcademicServicePreviousSchoolParams struct {
-	SchoolName *string `form:"schoolName,omitempty" json:"schoolName,omitempty"`
-	Grade      *string `form:"grade,omitempty" json:"grade,omitempty"`
-	XStaffId   *string `json:"X-Staff-Id,omitempty"`
-}
-
-// AcademicServiceModifyPreviousSchoolCityParams defines parameters for AcademicServiceModifyPreviousSchoolCity.
-type AcademicServiceModifyPreviousSchoolCityParams struct {
-	XStaffId *string `json:"X-Staff-Id,omitempty"`
-}
-
-// AcademicServiceStudentRewardsParams defines parameters for AcademicServiceStudentRewards.
-type AcademicServiceStudentRewardsParams struct {
-	SchoolYear *string `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
-	Semester   *string `form:"semester,omitempty" json:"semester,omitempty"`
-	XStaffId   *string `json:"X-Staff-Id,omitempty"`
 }
 
 // AcademicServiceScheduleParams defines parameters for AcademicServiceSchedule.
@@ -9241,17 +8847,6 @@ type GraduateServiceGraduateTutorsParams struct {
 	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
-// GroupChatServiceGetCityChatGroupParams defines parameters for GroupChatServiceGetCityChatGroup.
-type GroupChatServiceGetCityChatGroupParams struct {
-	City     *string `form:"city,omitempty" json:"city,omitempty"`
-	XStaffId *string `json:"X-Staff-Id,omitempty"`
-}
-
-// GroupChatServiceCreateCityChatGroupParams defines parameters for GroupChatServiceCreateCityChatGroup.
-type GroupChatServiceCreateCityChatGroupParams struct {
-	XStaffId *string `json:"X-Staff-Id,omitempty"`
-}
-
 // GroupChatServiceGetClassChatGroupParams defines parameters for GroupChatServiceGetClassChatGroup.
 type GroupChatServiceGetClassChatGroupParams struct {
 	ClassId  *string `form:"class_id,omitempty" json:"class_id,omitempty"`
@@ -9305,23 +8900,6 @@ type GroupChatServiceCreateGroupParams struct {
 type GroupChatServiceLeaveGroupParams struct {
 	OpenConversationId *string `form:"openConversationId,omitempty" json:"openConversationId,omitempty"`
 	XStaffId           *string `json:"X-Staff-Id,omitempty"`
-}
-
-// GroupChatServiceGetPreviousSchoolChatGroupParams defines parameters for GroupChatServiceGetPreviousSchoolChatGroup.
-type GroupChatServiceGetPreviousSchoolChatGroupParams struct {
-	SchoolName *string `form:"school_name,omitempty" json:"school_name,omitempty"`
-	Grade      *string `form:"grade,omitempty" json:"grade,omitempty"`
-	XStaffId   *string `json:"X-Staff-Id,omitempty"`
-}
-
-// GroupChatServiceCreatePreviousSchoolChatGroupParams defines parameters for GroupChatServiceCreatePreviousSchoolChatGroup.
-type GroupChatServiceCreatePreviousSchoolChatGroupParams struct {
-	XStaffId *string `json:"X-Staff-Id,omitempty"`
-}
-
-// GroupChatServiceJoinPreviousSchoolChatGroupParams defines parameters for GroupChatServiceJoinPreviousSchoolChatGroup.
-type GroupChatServiceJoinPreviousSchoolChatGroupParams struct {
-	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // GroupChatServiceCreateRecruitChatGroupParams defines parameters for GroupChatServiceCreateRecruitChatGroup.
@@ -9752,9 +9330,6 @@ type CampusLifeServiceListVolunteerActivitiesParams struct {
 // AcademicServiceClassQueryFavSetJSONRequestBody defines body for AcademicServiceClassQueryFavSet for application/json ContentType.
 type AcademicServiceClassQueryFavSetJSONRequestBody = ClassQueryFavSetRequestBody
 
-// AcademicServiceModifyPreviousSchoolCityJSONRequestBody defines body for AcademicServiceModifyPreviousSchoolCity for application/json ContentType.
-type AcademicServiceModifyPreviousSchoolCityJSONRequestBody = ModifyPreviousSchoolCityRequestBody
-
 // AdminServiceSetAppEnabledJSONRequestBody defines body for AdminServiceSetAppEnabled for application/json ContentType.
 type AdminServiceSetAppEnabledJSONRequestBody = SetAppEnabledRequestBody
 
@@ -10028,9 +9603,6 @@ type EmptyScheduleServiceJoinJSONRequestBody = JoinRequestBody
 // EmptyScheduleServiceLeaveRoomJSONRequestBody defines body for EmptyScheduleServiceLeaveRoom for application/json ContentType.
 type EmptyScheduleServiceLeaveRoomJSONRequestBody = LeaveRoomRequestBody
 
-// GroupChatServiceCreateCityChatGroupJSONRequestBody defines body for GroupChatServiceCreateCityChatGroup for application/json ContentType.
-type GroupChatServiceCreateCityChatGroupJSONRequestBody = CreateCityChatGroupRequestBody
-
 // GroupChatServiceCreateClassChatGroupJSONRequestBody defines body for GroupChatServiceCreateClassChatGroup for application/json ContentType.
 type GroupChatServiceCreateClassChatGroupJSONRequestBody = CreateClassChatGroupRequestBody
 
@@ -10048,12 +9620,6 @@ type GroupChatServiceSyncGradeChatGroupJSONRequestBody = SyncGradeChatGroupReque
 
 // GroupChatServiceCreateGroupJSONRequestBody defines body for GroupChatServiceCreateGroup for application/json ContentType.
 type GroupChatServiceCreateGroupJSONRequestBody = CreateGroupRequestBody
-
-// GroupChatServiceCreatePreviousSchoolChatGroupJSONRequestBody defines body for GroupChatServiceCreatePreviousSchoolChatGroup for application/json ContentType.
-type GroupChatServiceCreatePreviousSchoolChatGroupJSONRequestBody = CreatePreviousSchoolChatGroupRequestBody
-
-// GroupChatServiceJoinPreviousSchoolChatGroupJSONRequestBody defines body for GroupChatServiceJoinPreviousSchoolChatGroup for application/json ContentType.
-type GroupChatServiceJoinPreviousSchoolChatGroupJSONRequestBody = JoinPreviousSchoolChatGroupRequestBody
 
 // GroupChatServiceCreateRecruitChatGroupJSONRequestBody defines body for GroupChatServiceCreateRecruitChatGroup for application/json ContentType.
 type GroupChatServiceCreateRecruitChatGroupJSONRequestBody = CreateRecruitChatGroupRequestBody

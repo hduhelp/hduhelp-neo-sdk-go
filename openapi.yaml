@@ -201,27 +201,6 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/TimeResponseBody'
             x-hduhelp-http: {'auth': 'webhook', 'catalog': 'exclude'}
-    /hduhelp-neo/academic/city-code:
-        get:
-            tags:
-                - AcademicService
-            summary: 按城市编码查询城市名称
-            operationId: AcademicService_CityByCode
-            security:
-                - BearerAuth: []
-            parameters:
-                - name: code
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/CityByCodeResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/academic/class/fav:
         get:
             tags:
@@ -455,35 +434,6 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/CourseResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
-    /hduhelp-neo/academic/course-selection:
-        get:
-            tags:
-                - AcademicService
-            summary: 查询本人选课信息
-            operationId: AcademicService_StudentSelections
-            security:
-                - BearerAuth: []
-            parameters:
-                - name: schoolYear
-                  in: query
-                  schema:
-                    type: string
-                - name: semester
-                  in: query
-                  schema:
-                    type: string
-                - name: X-Staff-Id
-                  in: header
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/SelectResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/academic/directory/birthdays:
         get:
             tags:
@@ -565,7 +515,8 @@ paths:
         get:
             tags:
                 - AcademicService
-            summary: 查询在校人员目录
+            summary: 查询学生目录
+            description: 返回教务学籍明细视图的全量学生，不按在校状态过滤，学籍状态代码原样透出
             operationId: AcademicService_AllPersonInfo
             security:
                 - BearerAuth: []
@@ -576,27 +527,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AllPersonInfoResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
-    /hduhelp-neo/academic/dorm:
-        get:
-            tags:
-                - AcademicService
-            summary: 查询本人宿舍信息
-            operationId: AcademicService_StudentDorm
-            security:
-                - BearerAuth: []
-            parameters:
-                - name: X-Staff-Id
-                  in: header
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/DormInfoResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/academic/exam:
         get:
@@ -676,49 +606,6 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/FreshmanAdmissionQueryResponseBody'
             x-hduhelp-http: {'auth': 'bearer', 'catalog': 'exclude'}
-    /hduhelp-neo/academic/freshman/info:
-        get:
-            tags:
-                - AcademicService
-            summary: 查询新生信息
-            description: 返回新生录取基础信息（录取号/身份证/录取时间/省份）与迎新详细信息
-            operationId: AcademicService_FreshmanDetail
-            security:
-                - BearerAuth: []
-            parameters:
-                - name: X-Staff-Id
-                  in: header
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/FreshmanDetailResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
-    /hduhelp-neo/academic/freshman/roommate:
-        get:
-            tags:
-                - AcademicService
-            summary: 查询新生舍友信息
-            operationId: AcademicService_FreshmanRoommates
-            security:
-                - BearerAuth: []
-            parameters:
-                - name: X-Staff-Id
-                  in: header
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/FreshmanRoommatesResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/academic/gate-access:
         post:
             tags:
@@ -765,27 +652,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/StudentGradeResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
-    /hduhelp-neo/academic/holiday-stay:
-        get:
-            tags:
-                - AcademicService
-            summary: 查询本人假期留校信息
-            operationId: AcademicService_StudentStaySchool
-            security:
-                - BearerAuth: []
-            parameters:
-                - name: X-Staff-Id
-                  in: header
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/StaySchoolResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/academic/library/attendance:
         get:
@@ -1012,76 +878,12 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ShareIDResponseBody'
             x-hduhelp-http: {'auth': 'bearer', 'confirmation': 'required'}
-    /hduhelp-neo/academic/needy:
-        get:
-            tags:
-                - AcademicService
-            summary: 查询困难生认定列表
-            operationId: AcademicService_NeedyList
-            security:
-                - BearerAuth: []
-            parameters:
-                - name: X-Staff-Id
-                  in: header
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/NeedyListResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
-    /hduhelp-neo/academic/needy/student:
-        get:
-            tags:
-                - AcademicService
-            summary: 查询本人困难生认定信息
-            description: '---- 困难生 ----'
-            operationId: AcademicService_NeedyStudentInfo
-            security:
-                - BearerAuth: []
-            parameters:
-                - name: X-Staff-Id
-                  in: header
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/StudentNeedyInfoResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
-    /hduhelp-neo/academic/origin-city:
-        get:
-            tags:
-                - AcademicService
-            summary: 查询本人生源地城市
-            operationId: AcademicService_StudentCity
-            security:
-                - BearerAuth: []
-            parameters:
-                - name: X-Staff-Id
-                  in: header
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/CityInfoResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/academic/person/info:
         get:
             tags:
                 - AcademicService
             summary: 查询本人人员信息
-            description: 伞形人员信息：基础字段全员返回；student 学籍视图按 staff_type 判别，仅学生（本科/研究生）填充，教职工为空
+            description: 在校生人员信息，读自教务 Oracle 学籍明细视图 STUDENT_DETAIL（学院名/专业名取自 STUDENT_INFO）；非在校生学号无明细行，返回 404
             operationId: AcademicService_PersonInfo
             security:
                 - BearerAuth: []
@@ -1097,91 +899,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PersonInfoResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
-    /hduhelp-neo/academic/previous-school:
-        get:
-            tags:
-                - AcademicService
-            summary: 查询生源中学与同校同城统计
-            description: 返回本人生源中学信息与同校邻近年级、同城人数统计；schoolName/grade 缺省取本人记录
-            operationId: AcademicService_PreviousSchool
-            security:
-                - BearerAuth: []
-            parameters:
-                - name: schoolName
-                  in: query
-                  schema:
-                    type: string
-                - name: grade
-                  in: query
-                  schema:
-                    type: string
-                - name: X-Staff-Id
-                  in: header
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/PreviousSchoolResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
-    /hduhelp-neo/academic/previous-school/city:
-        post:
-            tags:
-                - AcademicService
-            summary: 修改本人生源地城市
-            operationId: AcademicService_ModifyPreviousSchoolCity
-            security:
-                - BearerAuth: []
-            parameters:
-                - name: X-Staff-Id
-                  in: header
-                  schema:
-                    type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/ModifyPreviousSchoolCityRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModifyCityResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
-    /hduhelp-neo/academic/reward:
-        get:
-            tags:
-                - AcademicService
-            summary: 查询本人奖励信息
-            operationId: AcademicService_StudentRewards
-            security:
-                - BearerAuth: []
-            parameters:
-                - name: schoolYear
-                  in: query
-                  schema:
-                    type: string
-                - name: semester
-                  in: query
-                  schema:
-                    type: string
-                - name: X-Staff-Id
-                  in: header
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/RewardsResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/academic/schedule:
         get:
@@ -1279,7 +996,7 @@ paths:
             tags:
                 - AcademicService
             summary: 查询本人学籍状态
-            description: 返回当前登录本科学生的学籍状态代码与中文描述(读自学校教务 Oracle STUDENT_DETAIL 视图)
+            description: 返回当前登录本科学生的学籍状态代码(ACADEMIC_STATUS_CODE，如 01)与中文描述(如 在读)，读自学校教务 Oracle STUDENT_DETAIL 视图
             operationId: AcademicService_StudentSchoolRollStatus
             security:
                 - BearerAuth: []
@@ -1525,7 +1242,7 @@ paths:
             tags:
                 - AdminService
             summary: 设置应用权限和用户权限
-            description: application_scopes 决定 TAT/App 可访问的业务能力；TAT/App 可用 X-Staff-Id 选择目标，无需额外的 identity:staffid:read，TAT 也可在持有 identity:binding:resolve 时使用 provider/openid 请求内解析，两种目标不得同时出现。user_scopes 限制 UAT 可请求且用户可同意的权限。两者均实时生效，无需重发令牌。
+            description: application_scopes 决定 TAT/App 可访问的业务能力；TAT/App 可用 X-Staff-Id 选择目标，TAT 也可在持有 identity:binding:resolve 时使用 provider/openid 请求内解析，两种目标不得同时出现。user_scopes 限制 UAT 可请求且用户可同意的权限。两者均实时生效，无需重发令牌。
             operationId: AdminService_SetAppPermissions
             security:
                 - OperatorBearerAuth: []
@@ -7063,59 +6780,6 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/GraduateTutorsResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
-    /hduhelp-neo/groupchat/city:
-        get:
-            tags:
-                - GroupChatService
-            summary: 查询城市校友群
-            description: 按城市查询城市校友群，群已解散则清理记录并返回空
-            operationId: GroupChatService_GetCityChatGroup
-            security:
-                - BearerAuth: []
-            parameters:
-                - name: city
-                  in: query
-                  schema:
-                    type: string
-                - name: X-Staff-Id
-                  in: header
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/GetCityChatGroupResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
-        post:
-            tags:
-                - GroupChatService
-            summary: 创建城市校友群
-            description: 按城市创建杭电城市校友钉钉群
-            operationId: GroupChatService_CreateCityChatGroup
-            security:
-                - BearerAuth: []
-            parameters:
-                - name: X-Staff-Id
-                  in: header
-                  schema:
-                    type: string
-            requestBody:
-                description: '---- 城市群 (city) ----'
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/CreateCityChatGroupRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/CreateCityChatGroupResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/groupchat/class:
         get:
             tags:
@@ -7354,7 +7018,7 @@ paths:
             tags:
                 - GroupChatService
             summary: 创建钉钉群聊
-            description: 按类型(班级/年级/招新/校友/城市)创建钉钉场景群并记录群映射
+            description: 按类型(班级/年级/招新)创建钉钉场景群并记录群映射
             operationId: GroupChatService_CreateGroup
             security:
                 - BearerAuth: []
@@ -7405,90 +7069,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/LeaveGroupResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
-    /hduhelp-neo/groupchat/previous-school:
-        get:
-            tags:
-                - GroupChatService
-            summary: 查询校友群
-            description: 按毕业中学与相近届别(年级±4)查询校友群列表
-            operationId: GroupChatService_GetPreviousSchoolChatGroup
-            security:
-                - BearerAuth: []
-            parameters:
-                - name: school_name
-                  in: query
-                  schema:
-                    type: string
-                - name: grade
-                  in: query
-                  schema:
-                    type: string
-                - name: X-Staff-Id
-                  in: header
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/GetPreviousSchoolChatGroupResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
-        post:
-            tags:
-                - GroupChatService
-            summary: 创建校友群
-            description: 按毕业中学与年级创建钉钉校友群
-            operationId: GroupChatService_CreatePreviousSchoolChatGroup
-            security:
-                - BearerAuth: []
-            parameters:
-                - name: X-Staff-Id
-                  in: header
-                  schema:
-                    type: string
-            requestBody:
-                description: '---- 校友群 (previous_school) ----'
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/CreatePreviousSchoolChatGroupRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/CreatePreviousSchoolChatGroupResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
-    /hduhelp-neo/groupchat/previous-school/join:
-        post:
-            tags:
-                - GroupChatService
-            summary: 加入校友群
-            description: 将当前用户加入指定校友群，已加入则提示重复加入
-            operationId: GroupChatService_JoinPreviousSchoolChatGroup
-            security:
-                - BearerAuth: []
-            parameters:
-                - name: X-Staff-Id
-                  in: header
-                  schema:
-                    type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/JoinPreviousSchoolChatGroupRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/JoinPreviousSchoolChatGroupResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/groupchat/recruit:
         post:
@@ -12856,10 +12436,6 @@ components:
                     type: string
                 avatar:
                     type: string
-                staffId:
-                    type: string
-                school:
-                    type: string
                 scopes:
                     type: array
                     items:
@@ -13669,13 +13245,9 @@ components:
                     type: string
                 grade:
                     type: string
-                schoolName:
-                    type: string
-                city:
-                    type: string
             description: |-
                 ============================================================================
-                典型群 DTO：班级/年级/校友/城市群统一返回结构
+                典型群 DTO：班级/年级群统一返回结构
                 ============================================================================
         CheckUpdateData:
             type: object
@@ -13714,42 +13286,6 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/KnowledgeChunk'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        CityByCodeData:
-            type: object
-            properties:
-                city:
-                    type: string
-        CityByCodeResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/CityByCodeData'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        CityInfo:
-            type: object
-            properties:
-                city:
-                    type: string
-                modifiedCity:
-                    type: string
-            description: |-
-                ---------------------------------------------------------------------------
-                城市（生源地）
-                ---------------------------------------------------------------------------
-        CityInfoResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/CityInfo'
                 code:
                     type: integer
                     format: int64
@@ -14424,21 +13960,6 @@ components:
                 sort_order:
                     type: integer
                     format: int32
-        CreateCityChatGroupRequestBody:
-            type: object
-            properties:
-                city:
-                    type: string
-        CreateCityChatGroupResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/ChatGroup'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
         CreateClassChatGroupRequestBody:
             type: object
             properties:
@@ -14514,7 +14035,7 @@ components:
             properties:
                 type:
                     type: string
-                    description: class|grade|recruit|alumni|city
+                    description: class|grade|recruit
                 name:
                     type: string
         CreateGroupResponseBody:
@@ -14675,23 +14196,6 @@ components:
                     $ref: '#/components/schemas/DeliveryPolicy'
                 is_default:
                     type: boolean
-        CreatePreviousSchoolChatGroupRequestBody:
-            type: object
-            properties:
-                school_name:
-                    type: string
-                grade:
-                    type: string
-        CreatePreviousSchoolChatGroupResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/ChatGroup'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
         CreateRecruitChatGroupData:
             type: object
             properties:
@@ -15341,29 +14845,6 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/KnowledgeDomainNode'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        DormInfo:
-            type: object
-            properties:
-                staffId:
-                    type: string
-                building:
-                    type: string
-                room:
-                    type: string
-            description: |-
-                ---------------------------------------------------------------------------
-                宿舍
-                ---------------------------------------------------------------------------
-        DormInfoResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/DormInfo'
                 code:
                     type: integer
                     format: int64
@@ -16155,108 +15636,11 @@ components:
                 classNo:
                     type: string
             description: |-
-                FreshmanAdmissionResult is deliberately minimal for the restricted legacy
-                public query. It must not grow to expose private迎新 fields.
-        FreshmanDetail:
-            type: object
-            properties:
-                staffId:
-                    type: string
-                staffName:
-                    type: string
-                className:
-                    type: string
-                roomName:
-                    type: string
-                regStatus:
-                    type: string
-                schoolId:
-                    type: string
-                schoolName:
-                    type: string
-                majorName:
-                    type: string
-                cardId:
-                    type: string
-                teacherName:
-                    type: string
-                teacherPhone:
-                    type: string
-                assistantName:
-                    type: string
-                assistantPhone:
-                    type: string
-                hasPaid:
-                    type: string
-                phone:
-                    type: string
-                qq:
-                    type: string
-                roomBuilding:
-                    type: string
-                roomRoom:
-                    type: string
-                roomBed:
-                    type: string
-                comeDate:
-                    type: string
-                high:
-                    type: string
-                station:
-                    type: string
-                lstd:
-                    type: string
-                    description: 绿色通道(学费缓缴)
-                lstdxy:
-                    type: string
-                    description: 绿色通道-学院
-                lstdzx:
-                    type: string
-                    description: 绿色通道-资助中心
-                offerId:
-                    type: string
-                idCardNo:
-                    type: string
-                offerTime:
-                    type: string
-                province:
-                    type: string
-            description: |-
                 ---------------------------------------------------------------------------
                 新生（迎新）
                 ---------------------------------------------------------------------------
-                FreshmanDetail 新生信息，含录取基础信息（录取号/身份证/录取时间/省份）与迎新详细信息。
-        FreshmanDetailResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/FreshmanDetail'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        FreshmanRoommate:
-            type: object
-            properties:
-                staffName:
-                    type: string
-                qq:
-                    type: string
-                phone:
-                    type: string
-        FreshmanRoommatesResponseBody:
-            type: object
-            properties:
-                data:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/FreshmanRoommate'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
+                FreshmanAdmissionResult is deliberately minimal for the restricted legacy
+                public query. It must not grow to expose private迎新 fields.
         FriendWishItem:
             type: object
             properties:
@@ -16395,16 +15779,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        GetCityChatGroupResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/ChatGroup'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
         GetClassChatGroupResponseBody:
             type: object
             properties:
@@ -16418,18 +15792,6 @@ components:
                 msg:
                     type: string
         GetGradeChatGroupResponseBody:
-            type: object
-            properties:
-                data:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ChatGroup'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        GetPreviousSchoolChatGroupResponseBody:
             type: object
             properties:
                 data:
@@ -16604,16 +15966,6 @@ components:
             description: |-
                 GradeItem 是信息流成绩卡片中的一条成绩。分数明细透传自教务库字符串列
                 （可能非数字如「优」「缺考」，故保持字符串）。
-        GradeSchoolInfo:
-            type: object
-            properties:
-                grade:
-                    type: string
-                schoolName:
-                    type: string
-                studentCount:
-                    type: integer
-                    format: int64
         GraduateGradeItem:
             type: object
             properties:
@@ -17076,19 +16428,6 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/KnowledgeItemSummary'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        JoinPreviousSchoolChatGroupRequestBody:
-            type: object
-            properties:
-                open_conversation_id:
-                    type: string
-        JoinPreviousSchoolChatGroupResponseBody:
-            type: object
-            properties:
                 code:
                     type: integer
                     format: int64
@@ -18201,19 +17540,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        ModifyCityResponseBody:
-            type: object
-            properties:
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        ModifyPreviousSchoolCityRequestBody:
-            type: object
-            properties:
-                cityCode:
-                    type: string
         MonthStat:
             type: object
             properties:
@@ -18316,43 +17642,6 @@ components:
                     type: integer
                     format: int64
                 msg:
-                    type: string
-        NeedyItem:
-            type: object
-            properties:
-                schoolYear:
-                    type: integer
-                    format: int32
-                needyStudent:
-                    type: boolean
-                level:
-                    type: string
-                    description: 困难档次(DANGCI)
-            description: ==================== 困难生 ====================
-        NeedyListResponseBody:
-            type: object
-            properties:
-                data:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/NeedyRecord'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        NeedyRecord:
-            type: object
-            properties:
-                id:
-                    type: string
-                staffId:
-                    type: string
-                name:
-                    type: string
-                level:
-                    type: string
-                reason:
                     type: string
         NewerData:
             type: object
@@ -18854,8 +18143,10 @@ components:
                     type: string
                 staffState:
                     type: string
+                    description: 学籍状态代码
                 staffType:
                     type: string
+                    description: 学生类别代码
                 unitCode:
                     type: string
                 grade:
@@ -18876,8 +18167,10 @@ components:
                     type: string
                 staffState:
                     type: string
+                    description: 学籍状态代码
                 staffType:
                     type: string
+                    description: 学生类别代码
                 unitCode:
                     type: string
                 grade:
@@ -18887,19 +18180,20 @@ components:
                     description: 学院名称
                 classId:
                     type: string
-                    description: 学籍字段：仅学生填充
                 majorId:
                     type: string
                 majorName:
                     type: string
-                teacherId:
+                staffTypeName:
                     type: string
-                teacherName:
+                    description: 学生类别中文名(字典未收录的代码回落为代码本身)
+                staffStateName:
                     type: string
+                    description: 学籍状态中文描述(字典未收录的代码回落为代码本身)
             description: |-
-                PersonInfoData 伞形人员信息：单层平铺。基础字段全员返回；学籍字段（班级/专业/
-                辅导员）按 staff_type 判别，仅学生（本科/研究生）填充，教职工留空。
-                学院用 unitCode + unitName 一对表示，不再有同物异名的 unitId。
+                PersonInfoData 在校生人员信息：单层平铺，逐字段读自教务 Oracle 学籍明细视图
+                (STUDENT_DETAIL)，学院名/专业名读自 STUDENT_INFO。学院用 unitCode + unitName
+                一对表示。staffState 为学籍状态代码，staffType 为学生类别代码。
         PersonInfoResponseBody:
             type: object
             properties:
@@ -19411,39 +18705,6 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/PreviewData'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        PreviousSchoolData:
-            type: object
-            properties:
-                staffId:
-                    type: string
-                staffName:
-                    type: string
-                previousSchoolName:
-                    type: string
-                grade:
-                    type: string
-                city:
-                    type: string
-                    description: 本人生源地城市
-                cityCount:
-                    type: string
-                    description: 同城人数
-                gradeSchoolInfo:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/GradeSchoolInfo'
-                    description: 同校邻近年级人数
-            description: PreviousSchoolData 本人生源中学信息与同校邻近年级、同城人数统计。
-        PreviousSchoolResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/PreviousSchoolData'
                 code:
                     type: integer
                     format: int64
@@ -20130,18 +19391,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        RewardsResponseBody:
-            type: object
-            properties:
-                data:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/StudentReward'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
         RichTextNode:
             type: object
             properties:
@@ -20456,7 +19705,7 @@ components:
                     type: string
                 statusCode:
                     type: string
-                    description: 学籍状态代码(原样透传 Oracle ACADEMIC_STATUS)
+                    description: 学籍状态代码(原样透传 Oracle ACADEMIC_STATUS_CODE)
                 statusDesc:
                     type: string
                     description: 学籍状态中文描述
@@ -20851,18 +20100,6 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/SeatSearchData'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        SelectResponseBody:
-            type: object
-            properties:
-                data:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/StudentCourseSelection'
                 code:
                     type: integer
                     format: int64
@@ -21756,16 +20993,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        StaySchoolResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/StudentStaySchoolInfo'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
         StudentBirthdayInfo:
             type: object
             properties:
@@ -21798,31 +21025,6 @@ components:
                     type: integer
                     format: int64
                 msg:
-                    type: string
-        StudentCourseSelection:
-            type: object
-            properties:
-                schoolYear:
-                    type: string
-                semester:
-                    type: string
-                staffId:
-                    type: string
-                staffName:
-                    type: string
-                selectCode:
-                    type: string
-                courseName:
-                    type: string
-                courseCode:
-                    type: string
-                teacherId:
-                    type: string
-                teacherName:
-                    type: string
-                classTime:
-                    type: string
-                classRoom:
                     type: string
         StudentExam:
             type: object
@@ -21985,87 +21187,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        StudentNeedyInfo:
-            type: object
-            properties:
-                staffId:
-                    type: string
-                staffName:
-                    type: string
-                needyStudent:
-                    type: boolean
-                items:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/NeedyItem'
-                sex:
-                    type: integer
-                    description: 性别(1男 2女 0未知)
-                    format: int32
-        StudentNeedyInfoResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/StudentNeedyInfo'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        StudentReward:
-            type: object
-            properties:
-                staffId:
-                    type: string
-                staffName:
-                    type: string
-                rewardName:
-                    type: string
-                schoolYear:
-                    type: string
-                semester:
-                    type: string
-                rewardLevel:
-                    type: string
-        StudentStaySchoolInfo:
-            type: object
-            properties:
-                staffId:
-                    type: string
-                staffName:
-                    type: string
-                reportTime:
-                    type: string
-                reason:
-                    type: string
-                time1Start:
-                    type: string
-                time1End:
-                    type: string
-                time2Start:
-                    type: string
-                time2End:
-                    type: string
-                teacherStatus:
-                    type: string
-                teacherRemark:
-                    type: string
-                unitStatus:
-                    type: string
-                unitRemark:
-                    type: string
-                cancelStatus:
-                    type: string
-                teacherReviewTime:
-                    type: string
-                    description: 辅导员审批时间
-                unitReviewTime:
-                    type: string
-                    description: 学院审批时间
-            description: |-
-                ---------------------------------------------------------------------------
-                留校（假期留校）
-                ---------------------------------------------------------------------------
         SubmitAppealRequestBody:
             type: object
             properties:
