@@ -4792,7 +4792,7 @@ paths:
             tags:
                 - UploadService
             summary: 上传文件(运营兜底)
-            description: multipart 表单字段 file；用于本地 fs 等不支持签名直传的存储。
+            description: multipart 表单字段 file；用于本地 fs 等不支持签名直传的存储。Go SDK 不覆盖二进制流，请优先调用 AdminSignUpload 后直传。
             operationId: UploadService_AdminUpload
             security:
                 - OperatorBearerAuth: []
@@ -4803,13 +4803,14 @@ paths:
                   schema:
                     type: string
             requestBody:
+                required: true
                 description: |-
                     UploadRequest keeps the runtime query value and the multipart contract in one
                     source of truth. The handler reads the file with c.FormFile because Hertz's
                     generated string binding does not represent a multipart.FileHeader; the
                     OpenAPI override correctly publishes the field as a binary upload.
                 content:
-                    application/json:
+                    multipart/form-data:
                         schema:
                             $ref: '#/components/schemas/UploadRequestBody'
             responses:
@@ -4819,7 +4820,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/UploadResponseBody'
-            x-hduhelp-http: {'auth': 'operator'}
+            x-hduhelp-http: {'auth': 'operator', 'request_content_type': 'multipart/form-data', 'file_field': 'file'}
     /hduhelp-neo/admin/upload/sign:
         post:
             tags:
@@ -7395,21 +7396,25 @@ paths:
             tags:
                 - IdentityService
             summary: 登出
-            description: 使指定的刷新令牌对应的会话失效。
+            description: 撤销当前原生会话。有效 access token 的 principal session ID 优先；refreshToken 用于无 access token 或旧客户端。接口幂等返回 200，data.revoked 表示本次是否实际撤销。
             operationId: IdentityService_AuthLogout
+            security: []
             requestBody:
-                description: 登出请求（吊销指定 refresh token 会话）
+                description: |-
+                    登出请求。refreshToken 为旧客户端兼容字段；携带有效原生 access token 时，
+                    服务端优先按 principal 中的当前 session ID 撤销。
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/LogoutRequestBody'
             responses:
                 "200":
-                    description: CommonResponse is the common response envelope tail (code/msg) reused across services.
+                    description: Successful response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/CommonResponseBody'
+                                $ref: '#/components/schemas/LogoutResponseBody'
+            x-hduhelp-http: {'auth': 'public_or_native_session'}
     /hduhelp-neo/identity/auth/logout/all:
         post:
             tags:
@@ -8153,6 +8158,16 @@ paths:
                   description: 登录后恢复的第一方 SPA 相对路径，服务端校验并存 state
                   schema:
                     type: string
+                - name: x-device-id
+                  in: header
+                  description: 浏览器配置/客户端安装实例 ID，不是物理设备指纹
+                  schema:
+                    type: string
+                - name: x-device-name
+                  in: header
+                  description: 客户端展示名
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -8167,6 +8182,16 @@ paths:
             summary: 创建微信公众号扫码登录或绑定
             description: 桌面浏览器创建短时扫码配对；flow=bind 时要求当前原生会话和 binding:write 权限。二维码只包含服务号 OAuth 地址，poll_token 仅由原浏览器保存。微信内授权完成后，结果通过一次性 handoff code 交还原浏览器。
             operationId: IdentityService_CreateWeChatQRLogin
+            parameters:
+                - name: x-device-id
+                  in: header
+                  description: 发起扫码的浏览器配置实例
+                  schema:
+                    type: string
+                - name: x-device-name
+                  in: header
+                  schema:
+                    type: string
             requestBody:
                 description: POST /hduhelp-neo/identity/login/wechat/qr —— 桌面浏览器创建公众号扫码配对
                 content:
@@ -10549,7 +10574,7 @@ paths:
             tags:
                 - UploadService
             summary: 获取已上传文件
-            description: 按对象 key(query 参数)返回原始字节(公开可读)。
+            description: 按对象 key(query 参数)返回原始字节(公开可读)。Go SDK 不覆盖二进制响应，请使用标准 HTTP 客户端下载。
             operationId: UploadService_Download
             parameters:
                 - name: key
@@ -17269,10 +17294,25 @@ components:
                     type: string
                 password:
                     type: string
+        LogoutData:
+            type: object
+            properties:
+                revoked:
+                    type: boolean
         LogoutRequestBody:
             type: object
             properties:
                 refreshToken:
+                    type: string
+        LogoutResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/LogoutData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
                     type: string
         LookUpShareData:
             type: object
@@ -17374,7 +17414,7 @@ components:
                     type: boolean
                 sourceInvalidated:
                     type: boolean
-                    description: 源账号 B 已被注销、其全部登录设备将被登出（合并完成后恒为 true）
+                    description: 源账号 B 已被注销、其全部登录会话将被撤销（合并完成后恒为 true）
         MergeConfirmRequestBody:
             type: object
             properties:

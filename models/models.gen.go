@@ -4455,9 +4455,21 @@ type LoginWithPasswordRequestBody struct {
 	Password   *string `json:"password,omitempty"`
 }
 
+// LogoutData defines model for LogoutData.
+type LogoutData struct {
+	Revoked *bool `json:"revoked,omitempty"`
+}
+
 // LogoutRequestBody defines model for LogoutRequestBody.
 type LogoutRequestBody struct {
 	RefreshToken *string `json:"refreshToken,omitempty"`
+}
+
+// LogoutResponseBody defines model for LogoutResponseBody.
+type LogoutResponseBody struct {
+	Code *int64      `json:"code,omitempty"`
+	Data *LogoutData `json:"data,omitempty"`
+	Msg  *string     `json:"msg,omitempty"`
 }
 
 // LookUpShareData defines model for LookUpShareData.
@@ -4523,7 +4535,7 @@ type MergeConfirmData struct {
 	AlreadyMerged *bool                `json:"alreadyMerged,omitempty"`
 	Migrated      *[]MergeMigratedItem `json:"migrated,omitempty"`
 
-	// SourceInvalidated 源账号 B 已被注销、其全部登录设备将被登出（合并完成后恒为 true）
+	// SourceInvalidated 源账号 B 已被注销、其全部登录会话将被撤销（合并完成后恒为 true）
 	SourceInvalidated *bool   `json:"sourceInvalidated,omitempty"`
 	SourceUserId      *string `json:"sourceUserId,omitempty"`
 	TargetUserId      *string `json:"targetUserId,omitempty"`
@@ -8591,12 +8603,6 @@ type AdminServiceSetTenantEnabledParams struct {
 	Id *string `form:"id,omitempty" json:"id,omitempty"`
 }
 
-// UploadServiceAdminUploadParams defines parameters for UploadServiceAdminUpload.
-type UploadServiceAdminUploadParams struct {
-	// Usage 可选业务分组(仅记录/审计)
-	Usage *string `form:"usage,omitempty" json:"usage,omitempty"`
-}
-
 // AdminServiceSearchUsersParams defines parameters for AdminServiceSearchUsers.
 type AdminServiceSearchUsersParams struct {
 	Keyword *string `form:"keyword,omitempty" json:"keyword,omitempty"`
@@ -9059,6 +9065,19 @@ type IdentityServiceGetLoginURLParams struct {
 
 	// ReturnTo 登录后恢复的第一方 SPA 相对路径，服务端校验并存 state
 	ReturnTo *string `form:"return_to,omitempty" json:"return_to,omitempty"`
+
+	// XDeviceId 浏览器配置/客户端安装实例 ID，不是物理设备指纹
+	XDeviceId *string `json:"x-device-id,omitempty"`
+
+	// XDeviceName 客户端展示名
+	XDeviceName *string `json:"x-device-name,omitempty"`
+}
+
+// IdentityServiceCreateWeChatQRLoginParams defines parameters for IdentityServiceCreateWeChatQRLogin.
+type IdentityServiceCreateWeChatQRLoginParams struct {
+	// XDeviceId 发起扫码的浏览器配置实例
+	XDeviceId   *string `json:"x-device-id,omitempty"`
+	XDeviceName *string `json:"x-device-name,omitempty"`
 }
 
 // InboxServiceListInboxParams defines parameters for InboxServiceListInbox.
@@ -9330,12 +9349,6 @@ type SubscriptionServiceUpdateSubscriptionParams struct {
 	Id *string `form:"id,omitempty" json:"id,omitempty"`
 }
 
-// UploadServiceDownloadParams defines parameters for UploadServiceDownload.
-type UploadServiceDownloadParams struct {
-	// Key Required server-generated upload object key.
-	Key string `form:"key" json:"key"`
-}
-
 // CampusLifeServiceListVolunteerActivitiesParams defines parameters for CampusLifeServiceListVolunteerActivities.
 type CampusLifeServiceListVolunteerActivitiesParams struct {
 	Page            *int32  `form:"page,omitempty" json:"page,omitempty"`
@@ -9561,9 +9574,6 @@ type AdminServiceSetTenantEnabledJSONRequestBody = SetTenantEnabledRequestBody
 
 // AdminServiceCreateTenantJSONRequestBody defines body for AdminServiceCreateTenant for application/json ContentType.
 type AdminServiceCreateTenantJSONRequestBody = CreateTenantRequestBody
-
-// UploadServiceAdminUploadJSONRequestBody defines body for UploadServiceAdminUpload for application/json ContentType.
-type UploadServiceAdminUploadJSONRequestBody = UploadRequestBody
 
 // UploadServiceAdminSignUploadJSONRequestBody defines body for UploadServiceAdminSignUpload for application/json ContentType.
 type UploadServiceAdminSignUploadJSONRequestBody = SignUploadRequestBody

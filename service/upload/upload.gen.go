@@ -15,58 +15,6 @@ type Service struct{ config *core.Config }
 // NewService binds the Upload service to a client config.
 func NewService(config *core.Config) *Service { return &Service{config: config} }
 
-// AdminUploadReq is the request for AdminUpload.
-type AdminUploadReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// AdminUploadReqBuilder builds a AdminUploadReq with a fluent setter per field.
-type AdminUploadReqBuilder struct{ req *AdminUploadReq }
-
-// NewAdminUploadReqBuilder creates a request builder for AdminUpload.
-func NewAdminUploadReqBuilder() *AdminUploadReqBuilder {
-	return &AdminUploadReqBuilder{req: &AdminUploadReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Usage sets the "usage" query parameter: 可选业务分组(仅记录/审计)
-func (b *AdminUploadReqBuilder) Usage(v string) *AdminUploadReqBuilder {
-	b.req.queryParams["usage"] = v
-	return b
-}
-
-// Body sets the request body.
-func (b *AdminUploadReqBuilder) Body(body *models.UploadRequestBody) *AdminUploadReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *AdminUploadReqBuilder) Build() *AdminUploadReq { return b.req }
-
-// AdminUploadResp is the response for AdminUpload.
-type AdminUploadResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.UploadData `json:"data"`
-}
-
-// AdminUpload: 上传文件(运营兜底)
-func (s *Service) AdminUpload(ctx context.Context, req *AdminUploadReq, opts ...core.RequestOption) (*AdminUploadResp, error) {
-	resp := &AdminUploadResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/admin/upload",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
 // AdminSignUploadReq is the request for AdminSignUpload.
 type AdminSignUploadReq struct {
 	pathParams  map[string]string
@@ -105,51 +53,6 @@ func (s *Service) AdminSignUpload(ctx context.Context, req *AdminSignUploadReq, 
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
 		PathTemplate: "/hduhelp-neo/admin/upload/sign",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// DownloadReq is the request for Download.
-type DownloadReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// DownloadReqBuilder builds a DownloadReq with a fluent setter per field.
-type DownloadReqBuilder struct{ req *DownloadReq }
-
-// NewDownloadReqBuilder creates a request builder for Download.
-func NewDownloadReqBuilder() *DownloadReqBuilder {
-	return &DownloadReqBuilder{req: &DownloadReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Key sets the "key" query parameter: Required server-generated upload object key.
-func (b *DownloadReqBuilder) Key(v string) *DownloadReqBuilder {
-	b.req.queryParams["key"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *DownloadReqBuilder) Build() *DownloadReq { return b.req }
-
-// DownloadResp is the response for Download.
-type DownloadResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-}
-
-// Download: 获取已上传文件
-func (s *Service) Download(ctx context.Context, req *DownloadReq, opts ...core.RequestOption) (*DownloadResp, error) {
-	resp := &DownloadResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/upload",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

@@ -993,6 +993,7 @@ func (b *AuthLogoutReqBuilder) Build() *AuthLogoutReq { return b.req }
 type AuthLogoutResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
+	Data *models.LogoutData `json:"data"`
 }
 
 // AuthLogout: 登出
@@ -2551,6 +2552,18 @@ func (b *GetLoginURLReqBuilder) ReturnTo(v string) *GetLoginURLReqBuilder {
 	return b
 }
 
+// DeviceID sets the "x-device-id" header parameter: 浏览器配置/客户端安装实例 ID，不是物理设备指纹
+func (b *GetLoginURLReqBuilder) DeviceID(v string) *GetLoginURLReqBuilder {
+	b.req.headers["x-device-id"] = v
+	return b
+}
+
+// DeviceName sets the "x-device-name" header parameter: 客户端展示名
+func (b *GetLoginURLReqBuilder) DeviceName(v string) *GetLoginURLReqBuilder {
+	b.req.headers["x-device-name"] = v
+	return b
+}
+
 // Build finalizes the request.
 func (b *GetLoginURLReqBuilder) Build() *GetLoginURLReq { return b.req }
 
@@ -2589,6 +2602,18 @@ type CreateWeChatQRLoginReqBuilder struct{ req *CreateWeChatQRLoginReq }
 // NewCreateWeChatQRLoginReqBuilder creates a request builder for CreateWeChatQRLogin.
 func NewCreateWeChatQRLoginReqBuilder() *CreateWeChatQRLoginReqBuilder {
 	return &CreateWeChatQRLoginReqBuilder{req: &CreateWeChatQRLoginReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// DeviceID sets the "x-device-id" header parameter: 发起扫码的浏览器配置实例
+func (b *CreateWeChatQRLoginReqBuilder) DeviceID(v string) *CreateWeChatQRLoginReqBuilder {
+	b.req.headers["x-device-id"] = v
+	return b
+}
+
+// DeviceName sets the "x-device-name" header parameter.
+func (b *CreateWeChatQRLoginReqBuilder) DeviceName(v string) *CreateWeChatQRLoginReqBuilder {
+	b.req.headers["x-device-name"] = v
+	return b
 }
 
 // Body sets the request body.
@@ -2860,6 +2885,12 @@ func NewDeviceAuthorizationReqBuilder() *DeviceAuthorizationReqBuilder {
 	return &DeviceAuthorizationReqBuilder{req: &DeviceAuthorizationReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
+// Body sets the request body.
+func (b *DeviceAuthorizationReqBuilder) Body(body *models.DeviceAuthorizationRequestBody) *DeviceAuthorizationReqBuilder {
+	b.req.body = body
+	return b
+}
+
 // Build finalizes the request.
 func (b *DeviceAuthorizationReqBuilder) Build() *DeviceAuthorizationReq { return b.req }
 
@@ -2872,7 +2903,7 @@ type DeviceAuthorizationResp struct {
 // DeviceAuthorization: hduhelp-cli设备授权
 func (s *Service) DeviceAuthorization(ctx context.Context, req *DeviceAuthorizationReq, opts ...core.RequestOption) (*DeviceAuthorizationResp, error) {
 	resp := &DeviceAuthorizationResp{}
-	err := s.config.Do(ctx, &core.APIReq{
+	err := s.config.DoForm(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
 		PathTemplate: "/hduhelp-neo/open-apis/auth/device-authorization",
 		PathParams:   req.pathParams,
@@ -2990,6 +3021,12 @@ func NewAuthenAccessTokenReqBuilder() *AuthenAccessTokenReqBuilder {
 	return &AuthenAccessTokenReqBuilder{req: &AuthenAccessTokenReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
+// Body sets the request body.
+func (b *AuthenAccessTokenReqBuilder) Body(body *models.AuthenAccessTokenRequestBody) *AuthenAccessTokenReqBuilder {
+	b.req.body = body
+	return b
+}
+
 // Build finalizes the request.
 func (b *AuthenAccessTokenReqBuilder) Build() *AuthenAccessTokenReq { return b.req }
 
@@ -3003,7 +3040,7 @@ type AuthenAccessTokenResp struct {
 // AuthenAccessToken: 授权码换 user_access_token
 func (s *Service) AuthenAccessToken(ctx context.Context, req *AuthenAccessTokenReq, opts ...core.RequestOption) (*AuthenAccessTokenResp, error) {
 	resp := &AuthenAccessTokenResp{}
-	err := s.config.Do(ctx, &core.APIReq{
+	err := s.config.DoForm(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
 		PathTemplate: "/hduhelp-neo/open-apis/authen/access-token",
 		PathParams:   req.pathParams,
