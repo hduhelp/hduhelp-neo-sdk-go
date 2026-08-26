@@ -228,6 +228,18 @@ func (b *ClassQuerySearchReqBuilder) From(v int32) *ClassQuerySearchReqBuilder {
 	return b
 }
 
+// SchoolYear sets the "schoolYear" query parameter.
+func (b *ClassQuerySearchReqBuilder) SchoolYear(v string) *ClassQuerySearchReqBuilder {
+	b.req.queryParams["schoolYear"] = v
+	return b
+}
+
+// Semester sets the "semester" query parameter.
+func (b *ClassQuerySearchReqBuilder) Semester(v int32) *ClassQuerySearchReqBuilder {
+	b.req.queryParams["semester"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
 // Build finalizes the request.
 func (b *ClassQuerySearchReqBuilder) Build() *ClassQuerySearchReq { return b.req }
 
@@ -470,6 +482,104 @@ func (s *Service) Course(ctx context.Context, req *CourseReq, opts ...core.Reque
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/academic/course",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// GetCourseSimulationReq is the request for GetCourseSimulation.
+type GetCourseSimulationReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// GetCourseSimulationReqBuilder builds a GetCourseSimulationReq with a fluent setter per field.
+type GetCourseSimulationReqBuilder struct{ req *GetCourseSimulationReq }
+
+// NewGetCourseSimulationReqBuilder creates a request builder for GetCourseSimulation.
+func NewGetCourseSimulationReqBuilder() *GetCourseSimulationReqBuilder {
+	return &GetCourseSimulationReqBuilder{req: &GetCourseSimulationReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// SchoolYear sets the "schoolYear" query parameter: Required school year in YYYY-YYYY form.
+func (b *GetCourseSimulationReqBuilder) SchoolYear(v string) *GetCourseSimulationReqBuilder {
+	b.req.queryParams["schoolYear"] = v
+	return b
+}
+
+// Semester sets the "semester" query parameter: Required semester number (1, 2, or 3).
+func (b *GetCourseSimulationReqBuilder) Semester(v int32) *GetCourseSimulationReqBuilder {
+	b.req.queryParams["semester"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *GetCourseSimulationReqBuilder) Build() *GetCourseSimulationReq { return b.req }
+
+// GetCourseSimulationResp is the response for GetCourseSimulation.
+type GetCourseSimulationResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.CourseSimulationData `json:"data"`
+}
+
+// GetCourseSimulation: 获取模拟选课方案
+func (s *Service) GetCourseSimulation(ctx context.Context, req *GetCourseSimulationReq, opts ...core.RequestOption) (*GetCourseSimulationResp, error) {
+	resp := &GetCourseSimulationResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/course-simulation",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ReplaceCourseSimulationReq is the request for ReplaceCourseSimulation.
+type ReplaceCourseSimulationReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ReplaceCourseSimulationReqBuilder builds a ReplaceCourseSimulationReq with a fluent setter per field.
+type ReplaceCourseSimulationReqBuilder struct{ req *ReplaceCourseSimulationReq }
+
+// NewReplaceCourseSimulationReqBuilder creates a request builder for ReplaceCourseSimulation.
+func NewReplaceCourseSimulationReqBuilder() *ReplaceCourseSimulationReqBuilder {
+	return &ReplaceCourseSimulationReqBuilder{req: &ReplaceCourseSimulationReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *ReplaceCourseSimulationReqBuilder) Body(body *models.ReplaceCourseSimulationRequestBody) *ReplaceCourseSimulationReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *ReplaceCourseSimulationReqBuilder) Build() *ReplaceCourseSimulationReq { return b.req }
+
+// ReplaceCourseSimulationResp is the response for ReplaceCourseSimulation.
+type ReplaceCourseSimulationResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.CourseSimulationData `json:"data"`
+}
+
+// ReplaceCourseSimulation: 原子替换模拟选课方案
+func (s *Service) ReplaceCourseSimulation(ctx context.Context, req *ReplaceCourseSimulationReq, opts ...core.RequestOption) (*ReplaceCourseSimulationResp, error) {
+	resp := &ReplaceCourseSimulationResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/academic/course-simulation",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

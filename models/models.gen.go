@@ -1715,6 +1715,7 @@ type ClassInfo struct {
 	ClassList         *string  `json:"classList,omitempty"`
 	ClassName         *string  `json:"className,omitempty"`
 	ClassTime         *string  `json:"classTime,omitempty"`
+	CourseAffiliation *string  `json:"courseAffiliation,omitempty"`
 	CourseID          *string  `json:"courseID,omitempty"`
 	CourseName        *string  `json:"courseName,omitempty"`
 	CourseNature      *string  `json:"courseNature,omitempty"`
@@ -2059,6 +2060,65 @@ type CourseScheduleSlot struct {
 	StartTime  *string  `json:"startTime,omitempty"`
 	WeekDay    *int32   `json:"weekDay,omitempty"`
 	Weeks      *[]int32 `json:"weeks,omitempty"`
+}
+
+// CourseSimulationCourse defines model for CourseSimulationCourse.
+type CourseSimulationCourse struct {
+	ClassID           string                 `json:"classID"`
+	ClassName         string                 `json:"className"`
+	ClassTime         string                 `json:"classTime"`
+	Classroom         string                 `json:"classroom"`
+	CourseID          string                 `json:"courseID"`
+	CourseName        string                 `json:"courseName"`
+	Credit            float64                `json:"credit"`
+	DuplicateOfActual bool                   `json:"duplicateOfActual"`
+	Effective         bool                   `json:"effective"`
+	ScheduleKnown     bool                   `json:"scheduleKnown"`
+	Slots             []CourseSimulationSlot `json:"slots"`
+	Source            string                 `json:"source"`
+	State             string                 `json:"state"`
+	TeacherName       string                 `json:"teacherName"`
+}
+
+// CourseSimulationData defines model for CourseSimulationData.
+type CourseSimulationData struct {
+	ActualCourses    []CourseSimulationCourse `json:"actualCourses"`
+	EffectiveCourses []CourseSimulationCourse `json:"effectiveCourses"`
+	Revision         int64                    `json:"revision"`
+	SchemaVersion    int32                    `json:"schemaVersion"`
+	SchoolYear       string                   `json:"schoolYear"`
+	Semester         int32                    `json:"semester"`
+	SimulationItems  []CourseSimulationItem   `json:"simulationItems"`
+}
+
+// CourseSimulationItem defines model for CourseSimulationItem.
+type CourseSimulationItem struct {
+	ClassID           string `json:"classID"`
+	DuplicateOfActual bool   `json:"duplicateOfActual"`
+	Intent            string `json:"intent"`
+	ScheduleKnown     bool   `json:"scheduleKnown"`
+}
+
+// CourseSimulationReplaceItem defines model for CourseSimulationReplaceItem.
+type CourseSimulationReplaceItem struct {
+	ClassID string `json:"classID"`
+	Intent  string `json:"intent"`
+}
+
+// CourseSimulationResponseBody defines model for CourseSimulationResponseBody.
+type CourseSimulationResponseBody struct {
+	Code int64                `json:"code"`
+	Data CourseSimulationData `json:"data"`
+	Msg  string               `json:"msg"`
+}
+
+// CourseSimulationSlot ---------------------------------------------------------------------------
+// 理想课表 / 模拟选课（只写 Neo PostgreSQL，不写学校教务系统）
+// ---------------------------------------------------------------------------
+type CourseSimulationSlot struct {
+	Section int32 `json:"section"`
+	Week    int32 `json:"week"`
+	Weekday int32 `json:"weekday"`
 }
 
 // CrawlRunInfo defines model for CrawlRunInfo.
@@ -5725,6 +5785,14 @@ type RenamePolicyProfileRequestBody struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// ReplaceCourseSimulationRequestBody defines model for ReplaceCourseSimulationRequestBody.
+type ReplaceCourseSimulationRequestBody struct {
+	ExpectedRevision int64                         `json:"expectedRevision"`
+	Items            []CourseSimulationReplaceItem `json:"items"`
+	SchoolYear       string                        `json:"schoolYear"`
+	Semester         int32                         `json:"semester"`
+}
+
 // ReplayTaskData defines model for ReplayTaskData.
 type ReplayTaskData struct {
 	Replayed *bool             `json:"replayed,omitempty"`
@@ -8053,9 +8121,11 @@ type AcademicServiceClassQueryFavSetParams struct {
 
 // AcademicServiceClassQuerySearchParams defines parameters for AcademicServiceClassQuerySearch.
 type AcademicServiceClassQuerySearchParams struct {
-	Query *string `form:"query,omitempty" json:"query,omitempty"`
-	Size  *int32  `form:"size,omitempty" json:"size,omitempty"`
-	From  *int32  `form:"from,omitempty" json:"from,omitempty"`
+	Query      *string `form:"query,omitempty" json:"query,omitempty"`
+	Size       *int32  `form:"size,omitempty" json:"size,omitempty"`
+	From       *int32  `form:"from,omitempty" json:"from,omitempty"`
+	SchoolYear *string `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
+	Semester   *int32  `form:"semester,omitempty" json:"semester,omitempty"`
 }
 
 // AcademicServiceGetClassroomsParams defines parameters for AcademicServiceGetClassrooms.
@@ -8079,6 +8149,15 @@ type AcademicServiceClassroomUsageParams struct {
 // AcademicServiceCourseParams defines parameters for AcademicServiceCourse.
 type AcademicServiceCourseParams struct {
 	Id *[]string `form:"id,omitempty" json:"id,omitempty"`
+}
+
+// AcademicServiceGetCourseSimulationParams defines parameters for AcademicServiceGetCourseSimulation.
+type AcademicServiceGetCourseSimulationParams struct {
+	// SchoolYear Required school year in YYYY-YYYY form.
+	SchoolYear string `form:"schoolYear" json:"schoolYear"`
+
+	// Semester Required semester number (1, 2, or 3).
+	Semester int32 `form:"semester" json:"semester"`
 }
 
 // AcademicServiceStudentBirthdaysParams defines parameters for AcademicServiceStudentBirthdays.
@@ -9367,6 +9446,9 @@ type CampusLifeServiceListVolunteerActivitiesParams struct {
 
 // AcademicServiceClassQueryFavSetJSONRequestBody defines body for AcademicServiceClassQueryFavSet for application/json ContentType.
 type AcademicServiceClassQueryFavSetJSONRequestBody = ClassQueryFavSetRequestBody
+
+// AcademicServiceReplaceCourseSimulationJSONRequestBody defines body for AcademicServiceReplaceCourseSimulation for application/json ContentType.
+type AcademicServiceReplaceCourseSimulationJSONRequestBody = ReplaceCourseSimulationRequestBody
 
 // AdminServiceSetAppEnabledJSONRequestBody defines body for AdminServiceSetAppEnabled for application/json ContentType.
 type AdminServiceSetAppEnabledJSONRequestBody = SetAppEnabledRequestBody

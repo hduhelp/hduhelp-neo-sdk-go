@@ -288,7 +288,7 @@ paths:
             tags:
                 - AcademicService
             summary: 选课检索
-            description: 按关键词检索开课班级，支持分页（size/from）
+            description: 按关键词检索开课班级，支持学年学期过滤与分页（size/from）
             operationId: AcademicService_ClassQuerySearch
             security:
                 - BearerAuth: []
@@ -303,6 +303,15 @@ paths:
                     type: integer
                     format: int32
                 - name: from
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: schoolYear
+                  in: query
+                  schema:
+                    type: string
+                - name: semester
                   in: query
                   schema:
                     type: integer
@@ -434,6 +443,65 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/CourseResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/academic/course-simulation:
+        get:
+            tags:
+                - AcademicService
+            summary: 获取模拟选课方案
+            description: 聚合本人真实课表与 Neo 中的模拟选课/模拟退课方案，不会修改学校教务数据
+            operationId: AcademicService_GetCourseSimulation
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: schoolYear
+                  in: query
+                  description: Required school year in YYYY-YYYY form.
+                  required: true
+                  schema:
+                    type: string
+                - name: semester
+                  in: query
+                  description: Required semester number (1, 2, or 3).
+                  required: true
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CourseSimulationResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+        put:
+            tags:
+                - AcademicService
+            summary: 原子替换模拟选课方案
+            description: 使用 expectedRevision 原子替换本人整份模拟 ENROLL/DROP 方案；只写 Neo PostgreSQL，不会执行学校选课或退课
+            operationId: AcademicService_ReplaceCourseSimulation
+            security:
+                - BearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ReplaceCourseSimulationRequestBody'
+            responses:
+                "409":
+                    description: Revision conflict; response data contains the latest complete aggregate.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CourseSimulationResponseBody'
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CourseSimulationResponseBody'
+            x-hduhelp-http: {'auth': 'bearer', 'request_body_required': true, 'conflict_response_schema': 'CourseSimulationResponseBody'}
     /hduhelp-neo/academic/directory/birthdays:
         get:
             tags:
@@ -13374,6 +13442,8 @@ components:
                     type: string
                 selectedStatus:
                     type: string
+                courseAffiliation:
+                    type: string
             description: |-
                 ===== 选课查询（搜索 / 映射 / 批量 / 详情 / 收藏）=====
                 ClassInfo 一门开课班级的检索信息。
@@ -13878,6 +13948,150 @@ components:
             description: |-
                 ---- 课程群列表 (course groups) ----
                 课程的一个排课段（一次课）：星期、周次/节次数组、地点与起止时间。
+        CourseSimulationCourse:
+            required:
+                - classID
+                - courseID
+                - courseName
+                - className
+                - teacherName
+                - credit
+                - classroom
+                - classTime
+                - slots
+                - source
+                - state
+                - effective
+                - duplicateOfActual
+                - scheduleKnown
+            type: object
+            properties:
+                classID:
+                    type: string
+                courseID:
+                    type: string
+                courseName:
+                    type: string
+                className:
+                    type: string
+                teacherName:
+                    type: string
+                credit:
+                    type: number
+                    format: double
+                classroom:
+                    type: string
+                classTime:
+                    type: string
+                slots:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/CourseSimulationSlot'
+                source:
+                    type: string
+                state:
+                    type: string
+                effective:
+                    type: boolean
+                duplicateOfActual:
+                    type: boolean
+                scheduleKnown:
+                    type: boolean
+        CourseSimulationData:
+            required:
+                - schemaVersion
+                - schoolYear
+                - semester
+                - revision
+                - actualCourses
+                - simulationItems
+                - effectiveCourses
+            type: object
+            properties:
+                schemaVersion:
+                    type: integer
+                    format: int32
+                schoolYear:
+                    type: string
+                semester:
+                    type: integer
+                    format: int32
+                revision:
+                    type: integer
+                    format: int64
+                actualCourses:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/CourseSimulationCourse'
+                simulationItems:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/CourseSimulationItem'
+                effectiveCourses:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/CourseSimulationCourse'
+        CourseSimulationItem:
+            required:
+                - classID
+                - intent
+                - duplicateOfActual
+                - scheduleKnown
+            type: object
+            properties:
+                classID:
+                    type: string
+                intent:
+                    type: string
+                duplicateOfActual:
+                    type: boolean
+                scheduleKnown:
+                    type: boolean
+        CourseSimulationReplaceItem:
+            required:
+                - classID
+                - intent
+            type: object
+            properties:
+                classID:
+                    maxLength: 64
+                    type: string
+                intent:
+                    type: string
+        CourseSimulationResponseBody:
+            required:
+                - data
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/CourseSimulationData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        CourseSimulationSlot:
+            required:
+                - week
+                - weekday
+                - section
+            type: object
+            properties:
+                week:
+                    type: integer
+                    format: int32
+                weekday:
+                    type: integer
+                    format: int32
+                section:
+                    type: integer
+                    format: int32
+            description: |-
+                ---------------------------------------------------------------------------
+                理想课表 / 模拟选课（只写 Neo PostgreSQL，不写学校教务系统）
+                ---------------------------------------------------------------------------
         CrawlRunInfo:
             type: object
             properties:
@@ -19209,6 +19423,27 @@ components:
             properties:
                 name:
                     type: string
+        ReplaceCourseSimulationRequestBody:
+            required:
+                - schoolYear
+                - semester
+                - expectedRevision
+                - items
+            type: object
+            properties:
+                schoolYear:
+                    type: string
+                semester:
+                    type: integer
+                    format: int32
+                expectedRevision:
+                    type: integer
+                    format: int64
+                items:
+                    maxItems: 100
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/CourseSimulationReplaceItem'
         ReplayTaskData:
             type: object
             properties:
