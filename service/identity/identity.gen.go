@@ -1138,6 +1138,52 @@ func (s *Service) ResetPassword(ctx context.Context, req *ResetPasswordReq, opts
 	return resp, err
 }
 
+// VerifyPasswordResetCodeReq is the request for VerifyPasswordResetCode.
+type VerifyPasswordResetCodeReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// VerifyPasswordResetCodeReqBuilder builds a VerifyPasswordResetCodeReq with a fluent setter per field.
+type VerifyPasswordResetCodeReqBuilder struct{ req *VerifyPasswordResetCodeReq }
+
+// NewVerifyPasswordResetCodeReqBuilder creates a request builder for VerifyPasswordResetCode.
+func NewVerifyPasswordResetCodeReqBuilder() *VerifyPasswordResetCodeReqBuilder {
+	return &VerifyPasswordResetCodeReqBuilder{req: &VerifyPasswordResetCodeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *VerifyPasswordResetCodeReqBuilder) Body(body *models.VerifyPasswordResetCodeRequestBody) *VerifyPasswordResetCodeReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *VerifyPasswordResetCodeReqBuilder) Build() *VerifyPasswordResetCodeReq { return b.req }
+
+// VerifyPasswordResetCodeResp is the response for VerifyPasswordResetCode.
+type VerifyPasswordResetCodeResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.PasswordResetVerificationData `json:"data"`
+}
+
+// VerifyPasswordResetCode: 校验找回密码验证码
+func (s *Service) VerifyPasswordResetCode(ctx context.Context, req *VerifyPasswordResetCodeReq, opts ...core.RequestOption) (*VerifyPasswordResetCodeResp, error) {
+	resp := &VerifyPasswordResetCodeResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/identity/auth/password/reset/verify",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // GetServiceAuthorizationStatusReq is the request for GetServiceAuthorizationStatus.
 type GetServiceAuthorizationStatusReq struct {
 	pathParams  map[string]string

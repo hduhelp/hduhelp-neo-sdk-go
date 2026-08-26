@@ -5004,6 +5004,18 @@ type PATScopeItem struct {
 	SupportsUat *bool   `json:"supportsUat,omitempty"`
 }
 
+// PasswordResetVerificationData defines model for PasswordResetVerificationData.
+type PasswordResetVerificationData struct {
+	ResetTicket *string `json:"resetTicket,omitempty"`
+}
+
+// PasswordResetVerificationResponseBody defines model for PasswordResetVerificationResponseBody.
+type PasswordResetVerificationResponseBody struct {
+	Code *int64                         `json:"code,omitempty"`
+	Data *PasswordResetVerificationData `json:"data,omitempty"`
+	Msg  *string                        `json:"msg,omitempty"`
+}
+
 // PersonInfo ---------------------------------------------------------------------------
 // 人员 / 学生基本信息
 // ---------------------------------------------------------------------------
@@ -5803,6 +5815,7 @@ type ResetOperatorPasswordResponseBody struct {
 type ResetPasswordRequestBody struct {
 	Code        *string `json:"code,omitempty"`
 	NewPassword *string `json:"newPassword,omitempty"`
+	ResetTicket *string `json:"resetTicket,omitempty"`
 	Target      *string `json:"target,omitempty"`
 
 	// Type "sms" | "email"
@@ -7980,6 +7993,15 @@ type VenueDatesResponseBody struct {
 	Msg  *string         `json:"msg,omitempty"`
 }
 
+// VerifyPasswordResetCodeRequestBody defines model for VerifyPasswordResetCodeRequestBody.
+type VerifyPasswordResetCodeRequestBody struct {
+	Code   *string `json:"code,omitempty"`
+	Target *string `json:"target,omitempty"`
+
+	// Type "sms" | "email"
+	Type *string `json:"type,omitempty"`
+}
+
 // WeatherCard WeatherCard 是信息流天气卡片负载。
 type WeatherCard struct {
 	// Aqi 空气质量指数
@@ -9668,6 +9690,9 @@ type IdentityServiceChangePasswordJSONRequestBody = ChangePasswordRequestBody
 
 // IdentityServiceResetPasswordJSONRequestBody defines body for IdentityServiceResetPassword for application/json ContentType.
 type IdentityServiceResetPasswordJSONRequestBody = ResetPasswordRequestBody
+
+// IdentityServiceVerifyPasswordResetCodeJSONRequestBody defines body for IdentityServiceVerifyPasswordResetCode for application/json ContentType.
+type IdentityServiceVerifyPasswordResetCodeJSONRequestBody = VerifyPasswordResetCodeRequestBody
 
 // IdentityServiceAuthorizeAllServicesJSONRequestBody defines body for IdentityServiceAuthorizeAllServices for application/json ContentType.
 type IdentityServiceAuthorizeAllServicesJSONRequestBody = AuthorizeAllServicesRequestBody

@@ -7455,7 +7455,7 @@ paths:
             tags:
                 - IdentityService
             summary: 重置密码
-            description: 通过手机号或邮箱验证码重置用户密码。需要提供手机号或邮箱、验证码和新密码。忘记密码时使用。
+            description: 通过短时一次性重置凭证设置新密码；仍兼容直接提交手机号或邮箱、验证码和新密码的旧客户端。
             operationId: IdentityService_ResetPassword
             requestBody:
                 description: 重置密码（忘记密码，凭验证码）
@@ -7470,6 +7470,26 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/CommonResponseBody'
+    /hduhelp-neo/identity/auth/password/reset/verify:
+        post:
+            tags:
+                - IdentityService
+            summary: 校验找回密码验证码
+            description: 校验邮箱或手机验证码，成功后签发短时、一次性的密码重置凭证。
+            operationId: IdentityService_VerifyPasswordResetCode
+            requestBody:
+                description: 校验找回密码验证码，成功后签发短时、一次性的重置凭证
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/VerifyPasswordResetCodeRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PasswordResetVerificationResponseBody'
     /hduhelp-neo/identity/auth/service-authorizations:
         get:
             tags:
@@ -18134,6 +18154,21 @@ components:
                     type: boolean
                 supportsTat:
                     type: boolean
+        PasswordResetVerificationData:
+            type: object
+            properties:
+                resetTicket:
+                    type: string
+        PasswordResetVerificationResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/PasswordResetVerificationData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         PersonInfo:
             type: object
             properties:
@@ -19280,6 +19315,8 @@ components:
                 type:
                     type: string
                     description: '"sms" | "email"'
+                resetTicket:
+                    type: string
         ResolveAppealRequestBody:
             type: object
             properties:
@@ -22497,6 +22534,16 @@ components:
                     format: int64
                 msg:
                     type: string
+        VerifyPasswordResetCodeRequestBody:
+            type: object
+            properties:
+                target:
+                    type: string
+                code:
+                    type: string
+                type:
+                    type: string
+                    description: '"sms" | "email"'
         WeatherCard:
             type: object
             properties:
