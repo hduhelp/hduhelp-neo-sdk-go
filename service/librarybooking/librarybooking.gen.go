@@ -171,7 +171,7 @@ func (b *ListSpaceCategoriesReqBuilder) Build() *ListSpaceCategoriesReq { return
 type ListSpaceCategoriesResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data []models.Category `json:"data"`
+	Data *models.LibraryBookingCategoryListData `json:"data"`
 }
 
 // ListSpaceCategories: 查询图书馆座位空间分类

@@ -8653,7 +8653,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/CategoryListResponseBody'
+                                $ref: '#/components/schemas/LibraryBookingCategoryListResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/library-booking/options:
         get:
@@ -13285,10 +13285,10 @@ components:
         CategoryListData:
             type: object
             properties:
-                categories:
+                list:
                     type: array
                     items:
-                        $ref: '#/components/schemas/SpaceCategory'
+                        $ref: '#/components/schemas/Category'
         CategoryListResponseBody:
             type: object
             properties:
@@ -17068,6 +17068,23 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/LibraryAttendanceData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        LibraryBookingCategoryListData:
+            type: object
+            properties:
+                categories:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SpaceCategory'
+        LibraryBookingCategoryListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/LibraryBookingCategoryListData'
                 code:
                     type: integer
                     format: int64

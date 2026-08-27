@@ -1620,7 +1620,7 @@ type Category struct {
 
 // CategoryListData defines model for CategoryListData.
 type CategoryListData struct {
-	Categories *[]SpaceCategory `json:"categories,omitempty"`
+	List *[]Category `json:"list,omitempty"`
 }
 
 // CategoryListResponseBody defines model for CategoryListResponseBody.
@@ -4206,6 +4206,18 @@ type LibraryAttendanceResponseBody struct {
 	Code *int64                 `json:"code,omitempty"`
 	Data *LibraryAttendanceData `json:"data,omitempty"`
 	Msg  *string                `json:"msg,omitempty"`
+}
+
+// LibraryBookingCategoryListData defines model for LibraryBookingCategoryListData.
+type LibraryBookingCategoryListData struct {
+	Categories *[]SpaceCategory `json:"categories,omitempty"`
+}
+
+// LibraryBookingCategoryListResponseBody defines model for LibraryBookingCategoryListResponseBody.
+type LibraryBookingCategoryListResponseBody struct {
+	Code *int64                          `json:"code,omitempty"`
+	Data *LibraryBookingCategoryListData `json:"data,omitempty"`
+	Msg  *string                         `json:"msg,omitempty"`
 }
 
 // LibraryReadingData defines model for LibraryReadingData.
