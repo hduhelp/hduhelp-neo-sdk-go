@@ -3947,6 +3947,10 @@ paths:
             security:
                 - OperatorBearerAuth: []
             parameters:
+                - name: published
+                  in: query
+                  schema:
+                    type: boolean
                 - name: page
                   in: query
                   schema:
@@ -3964,6 +3968,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AdminNoticePageResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
         post:
             tags:
                 - AdminNoticeService
@@ -3971,6 +3976,7 @@ paths:
             security:
                 - OperatorBearerAuth: []
             requestBody:
+                required: true
                 content:
                     application/json:
                         schema:
@@ -3982,6 +3988,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AdminNoticeResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
     /hduhelp-neo/admin/notices/{id}:
         get:
             tags:
@@ -4002,6 +4009,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AdminNoticeResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
         put:
             tags:
                 - AdminNoticeService
@@ -4015,6 +4023,7 @@ paths:
                   schema:
                     type: string
             requestBody:
+                required: true
                 content:
                     application/json:
                         schema:
@@ -4026,6 +4035,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AdminNoticeResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
         delete:
             tags:
                 - AdminNoticeService
@@ -4045,6 +4055,49 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/DeleteAdminNoticeResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/notices/{id}/audience:
+        get:
+            tags:
+                - AdminNoticeService
+            operationId: AdminNoticeService_ListAdminNoticeAudience
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: status
+                  in: query
+                  schema:
+                    enum:
+                        - all
+                        - pending_ack
+                        - acknowledged
+                        - expired
+                        - read
+                        - unread
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminNoticeAudiencePageResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/notices/{id}/publish:
         post:
             tags:
@@ -4065,6 +4118,28 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PublishAdminNoticeResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/notices/{id}/validate:
+        post:
+            tags:
+                - AdminNoticeService
+            operationId: AdminNoticeService_ValidateAdminNoticePublication
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidateAdminNoticeResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/notifications/deliveries/{id}:
         get:
             tags:
@@ -4085,6 +4160,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/DeliveryResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/notifications/policy-profiles:
         get:
             tags:
@@ -4095,6 +4171,7 @@ paths:
             parameters:
                 - name: topic_key
                   in: query
+                  required: true
                   schema:
                     type: string
                 - name: include_disabled
@@ -4108,6 +4185,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PolicyProfilesResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
         post:
             tags:
                 - NotificationService
@@ -4115,6 +4193,7 @@ paths:
             security:
                 - OperatorBearerAuth: []
             requestBody:
+                required: true
                 content:
                     application/json:
                         schema:
@@ -4126,6 +4205,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PolicyProfileResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
     /hduhelp-neo/admin/notifications/policy-profiles/{id}:
         get:
             tags:
@@ -4146,6 +4226,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PolicyProfileResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
         delete:
             tags:
                 - NotificationService
@@ -4165,6 +4246,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PolicyProfileResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/notifications/policy-profiles/{id}/default:
         put:
             tags:
@@ -4185,6 +4267,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PolicyProfileResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/notifications/policy-profiles/{id}/name:
         put:
             tags:
@@ -4199,6 +4282,7 @@ paths:
                   schema:
                     type: string
             requestBody:
+                required: true
                 content:
                     application/json:
                         schema:
@@ -4210,6 +4294,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PolicyProfileResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
     /hduhelp-neo/admin/notifications/policy-profiles/{id}/policy:
         put:
             tags:
@@ -4224,6 +4309,7 @@ paths:
                   schema:
                     type: string
             requestBody:
+                required: true
                 content:
                     application/json:
                         schema:
@@ -4235,6 +4321,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PolicyProfileResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
     /hduhelp-neo/admin/notifications/providers/test:
         post:
             tags:
@@ -4243,6 +4330,7 @@ paths:
             security:
                 - OperatorBearerAuth: []
             requestBody:
+                required: true
                 content:
                     application/json:
                         schema:
@@ -4254,6 +4342,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ProviderTestResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
     /hduhelp-neo/admin/notifications/runtime:
         get:
             tags:
@@ -4268,6 +4357,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/RuntimeStatusResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/notifications/tasks:
         get:
             tags:
@@ -4291,10 +4381,21 @@ paths:
                 - name: status
                   in: query
                   schema:
+                    enum:
+                        - pending
+                        - running
+                        - completed
                     type: string
                 - name: result
                   in: query
                   schema:
+                    enum:
+                        - success
+                        - partial_failed
+                        - failed
+                        - skipped
+                        - cancelled
+                        - expired
                     type: string
                 - name: page
                   in: query
@@ -4331,6 +4432,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/TaskPageResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/notifications/tasks/{id}:
         get:
             tags:
@@ -4351,6 +4453,34 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/TaskResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/notifications/tasks/{id}/cancel:
+        post:
+            tags:
+                - NotificationService
+            operationId: NotificationService_CancelNotificationTask
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CancelTaskRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CancelTaskResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
     /hduhelp-neo/admin/notifications/tasks/{id}/replay:
         post:
             tags:
@@ -4365,6 +4495,7 @@ paths:
                   schema:
                     type: string
             requestBody:
+                required: true
                 content:
                     application/json:
                         schema:
@@ -4376,6 +4507,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ReplayTaskResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
     /hduhelp-neo/admin/notifications/tasks/{taskId}/deliveries:
         get:
             tags:
@@ -4392,10 +4524,25 @@ paths:
                 - name: status
                   in: query
                   schema:
+                    enum:
+                        - pending
+                        - processing
+                        - succeeded
+                        - failed
+                        - skipped
                     type: string
                 - name: failure_kind
                   in: query
                   schema:
+                    enum:
+                        - permanent
+                        - unreachable
+                        - provider
+                        - uncertain
+                        - retry_exhausted
+                        - reconcile_exhausted
+                        - expired
+                        - dead_letter_parked
                     type: string
                 - name: page
                   in: query
@@ -4414,6 +4561,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/DeliveryPageResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/notifications/test:
         post:
             tags:
@@ -4422,6 +4570,7 @@ paths:
             security:
                 - OperatorBearerAuth: []
             requestBody:
+                required: true
                 content:
                     application/json:
                         schema:
@@ -4433,6 +4582,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/NotificationChainTestResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
     /hduhelp-neo/admin/notifications/topics/configurations:
         get:
             tags:
@@ -4447,6 +4597,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/NotificationTopicConfigurationsResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/notifications/topics/{topicKey}/capabilities:
         get:
             tags:
@@ -4467,6 +4618,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/TopicCapabilitiesResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/notifications/topics/{topicKey}/config:
         put:
             tags:
@@ -4481,6 +4633,7 @@ paths:
                   schema:
                     type: string
             requestBody:
+                required: true
                 content:
                     application/json:
                         schema:
@@ -4492,6 +4645,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/NotificationTopicConfigurationResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
     /hduhelp-neo/admin/notifications/topics/{topicKey}/validate-policy:
         post:
             tags:
@@ -4506,6 +4660,7 @@ paths:
                   schema:
                     type: string
             requestBody:
+                required: true
                 content:
                     application/json:
                         schema:
@@ -4517,6 +4672,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ValidatePolicyResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
     /hduhelp-neo/admin/operators:
         get:
             tags:
@@ -10481,6 +10637,7 @@ paths:
                 - name: id
                   in: query
                   description: 渠道 id，定位集合内单条订阅
+                  required: true
                   schema:
                     type: string
             requestBody:
@@ -10500,13 +10657,14 @@ paths:
             tags:
                 - SubscriptionService
             summary: 订阅提醒渠道
-            description: 为当前登录用户开启指定提醒渠道(幂等)，并写入渠道默认偏好与订阅流水
+            description: 为当前登录用户原子地开启指定提醒渠道并写入初始偏好与订阅流水
             operationId: SubscriptionService_Subscribe
             security:
                 - BearerAuth: []
             parameters:
                 - name: channel
                   in: query
+                  required: true
                   schema:
                     type: string
             requestBody:
@@ -10533,6 +10691,7 @@ paths:
             parameters:
                 - name: id
                   in: query
+                  required: true
                   schema:
                     type: string
             responses:
@@ -10553,6 +10712,7 @@ paths:
             security:
                 - BearerAuth: []
             requestBody:
+                required: true
                 content:
                     application/json:
                         schema:
@@ -10564,7 +10724,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SimpleResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
+            x-hduhelp-http: {'auth': 'bearer', 'request_body_required': true}
     /hduhelp-neo/subscriptions/{channel}/delivery-preference:
         get:
             tags:
@@ -10603,6 +10763,7 @@ paths:
                   schema:
                     type: string
             requestBody:
+                required: true
                 content:
                     application/json:
                         schema:
@@ -10614,7 +10775,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/DeliveryPreferenceResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
+            x-hduhelp-http: {'auth': 'bearer', 'request_body_required': true}
         delete:
             tags:
                 - SubscriptionService
@@ -11559,6 +11720,18 @@ components:
                 msg:
                     type: string
         AdminNotice:
+            required:
+                - id
+                - title
+                - summary
+                - body
+                - requiresAck
+                - targetUserIds
+                - targetCount
+                - publishAt
+                - createdById
+                - createdAt
+                - updatedAt
             type: object
             properties:
                 id:
@@ -11598,7 +11771,79 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/AdminNoticeEvent'
+                publishedAt:
+                    type: integer
+                    format: int64
+                publishedById:
+                    type: string
+                publicationTaskId:
+                    type: string
+                publicationPolicySnapshot:
+                    type: string
+                stats:
+                    $ref: '#/components/schemas/AdminNoticeStats'
+        AdminNoticeAudienceItem:
+            required:
+                - userId
+                - pendingAck
+                - expired
+            type: object
+            properties:
+                userId:
+                    type: string
+                entryId:
+                    type: string
+                readAt:
+                    type: integer
+                    format: int64
+                acknowledgedAt:
+                    type: integer
+                    format: int64
+                pendingAck:
+                    type: boolean
+                expired:
+                    type: boolean
+        AdminNoticeAudiencePage:
+            required:
+                - items
+                - total
+                - page
+                - pageSize
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AdminNoticeAudienceItem'
+                total:
+                    type: integer
+                    format: int64
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+        AdminNoticeAudiencePageResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminNoticeAudiencePage'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AdminNoticeEvent:
+            required:
+                - id
+                - eventType
+                - actorId
+                - detail
+                - createdAt
             type: object
             properties:
                 id:
@@ -11613,6 +11858,11 @@ components:
                     type: integer
                     format: int64
         AdminNoticePage:
+            required:
+                - items
+                - total
+                - page
+                - pageSize
             type: object
             properties:
                 items:
@@ -11629,6 +11879,9 @@ components:
                     type: integer
                     format: int32
         AdminNoticePageResponseBody:
+            required:
+                - code
+                - msg
             type: object
             properties:
                 data:
@@ -11639,6 +11892,9 @@ components:
                 msg:
                     type: string
         AdminNoticeResponseBody:
+            required:
+                - code
+                - msg
             type: object
             properties:
                 data:
@@ -11648,6 +11904,34 @@ components:
                     format: int64
                 msg:
                     type: string
+        AdminNoticeStats:
+            required:
+                - targeted
+                - created
+                - read
+                - acknowledged
+                - pendingAck
+                - expired
+            type: object
+            properties:
+                targeted:
+                    type: integer
+                    format: int32
+                created:
+                    type: integer
+                    format: int32
+                read:
+                    type: integer
+                    format: int32
+                acknowledged:
+                    type: integer
+                    format: int32
+                pendingAck:
+                    type: integer
+                    format: int32
+                expired:
+                    type: integer
+                    format: int32
         AdminPigeonRecallResponseBody:
             type: object
             properties:
@@ -12660,6 +12944,8 @@ components:
                 reason:
                     type: string
         BatchDeliveryPreferenceRequestBody:
+            required:
+                - updates
             type: object
             properties:
                 updates:
@@ -13155,6 +13441,36 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/CancelBookingData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        CancelTaskData:
+            required:
+                - task
+                - cancelled
+            type: object
+            properties:
+                task:
+                    $ref: '#/components/schemas/NotificationTask'
+                cancelled:
+                    type: boolean
+        CancelTaskRequestBody:
+            required:
+                - reason
+            type: object
+            properties:
+                reason:
+                    type: string
+        CancelTaskResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/CancelTaskData'
                 code:
                     type: integer
                     format: int64
@@ -14130,6 +14446,8 @@ components:
                     type: string
                     description: JSON 字符串
         CreateAdminNoticeRequestBody:
+            required:
+                - notice
             type: object
             properties:
                 notice:
@@ -14443,6 +14761,10 @@ components:
                 msg:
                     type: string
         CreatePolicyProfileRequestBody:
+            required:
+                - topic_key
+                - name
+                - policy
             type: object
             properties:
                 topic_key:
@@ -14708,6 +15030,9 @@ components:
                 msg:
                     type: string
         DeleteAdminNoticeResponseBody:
+            required:
+                - code
+                - msg
             type: object
             properties:
                 code:
@@ -14780,11 +15105,21 @@ components:
                 msg:
                     type: string
         DeliveryGroup:
+            required:
+                - key
+                - mode
+                - required
+                - providers
             type: object
             properties:
                 key:
                     type: string
                 mode:
+                    enum:
+                        - primary_only
+                        - fallback
+                        - fanout_all
+                        - fanout_best_effort
                     type: string
                 required:
                     type: boolean
@@ -14793,6 +15128,11 @@ components:
                     items:
                         type: string
         DeliveryPage:
+            required:
+                - items
+                - total
+                - page
+                - pageSize
             type: object
             properties:
                 items:
@@ -14809,6 +15149,9 @@ components:
                     type: integer
                     format: int32
         DeliveryPageResponseBody:
+            required:
+                - code
+                - msg
             type: object
             properties:
                 data:
@@ -14819,6 +15162,10 @@ components:
                 msg:
                     type: string
         DeliveryPolicy:
+            required:
+                - schemaVersion
+                - groups
+                - retry
             type: object
             properties:
                 schemaVersion:
@@ -14831,6 +15178,9 @@ components:
                 retry:
                     $ref: '#/components/schemas/RetryPolicy'
         DeliveryPreference:
+            required:
+                - channel
+                - inherited
             type: object
             properties:
                 channel:
@@ -14850,6 +15200,9 @@ components:
                 inherited:
                     type: boolean
         DeliveryPreferenceResponseBody:
+            required:
+                - code
+                - msg
             type: object
             properties:
                 data:
@@ -14860,13 +15213,23 @@ components:
                 msg:
                     type: string
         DeliveryPreferenceUpdate:
+            required:
+                - channel
             type: object
             properties:
                 channel:
                     type: string
                 provider:
+                    enum:
+                        - wechat_mp
+                        - dingtalk_work
                     type: string
         DeliveryProviderOption:
+            required:
+                - key
+                - name
+                - bound
+                - available
             type: object
             properties:
                 key:
@@ -14880,6 +15243,9 @@ components:
                 unavailableReason:
                     type: string
         DeliveryResponseBody:
+            required:
+                - code
+                - msg
             type: object
             properties:
                 data:
@@ -15118,6 +15484,10 @@ components:
                 msg:
                     type: string
         EditableNotice:
+            required:
+                - title
+                - body
+                - target_user_ids
             type: object
             properties:
                 title:
@@ -17970,9 +18340,34 @@ components:
                 msg:
                     type: string
         NoticeAction:
+            required:
+                - type
             type: object
             properties:
                 type:
+                    enum:
+                        - open_route
+                        - open_url
+                    type: string
+                label:
+                    type: string
+                route:
+                    type: string
+                params:
+                    type: object
+                    additionalProperties:
+                        type: string
+                url:
+                    type: string
+        NotificationAction:
+            required:
+                - type
+            type: object
+            properties:
+                type:
+                    enum:
+                        - open_route
+                        - open_url
                     type: string
                 label:
                     type: string
@@ -17985,11 +18380,20 @@ components:
                 url:
                     type: string
         NotificationChainTestRequestBody:
+            required:
+                - topic_key
+                - mode
+                - target_user_id
+                - title
+                - body
             type: object
             properties:
                 topic_key:
                     type: string
                 mode:
+                    enum:
+                        - diagnose
+                        - send
                     type: string
                 target_user_id:
                     type: string
@@ -18003,7 +18407,22 @@ components:
                     type: object
                     additionalProperties:
                         type: string
+                requires_ack:
+                    type: boolean
+                expires_at:
+                    type: integer
+                    format: int64
+                action:
+                    $ref: '#/components/schemas/NotificationAction'
+                provider_contents:
+                    type: object
+                    additionalProperties:
+                        type: string
         NotificationChainTestResponseBody:
+            required:
+                - data
+                - code
+                - msg
             type: object
             properties:
                 data:
@@ -18014,6 +18433,12 @@ components:
                 msg:
                     type: string
         NotificationChainTestResult:
+            required:
+                - serviceKey
+                - topicKey
+                - mode
+                - status
+                - stages
             type: object
             properties:
                 serviceKey:
@@ -18021,8 +18446,15 @@ components:
                 topicKey:
                     type: string
                 mode:
+                    enum:
+                        - diagnose
+                        - send
                     type: string
                 status:
+                    enum:
+                        - ready
+                        - accepted
+                        - failed
                     type: string
                 taskId:
                     type: string
@@ -18031,6 +18463,10 @@ components:
                     items:
                         $ref: '#/components/schemas/NotificationChainTestStage'
         NotificationChainTestStage:
+            required:
+                - key
+                - name
+                - status
             type: object
             properties:
                 key:
@@ -18038,10 +18474,30 @@ components:
                 name:
                     type: string
                 status:
+                    enum:
+                        - succeeded
+                        - failed
                     type: string
                 message:
                     type: string
         NotificationDelivery:
+            required:
+                - id
+                - taskId
+                - targetType
+                - targetId
+                - status
+                - currentGroupKey
+                - currentProviderKey
+                - currentRetryCount
+                - reconcileAttemptCount
+                - providerResults
+                - dispatchVersion
+                - replayable
+                - createdAt
+                - updatedAt
+                - providerResultsValid
+                - deadLetterRedriveCount
             type: object
             properties:
                 id:
@@ -18053,8 +18509,17 @@ components:
                 targetId:
                     type: string
                 status:
+                    enum:
+                        - pending
+                        - processing
+                        - succeeded
+                        - failed
+                        - skipped
                     type: string
                 nextAction:
+                    enum:
+                        - send
+                        - query
                     type: string
                 availableAt:
                     type: integer
@@ -18072,6 +18537,15 @@ components:
                 providerResults:
                     type: string
                 failureKind:
+                    enum:
+                        - permanent
+                        - unreachable
+                        - provider
+                        - uncertain
+                        - retry_exhausted
+                        - reconcile_exhausted
+                        - expired
+                        - dead_letter_parked
                     type: string
                 errorCode:
                     type: string
@@ -18094,7 +18568,33 @@ components:
                 updatedAt:
                     type: integer
                     format: int64
+                providerResultsValid:
+                    type: boolean
+                providerResultsError:
+                    type: string
+                deadLetterRedriveCount:
+                    type: integer
+                    format: int32
+                deadLetterParkedAt:
+                    type: integer
+                    format: int64
         NotificationLimits:
+            required:
+                - maxTargetsPerTask
+                - maxPayloadBytes
+                - maxContentBytes
+                - maxPersonalizationBytesPerTarget
+                - maxTotalPersonalizationBytes
+                - maxGroups
+                - maxProvidersPerGroup
+                - maxProviderRefs
+                - maxRetriesPerProvider
+                - maxReconcileAttemptsPerProvider
+                - maxReconcileDurationSeconds
+                - maxPlannedProviderActionsPerTask
+                - maxEnabledPolicyProfilesPerOwnerPerTopic
+                - maxPolicyProfileBytes
+                - maxDueOutboxBacklog
             type: object
             properties:
                 maxTargetsPerTask:
@@ -18143,6 +18643,23 @@ components:
                     type: integer
                     format: int32
         NotificationTask:
+            required:
+                - id
+                - topicKey
+                - sourceType
+                - sourceId
+                - businessEventKey
+                - scheduledAt
+                - status
+                - deliveryTotal
+                - deliverySucceeded
+                - deliveryFailed
+                - deliverySkipped
+                - createdByType
+                - createdById
+                - createdAt
+                - updatedAt
+                - requiresAck
             type: object
             properties:
                 id:
@@ -18164,8 +18681,19 @@ components:
                     type: integer
                     format: int64
                 status:
+                    enum:
+                        - pending
+                        - running
+                        - completed
                     type: string
                 result:
+                    enum:
+                        - success
+                        - partial_failed
+                        - failed
+                        - skipped
+                        - cancelled
+                        - expired
                     type: string
                 deliveryTotal:
                     type: integer
@@ -18192,7 +18720,34 @@ components:
                 updatedAt:
                     type: integer
                     format: int64
+                terminalReason:
+                    enum:
+                        - cancelled_by_operator
+                        - expired_before_delivery
+                        - all_deliveries_skipped
+                        - dead_letter_parked
+                    type: string
+                cancelledById:
+                    type: string
+                cancelledAt:
+                    type: integer
+                    format: int64
+                cancellationReason:
+                    type: string
+                title:
+                    type: string
+                requiresAck:
+                    type: boolean
         NotificationTopicConfiguration:
+            required:
+                - topicKey
+                - topicName
+                - serviceKey
+                - serviceName
+                - allowedProviders
+                - allowedModes
+                - configured
+                - valid
             type: object
             properties:
                 topicKey:
@@ -18225,6 +18780,10 @@ components:
                     type: integer
                     format: int64
         NotificationTopicConfigurationResponseBody:
+            required:
+                - data
+                - code
+                - msg
             type: object
             properties:
                 data:
@@ -18235,6 +18794,10 @@ components:
                 msg:
                     type: string
         NotificationTopicConfigurationsResponseBody:
+            required:
+                - data
+                - code
+                - msg
             type: object
             properties:
                 data:
@@ -18519,6 +19082,16 @@ components:
                 message:
                     type: string
         PolicyProfile:
+            required:
+                - id
+                - topicKey
+                - name
+                - ownerType
+                - isDefault
+                - createdAt
+                - updatedAt
+                - policy
+                - valid
             type: object
             properties:
                 id:
@@ -18528,6 +19101,10 @@ components:
                 name:
                     type: string
                 ownerType:
+                    enum:
+                        - system
+                        - admin
+                        - user
                     type: string
                 ownerId:
                     type: string
@@ -18549,6 +19126,9 @@ components:
                 validationError:
                     type: string
         PolicyProfileResponseBody:
+            required:
+                - code
+                - msg
             type: object
             properties:
                 data:
@@ -18559,6 +19139,9 @@ components:
                 msg:
                     type: string
         PolicyProfilesResponseBody:
+            required:
+                - code
+                - msg
             type: object
             properties:
                 data:
@@ -19017,6 +19600,10 @@ components:
                 msg:
                     type: string
         ProviderTestRequestBody:
+            required:
+                - provider_key
+                - title
+                - body
             type: object
             properties:
                 provider_key:
@@ -19028,6 +19615,9 @@ components:
                 body:
                     type: string
         ProviderTestResponseBody:
+            required:
+                - code
+                - msg
             type: object
             properties:
                 data:
@@ -19038,13 +19628,30 @@ components:
                 msg:
                     type: string
         ProviderTestResult:
+            required:
+                - providerKey
+                - status
             type: object
             properties:
                 providerKey:
                     type: string
                 status:
+                    enum:
+                        - sent
+                        - retry
+                        - failed
+                        - uncertain
                     type: string
                 failureKind:
+                    enum:
+                        - permanent
+                        - unreachable
+                        - provider
+                        - uncertain
+                        - retry_exhausted
+                        - reconcile_exhausted
+                        - expired
+                        - dead_letter_parked
                     type: string
                 errorCode:
                     type: string
@@ -19079,6 +19686,9 @@ components:
                 msg:
                     type: string
         PublishAdminNoticeResponseBody:
+            required:
+                - code
+                - msg
             type: object
             properties:
                 data:
@@ -19436,6 +20046,8 @@ components:
                 followed_by_me:
                     type: boolean
         RenamePolicyProfileRequestBody:
+            required:
+                - name
             type: object
             properties:
                 name:
@@ -19462,6 +20074,9 @@ components:
                     items:
                         $ref: '#/components/schemas/CourseSimulationReplaceItem'
         ReplayTaskData:
+            required:
+                - task
+                - replayed
             type: object
             properties:
                 task:
@@ -19469,6 +20084,9 @@ components:
                 replayed:
                     type: boolean
         ReplayTaskRequestBody:
+            required:
+                - replay_request_key
+                - delivery_ids
             type: object
             properties:
                 replay_request_key:
@@ -19478,6 +20096,9 @@ components:
                     items:
                         type: string
         ReplayTaskResponseBody:
+            required:
+                - code
+                - msg
             type: object
             properties:
                 data:
@@ -19664,6 +20285,9 @@ components:
                     description: 返回结果数量
                     format: int32
         RetryPolicy:
+            required:
+                - maxRetries
+                - backoffSeconds
             type: object
             properties:
                 maxRetries:
@@ -19801,10 +20425,54 @@ components:
                     format: int64
                 msg:
                     type: string
+        RuntimeComponentStatus:
+            required:
+                - key
+                - state
+                - liveCount
+                - expectedCount
+            type: object
+            properties:
+                key:
+                    type: string
+                state:
+                    enum:
+                        - stopped
+                        - running
+                        - healthy
+                        - connected
+                        - idle
+                        - degraded
+                        - disconnected
+                        - disabled
+                    type: string
+                liveCount:
+                    type: integer
+                    format: int32
+                expectedCount:
+                    type: integer
+                    format: int32
+                lastError:
+                    type: string
+                lastErrorAt:
+                    type: integer
+                    format: int64
         RuntimeStatus:
+            required:
+                - component
+                - dueOutboxCount
+                - oldestDueOutboxAgeSeconds
+                - maxPublishCount
+                - mqConnectionState
+                - checkedAt
+                - stuckPendingCount
+                - components
             type: object
             properties:
                 component:
+                    enum:
+                        - healthy
+                        - degraded
                     type: string
                 dueOutboxCount:
                     type: integer
@@ -19818,11 +20486,26 @@ components:
                 lastSanitizedPublishError:
                     type: string
                 mqConnectionState:
+                    enum:
+                        - connected
+                        - degraded
+                        - disconnected
+                        - disabled
                     type: string
                 checkedAt:
                     type: integer
                     format: int64
+                stuckPendingCount:
+                    type: integer
+                    format: int64
+                components:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/RuntimeComponentStatus'
         RuntimeStatusResponseBody:
+            required:
+                - code
+                - msg
             type: object
             properties:
                 data:
@@ -19841,6 +20524,8 @@ components:
                 note:
                     type: string
         SaveNotificationTopicConfigurationRequestBody:
+            required:
+                - policy
             type: object
             properties:
                 policy:
@@ -20778,9 +21463,14 @@ components:
                 msg:
                     type: string
         SetDeliveryPreferenceRequestBody:
+            required:
+                - provider
             type: object
             properties:
                 provider:
+                    enum:
+                        - wechat_mp
+                        - dingtalk_work
                     type: string
         SetLoginMethodsRequestBody:
             type: object
@@ -21140,6 +21830,9 @@ components:
                 msg:
                     type: string
         SimpleResponseBody:
+            required:
+                - code
+                - msg
             type: object
             properties:
                 code:
@@ -21538,11 +22231,18 @@ components:
                 detail:
                     type: string
         SubscribeRequestBody:
+            required:
+                - channel
             type: object
             properties:
                 channel:
                     type: string
+                options:
+                    type: string
         SubscriptionItem:
+            required:
+                - channel
+                - enabled
             type: object
             properties:
                 channel:
@@ -21592,6 +22292,9 @@ components:
                     type: boolean
                     description: 是否允许退订
         SubscriptionsResponseBody:
+            required:
+                - code
+                - msg
             type: object
             properties:
                 data:
@@ -21851,6 +22554,11 @@ components:
                 reason:
                     type: string
         TaskPage:
+            required:
+                - items
+                - total
+                - page
+                - pageSize
             type: object
             properties:
                 items:
@@ -21867,6 +22575,9 @@ components:
                     type: integer
                     format: int32
         TaskPageResponseBody:
+            required:
+                - code
+                - msg
             type: object
             properties:
                 data:
@@ -21877,6 +22588,9 @@ components:
                 msg:
                     type: string
         TaskResponseBody:
+            required:
+                - code
+                - msg
             type: object
             properties:
                 data:
@@ -22015,6 +22729,13 @@ components:
                     type: integer
                     format: int32
         TopicCapabilities:
+            required:
+                - topicKey
+                - allowedProviders
+                - allowedModes
+                - limits
+                - profiles
+                - defaultSelection
             type: object
             properties:
                 topicKey:
@@ -22038,6 +22759,9 @@ components:
                 defaultValidationError:
                     type: string
         TopicCapabilitiesResponseBody:
+            required:
+                - code
+                - msg
             type: object
             properties:
                 data:
@@ -22134,6 +22858,8 @@ components:
                 status:
                     type: string
         UpdateAdminNoticeRequestBody:
+            required:
+                - notice
             type: object
             properties:
                 notice:
@@ -22365,6 +23091,9 @@ components:
                 msg:
                     type: string
         UpdatePolicyProfileRequestBody:
+            required:
+                - name
+                - policy
             type: object
             properties:
                 name:
@@ -22708,12 +23437,31 @@ components:
                     format: int64
                 msg:
                     type: string
+        ValidateAdminNoticeResponseBody:
+            required:
+                - valid
+                - code
+                - msg
+            type: object
+            properties:
+                valid:
+                    type: boolean
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         ValidatePolicyData:
+            required:
+                - valid
             type: object
             properties:
                 valid:
                     type: boolean
         ValidatePolicyRequestBody:
+            required:
+                - selection
+                - target_count
             type: object
             properties:
                 selection:
@@ -22722,6 +23470,9 @@ components:
                     type: integer
                     format: int32
         ValidatePolicyResponseBody:
+            required:
+                - code
+                - msg
             type: object
             properties:
                 data:

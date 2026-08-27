@@ -11,6 +11,636 @@ const (
 	UATBearerAuthScopes      uATBearerAuthContextKey      = "UATBearerAuth.Scopes"
 )
 
+// Defines values for DeliveryGroupMode.
+const (
+	Fallback         DeliveryGroupMode = "fallback"
+	FanoutAll        DeliveryGroupMode = "fanout_all"
+	FanoutBestEffort DeliveryGroupMode = "fanout_best_effort"
+	PrimaryOnly      DeliveryGroupMode = "primary_only"
+)
+
+// Valid indicates whether the value is a known member of the DeliveryGroupMode enum.
+func (e DeliveryGroupMode) Valid() bool {
+	switch e {
+	case Fallback:
+		return true
+	case FanoutAll:
+		return true
+	case FanoutBestEffort:
+		return true
+	case PrimaryOnly:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeliveryPreferenceUpdateProvider.
+const (
+	DeliveryPreferenceUpdateProviderDingtalkWork DeliveryPreferenceUpdateProvider = "dingtalk_work"
+	DeliveryPreferenceUpdateProviderWechatMp     DeliveryPreferenceUpdateProvider = "wechat_mp"
+)
+
+// Valid indicates whether the value is a known member of the DeliveryPreferenceUpdateProvider enum.
+func (e DeliveryPreferenceUpdateProvider) Valid() bool {
+	switch e {
+	case DeliveryPreferenceUpdateProviderDingtalkWork:
+		return true
+	case DeliveryPreferenceUpdateProviderWechatMp:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for NoticeActionType.
+const (
+	NoticeActionTypeOpenRoute NoticeActionType = "open_route"
+	NoticeActionTypeOpenUrl   NoticeActionType = "open_url"
+)
+
+// Valid indicates whether the value is a known member of the NoticeActionType enum.
+func (e NoticeActionType) Valid() bool {
+	switch e {
+	case NoticeActionTypeOpenRoute:
+		return true
+	case NoticeActionTypeOpenUrl:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for NotificationActionType.
+const (
+	NotificationActionTypeOpenRoute NotificationActionType = "open_route"
+	NotificationActionTypeOpenUrl   NotificationActionType = "open_url"
+)
+
+// Valid indicates whether the value is a known member of the NotificationActionType enum.
+func (e NotificationActionType) Valid() bool {
+	switch e {
+	case NotificationActionTypeOpenRoute:
+		return true
+	case NotificationActionTypeOpenUrl:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for NotificationChainTestRequestBodyMode.
+const (
+	NotificationChainTestRequestBodyModeDiagnose NotificationChainTestRequestBodyMode = "diagnose"
+	NotificationChainTestRequestBodyModeSend     NotificationChainTestRequestBodyMode = "send"
+)
+
+// Valid indicates whether the value is a known member of the NotificationChainTestRequestBodyMode enum.
+func (e NotificationChainTestRequestBodyMode) Valid() bool {
+	switch e {
+	case NotificationChainTestRequestBodyModeDiagnose:
+		return true
+	case NotificationChainTestRequestBodyModeSend:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for NotificationChainTestResultMode.
+const (
+	NotificationChainTestResultModeDiagnose NotificationChainTestResultMode = "diagnose"
+	NotificationChainTestResultModeSend     NotificationChainTestResultMode = "send"
+)
+
+// Valid indicates whether the value is a known member of the NotificationChainTestResultMode enum.
+func (e NotificationChainTestResultMode) Valid() bool {
+	switch e {
+	case NotificationChainTestResultModeDiagnose:
+		return true
+	case NotificationChainTestResultModeSend:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for NotificationChainTestResultStatus.
+const (
+	NotificationChainTestResultStatusAccepted NotificationChainTestResultStatus = "accepted"
+	NotificationChainTestResultStatusFailed   NotificationChainTestResultStatus = "failed"
+	NotificationChainTestResultStatusReady    NotificationChainTestResultStatus = "ready"
+)
+
+// Valid indicates whether the value is a known member of the NotificationChainTestResultStatus enum.
+func (e NotificationChainTestResultStatus) Valid() bool {
+	switch e {
+	case NotificationChainTestResultStatusAccepted:
+		return true
+	case NotificationChainTestResultStatusFailed:
+		return true
+	case NotificationChainTestResultStatusReady:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for NotificationChainTestStageStatus.
+const (
+	NotificationChainTestStageStatusFailed    NotificationChainTestStageStatus = "failed"
+	NotificationChainTestStageStatusSucceeded NotificationChainTestStageStatus = "succeeded"
+)
+
+// Valid indicates whether the value is a known member of the NotificationChainTestStageStatus enum.
+func (e NotificationChainTestStageStatus) Valid() bool {
+	switch e {
+	case NotificationChainTestStageStatusFailed:
+		return true
+	case NotificationChainTestStageStatusSucceeded:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for NotificationDeliveryFailureKind.
+const (
+	NotificationDeliveryFailureKindDeadLetterParked   NotificationDeliveryFailureKind = "dead_letter_parked"
+	NotificationDeliveryFailureKindExpired            NotificationDeliveryFailureKind = "expired"
+	NotificationDeliveryFailureKindPermanent          NotificationDeliveryFailureKind = "permanent"
+	NotificationDeliveryFailureKindProvider           NotificationDeliveryFailureKind = "provider"
+	NotificationDeliveryFailureKindReconcileExhausted NotificationDeliveryFailureKind = "reconcile_exhausted"
+	NotificationDeliveryFailureKindRetryExhausted     NotificationDeliveryFailureKind = "retry_exhausted"
+	NotificationDeliveryFailureKindUncertain          NotificationDeliveryFailureKind = "uncertain"
+	NotificationDeliveryFailureKindUnreachable        NotificationDeliveryFailureKind = "unreachable"
+)
+
+// Valid indicates whether the value is a known member of the NotificationDeliveryFailureKind enum.
+func (e NotificationDeliveryFailureKind) Valid() bool {
+	switch e {
+	case NotificationDeliveryFailureKindDeadLetterParked:
+		return true
+	case NotificationDeliveryFailureKindExpired:
+		return true
+	case NotificationDeliveryFailureKindPermanent:
+		return true
+	case NotificationDeliveryFailureKindProvider:
+		return true
+	case NotificationDeliveryFailureKindReconcileExhausted:
+		return true
+	case NotificationDeliveryFailureKindRetryExhausted:
+		return true
+	case NotificationDeliveryFailureKindUncertain:
+		return true
+	case NotificationDeliveryFailureKindUnreachable:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for NotificationDeliveryNextAction.
+const (
+	Query NotificationDeliveryNextAction = "query"
+	Send  NotificationDeliveryNextAction = "send"
+)
+
+// Valid indicates whether the value is a known member of the NotificationDeliveryNextAction enum.
+func (e NotificationDeliveryNextAction) Valid() bool {
+	switch e {
+	case Query:
+		return true
+	case Send:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for NotificationDeliveryStatus.
+const (
+	NotificationDeliveryStatusFailed     NotificationDeliveryStatus = "failed"
+	NotificationDeliveryStatusPending    NotificationDeliveryStatus = "pending"
+	NotificationDeliveryStatusProcessing NotificationDeliveryStatus = "processing"
+	NotificationDeliveryStatusSkipped    NotificationDeliveryStatus = "skipped"
+	NotificationDeliveryStatusSucceeded  NotificationDeliveryStatus = "succeeded"
+)
+
+// Valid indicates whether the value is a known member of the NotificationDeliveryStatus enum.
+func (e NotificationDeliveryStatus) Valid() bool {
+	switch e {
+	case NotificationDeliveryStatusFailed:
+		return true
+	case NotificationDeliveryStatusPending:
+		return true
+	case NotificationDeliveryStatusProcessing:
+		return true
+	case NotificationDeliveryStatusSkipped:
+		return true
+	case NotificationDeliveryStatusSucceeded:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for NotificationTaskResult.
+const (
+	NotificationTaskResultCancelled     NotificationTaskResult = "cancelled"
+	NotificationTaskResultExpired       NotificationTaskResult = "expired"
+	NotificationTaskResultFailed        NotificationTaskResult = "failed"
+	NotificationTaskResultPartialFailed NotificationTaskResult = "partial_failed"
+	NotificationTaskResultSkipped       NotificationTaskResult = "skipped"
+	NotificationTaskResultSuccess       NotificationTaskResult = "success"
+)
+
+// Valid indicates whether the value is a known member of the NotificationTaskResult enum.
+func (e NotificationTaskResult) Valid() bool {
+	switch e {
+	case NotificationTaskResultCancelled:
+		return true
+	case NotificationTaskResultExpired:
+		return true
+	case NotificationTaskResultFailed:
+		return true
+	case NotificationTaskResultPartialFailed:
+		return true
+	case NotificationTaskResultSkipped:
+		return true
+	case NotificationTaskResultSuccess:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for NotificationTaskStatus.
+const (
+	NotificationTaskStatusCompleted NotificationTaskStatus = "completed"
+	NotificationTaskStatusPending   NotificationTaskStatus = "pending"
+	NotificationTaskStatusRunning   NotificationTaskStatus = "running"
+)
+
+// Valid indicates whether the value is a known member of the NotificationTaskStatus enum.
+func (e NotificationTaskStatus) Valid() bool {
+	switch e {
+	case NotificationTaskStatusCompleted:
+		return true
+	case NotificationTaskStatusPending:
+		return true
+	case NotificationTaskStatusRunning:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for NotificationTaskTerminalReason.
+const (
+	NotificationTaskTerminalReasonAllDeliveriesSkipped  NotificationTaskTerminalReason = "all_deliveries_skipped"
+	NotificationTaskTerminalReasonCancelledByOperator   NotificationTaskTerminalReason = "cancelled_by_operator"
+	NotificationTaskTerminalReasonDeadLetterParked      NotificationTaskTerminalReason = "dead_letter_parked"
+	NotificationTaskTerminalReasonExpiredBeforeDelivery NotificationTaskTerminalReason = "expired_before_delivery"
+)
+
+// Valid indicates whether the value is a known member of the NotificationTaskTerminalReason enum.
+func (e NotificationTaskTerminalReason) Valid() bool {
+	switch e {
+	case NotificationTaskTerminalReasonAllDeliveriesSkipped:
+		return true
+	case NotificationTaskTerminalReasonCancelledByOperator:
+		return true
+	case NotificationTaskTerminalReasonDeadLetterParked:
+		return true
+	case NotificationTaskTerminalReasonExpiredBeforeDelivery:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PolicyProfileOwnerType.
+const (
+	Admin  PolicyProfileOwnerType = "admin"
+	System PolicyProfileOwnerType = "system"
+	User   PolicyProfileOwnerType = "user"
+)
+
+// Valid indicates whether the value is a known member of the PolicyProfileOwnerType enum.
+func (e PolicyProfileOwnerType) Valid() bool {
+	switch e {
+	case Admin:
+		return true
+	case System:
+		return true
+	case User:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProviderTestResultFailureKind.
+const (
+	ProviderTestResultFailureKindDeadLetterParked   ProviderTestResultFailureKind = "dead_letter_parked"
+	ProviderTestResultFailureKindExpired            ProviderTestResultFailureKind = "expired"
+	ProviderTestResultFailureKindPermanent          ProviderTestResultFailureKind = "permanent"
+	ProviderTestResultFailureKindProvider           ProviderTestResultFailureKind = "provider"
+	ProviderTestResultFailureKindReconcileExhausted ProviderTestResultFailureKind = "reconcile_exhausted"
+	ProviderTestResultFailureKindRetryExhausted     ProviderTestResultFailureKind = "retry_exhausted"
+	ProviderTestResultFailureKindUncertain          ProviderTestResultFailureKind = "uncertain"
+	ProviderTestResultFailureKindUnreachable        ProviderTestResultFailureKind = "unreachable"
+)
+
+// Valid indicates whether the value is a known member of the ProviderTestResultFailureKind enum.
+func (e ProviderTestResultFailureKind) Valid() bool {
+	switch e {
+	case ProviderTestResultFailureKindDeadLetterParked:
+		return true
+	case ProviderTestResultFailureKindExpired:
+		return true
+	case ProviderTestResultFailureKindPermanent:
+		return true
+	case ProviderTestResultFailureKindProvider:
+		return true
+	case ProviderTestResultFailureKindReconcileExhausted:
+		return true
+	case ProviderTestResultFailureKindRetryExhausted:
+		return true
+	case ProviderTestResultFailureKindUncertain:
+		return true
+	case ProviderTestResultFailureKindUnreachable:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProviderTestResultStatus.
+const (
+	ProviderTestResultStatusFailed    ProviderTestResultStatus = "failed"
+	ProviderTestResultStatusRetry     ProviderTestResultStatus = "retry"
+	ProviderTestResultStatusSent      ProviderTestResultStatus = "sent"
+	ProviderTestResultStatusUncertain ProviderTestResultStatus = "uncertain"
+)
+
+// Valid indicates whether the value is a known member of the ProviderTestResultStatus enum.
+func (e ProviderTestResultStatus) Valid() bool {
+	switch e {
+	case ProviderTestResultStatusFailed:
+		return true
+	case ProviderTestResultStatusRetry:
+		return true
+	case ProviderTestResultStatusSent:
+		return true
+	case ProviderTestResultStatusUncertain:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RuntimeComponentStatusState.
+const (
+	RuntimeComponentStatusStateConnected    RuntimeComponentStatusState = "connected"
+	RuntimeComponentStatusStateDegraded     RuntimeComponentStatusState = "degraded"
+	RuntimeComponentStatusStateDisabled     RuntimeComponentStatusState = "disabled"
+	RuntimeComponentStatusStateDisconnected RuntimeComponentStatusState = "disconnected"
+	RuntimeComponentStatusStateHealthy      RuntimeComponentStatusState = "healthy"
+	RuntimeComponentStatusStateIdle         RuntimeComponentStatusState = "idle"
+	RuntimeComponentStatusStateRunning      RuntimeComponentStatusState = "running"
+	RuntimeComponentStatusStateStopped      RuntimeComponentStatusState = "stopped"
+)
+
+// Valid indicates whether the value is a known member of the RuntimeComponentStatusState enum.
+func (e RuntimeComponentStatusState) Valid() bool {
+	switch e {
+	case RuntimeComponentStatusStateConnected:
+		return true
+	case RuntimeComponentStatusStateDegraded:
+		return true
+	case RuntimeComponentStatusStateDisabled:
+		return true
+	case RuntimeComponentStatusStateDisconnected:
+		return true
+	case RuntimeComponentStatusStateHealthy:
+		return true
+	case RuntimeComponentStatusStateIdle:
+		return true
+	case RuntimeComponentStatusStateRunning:
+		return true
+	case RuntimeComponentStatusStateStopped:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RuntimeStatusComponent.
+const (
+	RuntimeStatusComponentDegraded RuntimeStatusComponent = "degraded"
+	RuntimeStatusComponentHealthy  RuntimeStatusComponent = "healthy"
+)
+
+// Valid indicates whether the value is a known member of the RuntimeStatusComponent enum.
+func (e RuntimeStatusComponent) Valid() bool {
+	switch e {
+	case RuntimeStatusComponentDegraded:
+		return true
+	case RuntimeStatusComponentHealthy:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RuntimeStatusMqConnectionState.
+const (
+	Connected    RuntimeStatusMqConnectionState = "connected"
+	Degraded     RuntimeStatusMqConnectionState = "degraded"
+	Disabled     RuntimeStatusMqConnectionState = "disabled"
+	Disconnected RuntimeStatusMqConnectionState = "disconnected"
+)
+
+// Valid indicates whether the value is a known member of the RuntimeStatusMqConnectionState enum.
+func (e RuntimeStatusMqConnectionState) Valid() bool {
+	switch e {
+	case Connected:
+		return true
+	case Degraded:
+		return true
+	case Disabled:
+		return true
+	case Disconnected:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SetDeliveryPreferenceRequestBodyProvider.
+const (
+	SetDeliveryPreferenceRequestBodyProviderDingtalkWork SetDeliveryPreferenceRequestBodyProvider = "dingtalk_work"
+	SetDeliveryPreferenceRequestBodyProviderWechatMp     SetDeliveryPreferenceRequestBodyProvider = "wechat_mp"
+)
+
+// Valid indicates whether the value is a known member of the SetDeliveryPreferenceRequestBodyProvider enum.
+func (e SetDeliveryPreferenceRequestBodyProvider) Valid() bool {
+	switch e {
+	case SetDeliveryPreferenceRequestBodyProviderDingtalkWork:
+		return true
+	case SetDeliveryPreferenceRequestBodyProviderWechatMp:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AdminNoticeServiceListAdminNoticeAudienceParamsStatus.
+const (
+	AdminNoticeServiceListAdminNoticeAudienceParamsStatusAcknowledged AdminNoticeServiceListAdminNoticeAudienceParamsStatus = "acknowledged"
+	AdminNoticeServiceListAdminNoticeAudienceParamsStatusAll          AdminNoticeServiceListAdminNoticeAudienceParamsStatus = "all"
+	AdminNoticeServiceListAdminNoticeAudienceParamsStatusExpired      AdminNoticeServiceListAdminNoticeAudienceParamsStatus = "expired"
+	AdminNoticeServiceListAdminNoticeAudienceParamsStatusPendingAck   AdminNoticeServiceListAdminNoticeAudienceParamsStatus = "pending_ack"
+	AdminNoticeServiceListAdminNoticeAudienceParamsStatusRead         AdminNoticeServiceListAdminNoticeAudienceParamsStatus = "read"
+	AdminNoticeServiceListAdminNoticeAudienceParamsStatusUnread       AdminNoticeServiceListAdminNoticeAudienceParamsStatus = "unread"
+)
+
+// Valid indicates whether the value is a known member of the AdminNoticeServiceListAdminNoticeAudienceParamsStatus enum.
+func (e AdminNoticeServiceListAdminNoticeAudienceParamsStatus) Valid() bool {
+	switch e {
+	case AdminNoticeServiceListAdminNoticeAudienceParamsStatusAcknowledged:
+		return true
+	case AdminNoticeServiceListAdminNoticeAudienceParamsStatusAll:
+		return true
+	case AdminNoticeServiceListAdminNoticeAudienceParamsStatusExpired:
+		return true
+	case AdminNoticeServiceListAdminNoticeAudienceParamsStatusPendingAck:
+		return true
+	case AdminNoticeServiceListAdminNoticeAudienceParamsStatusRead:
+		return true
+	case AdminNoticeServiceListAdminNoticeAudienceParamsStatusUnread:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for NotificationServiceListNotificationTasksParamsStatus.
+const (
+	NotificationServiceListNotificationTasksParamsStatusCompleted NotificationServiceListNotificationTasksParamsStatus = "completed"
+	NotificationServiceListNotificationTasksParamsStatusPending   NotificationServiceListNotificationTasksParamsStatus = "pending"
+	NotificationServiceListNotificationTasksParamsStatusRunning   NotificationServiceListNotificationTasksParamsStatus = "running"
+)
+
+// Valid indicates whether the value is a known member of the NotificationServiceListNotificationTasksParamsStatus enum.
+func (e NotificationServiceListNotificationTasksParamsStatus) Valid() bool {
+	switch e {
+	case NotificationServiceListNotificationTasksParamsStatusCompleted:
+		return true
+	case NotificationServiceListNotificationTasksParamsStatusPending:
+		return true
+	case NotificationServiceListNotificationTasksParamsStatusRunning:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for NotificationServiceListNotificationTasksParamsResult.
+const (
+	NotificationServiceListNotificationTasksParamsResultCancelled     NotificationServiceListNotificationTasksParamsResult = "cancelled"
+	NotificationServiceListNotificationTasksParamsResultExpired       NotificationServiceListNotificationTasksParamsResult = "expired"
+	NotificationServiceListNotificationTasksParamsResultFailed        NotificationServiceListNotificationTasksParamsResult = "failed"
+	NotificationServiceListNotificationTasksParamsResultPartialFailed NotificationServiceListNotificationTasksParamsResult = "partial_failed"
+	NotificationServiceListNotificationTasksParamsResultSkipped       NotificationServiceListNotificationTasksParamsResult = "skipped"
+	NotificationServiceListNotificationTasksParamsResultSuccess       NotificationServiceListNotificationTasksParamsResult = "success"
+)
+
+// Valid indicates whether the value is a known member of the NotificationServiceListNotificationTasksParamsResult enum.
+func (e NotificationServiceListNotificationTasksParamsResult) Valid() bool {
+	switch e {
+	case NotificationServiceListNotificationTasksParamsResultCancelled:
+		return true
+	case NotificationServiceListNotificationTasksParamsResultExpired:
+		return true
+	case NotificationServiceListNotificationTasksParamsResultFailed:
+		return true
+	case NotificationServiceListNotificationTasksParamsResultPartialFailed:
+		return true
+	case NotificationServiceListNotificationTasksParamsResultSkipped:
+		return true
+	case NotificationServiceListNotificationTasksParamsResultSuccess:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for NotificationServiceListNotificationTaskDeliveriesParamsStatus.
+const (
+	NotificationServiceListNotificationTaskDeliveriesParamsStatusFailed     NotificationServiceListNotificationTaskDeliveriesParamsStatus = "failed"
+	NotificationServiceListNotificationTaskDeliveriesParamsStatusPending    NotificationServiceListNotificationTaskDeliveriesParamsStatus = "pending"
+	NotificationServiceListNotificationTaskDeliveriesParamsStatusProcessing NotificationServiceListNotificationTaskDeliveriesParamsStatus = "processing"
+	NotificationServiceListNotificationTaskDeliveriesParamsStatusSkipped    NotificationServiceListNotificationTaskDeliveriesParamsStatus = "skipped"
+	NotificationServiceListNotificationTaskDeliveriesParamsStatusSucceeded  NotificationServiceListNotificationTaskDeliveriesParamsStatus = "succeeded"
+)
+
+// Valid indicates whether the value is a known member of the NotificationServiceListNotificationTaskDeliveriesParamsStatus enum.
+func (e NotificationServiceListNotificationTaskDeliveriesParamsStatus) Valid() bool {
+	switch e {
+	case NotificationServiceListNotificationTaskDeliveriesParamsStatusFailed:
+		return true
+	case NotificationServiceListNotificationTaskDeliveriesParamsStatusPending:
+		return true
+	case NotificationServiceListNotificationTaskDeliveriesParamsStatusProcessing:
+		return true
+	case NotificationServiceListNotificationTaskDeliveriesParamsStatusSkipped:
+		return true
+	case NotificationServiceListNotificationTaskDeliveriesParamsStatusSucceeded:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for NotificationServiceListNotificationTaskDeliveriesParamsFailureKind.
+const (
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindDeadLetterParked   NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "dead_letter_parked"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindExpired            NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "expired"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindPermanent          NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "permanent"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindProvider           NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "provider"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindReconcileExhausted NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "reconcile_exhausted"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindRetryExhausted     NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "retry_exhausted"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindUncertain          NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "uncertain"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindUnreachable        NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "unreachable"
+)
+
+// Valid indicates whether the value is a known member of the NotificationServiceListNotificationTaskDeliveriesParamsFailureKind enum.
+func (e NotificationServiceListNotificationTaskDeliveriesParamsFailureKind) Valid() bool {
+	switch e {
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindDeadLetterParked:
+		return true
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindExpired:
+		return true
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindPermanent:
+		return true
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindProvider:
+		return true
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindReconcileExhausted:
+		return true
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindRetryExhausted:
+		return true
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindUncertain:
+		return true
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindUnreachable:
+		return true
+	default:
+		return false
+	}
+}
+
 // AcademicConfigData defines model for AcademicConfigData.
 type AcademicConfigData struct {
 	// CourseQuery 课程查询筛选项（启用项，保序）
@@ -452,51 +1082,91 @@ type AdminMeResponseBody struct {
 
 // AdminNotice defines model for AdminNotice.
 type AdminNotice struct {
-	Action        *NoticeAction       `json:"action,omitempty"`
-	Body          *string             `json:"body,omitempty"`
-	CreatedAt     *int64              `json:"createdAt,omitempty"`
-	CreatedById   *string             `json:"createdById,omitempty"`
-	Events        *[]AdminNoticeEvent `json:"events,omitempty"`
-	ExpiresAt     *int64              `json:"expiresAt,omitempty"`
-	Id            *string             `json:"id,omitempty"`
-	PublishAt     *int64              `json:"publishAt,omitempty"`
-	RequiresAck   *bool               `json:"requiresAck,omitempty"`
-	Summary       *string             `json:"summary,omitempty"`
-	TargetCount   *int32              `json:"targetCount,omitempty"`
-	TargetUserIds *[]string           `json:"targetUserIds,omitempty"`
-	Title         *string             `json:"title,omitempty"`
-	UpdatedAt     *int64              `json:"updatedAt,omitempty"`
+	Action                    *NoticeAction       `json:"action,omitempty"`
+	Body                      string              `json:"body"`
+	CreatedAt                 int64               `json:"createdAt"`
+	CreatedById               string              `json:"createdById"`
+	Events                    *[]AdminNoticeEvent `json:"events,omitempty"`
+	ExpiresAt                 *int64              `json:"expiresAt,omitempty"`
+	Id                        string              `json:"id"`
+	PublicationPolicySnapshot *string             `json:"publicationPolicySnapshot,omitempty"`
+	PublicationTaskId         *string             `json:"publicationTaskId,omitempty"`
+	PublishAt                 int64               `json:"publishAt"`
+	PublishedAt               *int64              `json:"publishedAt,omitempty"`
+	PublishedById             *string             `json:"publishedById,omitempty"`
+	RequiresAck               bool                `json:"requiresAck"`
+	Stats                     *AdminNoticeStats   `json:"stats,omitempty"`
+	Summary                   string              `json:"summary"`
+	TargetCount               int32               `json:"targetCount"`
+	TargetUserIds             []string            `json:"targetUserIds"`
+	Title                     string              `json:"title"`
+	UpdatedAt                 int64               `json:"updatedAt"`
+}
+
+// AdminNoticeAudienceItem defines model for AdminNoticeAudienceItem.
+type AdminNoticeAudienceItem struct {
+	AcknowledgedAt *int64  `json:"acknowledgedAt,omitempty"`
+	EntryId        *string `json:"entryId,omitempty"`
+	Expired        bool    `json:"expired"`
+	PendingAck     bool    `json:"pendingAck"`
+	ReadAt         *int64  `json:"readAt,omitempty"`
+	UserId         string  `json:"userId"`
+}
+
+// AdminNoticeAudiencePage defines model for AdminNoticeAudiencePage.
+type AdminNoticeAudiencePage struct {
+	Items    []AdminNoticeAudienceItem `json:"items"`
+	Page     int32                     `json:"page"`
+	PageSize int32                     `json:"pageSize"`
+	Total    int64                     `json:"total"`
+}
+
+// AdminNoticeAudiencePageResponseBody defines model for AdminNoticeAudiencePageResponseBody.
+type AdminNoticeAudiencePageResponseBody struct {
+	Code int64                    `json:"code"`
+	Data *AdminNoticeAudiencePage `json:"data,omitempty"`
+	Msg  string                   `json:"msg"`
 }
 
 // AdminNoticeEvent defines model for AdminNoticeEvent.
 type AdminNoticeEvent struct {
-	ActorId   *string `json:"actorId,omitempty"`
-	CreatedAt *int64  `json:"createdAt,omitempty"`
-	Detail    *string `json:"detail,omitempty"`
-	EventType *string `json:"eventType,omitempty"`
-	Id        *string `json:"id,omitempty"`
+	ActorId   string `json:"actorId"`
+	CreatedAt int64  `json:"createdAt"`
+	Detail    string `json:"detail"`
+	EventType string `json:"eventType"`
+	Id        string `json:"id"`
 }
 
 // AdminNoticePage defines model for AdminNoticePage.
 type AdminNoticePage struct {
-	Items    *[]AdminNotice `json:"items,omitempty"`
-	Page     *int32         `json:"page,omitempty"`
-	PageSize *int32         `json:"pageSize,omitempty"`
-	Total    *int64         `json:"total,omitempty"`
+	Items    []AdminNotice `json:"items"`
+	Page     int32         `json:"page"`
+	PageSize int32         `json:"pageSize"`
+	Total    int64         `json:"total"`
 }
 
 // AdminNoticePageResponseBody defines model for AdminNoticePageResponseBody.
 type AdminNoticePageResponseBody struct {
-	Code *int64           `json:"code,omitempty"`
+	Code int64            `json:"code"`
 	Data *AdminNoticePage `json:"data,omitempty"`
-	Msg  *string          `json:"msg,omitempty"`
+	Msg  string           `json:"msg"`
 }
 
 // AdminNoticeResponseBody defines model for AdminNoticeResponseBody.
 type AdminNoticeResponseBody struct {
-	Code *int64       `json:"code,omitempty"`
+	Code int64        `json:"code"`
 	Data *AdminNotice `json:"data,omitempty"`
-	Msg  *string      `json:"msg,omitempty"`
+	Msg  string       `json:"msg"`
+}
+
+// AdminNoticeStats defines model for AdminNoticeStats.
+type AdminNoticeStats struct {
+	Acknowledged int32 `json:"acknowledged"`
+	Created      int32 `json:"created"`
+	Expired      int32 `json:"expired"`
+	PendingAck   int32 `json:"pendingAck"`
+	Read         int32 `json:"read"`
+	Targeted     int32 `json:"targeted"`
 }
 
 // AdminPigeonRecallResponseBody defines model for AdminPigeonRecallResponseBody.
@@ -1178,7 +1848,7 @@ type BanUserRequestBody struct {
 
 // BatchDeliveryPreferenceRequestBody defines model for BatchDeliveryPreferenceRequestBody.
 type BatchDeliveryPreferenceRequestBody struct {
-	Updates *[]DeliveryPreferenceUpdate `json:"updates,omitempty"`
+	Updates []DeliveryPreferenceUpdate `json:"updates"`
 }
 
 // BindCampusRequestBody defines model for BindCampusRequestBody.
@@ -1521,6 +2191,24 @@ type CancelBookingResponseBody struct {
 	Code *int64             `json:"code,omitempty"`
 	Data *CancelBookingData `json:"data,omitempty"`
 	Msg  *string            `json:"msg,omitempty"`
+}
+
+// CancelTaskData defines model for CancelTaskData.
+type CancelTaskData struct {
+	Cancelled bool             `json:"cancelled"`
+	Task      NotificationTask `json:"task"`
+}
+
+// CancelTaskRequestBody defines model for CancelTaskRequestBody.
+type CancelTaskRequestBody struct {
+	Reason string `json:"reason"`
+}
+
+// CancelTaskResponseBody defines model for CancelTaskResponseBody.
+type CancelTaskResponseBody struct {
+	Code int64           `json:"code"`
+	Data *CancelTaskData `json:"data,omitempty"`
+	Msg  string          `json:"msg"`
 }
 
 // CardBalanceData defines model for CardBalanceData.
@@ -2143,7 +2831,7 @@ type CrawlRunInfo struct {
 
 // CreateAdminNoticeRequestBody defines model for CreateAdminNoticeRequestBody.
 type CreateAdminNoticeRequestBody struct {
-	Notice *EditableNotice `json:"notice,omitempty"`
+	Notice EditableNotice `json:"notice"`
 }
 
 // CreateAppData defines model for CreateAppData.
@@ -2371,11 +3059,11 @@ type CreatePATResponseBody struct {
 
 // CreatePolicyProfileRequestBody defines model for CreatePolicyProfileRequestBody.
 type CreatePolicyProfileRequestBody struct {
-	IsDefault *bool           `json:"is_default,omitempty"`
-	Name      *string         `json:"name,omitempty"`
-	OwnerType *string         `json:"owner_type,omitempty"`
-	Policy    *DeliveryPolicy `json:"policy,omitempty"`
-	TopicKey  *string         `json:"topic_key,omitempty"`
+	IsDefault *bool          `json:"is_default,omitempty"`
+	Name      string         `json:"name"`
+	OwnerType *string        `json:"owner_type,omitempty"`
+	Policy    DeliveryPolicy `json:"policy"`
+	TopicKey  string         `json:"topic_key"`
 }
 
 // CreateRecruitChatGroupData defines model for CreateRecruitChatGroupData.
@@ -2571,8 +3259,8 @@ type CursorPostListResponseBody struct {
 
 // DeleteAdminNoticeResponseBody defines model for DeleteAdminNoticeResponseBody.
 type DeleteAdminNoticeResponseBody struct {
-	Code *int64  `json:"code,omitempty"`
-	Msg  *string `json:"msg,omitempty"`
+	Code int64  `json:"code"`
+	Msg  string `json:"msg"`
 }
 
 // DeleteCampusResponseBody defines model for DeleteCampusResponseBody.
@@ -2625,72 +3313,78 @@ type DeleteUserSocialIdentityResponseBody struct {
 
 // DeliveryGroup defines model for DeliveryGroup.
 type DeliveryGroup struct {
-	Key       *string   `json:"key,omitempty"`
-	Mode      *string   `json:"mode,omitempty"`
-	Providers *[]string `json:"providers,omitempty"`
-	Required  *bool     `json:"required,omitempty"`
+	Key       string            `json:"key"`
+	Mode      DeliveryGroupMode `json:"mode"`
+	Providers []string          `json:"providers"`
+	Required  bool              `json:"required"`
 }
+
+// DeliveryGroupMode defines model for DeliveryGroup.Mode.
+type DeliveryGroupMode string
 
 // DeliveryPage defines model for DeliveryPage.
 type DeliveryPage struct {
-	Items    *[]NotificationDelivery `json:"items,omitempty"`
-	Page     *int32                  `json:"page,omitempty"`
-	PageSize *int32                  `json:"pageSize,omitempty"`
-	Total    *int64                  `json:"total,omitempty"`
+	Items    []NotificationDelivery `json:"items"`
+	Page     int32                  `json:"page"`
+	PageSize int32                  `json:"pageSize"`
+	Total    int64                  `json:"total"`
 }
 
 // DeliveryPageResponseBody defines model for DeliveryPageResponseBody.
 type DeliveryPageResponseBody struct {
-	Code *int64        `json:"code,omitempty"`
+	Code int64         `json:"code"`
 	Data *DeliveryPage `json:"data,omitempty"`
-	Msg  *string       `json:"msg,omitempty"`
+	Msg  string        `json:"msg"`
 }
 
 // DeliveryPolicy defines model for DeliveryPolicy.
 type DeliveryPolicy struct {
-	Groups        *[]DeliveryGroup `json:"groups,omitempty"`
-	Retry         *RetryPolicy     `json:"retry,omitempty"`
-	SchemaVersion *int32           `json:"schemaVersion,omitempty"`
+	Groups        []DeliveryGroup `json:"groups"`
+	Retry         RetryPolicy     `json:"retry"`
+	SchemaVersion int32           `json:"schemaVersion"`
 }
 
 // DeliveryPreference defines model for DeliveryPreference.
 type DeliveryPreference struct {
 	AvailableProviders *[]DeliveryProviderOption `json:"availableProviders,omitempty"`
-	Channel            *string                   `json:"channel,omitempty"`
+	Channel            string                    `json:"channel"`
 	EffectivePolicy    *string                   `json:"effectivePolicy,omitempty"`
 	EffectiveProvider  *string                   `json:"effectiveProvider,omitempty"`
 	EffectiveSummary   *string                   `json:"effectiveSummary,omitempty"`
-	Inherited          *bool                     `json:"inherited,omitempty"`
+	Inherited          bool                      `json:"inherited"`
 	SelectedProvider   *string                   `json:"selectedProvider,omitempty"`
 }
 
 // DeliveryPreferenceResponseBody defines model for DeliveryPreferenceResponseBody.
 type DeliveryPreferenceResponseBody struct {
-	Code *int64              `json:"code,omitempty"`
+	Code int64               `json:"code"`
 	Data *DeliveryPreference `json:"data,omitempty"`
-	Msg  *string             `json:"msg,omitempty"`
+	Msg  string              `json:"msg"`
 }
 
 // DeliveryPreferenceUpdate defines model for DeliveryPreferenceUpdate.
 type DeliveryPreferenceUpdate struct {
-	Channel  *string `json:"channel,omitempty"`
-	Provider *string `json:"provider,omitempty"`
+	Channel  string                            `json:"channel"`
+	Provider *DeliveryPreferenceUpdateProvider `json:"provider,omitempty"`
 }
+
+// DeliveryPreferenceUpdateProvider defines model for DeliveryPreferenceUpdate.Provider.
+type DeliveryPreferenceUpdateProvider string
 
 // DeliveryProviderOption defines model for DeliveryProviderOption.
 type DeliveryProviderOption struct {
-	Available         *bool   `json:"available,omitempty"`
-	Bound             *bool   `json:"bound,omitempty"`
-	Key               *string `json:"key,omitempty"`
-	Name              *string `json:"name,omitempty"`
+	Available         bool    `json:"available"`
+	Bound             bool    `json:"bound"`
+	Key               string  `json:"key"`
+	Name              string  `json:"name"`
 	UnavailableReason *string `json:"unavailableReason,omitempty"`
 }
 
 // DeliveryResponseBody defines model for DeliveryResponseBody.
 type DeliveryResponseBody struct {
-	Code *int64                `json:"code,omitempty"`
+	Code int64                 `json:"code"`
 	Data *NotificationDelivery `json:"data,omitempty"`
-	Msg  *string               `json:"msg,omitempty"`
+	Msg  string                `json:"msg"`
 }
 
 // DenyDeviceRespBody defines model for DenyDeviceRespBody.
@@ -2854,13 +3548,13 @@ type DownloadResponseBody struct {
 // EditableNotice defines model for EditableNotice.
 type EditableNotice struct {
 	Action        *NoticeAction `json:"action,omitempty"`
-	Body          *string       `json:"body,omitempty"`
+	Body          string        `json:"body"`
 	ExpiresAt     *int64        `json:"expires_at,omitempty"`
 	PublishAt     *int64        `json:"publish_at,omitempty"`
 	RequiresAck   *bool         `json:"requires_ack,omitempty"`
 	Summary       *string       `json:"summary,omitempty"`
-	TargetUserIds *[]string     `json:"target_user_ids,omitempty"`
-	Title         *string       `json:"title,omitempty"`
+	TargetUserIds []string      `json:"target_user_ids"`
+	Title         string        `json:"title"`
 }
 
 // EditableSiteAnnouncement defines model for EditableSiteAnnouncement.
@@ -4841,141 +5535,200 @@ type NoticeAction struct {
 	Label  *string            `json:"label,omitempty"`
 	Params *map[string]string `json:"params,omitempty"`
 	Route  *string            `json:"route,omitempty"`
-	Type   *string            `json:"type,omitempty"`
+	Type   NoticeActionType   `json:"type"`
 	Url    *string            `json:"url,omitempty"`
 }
 
+// NoticeActionType defines model for NoticeAction.Type.
+type NoticeActionType string
+
+// NotificationAction defines model for NotificationAction.
+type NotificationAction struct {
+	Label  *string                `json:"label,omitempty"`
+	Params *map[string]string     `json:"params,omitempty"`
+	Route  *string                `json:"route,omitempty"`
+	Type   NotificationActionType `json:"type"`
+	Url    *string                `json:"url,omitempty"`
+}
+
+// NotificationActionType defines model for NotificationAction.Type.
+type NotificationActionType string
+
 // NotificationChainTestRequestBody defines model for NotificationChainTestRequestBody.
 type NotificationChainTestRequestBody struct {
-	Body            *string            `json:"body,omitempty"`
-	Mode            *string            `json:"mode,omitempty"`
-	Personalization *map[string]string `json:"personalization,omitempty"`
-	Summary         *string            `json:"summary,omitempty"`
-	TargetUserId    *string            `json:"target_user_id,omitempty"`
-	Title           *string            `json:"title,omitempty"`
-	TopicKey        *string            `json:"topic_key,omitempty"`
+	Action           *NotificationAction                  `json:"action,omitempty"`
+	Body             string                               `json:"body"`
+	ExpiresAt        *int64                               `json:"expires_at,omitempty"`
+	Mode             NotificationChainTestRequestBodyMode `json:"mode"`
+	Personalization  *map[string]string                   `json:"personalization,omitempty"`
+	ProviderContents *map[string]string                   `json:"provider_contents,omitempty"`
+	RequiresAck      *bool                                `json:"requires_ack,omitempty"`
+	Summary          *string                              `json:"summary,omitempty"`
+	TargetUserId     string                               `json:"target_user_id"`
+	Title            string                               `json:"title"`
+	TopicKey         string                               `json:"topic_key"`
 }
+
+// NotificationChainTestRequestBodyMode defines model for NotificationChainTestRequestBody.Mode.
+type NotificationChainTestRequestBodyMode string
 
 // NotificationChainTestResponseBody defines model for NotificationChainTestResponseBody.
 type NotificationChainTestResponseBody struct {
-	Code *int64                       `json:"code,omitempty"`
-	Data *NotificationChainTestResult `json:"data,omitempty"`
-	Msg  *string                      `json:"msg,omitempty"`
+	Code int64                       `json:"code"`
+	Data NotificationChainTestResult `json:"data"`
+	Msg  string                      `json:"msg"`
 }
 
 // NotificationChainTestResult defines model for NotificationChainTestResult.
 type NotificationChainTestResult struct {
-	Mode       *string                       `json:"mode,omitempty"`
-	ServiceKey *string                       `json:"serviceKey,omitempty"`
-	Stages     *[]NotificationChainTestStage `json:"stages,omitempty"`
-	Status     *string                       `json:"status,omitempty"`
-	TaskId     *string                       `json:"taskId,omitempty"`
-	TopicKey   *string                       `json:"topicKey,omitempty"`
+	Mode       NotificationChainTestResultMode   `json:"mode"`
+	ServiceKey string                            `json:"serviceKey"`
+	Stages     []NotificationChainTestStage      `json:"stages"`
+	Status     NotificationChainTestResultStatus `json:"status"`
+	TaskId     *string                           `json:"taskId,omitempty"`
+	TopicKey   string                            `json:"topicKey"`
 }
+
+// NotificationChainTestResultMode defines model for NotificationChainTestResult.Mode.
+type NotificationChainTestResultMode string
+
+// NotificationChainTestResultStatus defines model for NotificationChainTestResult.Status.
+type NotificationChainTestResultStatus string
 
 // NotificationChainTestStage defines model for NotificationChainTestStage.
 type NotificationChainTestStage struct {
-	Key     *string `json:"key,omitempty"`
-	Message *string `json:"message,omitempty"`
-	Name    *string `json:"name,omitempty"`
-	Status  *string `json:"status,omitempty"`
+	Key     string                           `json:"key"`
+	Message *string                          `json:"message,omitempty"`
+	Name    string                           `json:"name"`
+	Status  NotificationChainTestStageStatus `json:"status"`
 }
+
+// NotificationChainTestStageStatus defines model for NotificationChainTestStage.Status.
+type NotificationChainTestStageStatus string
 
 // NotificationDelivery defines model for NotificationDelivery.
 type NotificationDelivery struct {
-	AvailableAt           *int64  `json:"availableAt,omitempty"`
-	CreatedAt             *int64  `json:"createdAt,omitempty"`
-	CurrentGroupKey       *string `json:"currentGroupKey,omitempty"`
-	CurrentProviderKey    *string `json:"currentProviderKey,omitempty"`
-	CurrentRetryCount     *int32  `json:"currentRetryCount,omitempty"`
-	DispatchVersion       *int32  `json:"dispatchVersion,omitempty"`
-	ErrorCode             *string `json:"errorCode,omitempty"`
-	FailureKind           *string `json:"failureKind,omitempty"`
-	FinalizedAt           *int64  `json:"finalizedAt,omitempty"`
-	Id                    *string `json:"id,omitempty"`
-	NextAction            *string `json:"nextAction,omitempty"`
-	ProviderResults       *string `json:"providerResults,omitempty"`
-	ReconcileAttemptCount *int32  `json:"reconcileAttemptCount,omitempty"`
-	ReplayBlockReason     *string `json:"replayBlockReason,omitempty"`
-	Replayable            *bool   `json:"replayable,omitempty"`
-	SentAt                *int64  `json:"sentAt,omitempty"`
-	Status                *string `json:"status,omitempty"`
-	TargetId              *string `json:"targetId,omitempty"`
-	TargetType            *string `json:"targetType,omitempty"`
-	TaskId                *string `json:"taskId,omitempty"`
-	UpdatedAt             *int64  `json:"updatedAt,omitempty"`
+	AvailableAt            *int64                           `json:"availableAt,omitempty"`
+	CreatedAt              int64                            `json:"createdAt"`
+	CurrentGroupKey        string                           `json:"currentGroupKey"`
+	CurrentProviderKey     string                           `json:"currentProviderKey"`
+	CurrentRetryCount      int32                            `json:"currentRetryCount"`
+	DeadLetterParkedAt     *int64                           `json:"deadLetterParkedAt,omitempty"`
+	DeadLetterRedriveCount int32                            `json:"deadLetterRedriveCount"`
+	DispatchVersion        int32                            `json:"dispatchVersion"`
+	ErrorCode              *string                          `json:"errorCode,omitempty"`
+	FailureKind            *NotificationDeliveryFailureKind `json:"failureKind,omitempty"`
+	FinalizedAt            *int64                           `json:"finalizedAt,omitempty"`
+	Id                     string                           `json:"id"`
+	NextAction             *NotificationDeliveryNextAction  `json:"nextAction,omitempty"`
+	ProviderResults        string                           `json:"providerResults"`
+	ProviderResultsError   *string                          `json:"providerResultsError,omitempty"`
+	ProviderResultsValid   bool                             `json:"providerResultsValid"`
+	ReconcileAttemptCount  int32                            `json:"reconcileAttemptCount"`
+	ReplayBlockReason      *string                          `json:"replayBlockReason,omitempty"`
+	Replayable             bool                             `json:"replayable"`
+	SentAt                 *int64                           `json:"sentAt,omitempty"`
+	Status                 NotificationDeliveryStatus       `json:"status"`
+	TargetId               string                           `json:"targetId"`
+	TargetType             string                           `json:"targetType"`
+	TaskId                 string                           `json:"taskId"`
+	UpdatedAt              int64                            `json:"updatedAt"`
 }
+
+// NotificationDeliveryFailureKind defines model for NotificationDelivery.FailureKind.
+type NotificationDeliveryFailureKind string
+
+// NotificationDeliveryNextAction defines model for NotificationDelivery.NextAction.
+type NotificationDeliveryNextAction string
+
+// NotificationDeliveryStatus defines model for NotificationDelivery.Status.
+type NotificationDeliveryStatus string
 
 // NotificationLimits defines model for NotificationLimits.
 type NotificationLimits struct {
-	MaxContentBytes                          *int32 `json:"maxContentBytes,omitempty"`
-	MaxDueOutboxBacklog                      *int32 `json:"maxDueOutboxBacklog,omitempty"`
-	MaxEnabledPolicyProfilesPerOwnerPerTopic *int32 `json:"maxEnabledPolicyProfilesPerOwnerPerTopic,omitempty"`
-	MaxGroups                                *int32 `json:"maxGroups,omitempty"`
-	MaxPayloadBytes                          *int32 `json:"maxPayloadBytes,omitempty"`
-	MaxPersonalizationBytesPerTarget         *int32 `json:"maxPersonalizationBytesPerTarget,omitempty"`
-	MaxPlannedProviderActionsPerTask         *int32 `json:"maxPlannedProviderActionsPerTask,omitempty"`
-	MaxPolicyProfileBytes                    *int32 `json:"maxPolicyProfileBytes,omitempty"`
-	MaxProviderRefs                          *int32 `json:"maxProviderRefs,omitempty"`
-	MaxProvidersPerGroup                     *int32 `json:"maxProvidersPerGroup,omitempty"`
-	MaxReconcileAttemptsPerProvider          *int32 `json:"maxReconcileAttemptsPerProvider,omitempty"`
-	MaxReconcileDurationSeconds              *int32 `json:"maxReconcileDurationSeconds,omitempty"`
-	MaxRetriesPerProvider                    *int32 `json:"maxRetriesPerProvider,omitempty"`
-	MaxTargetsPerTask                        *int32 `json:"maxTargetsPerTask,omitempty"`
-	MaxTotalPersonalizationBytes             *int32 `json:"maxTotalPersonalizationBytes,omitempty"`
+	MaxContentBytes                          int32 `json:"maxContentBytes"`
+	MaxDueOutboxBacklog                      int32 `json:"maxDueOutboxBacklog"`
+	MaxEnabledPolicyProfilesPerOwnerPerTopic int32 `json:"maxEnabledPolicyProfilesPerOwnerPerTopic"`
+	MaxGroups                                int32 `json:"maxGroups"`
+	MaxPayloadBytes                          int32 `json:"maxPayloadBytes"`
+	MaxPersonalizationBytesPerTarget         int32 `json:"maxPersonalizationBytesPerTarget"`
+	MaxPlannedProviderActionsPerTask         int32 `json:"maxPlannedProviderActionsPerTask"`
+	MaxPolicyProfileBytes                    int32 `json:"maxPolicyProfileBytes"`
+	MaxProviderRefs                          int32 `json:"maxProviderRefs"`
+	MaxProvidersPerGroup                     int32 `json:"maxProvidersPerGroup"`
+	MaxReconcileAttemptsPerProvider          int32 `json:"maxReconcileAttemptsPerProvider"`
+	MaxReconcileDurationSeconds              int32 `json:"maxReconcileDurationSeconds"`
+	MaxRetriesPerProvider                    int32 `json:"maxRetriesPerProvider"`
+	MaxTargetsPerTask                        int32 `json:"maxTargetsPerTask"`
+	MaxTotalPersonalizationBytes             int32 `json:"maxTotalPersonalizationBytes"`
 }
 
 // NotificationTask defines model for NotificationTask.
 type NotificationTask struct {
-	BusinessEventKey  *string `json:"businessEventKey,omitempty"`
-	CreatedAt         *int64  `json:"createdAt,omitempty"`
-	CreatedById       *string `json:"createdById,omitempty"`
-	CreatedByType     *string `json:"createdByType,omitempty"`
-	DeliveryFailed    *int32  `json:"deliveryFailed,omitempty"`
-	DeliverySkipped   *int32  `json:"deliverySkipped,omitempty"`
-	DeliverySucceeded *int32  `json:"deliverySucceeded,omitempty"`
-	DeliveryTotal     *int32  `json:"deliveryTotal,omitempty"`
-	ExpiresAt         *int64  `json:"expiresAt,omitempty"`
-	FinalizedAt       *int64  `json:"finalizedAt,omitempty"`
-	Id                *string `json:"id,omitempty"`
-	ReplayOfTaskId    *string `json:"replayOfTaskId,omitempty"`
-	Result            *string `json:"result,omitempty"`
-	ScheduledAt       *int64  `json:"scheduledAt,omitempty"`
-	SourceId          *string `json:"sourceId,omitempty"`
-	SourceType        *string `json:"sourceType,omitempty"`
-	Status            *string `json:"status,omitempty"`
-	TopicKey          *string `json:"topicKey,omitempty"`
-	UpdatedAt         *int64  `json:"updatedAt,omitempty"`
+	BusinessEventKey   string                          `json:"businessEventKey"`
+	CancellationReason *string                         `json:"cancellationReason,omitempty"`
+	CancelledAt        *int64                          `json:"cancelledAt,omitempty"`
+	CancelledById      *string                         `json:"cancelledById,omitempty"`
+	CreatedAt          int64                           `json:"createdAt"`
+	CreatedById        string                          `json:"createdById"`
+	CreatedByType      string                          `json:"createdByType"`
+	DeliveryFailed     int32                           `json:"deliveryFailed"`
+	DeliverySkipped    int32                           `json:"deliverySkipped"`
+	DeliverySucceeded  int32                           `json:"deliverySucceeded"`
+	DeliveryTotal      int32                           `json:"deliveryTotal"`
+	ExpiresAt          *int64                          `json:"expiresAt,omitempty"`
+	FinalizedAt        *int64                          `json:"finalizedAt,omitempty"`
+	Id                 string                          `json:"id"`
+	ReplayOfTaskId     *string                         `json:"replayOfTaskId,omitempty"`
+	RequiresAck        bool                            `json:"requiresAck"`
+	Result             *NotificationTaskResult         `json:"result,omitempty"`
+	ScheduledAt        int64                           `json:"scheduledAt"`
+	SourceId           string                          `json:"sourceId"`
+	SourceType         string                          `json:"sourceType"`
+	Status             NotificationTaskStatus          `json:"status"`
+	TerminalReason     *NotificationTaskTerminalReason `json:"terminalReason,omitempty"`
+	Title              *string                         `json:"title,omitempty"`
+	TopicKey           string                          `json:"topicKey"`
+	UpdatedAt          int64                           `json:"updatedAt"`
 }
+
+// NotificationTaskResult defines model for NotificationTask.Result.
+type NotificationTaskResult string
+
+// NotificationTaskStatus defines model for NotificationTask.Status.
+type NotificationTaskStatus string
+
+// NotificationTaskTerminalReason defines model for NotificationTask.TerminalReason.
+type NotificationTaskTerminalReason string
 
 // NotificationTopicConfiguration defines model for NotificationTopicConfiguration.
 type NotificationTopicConfiguration struct {
-	AllowedModes     *[]string       `json:"allowedModes,omitempty"`
-	AllowedProviders *[]string       `json:"allowedProviders,omitempty"`
-	Configured       *bool           `json:"configured,omitempty"`
+	AllowedModes     []string        `json:"allowedModes"`
+	AllowedProviders []string        `json:"allowedProviders"`
+	Configured       bool            `json:"configured"`
 	Policy           *DeliveryPolicy `json:"policy,omitempty"`
-	ServiceKey       *string         `json:"serviceKey,omitempty"`
-	ServiceName      *string         `json:"serviceName,omitempty"`
-	TopicKey         *string         `json:"topicKey,omitempty"`
-	TopicName        *string         `json:"topicName,omitempty"`
+	ServiceKey       string          `json:"serviceKey"`
+	ServiceName      string          `json:"serviceName"`
+	TopicKey         string          `json:"topicKey"`
+	TopicName        string          `json:"topicName"`
 	UpdatedAt        *int64          `json:"updatedAt,omitempty"`
 	UpdatedById      *string         `json:"updatedById,omitempty"`
-	Valid            *bool           `json:"valid,omitempty"`
+	Valid            bool            `json:"valid"`
 	ValidationError  *string         `json:"validationError,omitempty"`
 }
 
 // NotificationTopicConfigurationResponseBody defines model for NotificationTopicConfigurationResponseBody.
 type NotificationTopicConfigurationResponseBody struct {
-	Code *int64                          `json:"code,omitempty"`
-	Data *NotificationTopicConfiguration `json:"data,omitempty"`
-	Msg  *string                         `json:"msg,omitempty"`
+	Code int64                          `json:"code"`
+	Data NotificationTopicConfiguration `json:"data"`
+	Msg  string                         `json:"msg"`
 }
 
 // NotificationTopicConfigurationsResponseBody defines model for NotificationTopicConfigurationsResponseBody.
 type NotificationTopicConfigurationsResponseBody struct {
-	Code *int64                            `json:"code,omitempty"`
-	Data *[]NotificationTopicConfiguration `json:"data,omitempty"`
-	Msg  *string                           `json:"msg,omitempty"`
+	Code int64                            `json:"code"`
+	Data []NotificationTopicConfiguration `json:"data"`
+	Msg  string                           `json:"msg"`
 }
 
 // OAuthIdentityOption defines model for OAuthIdentityOption.
@@ -5166,32 +5919,35 @@ type PingResponseBody struct {
 
 // PolicyProfile defines model for PolicyProfile.
 type PolicyProfile struct {
-	CreatedAt       *int64          `json:"createdAt,omitempty"`
-	DisabledAt      *int64          `json:"disabledAt,omitempty"`
-	Id              *string         `json:"id,omitempty"`
-	IsDefault       *bool           `json:"isDefault,omitempty"`
-	Name            *string         `json:"name,omitempty"`
-	OwnerId         *string         `json:"ownerId,omitempty"`
-	OwnerType       *string         `json:"ownerType,omitempty"`
-	Policy          *DeliveryPolicy `json:"policy,omitempty"`
-	TopicKey        *string         `json:"topicKey,omitempty"`
-	UpdatedAt       *int64          `json:"updatedAt,omitempty"`
-	Valid           *bool           `json:"valid,omitempty"`
-	ValidationError *string         `json:"validationError,omitempty"`
+	CreatedAt       int64                  `json:"createdAt"`
+	DisabledAt      *int64                 `json:"disabledAt,omitempty"`
+	Id              string                 `json:"id"`
+	IsDefault       bool                   `json:"isDefault"`
+	Name            string                 `json:"name"`
+	OwnerId         *string                `json:"ownerId,omitempty"`
+	OwnerType       PolicyProfileOwnerType `json:"ownerType"`
+	Policy          DeliveryPolicy         `json:"policy"`
+	TopicKey        string                 `json:"topicKey"`
+	UpdatedAt       int64                  `json:"updatedAt"`
+	Valid           bool                   `json:"valid"`
+	ValidationError *string                `json:"validationError,omitempty"`
 }
+
+// PolicyProfileOwnerType defines model for PolicyProfile.OwnerType.
+type PolicyProfileOwnerType string
 
 // PolicyProfileResponseBody defines model for PolicyProfileResponseBody.
 type PolicyProfileResponseBody struct {
-	Code *int64         `json:"code,omitempty"`
+	Code int64          `json:"code"`
 	Data *PolicyProfile `json:"data,omitempty"`
-	Msg  *string        `json:"msg,omitempty"`
+	Msg  string         `json:"msg"`
 }
 
 // PolicyProfilesResponseBody defines model for PolicyProfilesResponseBody.
 type PolicyProfilesResponseBody struct {
-	Code *int64           `json:"code,omitempty"`
+	Code int64            `json:"code"`
 	Data *[]PolicyProfile `json:"data,omitempty"`
-	Msg  *string          `json:"msg,omitempty"`
+	Msg  string           `json:"msg"`
 }
 
 // PolicySelection defines model for PolicySelection.
@@ -5505,28 +6261,34 @@ type PreviewTaggingPromptResponseBody struct {
 
 // ProviderTestRequestBody defines model for ProviderTestRequestBody.
 type ProviderTestRequestBody struct {
-	Body        *string `json:"body,omitempty"`
-	ProviderKey *string `json:"provider_key,omitempty"`
+	Body        string  `json:"body"`
+	ProviderKey string  `json:"provider_key"`
 	Summary     *string `json:"summary,omitempty"`
-	Title       *string `json:"title,omitempty"`
+	Title       string  `json:"title"`
 }
 
 // ProviderTestResponseBody defines model for ProviderTestResponseBody.
 type ProviderTestResponseBody struct {
-	Code *int64              `json:"code,omitempty"`
+	Code int64               `json:"code"`
 	Data *ProviderTestResult `json:"data,omitempty"`
-	Msg  *string             `json:"msg,omitempty"`
+	Msg  string              `json:"msg"`
 }
 
 // ProviderTestResult defines model for ProviderTestResult.
 type ProviderTestResult struct {
-	ErrorCode         *string `json:"errorCode,omitempty"`
-	FailureKind       *string `json:"failureKind,omitempty"`
-	Message           *string `json:"message,omitempty"`
-	ProviderKey       *string `json:"providerKey,omitempty"`
-	ProviderMessageId *string `json:"providerMessageId,omitempty"`
-	Status            *string `json:"status,omitempty"`
+	ErrorCode         *string                        `json:"errorCode,omitempty"`
+	FailureKind       *ProviderTestResultFailureKind `json:"failureKind,omitempty"`
+	Message           *string                        `json:"message,omitempty"`
+	ProviderKey       string                         `json:"providerKey"`
+	ProviderMessageId *string                        `json:"providerMessageId,omitempty"`
+	Status            ProviderTestResultStatus       `json:"status"`
 }
+
+// ProviderTestResultFailureKind defines model for ProviderTestResult.FailureKind.
+type ProviderTestResultFailureKind string
+
+// ProviderTestResultStatus defines model for ProviderTestResult.Status.
+type ProviderTestResultStatus string
 
 // PublicCampusItem ---- 校区列表(公开：id/名称/坐标) ----
 type PublicCampusItem struct {
@@ -5545,9 +6307,9 @@ type PublicCampusListResponseBody struct {
 
 // PublishAdminNoticeResponseBody defines model for PublishAdminNoticeResponseBody.
 type PublishAdminNoticeResponseBody struct {
-	Code *int64            `json:"code,omitempty"`
+	Code int64             `json:"code"`
 	Data *NotificationTask `json:"data,omitempty"`
-	Msg  *string           `json:"msg,omitempty"`
+	Msg  string            `json:"msg"`
 }
 
 // PublishCommentRequestBody defines model for PublishCommentRequestBody.
@@ -5794,7 +6556,7 @@ type RelationUser struct {
 
 // RenamePolicyProfileRequestBody defines model for RenamePolicyProfileRequestBody.
 type RenamePolicyProfileRequestBody struct {
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name"`
 }
 
 // ReplaceCourseSimulationRequestBody defines model for ReplaceCourseSimulationRequestBody.
@@ -5807,21 +6569,21 @@ type ReplaceCourseSimulationRequestBody struct {
 
 // ReplayTaskData defines model for ReplayTaskData.
 type ReplayTaskData struct {
-	Replayed *bool             `json:"replayed,omitempty"`
-	Task     *NotificationTask `json:"task,omitempty"`
+	Replayed bool             `json:"replayed"`
+	Task     NotificationTask `json:"task"`
 }
 
 // ReplayTaskRequestBody defines model for ReplayTaskRequestBody.
 type ReplayTaskRequestBody struct {
-	DeliveryIds      *[]string `json:"delivery_ids,omitempty"`
-	ReplayRequestKey *string   `json:"replay_request_key,omitempty"`
+	DeliveryIds      []string `json:"delivery_ids"`
+	ReplayRequestKey string   `json:"replay_request_key"`
 }
 
 // ReplayTaskResponseBody defines model for ReplayTaskResponseBody.
 type ReplayTaskResponseBody struct {
-	Code *int64          `json:"code,omitempty"`
+	Code int64           `json:"code"`
 	Data *ReplayTaskData `json:"data,omitempty"`
-	Msg  *string         `json:"msg,omitempty"`
+	Msg  string          `json:"msg"`
 }
 
 // Report defines model for Report.
@@ -5962,8 +6724,8 @@ type RetrieveRequestBody struct {
 
 // RetryPolicy defines model for RetryPolicy.
 type RetryPolicy struct {
-	BackoffSeconds *[]int32 `json:"backoffSeconds,omitempty"`
-	MaxRetries     *int32   `json:"maxRetries,omitempty"`
+	BackoffSeconds []int32 `json:"backoffSeconds"`
+	MaxRetries     int32   `json:"maxRetries"`
 }
 
 // ReviewCardData defines model for ReviewCardData.
@@ -6060,22 +6822,43 @@ type RunCronTaskResponseBody struct {
 	Msg  *string `json:"msg,omitempty"`
 }
 
+// RuntimeComponentStatus defines model for RuntimeComponentStatus.
+type RuntimeComponentStatus struct {
+	ExpectedCount int32                       `json:"expectedCount"`
+	Key           string                      `json:"key"`
+	LastError     *string                     `json:"lastError,omitempty"`
+	LastErrorAt   *int64                      `json:"lastErrorAt,omitempty"`
+	LiveCount     int32                       `json:"liveCount"`
+	State         RuntimeComponentStatusState `json:"state"`
+}
+
+// RuntimeComponentStatusState defines model for RuntimeComponentStatus.State.
+type RuntimeComponentStatusState string
+
 // RuntimeStatus defines model for RuntimeStatus.
 type RuntimeStatus struct {
-	CheckedAt                 *int64  `json:"checkedAt,omitempty"`
-	Component                 *string `json:"component,omitempty"`
-	DueOutboxCount            *int64  `json:"dueOutboxCount,omitempty"`
-	LastSanitizedPublishError *string `json:"lastSanitizedPublishError,omitempty"`
-	MaxPublishCount           *int32  `json:"maxPublishCount,omitempty"`
-	MqConnectionState         *string `json:"mqConnectionState,omitempty"`
-	OldestDueOutboxAgeSeconds *int64  `json:"oldestDueOutboxAgeSeconds,omitempty"`
+	CheckedAt                 int64                          `json:"checkedAt"`
+	Component                 RuntimeStatusComponent         `json:"component"`
+	Components                []RuntimeComponentStatus       `json:"components"`
+	DueOutboxCount            int64                          `json:"dueOutboxCount"`
+	LastSanitizedPublishError *string                        `json:"lastSanitizedPublishError,omitempty"`
+	MaxPublishCount           int32                          `json:"maxPublishCount"`
+	MqConnectionState         RuntimeStatusMqConnectionState `json:"mqConnectionState"`
+	OldestDueOutboxAgeSeconds int64                          `json:"oldestDueOutboxAgeSeconds"`
+	StuckPendingCount         int64                          `json:"stuckPendingCount"`
 }
+
+// RuntimeStatusComponent defines model for RuntimeStatus.Component.
+type RuntimeStatusComponent string
+
+// RuntimeStatusMqConnectionState defines model for RuntimeStatus.MqConnectionState.
+type RuntimeStatusMqConnectionState string
 
 // RuntimeStatusResponseBody defines model for RuntimeStatusResponseBody.
 type RuntimeStatusResponseBody struct {
-	Code *int64         `json:"code,omitempty"`
+	Code int64          `json:"code"`
 	Data *RuntimeStatus `json:"data,omitempty"`
-	Msg  *string        `json:"msg,omitempty"`
+	Msg  string         `json:"msg"`
 }
 
 // SaveDraftRequestBody defines model for SaveDraftRequestBody.
@@ -6088,7 +6871,7 @@ type SaveDraftRequestBody struct {
 
 // SaveNotificationTopicConfigurationRequestBody defines model for SaveNotificationTopicConfigurationRequestBody.
 type SaveNotificationTopicConfigurationRequestBody struct {
-	Policy *DeliveryPolicy `json:"policy,omitempty"`
+	Policy DeliveryPolicy `json:"policy"`
 }
 
 // Scene defines model for Scene.
@@ -6735,8 +7518,11 @@ type SetDefaultIdentityResponseBody struct {
 
 // SetDeliveryPreferenceRequestBody defines model for SetDeliveryPreferenceRequestBody.
 type SetDeliveryPreferenceRequestBody struct {
-	Provider *string `json:"provider,omitempty"`
+	Provider SetDeliveryPreferenceRequestBodyProvider `json:"provider"`
 }
+
+// SetDeliveryPreferenceRequestBodyProvider defines model for SetDeliveryPreferenceRequestBody.Provider.
+type SetDeliveryPreferenceRequestBodyProvider string
 
 // SetLoginMethodsRequestBody defines model for SetLoginMethodsRequestBody.
 type SetLoginMethodsRequestBody struct {
@@ -6953,8 +7739,8 @@ type SignUploadResponseBody struct {
 
 // SimpleResponseBody defines model for SimpleResponseBody.
 type SimpleResponseBody struct {
-	Code *int64  `json:"code,omitempty"`
-	Msg  *string `json:"msg,omitempty"`
+	Code int64  `json:"code"`
+	Msg  string `json:"msg"`
 }
 
 // SiteAnnouncement defines model for SiteAnnouncement.
@@ -7219,7 +8005,8 @@ type SubmitReportRequestBody struct {
 
 // SubscribeRequestBody defines model for SubscribeRequestBody.
 type SubscribeRequestBody struct {
-	Channel *string `json:"channel,omitempty"`
+	Channel string  `json:"channel"`
+	Options *string `json:"options,omitempty"`
 }
 
 // SubscriptionItem defines model for SubscriptionItem.
@@ -7228,12 +8015,12 @@ type SubscriptionItem struct {
 	CanCancel *bool `json:"canCancel,omitempty"`
 
 	// CanSubscribe 是否允许订阅
-	CanSubscribe *bool   `json:"canSubscribe,omitempty"`
-	Channel      *string `json:"channel,omitempty"`
+	CanSubscribe *bool  `json:"canSubscribe,omitempty"`
+	Channel      string `json:"channel"`
 
 	// Description 渠道描述
 	Description *string `json:"description,omitempty"`
-	Enabled     *bool   `json:"enabled,omitempty"`
+	Enabled     bool    `json:"enabled"`
 
 	// Frequency 推送频率
 	Frequency *string `json:"frequency,omitempty"`
@@ -7268,9 +8055,9 @@ type SubscriptionItem struct {
 
 // SubscriptionsResponseBody defines model for SubscriptionsResponseBody.
 type SubscriptionsResponseBody struct {
-	Code *int64              `json:"code,omitempty"`
+	Code int64               `json:"code"`
 	Data *[]SubscriptionItem `json:"data,omitempty"`
-	Msg  *string             `json:"msg,omitempty"`
+	Msg  string              `json:"msg"`
 }
 
 // SunrunCard SunrunCard 是信息流阳光长跑卡片负载（上游 mini-student-info 与 mini-student-group）。
@@ -7440,24 +8227,24 @@ type TakedownRequestBody struct {
 
 // TaskPage defines model for TaskPage.
 type TaskPage struct {
-	Items    *[]NotificationTask `json:"items,omitempty"`
-	Page     *int32              `json:"page,omitempty"`
-	PageSize *int32              `json:"pageSize,omitempty"`
-	Total    *int64              `json:"total,omitempty"`
+	Items    []NotificationTask `json:"items"`
+	Page     int32              `json:"page"`
+	PageSize int32              `json:"pageSize"`
+	Total    int64              `json:"total"`
 }
 
 // TaskPageResponseBody defines model for TaskPageResponseBody.
 type TaskPageResponseBody struct {
-	Code *int64    `json:"code,omitempty"`
+	Code int64     `json:"code"`
 	Data *TaskPage `json:"data,omitempty"`
-	Msg  *string   `json:"msg,omitempty"`
+	Msg  string    `json:"msg"`
 }
 
 // TaskResponseBody defines model for TaskResponseBody.
 type TaskResponseBody struct {
-	Code *int64            `json:"code,omitempty"`
+	Code int64             `json:"code"`
 	Data *NotificationTask `json:"data,omitempty"`
-	Msg  *string           `json:"msg,omitempty"`
+	Msg  string            `json:"msg"`
 }
 
 // TeachingClassData defines model for TeachingClassData.
@@ -7548,20 +8335,20 @@ type TimeSlotStat struct {
 
 // TopicCapabilities defines model for TopicCapabilities.
 type TopicCapabilities struct {
-	AllowedModes           *[]string           `json:"allowedModes,omitempty"`
-	AllowedProviders       *[]string           `json:"allowedProviders,omitempty"`
-	DefaultSelection       *PolicySelection    `json:"defaultSelection,omitempty"`
-	DefaultValidationError *string             `json:"defaultValidationError,omitempty"`
-	Limits                 *NotificationLimits `json:"limits,omitempty"`
-	Profiles               *[]PolicyProfile    `json:"profiles,omitempty"`
-	TopicKey               *string             `json:"topicKey,omitempty"`
+	AllowedModes           []string           `json:"allowedModes"`
+	AllowedProviders       []string           `json:"allowedProviders"`
+	DefaultSelection       PolicySelection    `json:"defaultSelection"`
+	DefaultValidationError *string            `json:"defaultValidationError,omitempty"`
+	Limits                 NotificationLimits `json:"limits"`
+	Profiles               []PolicyProfile    `json:"profiles"`
+	TopicKey               string             `json:"topicKey"`
 }
 
 // TopicCapabilitiesResponseBody defines model for TopicCapabilitiesResponseBody.
 type TopicCapabilitiesResponseBody struct {
-	Code *int64             `json:"code,omitempty"`
+	Code int64              `json:"code"`
 	Data *TopicCapabilities `json:"data,omitempty"`
-	Msg  *string            `json:"msg,omitempty"`
+	Msg  string             `json:"msg"`
 }
 
 // TotalTime defines model for TotalTime.
@@ -7614,7 +8401,7 @@ type UpdateActivityRequestBody struct {
 
 // UpdateAdminNoticeRequestBody defines model for UpdateAdminNoticeRequestBody.
 type UpdateAdminNoticeRequestBody struct {
-	Notice *EditableNotice `json:"notice,omitempty"`
+	Notice EditableNotice `json:"notice"`
 }
 
 // UpdateAppRequestBody defines model for UpdateAppRequestBody.
@@ -7776,8 +8563,8 @@ type UpdateMyProfileResponseBody struct {
 
 // UpdatePolicyProfileRequestBody defines model for UpdatePolicyProfileRequestBody.
 type UpdatePolicyProfileRequestBody struct {
-	Name   *string         `json:"name,omitempty"`
-	Policy *DeliveryPolicy `json:"policy,omitempty"`
+	Name   string         `json:"name"`
+	Policy DeliveryPolicy `json:"policy"`
 }
 
 // UpdatePostRequestBody defines model for UpdatePostRequestBody.
@@ -8014,22 +8801,29 @@ type UserProfileResponseBody struct {
 	Msg  *string      `json:"msg,omitempty"`
 }
 
+// ValidateAdminNoticeResponseBody defines model for ValidateAdminNoticeResponseBody.
+type ValidateAdminNoticeResponseBody struct {
+	Code  int64  `json:"code"`
+	Msg   string `json:"msg"`
+	Valid bool   `json:"valid"`
+}
+
 // ValidatePolicyData defines model for ValidatePolicyData.
 type ValidatePolicyData struct {
-	Valid *bool `json:"valid,omitempty"`
+	Valid bool `json:"valid"`
 }
 
 // ValidatePolicyRequestBody defines model for ValidatePolicyRequestBody.
 type ValidatePolicyRequestBody struct {
-	Selection   *PolicySelection `json:"selection,omitempty"`
-	TargetCount *int32           `json:"target_count,omitempty"`
+	Selection   PolicySelection `json:"selection"`
+	TargetCount int32           `json:"target_count"`
 }
 
 // ValidatePolicyResponseBody defines model for ValidatePolicyResponseBody.
 type ValidatePolicyResponseBody struct {
-	Code *int64              `json:"code,omitempty"`
+	Code int64               `json:"code"`
 	Data *ValidatePolicyData `json:"data,omitempty"`
-	Msg  *string             `json:"msg,omitempty"`
+	Msg  string              `json:"msg"`
 }
 
 // VenueAvailabilityData defines model for VenueAvailabilityData.
@@ -8639,38 +9433,61 @@ type MomentsServiceAdminListSensitiveWordsParams struct {
 
 // AdminNoticeServiceListAdminNoticesParams defines parameters for AdminNoticeServiceListAdminNotices.
 type AdminNoticeServiceListAdminNoticesParams struct {
-	Page     *int32 `form:"page,omitempty" json:"page,omitempty"`
-	PageSize *int32 `form:"page_size,omitempty" json:"page_size,omitempty"`
+	Published *bool  `form:"published,omitempty" json:"published,omitempty"`
+	Page      *int32 `form:"page,omitempty" json:"page,omitempty"`
+	PageSize  *int32 `form:"page_size,omitempty" json:"page_size,omitempty"`
 }
+
+// AdminNoticeServiceListAdminNoticeAudienceParams defines parameters for AdminNoticeServiceListAdminNoticeAudience.
+type AdminNoticeServiceListAdminNoticeAudienceParams struct {
+	Status   *AdminNoticeServiceListAdminNoticeAudienceParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	Page     *int32                                                 `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32                                                 `form:"page_size,omitempty" json:"page_size,omitempty"`
+}
+
+// AdminNoticeServiceListAdminNoticeAudienceParamsStatus defines parameters for AdminNoticeServiceListAdminNoticeAudience.
+type AdminNoticeServiceListAdminNoticeAudienceParamsStatus string
 
 // NotificationServiceListNotificationPolicyProfilesParams defines parameters for NotificationServiceListNotificationPolicyProfiles.
 type NotificationServiceListNotificationPolicyProfilesParams struct {
-	TopicKey        *string `form:"topic_key,omitempty" json:"topic_key,omitempty"`
-	IncludeDisabled *bool   `form:"include_disabled,omitempty" json:"include_disabled,omitempty"`
+	TopicKey        string `form:"topic_key" json:"topic_key"`
+	IncludeDisabled *bool  `form:"include_disabled,omitempty" json:"include_disabled,omitempty"`
 }
 
 // NotificationServiceListNotificationTasksParams defines parameters for NotificationServiceListNotificationTasks.
 type NotificationServiceListNotificationTasksParams struct {
-	TopicKey    *string `form:"topic_key,omitempty" json:"topic_key,omitempty"`
-	SourceType  *string `form:"source_type,omitempty" json:"source_type,omitempty"`
-	SourceId    *string `form:"source_id,omitempty" json:"source_id,omitempty"`
-	Status      *string `form:"status,omitempty" json:"status,omitempty"`
-	Result      *string `form:"result,omitempty" json:"result,omitempty"`
-	Page        *int32  `form:"page,omitempty" json:"page,omitempty"`
-	PageSize    *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
-	ServiceKey  *string `form:"service_key,omitempty" json:"service_key,omitempty"`
-	ProviderKey *string `form:"provider_key,omitempty" json:"provider_key,omitempty"`
-	CreatedFrom *int64  `form:"created_from,omitempty" json:"created_from,omitempty"`
-	CreatedTo   *int64  `form:"created_to,omitempty" json:"created_to,omitempty"`
+	TopicKey    *string                                               `form:"topic_key,omitempty" json:"topic_key,omitempty"`
+	SourceType  *string                                               `form:"source_type,omitempty" json:"source_type,omitempty"`
+	SourceId    *string                                               `form:"source_id,omitempty" json:"source_id,omitempty"`
+	Status      *NotificationServiceListNotificationTasksParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	Result      *NotificationServiceListNotificationTasksParamsResult `form:"result,omitempty" json:"result,omitempty"`
+	Page        *int32                                                `form:"page,omitempty" json:"page,omitempty"`
+	PageSize    *int32                                                `form:"page_size,omitempty" json:"page_size,omitempty"`
+	ServiceKey  *string                                               `form:"service_key,omitempty" json:"service_key,omitempty"`
+	ProviderKey *string                                               `form:"provider_key,omitempty" json:"provider_key,omitempty"`
+	CreatedFrom *int64                                                `form:"created_from,omitempty" json:"created_from,omitempty"`
+	CreatedTo   *int64                                                `form:"created_to,omitempty" json:"created_to,omitempty"`
 }
+
+// NotificationServiceListNotificationTasksParamsStatus defines parameters for NotificationServiceListNotificationTasks.
+type NotificationServiceListNotificationTasksParamsStatus string
+
+// NotificationServiceListNotificationTasksParamsResult defines parameters for NotificationServiceListNotificationTasks.
+type NotificationServiceListNotificationTasksParamsResult string
 
 // NotificationServiceListNotificationTaskDeliveriesParams defines parameters for NotificationServiceListNotificationTaskDeliveries.
 type NotificationServiceListNotificationTaskDeliveriesParams struct {
-	Status      *string `form:"status,omitempty" json:"status,omitempty"`
-	FailureKind *string `form:"failure_kind,omitempty" json:"failure_kind,omitempty"`
-	Page        *int32  `form:"page,omitempty" json:"page,omitempty"`
-	PageSize    *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+	Status      *NotificationServiceListNotificationTaskDeliveriesParamsStatus      `form:"status,omitempty" json:"status,omitempty"`
+	FailureKind *NotificationServiceListNotificationTaskDeliveriesParamsFailureKind `form:"failure_kind,omitempty" json:"failure_kind,omitempty"`
+	Page        *int32                                                              `form:"page,omitempty" json:"page,omitempty"`
+	PageSize    *int32                                                              `form:"page_size,omitempty" json:"page_size,omitempty"`
 }
+
+// NotificationServiceListNotificationTaskDeliveriesParamsStatus defines parameters for NotificationServiceListNotificationTaskDeliveries.
+type NotificationServiceListNotificationTaskDeliveriesParamsStatus string
+
+// NotificationServiceListNotificationTaskDeliveriesParamsFailureKind defines parameters for NotificationServiceListNotificationTaskDeliveries.
+type NotificationServiceListNotificationTaskDeliveriesParamsFailureKind string
 
 // AdminServiceSetOperatorEnabledParams defines parameters for AdminServiceSetOperatorEnabled.
 type AdminServiceSetOperatorEnabledParams struct {
@@ -9426,18 +10243,18 @@ type SubscriptionServiceSunrunOverviewParams struct {
 
 // SubscriptionServiceUnsubscribeParams defines parameters for SubscriptionServiceUnsubscribe.
 type SubscriptionServiceUnsubscribeParams struct {
-	Id *string `form:"id,omitempty" json:"id,omitempty"`
+	Id string `form:"id" json:"id"`
 }
 
 // SubscriptionServiceSubscribeParams defines parameters for SubscriptionServiceSubscribe.
 type SubscriptionServiceSubscribeParams struct {
-	Channel *string `form:"channel,omitempty" json:"channel,omitempty"`
+	Channel string `form:"channel" json:"channel"`
 }
 
 // SubscriptionServiceUpdateSubscriptionParams defines parameters for SubscriptionServiceUpdateSubscription.
 type SubscriptionServiceUpdateSubscriptionParams struct {
 	// Id 渠道 id，定位集合内单条订阅
-	Id *string `form:"id,omitempty" json:"id,omitempty"`
+	Id string `form:"id" json:"id"`
 }
 
 // CampusLifeServiceListVolunteerActivitiesParams defines parameters for CampusLifeServiceListVolunteerActivities.
@@ -9632,6 +10449,9 @@ type NotificationServiceUpdateNotificationPolicyProfileJSONRequestBody = UpdateP
 
 // NotificationServiceTestNotificationProviderJSONRequestBody defines body for NotificationServiceTestNotificationProvider for application/json ContentType.
 type NotificationServiceTestNotificationProviderJSONRequestBody = ProviderTestRequestBody
+
+// NotificationServiceCancelNotificationTaskJSONRequestBody defines body for NotificationServiceCancelNotificationTask for application/json ContentType.
+type NotificationServiceCancelNotificationTaskJSONRequestBody = CancelTaskRequestBody
 
 // NotificationServiceReplayNotificationTaskFailuresJSONRequestBody defines body for NotificationServiceReplayNotificationTaskFailures for application/json ContentType.
 type NotificationServiceReplayNotificationTaskFailuresJSONRequestBody = ReplayTaskRequestBody

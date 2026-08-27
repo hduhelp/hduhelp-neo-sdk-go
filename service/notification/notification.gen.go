@@ -672,6 +672,58 @@ func (s *Service) GetNotificationTask(ctx context.Context, req *GetNotificationT
 	return resp, err
 }
 
+// CancelNotificationTaskReq is the request for CancelNotificationTask.
+type CancelNotificationTaskReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// CancelNotificationTaskReqBuilder builds a CancelNotificationTaskReq with a fluent setter per field.
+type CancelNotificationTaskReqBuilder struct{ req *CancelNotificationTaskReq }
+
+// NewCancelNotificationTaskReqBuilder creates a request builder for CancelNotificationTask.
+func NewCancelNotificationTaskReqBuilder() *CancelNotificationTaskReqBuilder {
+	return &CancelNotificationTaskReqBuilder{req: &CancelNotificationTaskReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *CancelNotificationTaskReqBuilder) Id(v string) *CancelNotificationTaskReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *CancelNotificationTaskReqBuilder) Body(body *models.CancelTaskRequestBody) *CancelNotificationTaskReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *CancelNotificationTaskReqBuilder) Build() *CancelNotificationTaskReq { return b.req }
+
+// CancelNotificationTaskResp is the response for CancelNotificationTask.
+type CancelNotificationTaskResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.CancelTaskData `json:"data"`
+}
+
+// CancelNotificationTask calls POST /hduhelp-neo/admin/notifications/tasks/{id}/cancel.
+func (s *Service) CancelNotificationTask(ctx context.Context, req *CancelNotificationTaskReq, opts ...core.RequestOption) (*CancelNotificationTaskResp, error) {
+	resp := &CancelNotificationTaskResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/notifications/tasks/{id}/cancel",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // ReplayNotificationTaskFailuresReq is the request for ReplayNotificationTaskFailures.
 type ReplayNotificationTaskFailuresReq struct {
 	pathParams  map[string]string

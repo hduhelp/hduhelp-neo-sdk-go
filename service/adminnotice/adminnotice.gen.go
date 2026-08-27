@@ -32,6 +32,12 @@ func NewListAdminNoticesReqBuilder() *ListAdminNoticesReqBuilder {
 	return &ListAdminNoticesReqBuilder{req: &ListAdminNoticesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
+// Published sets the "published" query parameter.
+func (b *ListAdminNoticesReqBuilder) Published(v bool) *ListAdminNoticesReqBuilder {
+	b.req.queryParams["published"] = strconv.FormatBool(v)
+	return b
+}
+
 // Page sets the "page" query parameter.
 func (b *ListAdminNoticesReqBuilder) Page(v int32) *ListAdminNoticesReqBuilder {
 	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
@@ -257,6 +263,70 @@ func (s *Service) DeleteAdminNotice(ctx context.Context, req *DeleteAdminNoticeR
 	return resp, err
 }
 
+// ListAdminNoticeAudienceReq is the request for ListAdminNoticeAudience.
+type ListAdminNoticeAudienceReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListAdminNoticeAudienceReqBuilder builds a ListAdminNoticeAudienceReq with a fluent setter per field.
+type ListAdminNoticeAudienceReqBuilder struct{ req *ListAdminNoticeAudienceReq }
+
+// NewListAdminNoticeAudienceReqBuilder creates a request builder for ListAdminNoticeAudience.
+func NewListAdminNoticeAudienceReqBuilder() *ListAdminNoticeAudienceReqBuilder {
+	return &ListAdminNoticeAudienceReqBuilder{req: &ListAdminNoticeAudienceReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *ListAdminNoticeAudienceReqBuilder) Id(v string) *ListAdminNoticeAudienceReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Status sets the "status" query parameter.
+func (b *ListAdminNoticeAudienceReqBuilder) Status(v string) *ListAdminNoticeAudienceReqBuilder {
+	b.req.queryParams["status"] = v
+	return b
+}
+
+// Page sets the "page" query parameter.
+func (b *ListAdminNoticeAudienceReqBuilder) Page(v int32) *ListAdminNoticeAudienceReqBuilder {
+	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// PageSize sets the "page_size" query parameter.
+func (b *ListAdminNoticeAudienceReqBuilder) PageSize(v int32) *ListAdminNoticeAudienceReqBuilder {
+	b.req.queryParams["page_size"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *ListAdminNoticeAudienceReqBuilder) Build() *ListAdminNoticeAudienceReq { return b.req }
+
+// ListAdminNoticeAudienceResp is the response for ListAdminNoticeAudience.
+type ListAdminNoticeAudienceResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AdminNoticeAudiencePage `json:"data"`
+}
+
+// ListAdminNoticeAudience calls GET /hduhelp-neo/admin/notices/{id}/audience.
+func (s *Service) ListAdminNoticeAudience(ctx context.Context, req *ListAdminNoticeAudienceReq, opts ...core.RequestOption) (*ListAdminNoticeAudienceResp, error) {
+	resp := &ListAdminNoticeAudienceResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/notices/{id}/audience",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // PublishAdminNoticeReq is the request for PublishAdminNotice.
 type PublishAdminNoticeReq struct {
 	pathParams  map[string]string
@@ -295,6 +365,55 @@ func (s *Service) PublishAdminNotice(ctx context.Context, req *PublishAdminNotic
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
 		PathTemplate: "/hduhelp-neo/admin/notices/{id}/publish",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ValidateAdminNoticePublicationReq is the request for ValidateAdminNoticePublication.
+type ValidateAdminNoticePublicationReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ValidateAdminNoticePublicationReqBuilder builds a ValidateAdminNoticePublicationReq with a fluent setter per field.
+type ValidateAdminNoticePublicationReqBuilder struct {
+	req *ValidateAdminNoticePublicationReq
+}
+
+// NewValidateAdminNoticePublicationReqBuilder creates a request builder for ValidateAdminNoticePublication.
+func NewValidateAdminNoticePublicationReqBuilder() *ValidateAdminNoticePublicationReqBuilder {
+	return &ValidateAdminNoticePublicationReqBuilder{req: &ValidateAdminNoticePublicationReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *ValidateAdminNoticePublicationReqBuilder) Id(v string) *ValidateAdminNoticePublicationReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *ValidateAdminNoticePublicationReqBuilder) Build() *ValidateAdminNoticePublicationReq {
+	return b.req
+}
+
+// ValidateAdminNoticePublicationResp is the response for ValidateAdminNoticePublication.
+type ValidateAdminNoticePublicationResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// ValidateAdminNoticePublication calls POST /hduhelp-neo/admin/notices/{id}/validate.
+func (s *Service) ValidateAdminNoticePublication(ctx context.Context, req *ValidateAdminNoticePublicationReq, opts ...core.RequestOption) (*ValidateAdminNoticePublicationResp, error) {
+	resp := &ValidateAdminNoticePublicationResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/notices/{id}/validate",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
