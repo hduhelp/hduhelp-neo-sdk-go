@@ -336,20 +336,30 @@ paths:
             parameters:
                 - name: buildingID
                   in: query
+                  description: 教学楼 ID；建议先按楼栋缩小结果集，省略时查询全部教学楼。
                   schema:
                     type: string
                 - name: status
                   in: query
+                  description: 仅查空闲可自习教室时传 unused；省略时返回全部并通过 selfStudy 标记。
                   schema:
+                    enum:
+                        - unused
                     type: string
                 - name: week
                   in: query
+                  description: 教学周，1-30；省略时使用当前教学周。
                   schema:
+                    maximum: !!float 30
+                    minimum: !!float 1
                     type: integer
                     format: int32
                 - name: weekday
                   in: query
+                  description: 星期，周一=1至周日=7；省略时使用今天。
                   schema:
+                    maximum: !!float 7
+                    minimum: !!float 1
                     type: integer
                     format: int32
                 - name: section
@@ -361,12 +371,36 @@ paths:
                         format: int32
                 - name: schoolYear
                   in: query
+                  description: 学年，格式 YYYY-YYYY；省略时使用当前教学学期。
                   schema:
+                    pattern: ^[0-9]{4}-[0-9]{4}$
                     type: string
                 - name: semester
                   in: query
+                  description: 学期编号，只能为 1、2 或 3。
                   schema:
-                    type: string
+                    maximum: !!float 3
+                    minimum: !!float 1
+                    enum:
+                        - 1
+                        - 2
+                        - 3
+                    type: integer
+                    format: int32
+                - name: limit
+                  in: query
+                  description: 单页最多返回教室数，1-200。MCP 省略时默认 50；REST 旧客户端省略时保持兼容。
+                  schema:
+                    maximum: !!float 200
+                    minimum: !!float 1
+                    type: integer
+                    format: int32
+                - name: offset
+                  in: query
+                  description: 从第几条开始返回，从 0 计数；继续翻页时使用上一页 pagination.nextOffset。
+                  schema:
+                    type: integer
+                    format: int32
             responses:
                 "200":
                     description: Successful response
@@ -980,27 +1014,54 @@ paths:
             parameters:
                 - name: timestamp
                   in: query
+                  description: 可选 Unix 秒级时间戳；传入时按校历推导学年、学期和教学周，并覆盖显式学期参数。
                   schema:
                     type: integer
                     format: int64
                 - name: schoolYear
                   in: query
+                  description: 学年，格式 YYYY-YYYY；与 semester 都省略时使用当前教学学期。
                   schema:
+                    pattern: ^[0-9]{4}-[0-9]{4}$
                     type: string
                 - name: semester
                   in: query
+                  description: 学期编号，只能为 1、2 或 3。
                   schema:
+                    maximum: !!float 3
+                    minimum: !!float 1
+                    enum:
+                        - 1
+                        - 2
+                        - 3
                     type: integer
                     format: int32
                 - name: week
                   in: query
+                  description: 教学周，1-30；省略时返回所选学期全部周次。
                   schema:
+                    maximum: !!float 30
+                    minimum: !!float 1
                     type: integer
                     format: int32
                 - name: X-Staff-Id
                   in: header
                   schema:
                     type: string
+                - name: limit
+                  in: query
+                  description: 单页最多返回条数，1-200。MCP 省略时默认 50；REST 旧客户端省略时保持兼容。
+                  schema:
+                    maximum: !!float 200
+                    minimum: !!float 1
+                    type: integer
+                    format: int32
+                - name: offset
+                  in: query
+                  description: 从第几条开始返回，从 0 计数；继续翻页时使用上一页 pagination.nextOffset。
+                  schema:
+                    type: integer
+                    format: int32
             responses:
                 "200":
                     description: Successful response
@@ -2594,14 +2655,14 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/SearchRequestBody'
+                            $ref: '#/components/schemas/KnowledgeSearchRequestBody'
             responses:
                 "200":
                     description: Successful response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/SearchResponseBody'
+                                $ref: '#/components/schemas/KnowledgeSearchResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/knowledge/service-chat:
         post:
@@ -6485,10 +6546,14 @@ paths:
             parameters:
                 - name: room_id
                   in: query
+                  description: 必填。目标结果所属房间 ID，必须复用上一步查询返回值。
+                  required: true
                   schema:
                     type: string
                 - name: event_id
                   in: query
+                  description: 必填。要删除的空闲时段结果 ID，必须复用房间详情或结果查询返回值。
+                  required: true
                   schema:
                     type: string
             responses:
@@ -6603,6 +6668,8 @@ paths:
             parameters:
                 - name: f_id
                   in: query
+                  description: 必填。要删除的收藏 ID，必须来自先前的收藏列表或结果详情返回。
+                  required: true
                   schema:
                     type: string
             responses:
@@ -6679,6 +6746,8 @@ paths:
             parameters:
                 - name: room_id
                   in: query
+                  description: 必填。要删除的空课表房间 ID；必须来自先前的房间列表、创建或详情返回。
+                  required: true
                   schema:
                     type: string
             responses:
@@ -7281,6 +7350,8 @@ paths:
             parameters:
                 - name: openConversationId
                   in: query
+                  description: 必填。要退出的群 openConversationId，必须复用先前群列表或群详情返回的真实 ID。
+                  required: true
                   schema:
                     type: string
                 - name: X-Staff-Id
@@ -8675,7 +8746,7 @@ paths:
             tags:
                 - KnowledgeService
             summary: 知识检索
-            description: 对外检索:仅支持标签过滤与返回数量;命中带溯源信息。一方登录用户直接可用；第三方 token 需携带 knowledge:search:read
+            description: 只读知识检索：支持标签过滤与返回数量，命中带溯源信息。一方登录用户直接可用；第三方 token 需携带 knowledge:search:read。不会写入或修改知识库。
             operationId: KnowledgeService_KnowledgeRetrieve
             security:
                 - BearerAuth: []
@@ -8691,14 +8762,14 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/SearchResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
+                                $ref: '#/components/schemas/KnowledgeSearchResponseBody'
+            x-hduhelp-http: {'auth': 'bearer', 'risk': 'sensitive-read'}
     /hduhelp-neo/knowledge/service-chat:
         post:
             tags:
                 - KnowledgeService
             summary: 快速问答
-            description: 走方舟知识服务的检索/问答：内置 rerank、query 改写与可选 LLM 回答；可选 strategy_name 选策略(知识服务), 空=默认；返回回答与溯源切片。一方登录用户直接可用；第三方 token 需携带 knowledge:search:read
+            description: 只读知识问答：走方舟知识服务，内置 rerank、query 改写与可选 LLM 回答；可选 strategy_name 选策略，空=默认；返回回答与溯源切片。一方登录用户直接可用；第三方 token 需携带 knowledge:search:read。不会写入或修改知识库。
             operationId: KnowledgeService_KnowledgeServiceChat
             security:
                 - BearerAuth: []
@@ -8715,7 +8786,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ServiceChatResponseBody'
-            x-hduhelp-http: {'auth': 'bearer'}
+            x-hduhelp-http: {'auth': 'bearer', 'risk': 'sensitive-read'}
     /hduhelp-neo/knowledge/tags:
         get:
             tags:
@@ -13926,12 +13997,19 @@ components:
                 msg:
                     type: string
         ClassroomsResponseBody:
+            required:
+                - data
+                - pagination
+                - code
+                - msg
             type: object
             properties:
                 data:
                     type: array
                     items:
                         $ref: '#/components/schemas/ClassroomItem'
+                pagination:
+                    $ref: '#/components/schemas/OffsetPagination'
                 code:
                     type: integer
                     format: int64
@@ -17363,6 +17441,70 @@ components:
                     type: string
                     description: public=任何人可检索 | internal=需已绑定校园身份
             description: KnowledgeItemSummary 是列表页展示的知识条目摘要。
+        KnowledgeSearchRequestBody:
+            required:
+                - query
+            type: object
+            properties:
+                query:
+                    maxLength: 2000
+                    minLength: 1
+                    type: string
+                    description: 要检索的自然语言问题或关键词。
+                domain_keys:
+                    type: array
+                    items:
+                        type: string
+                    description: 命中任一子树(set 相交)
+                official_only:
+                    type: boolean
+                    description: 仅学校/助手官方
+                limit:
+                    maximum: !!float 50
+                    minimum: !!float 1
+                    type: integer
+                    description: 最多返回命中数，1-50，默认 10。
+                    format: int32
+                dense_weight:
+                    type: number
+                    description: 稠密(向量)权重
+                    format: double
+                rewrite:
+                    type: boolean
+                    description: 问题改写
+                rerank:
+                    type: boolean
+                    description: 重排开关
+                rerank_model:
+                    type: string
+                    description: 重排模型
+                retrieve_count:
+                    type: integer
+                    description: 进入重排数量
+                    format: int32
+                chunk_group:
+                    type: boolean
+                    description: 文档聚合排序
+                score_threshold:
+                    type: number
+                    description: 阈值过滤(0=不过滤)
+                    format: double
+        KnowledgeSearchResponseBody:
+            required:
+                - data
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SearchHit'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         KnowledgeSourceNode:
             type: object
             properties:
@@ -18863,6 +19005,29 @@ components:
                     format: int64
                 msg:
                     type: string
+        OffsetPagination:
+            required:
+                - total
+                - limit
+                - offset
+                - hasMore
+            type: object
+            properties:
+                total:
+                    type: integer
+                    format: int32
+                limit:
+                    type: integer
+                    format: int32
+                offset:
+                    type: integer
+                    format: int32
+                hasMore:
+                    type: boolean
+                nextOffset:
+                    type: integer
+                    format: int32
+            description: OffsetPagination 是 Agent 可直接复用的偏移分页语义。nextOffset 仅在 hasMore=true 时返回。
         OperatorInfo:
             type: object
             properties:
@@ -20271,18 +20436,25 @@ components:
                 version_id:
                     type: string
         RetrieveRequestBody:
+            required:
+                - query
             type: object
             properties:
                 query:
+                    maxLength: 2000
+                    minLength: 1
                     type: string
+                    description: 要检索的自然语言问题或关键词。
                 tags:
                     type: array
                     items:
                         type: string
                     description: 标签过滤(命中任一)
                 limit:
+                    maximum: !!float 20
+                    minimum: !!float 1
                     type: integer
-                    description: 返回结果数量
+                    description: 最多返回命中数，1-20，默认 8。
                     format: int32
         RetryPolicy:
             required:
@@ -20699,12 +20871,19 @@ components:
                 msg:
                     type: string
         ScheduleResponseBody:
+            required:
+                - data
+                - pagination
+                - code
+                - msg
             type: object
             properties:
                 data:
                     type: array
                     items:
                         $ref: '#/components/schemas/ScheduleItem'
+                pagination:
+                    $ref: '#/components/schemas/OffsetPagination'
                 code:
                     type: integer
                     format: int64
@@ -20901,47 +21080,6 @@ components:
                 nextPage:
                     type: integer
                     format: int32
-        SearchRequestBody:
-            type: object
-            properties:
-                query:
-                    type: string
-                domain_keys:
-                    type: array
-                    items:
-                        type: string
-                    description: 命中任一子树(set 相交)
-                official_only:
-                    type: boolean
-                    description: 仅学校/助手官方
-                limit:
-                    type: integer
-                    description: 结果返回数量
-                    format: int32
-                dense_weight:
-                    type: number
-                    description: 稠密(向量)权重
-                    format: double
-                rewrite:
-                    type: boolean
-                    description: 问题改写
-                rerank:
-                    type: boolean
-                    description: 重排开关
-                rerank_model:
-                    type: string
-                    description: 重排模型
-                retrieve_count:
-                    type: integer
-                    description: 进入重排数量
-                    format: int32
-                chunk_group:
-                    type: boolean
-                    description: 文档聚合排序
-                score_threshold:
-                    type: number
-                    description: 阈值过滤(0=不过滤)
-                    format: double
         SearchResponseBody:
             type: object
             properties:
@@ -21318,10 +21456,15 @@ components:
                         $ref: '#/components/schemas/SearchHit'
                     description: 溯源切片
         ServiceChatRequestBody:
+            required:
+                - query
             type: object
             properties:
                 query:
+                    maxLength: 2000
+                    minLength: 1
                     type: string
+                    description: 要回答的自然语言问题。
                 domain_keys:
                     type: array
                     items:

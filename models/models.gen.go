@@ -497,6 +497,63 @@ func (e SetDeliveryPreferenceRequestBodyProvider) Valid() bool {
 	}
 }
 
+// Defines values for AcademicServiceGetClassroomsParamsStatus.
+const (
+	Unused AcademicServiceGetClassroomsParamsStatus = "unused"
+)
+
+// Valid indicates whether the value is a known member of the AcademicServiceGetClassroomsParamsStatus enum.
+func (e AcademicServiceGetClassroomsParamsStatus) Valid() bool {
+	switch e {
+	case Unused:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AcademicServiceGetClassroomsParamsSemester.
+const (
+	AcademicServiceGetClassroomsParamsSemesterN1 AcademicServiceGetClassroomsParamsSemester = 1
+	AcademicServiceGetClassroomsParamsSemesterN2 AcademicServiceGetClassroomsParamsSemester = 2
+	AcademicServiceGetClassroomsParamsSemesterN3 AcademicServiceGetClassroomsParamsSemester = 3
+)
+
+// Valid indicates whether the value is a known member of the AcademicServiceGetClassroomsParamsSemester enum.
+func (e AcademicServiceGetClassroomsParamsSemester) Valid() bool {
+	switch e {
+	case AcademicServiceGetClassroomsParamsSemesterN1:
+		return true
+	case AcademicServiceGetClassroomsParamsSemesterN2:
+		return true
+	case AcademicServiceGetClassroomsParamsSemesterN3:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AcademicServiceScheduleParamsSemester.
+const (
+	AcademicServiceScheduleParamsSemesterN1 AcademicServiceScheduleParamsSemester = 1
+	AcademicServiceScheduleParamsSemesterN2 AcademicServiceScheduleParamsSemester = 2
+	AcademicServiceScheduleParamsSemesterN3 AcademicServiceScheduleParamsSemester = 3
+)
+
+// Valid indicates whether the value is a known member of the AcademicServiceScheduleParamsSemester enum.
+func (e AcademicServiceScheduleParamsSemester) Valid() bool {
+	switch e {
+	case AcademicServiceScheduleParamsSemesterN1:
+		return true
+	case AcademicServiceScheduleParamsSemesterN2:
+		return true
+	case AcademicServiceScheduleParamsSemesterN3:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AdminNoticeServiceListAdminNoticeAudienceParamsStatus.
 const (
 	AdminNoticeServiceListAdminNoticeAudienceParamsStatusAcknowledged AdminNoticeServiceListAdminNoticeAudienceParamsStatus = "acknowledged"
@@ -2528,9 +2585,12 @@ type ClassroomUsageResponseBody struct {
 
 // ClassroomsResponseBody defines model for ClassroomsResponseBody.
 type ClassroomsResponseBody struct {
-	Code *int64           `json:"code,omitempty"`
-	Data *[]ClassroomItem `json:"data,omitempty"`
-	Msg  *string          `json:"msg,omitempty"`
+	Code int64           `json:"code"`
+	Data []ClassroomItem `json:"data"`
+	Msg  string          `json:"msg"`
+
+	// Pagination OffsetPagination 是 Agent 可直接复用的偏移分页语义。nextOffset 仅在 hasMore=true 时返回。
+	Pagination OffsetPagination `json:"pagination"`
 }
 
 // CollectStateData defines model for CollectStateData.
@@ -4849,6 +4909,49 @@ type KnowledgeItemSummary struct {
 	Visibility *string `json:"visibility,omitempty"`
 }
 
+// KnowledgeSearchRequestBody defines model for KnowledgeSearchRequestBody.
+type KnowledgeSearchRequestBody struct {
+	// ChunkGroup 文档聚合排序
+	ChunkGroup *bool `json:"chunk_group,omitempty"`
+
+	// DenseWeight 稠密(向量)权重
+	DenseWeight *float64 `json:"dense_weight,omitempty"`
+
+	// DomainKeys 命中任一子树(set 相交)
+	DomainKeys *[]string `json:"domain_keys,omitempty"`
+
+	// Limit 最多返回命中数，1-50，默认 10。
+	Limit *int32 `json:"limit,omitempty"`
+
+	// OfficialOnly 仅学校/助手官方
+	OfficialOnly *bool `json:"official_only,omitempty"`
+
+	// Query 要检索的自然语言问题或关键词。
+	Query string `json:"query"`
+
+	// Rerank 重排开关
+	Rerank *bool `json:"rerank,omitempty"`
+
+	// RerankModel 重排模型
+	RerankModel *string `json:"rerank_model,omitempty"`
+
+	// RetrieveCount 进入重排数量
+	RetrieveCount *int32 `json:"retrieve_count,omitempty"`
+
+	// Rewrite 问题改写
+	Rewrite *bool `json:"rewrite,omitempty"`
+
+	// ScoreThreshold 阈值过滤(0=不过滤)
+	ScoreThreshold *float64 `json:"score_threshold,omitempty"`
+}
+
+// KnowledgeSearchResponseBody defines model for KnowledgeSearchResponseBody.
+type KnowledgeSearchResponseBody struct {
+	Code int64       `json:"code"`
+	Data []SearchHit `json:"data"`
+	Msg  string      `json:"msg"`
+}
+
 // KnowledgeSourceNode KnowledgeSourceNode 是扁平「来源」词表的一项。
 type KnowledgeSourceNode struct {
 	Id *string `json:"id,omitempty"`
@@ -5767,6 +5870,15 @@ type OfficialAccountResponseBody struct {
 	// OfficialAccount 由应用记录投影而来，不是独立实体。
 	Data *OfficialAccount `json:"data,omitempty"`
 	Msg  *string          `json:"msg,omitempty"`
+}
+
+// OffsetPagination OffsetPagination 是 Agent 可直接复用的偏移分页语义。nextOffset 仅在 hasMore=true 时返回。
+type OffsetPagination struct {
+	HasMore    bool   `json:"hasMore"`
+	Limit      int32  `json:"limit"`
+	NextOffset *int32 `json:"nextOffset,omitempty"`
+	Offset     int32  `json:"offset"`
+	Total      int32  `json:"total"`
 }
 
 // OperatorInfo defines model for OperatorInfo.
@@ -6714,9 +6826,11 @@ type RestoreVersionRequestBody struct {
 
 // RetrieveRequestBody defines model for RetrieveRequestBody.
 type RetrieveRequestBody struct {
-	// Limit 返回结果数量
-	Limit *int32  `json:"limit,omitempty"`
-	Query *string `json:"query,omitempty"`
+	// Limit 最多返回命中数，1-20，默认 8。
+	Limit *int32 `json:"limit,omitempty"`
+
+	// Query 要检索的自然语言问题或关键词。
+	Query string `json:"query"`
 
 	// Tags 标签过滤(命中任一)
 	Tags *[]string `json:"tags,omitempty"`
@@ -6990,9 +7104,12 @@ type ScheduleNowResponseBody struct {
 
 // ScheduleResponseBody defines model for ScheduleResponseBody.
 type ScheduleResponseBody struct {
-	Code *int64          `json:"code,omitempty"`
-	Data *[]ScheduleItem `json:"data,omitempty"`
-	Msg  *string         `json:"msg,omitempty"`
+	Code int64          `json:"code"`
+	Data []ScheduleItem `json:"data"`
+	Msg  string         `json:"msg"`
+
+	// Pagination OffsetPagination 是 Agent 可直接复用的偏移分页语义。nextOffset 仅在 hasMore=true 时返回。
+	Pagination OffsetPagination `json:"pagination"`
 }
 
 // SchoolRollStatus SchoolRollStatus 学籍状态(学籍状态代码 + 中文描述，读自 Oracle STUDENT_DETAIL 视图)。
@@ -7119,40 +7236,6 @@ type SearchPage struct {
 	PageSize   *int32      `json:"pageSize,omitempty"`
 	Total      *int32      `json:"total,omitempty"`
 	TotalPages *int32      `json:"totalPages,omitempty"`
-}
-
-// SearchRequestBody defines model for SearchRequestBody.
-type SearchRequestBody struct {
-	// ChunkGroup 文档聚合排序
-	ChunkGroup *bool `json:"chunk_group,omitempty"`
-
-	// DenseWeight 稠密(向量)权重
-	DenseWeight *float64 `json:"dense_weight,omitempty"`
-
-	// DomainKeys 命中任一子树(set 相交)
-	DomainKeys *[]string `json:"domain_keys,omitempty"`
-
-	// Limit 结果返回数量
-	Limit *int32 `json:"limit,omitempty"`
-
-	// OfficialOnly 仅学校/助手官方
-	OfficialOnly *bool   `json:"official_only,omitempty"`
-	Query        *string `json:"query,omitempty"`
-
-	// Rerank 重排开关
-	Rerank *bool `json:"rerank,omitempty"`
-
-	// RerankModel 重排模型
-	RerankModel *string `json:"rerank_model,omitempty"`
-
-	// RetrieveCount 进入重排数量
-	RetrieveCount *int32 `json:"retrieve_count,omitempty"`
-
-	// Rewrite 问题改写
-	Rewrite *bool `json:"rewrite,omitempty"`
-
-	// ScoreThreshold 阈值过滤(0=不过滤)
-	ScoreThreshold *float64 `json:"score_threshold,omitempty"`
 }
 
 // SearchResponseBody defines model for SearchResponseBody.
@@ -7415,7 +7498,9 @@ type ServiceChatData struct {
 type ServiceChatRequestBody struct {
 	DomainKeys   *[]string `json:"domain_keys,omitempty"`
 	OfficialOnly *bool     `json:"official_only,omitempty"`
-	Query        *string   `json:"query,omitempty"`
+
+	// Query 要回答的自然语言问题。
+	Query string `json:"query"`
 
 	// StrategyName 策略(知识服务)名；空=默认
 	StrategyName *string `json:"strategy_name,omitempty"`
@@ -8936,14 +9021,37 @@ type AcademicServiceClassQuerySearchParams struct {
 
 // AcademicServiceGetClassroomsParams defines parameters for AcademicServiceGetClassrooms.
 type AcademicServiceGetClassroomsParams struct {
-	BuildingID *string  `form:"buildingID,omitempty" json:"buildingID,omitempty"`
-	Status     *string  `form:"status,omitempty" json:"status,omitempty"`
-	Week       *int32   `form:"week,omitempty" json:"week,omitempty"`
-	Weekday    *int32   `form:"weekday,omitempty" json:"weekday,omitempty"`
-	Section    *[]int32 `form:"section,omitempty" json:"section,omitempty"`
-	SchoolYear *string  `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
-	Semester   *string  `form:"semester,omitempty" json:"semester,omitempty"`
+	// BuildingID 教学楼 ID；建议先按楼栋缩小结果集，省略时查询全部教学楼。
+	BuildingID *string `form:"buildingID,omitempty" json:"buildingID,omitempty"`
+
+	// Status 仅查空闲可自习教室时传 unused；省略时返回全部并通过 selfStudy 标记。
+	Status *AcademicServiceGetClassroomsParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+
+	// Week 教学周，1-30；省略时使用当前教学周。
+	Week *int32 `form:"week,omitempty" json:"week,omitempty"`
+
+	// Weekday 星期，周一=1至周日=7；省略时使用今天。
+	Weekday *int32   `form:"weekday,omitempty" json:"weekday,omitempty"`
+	Section *[]int32 `form:"section,omitempty" json:"section,omitempty"`
+
+	// SchoolYear 学年，格式 YYYY-YYYY；省略时使用当前教学学期。
+	SchoolYear *string `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
+
+	// Semester 学期编号，只能为 1、2 或 3。
+	Semester *AcademicServiceGetClassroomsParamsSemester `form:"semester,omitempty" json:"semester,omitempty"`
+
+	// Limit 单页最多返回教室数，1-200。MCP 省略时默认 50；REST 旧客户端省略时保持兼容。
+	Limit *int32 `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Offset 从第几条开始返回，从 0 计数；继续翻页时使用上一页 pagination.nextOffset。
+	Offset *int32 `form:"offset,omitempty" json:"offset,omitempty"`
 }
+
+// AcademicServiceGetClassroomsParamsStatus defines parameters for AcademicServiceGetClassrooms.
+type AcademicServiceGetClassroomsParamsStatus string
+
+// AcademicServiceGetClassroomsParamsSemester defines parameters for AcademicServiceGetClassrooms.
+type AcademicServiceGetClassroomsParamsSemester int32
 
 // AcademicServiceClassroomUsageParams defines parameters for AcademicServiceClassroomUsage.
 type AcademicServiceClassroomUsageParams struct {
@@ -9063,12 +9171,28 @@ type AcademicServicePersonInfoParams struct {
 
 // AcademicServiceScheduleParams defines parameters for AcademicServiceSchedule.
 type AcademicServiceScheduleParams struct {
-	Timestamp  *int64  `form:"timestamp,omitempty" json:"timestamp,omitempty"`
+	// Timestamp 可选 Unix 秒级时间戳；传入时按校历推导学年、学期和教学周，并覆盖显式学期参数。
+	Timestamp *int64 `form:"timestamp,omitempty" json:"timestamp,omitempty"`
+
+	// SchoolYear 学年，格式 YYYY-YYYY；与 semester 都省略时使用当前教学学期。
 	SchoolYear *string `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
-	Semester   *int32  `form:"semester,omitempty" json:"semester,omitempty"`
-	Week       *int32  `form:"week,omitempty" json:"week,omitempty"`
-	XStaffId   *string `json:"X-Staff-Id,omitempty"`
+
+	// Semester 学期编号，只能为 1、2 或 3。
+	Semester *AcademicServiceScheduleParamsSemester `form:"semester,omitempty" json:"semester,omitempty"`
+
+	// Week 教学周，1-30；省略时返回所选学期全部周次。
+	Week *int32 `form:"week,omitempty" json:"week,omitempty"`
+
+	// Limit 单页最多返回条数，1-200。MCP 省略时默认 50；REST 旧客户端省略时保持兼容。
+	Limit *int32 `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Offset 从第几条开始返回，从 0 计数；继续翻页时使用上一页 pagination.nextOffset。
+	Offset   *int32  `form:"offset,omitempty" json:"offset,omitempty"`
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
+
+// AcademicServiceScheduleParamsSemester defines parameters for AcademicServiceSchedule.
+type AcademicServiceScheduleParamsSemester int32
 
 // AcademicServiceGlobalScheduleParams defines parameters for AcademicServiceGlobalSchedule.
 type AcademicServiceGlobalScheduleParams struct {
@@ -9718,8 +9842,11 @@ type IdentityServiceListPATsParams struct {
 
 // EmptyScheduleServiceDeleteEventParams defines parameters for EmptyScheduleServiceDeleteEvent.
 type EmptyScheduleServiceDeleteEventParams struct {
-	RoomId  *string `form:"room_id,omitempty" json:"room_id,omitempty"`
-	EventId *string `form:"event_id,omitempty" json:"event_id,omitempty"`
+	// RoomId 必填。目标结果所属房间 ID，必须复用上一步查询返回值。
+	RoomId string `form:"room_id" json:"room_id"`
+
+	// EventId 必填。要删除的空闲时段结果 ID，必须复用房间详情或结果查询返回值。
+	EventId string `form:"event_id" json:"event_id"`
 }
 
 // EmptyScheduleServiceEventResultParams defines parameters for EmptyScheduleServiceEventResult.
@@ -9730,7 +9857,8 @@ type EmptyScheduleServiceEventResultParams struct {
 
 // EmptyScheduleServiceDeleteFavoriteParams defines parameters for EmptyScheduleServiceDeleteFavorite.
 type EmptyScheduleServiceDeleteFavoriteParams struct {
-	FId *string `form:"f_id,omitempty" json:"f_id,omitempty"`
+	// FId 必填。要删除的收藏 ID，必须来自先前的收藏列表或结果详情返回。
+	FId string `form:"f_id" json:"f_id"`
 }
 
 // EmptyScheduleServiceFavoritesParams defines parameters for EmptyScheduleServiceFavorites.
@@ -9741,7 +9869,8 @@ type EmptyScheduleServiceFavoritesParams struct {
 
 // EmptyScheduleServiceDeleteRoomParams defines parameters for EmptyScheduleServiceDeleteRoom.
 type EmptyScheduleServiceDeleteRoomParams struct {
-	RoomId *string `form:"room_id,omitempty" json:"room_id,omitempty"`
+	// RoomId 必填。要删除的空课表房间 ID；必须来自先前的房间列表、创建或详情返回。
+	RoomId string `form:"room_id" json:"room_id"`
 }
 
 // EmptyScheduleServiceRoomDetailParams defines parameters for EmptyScheduleServiceRoomDetail.
@@ -9837,7 +9966,8 @@ type GroupChatServiceCreateGroupParams struct {
 
 // GroupChatServiceLeaveGroupParams defines parameters for GroupChatServiceLeaveGroup.
 type GroupChatServiceLeaveGroupParams struct {
-	OpenConversationId *string `form:"openConversationId,omitempty" json:"openConversationId,omitempty"`
+	// OpenConversationId 必填。要退出的群 openConversationId，必须复用先前群列表或群详情返回的真实 ID。
+	OpenConversationId string  `form:"openConversationId" json:"openConversationId"`
 	XStaffId           *string `json:"X-Staff-Id,omitempty"`
 }
 
@@ -10364,7 +10494,7 @@ type KnowledgeServiceAdminItemStateJSONRequestBody = ItemStateRequestBody
 type KnowledgeServiceAdminSetQAStrategiesJSONRequestBody = SetQAStrategiesRequestBody
 
 // KnowledgeServiceAdminKnowledgeSearchJSONRequestBody defines body for KnowledgeServiceAdminKnowledgeSearch for application/json ContentType.
-type KnowledgeServiceAdminKnowledgeSearchJSONRequestBody = SearchRequestBody
+type KnowledgeServiceAdminKnowledgeSearchJSONRequestBody = KnowledgeSearchRequestBody
 
 // KnowledgeServiceAdminKnowledgeServiceChatJSONRequestBody defines body for KnowledgeServiceAdminKnowledgeServiceChat for application/json ContentType.
 type KnowledgeServiceAdminKnowledgeServiceChatJSONRequestBody = ServiceChatRequestBody

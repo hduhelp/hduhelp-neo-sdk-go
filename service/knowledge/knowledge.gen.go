@@ -1695,7 +1695,7 @@ func NewAdminKnowledgeSearchReqBuilder() *AdminKnowledgeSearchReqBuilder {
 }
 
 // Body sets the request body.
-func (b *AdminKnowledgeSearchReqBuilder) Body(body *models.SearchRequestBody) *AdminKnowledgeSearchReqBuilder {
+func (b *AdminKnowledgeSearchReqBuilder) Body(body *models.KnowledgeSearchRequestBody) *AdminKnowledgeSearchReqBuilder {
 	b.req.body = body
 	return b
 }
@@ -1707,7 +1707,7 @@ func (b *AdminKnowledgeSearchReqBuilder) Build() *AdminKnowledgeSearchReq { retu
 type AdminKnowledgeSearchResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.SearchPage `json:"data"`
+	Data []models.SearchHit `json:"data"`
 }
 
 // AdminKnowledgeSearch: 知识检索（后台试搜）
@@ -2296,7 +2296,7 @@ func (b *KnowledgeRetrieveReqBuilder) Build() *KnowledgeRetrieveReq { return b.r
 type KnowledgeRetrieveResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.SearchPage `json:"data"`
+	Data []models.SearchHit `json:"data"`
 }
 
 // KnowledgeRetrieve: 知识检索

@@ -542,7 +542,7 @@ func NewLeaveGroupReqBuilder() *LeaveGroupReqBuilder {
 	return &LeaveGroupReqBuilder{req: &LeaveGroupReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// OpenConversationId sets the "openConversationId" query parameter.
+// OpenConversationId sets the "openConversationId" query parameter: 必填。要退出的群 openConversationId，必须复用先前群列表或群详情返回的真实 ID。
 func (b *LeaveGroupReqBuilder) OpenConversationId(v string) *LeaveGroupReqBuilder {
 	b.req.queryParams["openConversationId"] = v
 	return b

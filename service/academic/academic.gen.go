@@ -280,25 +280,25 @@ func NewGetClassroomsReqBuilder() *GetClassroomsReqBuilder {
 	return &GetClassroomsReqBuilder{req: &GetClassroomsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// BuildingID sets the "buildingID" query parameter.
+// BuildingID sets the "buildingID" query parameter: 教学楼 ID；建议先按楼栋缩小结果集，省略时查询全部教学楼。
 func (b *GetClassroomsReqBuilder) BuildingID(v string) *GetClassroomsReqBuilder {
 	b.req.queryParams["buildingID"] = v
 	return b
 }
 
-// Status sets the "status" query parameter.
+// Status sets the "status" query parameter: 仅查空闲可自习教室时传 unused；省略时返回全部并通过 selfStudy 标记。
 func (b *GetClassroomsReqBuilder) Status(v string) *GetClassroomsReqBuilder {
 	b.req.queryParams["status"] = v
 	return b
 }
 
-// Week sets the "week" query parameter.
+// Week sets the "week" query parameter: 教学周，1-30；省略时使用当前教学周。
 func (b *GetClassroomsReqBuilder) Week(v int32) *GetClassroomsReqBuilder {
 	b.req.queryParams["week"] = strconv.FormatInt(int64(v), 10)
 	return b
 }
 
-// Weekday sets the "weekday" query parameter.
+// Weekday sets the "weekday" query parameter: 星期，周一=1至周日=7；省略时使用今天。
 func (b *GetClassroomsReqBuilder) Weekday(v int32) *GetClassroomsReqBuilder {
 	b.req.queryParams["weekday"] = strconv.FormatInt(int64(v), 10)
 	return b
@@ -310,15 +310,27 @@ func (b *GetClassroomsReqBuilder) Section(v []string) *GetClassroomsReqBuilder {
 	return b
 }
 
-// SchoolYear sets the "schoolYear" query parameter.
+// SchoolYear sets the "schoolYear" query parameter: 学年，格式 YYYY-YYYY；省略时使用当前教学学期。
 func (b *GetClassroomsReqBuilder) SchoolYear(v string) *GetClassroomsReqBuilder {
 	b.req.queryParams["schoolYear"] = v
 	return b
 }
 
-// Semester sets the "semester" query parameter.
-func (b *GetClassroomsReqBuilder) Semester(v string) *GetClassroomsReqBuilder {
-	b.req.queryParams["semester"] = v
+// Semester sets the "semester" query parameter: 学期编号，只能为 1、2 或 3。
+func (b *GetClassroomsReqBuilder) Semester(v int32) *GetClassroomsReqBuilder {
+	b.req.queryParams["semester"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Limit sets the "limit" query parameter: 单页最多返回教室数，1-200。MCP 省略时默认 50；REST 旧客户端省略时保持兼容。
+func (b *GetClassroomsReqBuilder) Limit(v int32) *GetClassroomsReqBuilder {
+	b.req.queryParams["limit"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Offset sets the "offset" query parameter: 从第几条开始返回，从 0 计数；继续翻页时使用上一页 pagination.nextOffset。
+func (b *GetClassroomsReqBuilder) Offset(v int32) *GetClassroomsReqBuilder {
+	b.req.queryParams["offset"] = strconv.FormatInt(int64(v), 10)
 	return b
 }
 
@@ -1470,25 +1482,25 @@ func NewScheduleReqBuilder() *ScheduleReqBuilder {
 	return &ScheduleReqBuilder{req: &ScheduleReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// Timestamp sets the "timestamp" query parameter.
+// Timestamp sets the "timestamp" query parameter: 可选 Unix 秒级时间戳；传入时按校历推导学年、学期和教学周，并覆盖显式学期参数。
 func (b *ScheduleReqBuilder) Timestamp(v int64) *ScheduleReqBuilder {
 	b.req.queryParams["timestamp"] = strconv.FormatInt(v, 10)
 	return b
 }
 
-// SchoolYear sets the "schoolYear" query parameter.
+// SchoolYear sets the "schoolYear" query parameter: 学年，格式 YYYY-YYYY；与 semester 都省略时使用当前教学学期。
 func (b *ScheduleReqBuilder) SchoolYear(v string) *ScheduleReqBuilder {
 	b.req.queryParams["schoolYear"] = v
 	return b
 }
 
-// Semester sets the "semester" query parameter.
+// Semester sets the "semester" query parameter: 学期编号，只能为 1、2 或 3。
 func (b *ScheduleReqBuilder) Semester(v int32) *ScheduleReqBuilder {
 	b.req.queryParams["semester"] = strconv.FormatInt(int64(v), 10)
 	return b
 }
 
-// Week sets the "week" query parameter.
+// Week sets the "week" query parameter: 教学周，1-30；省略时返回所选学期全部周次。
 func (b *ScheduleReqBuilder) Week(v int32) *ScheduleReqBuilder {
 	b.req.queryParams["week"] = strconv.FormatInt(int64(v), 10)
 	return b
@@ -1497,6 +1509,18 @@ func (b *ScheduleReqBuilder) Week(v int32) *ScheduleReqBuilder {
 // StaffID sets the "X-Staff-Id" header parameter.
 func (b *ScheduleReqBuilder) StaffID(v string) *ScheduleReqBuilder {
 	b.req.headers["X-Staff-Id"] = v
+	return b
+}
+
+// Limit sets the "limit" query parameter: 单页最多返回条数，1-200。MCP 省略时默认 50；REST 旧客户端省略时保持兼容。
+func (b *ScheduleReqBuilder) Limit(v int32) *ScheduleReqBuilder {
+	b.req.queryParams["limit"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Offset sets the "offset" query parameter: 从第几条开始返回，从 0 计数；继续翻页时使用上一页 pagination.nextOffset。
+func (b *ScheduleReqBuilder) Offset(v int32) *ScheduleReqBuilder {
+	b.req.queryParams["offset"] = strconv.FormatInt(int64(v), 10)
 	return b
 }
 

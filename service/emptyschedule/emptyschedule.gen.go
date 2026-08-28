@@ -130,13 +130,13 @@ func NewDeleteEventReqBuilder() *DeleteEventReqBuilder {
 	return &DeleteEventReqBuilder{req: &DeleteEventReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// RoomId sets the "room_id" query parameter.
+// RoomId sets the "room_id" query parameter: 必填。目标结果所属房间 ID，必须复用上一步查询返回值。
 func (b *DeleteEventReqBuilder) RoomId(v string) *DeleteEventReqBuilder {
 	b.req.queryParams["room_id"] = v
 	return b
 }
 
-// EventId sets the "event_id" query parameter.
+// EventId sets the "event_id" query parameter: 必填。要删除的空闲时段结果 ID，必须复用房间详情或结果查询返回值。
 func (b *DeleteEventReqBuilder) EventId(v string) *DeleteEventReqBuilder {
 	b.req.queryParams["event_id"] = v
 	return b
@@ -371,7 +371,7 @@ func NewDeleteFavoriteReqBuilder() *DeleteFavoriteReqBuilder {
 	return &DeleteFavoriteReqBuilder{req: &DeleteFavoriteReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// FId sets the "f_id" query parameter.
+// FId sets the "f_id" query parameter: 必填。要删除的收藏 ID，必须来自先前的收藏列表或结果详情返回。
 func (b *DeleteFavoriteReqBuilder) FId(v string) *DeleteFavoriteReqBuilder {
 	b.req.queryParams["f_id"] = v
 	return b
@@ -542,7 +542,7 @@ func NewDeleteRoomReqBuilder() *DeleteRoomReqBuilder {
 	return &DeleteRoomReqBuilder{req: &DeleteRoomReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// RoomId sets the "room_id" query parameter.
+// RoomId sets the "room_id" query parameter: 必填。要删除的空课表房间 ID；必须来自先前的房间列表、创建或详情返回。
 func (b *DeleteRoomReqBuilder) RoomId(v string) *DeleteRoomReqBuilder {
 	b.req.queryParams["room_id"] = v
 	return b
