@@ -1120,6 +1120,453 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ScheduleNowResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/academic/schedule/share/bind:
+        post:
+            tags:
+                - AcademicService
+            summary: 确认绑定课表分享
+            description: 在数据库事务与行锁下将一次性邀请原子绑定到当前 Neo 账号
+            operationId: AcademicService_BindScheduleShare
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: Idempotency-Key
+                  in: header
+                  required: true
+                  schema:
+                    type: string
+                - name: X-Device-Id
+                  in: header
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/BindScheduleShareRequestBody'
+            responses:
+                "429":
+                    description: Too many schedule-share attempts.
+                    headers:
+                        Retry-After:
+                            required: true
+                            schema:
+                                type: integer
+                                format: int64
+                                minimum: 1
+                    content:
+                        application/json:
+                            schema:
+                                required:
+                                    - code
+                                    - msg
+                                    - retry_after
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        format: int64
+                                    msg:
+                                        type: string
+                                    retry_after:
+                                        type: integer
+                                        format: int64
+                                        minimum: 1
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ScheduleShareGrantResponseBody'
+            x-hduhelp-http: {'auth': 'native_session', 'request_body_required': true, 'rate_limited': true}
+    /hduhelp-neo/academic/schedule/share/claims:
+        post:
+            tags:
+                - AcademicService
+            summary: 交换邀请 token
+            description: 匿名端点；将 URL fragment 中的 token 换成设备绑定、10 分钟有效的短 claim，所有无效邀请返回统一结果
+            operationId: AcademicService_ExchangeScheduleShareClaim
+            security: []
+            parameters:
+                - name: X-Device-Id
+                  in: header
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ExchangeScheduleShareClaimRequestBody'
+            responses:
+                "429":
+                    description: Too many schedule-share attempts.
+                    headers:
+                        Retry-After:
+                            required: true
+                            schema:
+                                type: integer
+                                format: int64
+                                minimum: 1
+                    content:
+                        application/json:
+                            schema:
+                                required:
+                                    - code
+                                    - msg
+                                    - retry_after
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        format: int64
+                                    msg:
+                                        type: string
+                                    retry_after:
+                                        type: integer
+                                        format: int64
+                                        minimum: 1
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExchangedScheduleShareClaimResponseBody'
+            x-hduhelp-http: {'auth': 'public', 'catalog': 'exclude', 'request_body_required': true, 'rate_limited': true}
+    /hduhelp-neo/academic/schedule/share/claims/preview:
+        post:
+            tags:
+                - AcademicService
+            summary: 登录后预览课表分享绑定
+            description: 仅原生会话可查看分享者与当前接收账号并进行确认；短 claim 仅置于请求体，不进入 URL
+            operationId: AcademicService_PreviewScheduleShareClaim
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: X-Device-Id
+                  in: header
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PreviewScheduleShareClaimRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ScheduleShareClaimPreviewResponseBody'
+            x-hduhelp-http: {'auth': 'native_session', 'request_body_required': true}
+    /hduhelp-neo/academic/schedule/shared:
+        get:
+            tags:
+                - AcademicService
+            summary: 列出我接收的课表分享
+            description: 分页返回当前 Neo 账号接收的生效中或历史授权
+            operationId: AcademicService_ListReceivedScheduleShares
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: history
+                  in: query
+                  schema:
+                    type: boolean
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ScheduleShareGrantPageResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/academic/schedule/shared/{grantId}:
+        get:
+            tags:
+                - AcademicService
+            summary: 读取账号绑定的共享课表
+            description: 服务端从当前接收者 grant 的 owner_user_id 与 identity_type 动态解析学业身份，并应用固定范围；全学期授权可按周切换，只返回课程名、节次时间、地点与教师
+            operationId: AcademicService_ReadSharedSchedule
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: grantId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: week
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SharedScheduleResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+        delete:
+            tags:
+                - AcademicService
+            summary: 解除我接收的课表分享
+            description: 操作幂等，终态元数据永久保留
+            operationId: AcademicService_UnbindScheduleShare
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: grantId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ScheduleShareGrantResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/academic/schedule/shares:
+        get:
+            tags:
+                - AcademicService
+            summary: 列出我发起的课表分享
+            description: history=false 返回等待绑定和生效中的分享，history=true 返回永久保留的终态元数据
+            operationId: AcademicService_ListScheduleShares
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: history
+                  in: query
+                  schema:
+                    type: boolean
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ScheduleShareInvitationPageResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+        post:
+            tags:
+                - AcademicService
+            summary: 创建一次性课表分享
+            description: 授权绑定当前 Neo 用户与当前校园身份类型，并固定学年学期和可选周次；明文邀请 token 仅在 URL fragment 中返回
+            operationId: AcademicService_CreateScheduleShare
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: Idempotency-Key
+                  in: header
+                  required: true
+                  schema:
+                    type: string
+                - name: X-Device-Id
+                  in: header
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateScheduleShareRequestBody'
+            responses:
+                "429":
+                    description: Too many schedule-share attempts.
+                    headers:
+                        Retry-After:
+                            required: true
+                            schema:
+                                type: integer
+                                format: int64
+                                minimum: 1
+                    content:
+                        application/json:
+                            schema:
+                                required:
+                                    - code
+                                    - msg
+                                    - retry_after
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        format: int64
+                                    msg:
+                                        type: string
+                                    retry_after:
+                                        type: integer
+                                        format: int64
+                                        minimum: 1
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreatedScheduleShareResponseBody'
+            x-hduhelp-http: {'auth': 'native_session', 'request_body_required': true, 'rate_limited': true}
+    /hduhelp-neo/academic/schedule/shares/options:
+        get:
+            tags:
+                - AcademicService
+            summary: 获取课表分享策略选项
+            description: 返回服务端允许的绑定窗口、授权时长和数据库时间；仅接受 Neo 原生会话
+            operationId: AcademicService_ScheduleShareOptions
+            security:
+                - NativeSessionAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ScheduleShareOptionsResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/academic/schedule/shares/{invitationId}:
+        delete:
+            tags:
+                - AcademicService
+            summary: 取消邀请或撤销授权
+            description: 等待绑定时取消，绑定后撤销；操作幂等且终态永久保留
+            operationId: AcademicService_EndScheduleShare
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: invitationId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ScheduleShareInvitationResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+        patch:
+            tags:
+                - AcademicService
+            summary: 重命名课表分享
+            description: 修改接收者可见的分享名称，不改变授权范围
+            operationId: AcademicService_RenameScheduleShare
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: invitationId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RenameScheduleShareRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ScheduleShareInvitationResponseBody'
+            x-hduhelp-http: {'auth': 'native_session', 'request_body_required': true}
+    /hduhelp-neo/academic/schedule/shares/{invitationId}/reissue:
+        post:
+            tags:
+                - AcademicService
+            summary: 重新生成等待绑定的邀请
+            description: 原邀请与 token 在同一事务中失效，新 URL 只返回一次
+            operationId: AcademicService_ReissueScheduleShare
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: invitationId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: Idempotency-Key
+                  in: header
+                  required: true
+                  schema:
+                    type: string
+                - name: X-Device-Id
+                  in: header
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "429":
+                    description: Too many schedule-share attempts.
+                    headers:
+                        Retry-After:
+                            required: true
+                            schema:
+                                type: integer
+                                format: int64
+                                minimum: 1
+                    content:
+                        application/json:
+                            schema:
+                                required:
+                                    - code
+                                    - msg
+                                    - retry_after
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        format: int64
+                                    msg:
+                                        type: string
+                                    retry_after:
+                                        type: integer
+                                        format: int64
+                                        minimum: 1
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreatedScheduleShareResponseBody'
+            x-hduhelp-http: {'auth': 'native_session', 'rate_limited': true}
     /hduhelp-neo/academic/school-roll-status:
         get:
             tags:
@@ -13116,6 +13563,13 @@ components:
                 room_id:
                     type: integer
                     format: int64
+        BindScheduleShareRequestBody:
+            required:
+                - claimHandle
+            type: object
+            properties:
+                claimHandle:
+                    type: string
         BindSocialRequestBody:
             type: object
             properties:
@@ -14910,6 +15364,31 @@ components:
                     format: int64
                 msg:
                     type: string
+        CreateScheduleShareRequestBody:
+            required:
+                - schoolYear
+                - semester
+                - bindTtlSeconds
+                - shareTtlSeconds
+            type: object
+            properties:
+                name:
+                    maxLength: 40
+                    type: string
+                schoolYear:
+                    type: string
+                semester:
+                    type: integer
+                    format: int32
+                week:
+                    type: integer
+                    format: int32
+                bindTtlSeconds:
+                    type: integer
+                    format: int64
+                shareTtlSeconds:
+                    type: integer
+                    format: int64
         CreateSensitiveWordRequestBody:
             type: object
             properties:
@@ -14985,6 +15464,25 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/CreateWeChatQRLoginData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        CreatedScheduleShareData:
+            type: object
+            properties:
+                invitation:
+                    $ref: '#/components/schemas/ScheduleShareInvitation'
+                shareUrl:
+                    type: string
+                replayed:
+                    type: boolean
+        CreatedScheduleShareResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/CreatedScheduleShareData'
                 code:
                     type: integer
                     format: int64
@@ -15965,6 +16463,33 @@ components:
                     type: integer
                     format: int64
                 message:
+                    type: string
+        ExchangeScheduleShareClaimRequestBody:
+            required:
+                - token
+            type: object
+            properties:
+                token:
+                    type: string
+        ExchangedScheduleShareClaimData:
+            type: object
+            properties:
+                claimHandle:
+                    type: string
+                preview:
+                    $ref: '#/components/schemas/ScheduleShareAnonymousPreview'
+                expiresAt:
+                    type: integer
+                    format: int64
+        ExchangedScheduleShareClaimResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ExchangedScheduleShareClaimData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
                     type: string
         FaqEntry:
             type: object
@@ -19754,6 +20279,13 @@ components:
             properties:
                 preview:
                     type: string
+        PreviewScheduleShareClaimRequestBody:
+            required:
+                - claimHandle
+            type: object
+            properties:
+                claimHandle:
+                    type: string
         PreviewTaggingPromptResponseBody:
             type: object
             properties:
@@ -20216,6 +20748,14 @@ components:
             type: object
             properties:
                 name:
+                    type: string
+        RenameScheduleShareRequestBody:
+            required:
+                - name
+            type: object
+            properties:
+                name:
+                    maxLength: 40
                     type: string
         ReplaceCourseSimulationRequestBody:
             required:
@@ -20884,6 +21424,249 @@ components:
                         $ref: '#/components/schemas/ScheduleItem'
                 pagination:
                     $ref: '#/components/schemas/OffsetPagination'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ScheduleShareAnonymousPreview:
+            type: object
+            properties:
+                invitationName:
+                    type: string
+                schoolYear:
+                    type: string
+                semester:
+                    type: integer
+                    format: int32
+                week:
+                    type: integer
+                    format: int32
+                bindExpiresAt:
+                    type: integer
+                    format: int64
+                shareTtlSeconds:
+                    type: integer
+                    format: int64
+        ScheduleShareClaimPreviewData:
+            type: object
+            properties:
+                preview:
+                    $ref: '#/components/schemas/ScheduleShareAnonymousPreview'
+                owner:
+                    $ref: '#/components/schemas/ScheduleShareIdentity'
+                recipient:
+                    $ref: '#/components/schemas/ScheduleShareIdentity'
+        ScheduleShareClaimPreviewResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ScheduleShareClaimPreviewData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ScheduleShareGrant:
+            type: object
+            properties:
+                id:
+                    type: string
+                invitationId:
+                    type: string
+                name:
+                    type: string
+                schoolYear:
+                    type: string
+                semester:
+                    type: integer
+                    format: int32
+                week:
+                    type: integer
+                    format: int32
+                status:
+                    type: string
+                boundAt:
+                    type: integer
+                    format: int64
+                expiresAt:
+                    type: integer
+                    format: int64
+                endedAt:
+                    type: integer
+                    format: int64
+                endReason:
+                    type: string
+                owner:
+                    $ref: '#/components/schemas/ScheduleShareIdentity'
+                recipient:
+                    $ref: '#/components/schemas/ScheduleShareIdentity'
+                identityType:
+                    type: string
+        ScheduleShareGrantPageData:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ScheduleShareGrant'
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                total:
+                    type: integer
+                    format: int64
+                serverNow:
+                    type: integer
+                    format: int64
+        ScheduleShareGrantPageResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ScheduleShareGrantPageData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ScheduleShareGrantResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ScheduleShareGrant'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ScheduleShareIdentity:
+            type: object
+            properties:
+                userId:
+                    type: string
+                nickname:
+                    type: string
+                avatarKey:
+                    type: string
+            description: ==================== Neo 课表分享（账号绑定） ====================
+        ScheduleShareInvitation:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                schoolYear:
+                    type: string
+                semester:
+                    type: integer
+                    format: int32
+                week:
+                    type: integer
+                    format: int32
+                status:
+                    type: string
+                createdAt:
+                    type: integer
+                    format: int64
+                bindExpiresAt:
+                    type: integer
+                    format: int64
+                bindTtlSeconds:
+                    type: integer
+                    format: int64
+                shareTtlSeconds:
+                    type: integer
+                    format: int64
+                claimedAt:
+                    type: integer
+                    format: int64
+                endedAt:
+                    type: integer
+                    format: int64
+                endReason:
+                    type: string
+                grantId:
+                    type: string
+                grantExpiresAt:
+                    type: integer
+                    format: int64
+                recipient:
+                    $ref: '#/components/schemas/ScheduleShareIdentity'
+                identityType:
+                    type: string
+        ScheduleShareInvitationPageData:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ScheduleShareInvitation'
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                total:
+                    type: integer
+                    format: int64
+                serverNow:
+                    type: integer
+                    format: int64
+        ScheduleShareInvitationPageResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ScheduleShareInvitationPageData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ScheduleShareInvitationResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ScheduleShareInvitation'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ScheduleShareOptionsData:
+            type: object
+            properties:
+                bindTtlSeconds:
+                    type: array
+                    items:
+                        type: integer
+                        format: int64
+                defaultBindTtlSeconds:
+                    type: integer
+                    format: int64
+                shareTtlSeconds:
+                    type: array
+                    items:
+                        type: integer
+                        format: int64
+                defaultShareTtlSeconds:
+                    type: integer
+                    format: int64
+                claimTtlSeconds:
+                    type: integer
+                    format: int64
+                serverNow:
+                    type: integer
+                    format: int64
+        ScheduleShareOptionsResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ScheduleShareOptionsData'
                 code:
                     type: integer
                     format: int64
@@ -21934,6 +22717,60 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/SharedLibraryReportData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        SharedScheduleData:
+            type: object
+            properties:
+                grant:
+                    $ref: '#/components/schemas/ScheduleShareGrant'
+                week:
+                    type: integer
+                    format: int32
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SharedScheduleItem'
+                serverNow:
+                    type: integer
+                    format: int64
+                weekCount:
+                    type: integer
+                    format: int32
+        SharedScheduleItem:
+            type: object
+            properties:
+                courseName:
+                    type: string
+                weekDay:
+                    type: integer
+                    format: int32
+                sections:
+                    type: array
+                    items:
+                        type: integer
+                        format: int32
+                startTime:
+                    type: string
+                endTime:
+                    type: string
+                location:
+                    type: string
+                teacherName:
+                    type: string
+                weeks:
+                    type: array
+                    items:
+                        type: integer
+                        format: int32
+        SharedScheduleResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/SharedScheduleData'
                 code:
                     type: integer
                     format: int64

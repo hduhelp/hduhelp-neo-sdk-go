@@ -1646,6 +1646,586 @@ func (s *Service) ScheduleNow(ctx context.Context, req *ScheduleNowReq, opts ...
 	return resp, err
 }
 
+// BindScheduleShareReq is the request for BindScheduleShare.
+type BindScheduleShareReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// BindScheduleShareReqBuilder builds a BindScheduleShareReq with a fluent setter per field.
+type BindScheduleShareReqBuilder struct{ req *BindScheduleShareReq }
+
+// NewBindScheduleShareReqBuilder creates a request builder for BindScheduleShare.
+func NewBindScheduleShareReqBuilder() *BindScheduleShareReqBuilder {
+	return &BindScheduleShareReqBuilder{req: &BindScheduleShareReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// IdempotencyKey sets the "Idempotency-Key" header parameter.
+func (b *BindScheduleShareReqBuilder) IdempotencyKey(v string) *BindScheduleShareReqBuilder {
+	b.req.headers["Idempotency-Key"] = v
+	return b
+}
+
+// DeviceID sets the "X-Device-Id" header parameter.
+func (b *BindScheduleShareReqBuilder) DeviceID(v string) *BindScheduleShareReqBuilder {
+	b.req.headers["X-Device-Id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *BindScheduleShareReqBuilder) Body(body *models.BindScheduleShareRequestBody) *BindScheduleShareReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *BindScheduleShareReqBuilder) Build() *BindScheduleShareReq { return b.req }
+
+// BindScheduleShareResp is the response for BindScheduleShare.
+type BindScheduleShareResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ScheduleShareGrant `json:"data"`
+}
+
+// BindScheduleShare: 确认绑定课表分享
+func (s *Service) BindScheduleShare(ctx context.Context, req *BindScheduleShareReq, opts ...core.RequestOption) (*BindScheduleShareResp, error) {
+	resp := &BindScheduleShareResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/academic/schedule/share/bind",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// PreviewScheduleShareClaimReq is the request for PreviewScheduleShareClaim.
+type PreviewScheduleShareClaimReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// PreviewScheduleShareClaimReqBuilder builds a PreviewScheduleShareClaimReq with a fluent setter per field.
+type PreviewScheduleShareClaimReqBuilder struct{ req *PreviewScheduleShareClaimReq }
+
+// NewPreviewScheduleShareClaimReqBuilder creates a request builder for PreviewScheduleShareClaim.
+func NewPreviewScheduleShareClaimReqBuilder() *PreviewScheduleShareClaimReqBuilder {
+	return &PreviewScheduleShareClaimReqBuilder{req: &PreviewScheduleShareClaimReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// DeviceID sets the "X-Device-Id" header parameter.
+func (b *PreviewScheduleShareClaimReqBuilder) DeviceID(v string) *PreviewScheduleShareClaimReqBuilder {
+	b.req.headers["X-Device-Id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *PreviewScheduleShareClaimReqBuilder) Body(body *models.PreviewScheduleShareClaimRequestBody) *PreviewScheduleShareClaimReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *PreviewScheduleShareClaimReqBuilder) Build() *PreviewScheduleShareClaimReq { return b.req }
+
+// PreviewScheduleShareClaimResp is the response for PreviewScheduleShareClaim.
+type PreviewScheduleShareClaimResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ScheduleShareClaimPreviewData `json:"data"`
+}
+
+// PreviewScheduleShareClaim: 登录后预览课表分享绑定
+func (s *Service) PreviewScheduleShareClaim(ctx context.Context, req *PreviewScheduleShareClaimReq, opts ...core.RequestOption) (*PreviewScheduleShareClaimResp, error) {
+	resp := &PreviewScheduleShareClaimResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/academic/schedule/share/claims/preview",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ListReceivedScheduleSharesReq is the request for ListReceivedScheduleShares.
+type ListReceivedScheduleSharesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListReceivedScheduleSharesReqBuilder builds a ListReceivedScheduleSharesReq with a fluent setter per field.
+type ListReceivedScheduleSharesReqBuilder struct {
+	req *ListReceivedScheduleSharesReq
+}
+
+// NewListReceivedScheduleSharesReqBuilder creates a request builder for ListReceivedScheduleShares.
+func NewListReceivedScheduleSharesReqBuilder() *ListReceivedScheduleSharesReqBuilder {
+	return &ListReceivedScheduleSharesReqBuilder{req: &ListReceivedScheduleSharesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// History sets the "history" query parameter.
+func (b *ListReceivedScheduleSharesReqBuilder) History(v bool) *ListReceivedScheduleSharesReqBuilder {
+	b.req.queryParams["history"] = strconv.FormatBool(v)
+	return b
+}
+
+// Page sets the "page" query parameter.
+func (b *ListReceivedScheduleSharesReqBuilder) Page(v int32) *ListReceivedScheduleSharesReqBuilder {
+	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// PageSize sets the "pageSize" query parameter.
+func (b *ListReceivedScheduleSharesReqBuilder) PageSize(v int32) *ListReceivedScheduleSharesReqBuilder {
+	b.req.queryParams["pageSize"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *ListReceivedScheduleSharesReqBuilder) Build() *ListReceivedScheduleSharesReq { return b.req }
+
+// ListReceivedScheduleSharesResp is the response for ListReceivedScheduleShares.
+type ListReceivedScheduleSharesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ScheduleShareGrantPageData `json:"data"`
+}
+
+// ListReceivedScheduleShares: 列出我接收的课表分享
+func (s *Service) ListReceivedScheduleShares(ctx context.Context, req *ListReceivedScheduleSharesReq, opts ...core.RequestOption) (*ListReceivedScheduleSharesResp, error) {
+	resp := &ListReceivedScheduleSharesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/schedule/shared",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ReadSharedScheduleReq is the request for ReadSharedSchedule.
+type ReadSharedScheduleReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ReadSharedScheduleReqBuilder builds a ReadSharedScheduleReq with a fluent setter per field.
+type ReadSharedScheduleReqBuilder struct{ req *ReadSharedScheduleReq }
+
+// NewReadSharedScheduleReqBuilder creates a request builder for ReadSharedSchedule.
+func NewReadSharedScheduleReqBuilder() *ReadSharedScheduleReqBuilder {
+	return &ReadSharedScheduleReqBuilder{req: &ReadSharedScheduleReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// GrantId sets the "grantId" path parameter.
+func (b *ReadSharedScheduleReqBuilder) GrantId(v string) *ReadSharedScheduleReqBuilder {
+	b.req.pathParams["grantId"] = v
+	return b
+}
+
+// Week sets the "week" query parameter.
+func (b *ReadSharedScheduleReqBuilder) Week(v int32) *ReadSharedScheduleReqBuilder {
+	b.req.queryParams["week"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *ReadSharedScheduleReqBuilder) Build() *ReadSharedScheduleReq { return b.req }
+
+// ReadSharedScheduleResp is the response for ReadSharedSchedule.
+type ReadSharedScheduleResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.SharedScheduleData `json:"data"`
+}
+
+// ReadSharedSchedule: 读取账号绑定的共享课表
+func (s *Service) ReadSharedSchedule(ctx context.Context, req *ReadSharedScheduleReq, opts ...core.RequestOption) (*ReadSharedScheduleResp, error) {
+	resp := &ReadSharedScheduleResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/schedule/shared/{grantId}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// UnbindScheduleShareReq is the request for UnbindScheduleShare.
+type UnbindScheduleShareReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// UnbindScheduleShareReqBuilder builds a UnbindScheduleShareReq with a fluent setter per field.
+type UnbindScheduleShareReqBuilder struct{ req *UnbindScheduleShareReq }
+
+// NewUnbindScheduleShareReqBuilder creates a request builder for UnbindScheduleShare.
+func NewUnbindScheduleShareReqBuilder() *UnbindScheduleShareReqBuilder {
+	return &UnbindScheduleShareReqBuilder{req: &UnbindScheduleShareReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// GrantId sets the "grantId" path parameter.
+func (b *UnbindScheduleShareReqBuilder) GrantId(v string) *UnbindScheduleShareReqBuilder {
+	b.req.pathParams["grantId"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *UnbindScheduleShareReqBuilder) Build() *UnbindScheduleShareReq { return b.req }
+
+// UnbindScheduleShareResp is the response for UnbindScheduleShare.
+type UnbindScheduleShareResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ScheduleShareGrant `json:"data"`
+}
+
+// UnbindScheduleShare: 解除我接收的课表分享
+func (s *Service) UnbindScheduleShare(ctx context.Context, req *UnbindScheduleShareReq, opts ...core.RequestOption) (*UnbindScheduleShareResp, error) {
+	resp := &UnbindScheduleShareResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/academic/schedule/shared/{grantId}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ListScheduleSharesReq is the request for ListScheduleShares.
+type ListScheduleSharesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListScheduleSharesReqBuilder builds a ListScheduleSharesReq with a fluent setter per field.
+type ListScheduleSharesReqBuilder struct{ req *ListScheduleSharesReq }
+
+// NewListScheduleSharesReqBuilder creates a request builder for ListScheduleShares.
+func NewListScheduleSharesReqBuilder() *ListScheduleSharesReqBuilder {
+	return &ListScheduleSharesReqBuilder{req: &ListScheduleSharesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// History sets the "history" query parameter.
+func (b *ListScheduleSharesReqBuilder) History(v bool) *ListScheduleSharesReqBuilder {
+	b.req.queryParams["history"] = strconv.FormatBool(v)
+	return b
+}
+
+// Page sets the "page" query parameter.
+func (b *ListScheduleSharesReqBuilder) Page(v int32) *ListScheduleSharesReqBuilder {
+	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// PageSize sets the "pageSize" query parameter.
+func (b *ListScheduleSharesReqBuilder) PageSize(v int32) *ListScheduleSharesReqBuilder {
+	b.req.queryParams["pageSize"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *ListScheduleSharesReqBuilder) Build() *ListScheduleSharesReq { return b.req }
+
+// ListScheduleSharesResp is the response for ListScheduleShares.
+type ListScheduleSharesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ScheduleShareInvitationPageData `json:"data"`
+}
+
+// ListScheduleShares: 列出我发起的课表分享
+func (s *Service) ListScheduleShares(ctx context.Context, req *ListScheduleSharesReq, opts ...core.RequestOption) (*ListScheduleSharesResp, error) {
+	resp := &ListScheduleSharesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/schedule/shares",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// CreateScheduleShareReq is the request for CreateScheduleShare.
+type CreateScheduleShareReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// CreateScheduleShareReqBuilder builds a CreateScheduleShareReq with a fluent setter per field.
+type CreateScheduleShareReqBuilder struct{ req *CreateScheduleShareReq }
+
+// NewCreateScheduleShareReqBuilder creates a request builder for CreateScheduleShare.
+func NewCreateScheduleShareReqBuilder() *CreateScheduleShareReqBuilder {
+	return &CreateScheduleShareReqBuilder{req: &CreateScheduleShareReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// IdempotencyKey sets the "Idempotency-Key" header parameter.
+func (b *CreateScheduleShareReqBuilder) IdempotencyKey(v string) *CreateScheduleShareReqBuilder {
+	b.req.headers["Idempotency-Key"] = v
+	return b
+}
+
+// DeviceID sets the "X-Device-Id" header parameter.
+func (b *CreateScheduleShareReqBuilder) DeviceID(v string) *CreateScheduleShareReqBuilder {
+	b.req.headers["X-Device-Id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *CreateScheduleShareReqBuilder) Body(body *models.CreateScheduleShareRequestBody) *CreateScheduleShareReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *CreateScheduleShareReqBuilder) Build() *CreateScheduleShareReq { return b.req }
+
+// CreateScheduleShareResp is the response for CreateScheduleShare.
+type CreateScheduleShareResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.CreatedScheduleShareData `json:"data"`
+}
+
+// CreateScheduleShare: 创建一次性课表分享
+func (s *Service) CreateScheduleShare(ctx context.Context, req *CreateScheduleShareReq, opts ...core.RequestOption) (*CreateScheduleShareResp, error) {
+	resp := &CreateScheduleShareResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/academic/schedule/shares",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ScheduleShareOptionsReq is the request for ScheduleShareOptions.
+type ScheduleShareOptionsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ScheduleShareOptionsReqBuilder builds a ScheduleShareOptionsReq with a fluent setter per field.
+type ScheduleShareOptionsReqBuilder struct{ req *ScheduleShareOptionsReq }
+
+// NewScheduleShareOptionsReqBuilder creates a request builder for ScheduleShareOptions.
+func NewScheduleShareOptionsReqBuilder() *ScheduleShareOptionsReqBuilder {
+	return &ScheduleShareOptionsReqBuilder{req: &ScheduleShareOptionsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *ScheduleShareOptionsReqBuilder) Build() *ScheduleShareOptionsReq { return b.req }
+
+// ScheduleShareOptionsResp is the response for ScheduleShareOptions.
+type ScheduleShareOptionsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ScheduleShareOptionsData `json:"data"`
+}
+
+// ScheduleShareOptions: 获取课表分享策略选项
+func (s *Service) ScheduleShareOptions(ctx context.Context, req *ScheduleShareOptionsReq, opts ...core.RequestOption) (*ScheduleShareOptionsResp, error) {
+	resp := &ScheduleShareOptionsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/schedule/shares/options",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// EndScheduleShareReq is the request for EndScheduleShare.
+type EndScheduleShareReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// EndScheduleShareReqBuilder builds a EndScheduleShareReq with a fluent setter per field.
+type EndScheduleShareReqBuilder struct{ req *EndScheduleShareReq }
+
+// NewEndScheduleShareReqBuilder creates a request builder for EndScheduleShare.
+func NewEndScheduleShareReqBuilder() *EndScheduleShareReqBuilder {
+	return &EndScheduleShareReqBuilder{req: &EndScheduleShareReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// InvitationId sets the "invitationId" path parameter.
+func (b *EndScheduleShareReqBuilder) InvitationId(v string) *EndScheduleShareReqBuilder {
+	b.req.pathParams["invitationId"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *EndScheduleShareReqBuilder) Build() *EndScheduleShareReq { return b.req }
+
+// EndScheduleShareResp is the response for EndScheduleShare.
+type EndScheduleShareResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ScheduleShareInvitation `json:"data"`
+}
+
+// EndScheduleShare: 取消邀请或撤销授权
+func (s *Service) EndScheduleShare(ctx context.Context, req *EndScheduleShareReq, opts ...core.RequestOption) (*EndScheduleShareResp, error) {
+	resp := &EndScheduleShareResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/academic/schedule/shares/{invitationId}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// RenameScheduleShareReq is the request for RenameScheduleShare.
+type RenameScheduleShareReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// RenameScheduleShareReqBuilder builds a RenameScheduleShareReq with a fluent setter per field.
+type RenameScheduleShareReqBuilder struct{ req *RenameScheduleShareReq }
+
+// NewRenameScheduleShareReqBuilder creates a request builder for RenameScheduleShare.
+func NewRenameScheduleShareReqBuilder() *RenameScheduleShareReqBuilder {
+	return &RenameScheduleShareReqBuilder{req: &RenameScheduleShareReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// InvitationId sets the "invitationId" path parameter.
+func (b *RenameScheduleShareReqBuilder) InvitationId(v string) *RenameScheduleShareReqBuilder {
+	b.req.pathParams["invitationId"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *RenameScheduleShareReqBuilder) Body(body *models.RenameScheduleShareRequestBody) *RenameScheduleShareReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *RenameScheduleShareReqBuilder) Build() *RenameScheduleShareReq { return b.req }
+
+// RenameScheduleShareResp is the response for RenameScheduleShare.
+type RenameScheduleShareResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ScheduleShareInvitation `json:"data"`
+}
+
+// RenameScheduleShare: 重命名课表分享
+func (s *Service) RenameScheduleShare(ctx context.Context, req *RenameScheduleShareReq, opts ...core.RequestOption) (*RenameScheduleShareResp, error) {
+	resp := &RenameScheduleShareResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PATCH",
+		PathTemplate: "/hduhelp-neo/academic/schedule/shares/{invitationId}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ReissueScheduleShareReq is the request for ReissueScheduleShare.
+type ReissueScheduleShareReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ReissueScheduleShareReqBuilder builds a ReissueScheduleShareReq with a fluent setter per field.
+type ReissueScheduleShareReqBuilder struct{ req *ReissueScheduleShareReq }
+
+// NewReissueScheduleShareReqBuilder creates a request builder for ReissueScheduleShare.
+func NewReissueScheduleShareReqBuilder() *ReissueScheduleShareReqBuilder {
+	return &ReissueScheduleShareReqBuilder{req: &ReissueScheduleShareReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// InvitationId sets the "invitationId" path parameter.
+func (b *ReissueScheduleShareReqBuilder) InvitationId(v string) *ReissueScheduleShareReqBuilder {
+	b.req.pathParams["invitationId"] = v
+	return b
+}
+
+// IdempotencyKey sets the "Idempotency-Key" header parameter.
+func (b *ReissueScheduleShareReqBuilder) IdempotencyKey(v string) *ReissueScheduleShareReqBuilder {
+	b.req.headers["Idempotency-Key"] = v
+	return b
+}
+
+// DeviceID sets the "X-Device-Id" header parameter.
+func (b *ReissueScheduleShareReqBuilder) DeviceID(v string) *ReissueScheduleShareReqBuilder {
+	b.req.headers["X-Device-Id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *ReissueScheduleShareReqBuilder) Build() *ReissueScheduleShareReq { return b.req }
+
+// ReissueScheduleShareResp is the response for ReissueScheduleShare.
+type ReissueScheduleShareResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.CreatedScheduleShareData `json:"data"`
+}
+
+// ReissueScheduleShare: 重新生成等待绑定的邀请
+func (s *Service) ReissueScheduleShare(ctx context.Context, req *ReissueScheduleShareReq, opts ...core.RequestOption) (*ReissueScheduleShareResp, error) {
+	resp := &ReissueScheduleShareResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/academic/schedule/shares/{invitationId}/reissue",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // StudentSchoolRollStatusReq is the request for StudentSchoolRollStatus.
 type StudentSchoolRollStatusReq struct {
 	pathParams  map[string]string

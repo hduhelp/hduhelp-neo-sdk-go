@@ -1980,6 +1980,11 @@ type BindRoomRequestBody struct {
 	RoomId int64 `json:"room_id"`
 }
 
+// BindScheduleShareRequestBody defines model for BindScheduleShareRequestBody.
+type BindScheduleShareRequestBody struct {
+	ClaimHandle string `json:"claimHandle"`
+}
+
 // BindSocialRequestBody defines model for BindSocialRequestBody.
 type BindSocialRequestBody struct {
 	GrantKey *string `json:"grant_key,omitempty"`
@@ -3162,6 +3167,16 @@ type CreateRoomResponseBody struct {
 	Msg  *string   `json:"msg,omitempty"`
 }
 
+// CreateScheduleShareRequestBody defines model for CreateScheduleShareRequestBody.
+type CreateScheduleShareRequestBody struct {
+	BindTtlSeconds  int64   `json:"bindTtlSeconds"`
+	Name            *string `json:"name,omitempty"`
+	SchoolYear      string  `json:"schoolYear"`
+	Semester        int32   `json:"semester"`
+	ShareTtlSeconds int64   `json:"shareTtlSeconds"`
+	Week            *int32  `json:"week,omitempty"`
+}
+
 // CreateSensitiveWordRequestBody defines model for CreateSensitiveWordRequestBody.
 type CreateSensitiveWordRequestBody struct {
 	Action *string `json:"action,omitempty"`
@@ -3227,6 +3242,20 @@ type CreateWeChatQRLoginResponseBody struct {
 	Code *int64                   `json:"code,omitempty"`
 	Data *CreateWeChatQRLoginData `json:"data,omitempty"`
 	Msg  *string                  `json:"msg,omitempty"`
+}
+
+// CreatedScheduleShareData defines model for CreatedScheduleShareData.
+type CreatedScheduleShareData struct {
+	Invitation *ScheduleShareInvitation `json:"invitation,omitempty"`
+	Replayed   *bool                    `json:"replayed,omitempty"`
+	ShareUrl   *string                  `json:"shareUrl,omitempty"`
+}
+
+// CreatedScheduleShareResponseBody defines model for CreatedScheduleShareResponseBody.
+type CreatedScheduleShareResponseBody struct {
+	Code *int64                    `json:"code,omitempty"`
+	Data *CreatedScheduleShareData `json:"data,omitempty"`
+	Msg  *string                   `json:"msg,omitempty"`
 }
 
 // CronTaskInfo -------------------- 定时任务（cron_tasks） --------------------
@@ -3869,6 +3898,25 @@ type ExamResponseBody struct {
 	Code    *int64  `json:"code,omitempty"`
 	Data    *[]Exam `json:"data,omitempty"`
 	Message *string `json:"message,omitempty"`
+}
+
+// ExchangeScheduleShareClaimRequestBody defines model for ExchangeScheduleShareClaimRequestBody.
+type ExchangeScheduleShareClaimRequestBody struct {
+	Token string `json:"token"`
+}
+
+// ExchangedScheduleShareClaimData defines model for ExchangedScheduleShareClaimData.
+type ExchangedScheduleShareClaimData struct {
+	ClaimHandle *string                        `json:"claimHandle,omitempty"`
+	ExpiresAt   *int64                         `json:"expiresAt,omitempty"`
+	Preview     *ScheduleShareAnonymousPreview `json:"preview,omitempty"`
+}
+
+// ExchangedScheduleShareClaimResponseBody defines model for ExchangedScheduleShareClaimResponseBody.
+type ExchangedScheduleShareClaimResponseBody struct {
+	Code *int64                           `json:"code,omitempty"`
+	Data *ExchangedScheduleShareClaimData `json:"data,omitempty"`
+	Msg  *string                          `json:"msg,omitempty"`
 }
 
 // FaqEntry FAQ 单条录入结构。
@@ -6364,6 +6412,11 @@ type PreviewData struct {
 	Preview *string `json:"preview,omitempty"`
 }
 
+// PreviewScheduleShareClaimRequestBody defines model for PreviewScheduleShareClaimRequestBody.
+type PreviewScheduleShareClaimRequestBody struct {
+	ClaimHandle string `json:"claimHandle"`
+}
+
 // PreviewTaggingPromptResponseBody defines model for PreviewTaggingPromptResponseBody.
 type PreviewTaggingPromptResponseBody struct {
 	Code *int64       `json:"code,omitempty"`
@@ -6668,6 +6721,11 @@ type RelationUser struct {
 
 // RenamePolicyProfileRequestBody defines model for RenamePolicyProfileRequestBody.
 type RenamePolicyProfileRequestBody struct {
+	Name string `json:"name"`
+}
+
+// RenameScheduleShareRequestBody defines model for RenameScheduleShareRequestBody.
+type RenameScheduleShareRequestBody struct {
 	Name string `json:"name"`
 }
 
@@ -7110,6 +7168,148 @@ type ScheduleResponseBody struct {
 
 	// Pagination OffsetPagination 是 Agent 可直接复用的偏移分页语义。nextOffset 仅在 hasMore=true 时返回。
 	Pagination OffsetPagination `json:"pagination"`
+}
+
+// ScheduleShareAnonymousPreview defines model for ScheduleShareAnonymousPreview.
+type ScheduleShareAnonymousPreview struct {
+	BindExpiresAt   *int64  `json:"bindExpiresAt,omitempty"`
+	InvitationName  *string `json:"invitationName,omitempty"`
+	SchoolYear      *string `json:"schoolYear,omitempty"`
+	Semester        *int32  `json:"semester,omitempty"`
+	ShareTtlSeconds *int64  `json:"shareTtlSeconds,omitempty"`
+	Week            *int32  `json:"week,omitempty"`
+}
+
+// ScheduleShareClaimPreviewData defines model for ScheduleShareClaimPreviewData.
+type ScheduleShareClaimPreviewData struct {
+	// Owner ==================== Neo 课表分享（账号绑定） ====================
+	Owner   *ScheduleShareIdentity         `json:"owner,omitempty"`
+	Preview *ScheduleShareAnonymousPreview `json:"preview,omitempty"`
+
+	// Recipient ==================== Neo 课表分享（账号绑定） ====================
+	Recipient *ScheduleShareIdentity `json:"recipient,omitempty"`
+}
+
+// ScheduleShareClaimPreviewResponseBody defines model for ScheduleShareClaimPreviewResponseBody.
+type ScheduleShareClaimPreviewResponseBody struct {
+	Code *int64                         `json:"code,omitempty"`
+	Data *ScheduleShareClaimPreviewData `json:"data,omitempty"`
+	Msg  *string                        `json:"msg,omitempty"`
+}
+
+// ScheduleShareGrant defines model for ScheduleShareGrant.
+type ScheduleShareGrant struct {
+	BoundAt      *int64  `json:"boundAt,omitempty"`
+	EndReason    *string `json:"endReason,omitempty"`
+	EndedAt      *int64  `json:"endedAt,omitempty"`
+	ExpiresAt    *int64  `json:"expiresAt,omitempty"`
+	Id           *string `json:"id,omitempty"`
+	IdentityType *string `json:"identityType,omitempty"`
+	InvitationId *string `json:"invitationId,omitempty"`
+	Name         *string `json:"name,omitempty"`
+
+	// Owner ==================== Neo 课表分享（账号绑定） ====================
+	Owner *ScheduleShareIdentity `json:"owner,omitempty"`
+
+	// Recipient ==================== Neo 课表分享（账号绑定） ====================
+	Recipient  *ScheduleShareIdentity `json:"recipient,omitempty"`
+	SchoolYear *string                `json:"schoolYear,omitempty"`
+	Semester   *int32                 `json:"semester,omitempty"`
+	Status     *string                `json:"status,omitempty"`
+	Week       *int32                 `json:"week,omitempty"`
+}
+
+// ScheduleShareGrantPageData defines model for ScheduleShareGrantPageData.
+type ScheduleShareGrantPageData struct {
+	Items     *[]ScheduleShareGrant `json:"items,omitempty"`
+	Page      *int32                `json:"page,omitempty"`
+	PageSize  *int32                `json:"pageSize,omitempty"`
+	ServerNow *int64                `json:"serverNow,omitempty"`
+	Total     *int64                `json:"total,omitempty"`
+}
+
+// ScheduleShareGrantPageResponseBody defines model for ScheduleShareGrantPageResponseBody.
+type ScheduleShareGrantPageResponseBody struct {
+	Code *int64                      `json:"code,omitempty"`
+	Data *ScheduleShareGrantPageData `json:"data,omitempty"`
+	Msg  *string                     `json:"msg,omitempty"`
+}
+
+// ScheduleShareGrantResponseBody defines model for ScheduleShareGrantResponseBody.
+type ScheduleShareGrantResponseBody struct {
+	Code *int64              `json:"code,omitempty"`
+	Data *ScheduleShareGrant `json:"data,omitempty"`
+	Msg  *string             `json:"msg,omitempty"`
+}
+
+// ScheduleShareIdentity ==================== Neo 课表分享（账号绑定） ====================
+type ScheduleShareIdentity struct {
+	AvatarKey *string `json:"avatarKey,omitempty"`
+	Nickname  *string `json:"nickname,omitempty"`
+	UserId    *string `json:"userId,omitempty"`
+}
+
+// ScheduleShareInvitation defines model for ScheduleShareInvitation.
+type ScheduleShareInvitation struct {
+	BindExpiresAt  *int64  `json:"bindExpiresAt,omitempty"`
+	BindTtlSeconds *int64  `json:"bindTtlSeconds,omitempty"`
+	ClaimedAt      *int64  `json:"claimedAt,omitempty"`
+	CreatedAt      *int64  `json:"createdAt,omitempty"`
+	EndReason      *string `json:"endReason,omitempty"`
+	EndedAt        *int64  `json:"endedAt,omitempty"`
+	GrantExpiresAt *int64  `json:"grantExpiresAt,omitempty"`
+	GrantId        *string `json:"grantId,omitempty"`
+	Id             *string `json:"id,omitempty"`
+	IdentityType   *string `json:"identityType,omitempty"`
+	Name           *string `json:"name,omitempty"`
+
+	// Recipient ==================== Neo 课表分享（账号绑定） ====================
+	Recipient       *ScheduleShareIdentity `json:"recipient,omitempty"`
+	SchoolYear      *string                `json:"schoolYear,omitempty"`
+	Semester        *int32                 `json:"semester,omitempty"`
+	ShareTtlSeconds *int64                 `json:"shareTtlSeconds,omitempty"`
+	Status          *string                `json:"status,omitempty"`
+	Week            *int32                 `json:"week,omitempty"`
+}
+
+// ScheduleShareInvitationPageData defines model for ScheduleShareInvitationPageData.
+type ScheduleShareInvitationPageData struct {
+	Items     *[]ScheduleShareInvitation `json:"items,omitempty"`
+	Page      *int32                     `json:"page,omitempty"`
+	PageSize  *int32                     `json:"pageSize,omitempty"`
+	ServerNow *int64                     `json:"serverNow,omitempty"`
+	Total     *int64                     `json:"total,omitempty"`
+}
+
+// ScheduleShareInvitationPageResponseBody defines model for ScheduleShareInvitationPageResponseBody.
+type ScheduleShareInvitationPageResponseBody struct {
+	Code *int64                           `json:"code,omitempty"`
+	Data *ScheduleShareInvitationPageData `json:"data,omitempty"`
+	Msg  *string                          `json:"msg,omitempty"`
+}
+
+// ScheduleShareInvitationResponseBody defines model for ScheduleShareInvitationResponseBody.
+type ScheduleShareInvitationResponseBody struct {
+	Code *int64                   `json:"code,omitempty"`
+	Data *ScheduleShareInvitation `json:"data,omitempty"`
+	Msg  *string                  `json:"msg,omitempty"`
+}
+
+// ScheduleShareOptionsData defines model for ScheduleShareOptionsData.
+type ScheduleShareOptionsData struct {
+	BindTtlSeconds         *[]int64 `json:"bindTtlSeconds,omitempty"`
+	ClaimTtlSeconds        *int64   `json:"claimTtlSeconds,omitempty"`
+	DefaultBindTtlSeconds  *int64   `json:"defaultBindTtlSeconds,omitempty"`
+	DefaultShareTtlSeconds *int64   `json:"defaultShareTtlSeconds,omitempty"`
+	ServerNow              *int64   `json:"serverNow,omitempty"`
+	ShareTtlSeconds        *[]int64 `json:"shareTtlSeconds,omitempty"`
+}
+
+// ScheduleShareOptionsResponseBody defines model for ScheduleShareOptionsResponseBody.
+type ScheduleShareOptionsResponseBody struct {
+	Code *int64                    `json:"code,omitempty"`
+	Data *ScheduleShareOptionsData `json:"data,omitempty"`
+	Msg  *string                   `json:"msg,omitempty"`
 }
 
 // SchoolRollStatus SchoolRollStatus 学籍状态(学籍状态代码 + 中文描述，读自 Oracle STUDENT_DETAIL 视图)。
@@ -7796,6 +7996,34 @@ type SharedLibraryReportResponseBody struct {
 	Code int64                    `json:"code"`
 	Data *SharedLibraryReportData `json:"data,omitempty"`
 	Msg  string                   `json:"msg"`
+}
+
+// SharedScheduleData defines model for SharedScheduleData.
+type SharedScheduleData struct {
+	Grant     *ScheduleShareGrant   `json:"grant,omitempty"`
+	Items     *[]SharedScheduleItem `json:"items,omitempty"`
+	ServerNow *int64                `json:"serverNow,omitempty"`
+	Week      *int32                `json:"week,omitempty"`
+	WeekCount *int32                `json:"weekCount,omitempty"`
+}
+
+// SharedScheduleItem defines model for SharedScheduleItem.
+type SharedScheduleItem struct {
+	CourseName  *string  `json:"courseName,omitempty"`
+	EndTime     *string  `json:"endTime,omitempty"`
+	Location    *string  `json:"location,omitempty"`
+	Sections    *[]int32 `json:"sections,omitempty"`
+	StartTime   *string  `json:"startTime,omitempty"`
+	TeacherName *string  `json:"teacherName,omitempty"`
+	WeekDay     *int32   `json:"weekDay,omitempty"`
+	Weeks       *[]int32 `json:"weeks,omitempty"`
+}
+
+// SharedScheduleResponseBody defines model for SharedScheduleResponseBody.
+type SharedScheduleResponseBody struct {
+	Code *int64              `json:"code,omitempty"`
+	Data *SharedScheduleData `json:"data,omitempty"`
+	Msg  *string             `json:"msg,omitempty"`
 }
 
 // SignUploadData defines model for SignUploadData.
@@ -9205,6 +9433,48 @@ type AcademicServiceScheduleNowParams struct {
 	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
+// AcademicServiceBindScheduleShareParams defines parameters for AcademicServiceBindScheduleShare.
+type AcademicServiceBindScheduleShareParams struct {
+	IdempotencyKey string `json:"Idempotency-Key"`
+	XDeviceId      string `json:"X-Device-Id"`
+}
+
+// AcademicServicePreviewScheduleShareClaimParams defines parameters for AcademicServicePreviewScheduleShareClaim.
+type AcademicServicePreviewScheduleShareClaimParams struct {
+	XDeviceId string `json:"X-Device-Id"`
+}
+
+// AcademicServiceListReceivedScheduleSharesParams defines parameters for AcademicServiceListReceivedScheduleShares.
+type AcademicServiceListReceivedScheduleSharesParams struct {
+	History  *bool  `form:"history,omitempty" json:"history,omitempty"`
+	Page     *int32 `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32 `form:"pageSize,omitempty" json:"pageSize,omitempty"`
+}
+
+// AcademicServiceReadSharedScheduleParams defines parameters for AcademicServiceReadSharedSchedule.
+type AcademicServiceReadSharedScheduleParams struct {
+	Week *int32 `form:"week,omitempty" json:"week,omitempty"`
+}
+
+// AcademicServiceListScheduleSharesParams defines parameters for AcademicServiceListScheduleShares.
+type AcademicServiceListScheduleSharesParams struct {
+	History  *bool  `form:"history,omitempty" json:"history,omitempty"`
+	Page     *int32 `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32 `form:"pageSize,omitempty" json:"pageSize,omitempty"`
+}
+
+// AcademicServiceCreateScheduleShareParams defines parameters for AcademicServiceCreateScheduleShare.
+type AcademicServiceCreateScheduleShareParams struct {
+	IdempotencyKey string `json:"Idempotency-Key"`
+	XDeviceId      string `json:"X-Device-Id"`
+}
+
+// AcademicServiceReissueScheduleShareParams defines parameters for AcademicServiceReissueScheduleShare.
+type AcademicServiceReissueScheduleShareParams struct {
+	IdempotencyKey string `json:"Idempotency-Key"`
+	XDeviceId      string `json:"X-Device-Id"`
+}
+
 // AcademicServiceStudentSchoolRollStatusParams defines parameters for AcademicServiceStudentSchoolRollStatus.
 type AcademicServiceStudentSchoolRollStatusParams struct {
 	XStaffId *string `json:"X-Staff-Id,omitempty"`
@@ -10408,6 +10678,18 @@ type AcademicServiceClassQueryFavSetJSONRequestBody = ClassQueryFavSetRequestBod
 
 // AcademicServiceReplaceCourseSimulationJSONRequestBody defines body for AcademicServiceReplaceCourseSimulation for application/json ContentType.
 type AcademicServiceReplaceCourseSimulationJSONRequestBody = ReplaceCourseSimulationRequestBody
+
+// AcademicServiceBindScheduleShareJSONRequestBody defines body for AcademicServiceBindScheduleShare for application/json ContentType.
+type AcademicServiceBindScheduleShareJSONRequestBody = BindScheduleShareRequestBody
+
+// AcademicServicePreviewScheduleShareClaimJSONRequestBody defines body for AcademicServicePreviewScheduleShareClaim for application/json ContentType.
+type AcademicServicePreviewScheduleShareClaimJSONRequestBody = PreviewScheduleShareClaimRequestBody
+
+// AcademicServiceCreateScheduleShareJSONRequestBody defines body for AcademicServiceCreateScheduleShare for application/json ContentType.
+type AcademicServiceCreateScheduleShareJSONRequestBody = CreateScheduleShareRequestBody
+
+// AcademicServiceRenameScheduleShareJSONRequestBody defines body for AcademicServiceRenameScheduleShare for application/json ContentType.
+type AcademicServiceRenameScheduleShareJSONRequestBody = RenameScheduleShareRequestBody
 
 // AdminServiceSetAppEnabledJSONRequestBody defines body for AdminServiceSetAppEnabled for application/json ContentType.
 type AdminServiceSetAppEnabledJSONRequestBody = SetAppEnabledRequestBody
