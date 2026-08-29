@@ -1880,6 +1880,12 @@ type AuthorizedAppItem struct {
 	Scopes      *[]string `json:"scopes,omitempty"`
 }
 
+// AvatarUploadRequestBody defines model for AvatarUploadRequestBody.
+type AvatarUploadRequestBody struct {
+	// File Avatar image bytes uploaded as multipart field file.
+	File string `json:"file"`
+}
+
 // BanStateData defines model for BanStateData.
 type BanStateData struct {
 	Banned *bool   `json:"banned,omitempty"`

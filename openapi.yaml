@@ -11339,6 +11339,33 @@ paths:
                                 type: string
                                 format: binary
             x-hduhelp-cli: {'response_content_type': 'application/octet-stream'}
+    /hduhelp-neo/upload/avatar:
+        post:
+            tags:
+                - UploadService
+            summary: 上传头像(本地存储兜底)
+            description: multipart 表单字段 file；仅用于不支持签名直传的存储。服务端固定 usage=avatar、嗅探真实内容类型，并要求 upload:file:write。
+            operationId: UploadService_UploadAvatar
+            security:
+                - BearerAuth: []
+            requestBody:
+                required: true
+                description: |-
+                    First-party avatar fallback for stores that cannot issue a signed PUT URL.
+                    There is deliberately no caller-controlled usage field: the handler always
+                    persists this upload in the avatar bucket.
+                content:
+                    multipart/form-data:
+                        schema:
+                            $ref: '#/components/schemas/AvatarUploadRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UploadResponseBody'
+            x-hduhelp-http: {'auth': 'bearer', 'request_content_type': 'multipart/form-data', 'file_field': 'file'}
     /hduhelp-neo/upload/sign:
         post:
             tags:
@@ -13430,6 +13457,15 @@ components:
                     items:
                         type: string
             description: 当前用户已授权的应用列表 / 撤销对某应用的授权（用户自助的"已连接应用"管理）。
+        AvatarUploadRequestBody:
+            required:
+                - file
+            type: object
+            properties:
+                file:
+                    type: string
+                    description: Avatar image bytes uploaded as multipart field file.
+                    format: binary
         BanStateData:
             type: object
             properties:
