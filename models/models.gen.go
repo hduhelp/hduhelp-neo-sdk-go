@@ -7679,6 +7679,9 @@ type ServiceAuthorizationItem struct {
 // ServiceAuthorizationStatusData defines model for ServiceAuthorizationStatusData.
 type ServiceAuthorizationStatusData struct {
 	Services *[]ServiceAuthorizationItem `json:"services,omitempty"`
+
+	// StaffId 当前会话身份实际用于服务授权的学号/工号
+	StaffId *string `json:"staff_id,omitempty"`
 }
 
 // ServiceAuthorizationStatusResponseBody defines model for ServiceAuthorizationStatusResponseBody.

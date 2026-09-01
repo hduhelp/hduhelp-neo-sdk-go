@@ -22246,6 +22246,9 @@ components:
         ServiceAuthorizationStatusData:
             type: object
             properties:
+                staff_id:
+                    type: string
+                    description: 当前会话身份实际用于服务授权的学号/工号
                 services:
                     type: array
                     items:
