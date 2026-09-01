@@ -22093,10 +22093,6 @@ components:
                     type: integer
                     description: 1=当前学期
                     format: int32
-                weeks:
-                    type: integer
-                    description: 教务校历中的最大教学周（ZC）
-                    format: int32
         SemesterListResponseBody:
             type: object
             properties:

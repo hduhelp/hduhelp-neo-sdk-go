@@ -7568,9 +7568,6 @@ type SemesterInfo struct {
 
 	// State 1=当前学期
 	State *int32 `json:"state,omitempty"`
-
-	// Weeks 教务校历中的最大教学周（ZC）
-	Weeks *int32 `json:"weeks,omitempty"`
 }
 
 // SemesterListResponseBody defines model for SemesterListResponseBody.
