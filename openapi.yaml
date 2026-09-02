@@ -17122,8 +17122,8 @@ components:
                 courseName:
                     type: string
                 score:
-                    type: number
-                    format: double
+                    type: string
+                    description: 最终成绩（可能为等级制，如「优秀」「缺考」）
                 gpa:
                     type: number
                     format: double
@@ -17211,8 +17211,8 @@ components:
                     type: number
                     format: double
                 score:
-                    type: number
-                    format: double
+                    type: string
+                    description: 最终成绩
                 scoreDaily:
                     type: string
                     description: 平时分
@@ -17232,7 +17232,7 @@ components:
                     type: number
                     format: double
             description: |-
-                GradeItem 是信息流成绩卡片中的一条成绩。分数明细透传自教务库字符串列
+                GradeItem 是信息流成绩卡片中的一条成绩。最终成绩与分数明细透传自教务库字符串列
                 （可能非数字如「优」「缺考」，故保持字符串）。
         GraduateGradeItem:
             type: object
@@ -23137,8 +23137,8 @@ components:
                     type: number
                     format: double
                 score:
-                    type: number
-                    format: double
+                    type: string
+                    description: 最终成绩（可能为等级制，如「优秀」「缺考」）
                 gpa:
                     type: number
                     format: double

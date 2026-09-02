@@ -4331,9 +4331,11 @@ type GlobalStudentGrade struct {
 	CourseName *string  `json:"courseName,omitempty"`
 	Gpa        *float64 `json:"gpa,omitempty"`
 	SchoolYear *string  `json:"schoolYear,omitempty"`
-	Score      *float64 `json:"score,omitempty"`
-	Semester   *string  `json:"semester,omitempty"`
-	StaffId    *string  `json:"staffId,omitempty"`
+
+	// Score 最终成绩（可能为等级制，如「优秀」「缺考」）
+	Score    *string `json:"score,omitempty"`
+	Semester *string `json:"semester,omitempty"`
+	StaffId  *string `json:"staffId,omitempty"`
 
 	// UpdateAt 操作时间
 	UpdateAt *string `json:"updateAt,omitempty"`
@@ -4371,7 +4373,7 @@ type GradeCount struct {
 	Grade *string `json:"grade,omitempty"`
 }
 
-// GradeItem GradeItem 是信息流成绩卡片中的一条成绩。分数明细透传自教务库字符串列
+// GradeItem GradeItem 是信息流成绩卡片中的一条成绩。最终成绩与分数明细透传自教务库字符串列
 // （可能非数字如「优」「缺考」，故保持字符串）。
 type GradeItem struct {
 	// CourseCode 课程号
@@ -4380,7 +4382,9 @@ type GradeItem struct {
 	Credit     *float64 `json:"credit,omitempty"`
 	Gpa        *float64 `json:"gpa,omitempty"`
 	SchoolYear *string  `json:"schoolYear,omitempty"`
-	Score      *float64 `json:"score,omitempty"`
+
+	// Score 最终成绩
+	Score *string `json:"score,omitempty"`
 
 	// ScoreDaily 平时分
 	ScoreDaily *string `json:"scoreDaily,omitempty"`
@@ -8243,7 +8247,9 @@ type StudentGradeItem struct {
 	Credit     *float64 `json:"credit,omitempty"`
 	Gpa        *float64 `json:"gpa,omitempty"`
 	SchoolYear *string  `json:"schoolYear,omitempty"`
-	Score      *float64 `json:"score,omitempty"`
+
+	// Score 最终成绩（可能为等级制，如「优秀」「缺考」）
+	Score *string `json:"score,omitempty"`
 
 	// ScoreDaily 平时分
 	ScoreDaily *string `json:"scoreDaily,omitempty"`
