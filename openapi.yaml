@@ -1006,8 +1006,8 @@ paths:
         get:
             tags:
                 - AcademicService
-            summary: 查询本人学期完整课表
-            description: 返回本人当前或指定学期的完整课表和每周课程，可按时间戳、学年+学期或周次过滤，数据来自学校教务库
+            summary: 获取学期课表
+            description: 返回当前登录学生的课表条目。不传过滤参数时返回整学期全部条目（数据量可能较大）；按当前周查看请传 timestamp；只看今明两天用 hduhelp.academic.schedule.now；需要指定学年学期时先用 hduhelp.academic.config 查询可选值。
             operationId: AcademicService_Schedule
             security:
                 - BearerAuth: []

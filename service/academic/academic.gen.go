@@ -1534,7 +1534,7 @@ type ScheduleResp struct {
 	Data []models.ScheduleItem `json:"data"`
 }
 
-// Schedule: 查询本人学期完整课表
+// Schedule: 获取学期课表
 func (s *Service) Schedule(ctx context.Context, req *ScheduleReq, opts ...core.RequestOption) (*ScheduleResp, error) {
 	resp := &ScheduleResp{}
 	err := s.config.Do(ctx, &core.APIReq{
