@@ -2553,6 +2553,28 @@ type ClassQuerySearchResponseBody struct {
 	Msg  *string         `json:"msg,omitempty"`
 }
 
+// ClassRosterData defines model for ClassRosterData.
+type ClassRosterData struct {
+	ClassId    *string               `json:"classId,omitempty"`
+	ClassName  *string               `json:"className,omitempty"`
+	CourseId   *string               `json:"courseId,omitempty"`
+	CourseName *string               `json:"courseName,omitempty"`
+	Students   *[]ClassRosterStudent `json:"students,omitempty"`
+}
+
+// ClassRosterResponseBody defines model for ClassRosterResponseBody.
+type ClassRosterResponseBody struct {
+	Code int64           `json:"code"`
+	Data ClassRosterData `json:"data"`
+	Msg  string          `json:"msg"`
+}
+
+// ClassRosterStudent defines model for ClassRosterStudent.
+type ClassRosterStudent struct {
+	StaffId   *string `json:"staffId,omitempty"`
+	StaffName *string `json:"staffName,omitempty"`
+}
+
 // ClassroomItem defines model for ClassroomItem.
 type ClassroomItem struct {
 	BuildingID   *string `json:"buildingID,omitempty"`
@@ -9253,6 +9275,12 @@ type AcademicServiceClassQueryFavGetParams struct {
 
 // AcademicServiceClassQueryFavSetParams defines parameters for AcademicServiceClassQueryFavSet.
 type AcademicServiceClassQueryFavSetParams struct {
+	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServiceClassRosterParams defines parameters for AcademicServiceClassRoster.
+type AcademicServiceClassRosterParams struct {
+	ClassId  *string `form:"class_id,omitempty" json:"class_id,omitempty"`
 	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 

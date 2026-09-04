@@ -283,6 +283,32 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ClassQueryMapResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/academic/class/roster:
+        get:
+            tags:
+                - AcademicService
+            summary: 查询课程学生名单
+            description: 仅当前教学班的任课教师可查询；返回去重后的学号与姓名。
+            operationId: AcademicService_ClassRoster
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: class_id
+                  in: query
+                  schema:
+                    type: string
+                - name: X-Staff-Id
+                  in: header
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ClassRosterResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/academic/class/search:
         get:
             tags:
@@ -1007,7 +1033,7 @@ paths:
             tags:
                 - AcademicService
             summary: 获取学期课表
-            description: 返回当前登录学生的课表条目。不传过滤参数时返回整学期全部条目（数据量可能较大）；按当前周查看请传 timestamp；只看今明两天用 hduhelp.academic.schedule.now；需要指定学年学期时先用 hduhelp.academic.config 查询可选值。
+            description: 返回当前登录本科生的选课课表，或当前教职工的任课课表。不传过滤参数时返回整学期全部条目（数据量可能较大）；按当前周查看请传 timestamp；需要指定学年学期时先用 hduhelp.academic.config 查询可选值。
             operationId: AcademicService_Schedule
             security:
                 - BearerAuth: []
@@ -7633,7 +7659,7 @@ paths:
             tags:
                 - GroupChatService
             summary: 我的课程群列表
-            description: 返回当前学生本学期各教学班的课程信息，并内嵌每个班已建的钉钉群；课程群页面用此接口替代拉取整张课表
+            description: 返回当前本科生所选或教职工任课的本学期教学班，并内嵌每个班已建的钉钉群；课程群页面用此接口替代拉取整张课表
             operationId: GroupChatService_CourseGroups
             security:
                 - BearerAuth: []
@@ -14424,6 +14450,42 @@ components:
                     type: integer
                     format: int64
                 msg:
+                    type: string
+        ClassRosterData:
+            type: object
+            properties:
+                classId:
+                    type: string
+                className:
+                    type: string
+                courseId:
+                    type: string
+                courseName:
+                    type: string
+                students:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ClassRosterStudent'
+        ClassRosterResponseBody:
+            required:
+                - data
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ClassRosterData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ClassRosterStudent:
+            type: object
+            properties:
+                staffId:
+                    type: string
+                staffName:
                     type: string
         ClassroomItem:
             type: object

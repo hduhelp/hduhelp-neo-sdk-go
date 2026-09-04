@@ -194,6 +194,58 @@ func (s *Service) ClassQueryMap(ctx context.Context, req *ClassQueryMapReq, opts
 	return resp, err
 }
 
+// ClassRosterReq is the request for ClassRoster.
+type ClassRosterReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ClassRosterReqBuilder builds a ClassRosterReq with a fluent setter per field.
+type ClassRosterReqBuilder struct{ req *ClassRosterReq }
+
+// NewClassRosterReqBuilder creates a request builder for ClassRoster.
+func NewClassRosterReqBuilder() *ClassRosterReqBuilder {
+	return &ClassRosterReqBuilder{req: &ClassRosterReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// ClassId sets the "class_id" query parameter.
+func (b *ClassRosterReqBuilder) ClassId(v string) *ClassRosterReqBuilder {
+	b.req.queryParams["class_id"] = v
+	return b
+}
+
+// StaffID sets the "X-Staff-Id" header parameter.
+func (b *ClassRosterReqBuilder) StaffID(v string) *ClassRosterReqBuilder {
+	b.req.headers["X-Staff-Id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *ClassRosterReqBuilder) Build() *ClassRosterReq { return b.req }
+
+// ClassRosterResp is the response for ClassRoster.
+type ClassRosterResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ClassRosterData `json:"data"`
+}
+
+// ClassRoster: 查询课程学生名单
+func (s *Service) ClassRoster(ctx context.Context, req *ClassRosterReq, opts ...core.RequestOption) (*ClassRosterResp, error) {
+	resp := &ClassRosterResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/class/roster",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // ClassQuerySearchReq is the request for ClassQuerySearch.
 type ClassQuerySearchReq struct {
 	pathParams  map[string]string
