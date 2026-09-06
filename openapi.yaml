@@ -342,6 +342,12 @@ paths:
                   schema:
                     type: integer
                     format: int32
+                - name: weekday
+                  in: query
+                  description: 1=周一 … 7=周日；不传则不过滤上课日。
+                  schema:
+                    type: integer
+                    format: int32
             responses:
                 "200":
                     description: Successful response
@@ -15295,7 +15301,7 @@ components:
                     description: public | internal；空=internal
                 upload_key:
                     type: string
-                    description: 'kind=file: 上传接口返回的稳定对象Key'
+                    description: 'kind=file: 上传接口返回的稳定对象 key'
         CreateLoginClientRequestBody:
             type: object
             properties:

@@ -292,6 +292,12 @@ func (b *ClassQuerySearchReqBuilder) Semester(v int32) *ClassQuerySearchReqBuild
 	return b
 }
 
+// Weekday sets the "weekday" query parameter: 1=周一 … 7=周日；不传则不过滤上课日。
+func (b *ClassQuerySearchReqBuilder) Weekday(v int32) *ClassQuerySearchReqBuilder {
+	b.req.queryParams["weekday"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
 // Build finalizes the request.
 func (b *ClassQuerySearchReqBuilder) Build() *ClassQuerySearchReq { return b.req }
 

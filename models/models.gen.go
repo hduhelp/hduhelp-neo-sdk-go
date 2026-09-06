@@ -3078,7 +3078,7 @@ type CreateItemRequestBody struct {
 	Tags  *[]string `json:"tags,omitempty"`
 	Title *string   `json:"title,omitempty"`
 
-	// UploadKey kind=file: 上传接口返回的稳定对象Key
+	// UploadKey kind=file: 上传接口返回的稳定对象 key
 	UploadKey  *string `json:"upload_key,omitempty"`
 	ValidUntil *int64  `json:"valid_until,omitempty"`
 
@@ -9291,6 +9291,9 @@ type AcademicServiceClassQuerySearchParams struct {
 	From       *int32  `form:"from,omitempty" json:"from,omitempty"`
 	SchoolYear *string `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
 	Semester   *int32  `form:"semester,omitempty" json:"semester,omitempty"`
+
+	// Weekday 1=周一 … 7=周日；不传则不过滤上课日。
+	Weekday *int32 `form:"weekday,omitempty" json:"weekday,omitempty"`
 }
 
 // AcademicServiceGetClassroomsParams defines parameters for AcademicServiceGetClassrooms.
