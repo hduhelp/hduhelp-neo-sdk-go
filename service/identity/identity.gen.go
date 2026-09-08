@@ -2390,6 +2390,52 @@ func (s *Service) LoginFlowExchange(ctx context.Context, req *LoginFlowExchangeR
 	return resp, err
 }
 
+// CompleteLoginIntentReq is the request for CompleteLoginIntent.
+type CompleteLoginIntentReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// CompleteLoginIntentReqBuilder builds a CompleteLoginIntentReq with a fluent setter per field.
+type CompleteLoginIntentReqBuilder struct{ req *CompleteLoginIntentReq }
+
+// NewCompleteLoginIntentReqBuilder creates a request builder for CompleteLoginIntent.
+func NewCompleteLoginIntentReqBuilder() *CompleteLoginIntentReqBuilder {
+	return &CompleteLoginIntentReqBuilder{req: &CompleteLoginIntentReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *CompleteLoginIntentReqBuilder) Body(body *models.CompleteLoginIntentRequestBody) *CompleteLoginIntentReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *CompleteLoginIntentReqBuilder) Build() *CompleteLoginIntentReq { return b.req }
+
+// CompleteLoginIntentResp is the response for CompleteLoginIntent.
+type CompleteLoginIntentResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.LoginURLData `json:"data"`
+}
+
+// CompleteLoginIntent: 完成第一方统一登录
+func (s *Service) CompleteLoginIntent(ctx context.Context, req *CompleteLoginIntentReq, opts ...core.RequestOption) (*CompleteLoginIntentResp, error) {
+	resp := &CompleteLoginIntentResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/identity/login/intents/complete",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // SSOCallbackReq is the request for SSOCallback.
 type SSOCallbackReq struct {
 	pathParams  map[string]string
@@ -2522,7 +2568,7 @@ func NewGetLoginURLReqBuilder() *GetLoginURLReqBuilder {
 	return &GetLoginURLReqBuilder{req: &GetLoginURLReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// GrantKey sets the "grant-key" query parameter: 登录来源: cas/wxmp/dingtalk/...
+// GrantKey sets the "grant-key" query parameter: cas/wxmp等provider或保留值login-client；空值非法
 func (b *GetLoginURLReqBuilder) GrantKey(v string) *GetLoginURLReqBuilder {
 	b.req.queryParams["grant-key"] = v
 	return b
@@ -2534,7 +2580,7 @@ func (b *GetLoginURLReqBuilder) ClientId(v string) *GetLoginURLReqBuilder {
 	return b
 }
 
-// RedirectUri sets the "redirect_uri" query parameter: 精确匹配客户端白名单；缺省取首项
+// RedirectUri sets the "redirect_uri" query parameter: 指定渠道缺省取首项；统一登录必须精确提供
 func (b *GetLoginURLReqBuilder) RedirectUri(v string) *GetLoginURLReqBuilder {
 	b.req.queryParams["redirect_uri"] = v
 	return b
@@ -2561,6 +2607,24 @@ func (b *GetLoginURLReqBuilder) DeviceID(v string) *GetLoginURLReqBuilder {
 // DeviceName sets the "x-device-name" header parameter: 客户端展示名
 func (b *GetLoginURLReqBuilder) DeviceName(v string) *GetLoginURLReqBuilder {
 	b.req.headers["x-device-name"] = v
+	return b
+}
+
+// State sets the "state" query parameter: 统一登录必填：客户端opaque CSRF state
+func (b *GetLoginURLReqBuilder) State(v string) *GetLoginURLReqBuilder {
+	b.req.queryParams["state"] = v
+	return b
+}
+
+// CodeChallenge sets the "code_challenge" query parameter: 统一登录必填：RFC 7636 challenge
+func (b *GetLoginURLReqBuilder) CodeChallenge(v string) *GetLoginURLReqBuilder {
+	b.req.queryParams["code_challenge"] = v
+	return b
+}
+
+// CodeChallengeMethod sets the "code_challenge_method" query parameter: 统一登录仅接受S256
+func (b *GetLoginURLReqBuilder) CodeChallengeMethod(v string) *GetLoginURLReqBuilder {
+	b.req.queryParams["code_challenge_method"] = v
 	return b
 }
 

@@ -2751,6 +2751,15 @@ type CommonResponseBody struct {
 	Msg  *string `json:"msg,omitempty"`
 }
 
+// CompleteLoginIntentRequestBody defines model for CompleteLoginIntentRequestBody.
+type CompleteLoginIntentRequestBody struct {
+	ClientId            *string `json:"client_id,omitempty"`
+	CodeChallenge       *string `json:"code_challenge,omitempty"`
+	CodeChallengeMethod *string `json:"code_challenge_method,omitempty"`
+	RedirectUri         *string `json:"redirect_uri,omitempty"`
+	State               *string `json:"state,omitempty"`
+}
+
 // ConfigGetResponseBody defines model for ConfigGetResponseBody.
 type ConfigGetResponseBody struct {
 	Code *int64      `json:"code,omitempty"`
@@ -5260,8 +5269,14 @@ type LoginExchangeData struct {
 
 // LoginExchangeRequestBody defines model for LoginExchangeRequestBody.
 type LoginExchangeRequestBody struct {
+	// ClientId Login Intent handoff 必填
+	ClientId *string `json:"client_id,omitempty"`
+
 	// Code SSO 302 回跳携带的一次性兑换码
 	Code *string `json:"code,omitempty"`
+
+	// CodeVerifier Login Intent S256 verifier
+	CodeVerifier *string `json:"code_verifier,omitempty"`
 }
 
 // LoginExchangeResponseBody defines model for LoginExchangeResponseBody.
@@ -10408,13 +10423,13 @@ type IdentityServiceSSOStateCallbackParams struct {
 
 // IdentityServiceGetLoginURLParams defines parameters for IdentityServiceGetLoginURL.
 type IdentityServiceGetLoginURLParams struct {
-	// GrantKey 登录来源: cas/wxmp/dingtalk/...
+	// GrantKey cas/wxmp等provider或保留值login-client；空值非法
 	GrantKey *string `form:"grant-key,omitempty" json:"grant-key,omitempty"`
 
 	// ClientId 运营平台注册的第一方登录客户端
 	ClientId *string `form:"client_id,omitempty" json:"client_id,omitempty"`
 
-	// RedirectUri 精确匹配客户端白名单；缺省取首项
+	// RedirectUri 指定渠道缺省取首项；统一登录必须精确提供
 	RedirectUri *string `form:"redirect_uri,omitempty" json:"redirect_uri,omitempty"`
 
 	// Remember "true" 记住登录
@@ -10422,6 +10437,15 @@ type IdentityServiceGetLoginURLParams struct {
 
 	// ReturnTo 登录后恢复的第一方 SPA 相对路径，服务端校验并存 state
 	ReturnTo *string `form:"return_to,omitempty" json:"return_to,omitempty"`
+
+	// State 统一登录必填：客户端opaque CSRF state
+	State *string `form:"state,omitempty" json:"state,omitempty"`
+
+	// CodeChallenge 统一登录必填：RFC 7636 challenge
+	CodeChallenge *string `form:"code_challenge,omitempty" json:"code_challenge,omitempty"`
+
+	// CodeChallengeMethod 统一登录仅接受S256
+	CodeChallengeMethod *string `form:"code_challenge_method,omitempty" json:"code_challenge_method,omitempty"`
 
 	// XDeviceId 浏览器配置/客户端安装实例 ID，不是物理设备指纹
 	XDeviceId *string `json:"x-device-id,omitempty"`
@@ -11111,6 +11135,9 @@ type IdentityServiceLoginExchangeJSONRequestBody = LoginExchangeRequestBody
 
 // IdentityServiceLoginFlowExchangeJSONRequestBody defines body for IdentityServiceLoginFlowExchange for application/json ContentType.
 type IdentityServiceLoginFlowExchangeJSONRequestBody = LoginFlowExchangeRequestBody
+
+// IdentityServiceCompleteLoginIntentJSONRequestBody defines body for IdentityServiceCompleteLoginIntent for application/json ContentType.
+type IdentityServiceCompleteLoginIntentJSONRequestBody = CompleteLoginIntentRequestBody
 
 // IdentityServiceCreateWeChatQRLoginJSONRequestBody defines body for IdentityServiceCreateWeChatQRLogin for application/json ContentType.
 type IdentityServiceCreateWeChatQRLoginJSONRequestBody = CreateWeChatQRLoginRequestBody

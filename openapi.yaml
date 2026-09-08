@@ -8806,10 +8806,12 @@ paths:
             tags:
                 - IdentityService
             summary: SSO 令牌兑换
-            description: 浏览器 SSO 回调的 302 只携带一次性 handoff code（?code=），令牌不出现在 URL 中。前端携该码 POST /login/exchange 兑换完整令牌对（access + refresh），凭刷新令牌实现静默续期。兑换码一次性、约 60 秒过期，兑换后即失效；未知/过期/已兑换的码一律拒绝。
+            description: 浏览器回调只携带一次性 handoff code，令牌不进入 URL。旧 provider handoff 只提交 code；LoginClient handoff 必须同时提交注册 client_id 与 S256 code_verifier，并仅在source session仍有效时按其当前identity签发目标session。兑换码约60秒、严格单次消费。
             operationId: IdentityService_LoginExchange
             requestBody:
-                description: POST /hduhelp-neo/identity/login/exchange —— 用一次性 handoff code 兑换 SSO 登录令牌对
+                description: |-
+                    POST /hduhelp-neo/identity/login/exchange —— 用一次性 handoff code 兑换 SSO 登录令牌对。
+                    Login Intent 签发的 code 还必须提交匹配的 client_id 与 S256 verifier。
                 content:
                     application/json:
                         schema:
@@ -8843,6 +8845,28 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/LoginFlowExchangeResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/identity/login/intents/complete:
+        post:
+            tags:
+                - IdentityService
+            summary: 完成第一方统一登录
+            description: 仅Neo原生会话可完成LoginClient统一登录请求；重新校验Client、精确回调、state与S256 challenge，把source session绑定到一次性code并返回原state的白名单回调。目标native session延迟到PKCE兑换成功后签发。
+            operationId: IdentityService_CompleteLoginIntent
+            security:
+                - NativeSessionAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CompleteLoginIntentRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LoginURLResponseBody'
             x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/identity/login/sso:
         get:
@@ -8904,12 +8928,12 @@ paths:
             tags:
                 - IdentityService
             summary: 获取登录授权 URL
-            description: 按登录来源 grant-key 生成第三方授权地址与登录态 state，前端拿到后自行跳转完成登录。
+            description: grant-key=login-client时校验LoginClient、精确回调、state与S256 challenge并返回Neo统一登录continuation；其它非空值选择既有provider，空值非法。授权请求参数公开携带且在完成时重新校验，不创建预授权状态。
             operationId: IdentityService_GetLoginURL
             parameters:
                 - name: grant-key
                   in: query
-                  description: '登录来源: cas/wxmp/dingtalk/...'
+                  description: cas/wxmp等provider或保留值login-client；空值非法
                   schema:
                     type: string
                 - name: client_id
@@ -8919,7 +8943,7 @@ paths:
                     type: string
                 - name: redirect_uri
                   in: query
-                  description: 精确匹配客户端白名单；缺省取首项
+                  description: 指定渠道缺省取首项；统一登录必须精确提供
                   schema:
                     type: string
                 - name: remember
@@ -8940,6 +8964,21 @@ paths:
                 - name: x-device-name
                   in: header
                   description: 客户端展示名
+                  schema:
+                    type: string
+                - name: state
+                  in: query
+                  description: 统一登录必填：客户端opaque CSRF state
+                  schema:
+                    type: string
+                - name: code_challenge
+                  in: query
+                  description: 统一登录必填：RFC 7636 challenge
+                  schema:
+                    type: string
+                - name: code_challenge_method
+                  in: query
+                  description: 统一登录仅接受S256
                   schema:
                     type: string
             responses:
@@ -14742,6 +14781,19 @@ components:
                     format: int64
                 msg:
                     type: string
+        CompleteLoginIntentRequestBody:
+            type: object
+            properties:
+                client_id:
+                    type: string
+                redirect_uri:
+                    type: string
+                state:
+                    type: string
+                code_challenge:
+                    type: string
+                code_challenge_method:
+                    type: string
         ConfigGetResponseBody:
             type: object
             properties:
@@ -18507,6 +18559,12 @@ components:
                 code:
                     type: string
                     description: SSO 302 回跳携带的一次性兑换码
+                client_id:
+                    type: string
+                    description: Login Intent handoff 必填
+                code_verifier:
+                    type: string
+                    description: Login Intent S256 verifier
         LoginExchangeResponseBody:
             type: object
             properties:
