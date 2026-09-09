@@ -5233,7 +5233,7 @@ paths:
             tags:
                 - AdminService
             summary: 创建运营者
-            description: 新建后台运营者账号，口令以bcrypt哈希存储
+            description: 新建后台运营者账号，口令以bcrypt哈希存储；可通过 role_id 分配单一角色，旧 role 字段仅为兼容保留且不再用于任命管理员
             operationId: AdminService_CreateOperator
             security:
                 - OperatorBearerAuth: []
@@ -5302,6 +5302,48 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ResetOperatorPasswordResponseBody'
+    /hduhelp-neo/admin/operators/role:
+        put:
+            tags:
+                - AdminService
+            summary: 分配运营人员角色
+            description: 为运营人员分配单一角色；role_id 为空时取消角色
+            operationId: AdminService_AssignOperatorRole
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AssignOperatorRoleRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AssignOperatorRoleResponseBody'
+    /hduhelp-neo/admin/permissions/catalog:
+        get:
+            tags:
+                - AdminService
+            summary: 权限目录
+            description: 返回后端静态注册的业务域、资源与可用操作；治理资源不可分配给自定义角色
+            operationId: AdminService_ListPermissionCatalog
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PermissionCatalogResponseBody'
     /hduhelp-neo/admin/refresh:
         post:
             tags:
@@ -5323,6 +5365,113 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/AdminRefreshResponseBody'
             x-hduhelp-http: {'auth': 'public'}
+    /hduhelp-neo/admin/roles:
+        get:
+            tags:
+                - AdminService
+            summary: 角色列表
+            description: 返回内置和自定义角色、成员数量及展开后的权限
+            operationId: AdminService_ListRoles
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RoleListResponseBody'
+        post:
+            tags:
+                - AdminService
+            summary: 创建自定义角色
+            description: 创建自定义角色并原子写入完整权限集合
+            operationId: AdminService_CreateRole
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateRoleRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateRoleResponseBody'
+        delete:
+            tags:
+                - AdminService
+            summary: 删除自定义角色
+            description: 删除角色、策略并将成员原子调整为无角色；内置角色不可删除
+            operationId: AdminService_DeleteRole
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeleteRoleResponseBody'
+        patch:
+            tags:
+                - AdminService
+            summary: 编辑自定义角色
+            description: 修改自定义角色名称与说明；内置角色不可编辑
+            operationId: AdminService_UpdateRole
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateRoleRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UpdateRoleResponseBody'
+    /hduhelp-neo/admin/roles/permissions:
+        put:
+            tags:
+                - AdminService
+            summary: 替换角色权限
+            description: 全量替换自定义角色权限；非 view 操作会自动补充对应资源的 view
+            operationId: AdminService_SetRolePermissions
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SetRolePermissionsRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SetRolePermissionsResponseBody'
     /hduhelp-neo/admin/scopes:
         get:
             tags:
@@ -12770,6 +12919,26 @@ components:
                     format: int64
                 msg:
                     type: string
+        AdminRoleInfo:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                kind:
+                    type: string
+                description:
+                    type: string
+                locked:
+                    type: boolean
+                memberCount:
+                    type: integer
+                    format: int64
+                permissions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PermissionGrant'
         AdminScopeDef:
             type: object
             properties:
@@ -13123,6 +13292,19 @@ components:
                     type: string
                     description: requested | custom | never；缺省兼容旧客户端
         ApproveDeviceRespBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AssignOperatorRoleRequestBody:
+            type: object
+            properties:
+                role_id:
+                    type: string
+        AssignOperatorRoleResponseBody:
             type: object
             properties:
                 code:
@@ -15395,6 +15577,8 @@ components:
                     type: string
                 role:
                     type: string
+                role_id:
+                    type: string
         CreateOperatorResponseBody:
             type: object
             properties:
@@ -15490,6 +15674,27 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/CreateRecruitChatGroupData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        CreateRoleRequestBody:
+            type: object
+            properties:
+                name:
+                    type: string
+                description:
+                    type: string
+                permissions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PermissionGrant'
+        CreateRoleResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminRoleInfo'
                 code:
                     type: integer
                     format: int64
@@ -15805,6 +16010,14 @@ components:
                 msg:
                     type: string
         DeleteLoginClientResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        DeleteRoleResponseBody:
             type: object
             properties:
                 code:
@@ -19734,6 +19947,16 @@ components:
                     format: int64
                 mustChangePassword:
                     type: boolean
+                roleId:
+                    type: string
+                roleName:
+                    type: string
+                roleKind:
+                    type: string
+                permissions:
+                    type: array
+                    items:
+                        type: string
         OperatorListResponseBody:
             type: object
             properties:
@@ -19854,6 +20077,40 @@ components:
                     type: integer
                     format: int64
                 msg:
+                    type: string
+        PermissionCatalogResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PermissionDefinition'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        PermissionDefinition:
+            type: object
+            properties:
+                domain:
+                    type: string
+                resource:
+                    type: string
+                name:
+                    type: string
+                actions:
+                    type: array
+                    items:
+                        type: string
+                assignable:
+                    type: boolean
+        PermissionGrant:
+            type: object
+            properties:
+                resource:
+                    type: string
+                action:
                     type: string
         PersonInfo:
             type: object
@@ -21238,6 +21495,18 @@ components:
                 a        超链接，取 text 与 href
                 at       @提及，取 userId 与 displayName
                 hashtag  话题，取 text（形如 #话题名）。仅帖子正文支持，评论不支持。
+        RoleListResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AdminRoleInfo'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         RoomDetailData:
             type: object
             properties:
@@ -22000,6 +22269,10 @@ components:
                 restricted:
                     type: boolean
                     description: 该命中是否为受限(校内)内容，供客户端加标
+                publishedAt:
+                    type: integer
+                    description: 来源发布时间，Unix 毫秒；未知时省略
+                    format: int64
             description: SearchHit 是一条检索命中，溯源信息足以回链到我方 DB 与方舟切片。
         SearchPage:
             type: object
@@ -22612,6 +22885,21 @@ components:
                     type: number
                     description: rankBoost 是打分的乘性人工权重。1 为不干预，小于 1 降权，大于 1 加权。
                     format: double
+        SetRolePermissionsRequestBody:
+            type: object
+            properties:
+                permissions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PermissionGrant'
+        SetRolePermissionsResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         SetTaggingPromptRequestBody:
             type: object
             properties:
@@ -24270,6 +24558,21 @@ components:
                     type: array
                     items:
                         type: string
+        UpdateRoleRequestBody:
+            type: object
+            properties:
+                name:
+                    type: string
+                description:
+                    type: string
+        UpdateRoleResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         UpdateServiceAuthorizationNotificationRequestBody:
             type: object
             properties:

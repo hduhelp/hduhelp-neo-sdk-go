@@ -1366,6 +1366,17 @@ type AdminReportListResponseBody struct {
 	Msg  *string              `json:"msg,omitempty"`
 }
 
+// AdminRoleInfo defines model for AdminRoleInfo.
+type AdminRoleInfo struct {
+	Description *string            `json:"description,omitempty"`
+	Id          *string            `json:"id,omitempty"`
+	Kind        *string            `json:"kind,omitempty"`
+	Locked      *bool              `json:"locked,omitempty"`
+	MemberCount *int64             `json:"memberCount,omitempty"`
+	Name        *string            `json:"name,omitempty"`
+	Permissions *[]PermissionGrant `json:"permissions,omitempty"`
+}
+
 // AdminScopeDef -------------------- scope 目录（能力级；pkg/scope.Catalog） --------------------
 type AdminScopeDef struct {
 	Action               *string   `json:"action,omitempty"`
@@ -1584,6 +1595,17 @@ type ApproveDeviceRequestBody struct {
 
 // ApproveDeviceRespBody defines model for ApproveDeviceRespBody.
 type ApproveDeviceRespBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
+// AssignOperatorRoleRequestBody defines model for AssignOperatorRoleRequestBody.
+type AssignOperatorRoleRequestBody struct {
+	RoleId *string `json:"role_id,omitempty"`
+}
+
+// AssignOperatorRoleResponseBody defines model for AssignOperatorRoleResponseBody.
+type AssignOperatorRoleResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
 }
@@ -3121,6 +3143,7 @@ type CreateOperatorRequestBody struct {
 	DisplayName *string `json:"display_name,omitempty"`
 	Password    *string `json:"password,omitempty"`
 	Role        *string `json:"role,omitempty"`
+	RoleId      *string `json:"role_id,omitempty"`
 	Username    *string `json:"username,omitempty"`
 }
 
@@ -3187,6 +3210,20 @@ type CreateRecruitChatGroupResponseBody struct {
 	Code *int64                      `json:"code,omitempty"`
 	Data *CreateRecruitChatGroupData `json:"data,omitempty"`
 	Msg  *string                     `json:"msg,omitempty"`
+}
+
+// CreateRoleRequestBody defines model for CreateRoleRequestBody.
+type CreateRoleRequestBody struct {
+	Description *string            `json:"description,omitempty"`
+	Name        *string            `json:"name,omitempty"`
+	Permissions *[]PermissionGrant `json:"permissions,omitempty"`
+}
+
+// CreateRoleResponseBody defines model for CreateRoleResponseBody.
+type CreateRoleResponseBody struct {
+	Code *int64         `json:"code,omitempty"`
+	Data *AdminRoleInfo `json:"data,omitempty"`
+	Msg  *string        `json:"msg,omitempty"`
 }
 
 // CreateRoomRequestBody defines model for CreateRoomRequestBody.
@@ -3415,6 +3452,12 @@ type DeleteFavoriteResponseBody struct {
 
 // DeleteLoginClientResponseBody defines model for DeleteLoginClientResponseBody.
 type DeleteLoginClientResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
+// DeleteRoleResponseBody defines model for DeleteRoleResponseBody.
+type DeleteRoleResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
 }
@@ -5978,13 +6021,17 @@ type OffsetPagination struct {
 
 // OperatorInfo defines model for OperatorInfo.
 type OperatorInfo struct {
-	DisplayName        *string `json:"displayName,omitempty"`
-	Id                 *string `json:"id,omitempty"`
-	LastLoginAt        *int64  `json:"lastLoginAt,omitempty"`
-	MustChangePassword *bool   `json:"mustChangePassword,omitempty"`
-	Role               *string `json:"role,omitempty"`
-	Status             *int32  `json:"status,omitempty"`
-	Username           *string `json:"username,omitempty"`
+	DisplayName        *string   `json:"displayName,omitempty"`
+	Id                 *string   `json:"id,omitempty"`
+	LastLoginAt        *int64    `json:"lastLoginAt,omitempty"`
+	MustChangePassword *bool     `json:"mustChangePassword,omitempty"`
+	Permissions        *[]string `json:"permissions,omitempty"`
+	Role               *string   `json:"role,omitempty"`
+	RoleId             *string   `json:"roleId,omitempty"`
+	RoleKind           *string   `json:"roleKind,omitempty"`
+	RoleName           *string   `json:"roleName,omitempty"`
+	Status             *int32    `json:"status,omitempty"`
+	Username           *string   `json:"username,omitempty"`
 }
 
 // OperatorListResponseBody defines model for OperatorListResponseBody.
@@ -6058,6 +6105,28 @@ type PasswordResetVerificationResponseBody struct {
 	Code *int64                         `json:"code,omitempty"`
 	Data *PasswordResetVerificationData `json:"data,omitempty"`
 	Msg  *string                        `json:"msg,omitempty"`
+}
+
+// PermissionCatalogResponseBody defines model for PermissionCatalogResponseBody.
+type PermissionCatalogResponseBody struct {
+	Code *int64                  `json:"code,omitempty"`
+	Data *[]PermissionDefinition `json:"data,omitempty"`
+	Msg  *string                 `json:"msg,omitempty"`
+}
+
+// PermissionDefinition defines model for PermissionDefinition.
+type PermissionDefinition struct {
+	Actions    *[]string `json:"actions,omitempty"`
+	Assignable *bool     `json:"assignable,omitempty"`
+	Domain     *string   `json:"domain,omitempty"`
+	Name       *string   `json:"name,omitempty"`
+	Resource   *string   `json:"resource,omitempty"`
+}
+
+// PermissionGrant defines model for PermissionGrant.
+type PermissionGrant struct {
+	Action   *string `json:"action,omitempty"`
+	Resource *string `json:"resource,omitempty"`
 }
 
 // PersonInfo ---------------------------------------------------------------------------
@@ -7000,6 +7069,13 @@ type RichTextNode struct {
 	UserId      *string `json:"user_id,omitempty"`
 }
 
+// RoleListResponseBody defines model for RoleListResponseBody.
+type RoleListResponseBody struct {
+	Code *int64           `json:"code,omitempty"`
+	Data *[]AdminRoleInfo `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
+}
+
 // RoomDetailData defines model for RoomDetailData.
 type RoomDetailData struct {
 	Events    *[]EventBrief `json:"events,omitempty"`
@@ -7460,7 +7536,10 @@ type SearchHit struct {
 	// OriginUrl 对外暴露的最初来源
 	OriginUrl *string `json:"originUrl,omitempty"`
 	PointId   *string `json:"pointId,omitempty"`
-	Question  *string `json:"question,omitempty"`
+
+	// PublishedAt 来源发布时间，Unix 毫秒；未知时省略
+	PublishedAt *int64  `json:"publishedAt,omitempty"`
+	Question    *string `json:"question,omitempty"`
 
 	// RerankScore 重排得分
 	RerankScore *float64 `json:"rerankScore,omitempty"`
@@ -7895,6 +7974,17 @@ type SetQAStrategiesRequestBody struct {
 type SetRankBoostRequestBody struct {
 	// RankBoost rankBoost 是打分的乘性人工权重。1 为不干预，小于 1 降权，大于 1 加权。
 	RankBoost *float64 `json:"rank_boost,omitempty"`
+}
+
+// SetRolePermissionsRequestBody defines model for SetRolePermissionsRequestBody.
+type SetRolePermissionsRequestBody struct {
+	Permissions *[]PermissionGrant `json:"permissions,omitempty"`
+}
+
+// SetRolePermissionsResponseBody defines model for SetRolePermissionsResponseBody.
+type SetRolePermissionsResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
 }
 
 // SetTaggingPromptRequestBody defines model for SetTaggingPromptRequestBody.
@@ -8944,6 +9034,18 @@ type UpdatePostRequestBody struct {
 	Title       *string           `json:"title,omitempty"`
 }
 
+// UpdateRoleRequestBody defines model for UpdateRoleRequestBody.
+type UpdateRoleRequestBody struct {
+	Description *string `json:"description,omitempty"`
+	Name        *string `json:"name,omitempty"`
+}
+
+// UpdateRoleResponseBody defines model for UpdateRoleResponseBody.
+type UpdateRoleResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
 // UpdateServiceAuthorizationNotificationRequestBody defines model for UpdateServiceAuthorizationNotificationRequestBody.
 type UpdateServiceAuthorizationNotificationRequestBody struct {
 	Enabled *bool `json:"enabled,omitempty"`
@@ -9957,6 +10059,26 @@ type AdminServiceResetOperatorPasswordParams struct {
 	Id *string `form:"id,omitempty" json:"id,omitempty"`
 }
 
+// AdminServiceAssignOperatorRoleParams defines parameters for AdminServiceAssignOperatorRole.
+type AdminServiceAssignOperatorRoleParams struct {
+	Id *string `form:"id,omitempty" json:"id,omitempty"`
+}
+
+// AdminServiceDeleteRoleParams defines parameters for AdminServiceDeleteRole.
+type AdminServiceDeleteRoleParams struct {
+	Id *string `form:"id,omitempty" json:"id,omitempty"`
+}
+
+// AdminServiceUpdateRoleParams defines parameters for AdminServiceUpdateRole.
+type AdminServiceUpdateRoleParams struct {
+	Id *string `form:"id,omitempty" json:"id,omitempty"`
+}
+
+// AdminServiceSetRolePermissionsParams defines parameters for AdminServiceSetRolePermissions.
+type AdminServiceSetRolePermissionsParams struct {
+	Id *string `form:"id,omitempty" json:"id,omitempty"`
+}
+
 // SiteAnnouncementServiceListSiteAnnouncementsParams defines parameters for SiteAnnouncementServiceListSiteAnnouncements.
 type SiteAnnouncementServiceListSiteAnnouncementsParams struct {
 	Page     *int32  `form:"page,omitempty" json:"page,omitempty"`
@@ -10959,8 +11081,20 @@ type AdminServiceCreateOperatorJSONRequestBody = CreateOperatorRequestBody
 // AdminServiceResetOperatorPasswordJSONRequestBody defines body for AdminServiceResetOperatorPassword for application/json ContentType.
 type AdminServiceResetOperatorPasswordJSONRequestBody = ResetOperatorPasswordRequestBody
 
+// AdminServiceAssignOperatorRoleJSONRequestBody defines body for AdminServiceAssignOperatorRole for application/json ContentType.
+type AdminServiceAssignOperatorRoleJSONRequestBody = AssignOperatorRoleRequestBody
+
 // AdminServiceAdminRefreshJSONRequestBody defines body for AdminServiceAdminRefresh for application/json ContentType.
 type AdminServiceAdminRefreshJSONRequestBody = AdminRefreshRequestBody
+
+// AdminServiceUpdateRoleJSONRequestBody defines body for AdminServiceUpdateRole for application/json ContentType.
+type AdminServiceUpdateRoleJSONRequestBody = UpdateRoleRequestBody
+
+// AdminServiceCreateRoleJSONRequestBody defines body for AdminServiceCreateRole for application/json ContentType.
+type AdminServiceCreateRoleJSONRequestBody = CreateRoleRequestBody
+
+// AdminServiceSetRolePermissionsJSONRequestBody defines body for AdminServiceSetRolePermissions for application/json ContentType.
+type AdminServiceSetRolePermissionsJSONRequestBody = SetRolePermissionsRequestBody
 
 // SiteAnnouncementServiceCreateSiteAnnouncementJSONRequestBody defines body for SiteAnnouncementServiceCreateSiteAnnouncement for application/json ContentType.
 type SiteAnnouncementServiceCreateSiteAnnouncementJSONRequestBody = CreateSiteAnnouncementRequestBody

@@ -1766,6 +1766,97 @@ func (s *Service) ResetOperatorPassword(ctx context.Context, req *ResetOperatorP
 	return resp, err
 }
 
+// AssignOperatorRoleReq is the request for AssignOperatorRole.
+type AssignOperatorRoleReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AssignOperatorRoleReqBuilder builds a AssignOperatorRoleReq with a fluent setter per field.
+type AssignOperatorRoleReqBuilder struct{ req *AssignOperatorRoleReq }
+
+// NewAssignOperatorRoleReqBuilder creates a request builder for AssignOperatorRole.
+func NewAssignOperatorRoleReqBuilder() *AssignOperatorRoleReqBuilder {
+	return &AssignOperatorRoleReqBuilder{req: &AssignOperatorRoleReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" query parameter.
+func (b *AssignOperatorRoleReqBuilder) Id(v string) *AssignOperatorRoleReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AssignOperatorRoleReqBuilder) Body(body *models.AssignOperatorRoleRequestBody) *AssignOperatorRoleReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AssignOperatorRoleReqBuilder) Build() *AssignOperatorRoleReq { return b.req }
+
+// AssignOperatorRoleResp is the response for AssignOperatorRole.
+type AssignOperatorRoleResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// AssignOperatorRole: 分配运营人员角色
+func (s *Service) AssignOperatorRole(ctx context.Context, req *AssignOperatorRoleReq, opts ...core.RequestOption) (*AssignOperatorRoleResp, error) {
+	resp := &AssignOperatorRoleResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/operators/role",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ListPermissionCatalogReq is the request for ListPermissionCatalog.
+type ListPermissionCatalogReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListPermissionCatalogReqBuilder builds a ListPermissionCatalogReq with a fluent setter per field.
+type ListPermissionCatalogReqBuilder struct{ req *ListPermissionCatalogReq }
+
+// NewListPermissionCatalogReqBuilder creates a request builder for ListPermissionCatalog.
+func NewListPermissionCatalogReqBuilder() *ListPermissionCatalogReqBuilder {
+	return &ListPermissionCatalogReqBuilder{req: &ListPermissionCatalogReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *ListPermissionCatalogReqBuilder) Build() *ListPermissionCatalogReq { return b.req }
+
+// ListPermissionCatalogResp is the response for ListPermissionCatalog.
+type ListPermissionCatalogResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.PermissionDefinition `json:"data"`
+}
+
+// ListPermissionCatalog: 权限目录
+func (s *Service) ListPermissionCatalog(ctx context.Context, req *ListPermissionCatalogReq, opts ...core.RequestOption) (*ListPermissionCatalogResp, error) {
+	resp := &ListPermissionCatalogResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/permissions/catalog",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // AdminRefreshReq is the request for AdminRefresh.
 type AdminRefreshReq struct {
 	pathParams  map[string]string
@@ -1804,6 +1895,239 @@ func (s *Service) AdminRefresh(ctx context.Context, req *AdminRefreshReq, opts .
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
 		PathTemplate: "/hduhelp-neo/admin/refresh",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ListRolesReq is the request for ListRoles.
+type ListRolesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListRolesReqBuilder builds a ListRolesReq with a fluent setter per field.
+type ListRolesReqBuilder struct{ req *ListRolesReq }
+
+// NewListRolesReqBuilder creates a request builder for ListRoles.
+func NewListRolesReqBuilder() *ListRolesReqBuilder {
+	return &ListRolesReqBuilder{req: &ListRolesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *ListRolesReqBuilder) Build() *ListRolesReq { return b.req }
+
+// ListRolesResp is the response for ListRoles.
+type ListRolesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.AdminRoleInfo `json:"data"`
+}
+
+// ListRoles: 角色列表
+func (s *Service) ListRoles(ctx context.Context, req *ListRolesReq, opts ...core.RequestOption) (*ListRolesResp, error) {
+	resp := &ListRolesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/roles",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// CreateRoleReq is the request for CreateRole.
+type CreateRoleReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// CreateRoleReqBuilder builds a CreateRoleReq with a fluent setter per field.
+type CreateRoleReqBuilder struct{ req *CreateRoleReq }
+
+// NewCreateRoleReqBuilder creates a request builder for CreateRole.
+func NewCreateRoleReqBuilder() *CreateRoleReqBuilder {
+	return &CreateRoleReqBuilder{req: &CreateRoleReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *CreateRoleReqBuilder) Body(body *models.CreateRoleRequestBody) *CreateRoleReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *CreateRoleReqBuilder) Build() *CreateRoleReq { return b.req }
+
+// CreateRoleResp is the response for CreateRole.
+type CreateRoleResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AdminRoleInfo `json:"data"`
+}
+
+// CreateRole: 创建自定义角色
+func (s *Service) CreateRole(ctx context.Context, req *CreateRoleReq, opts ...core.RequestOption) (*CreateRoleResp, error) {
+	resp := &CreateRoleResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/roles",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// DeleteRoleReq is the request for DeleteRole.
+type DeleteRoleReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// DeleteRoleReqBuilder builds a DeleteRoleReq with a fluent setter per field.
+type DeleteRoleReqBuilder struct{ req *DeleteRoleReq }
+
+// NewDeleteRoleReqBuilder creates a request builder for DeleteRole.
+func NewDeleteRoleReqBuilder() *DeleteRoleReqBuilder {
+	return &DeleteRoleReqBuilder{req: &DeleteRoleReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" query parameter.
+func (b *DeleteRoleReqBuilder) Id(v string) *DeleteRoleReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *DeleteRoleReqBuilder) Build() *DeleteRoleReq { return b.req }
+
+// DeleteRoleResp is the response for DeleteRole.
+type DeleteRoleResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// DeleteRole: 删除自定义角色
+func (s *Service) DeleteRole(ctx context.Context, req *DeleteRoleReq, opts ...core.RequestOption) (*DeleteRoleResp, error) {
+	resp := &DeleteRoleResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/admin/roles",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// UpdateRoleReq is the request for UpdateRole.
+type UpdateRoleReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// UpdateRoleReqBuilder builds a UpdateRoleReq with a fluent setter per field.
+type UpdateRoleReqBuilder struct{ req *UpdateRoleReq }
+
+// NewUpdateRoleReqBuilder creates a request builder for UpdateRole.
+func NewUpdateRoleReqBuilder() *UpdateRoleReqBuilder {
+	return &UpdateRoleReqBuilder{req: &UpdateRoleReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" query parameter.
+func (b *UpdateRoleReqBuilder) Id(v string) *UpdateRoleReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *UpdateRoleReqBuilder) Body(body *models.UpdateRoleRequestBody) *UpdateRoleReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *UpdateRoleReqBuilder) Build() *UpdateRoleReq { return b.req }
+
+// UpdateRoleResp is the response for UpdateRole.
+type UpdateRoleResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// UpdateRole: 编辑自定义角色
+func (s *Service) UpdateRole(ctx context.Context, req *UpdateRoleReq, opts ...core.RequestOption) (*UpdateRoleResp, error) {
+	resp := &UpdateRoleResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PATCH",
+		PathTemplate: "/hduhelp-neo/admin/roles",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SetRolePermissionsReq is the request for SetRolePermissions.
+type SetRolePermissionsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// SetRolePermissionsReqBuilder builds a SetRolePermissionsReq with a fluent setter per field.
+type SetRolePermissionsReqBuilder struct{ req *SetRolePermissionsReq }
+
+// NewSetRolePermissionsReqBuilder creates a request builder for SetRolePermissions.
+func NewSetRolePermissionsReqBuilder() *SetRolePermissionsReqBuilder {
+	return &SetRolePermissionsReqBuilder{req: &SetRolePermissionsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" query parameter.
+func (b *SetRolePermissionsReqBuilder) Id(v string) *SetRolePermissionsReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *SetRolePermissionsReqBuilder) Body(body *models.SetRolePermissionsRequestBody) *SetRolePermissionsReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *SetRolePermissionsReqBuilder) Build() *SetRolePermissionsReq { return b.req }
+
+// SetRolePermissionsResp is the response for SetRolePermissions.
+type SetRolePermissionsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// SetRolePermissions: 替换角色权限
+func (s *Service) SetRolePermissions(ctx context.Context, req *SetRolePermissionsReq, opts ...core.RequestOption) (*SetRolePermissionsResp, error) {
+	resp := &SetRolePermissionsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/roles/permissions",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
