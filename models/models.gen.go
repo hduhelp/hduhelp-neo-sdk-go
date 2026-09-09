@@ -4589,8 +4589,8 @@ type HealthResponseBody struct {
 	Status  *string `json:"status,omitempty"`
 }
 
-// IcsLinkData IcsLinkData 携带课表 ICS 订阅链接。link 仅在本次新建令牌时返回明文(服务端只存哈希,
-// 无法回显既有令牌);hasToken 表示当前是否已有有效令牌。
+// IcsLinkData IcsLinkData 携带可重复获取的课表 ICS 订阅链接。hasToken 表示当前是否有有效令牌。
+// 旧版仅保存哈希的令牌返回 link=""、hasToken=true，原链接继续有效，需本人明确轮换后获取新链接。
 type IcsLinkData struct {
 	HasToken *bool   `json:"hasToken,omitempty"`
 	Link     *string `json:"link,omitempty"`
@@ -4600,8 +4600,8 @@ type IcsLinkData struct {
 type IcsLinkResponseBody struct {
 	Code *int64 `json:"code,omitempty"`
 
-	// Data IcsLinkData 携带课表 ICS 订阅链接。link 仅在本次新建令牌时返回明文(服务端只存哈希,
-	// 无法回显既有令牌);hasToken 表示当前是否已有有效令牌。
+	// Data IcsLinkData 携带可重复获取的课表 ICS 订阅链接。hasToken 表示当前是否有有效令牌。
+	// 旧版仅保存哈希的令牌返回 link=""、hasToken=true，原链接继续有效，需本人明确轮换后获取新链接。
 	Data *IcsLinkData `json:"data,omitempty"`
 	Msg  *string      `json:"msg,omitempty"`
 }
