@@ -1819,6 +1819,26 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/CreateAppResponseBody'
+        delete:
+            tags:
+                - AdminService
+            summary: 删除应用
+            description: 删除 OAuth 应用，应用将无法继续登录授权或调用接口
+            operationId: AdminService_DeleteApp
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeleteAppResponseBody'
         patch:
             tags:
                 - AdminService
@@ -5249,6 +5269,26 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/CreateOperatorResponseBody'
+        delete:
+            tags:
+                - AdminService
+            summary: 删除运营者
+            description: 删除运营者账号；超级管理员不可删除，管理员仅能删除下级运营者
+            operationId: AdminService_DeleteOperator
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeleteOperatorResponseBody'
         patch:
             tags:
                 - AdminService
@@ -15977,6 +16017,14 @@ components:
                     format: int64
                 msg:
                     type: string
+        DeleteAppResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         DeleteCampusResponseBody:
             type: object
             properties:
@@ -16010,6 +16058,14 @@ components:
                 msg:
                     type: string
         DeleteLoginClientResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        DeleteOperatorResponseBody:
             type: object
             properties:
                 code:

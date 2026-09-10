@@ -3426,6 +3426,12 @@ type DeleteAdminNoticeResponseBody struct {
 	Msg  string `json:"msg"`
 }
 
+// DeleteAppResponseBody defines model for DeleteAppResponseBody.
+type DeleteAppResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
 // DeleteCampusResponseBody defines model for DeleteCampusResponseBody.
 type DeleteCampusResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
@@ -3452,6 +3458,12 @@ type DeleteFavoriteResponseBody struct {
 
 // DeleteLoginClientResponseBody defines model for DeleteLoginClientResponseBody.
 type DeleteLoginClientResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
+// DeleteOperatorResponseBody defines model for DeleteOperatorResponseBody.
+type DeleteOperatorResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
 }
@@ -9672,6 +9684,11 @@ type AcademicServiceTeachingClassParams struct {
 	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
+// AdminServiceDeleteAppParams defines parameters for AdminServiceDeleteApp.
+type AdminServiceDeleteAppParams struct {
+	Id *string `form:"id,omitempty" json:"id,omitempty"`
+}
+
 // AdminServiceListAppsParams defines parameters for AdminServiceListApps.
 type AdminServiceListAppsParams struct {
 	// Id 传入时定位单个应用，返回其详情
@@ -10048,6 +10065,11 @@ type NotificationServiceListNotificationTaskDeliveriesParamsStatus string
 
 // NotificationServiceListNotificationTaskDeliveriesParamsFailureKind defines parameters for NotificationServiceListNotificationTaskDeliveries.
 type NotificationServiceListNotificationTaskDeliveriesParamsFailureKind string
+
+// AdminServiceDeleteOperatorParams defines parameters for AdminServiceDeleteOperator.
+type AdminServiceDeleteOperatorParams struct {
+	Id *string `form:"id,omitempty" json:"id,omitempty"`
+}
 
 // AdminServiceSetOperatorEnabledParams defines parameters for AdminServiceSetOperatorEnabled.
 type AdminServiceSetOperatorEnabledParams struct {

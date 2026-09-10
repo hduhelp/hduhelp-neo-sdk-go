@@ -160,6 +160,51 @@ func (s *Service) UpdateApp(ctx context.Context, req *UpdateAppReq, opts ...core
 	return resp, err
 }
 
+// DeleteAppReq is the request for DeleteApp.
+type DeleteAppReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// DeleteAppReqBuilder builds a DeleteAppReq with a fluent setter per field.
+type DeleteAppReqBuilder struct{ req *DeleteAppReq }
+
+// NewDeleteAppReqBuilder creates a request builder for DeleteApp.
+func NewDeleteAppReqBuilder() *DeleteAppReqBuilder {
+	return &DeleteAppReqBuilder{req: &DeleteAppReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" query parameter.
+func (b *DeleteAppReqBuilder) Id(v string) *DeleteAppReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *DeleteAppReqBuilder) Build() *DeleteAppReq { return b.req }
+
+// DeleteAppResp is the response for DeleteApp.
+type DeleteAppResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// DeleteApp: 删除应用
+func (s *Service) DeleteApp(ctx context.Context, req *DeleteAppReq, opts ...core.RequestOption) (*DeleteAppResp, error) {
+	resp := &DeleteAppResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/admin/apps",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // SetAppEnabledReq is the request for SetAppEnabled.
 type SetAppEnabledReq struct {
 	pathParams  map[string]string
@@ -1655,6 +1700,51 @@ func (s *Service) CreateOperator(ctx context.Context, req *CreateOperatorReq, op
 	resp := &CreateOperatorResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/operators",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// DeleteOperatorReq is the request for DeleteOperator.
+type DeleteOperatorReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// DeleteOperatorReqBuilder builds a DeleteOperatorReq with a fluent setter per field.
+type DeleteOperatorReqBuilder struct{ req *DeleteOperatorReq }
+
+// NewDeleteOperatorReqBuilder creates a request builder for DeleteOperator.
+func NewDeleteOperatorReqBuilder() *DeleteOperatorReqBuilder {
+	return &DeleteOperatorReqBuilder{req: &DeleteOperatorReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" query parameter.
+func (b *DeleteOperatorReqBuilder) Id(v string) *DeleteOperatorReqBuilder {
+	b.req.queryParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *DeleteOperatorReqBuilder) Build() *DeleteOperatorReq { return b.req }
+
+// DeleteOperatorResp is the response for DeleteOperator.
+type DeleteOperatorResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// DeleteOperator: 删除运营者
+func (s *Service) DeleteOperator(ctx context.Context, req *DeleteOperatorReq, opts ...core.RequestOption) (*DeleteOperatorResp, error) {
+	resp := &DeleteOperatorResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
 		PathTemplate: "/hduhelp-neo/admin/operators",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
