@@ -70,7 +70,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/InfoStreamResponseBody'
+                                $ref: '#/components/schemas/DingTalkInfoStreamResponseBody'
             x-hduhelp-http: {'auth': 'webhook', 'catalog': 'exclude'}
     /dingtalk/ping:
         get:
@@ -5253,7 +5253,7 @@ paths:
             tags:
                 - AdminService
             summary: 创建运营者
-            description: 新建后台运营者账号，口令以bcrypt哈希存储；可通过 role_id 分配单一角色，旧 role 字段仅为兼容保留且不再用于任命管理员
+            description: 新建后台运营者账号；role_id 指定唯一角色，省略时创建无角色账号
             operationId: AdminService_CreateOperator
             security:
                 - OperatorBearerAuth: []
@@ -5320,7 +5320,7 @@ paths:
             tags:
                 - AdminService
             summary: 重置运营者口令
-            description: 仅超级管理员可用：重置指定运营者口令，重置后目标运营者首次登录须强制改密
+            description: 管理员可重置普通运营人员口令，管理管理员须为超级管理员；重置后目标运营者下次登录须改密
             operationId: AdminService_ResetOperatorPassword
             security:
                 - OperatorBearerAuth: []
@@ -15615,8 +15615,6 @@ components:
                     type: string
                 display_name:
                     type: string
-                role:
-                    type: string
                 role_id:
                     type: string
         CreateOperatorResponseBody:
@@ -16390,6 +16388,32 @@ components:
                         type: object
                         additionalProperties:
                             type: string
+        DingTalkInfoStreamData:
+            type: object
+            properties:
+                schedule:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ScheduleDay'
+                electric:
+                    $ref: '#/components/schemas/Electric'
+                card:
+                    type: number
+                    format: double
+                school_time:
+                    $ref: '#/components/schemas/InfoSchoolTime'
+                sunrun_new:
+                    $ref: '#/components/schemas/Sunrun'
+        DingTalkInfoStreamResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/DingTalkInfoStreamData'
+                code:
+                    type: integer
+                    format: int64
+                message:
+                    type: string
         DingTalkPigeonCallbackRequestBody:
             type: object
             properties:
@@ -16521,6 +16545,15 @@ components:
                 expired_at:
                     type: integer
                     format: int64
+        Electric:
+            type: object
+            properties:
+                fee:
+                    type: string
+                roomId:
+                    type: string
+                roomName:
+                    type: string
         ElectricBalanceData:
             type: object
             properties:
@@ -18016,6 +18049,54 @@ components:
                     type: number
                     format: double
             description: 信息流卡片(AQI / 温度 / 停雨)
+        InfoCourse:
+            type: object
+            properties:
+                start_section:
+                    type: integer
+                    format: int32
+                end_section:
+                    type: integer
+                    format: int32
+                start_time:
+                    type: string
+                end_time:
+                    type: string
+                course_name:
+                    type: string
+                classroom:
+                    type: string
+                teacher:
+                    type: string
+                duration:
+                    type: string
+            description: |-
+                Preserve the legacy /student/schedule/now/v3 JSON forwarded by Consulting.
+                Its protojson encoder used UseProtoNames, including for infoStream classes.
+        InfoSchoolTime:
+            type: object
+            properties:
+                schoolYear:
+                    type: integer
+                    format: int32
+                semester:
+                    type: integer
+                    format: int32
+                semester_start_timestamp:
+                    type: integer
+                    format: int64
+                weekNow:
+                    type: integer
+                    format: int32
+                weekDayNow:
+                    type: integer
+                    format: int32
+                timeStamp:
+                    type: integer
+                    format: int64
+                section:
+                    type: integer
+                    format: int32
         InfoStreamData:
             type: object
             properties:
@@ -19993,8 +20074,6 @@ components:
                     type: string
                 displayName:
                     type: string
-                role:
-                    type: string
                 status:
                     type: integer
                     format: int32
@@ -21784,6 +21863,17 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/Course'
+        ScheduleDay:
+            type: object
+            properties:
+                date:
+                    type: string
+                weekday:
+                    type: string
+                classes:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/InfoCourse'
         ScheduleIcsResponseBody:
             type: object
             properties:
@@ -23799,6 +23889,39 @@ components:
                     format: int64
                 msg:
                     type: string
+        Sunrun:
+            type: object
+            properties:
+                name:
+                    type: string
+                code:
+                    type: string
+                sex:
+                    type: string
+                validTimes:
+                    type: integer
+                    format: int32
+                finalTimes:
+                    type: integer
+                    format: int32
+                validMileages:
+                    type: integer
+                    format: int32
+                totalMileages:
+                    type: integer
+                    format: int32
+                speed:
+                    type: number
+                    format: double
+                days:
+                    type: integer
+                    format: int32
+                todayMileage:
+                    type: number
+                    format: double
+                todaySpeed:
+                    type: number
+                    format: double
         SunrunCard:
             type: object
             properties:

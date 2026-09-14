@@ -3142,7 +3142,6 @@ type CreateLoginClientResponseBody struct {
 type CreateOperatorRequestBody struct {
 	DisplayName *string `json:"display_name,omitempty"`
 	Password    *string `json:"password,omitempty"`
-	Role        *string `json:"role,omitempty"`
 	RoleId      *string `json:"role_id,omitempty"`
 	Username    *string `json:"username,omitempty"`
 }
@@ -3654,6 +3653,22 @@ type DingTalkBlessReviewCallbackResponseBody struct {
 	PrivateData    *map[string]map[string]string `json:"privateData,omitempty"`
 }
 
+// DingTalkInfoStreamData defines model for DingTalkInfoStreamData.
+type DingTalkInfoStreamData struct {
+	Card       *float64        `json:"card,omitempty"`
+	Electric   *Electric       `json:"electric,omitempty"`
+	Schedule   *[]ScheduleDay  `json:"schedule,omitempty"`
+	SchoolTime *InfoSchoolTime `json:"school_time,omitempty"`
+	SunrunNew  *Sunrun         `json:"sunrun_new,omitempty"`
+}
+
+// DingTalkInfoStreamResponseBody defines model for DingTalkInfoStreamResponseBody.
+type DingTalkInfoStreamResponseBody struct {
+	Code    *int64                  `json:"code,omitempty"`
+	Data    *DingTalkInfoStreamData `json:"data,omitempty"`
+	Message *string                 `json:"message,omitempty"`
+}
+
 // DingTalkPigeonCallbackRequestBody defines model for DingTalkPigeonCallbackRequestBody.
 type DingTalkPigeonCallbackRequestBody struct {
 	CorpId     *string `json:"corpId,omitempty"`
@@ -3743,6 +3758,13 @@ type EditableSiteAnnouncement struct {
 	Body      *string `json:"body,omitempty"`
 	ExpiredAt *int64  `json:"expired_at,omitempty"`
 	Title     *string `json:"title,omitempty"`
+}
+
+// Electric defines model for Electric.
+type Electric struct {
+	Fee      *string `json:"fee,omitempty"`
+	RoomId   *string `json:"roomId,omitempty"`
+	RoomName *string `json:"roomName,omitempty"`
 }
 
 // ElectricBalanceData ---- 电费余额（当前绑定电表 + 寝室归属） ----
@@ -4779,6 +4801,30 @@ type InfoCard struct {
 	// Type aqi | temperature | rainstop
 	Type  *string  `json:"type,omitempty"`
 	Value *float64 `json:"value,omitempty"`
+}
+
+// InfoCourse Preserve the legacy /student/schedule/now/v3 JSON forwarded by Consulting.
+// Its protojson encoder used UseProtoNames, including for infoStream classes.
+type InfoCourse struct {
+	Classroom    *string `json:"classroom,omitempty"`
+	CourseName   *string `json:"course_name,omitempty"`
+	Duration     *string `json:"duration,omitempty"`
+	EndSection   *int32  `json:"end_section,omitempty"`
+	EndTime      *string `json:"end_time,omitempty"`
+	StartSection *int32  `json:"start_section,omitempty"`
+	StartTime    *string `json:"start_time,omitempty"`
+	Teacher      *string `json:"teacher,omitempty"`
+}
+
+// InfoSchoolTime defines model for InfoSchoolTime.
+type InfoSchoolTime struct {
+	SchoolYear             *int32 `json:"schoolYear,omitempty"`
+	Section                *int32 `json:"section,omitempty"`
+	Semester               *int32 `json:"semester,omitempty"`
+	SemesterStartTimestamp *int64 `json:"semester_start_timestamp,omitempty"`
+	TimeStamp              *int64 `json:"timeStamp,omitempty"`
+	WeekDayNow             *int32 `json:"weekDayNow,omitempty"`
+	WeekNow                *int32 `json:"weekNow,omitempty"`
 }
 
 // InfoStreamData defines model for InfoStreamData.
@@ -6038,7 +6084,6 @@ type OperatorInfo struct {
 	LastLoginAt        *int64    `json:"lastLoginAt,omitempty"`
 	MustChangePassword *bool     `json:"mustChangePassword,omitempty"`
 	Permissions        *[]string `json:"permissions,omitempty"`
-	Role               *string   `json:"role,omitempty"`
 	RoleId             *string   `json:"roleId,omitempty"`
 	RoleKind           *string   `json:"roleKind,omitempty"`
 	RoleName           *string   `json:"roleName,omitempty"`
@@ -7211,6 +7256,13 @@ type ScheduleCourse struct {
 type ScheduleData struct {
 	Today    *[]Course `json:"today,omitempty"`
 	Tomorrow *[]Course `json:"tomorrow,omitempty"`
+}
+
+// ScheduleDay defines model for ScheduleDay.
+type ScheduleDay struct {
+	Classes *[]InfoCourse `json:"classes,omitempty"`
+	Date    *string       `json:"date,omitempty"`
+	Weekday *string       `json:"weekday,omitempty"`
 }
 
 // ScheduleIcsResponseBody defines model for ScheduleIcsResponseBody.
@@ -8528,6 +8580,21 @@ type SubscriptionsResponseBody struct {
 	Code int64               `json:"code"`
 	Data *[]SubscriptionItem `json:"data,omitempty"`
 	Msg  string              `json:"msg"`
+}
+
+// Sunrun defines model for Sunrun.
+type Sunrun struct {
+	Code          *string  `json:"code,omitempty"`
+	Days          *int32   `json:"days,omitempty"`
+	FinalTimes    *int32   `json:"finalTimes,omitempty"`
+	Name          *string  `json:"name,omitempty"`
+	Sex           *string  `json:"sex,omitempty"`
+	Speed         *float64 `json:"speed,omitempty"`
+	TodayMileage  *float64 `json:"todayMileage,omitempty"`
+	TodaySpeed    *float64 `json:"todaySpeed,omitempty"`
+	TotalMileages *int32   `json:"totalMileages,omitempty"`
+	ValidMileages *int32   `json:"validMileages,omitempty"`
+	ValidTimes    *int32   `json:"validTimes,omitempty"`
 }
 
 // SunrunCard SunrunCard 是信息流阳光长跑卡片负载（上游 mini-student-info 与 mini-student-group）。
