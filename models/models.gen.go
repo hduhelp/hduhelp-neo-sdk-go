@@ -2782,6 +2782,11 @@ type CompleteLoginIntentRequestBody struct {
 	State               *string `json:"state,omitempty"`
 }
 
+// CompleteUploadRequestBody defines model for CompleteUploadRequestBody.
+type CompleteUploadRequestBody struct {
+	Key *string `json:"key,omitempty"`
+}
+
 // ConfigGetResponseBody defines model for ConfigGetResponseBody.
 type ConfigGetResponseBody struct {
 	Code *int64      `json:"code,omitempty"`
@@ -11454,6 +11459,9 @@ type SubscriptionServiceBatchSetDeliveryPreferencesJSONRequestBody = BatchDelive
 
 // SubscriptionServiceSetDeliveryPreferenceJSONRequestBody defines body for SubscriptionServiceSetDeliveryPreference for application/json ContentType.
 type SubscriptionServiceSetDeliveryPreferenceJSONRequestBody = SetDeliveryPreferenceRequestBody
+
+// UploadServiceCompleteUploadJSONRequestBody defines body for UploadServiceCompleteUpload for application/json ContentType.
+type UploadServiceCompleteUploadJSONRequestBody = CompleteUploadRequestBody
 
 // UploadServiceSignUploadJSONRequestBody defines body for UploadServiceSignUpload for application/json ContentType.
 type UploadServiceSignUploadJSONRequestBody = SignUploadRequestBody

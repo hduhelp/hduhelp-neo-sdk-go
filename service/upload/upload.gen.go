@@ -61,6 +61,52 @@ func (s *Service) AdminSignUpload(ctx context.Context, req *AdminSignUploadReq, 
 	return resp, err
 }
 
+// CompleteUploadReq is the request for CompleteUpload.
+type CompleteUploadReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// CompleteUploadReqBuilder builds a CompleteUploadReq with a fluent setter per field.
+type CompleteUploadReqBuilder struct{ req *CompleteUploadReq }
+
+// NewCompleteUploadReqBuilder creates a request builder for CompleteUpload.
+func NewCompleteUploadReqBuilder() *CompleteUploadReqBuilder {
+	return &CompleteUploadReqBuilder{req: &CompleteUploadReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *CompleteUploadReqBuilder) Body(body *models.CompleteUploadRequestBody) *CompleteUploadReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *CompleteUploadReqBuilder) Build() *CompleteUploadReq { return b.req }
+
+// CompleteUploadResp is the response for CompleteUpload.
+type CompleteUploadResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.UploadData `json:"data"`
+}
+
+// CompleteUpload: 确认头像直传完成
+func (s *Service) CompleteUpload(ctx context.Context, req *CompleteUploadReq, opts ...core.RequestOption) (*CompleteUploadResp, error) {
+	resp := &CompleteUploadResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/upload/complete",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // SignUploadReq is the request for SignUpload.
 type SignUploadReq struct {
 	pathParams  map[string]string

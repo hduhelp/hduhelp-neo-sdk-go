@@ -5785,8 +5785,8 @@ paths:
                 - OperatorBearerAuth: []
             requestBody:
                 description: |-
-                    签名直传：sign 校验元数据、为后端生成对象 key、签发短期 PUT URL，并同时预登记元数据行。
-                    客户端不得自行指定 key；PUT 到 uploadUrl 完成后即可用 key 引用，无需二次回调。
+                    头像签名直传会预登记 pending 元数据行；新客户端 PUT 后调用 complete，
+                    业务首次引用也会为旧客户端执行同一确认。其它 usage 保持原有直传语义。
                 content:
                     application/json:
                         schema:
@@ -11626,19 +11626,41 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/UploadResponseBody'
             x-hduhelp-http: {'auth': 'bearer', 'request_content_type': 'multipart/form-data', 'file_field': 'file'}
+    /hduhelp-neo/upload/complete:
+        post:
+            tags:
+                - UploadService
+            summary: 确认头像直传完成
+            description: 校验头像对象已写入存储且大小、内容类型与签名元数据一致，将 pending 上传幂等标记为 ready。第三方用户令牌需携带 upload:file:write。
+            operationId: UploadService_CompleteUpload
+            security:
+                - BearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CompleteUploadRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UploadResponseBody'
+            x-hduhelp-cli: {'auth': 'bearer'}
     /hduhelp-neo/upload/sign:
         post:
             tags:
                 - UploadService
             summary: 签发直传地址
-            description: 校验 filename/size/content_type 后生成对象 key 与短期 PUT URL，并预登记元数据行；客户端 PUT 到该 URL 即可用 key 引用，无需回调。第三方用户令牌需携带 upload:file:write。
+            description: 校验 filename/size/content_type 后生成对象 key 与短期 PUT URL。usage=avatar 时预登记 pending 元数据，PUT 后调用 /upload/complete；业务首次引用会为旧客户端执行同一确认。第三方用户令牌需携带 upload:file:write。
             operationId: UploadService_SignUpload
             security:
                 - BearerAuth: []
             requestBody:
                 description: |-
-                    签名直传：sign 校验元数据、为后端生成对象 key、签发短期 PUT URL，并同时预登记元数据行。
-                    客户端不得自行指定 key；PUT 到 uploadUrl 完成后即可用 key 引用，无需二次回调。
+                    头像签名直传会预登记 pending 元数据行；新客户端 PUT 后调用 complete，
+                    业务首次引用也会为旧客户端执行同一确认。其它 usage 保持原有直传语义。
                 content:
                     application/json:
                         schema:
@@ -15015,6 +15037,11 @@ components:
                 code_challenge:
                     type: string
                 code_challenge_method:
+                    type: string
+        CompleteUploadRequestBody:
+            type: object
+            properties:
+                key:
                     type: string
         ConfigGetResponseBody:
             type: object
