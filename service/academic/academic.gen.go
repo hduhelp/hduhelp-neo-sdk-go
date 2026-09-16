@@ -298,6 +298,12 @@ func (b *ClassQuerySearchReqBuilder) Weekday(v int32) *ClassQuerySearchReqBuilde
 	return b
 }
 
+// ForSimulation sets the "forSimulation" query parameter.
+func (b *ClassQuerySearchReqBuilder) ForSimulation(v bool) *ClassQuerySearchReqBuilder {
+	b.req.queryParams["forSimulation"] = strconv.FormatBool(v)
+	return b
+}
+
 // Build finalizes the request.
 func (b *ClassQuerySearchReqBuilder) Build() *ClassQuerySearchReq { return b.req }
 
@@ -533,6 +539,24 @@ func NewCourseReqBuilder() *CourseReqBuilder {
 // Id sets the "id" query parameter.
 func (b *CourseReqBuilder) Id(v []string) *CourseReqBuilder {
 	b.req.queryParams["id"] = strings.Join(v, ",")
+	return b
+}
+
+// ForSimulation sets the "forSimulation" query parameter.
+func (b *CourseReqBuilder) ForSimulation(v bool) *CourseReqBuilder {
+	b.req.queryParams["forSimulation"] = strconv.FormatBool(v)
+	return b
+}
+
+// SchoolYear sets the "schoolYear" query parameter.
+func (b *CourseReqBuilder) SchoolYear(v string) *CourseReqBuilder {
+	b.req.queryParams["schoolYear"] = v
+	return b
+}
+
+// Semester sets the "semester" query parameter.
+func (b *CourseReqBuilder) Semester(v int32) *CourseReqBuilder {
+	b.req.queryParams["semester"] = strconv.FormatInt(int64(v), 10)
 	return b
 }
 

@@ -348,6 +348,10 @@ paths:
                   schema:
                     type: integer
                     format: int32
+                - name: forSimulation
+                  in: query
+                  schema:
+                    type: boolean
             responses:
                 "200":
                     description: Successful response
@@ -501,6 +505,19 @@ paths:
                     type: array
                     items:
                         type: string
+                - name: forSimulation
+                  in: query
+                  schema:
+                    type: boolean
+                - name: schoolYear
+                  in: query
+                  schema:
+                    type: string
+                - name: semester
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
             responses:
                 "200":
                     description: Successful response
@@ -1039,7 +1056,7 @@ paths:
             tags:
                 - AcademicService
             summary: 获取学期课表
-            description: 返回当前登录本科生的选课课表，或当前教职工的任课课表。不传过滤参数时返回整学期全部条目（数据量可能较大）；按当前周查看请传 timestamp；需要指定学年学期时先用 hduhelp.academic.config 查询可选值。
+            description: 返回当前登录本科生的选课课表，或当前教职工的任课课表。若同时存在下沙和绍兴课程，优先展示下沙课程；仅有绍兴课程时展示绍兴课程；校区判断先于周次筛选与分页。不传过滤参数时返回整学期展示条目（数据量可能较大），sectionTimes 提供所选展示校区时间轴，绍兴第5节为12:05–12:30、第13节为08:30–09:15占位，均不生成课程；按当前周查看请传 timestamp；需要指定学年学期时先用 hduhelp.academic.config 查询可选值。
             operationId: AcademicService_Schedule
             security:
                 - BearerAuth: []
@@ -14825,6 +14842,10 @@ components:
                 locationName:
                     type: string
                     description: 教室名称
+                startTime:
+                    type: string
+                endTime:
+                    type: string
         ClassroomUsageResponseBody:
             type: object
             properties:
@@ -14832,6 +14853,10 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/ClassroomUsageItem'
+                sectionTimes:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SectionTime'
                 code:
                     type: integer
                     format: int64
@@ -15217,6 +15242,7 @@ components:
                 - effective
                 - duplicateOfActual
                 - scheduleKnown
+                - campusID
             type: object
             properties:
                 classID:
@@ -15250,6 +15276,8 @@ components:
                     type: boolean
                 scheduleKnown:
                     type: boolean
+                campusID:
+                    type: string
         CourseSimulationData:
             required:
                 - schemaVersion
@@ -15259,6 +15287,11 @@ components:
                 - actualCourses
                 - simulationItems
                 - effectiveCourses
+                - campusID
+                - campusName
+                - campusSource
+                - sectionTimes
+                - warnings
             type: object
             properties:
                 schemaVersion:
@@ -15284,6 +15317,20 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/CourseSimulationCourse'
+                campusID:
+                    type: string
+                campusName:
+                    type: string
+                campusSource:
+                    type: string
+                sectionTimes:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SectionTime'
+                warnings:
+                    type: array
+                    items:
+                        type: string
         CourseSimulationItem:
             required:
                 - classID
@@ -15330,6 +15377,8 @@ components:
                 - week
                 - weekday
                 - section
+                - startTime
+                - endTime
             type: object
             properties:
                 week:
@@ -15341,6 +15390,10 @@ components:
                 section:
                     type: integer
                     format: int32
+                startTime:
+                    type: string
+                endTime:
+                    type: string
             description: |-
                 ---------------------------------------------------------------------------
                 理想课表 / 模拟选课（只写 Neo PostgreSQL，不写学校教务系统）
@@ -21992,6 +22045,9 @@ components:
                         type: integer
                         format: int32
                     description: 整段节次数组(SECTION_BIT 解码)
+                campusID:
+                    type: string
+                    description: 课程所在教务校区，非用户当前位置
             description: ===== 学期课表 / 成绩（已有）=====
         ScheduleNowData:
             type: object
@@ -22028,6 +22084,11 @@ components:
                         $ref: '#/components/schemas/ScheduleItem'
                 pagination:
                     $ref: '#/components/schemas/OffsetPagination'
+                sectionTimes:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SectionTime'
+                    description: 按展示校区读取所选学期时间轴；混合校区优先下沙，仅绍兴时第5节为12:05-12:30、第13节为08:30-09:15占位
                 code:
                     type: integer
                     format: int64
@@ -22647,6 +22708,20 @@ components:
                     type: integer
                     format: int64
                 msg:
+                    type: string
+        SectionTime:
+            required:
+                - section
+                - startTime
+                - endTime
+            type: object
+            properties:
+                section:
+                    type: integer
+                    format: int32
+                startTime:
+                    type: string
+                endTime:
                     type: string
         SemesterInfo:
             type: object
@@ -23370,6 +23445,10 @@ components:
                 weekCount:
                     type: integer
                     format: int32
+                sectionTimes:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SectionTime'
         SharedScheduleItem:
             type: object
             properties:

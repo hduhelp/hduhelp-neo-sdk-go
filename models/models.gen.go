@@ -2619,11 +2619,13 @@ type ClassroomUsageItem struct {
 	// CourseCode 课程号
 	CourseCode *string `json:"courseCode,omitempty"`
 	CourseName *string `json:"courseName,omitempty"`
+	EndTime    *string `json:"endTime,omitempty"`
 	LocationID *string `json:"locationID,omitempty"`
 
 	// LocationName 教室名称
 	LocationName *string `json:"locationName,omitempty"`
 	Section      *int32  `json:"section,omitempty"`
+	StartTime    *string `json:"startTime,omitempty"`
 
 	// Teacher 无数据源，恒空
 	Teacher *string `json:"teacher,omitempty"`
@@ -2633,9 +2635,10 @@ type ClassroomUsageItem struct {
 
 // ClassroomUsageResponseBody defines model for ClassroomUsageResponseBody.
 type ClassroomUsageResponseBody struct {
-	Code *int64                `json:"code,omitempty"`
-	Data *[]ClassroomUsageItem `json:"data,omitempty"`
-	Msg  *string               `json:"msg,omitempty"`
+	Code         *int64                `json:"code,omitempty"`
+	Data         *[]ClassroomUsageItem `json:"data,omitempty"`
+	Msg          *string               `json:"msg,omitempty"`
+	SectionTimes *[]SectionTime        `json:"sectionTimes,omitempty"`
 }
 
 // ClassroomsResponseBody defines model for ClassroomsResponseBody.
@@ -2881,6 +2884,7 @@ type CourseScheduleSlot struct {
 
 // CourseSimulationCourse defines model for CourseSimulationCourse.
 type CourseSimulationCourse struct {
+	CampusID          string                 `json:"campusID"`
 	ClassID           string                 `json:"classID"`
 	ClassName         string                 `json:"className"`
 	ClassTime         string                 `json:"classTime"`
@@ -2900,12 +2904,17 @@ type CourseSimulationCourse struct {
 // CourseSimulationData defines model for CourseSimulationData.
 type CourseSimulationData struct {
 	ActualCourses    []CourseSimulationCourse `json:"actualCourses"`
+	CampusID         string                   `json:"campusID"`
+	CampusName       string                   `json:"campusName"`
+	CampusSource     string                   `json:"campusSource"`
 	EffectiveCourses []CourseSimulationCourse `json:"effectiveCourses"`
 	Revision         int64                    `json:"revision"`
 	SchemaVersion    int32                    `json:"schemaVersion"`
 	SchoolYear       string                   `json:"schoolYear"`
+	SectionTimes     []SectionTime            `json:"sectionTimes"`
 	Semester         int32                    `json:"semester"`
 	SimulationItems  []CourseSimulationItem   `json:"simulationItems"`
+	Warnings         []string                 `json:"warnings"`
 }
 
 // CourseSimulationItem defines model for CourseSimulationItem.
@@ -2933,9 +2942,11 @@ type CourseSimulationResponseBody struct {
 // 理想课表 / 模拟选课（只写 Neo PostgreSQL，不写学校教务系统）
 // ---------------------------------------------------------------------------
 type CourseSimulationSlot struct {
-	Section int32 `json:"section"`
-	Week    int32 `json:"week"`
-	Weekday int32 `json:"weekday"`
+	EndTime   string `json:"endTime"`
+	Section   int32  `json:"section"`
+	StartTime string `json:"startTime"`
+	Week      int32  `json:"week"`
+	Weekday   int32  `json:"weekday"`
 }
 
 // CrawlRunInfo defines model for CrawlRunInfo.
@@ -7282,6 +7293,9 @@ type ScheduleItem struct {
 	// BuildingName 教学楼
 	BuildingName *string `json:"buildingName,omitempty"`
 
+	// CampusID 课程所在教务校区，非用户当前位置
+	CampusID *string `json:"campusID,omitempty"`
+
 	// ClassId 教学班号
 	ClassId *string `json:"classId,omitempty"`
 
@@ -7360,6 +7374,9 @@ type ScheduleResponseBody struct {
 
 	// Pagination OffsetPagination 是 Agent 可直接复用的偏移分页语义。nextOffset 仅在 hasMore=true 时返回。
 	Pagination OffsetPagination `json:"pagination"`
+
+	// SectionTimes 按展示校区读取所选学期时间轴；混合校区优先下沙，仅绍兴时第5节为12:05-12:30、第13节为08:30-09:15占位
+	SectionTimes *[]SectionTime `json:"sectionTimes,omitempty"`
 }
 
 // ScheduleShareAnonymousPreview defines model for ScheduleShareAnonymousPreview.
@@ -7743,6 +7760,13 @@ type SeatSearchResponseBody struct {
 	Code *int64          `json:"code,omitempty"`
 	Data *SeatSearchData `json:"data,omitempty"`
 	Msg  *string         `json:"msg,omitempty"`
+}
+
+// SectionTime defines model for SectionTime.
+type SectionTime struct {
+	EndTime   string `json:"endTime"`
+	Section   int32  `json:"section"`
+	StartTime string `json:"startTime"`
 }
 
 // SemesterInfo defines model for SemesterInfo.
@@ -8212,11 +8236,12 @@ type SharedLibraryReportResponseBody struct {
 
 // SharedScheduleData defines model for SharedScheduleData.
 type SharedScheduleData struct {
-	Grant     *ScheduleShareGrant   `json:"grant,omitempty"`
-	Items     *[]SharedScheduleItem `json:"items,omitempty"`
-	ServerNow *int64                `json:"serverNow,omitempty"`
-	Week      *int32                `json:"week,omitempty"`
-	WeekCount *int32                `json:"weekCount,omitempty"`
+	Grant        *ScheduleShareGrant   `json:"grant,omitempty"`
+	Items        *[]SharedScheduleItem `json:"items,omitempty"`
+	SectionTimes *[]SectionTime        `json:"sectionTimes,omitempty"`
+	ServerNow    *int64                `json:"serverNow,omitempty"`
+	Week         *int32                `json:"week,omitempty"`
+	WeekCount    *int32                `json:"weekCount,omitempty"`
 }
 
 // SharedScheduleItem defines model for SharedScheduleItem.
@@ -9494,7 +9519,8 @@ type AcademicServiceClassQuerySearchParams struct {
 	Semester   *int32  `form:"semester,omitempty" json:"semester,omitempty"`
 
 	// Weekday 1=周一 … 7=周日；不传则不过滤上课日。
-	Weekday *int32 `form:"weekday,omitempty" json:"weekday,omitempty"`
+	Weekday       *int32 `form:"weekday,omitempty" json:"weekday,omitempty"`
+	ForSimulation *bool  `form:"forSimulation,omitempty" json:"forSimulation,omitempty"`
 }
 
 // AcademicServiceGetClassroomsParams defines parameters for AcademicServiceGetClassrooms.
@@ -9540,7 +9566,10 @@ type AcademicServiceClassroomUsageParams struct {
 
 // AcademicServiceCourseParams defines parameters for AcademicServiceCourse.
 type AcademicServiceCourseParams struct {
-	Id *[]string `form:"id,omitempty" json:"id,omitempty"`
+	Id            *[]string `form:"id,omitempty" json:"id,omitempty"`
+	ForSimulation *bool     `form:"forSimulation,omitempty" json:"forSimulation,omitempty"`
+	SchoolYear    *string   `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
+	Semester      *int32    `form:"semester,omitempty" json:"semester,omitempty"`
 }
 
 // AcademicServiceGetCourseSimulationParams defines parameters for AcademicServiceGetCourseSimulation.
