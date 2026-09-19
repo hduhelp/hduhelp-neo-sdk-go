@@ -6185,7 +6185,7 @@ paths:
             tags:
                 - MessagingService
             summary: 钉钉祝福人工审核回调
-            description: 仅供祝福审核互动卡片调用；审核通过后激活对应投递，拒绝后保持取消；不属于管理端或 CLI 接口
+            description: 仅供祝福审核互动卡片调用；祝福默认投递，明确拒绝后取消；不属于管理端或 CLI 接口
             operationId: MessagingService_DingTalkBlessReviewCallback
             security: []
             parameters:
