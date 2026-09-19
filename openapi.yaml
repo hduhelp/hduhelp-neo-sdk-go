@@ -314,7 +314,7 @@ paths:
             tags:
                 - AcademicService
             summary: 选课检索
-            description: 按关键词检索开课班级，支持学年学期过滤与分页（size/from）
+            description: 按本人真实课表校区检索开课班级，支持学年学期、关键词及星期过滤；未指定学期时使用当前教学学期，有收藏读取权限时收藏教学班在分页（size/from）前优先，无可判定校区时返回空列表
             operationId: AcademicService_ClassQuerySearch
             security:
                 - BearerAuth: []
