@@ -2599,13 +2599,18 @@ type ClassRosterStudent struct {
 
 // ClassroomItem defines model for ClassroomItem.
 type ClassroomItem struct {
-	BuildingID   *string `json:"buildingID,omitempty"`
-	Capacity     *int32  `json:"capacity,omitempty"`
-	LocationID   *string `json:"locationID,omitempty"`
-	LocationName *string `json:"locationName,omitempty"`
-	SchoolYear   *string `json:"schoolYear,omitempty"`
-	SelfStudy    *bool   `json:"selfStudy,omitempty"`
-	Semester     *string `json:"semester,omitempty"`
+	Available  *bool   `json:"available,omitempty"`
+	BuildingID *string `json:"buildingID,omitempty"`
+	Capacity   *int32  `json:"capacity,omitempty"`
+
+	// HasProjector optional 保留“尚未实地确认”与“已确认没有”的区别。
+	HasProjector  *bool   `json:"hasProjector,omitempty"`
+	HasWhiteboard *bool   `json:"hasWhiteboard,omitempty"`
+	LocationID    *string `json:"locationID,omitempty"`
+	LocationName  *string `json:"locationName,omitempty"`
+	SchoolYear    *string `json:"schoolYear,omitempty"`
+	SelfStudy     *bool   `json:"selfStudy,omitempty"`
+	Semester      *string `json:"semester,omitempty"`
 }
 
 // ClassroomUsageItem defines model for ClassroomUsageItem.
@@ -9528,7 +9533,7 @@ type AcademicServiceGetClassroomsParams struct {
 	// BuildingID 教学楼 ID；建议先按楼栋缩小结果集，省略时查询全部教学楼。
 	BuildingID *string `form:"buildingID,omitempty" json:"buildingID,omitempty"`
 
-	// Status 仅查空闲可自习教室时传 unused；省略时返回全部并通过 selfStudy 标记。
+	// Status 仅查当前时段空闲教室时传 unused；省略时返回全部。
 	Status *AcademicServiceGetClassroomsParamsStatus `form:"status,omitempty" json:"status,omitempty"`
 
 	// Week 教学周，1-30；省略时使用当前教学周。

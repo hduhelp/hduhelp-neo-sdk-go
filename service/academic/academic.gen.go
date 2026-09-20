@@ -350,7 +350,7 @@ func (b *GetClassroomsReqBuilder) BuildingID(v string) *GetClassroomsReqBuilder 
 	return b
 }
 
-// Status sets the "status" query parameter: 仅查空闲可自习教室时传 unused；省略时返回全部并通过 selfStudy 标记。
+// Status sets the "status" query parameter: 仅查当前时段空闲教室时传 unused；省略时返回全部。
 func (b *GetClassroomsReqBuilder) Status(v string) *GetClassroomsReqBuilder {
 	b.req.queryParams["status"] = v
 	return b

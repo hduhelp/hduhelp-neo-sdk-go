@@ -365,7 +365,7 @@ paths:
             tags:
                 - AcademicService
             summary: 获取教室列表
-            description: 返回教学楼下教室，并按给定周次/星期/节次标记是否空闲可自习；status=unused 时仅返回空闲教室
+            description: 返回教学楼下教室；available 表示所选时段是否空闲，selfStudy 表示房间是否允许自修；status=unused 时仅返回空闲教室
             operationId: AcademicService_GetClassrooms
             security:
                 - BearerAuth: []
@@ -377,7 +377,7 @@ paths:
                     type: string
                 - name: status
                   in: query
-                  description: 仅查空闲可自习教室时传 unused；省略时返回全部并通过 selfStudy 标记。
+                  description: 仅查当前时段空闲教室时传 unused；省略时返回全部。
                   schema:
                     enum:
                         - unused
@@ -14811,6 +14811,13 @@ components:
                     type: string
                 semester:
                     type: string
+                available:
+                    type: boolean
+                hasProjector:
+                    type: boolean
+                    description: optional 保留“尚未实地确认”与“已确认没有”的区别。
+                hasWhiteboard:
+                    type: boolean
         ClassroomUsageItem:
             type: object
             properties:
