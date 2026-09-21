@@ -20384,6 +20384,10 @@ components:
                     type: string
                 majorName:
                     type: string
+                sex:
+                    type: integer
+                    description: 性别代码
+                    format: int32
                 staffTypeName:
                     type: string
                     description: 学生类别中文名(字典未收录的代码回落为代码本身)

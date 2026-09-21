@@ -6234,6 +6234,9 @@ type PersonInfoData struct {
 	Grade     *string `json:"grade,omitempty"`
 	MajorId   *string `json:"majorId,omitempty"`
 	MajorName *string `json:"majorName,omitempty"`
+
+	// Sex 性别代码
+	Sex       *int32  `json:"sex,omitempty"`
 	StaffId   *string `json:"staffId,omitempty"`
 	StaffName *string `json:"staffName,omitempty"`
 
