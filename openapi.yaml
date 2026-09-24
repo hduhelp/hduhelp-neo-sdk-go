@@ -9589,6 +9589,25 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/CancelBookingResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/library-booking/calendar:
+        get:
+            tags:
+                - LibraryBookingService
+            summary: 生成图书馆预约 iCalendar 数据
+            description: 返回供日历软件订阅和同步图书馆座位预约使用的 iCalendar 数据
+            operationId: LibraryBookingService_BookingCalendar
+            parameters:
+                - name: token
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BookingCalendarResponseBody'
     /hduhelp-neo/library-booking/categories:
         get:
             tags:
@@ -9605,6 +9624,53 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/LibraryBookingCategoryListResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/library-booking/ics-link:
+        get:
+            tags:
+                - LibraryBookingService
+            summary: 获取图书馆预约日历订阅链接
+            operationId: LibraryBookingService_CalendarLink
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CalendarLinkResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+        delete:
+            tags:
+                - LibraryBookingService
+            summary: 停止图书馆预约日历订阅
+            operationId: LibraryBookingService_RevokeCalendarLink
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CalendarLinkResponseBody'
+            x-hduhelp-http: {'auth': 'bearer'}
+    /hduhelp-neo/library-booking/ics-link/rotate:
+        post:
+            tags:
+                - LibraryBookingService
+            summary: 轮换图书馆预约日历订阅链接
+            operationId: LibraryBookingService_RotateCalendarLink
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CalendarLinkResponseBody'
             x-hduhelp-http: {'auth': 'bearer'}
     /hduhelp-neo/library-booking/options:
         get:
@@ -14107,6 +14173,16 @@ components:
                 borrowCount:
                     type: integer
                     format: int32
+        BookingCalendarResponseBody:
+            type: object
+            properties:
+                calendar:
+                    type: string
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         BookingDateOption:
             type: object
             properties:
@@ -14285,6 +14361,23 @@ components:
                     type: boolean
                     description: 是否已有密钥；密钥本身永不返回
             description: '-------------------- 彩云天气配置（平台配置，有序 fallback） --------------------'
+        CalendarLinkData:
+            type: object
+            properties:
+                link:
+                    type: string
+                hasToken:
+                    type: boolean
+        CalendarLinkResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/CalendarLinkData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         CampusBinding:
             type: object
             properties:

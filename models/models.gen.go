@@ -2122,6 +2122,13 @@ type BookStat struct {
 	BorrowCount *int32  `json:"borrowCount,omitempty"`
 }
 
+// BookingCalendarResponseBody defines model for BookingCalendarResponseBody.
+type BookingCalendarResponseBody struct {
+	Calendar *string `json:"calendar,omitempty"`
+	Code     *int64  `json:"code,omitempty"`
+	Msg      *string `json:"msg,omitempty"`
+}
+
 // BookingDateOption defines model for BookingDateOption.
 type BookingDateOption struct {
 	Date  *string              `json:"date,omitempty"`
@@ -2242,6 +2249,19 @@ type CaiyunProviderItem struct {
 
 	// Id 内部稳定 ID，用于掩码密钥在调序/编辑后保持对应关系
 	Id *string `json:"id,omitempty"`
+}
+
+// CalendarLinkData defines model for CalendarLinkData.
+type CalendarLinkData struct {
+	HasToken *bool   `json:"hasToken,omitempty"`
+	Link     *string `json:"link,omitempty"`
+}
+
+// CalendarLinkResponseBody defines model for CalendarLinkResponseBody.
+type CalendarLinkResponseBody struct {
+	Code *int64            `json:"code,omitempty"`
+	Data *CalendarLinkData `json:"data,omitempty"`
+	Msg  *string           `json:"msg,omitempty"`
 }
 
 // CampusBinding defines model for CampusBinding.
@@ -10719,6 +10739,11 @@ type InboxServiceListInboxParams struct {
 	Page     *int32 `form:"page,omitempty" json:"page,omitempty"`
 	PageSize *int32 `form:"page_size,omitempty" json:"page_size,omitempty"`
 	History  *bool  `form:"history,omitempty" json:"history,omitempty"`
+}
+
+// LibraryBookingServiceBookingCalendarParams defines parameters for LibraryBookingServiceBookingCalendar.
+type LibraryBookingServiceBookingCalendarParams struct {
+	Token *string `form:"token,omitempty" json:"token,omitempty"`
 }
 
 // LibraryBookingServiceGetBookingOptionsParams defines parameters for LibraryBookingServiceGetBookingOptions.

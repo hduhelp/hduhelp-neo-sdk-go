@@ -148,6 +148,51 @@ func (s *Service) CancelBooking(ctx context.Context, req *CancelBookingReq, opts
 	return resp, err
 }
 
+// BookingCalendarReq is the request for BookingCalendar.
+type BookingCalendarReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// BookingCalendarReqBuilder builds a BookingCalendarReq with a fluent setter per field.
+type BookingCalendarReqBuilder struct{ req *BookingCalendarReq }
+
+// NewBookingCalendarReqBuilder creates a request builder for BookingCalendar.
+func NewBookingCalendarReqBuilder() *BookingCalendarReqBuilder {
+	return &BookingCalendarReqBuilder{req: &BookingCalendarReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Token sets the "token" query parameter.
+func (b *BookingCalendarReqBuilder) Token(v string) *BookingCalendarReqBuilder {
+	b.req.queryParams["token"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *BookingCalendarReqBuilder) Build() *BookingCalendarReq { return b.req }
+
+// BookingCalendarResp is the response for BookingCalendar.
+type BookingCalendarResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// BookingCalendar: 生成图书馆预约 iCalendar 数据
+func (s *Service) BookingCalendar(ctx context.Context, req *BookingCalendarReq, opts ...core.RequestOption) (*BookingCalendarResp, error) {
+	resp := &BookingCalendarResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/library-booking/calendar",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // ListSpaceCategoriesReq is the request for ListSpaceCategories.
 type ListSpaceCategoriesReq struct {
 	pathParams  map[string]string
@@ -180,6 +225,126 @@ func (s *Service) ListSpaceCategories(ctx context.Context, req *ListSpaceCategor
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/library-booking/categories",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// CalendarLinkReq is the request for CalendarLink.
+type CalendarLinkReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// CalendarLinkReqBuilder builds a CalendarLinkReq with a fluent setter per field.
+type CalendarLinkReqBuilder struct{ req *CalendarLinkReq }
+
+// NewCalendarLinkReqBuilder creates a request builder for CalendarLink.
+func NewCalendarLinkReqBuilder() *CalendarLinkReqBuilder {
+	return &CalendarLinkReqBuilder{req: &CalendarLinkReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *CalendarLinkReqBuilder) Build() *CalendarLinkReq { return b.req }
+
+// CalendarLinkResp is the response for CalendarLink.
+type CalendarLinkResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.CalendarLinkData `json:"data"`
+}
+
+// CalendarLink: 获取图书馆预约日历订阅链接
+func (s *Service) CalendarLink(ctx context.Context, req *CalendarLinkReq, opts ...core.RequestOption) (*CalendarLinkResp, error) {
+	resp := &CalendarLinkResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/library-booking/ics-link",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// RevokeCalendarLinkReq is the request for RevokeCalendarLink.
+type RevokeCalendarLinkReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// RevokeCalendarLinkReqBuilder builds a RevokeCalendarLinkReq with a fluent setter per field.
+type RevokeCalendarLinkReqBuilder struct{ req *RevokeCalendarLinkReq }
+
+// NewRevokeCalendarLinkReqBuilder creates a request builder for RevokeCalendarLink.
+func NewRevokeCalendarLinkReqBuilder() *RevokeCalendarLinkReqBuilder {
+	return &RevokeCalendarLinkReqBuilder{req: &RevokeCalendarLinkReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *RevokeCalendarLinkReqBuilder) Build() *RevokeCalendarLinkReq { return b.req }
+
+// RevokeCalendarLinkResp is the response for RevokeCalendarLink.
+type RevokeCalendarLinkResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.CalendarLinkData `json:"data"`
+}
+
+// RevokeCalendarLink: 停止图书馆预约日历订阅
+func (s *Service) RevokeCalendarLink(ctx context.Context, req *RevokeCalendarLinkReq, opts ...core.RequestOption) (*RevokeCalendarLinkResp, error) {
+	resp := &RevokeCalendarLinkResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/library-booking/ics-link",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// RotateCalendarLinkReq is the request for RotateCalendarLink.
+type RotateCalendarLinkReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// RotateCalendarLinkReqBuilder builds a RotateCalendarLinkReq with a fluent setter per field.
+type RotateCalendarLinkReqBuilder struct{ req *RotateCalendarLinkReq }
+
+// NewRotateCalendarLinkReqBuilder creates a request builder for RotateCalendarLink.
+func NewRotateCalendarLinkReqBuilder() *RotateCalendarLinkReqBuilder {
+	return &RotateCalendarLinkReqBuilder{req: &RotateCalendarLinkReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *RotateCalendarLinkReqBuilder) Build() *RotateCalendarLinkReq { return b.req }
+
+// RotateCalendarLinkResp is the response for RotateCalendarLink.
+type RotateCalendarLinkResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.CalendarLinkData `json:"data"`
+}
+
+// RotateCalendarLink: 轮换图书馆预约日历订阅链接
+func (s *Service) RotateCalendarLink(ctx context.Context, req *RotateCalendarLinkReq, opts ...core.RequestOption) (*RotateCalendarLinkResp, error) {
+	resp := &RotateCalendarLinkResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/library-booking/ics-link/rotate",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
