@@ -1160,7 +1160,7 @@ func NewLibraryReadingReqBuilder() *LibraryReadingReqBuilder {
 	return &LibraryReadingReqBuilder{req: &LibraryReadingReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// Metric sets the "metric" query parameter: summary | first-book | months | max-month | least-popular | preference | total-time | borrows | keywords | newer | all | unreturned
+// Metric sets the "metric" query parameter: summary | first-book | months | max-month | least-popular | preference | total-time | borrows | newer | all | unreturned
 func (b *LibraryReadingReqBuilder) Metric(v string) *LibraryReadingReqBuilder {
 	b.req.queryParams["metric"] = v
 	return b

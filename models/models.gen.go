@@ -4256,7 +4256,6 @@ type FlatReadData struct {
 	HasRecord               *bool       `json:"hasRecord,omitempty"`
 	Hours                   *int32      `json:"hours,omitempty"`
 	IsNewer                 *bool       `json:"isNewer,omitempty"`
-	Keywords                *[]Keyword  `json:"keywords,omitempty"`
 	LeastPopularBook        *string     `json:"leastPopularBook,omitempty"`
 	LeastPopularBorrowCount *int32      `json:"leastPopularBorrowCount,omitempty"`
 	LongestBook             *string     `json:"longestBook,omitempty"`
@@ -4944,18 +4943,6 @@ type JoinResponseBody struct {
 	Msg  *string   `json:"msg,omitempty"`
 }
 
-// Keyword defines model for Keyword.
-type Keyword struct {
-	Weight int32  `json:"weight"`
-	Word   string `json:"word"`
-}
-
-// KeywordResult defines model for KeywordResult.
-type KeywordResult struct {
-	Keywords []Keyword `json:"keywords"`
-	StaffId  string    `json:"staffId"`
-}
-
 // KnowledgeCarrier KnowledgeCarrier 是 item 下一个可独立索引/编辑的内容载体（= 一个方舟 doc）。方舟对账态
 // (syncStatus/syncError/arkDocId/syncedAt) 来自其 projection。
 type KnowledgeCarrier struct {
@@ -5253,7 +5240,6 @@ type LibraryReadingData struct {
 	All             *FlatReadData          `json:"all,omitempty"`
 	Borrows         *BorrowList            `json:"borrows,omitempty"`
 	FirstBook       *FirstBook             `json:"firstBook,omitempty"`
-	Keywords        *KeywordResult         `json:"keywords,omitempty"`
 	LeastPopular    *[]BookStat            `json:"leastPopular,omitempty"`
 	MaxMonth        *MaxMonth              `json:"maxMonth,omitempty"`
 	Months          *[]MonthStat           `json:"months,omitempty"`
@@ -8236,7 +8222,6 @@ type SharedFlatReadData struct {
 	HasRecord               bool             `json:"hasRecord"`
 	Hours                   int32            `json:"hours"`
 	IsNewer                 bool             `json:"isNewer"`
-	Keywords                []Keyword        `json:"keywords"`
 	LeastPopularBook        string           `json:"leastPopularBook"`
 	LeastPopularBorrowCount int32            `json:"leastPopularBorrowCount"`
 	LongestBook             string           `json:"longestBook"`
@@ -9661,7 +9646,7 @@ type AcademicServiceLibraryAttendanceParams struct {
 
 // AcademicServiceLibraryReadingParams defines parameters for AcademicServiceLibraryReading.
 type AcademicServiceLibraryReadingParams struct {
-	// Metric summary | first-book | months | max-month | least-popular | preference | total-time | borrows | keywords | newer | all | unreturned
+	// Metric summary | first-book | months | max-month | least-popular | preference | total-time | borrows | newer | all | unreturned
 	Metric *string `form:"metric,omitempty" json:"metric,omitempty"`
 
 	// Start yyyy-MM-dd

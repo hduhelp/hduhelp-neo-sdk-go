@@ -846,14 +846,14 @@ paths:
             tags:
                 - AcademicService
             summary: 按指标查询本人阅读数据
-            description: metric=summary|first-book|months|max-month|least-popular|preference|total-time|borrows|keywords|newer|all|unreturned 选择返回指标，响应 data 仅填对应字段；metric=unreturned 且 batch=true 时按 staffIds 批量查询多名学生未归还图书
+            description: metric=summary|first-book|months|max-month|least-popular|preference|total-time|borrows|newer|all|unreturned 选择返回指标，响应 data 仅填对应字段；metric=unreturned 且 batch=true 时按 staffIds 批量查询多名学生未归还图书
             operationId: AcademicService_LibraryReading
             security:
                 - BearerAuth: []
             parameters:
                 - name: metric
                   in: query
-                  description: summary | first-book | months | max-month | least-popular | preference | total-time | borrows | keywords | newer | all | unreturned
+                  description: summary | first-book | months | max-month | least-popular | preference | total-time | borrows | newer | all | unreturned
                   schema:
                     type: string
                 - name: start
@@ -17438,10 +17438,6 @@ components:
                         $ref: '#/components/schemas/BookItem'
                 isNewer:
                     type: boolean
-                keywords:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/Keyword'
         FloorStat:
             type: object
             properties:
@@ -18372,29 +18368,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        Keyword:
-            required:
-                - word
-                - weight
-            type: object
-            properties:
-                word:
-                    type: string
-                weight:
-                    type: integer
-                    format: int32
-        KeywordResult:
-            required:
-                - staffId
-                - keywords
-            type: object
-            properties:
-                staffId:
-                    type: string
-                keywords:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/Keyword'
         KnowledgeCarrier:
             type: object
             properties:
@@ -18846,8 +18819,6 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/UnreturnedBatchItem'
-                keywords:
-                    $ref: '#/components/schemas/KeywordResult'
         LibraryReadingResponseBody:
             type: object
             properties:
@@ -23450,7 +23421,6 @@ components:
                 - total
                 - books
                 - isNewer
-                - keywords
             type: object
             properties:
                 rank:
@@ -23504,10 +23474,6 @@ components:
                         $ref: '#/components/schemas/SharedBookItem'
                 isNewer:
                     type: boolean
-                keywords:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/Keyword'
         SharedLibraryReportData:
             required:
                 - reading
