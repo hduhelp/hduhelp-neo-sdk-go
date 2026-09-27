@@ -7405,12 +7405,18 @@ type ScheduleShareAnonymousPreview struct {
 
 // ScheduleShareClaimPreviewData defines model for ScheduleShareClaimPreviewData.
 type ScheduleShareClaimPreviewData struct {
+	GrantId *string `json:"grantId,omitempty"`
+
 	// Owner ==================== Neo 课表分享（账号绑定） ====================
 	Owner   *ScheduleShareIdentity         `json:"owner,omitempty"`
 	Preview *ScheduleShareAnonymousPreview `json:"preview,omitempty"`
 
+	// ReceivedBy ==================== Neo 课表分享（账号绑定） ====================
+	ReceivedBy *ScheduleShareIdentity `json:"receivedBy,omitempty"`
+
 	// Recipient ==================== Neo 课表分享（账号绑定） ====================
 	Recipient *ScheduleShareIdentity `json:"recipient,omitempty"`
+	Status    *string                `json:"status,omitempty"`
 }
 
 // ScheduleShareClaimPreviewResponseBody defines model for ScheduleShareClaimPreviewResponseBody.

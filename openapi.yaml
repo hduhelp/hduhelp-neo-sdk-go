@@ -22197,6 +22197,12 @@ components:
                     $ref: '#/components/schemas/ScheduleShareIdentity'
                 recipient:
                     $ref: '#/components/schemas/ScheduleShareIdentity'
+                status:
+                    type: string
+                receivedBy:
+                    $ref: '#/components/schemas/ScheduleShareIdentity'
+                grantId:
+                    type: string
         ScheduleShareClaimPreviewResponseBody:
             type: object
             properties:
