@@ -1103,6 +1103,12 @@ func (b *ListElectricityMetersReqBuilder) Size(v int32) *ListElectricityMetersRe
 	return b
 }
 
+// CampusId sets the "campus_id" query parameter.
+func (b *ListElectricityMetersReqBuilder) CampusId(v string) *ListElectricityMetersReqBuilder {
+	b.req.queryParams["campus_id"] = v
+	return b
+}
+
 // Build finalizes the request.
 func (b *ListElectricityMetersReqBuilder) Build() *ListElectricityMetersReq { return b.req }
 

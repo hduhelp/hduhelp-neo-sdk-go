@@ -1277,6 +1277,12 @@ func NewListBuildingsReqBuilder() *ListBuildingsReqBuilder {
 	return &ListBuildingsReqBuilder{req: &ListBuildingsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
+// CampusId sets the "campus_id" query parameter.
+func (b *ListBuildingsReqBuilder) CampusId(v string) *ListBuildingsReqBuilder {
+	b.req.queryParams["campus_id"] = v
+	return b
+}
+
 // Build finalizes the request.
 func (b *ListBuildingsReqBuilder) Build() *ListBuildingsReq { return b.req }
 

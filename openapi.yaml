@@ -2275,6 +2275,10 @@ paths:
                   schema:
                     type: integer
                     format: int32
+                - name: campus_id
+                  in: query
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -6710,9 +6714,15 @@ paths:
             tags:
                 - CampusLifeService
             summary: 查询真实楼栋列表
+            description: 按电表所属校区过滤，与用户当前校区无关；不传 campus_id 时返回全部楼栋
             operationId: CampusLifeService_ListBuildings
             security:
                 - BearerAuth: []
+            parameters:
+                - name: campus_id
+                  in: query
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -12550,6 +12560,8 @@ components:
                     type: integer
                     description: unix 毫秒
                     format: int64
+                campusId:
+                    type: string
             description: '-------------------- 电费主数据管理（electricity_meters） --------------------'
         AdminLoginClientInfo:
             type: object
@@ -15680,6 +15692,8 @@ components:
                     type: string
                 meter_address:
                     type: string
+                campus_id:
+                    type: string
         CreateGradeChatGroupRequestBody:
             type: object
             properties:
@@ -16785,6 +16799,10 @@ components:
                     type: integer
                     format: int64
                 roomName:
+                    type: string
+                campusId:
+                    type: string
+                campusName:
                     type: string
             description: '---- 当前电表绑定信息 ----'
         ElectricBindingResponseBody:
@@ -24794,6 +24812,8 @@ components:
                 room_name:
                     type: string
                 meter_address:
+                    type: string
+                campus_id:
                     type: string
         UpdateFavoriteRequestBody:
             type: object

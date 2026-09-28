@@ -1073,6 +1073,7 @@ type AdminElectricityMeter struct {
 	BalanceSyncedAt *int64  `json:"balanceSyncedAt,omitempty"`
 	BuildingId      *int64  `json:"buildingId,omitempty"`
 	BuildingName    *string `json:"buildingName,omitempty"`
+	CampusId        *string `json:"campusId,omitempty"`
 
 	// CreatedAt unix 毫秒
 	CreatedAt    *int64  `json:"createdAt,omitempty"`
@@ -3086,6 +3087,7 @@ type CreateDomainRequestBody struct {
 type CreateElectricityMeterRequestBody struct {
 	BuildingId   *int64  `json:"building_id,omitempty"`
 	BuildingName *string `json:"building_name,omitempty"`
+	CampusId     *string `json:"campus_id,omitempty"`
 	FloorId      *int64  `json:"floor_id,omitempty"`
 	FloorName    *string `json:"floor_name,omitempty"`
 	MeterAddress *string `json:"meter_address,omitempty"`
@@ -3835,6 +3837,8 @@ type ElectricBalanceResponseBody struct {
 type ElectricBindingData struct {
 	BuildingId   *int64  `json:"buildingId,omitempty"`
 	BuildingName *string `json:"buildingName,omitempty"`
+	CampusId     *string `json:"campusId,omitempty"`
+	CampusName   *string `json:"campusName,omitempty"`
 	FloorId      *int64  `json:"floorId,omitempty"`
 	FloorName    *string `json:"floorName,omitempty"`
 	MeterAddress *string `json:"meterAddress,omitempty"`
@@ -9075,6 +9079,7 @@ type UpdateDomainRequestBody struct {
 type UpdateElectricityMeterRequestBody struct {
 	BuildingId   *int64  `json:"building_id,omitempty"`
 	BuildingName *string `json:"building_name,omitempty"`
+	CampusId     *string `json:"campus_id,omitempty"`
 	FloorId      *int64  `json:"floor_id,omitempty"`
 	FloorName    *string `json:"floor_name,omitempty"`
 	MeterAddress *string `json:"meter_address,omitempty"`
@@ -9863,6 +9868,7 @@ type AdminServiceListElectricityMetersParams struct {
 	FloorId    *int64  `form:"floor_id,omitempty" json:"floor_id,omitempty"`
 	Page       *int32  `form:"page,omitempty" json:"page,omitempty"`
 	Size       *int32  `form:"size,omitempty" json:"size,omitempty"`
+	CampusId   *string `form:"campus_id,omitempty" json:"campus_id,omitempty"`
 }
 
 // AdminServiceUpdateElectricityMeterParams defines parameters for AdminServiceUpdateElectricityMeter.
@@ -10344,6 +10350,11 @@ type CampusLifeServiceCardInfoParams struct {
 type CampusLifeServiceListCareerRecruitmentParams struct {
 	Section *string `form:"section,omitempty" json:"section,omitempty"`
 	Page    *int32  `form:"page,omitempty" json:"page,omitempty"`
+}
+
+// CampusLifeServiceListBuildingsParams defines parameters for CampusLifeServiceListBuildings.
+type CampusLifeServiceListBuildingsParams struct {
+	CampusId *string `form:"campus_id,omitempty" json:"campus_id,omitempty"`
 }
 
 // CampusLifeServiceListFloorsParams defines parameters for CampusLifeServiceListFloors.
