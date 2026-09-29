@@ -2351,6 +2351,134 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/DeleteElectricityMeterResponseBody'
+    /hduhelp-neo/admin/feedbacks:
+        get:
+            tags:
+                - FeedbackService
+            summary: 查询用户反馈
+            operationId: FeedbackService_ListAdminFeedbacks
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: status
+                  in: query
+                  schema:
+                    enum:
+                        - pending
+                        - handled
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FeedbackPageResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/feedbacks/{id}:
+        get:
+            tags:
+                - FeedbackService
+            summary: 查看用户反馈
+            operationId: FeedbackService_GetAdminFeedback
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FeedbackResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        delete:
+            tags:
+                - FeedbackService
+            summary: 删除用户反馈
+            description: 从反馈队列永久删除一条反馈。
+            operationId: FeedbackService_DeleteAdminFeedback
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FeedbackResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/feedbacks/{id}/handle:
+        post:
+            tags:
+                - FeedbackService
+            summary: 标记反馈已处理
+            operationId: FeedbackService_HandleAdminFeedback
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FeedbackResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/feedbacks/{id}/reply:
+        post:
+            tags:
+                - FeedbackService
+            summary: 站内信回复反馈
+            description: 向提交用户发送一次站内信并标记已处理。
+            operationId: FeedbackService_ReplyAdminFeedback
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ReplyFeedbackRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FeedbackResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/knowledge/audit:
         get:
             tags:
@@ -7695,6 +7823,28 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ScheduleIcsResponseBody'
+    /hduhelp-neo/feedbacks:
+        post:
+            tags:
+                - FeedbackService
+            summary: 提交意见反馈
+            description: 提交一次文字反馈；不提供用户侧反馈历史。
+            operationId: FeedbackService_CreateFeedback
+            security:
+                - NativeSessionAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateFeedbackRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FeedbackSubmissionResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/graduate/grades:
         get:
             tags:
@@ -15694,6 +15844,20 @@ components:
                     type: string
                 campus_id:
                     type: string
+        CreateFeedbackRequestBody:
+            required:
+                - content
+            type: object
+            properties:
+                content:
+                    maxLength: 2000
+                    type: string
+                context:
+                    $ref: '#/components/schemas/FeedbackContext'
+                imageKeys:
+                    type: array
+                    items:
+                        type: string
         CreateGradeChatGroupRequestBody:
             type: object
             properties:
@@ -17392,6 +17556,102 @@ components:
                     type: integer
                     format: int64
             description: FeedTimeInfo 是校历时间信息（best-effort，无上游时为空）。
+        FeedbackContext:
+            type: object
+            properties:
+                route:
+                    type: string
+                appVersion:
+                    type: string
+                platform:
+                    type: string
+        FeedbackItem:
+            type: object
+            properties:
+                id:
+                    type: string
+                userId:
+                    type: string
+                content:
+                    type: string
+                context:
+                    $ref: '#/components/schemas/FeedbackContext'
+                imageKeys:
+                    type: array
+                    items:
+                        type: string
+                images:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/UploadData'
+                status:
+                    type: string
+                handledById:
+                    type: string
+                replyContent:
+                    type: string
+                replyTaskId:
+                    type: string
+                createdAt:
+                    type: integer
+                    format: int64
+                updatedAt:
+                    type: integer
+                    format: int64
+        FeedbackPage:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/FeedbackItem'
+                total:
+                    type: integer
+                    format: int64
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+        FeedbackPageResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/FeedbackPage'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        FeedbackResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/FeedbackItem'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        FeedbackSubmission:
+            type: object
+            properties:
+                id:
+                    type: string
+                createdAt:
+                    type: integer
+                    format: int64
+        FeedbackSubmissionResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/FeedbackSubmission'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         FirstBook:
             type: object
             properties:
@@ -21540,6 +21800,15 @@ components:
                     format: int64
                 msg:
                     type: string
+        ReplyFeedbackRequestBody:
+            required:
+                - content
+            type: object
+            properties:
+                content:
+                    maxLength: 2000
+                    minLength: 1
+                    type: string
         Report:
             type: object
             properties:
@@ -25443,6 +25712,7 @@ tags:
     - name: DingTalkWorkbenchService
     - name: EmptyScheduleService
     - name: FeedService
+    - name: FeedbackService
     - name: GraduateService
       description: |-
         GraduateService 研究生上下文:读研究生管理系统(xsdgradms),提供研究生学籍/导师/成绩基础数据。

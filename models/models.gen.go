@@ -554,6 +554,24 @@ func (e AcademicServiceScheduleParamsSemester) Valid() bool {
 	}
 }
 
+// Defines values for FeedbackServiceListAdminFeedbacksParamsStatus.
+const (
+	FeedbackServiceListAdminFeedbacksParamsStatusHandled FeedbackServiceListAdminFeedbacksParamsStatus = "handled"
+	FeedbackServiceListAdminFeedbacksParamsStatusPending FeedbackServiceListAdminFeedbacksParamsStatus = "pending"
+)
+
+// Valid indicates whether the value is a known member of the FeedbackServiceListAdminFeedbacksParamsStatus enum.
+func (e FeedbackServiceListAdminFeedbacksParamsStatus) Valid() bool {
+	switch e {
+	case FeedbackServiceListAdminFeedbacksParamsStatusHandled:
+		return true
+	case FeedbackServiceListAdminFeedbacksParamsStatusPending:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AdminNoticeServiceListAdminNoticeAudienceParamsStatus.
 const (
 	AdminNoticeServiceListAdminNoticeAudienceParamsStatusAcknowledged AdminNoticeServiceListAdminNoticeAudienceParamsStatus = "acknowledged"
@@ -637,25 +655,25 @@ func (e NotificationServiceListNotificationTasksParamsResult) Valid() bool {
 
 // Defines values for NotificationServiceListNotificationTaskDeliveriesParamsStatus.
 const (
-	NotificationServiceListNotificationTaskDeliveriesParamsStatusFailed     NotificationServiceListNotificationTaskDeliveriesParamsStatus = "failed"
-	NotificationServiceListNotificationTaskDeliveriesParamsStatusPending    NotificationServiceListNotificationTaskDeliveriesParamsStatus = "pending"
-	NotificationServiceListNotificationTaskDeliveriesParamsStatusProcessing NotificationServiceListNotificationTaskDeliveriesParamsStatus = "processing"
-	NotificationServiceListNotificationTaskDeliveriesParamsStatusSkipped    NotificationServiceListNotificationTaskDeliveriesParamsStatus = "skipped"
-	NotificationServiceListNotificationTaskDeliveriesParamsStatusSucceeded  NotificationServiceListNotificationTaskDeliveriesParamsStatus = "succeeded"
+	Failed     NotificationServiceListNotificationTaskDeliveriesParamsStatus = "failed"
+	Pending    NotificationServiceListNotificationTaskDeliveriesParamsStatus = "pending"
+	Processing NotificationServiceListNotificationTaskDeliveriesParamsStatus = "processing"
+	Skipped    NotificationServiceListNotificationTaskDeliveriesParamsStatus = "skipped"
+	Succeeded  NotificationServiceListNotificationTaskDeliveriesParamsStatus = "succeeded"
 )
 
 // Valid indicates whether the value is a known member of the NotificationServiceListNotificationTaskDeliveriesParamsStatus enum.
 func (e NotificationServiceListNotificationTaskDeliveriesParamsStatus) Valid() bool {
 	switch e {
-	case NotificationServiceListNotificationTaskDeliveriesParamsStatusFailed:
+	case Failed:
 		return true
-	case NotificationServiceListNotificationTaskDeliveriesParamsStatusPending:
+	case Pending:
 		return true
-	case NotificationServiceListNotificationTaskDeliveriesParamsStatusProcessing:
+	case Processing:
 		return true
-	case NotificationServiceListNotificationTaskDeliveriesParamsStatusSkipped:
+	case Skipped:
 		return true
-	case NotificationServiceListNotificationTaskDeliveriesParamsStatusSucceeded:
+	case Succeeded:
 		return true
 	default:
 		return false
@@ -3096,6 +3114,13 @@ type CreateElectricityMeterRequestBody struct {
 	RoomName     *string `json:"room_name,omitempty"`
 }
 
+// CreateFeedbackRequestBody defines model for CreateFeedbackRequestBody.
+type CreateFeedbackRequestBody struct {
+	Content   string           `json:"content"`
+	Context   *FeedbackContext `json:"context,omitempty"`
+	ImageKeys *[]string        `json:"imageKeys,omitempty"`
+}
+
 // CreateGradeChatGroupRequestBody defines model for CreateGradeChatGroupRequestBody.
 type CreateGradeChatGroupRequestBody struct {
 	Grade  *string `json:"grade,omitempty"`
@@ -4241,6 +4266,64 @@ type FeedTimeInfo struct {
 	Timestamp  *int64  `json:"timestamp,omitempty"`
 	WeekDayNow *int32  `json:"weekDayNow,omitempty"`
 	WeekNow    *int32  `json:"weekNow,omitempty"`
+}
+
+// FeedbackContext defines model for FeedbackContext.
+type FeedbackContext struct {
+	AppVersion *string `json:"appVersion,omitempty"`
+	Platform   *string `json:"platform,omitempty"`
+	Route      *string `json:"route,omitempty"`
+}
+
+// FeedbackItem defines model for FeedbackItem.
+type FeedbackItem struct {
+	Content      *string          `json:"content,omitempty"`
+	Context      *FeedbackContext `json:"context,omitempty"`
+	CreatedAt    *int64           `json:"createdAt,omitempty"`
+	HandledById  *string          `json:"handledById,omitempty"`
+	Id           *string          `json:"id,omitempty"`
+	ImageKeys    *[]string        `json:"imageKeys,omitempty"`
+	Images       *[]UploadData    `json:"images,omitempty"`
+	ReplyContent *string          `json:"replyContent,omitempty"`
+	ReplyTaskId  *string          `json:"replyTaskId,omitempty"`
+	Status       *string          `json:"status,omitempty"`
+	UpdatedAt    *int64           `json:"updatedAt,omitempty"`
+	UserId       *string          `json:"userId,omitempty"`
+}
+
+// FeedbackPage defines model for FeedbackPage.
+type FeedbackPage struct {
+	Items    *[]FeedbackItem `json:"items,omitempty"`
+	Page     *int32          `json:"page,omitempty"`
+	PageSize *int32          `json:"pageSize,omitempty"`
+	Total    *int64          `json:"total,omitempty"`
+}
+
+// FeedbackPageResponseBody defines model for FeedbackPageResponseBody.
+type FeedbackPageResponseBody struct {
+	Code *int64        `json:"code,omitempty"`
+	Data *FeedbackPage `json:"data,omitempty"`
+	Msg  *string       `json:"msg,omitempty"`
+}
+
+// FeedbackResponseBody defines model for FeedbackResponseBody.
+type FeedbackResponseBody struct {
+	Code *int64        `json:"code,omitempty"`
+	Data *FeedbackItem `json:"data,omitempty"`
+	Msg  *string       `json:"msg,omitempty"`
+}
+
+// FeedbackSubmission defines model for FeedbackSubmission.
+type FeedbackSubmission struct {
+	CreatedAt *int64  `json:"createdAt,omitempty"`
+	Id        *string `json:"id,omitempty"`
+}
+
+// FeedbackSubmissionResponseBody defines model for FeedbackSubmissionResponseBody.
+type FeedbackSubmissionResponseBody struct {
+	Code *int64              `json:"code,omitempty"`
+	Data *FeedbackSubmission `json:"data,omitempty"`
+	Msg  *string             `json:"msg,omitempty"`
 }
 
 // FirstBook defines model for FirstBook.
@@ -6961,6 +7044,11 @@ type ReplayTaskResponseBody struct {
 	Code int64           `json:"code"`
 	Data *ReplayTaskData `json:"data,omitempty"`
 	Msg  string          `json:"msg"`
+}
+
+// ReplyFeedbackRequestBody defines model for ReplyFeedbackRequestBody.
+type ReplyFeedbackRequestBody struct {
+	Content string `json:"content"`
 }
 
 // Report defines model for Report.
@@ -9876,6 +9964,16 @@ type AdminServiceUpdateElectricityMeterParams struct {
 	Id *string `form:"id,omitempty" json:"id,omitempty"`
 }
 
+// FeedbackServiceListAdminFeedbacksParams defines parameters for FeedbackServiceListAdminFeedbacks.
+type FeedbackServiceListAdminFeedbacksParams struct {
+	Status   *FeedbackServiceListAdminFeedbacksParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	Page     *int32                                         `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32                                         `form:"page_size,omitempty" json:"page_size,omitempty"`
+}
+
+// FeedbackServiceListAdminFeedbacksParamsStatus defines parameters for FeedbackServiceListAdminFeedbacks.
+type FeedbackServiceListAdminFeedbacksParamsStatus string
+
 // KnowledgeServiceAdminListAuditParams defines parameters for KnowledgeServiceAdminListAudit.
 type KnowledgeServiceAdminListAuditParams struct {
 	TargetId   *string `form:"target_id,omitempty" json:"target_id,omitempty"`
@@ -11086,6 +11184,9 @@ type AdminServiceCreateElectricityMeterJSONRequestBody = CreateElectricityMeterR
 // AdminServiceUpdateElectricityMeterJSONRequestBody defines body for AdminServiceUpdateElectricityMeter for application/json ContentType.
 type AdminServiceUpdateElectricityMeterJSONRequestBody = UpdateElectricityMeterRequestBody
 
+// FeedbackServiceReplyAdminFeedbackJSONRequestBody defines body for FeedbackServiceReplyAdminFeedback for application/json ContentType.
+type FeedbackServiceReplyAdminFeedbackJSONRequestBody = ReplyFeedbackRequestBody
+
 // KnowledgeServiceAdminAddChunkJSONRequestBody defines body for KnowledgeServiceAdminAddChunk for application/json ContentType.
 type KnowledgeServiceAdminAddChunkJSONRequestBody = AddChunkRequestBody
 
@@ -11328,6 +11429,9 @@ type EmptyScheduleServiceJoinJSONRequestBody = JoinRequestBody
 
 // EmptyScheduleServiceLeaveRoomJSONRequestBody defines body for EmptyScheduleServiceLeaveRoom for application/json ContentType.
 type EmptyScheduleServiceLeaveRoomJSONRequestBody = LeaveRoomRequestBody
+
+// FeedbackServiceCreateFeedbackJSONRequestBody defines body for FeedbackServiceCreateFeedback for application/json ContentType.
+type FeedbackServiceCreateFeedbackJSONRequestBody = CreateFeedbackRequestBody
 
 // GroupChatServiceCreateClassChatGroupJSONRequestBody defines body for GroupChatServiceCreateClassChatGroup for application/json ContentType.
 type GroupChatServiceCreateClassChatGroupJSONRequestBody = CreateClassChatGroupRequestBody
