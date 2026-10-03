@@ -1493,18 +1493,19 @@ type AdminUsersData struct {
 
 // AdminWishReviewItem defines model for AdminWishReviewItem.
 type AdminWishReviewItem struct {
-	Alias         *string `json:"alias,omitempty"`
-	Content       *string `json:"content,omitempty"`
-	CreatedAt     *int64  `json:"createdAt,omitempty"`
-	DeliverAt     *int64  `json:"deliverAt,omitempty"`
-	Id            *string `json:"id,omitempty"`
-	Kind          *string `json:"kind,omitempty"`
-	ReviewReason  *string `json:"reviewReason,omitempty"`
-	ReviewedAt    *int64  `json:"reviewedAt,omitempty"`
-	ReviewedBy    *string `json:"reviewedBy,omitempty"`
-	SenderStaffId *string `json:"senderStaffId,omitempty"`
-	Status        *string `json:"status,omitempty"`
-	TargetStaffId *string `json:"targetStaffId,omitempty"`
+	Alias         *string                  `json:"alias,omitempty"`
+	Cancellation  *WishCancellationSummary `json:"cancellation,omitempty"`
+	Content       *string                  `json:"content,omitempty"`
+	CreatedAt     *int64                   `json:"createdAt,omitempty"`
+	DeliverAt     *int64                   `json:"deliverAt,omitempty"`
+	Id            *string                  `json:"id,omitempty"`
+	Kind          *string                  `json:"kind,omitempty"`
+	ReviewReason  *string                  `json:"reviewReason,omitempty"`
+	ReviewedAt    *int64                   `json:"reviewedAt,omitempty"`
+	ReviewedBy    *string                  `json:"reviewedBy,omitempty"`
+	SenderStaffId *string                  `json:"senderStaffId,omitempty"`
+	Status        *string                  `json:"status,omitempty"`
+	TargetStaffId *string                  `json:"targetStaffId,omitempty"`
 }
 
 // AdminWishReviewPage defines model for AdminWishReviewPage.
@@ -9589,6 +9590,15 @@ type WeatherCard struct {
 
 	// Temp 温度 ℃
 	Temp *float64 `json:"temp,omitempty"`
+}
+
+// WishCancellationSummary defines model for WishCancellationSummary.
+type WishCancellationSummary struct {
+	Cancelled *int32 `json:"cancelled,omitempty"`
+	Finished  *int32 `json:"finished,omitempty"`
+	Prevented *int32 `json:"prevented,omitempty"`
+	Started   *int32 `json:"started,omitempty"`
+	Succeeded *int32 `json:"succeeded,omitempty"`
 }
 
 // bearerAuthContextKey is the context key for BearerAuth security scheme

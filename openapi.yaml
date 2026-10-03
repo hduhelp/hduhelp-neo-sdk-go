@@ -13453,6 +13453,8 @@ components:
                 reviewedAt:
                     type: integer
                     format: int64
+                cancellation:
+                    $ref: '#/components/schemas/WishCancellationSummary'
         AdminWishReviewPage:
             type: object
             properties:
@@ -25704,6 +25706,24 @@ components:
                     description: 空气质量指数
                     format: int32
             description: WeatherCard 是信息流天气卡片负载。
+        WishCancellationSummary:
+            type: object
+            properties:
+                prevented:
+                    type: integer
+                    format: int32
+                cancelled:
+                    type: integer
+                    format: int32
+                started:
+                    type: integer
+                    format: int32
+                succeeded:
+                    type: integer
+                    format: int32
+                finished:
+                    type: integer
+                    format: int32
 tags:
     - name: AcademicService
     - name: AdminNoticeService
