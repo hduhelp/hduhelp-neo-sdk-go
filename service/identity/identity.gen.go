@@ -2964,7 +2964,7 @@ type DeviceAuthorizationResp struct {
 	core.CodeMsg
 }
 
-// DeviceAuthorization: hduhelp-cli设备授权
+// DeviceAuthorization: PAT设备授权
 func (s *Service) DeviceAuthorization(ctx context.Context, req *DeviceAuthorizationReq, opts ...core.RequestOption) (*DeviceAuthorizationResp, error) {
 	resp := &DeviceAuthorizationResp{}
 	err := s.config.DoForm(ctx, &core.APIReq{
@@ -3009,7 +3009,7 @@ type CancelDeviceAuthorizationResp struct {
 	core.CodeMsg
 }
 
-// CancelDeviceAuthorization: 取消CLI设备授权
+// CancelDeviceAuthorization: 取消设备授权
 func (s *Service) CancelDeviceAuthorization(ctx context.Context, req *CancelDeviceAuthorizationReq, opts ...core.RequestOption) (*CancelDeviceAuthorizationResp, error) {
 	resp := &CancelDeviceAuthorizationResp{}
 	err := s.config.Do(ctx, &core.APIReq{

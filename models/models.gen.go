@@ -4967,6 +4967,22 @@ type InfoStreamResponseBody struct {
 	Msg  *string         `json:"msg,omitempty"`
 }
 
+// IntrospectTokenRequestForm defines model for IntrospectTokenRequestForm.
+type IntrospectTokenRequestForm struct {
+	Token *string `json:"token,omitempty"`
+}
+
+// IntrospectTokenResponseBody defines model for IntrospectTokenResponseBody.
+type IntrospectTokenResponseBody struct {
+	Active    *bool   `json:"active,omitempty"`
+	ClientId  *string `json:"client_id,omitempty"`
+	Exp       *int64  `json:"exp,omitempty"`
+	PatId     *string `json:"pat_id,omitempty"`
+	Scope     *string `json:"scope,omitempty"`
+	TokenType *string `json:"token_type,omitempty"`
+	UserId    *string `json:"user_id,omitempty"`
+}
+
 // InviteData defines model for InviteData.
 type InviteData struct {
 	InviteCode *string `json:"invite_code,omitempty"`
