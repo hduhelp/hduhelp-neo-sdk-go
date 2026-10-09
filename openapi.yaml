@@ -9621,7 +9621,7 @@ paths:
             tags:
                 - KnowledgeService
             summary: 知识检索
-            description: 只读知识检索：支持标签过滤与返回数量，命中带溯源信息。一方登录用户直接可用；第三方 token 需携带 knowledge:search:read。不会写入或修改知识库。
+            description: 只读知识检索：支持标签过滤与返回数量，命中带溯源信息。一方登录用户直接可用；第三方 token 需携带 knowledge:search:read；租户凭据仅可检索公开知识。不会写入或修改知识库。
             operationId: KnowledgeService_KnowledgeRetrieve
             security:
                 - BearerAuth: []
@@ -9638,13 +9638,13 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/KnowledgeSearchResponseBody'
-            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer', 'risk': 'sensitive-read'}
+            x-hduhelp-http: {'requires_user': false, 'auth': 'bearer', 'risk': 'sensitive-read'}
     /hduhelp-neo/knowledge/service-chat:
         post:
             tags:
                 - KnowledgeService
             summary: 快速问答
-            description: 只读知识问答：走方舟知识服务，内置 rerank、query 改写与可选 LLM 回答；可选 strategy_name 选策略，空=默认；返回回答与溯源切片。一方登录用户直接可用；第三方 token 需携带 knowledge:search:read。不会写入或修改知识库。
+            description: 只读知识问答：走方舟知识服务，内置 rerank、query 改写与可选 LLM 回答；可选 strategy_name 选策略，空=默认；返回回答与溯源切片。一方登录用户直接可用；第三方 token 需携带 knowledge:search:read；租户凭据仅可检索公开知识。不会写入或修改知识库。
             operationId: KnowledgeService_KnowledgeServiceChat
             security:
                 - BearerAuth: []
@@ -9661,7 +9661,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ServiceChatResponseBody'
-            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer', 'risk': 'sensitive-read'}
+            x-hduhelp-http: {'requires_user': false, 'auth': 'bearer', 'risk': 'sensitive-read'}
     /hduhelp-neo/knowledge/tags:
         get:
             tags:
@@ -11543,6 +11543,30 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/AuthenUserInfoRespBody'
             x-hduhelp-http: {'auth': 'uat'}
+    /hduhelp-neo/open-apis/identity/resolve:
+        post:
+            tags:
+                - IdentityService
+            summary: 解析应用请求的社交身份
+            description: 仅接受具备 identity:binding:resolve 的 TAT。返回精确 provider/open_id 的绑定状态和 Neo 用户 ID；不要求校园身份，不授予用户主体权限。
+            operationId: IdentityService_ResolveSocialIdentity
+            security:
+                - BearerAuth: []
+            requestBody:
+                required: true
+                description: Application-scoped identity lookup; never issues a user credential.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ResolveSocialIdentityRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ResolveSocialIdentityResponseBody'
+            x-hduhelp-http: {'auth': 'bearer', 'catalog': 'exclude', 'request_body_required': true}
     /hduhelp-neo/site-announcements/active:
         get:
             tags:
@@ -21996,6 +22020,42 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/ResolveReportData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ResolveSocialIdentityData:
+            required:
+                - client_id
+                - bound
+            type: object
+            properties:
+                client_id:
+                    type: string
+                bound:
+                    type: boolean
+                user_id:
+                    type: string
+        ResolveSocialIdentityRequestBody:
+            required:
+                - provider
+                - open_id
+            type: object
+            properties:
+                provider:
+                    type: string
+                open_id:
+                    type: string
+        ResolveSocialIdentityResponseBody:
+            required:
+                - data
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ResolveSocialIdentityData'
                 code:
                     type: integer
                     format: int64

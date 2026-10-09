@@ -7189,6 +7189,26 @@ type ResolveReportResponseBody struct {
 	Msg  *string            `json:"msg,omitempty"`
 }
 
+// ResolveSocialIdentityData defines model for ResolveSocialIdentityData.
+type ResolveSocialIdentityData struct {
+	Bound    bool    `json:"bound"`
+	ClientId string  `json:"client_id"`
+	UserId   *string `json:"user_id,omitempty"`
+}
+
+// ResolveSocialIdentityRequestBody defines model for ResolveSocialIdentityRequestBody.
+type ResolveSocialIdentityRequestBody struct {
+	OpenId   string `json:"open_id"`
+	Provider string `json:"provider"`
+}
+
+// ResolveSocialIdentityResponseBody defines model for ResolveSocialIdentityResponseBody.
+type ResolveSocialIdentityResponseBody struct {
+	Code int64                     `json:"code"`
+	Data ResolveSocialIdentityData `json:"data"`
+	Msg  string                    `json:"msg"`
+}
+
 // RestoreVersionRequestBody defines model for RestoreVersionRequestBody.
 type RestoreVersionRequestBody struct {
 	VersionId *string `json:"version_id,omitempty"`
