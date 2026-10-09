@@ -256,8 +256,6 @@ paths:
             summary: 选课收藏排行
             description: 返回被收藏次数最多的班级号排行榜
             operationId: AcademicService_ClassQueryFavRank
-            security:
-                - BearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -265,7 +263,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ClassQueryFavRankResponseBody'
-            x-hduhelp-http: {'requires_user': false, 'auth': 'bearer'}
+            x-hduhelp-http: {'requires_user': false}
     /hduhelp-neo/academic/class/map:
         get:
             tags:
@@ -273,8 +271,6 @@ paths:
             summary: 选课字典映射
             description: 返回校区/考核方式/教学方式等枚举值到中文的映射
             operationId: AcademicService_ClassQueryMap
-            security:
-                - BearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -282,7 +278,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ClassQueryMapResponseBody'
-            x-hduhelp-http: {'requires_user': false, 'auth': 'bearer'}
+            x-hduhelp-http: {'requires_user': false}
     /hduhelp-neo/academic/class/roster:
         get:
             tags:
@@ -367,8 +363,6 @@ paths:
             summary: 获取教室列表
             description: 返回教学楼下教室；available 表示所选时段是否空闲，selfStudy 表示房间是否允许自修；status=unused 时仅返回空闲教室
             operationId: AcademicService_GetClassrooms
-            security:
-                - BearerAuth: []
             parameters:
                 - name: buildingID
                   in: query
@@ -444,7 +438,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ClassroomsResponseBody'
-            x-hduhelp-http: {'requires_user': false, 'auth': 'bearer'}
+            x-hduhelp-http: {'requires_user': false}
     /hduhelp-neo/academic/classroom/usage:
         get:
             tags:
@@ -452,8 +446,6 @@ paths:
             summary: 获取教室占用
             description: 返回指定教室在本学期的占用安排（周次/星期/节次）
             operationId: AcademicService_ClassroomUsage
-            security:
-                - BearerAuth: []
             parameters:
                 - name: locationID
                   in: query
@@ -474,7 +466,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ClassroomUsageResponseBody'
-            x-hduhelp-http: {'requires_user': false, 'auth': 'bearer'}
+            x-hduhelp-http: {'requires_user': false}
     /hduhelp-neo/academic/config:
         get:
             tags:
@@ -938,8 +930,6 @@ paths:
             summary: 查询图书馆座位房间与座位数
             description: 返回图书馆各房间及其座位数（读自学校图书馆库 v21 座位预约房间座位数）
             operationId: AcademicService_LibrarySeatRooms
-            security:
-                - BearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -947,7 +937,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SeatRoomListResponseBody'
-            x-hduhelp-http: {'requires_user': false, 'auth': 'bearer'}
+            x-hduhelp-http: {'requires_user': false}
     /hduhelp-neo/academic/library/share:
         post:
             tags:
@@ -1645,8 +1635,6 @@ paths:
                 - AcademicService
             summary: 按日期范围查询学期列表
             operationId: AcademicService_SemesterListByDate
-            security:
-                - BearerAuth: []
             parameters:
                 - name: start_date
                   in: query
@@ -1663,7 +1651,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SemesterListResponseBody'
-            x-hduhelp-http: {'requires_user': false, 'auth': 'bearer'}
+            x-hduhelp-http: {'requires_user': false}
     /hduhelp-neo/academic/schooltime/time:
         get:
             tags:
@@ -1671,8 +1659,6 @@ paths:
             summary: 查询当前校历时间
             description: '---- 校历时间 ----'
             operationId: AcademicService_SchoolTime
-            security:
-                - BearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -1680,7 +1666,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SchoolTimeResponseBody'
-            x-hduhelp-http: {'requires_user': false, 'auth': 'bearer'}
+            x-hduhelp-http: {'requires_user': false}
     /hduhelp-neo/academic/student-history/class-members:
         get:
             tags:
@@ -10172,8 +10158,6 @@ paths:
             summary: 板块列表
             description: 运营配置的固定集合，一帖可属多个板块
             operationId: MomentsService_ListCategories
-            security:
-                - BearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -10181,7 +10165,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/CategoryListResponseBody'
-            x-hduhelp-http: {'requires_user': false, 'auth': 'bearer'}
+            x-hduhelp-http: {'requires_user': false}
     /hduhelp-neo/moments/comments/{id}:
         delete:
             tags:
@@ -10329,8 +10313,6 @@ paths:
             summary: 可用表情集合
             description: 供表情选择器渲染
             operationId: MomentsService_ListEmojis
-            security:
-                - BearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -10338,7 +10320,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/EmojiListResponseBody'
-            x-hduhelp-http: {'requires_user': false, 'auth': 'bearer'}
+            x-hduhelp-http: {'requires_user': false}
     /hduhelp-neo/moments/feed:
         get:
             tags:
@@ -10386,8 +10368,6 @@ paths:
             summary: 话题补全
             description: '发布器输入 # 时按前缀匹配已有话题'
             operationId: MomentsService_SuggestHashtags
-            security:
-                - BearerAuth: []
             parameters:
                 - name: q
                   in: query
@@ -10405,7 +10385,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HashtagListResponseBody'
-            x-hduhelp-http: {'requires_user': false, 'auth': 'bearer'}
+            x-hduhelp-http: {'requires_user': false}
     /hduhelp-neo/moments/hashtags/{name}:
         get:
             tags:
@@ -10413,8 +10393,6 @@ paths:
             summary: 话题详情
             description: 话题下的帖子经 feed 接口的 hashtag 参数获取
             operationId: MomentsService_GetHashtag
-            security:
-                - BearerAuth: []
             parameters:
                 - name: name
                   in: path
@@ -10428,7 +10406,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HashtagResponseBody'
-            x-hduhelp-http: {'requires_user': false, 'auth': 'bearer'}
+            x-hduhelp-http: {'requires_user': false}
     /hduhelp-neo/moments/me/collections:
         get:
             tags:
@@ -11027,8 +11005,6 @@ paths:
             summary: 举报原因枚举
             description: '----- 举报 -----'
             operationId: MomentsService_ListReportReasons
-            security:
-                - BearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -11036,7 +11012,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ReportReasonListResponseBody'
-            x-hduhelp-http: {'requires_user': false, 'auth': 'bearer'}
+            x-hduhelp-http: {'requires_user': false}
     /hduhelp-neo/moments/reports:
         post:
             tags:
