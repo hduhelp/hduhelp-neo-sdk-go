@@ -10646,11 +10646,6 @@ type FeedServiceIcsLinkParams struct {
 	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
-// FeedServiceScheduleIcsParams defines parameters for FeedServiceScheduleIcs.
-type FeedServiceScheduleIcsParams struct {
-	Token *string `form:"token,omitempty" json:"token,omitempty"`
-}
-
 // GraduateServiceGraduateGradesParams defines parameters for GraduateServiceGraduateGrades.
 type GraduateServiceGraduateGradesParams struct {
 	SchoolYear *string `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`

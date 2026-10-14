@@ -7801,19 +7801,45 @@ paths:
             summary: 生成课表 iCalendar 数据
             description: 返回供日历软件订阅和同步课程使用的 iCalendar 数据
             operationId: FeedService_ScheduleIcs
+            security: []
             parameters:
                 - name: token
                   in: query
+                  description: 课表订阅令牌，不能为空。
+                  required: true
                   schema:
                     type: string
             responses:
                 "200":
                     description: ScheduleIcsResponse 承载 iCalendar 文本；handler 以 text/calendar 原样返回。
                     content:
-                        application/json:
+                        text/calendar:
                             schema:
-                                $ref: '#/components/schemas/ScheduleIcsResponseBody'
-            x-hduhelp-http: {'requires_user': false}
+                                type: string
+            x-hduhelp-http: {'requires_user': false, 'auth': 'public', 'response_content_type': 'text/calendar'}
+    /hduhelp-neo/feed/schedule.ics:
+        get:
+            tags:
+                - FeedService
+            summary: 通过 .ics 地址获取课表 iCalendar 数据
+            description: 与无后缀课表订阅地址共用 token，直接返回相同的 iCalendar 数据，不重定向
+            operationId: FeedService_ScheduleIcsFile
+            security: []
+            parameters:
+                - name: token
+                  in: query
+                  description: 课表订阅令牌，不能为空。
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: ScheduleIcsResponse 承载 iCalendar 文本；handler 以 text/calendar 原样返回。
+                    content:
+                        text/calendar:
+                            schema:
+                                type: string
+            x-hduhelp-http: {'catalog': 'exclude', 'requires_user': false, 'auth': 'public', 'response_content_type': 'text/calendar'}
     /hduhelp-neo/feedbacks:
         post:
             tags:
