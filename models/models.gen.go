@@ -802,33 +802,17 @@ type Activity struct {
 
 // ActivityDetail defines model for ActivityDetail.
 type ActivityDetail struct {
-	Audience            *string             `json:"audience,omitempty"`
-	Benefits            *string             `json:"benefits,omitempty"`
-	Category            *string             `json:"category,omitempty"`
-	CreatedAt           *int64              `json:"createdAt,omitempty"`
-	CreatedByStaffId    *string             `json:"createdByStaffId,omitempty"`
-	CreatedByUserId     *string             `json:"createdByUserId,omitempty"`
-	DeadlineAt          *int64              `json:"deadlineAt,omitempty"`
-	Description         *string             `json:"description,omitempty"`
-	EndAt               *int64              `json:"endAt,omitempty"`
-	HourRule            *string             `json:"hourRule,omitempty"`
-	Id                  *string             `json:"id,omitempty"`
-	IsUrgent            *bool               `json:"isUrgent,omitempty"`
-	Location            *string             `json:"location,omitempty"`
-	Organization        *string             `json:"organization,omitempty"`
-	OrganizerBackground *string             `json:"organizerBackground,omitempty"`
-	Positions           *[]ActivityPosition `json:"positions,omitempty"`
-	PublishedAt         *int64              `json:"publishedAt,omitempty"`
-	RecruitmentCount    *int32              `json:"recruitmentCount,omitempty"`
-	RegistrationChannel *string             `json:"registrationChannel,omitempty"`
-	Requirements        *string             `json:"requirements,omitempty"`
-	Sessions            *[]ActivitySession  `json:"sessions,omitempty"`
-	StartAt             *int64              `json:"startAt,omitempty"`
-	Status              *string             `json:"status,omitempty"`
-	Title               *string             `json:"title,omitempty"`
-	TrainingInfo        *string             `json:"trainingInfo,omitempty"`
-	UpdatedAt           *int64              `json:"updatedAt,omitempty"`
-	UrgentAt            *int64              `json:"urgentAt,omitempty"`
+	CreatedAt   *int64  `json:"createdAt,omitempty"`
+	Description *string `json:"description,omitempty"`
+	EndAt       *int64  `json:"endAt,omitempty"`
+	Id          *string `json:"id,omitempty"`
+	IsUrgent    *bool   `json:"isUrgent,omitempty"`
+	PublishedAt *int64  `json:"publishedAt,omitempty"`
+	StartAt     *int64  `json:"startAt,omitempty"`
+	Status      *string `json:"status,omitempty"`
+	Title       *string `json:"title,omitempty"`
+	UpdatedAt   *int64  `json:"updatedAt,omitempty"`
+	UrgentAt    *int64  `json:"urgentAt,omitempty"`
 }
 
 // ActivityDetailResponseBody defines model for ActivityDetailResponseBody.
@@ -887,21 +871,6 @@ type ActivityPageResponseBody struct {
 	Msg  *string       `json:"msg,omitempty"`
 }
 
-// ActivityPosition All timestamps are Unix milliseconds. Status/category values are stable strings
-// so generated OpenAPI clients keep readable JSON instead of numeric Thrift enums.
-type ActivityPosition struct {
-	Description *string `json:"description,omitempty"`
-	Id          *string `json:"id,omitempty"`
-	Name        *string `json:"name,omitempty"`
-	SortOrder   *int32  `json:"sortOrder,omitempty"`
-}
-
-// ActivityPositionInput defines model for ActivityPositionInput.
-type ActivityPositionInput struct {
-	Description *string `json:"description,omitempty"`
-	Name        *string `json:"name,omitempty"`
-}
-
 // ActivityRegistrationData defines model for ActivityRegistrationData.
 type ActivityRegistrationData struct {
 	ActivityID *string `json:"activityID,omitempty"`
@@ -915,41 +884,18 @@ type ActivityRegistrationResponseBody struct {
 	Msg  *string                   `json:"msg,omitempty"`
 }
 
-// ActivitySession defines model for ActivitySession.
-type ActivitySession struct {
-	EndAt            *int64  `json:"endAt,omitempty"`
-	Id               *string `json:"id,omitempty"`
-	Name             *string `json:"name,omitempty"`
-	RecruitmentCount *int32  `json:"recruitmentCount,omitempty"`
-	SortOrder        *int32  `json:"sortOrder,omitempty"`
-	StartAt          *int64  `json:"startAt,omitempty"`
-}
-
-// ActivitySessionInput defines model for ActivitySessionInput.
-type ActivitySessionInput struct {
-	EndAt            *int64  `json:"end_at,omitempty"`
-	Name             *string `json:"name,omitempty"`
-	RecruitmentCount *int32  `json:"recruitment_count,omitempty"`
-	StartAt          *int64  `json:"start_at,omitempty"`
-}
-
-// ActivitySummary defines model for ActivitySummary.
+// ActivitySummary All timestamps are Unix milliseconds. Status values are stable strings.
 type ActivitySummary struct {
-	Category         *string `json:"category,omitempty"`
-	CreatedAt        *int64  `json:"createdAt,omitempty"`
-	DeadlineAt       *int64  `json:"deadlineAt,omitempty"`
-	EndAt            *int64  `json:"endAt,omitempty"`
-	Id               *string `json:"id,omitempty"`
-	IsUrgent         *bool   `json:"isUrgent,omitempty"`
-	Location         *string `json:"location,omitempty"`
-	Organization     *string `json:"organization,omitempty"`
-	PublishedAt      *int64  `json:"publishedAt,omitempty"`
-	RecruitmentCount *int32  `json:"recruitmentCount,omitempty"`
-	StartAt          *int64  `json:"startAt,omitempty"`
-	Status           *string `json:"status,omitempty"`
-	Title            *string `json:"title,omitempty"`
-	UpdatedAt        *int64  `json:"updatedAt,omitempty"`
-	UrgentAt         *int64  `json:"urgentAt,omitempty"`
+	CreatedAt   *int64  `json:"createdAt,omitempty"`
+	EndAt       *int64  `json:"endAt,omitempty"`
+	Id          *string `json:"id,omitempty"`
+	IsUrgent    *bool   `json:"isUrgent,omitempty"`
+	PublishedAt *int64  `json:"publishedAt,omitempty"`
+	StartAt     *int64  `json:"startAt,omitempty"`
+	Status      *string `json:"status,omitempty"`
+	Title       *string `json:"title,omitempty"`
+	UpdatedAt   *int64  `json:"updatedAt,omitempty"`
+	UrgentAt    *int64  `json:"urgentAt,omitempty"`
 }
 
 // AddChunkRequestBody defines model for AddChunkRequestBody.
@@ -3351,6 +3297,15 @@ type CreateTenantResponseBody struct {
 	// Data -------------------- 租户（接入方）管理 --------------------
 	Data *AdminTenantInfo `json:"data,omitempty"`
 	Msg  *string          `json:"msg,omitempty"`
+}
+
+// CreateVolunteerActivityRequestBody defines model for CreateVolunteerActivityRequestBody.
+type CreateVolunteerActivityRequestBody struct {
+	Description *string `json:"description,omitempty"`
+	EndAt       *int64  `json:"end_at,omitempty"`
+	StartAt     *int64  `json:"start_at,omitempty"`
+	Status      *string `json:"status,omitempty"`
+	Title       *string `json:"title,omitempty"`
 }
 
 // CreateWeChatQRLoginData defines model for CreateWeChatQRLoginData.
@@ -9093,25 +9048,11 @@ type UnreturnedBatchItem struct {
 
 // UpdateActivityRequestBody defines model for UpdateActivityRequestBody.
 type UpdateActivityRequestBody struct {
-	Audience            *string                  `json:"audience,omitempty"`
-	Benefits            *string                  `json:"benefits,omitempty"`
-	Category            *string                  `json:"category,omitempty"`
-	DeadlineAt          *int64                   `json:"deadline_at,omitempty"`
-	Description         *string                  `json:"description,omitempty"`
-	EndAt               *int64                   `json:"end_at,omitempty"`
-	HourRule            *string                  `json:"hour_rule,omitempty"`
-	Location            *string                  `json:"location,omitempty"`
-	Organization        *string                  `json:"organization,omitempty"`
-	OrganizerBackground *string                  `json:"organizer_background,omitempty"`
-	Positions           *[]ActivityPositionInput `json:"positions,omitempty"`
-	RecruitmentCount    *int32                   `json:"recruitment_count,omitempty"`
-	RegistrationChannel *string                  `json:"registration_channel,omitempty"`
-	Requirements        *string                  `json:"requirements,omitempty"`
-	Sessions            *[]ActivitySessionInput  `json:"sessions,omitempty"`
-	StartAt             *int64                   `json:"start_at,omitempty"`
-	Status              *string                  `json:"status,omitempty"`
-	Title               *string                  `json:"title,omitempty"`
-	TrainingInfo        *string                  `json:"training_info,omitempty"`
+	Description *string `json:"description,omitempty"`
+	EndAt       *int64  `json:"end_at,omitempty"`
+	StartAt     *int64  `json:"start_at,omitempty"`
+	Status      *string `json:"status,omitempty"`
+	Title       *string `json:"title,omitempty"`
 }
 
 // UpdateAdminNoticeRequestBody defines model for UpdateAdminNoticeRequestBody.
@@ -10413,18 +10354,13 @@ type AdminServiceDeleteUserSocialIdentityParams struct {
 
 // CampusLifeServiceAdminListVolunteerActivitiesParams defines parameters for CampusLifeServiceAdminListVolunteerActivities.
 type CampusLifeServiceAdminListVolunteerActivitiesParams struct {
-	Page            *int32  `form:"page,omitempty" json:"page,omitempty"`
-	PageSize        *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
-	Category        *string `form:"category,omitempty" json:"category,omitempty"`
-	Organization    *string `form:"organization,omitempty" json:"organization,omitempty"`
-	StartAtFrom     *int64  `form:"start_at_from,omitempty" json:"start_at_from,omitempty"`
-	StartAtTo       *int64  `form:"start_at_to,omitempty" json:"start_at_to,omitempty"`
-	DeadlineAtFrom  *int64  `form:"deadline_at_from,omitempty" json:"deadline_at_from,omitempty"`
-	DeadlineAtTo    *int64  `form:"deadline_at_to,omitempty" json:"deadline_at_to,omitempty"`
-	IsUrgent        *bool   `form:"is_urgent,omitempty" json:"is_urgent,omitempty"`
-	Keyword         *string `form:"keyword,omitempty" json:"keyword,omitempty"`
-	Status          *string `form:"status,omitempty" json:"status,omitempty"`
-	CreatedByUserId *string `form:"created_by_user_id,omitempty" json:"created_by_user_id,omitempty"`
+	Page        *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize    *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+	StartAtFrom *int64  `form:"start_at_from,omitempty" json:"start_at_from,omitempty"`
+	StartAtTo   *int64  `form:"start_at_to,omitempty" json:"start_at_to,omitempty"`
+	IsUrgent    *bool   `form:"is_urgent,omitempty" json:"is_urgent,omitempty"`
+	Keyword     *string `form:"keyword,omitempty" json:"keyword,omitempty"`
+	Status      *string `form:"status,omitempty" json:"status,omitempty"`
 }
 
 // MessagingServiceDingTalkBlessReviewCallbackParams defines parameters for MessagingServiceDingTalkBlessReviewCallback.
@@ -11151,18 +11087,13 @@ type SubscriptionServiceUpdateSubscriptionParams struct {
 
 // CampusLifeServiceListVolunteerActivitiesParams defines parameters for CampusLifeServiceListVolunteerActivities.
 type CampusLifeServiceListVolunteerActivitiesParams struct {
-	Page            *int32  `form:"page,omitempty" json:"page,omitempty"`
-	PageSize        *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
-	Category        *string `form:"category,omitempty" json:"category,omitempty"`
-	Organization    *string `form:"organization,omitempty" json:"organization,omitempty"`
-	StartAtFrom     *int64  `form:"start_at_from,omitempty" json:"start_at_from,omitempty"`
-	StartAtTo       *int64  `form:"start_at_to,omitempty" json:"start_at_to,omitempty"`
-	DeadlineAtFrom  *int64  `form:"deadline_at_from,omitempty" json:"deadline_at_from,omitempty"`
-	DeadlineAtTo    *int64  `form:"deadline_at_to,omitempty" json:"deadline_at_to,omitempty"`
-	IsUrgent        *bool   `form:"is_urgent,omitempty" json:"is_urgent,omitempty"`
-	Keyword         *string `form:"keyword,omitempty" json:"keyword,omitempty"`
-	Status          *string `form:"status,omitempty" json:"status,omitempty"`
-	CreatedByUserId *string `form:"created_by_user_id,omitempty" json:"created_by_user_id,omitempty"`
+	Page        *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize    *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+	StartAtFrom *int64  `form:"start_at_from,omitempty" json:"start_at_from,omitempty"`
+	StartAtTo   *int64  `form:"start_at_to,omitempty" json:"start_at_to,omitempty"`
+	IsUrgent    *bool   `form:"is_urgent,omitempty" json:"is_urgent,omitempty"`
+	Keyword     *string `form:"keyword,omitempty" json:"keyword,omitempty"`
+	Status      *string `form:"status,omitempty" json:"status,omitempty"`
 }
 
 // AcademicServiceClassQueryFavSetJSONRequestBody defines body for AcademicServiceClassQueryFavSet for application/json ContentType.
@@ -11422,6 +11353,9 @@ type AdminServiceUpsertUserSocialIdentityJSONRequestBody = UpsertUserSocialIdent
 
 // AdminServiceSetUserDefaultIdentityJSONRequestBody defines body for AdminServiceSetUserDefaultIdentity for application/json ContentType.
 type AdminServiceSetUserDefaultIdentityJSONRequestBody = SetUserDefaultIdentityRequestBody
+
+// CampusLifeServiceAdminCreateVolunteerActivityJSONRequestBody defines body for CampusLifeServiceAdminCreateVolunteerActivity for application/json ContentType.
+type CampusLifeServiceAdminCreateVolunteerActivityJSONRequestBody = CreateVolunteerActivityRequestBody
 
 // CampusLifeServiceAdminUpdateVolunteerActivityJSONRequestBody defines body for CampusLifeServiceAdminUpdateVolunteerActivity for application/json ContentType.
 type CampusLifeServiceAdminUpdateVolunteerActivityJSONRequestBody = UpdateActivityRequestBody

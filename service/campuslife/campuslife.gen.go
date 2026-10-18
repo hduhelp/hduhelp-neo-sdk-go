@@ -47,18 +47,6 @@ func (b *AdminListVolunteerActivitiesReqBuilder) PageSize(v int32) *AdminListVol
 	return b
 }
 
-// Category sets the "category" query parameter.
-func (b *AdminListVolunteerActivitiesReqBuilder) Category(v string) *AdminListVolunteerActivitiesReqBuilder {
-	b.req.queryParams["category"] = v
-	return b
-}
-
-// Organization sets the "organization" query parameter.
-func (b *AdminListVolunteerActivitiesReqBuilder) Organization(v string) *AdminListVolunteerActivitiesReqBuilder {
-	b.req.queryParams["organization"] = v
-	return b
-}
-
 // StartAtFrom sets the "start_at_from" query parameter.
 func (b *AdminListVolunteerActivitiesReqBuilder) StartAtFrom(v int64) *AdminListVolunteerActivitiesReqBuilder {
 	b.req.queryParams["start_at_from"] = strconv.FormatInt(v, 10)
@@ -68,18 +56,6 @@ func (b *AdminListVolunteerActivitiesReqBuilder) StartAtFrom(v int64) *AdminList
 // StartAtTo sets the "start_at_to" query parameter.
 func (b *AdminListVolunteerActivitiesReqBuilder) StartAtTo(v int64) *AdminListVolunteerActivitiesReqBuilder {
 	b.req.queryParams["start_at_to"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// DeadlineAtFrom sets the "deadline_at_from" query parameter.
-func (b *AdminListVolunteerActivitiesReqBuilder) DeadlineAtFrom(v int64) *AdminListVolunteerActivitiesReqBuilder {
-	b.req.queryParams["deadline_at_from"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// DeadlineAtTo sets the "deadline_at_to" query parameter.
-func (b *AdminListVolunteerActivitiesReqBuilder) DeadlineAtTo(v int64) *AdminListVolunteerActivitiesReqBuilder {
-	b.req.queryParams["deadline_at_to"] = strconv.FormatInt(v, 10)
 	return b
 }
 
@@ -101,12 +77,6 @@ func (b *AdminListVolunteerActivitiesReqBuilder) Status(v string) *AdminListVolu
 	return b
 }
 
-// CreatedByUserId sets the "created_by_user_id" query parameter.
-func (b *AdminListVolunteerActivitiesReqBuilder) CreatedByUserId(v string) *AdminListVolunteerActivitiesReqBuilder {
-	b.req.queryParams["created_by_user_id"] = v
-	return b
-}
-
 // Build finalizes the request.
 func (b *AdminListVolunteerActivitiesReqBuilder) Build() *AdminListVolunteerActivitiesReq {
 	return b.req
@@ -124,6 +94,56 @@ func (s *Service) AdminListVolunteerActivities(ctx context.Context, req *AdminLi
 	resp := &AdminListVolunteerActivitiesResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/volunteer-admin/activities",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminCreateVolunteerActivityReq is the request for AdminCreateVolunteerActivity.
+type AdminCreateVolunteerActivityReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminCreateVolunteerActivityReqBuilder builds a AdminCreateVolunteerActivityReq with a fluent setter per field.
+type AdminCreateVolunteerActivityReqBuilder struct {
+	req *AdminCreateVolunteerActivityReq
+}
+
+// NewAdminCreateVolunteerActivityReqBuilder creates a request builder for AdminCreateVolunteerActivity.
+func NewAdminCreateVolunteerActivityReqBuilder() *AdminCreateVolunteerActivityReqBuilder {
+	return &AdminCreateVolunteerActivityReqBuilder{req: &AdminCreateVolunteerActivityReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *AdminCreateVolunteerActivityReqBuilder) Body(body *models.CreateVolunteerActivityRequestBody) *AdminCreateVolunteerActivityReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminCreateVolunteerActivityReqBuilder) Build() *AdminCreateVolunteerActivityReq {
+	return b.req
+}
+
+// AdminCreateVolunteerActivityResp is the response for AdminCreateVolunteerActivity.
+type AdminCreateVolunteerActivityResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ActivityDetail `json:"data"`
+}
+
+// AdminCreateVolunteerActivity: 管理员创建志愿活动
+func (s *Service) AdminCreateVolunteerActivity(ctx context.Context, req *AdminCreateVolunteerActivityReq, opts ...core.RequestOption) (*AdminCreateVolunteerActivityResp, error) {
+	resp := &AdminCreateVolunteerActivityResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
 		PathTemplate: "/hduhelp-neo/admin/volunteer-admin/activities",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
@@ -270,12 +290,58 @@ type AdminOfflineVolunteerActivityResp struct {
 	core.CodeMsg
 }
 
-// AdminOfflineVolunteerActivity: 管理员下架志愿活动
+// AdminOfflineVolunteerActivity: 管理员删除志愿活动
 func (s *Service) AdminOfflineVolunteerActivity(ctx context.Context, req *AdminOfflineVolunteerActivityReq, opts ...core.RequestOption) (*AdminOfflineVolunteerActivityResp, error) {
 	resp := &AdminOfflineVolunteerActivityResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "DELETE",
 		PathTemplate: "/hduhelp-neo/admin/volunteer-admin/activities/{id}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminEndVolunteerActivityReq is the request for AdminEndVolunteerActivity.
+type AdminEndVolunteerActivityReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminEndVolunteerActivityReqBuilder builds a AdminEndVolunteerActivityReq with a fluent setter per field.
+type AdminEndVolunteerActivityReqBuilder struct{ req *AdminEndVolunteerActivityReq }
+
+// NewAdminEndVolunteerActivityReqBuilder creates a request builder for AdminEndVolunteerActivity.
+func NewAdminEndVolunteerActivityReqBuilder() *AdminEndVolunteerActivityReqBuilder {
+	return &AdminEndVolunteerActivityReqBuilder{req: &AdminEndVolunteerActivityReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AdminEndVolunteerActivityReqBuilder) Id(v string) *AdminEndVolunteerActivityReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminEndVolunteerActivityReqBuilder) Build() *AdminEndVolunteerActivityReq { return b.req }
+
+// AdminEndVolunteerActivityResp is the response for AdminEndVolunteerActivity.
+type AdminEndVolunteerActivityResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ActivityDetail `json:"data"`
+}
+
+// AdminEndVolunteerActivity: 管理员结束志愿活动
+func (s *Service) AdminEndVolunteerActivity(ctx context.Context, req *AdminEndVolunteerActivityReq, opts ...core.RequestOption) (*AdminEndVolunteerActivityResp, error) {
+	resp := &AdminEndVolunteerActivityResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/volunteer-admin/activities/{id}/end",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -1889,18 +1955,6 @@ func (b *ListVolunteerActivitiesReqBuilder) PageSize(v int32) *ListVolunteerActi
 	return b
 }
 
-// Category sets the "category" query parameter.
-func (b *ListVolunteerActivitiesReqBuilder) Category(v string) *ListVolunteerActivitiesReqBuilder {
-	b.req.queryParams["category"] = v
-	return b
-}
-
-// Organization sets the "organization" query parameter.
-func (b *ListVolunteerActivitiesReqBuilder) Organization(v string) *ListVolunteerActivitiesReqBuilder {
-	b.req.queryParams["organization"] = v
-	return b
-}
-
 // StartAtFrom sets the "start_at_from" query parameter.
 func (b *ListVolunteerActivitiesReqBuilder) StartAtFrom(v int64) *ListVolunteerActivitiesReqBuilder {
 	b.req.queryParams["start_at_from"] = strconv.FormatInt(v, 10)
@@ -1910,18 +1964,6 @@ func (b *ListVolunteerActivitiesReqBuilder) StartAtFrom(v int64) *ListVolunteerA
 // StartAtTo sets the "start_at_to" query parameter.
 func (b *ListVolunteerActivitiesReqBuilder) StartAtTo(v int64) *ListVolunteerActivitiesReqBuilder {
 	b.req.queryParams["start_at_to"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// DeadlineAtFrom sets the "deadline_at_from" query parameter.
-func (b *ListVolunteerActivitiesReqBuilder) DeadlineAtFrom(v int64) *ListVolunteerActivitiesReqBuilder {
-	b.req.queryParams["deadline_at_from"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// DeadlineAtTo sets the "deadline_at_to" query parameter.
-func (b *ListVolunteerActivitiesReqBuilder) DeadlineAtTo(v int64) *ListVolunteerActivitiesReqBuilder {
-	b.req.queryParams["deadline_at_to"] = strconv.FormatInt(v, 10)
 	return b
 }
 
@@ -1940,12 +1982,6 @@ func (b *ListVolunteerActivitiesReqBuilder) Keyword(v string) *ListVolunteerActi
 // Status sets the "status" query parameter.
 func (b *ListVolunteerActivitiesReqBuilder) Status(v string) *ListVolunteerActivitiesReqBuilder {
 	b.req.queryParams["status"] = v
-	return b
-}
-
-// CreatedByUserId sets the "created_by_user_id" query parameter.
-func (b *ListVolunteerActivitiesReqBuilder) CreatedByUserId(v string) *ListVolunteerActivitiesReqBuilder {
-	b.req.queryParams["created_by_user_id"] = v
 	return b
 }
 

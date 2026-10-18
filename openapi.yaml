@@ -6133,30 +6133,12 @@ paths:
                   schema:
                     type: integer
                     format: int32
-                - name: category
-                  in: query
-                  schema:
-                    type: string
-                - name: organization
-                  in: query
-                  schema:
-                    type: string
                 - name: start_at_from
                   in: query
                   schema:
                     type: integer
                     format: int64
                 - name: start_at_to
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: deadline_at_from
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: deadline_at_to
                   in: query
                   schema:
                     type: integer
@@ -6173,10 +6155,6 @@ paths:
                   in: query
                   schema:
                     type: string
-                - name: created_by_user_id
-                  in: query
-                  schema:
-                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -6184,6 +6162,26 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ActivityListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        post:
+            tags:
+                - CampusLifeService
+            summary: 管理员创建志愿活动
+            operationId: CampusLifeService_AdminCreateVolunteerActivity
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateVolunteerActivityRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ActivityDetailResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/volunteer-admin/activities/{id}:
         get:
@@ -6236,7 +6234,7 @@ paths:
         delete:
             tags:
                 - CampusLifeService
-            summary: 管理员下架志愿活动
+            summary: 管理员删除志愿活动
             operationId: CampusLifeService_AdminOfflineVolunteerActivity
             security:
                 - OperatorBearerAuth: []
@@ -6253,6 +6251,28 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/MutateResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/volunteer-admin/activities/{id}/end:
+        post:
+            tags:
+                - CampusLifeService
+            summary: 管理员结束志愿活动
+            operationId: CampusLifeService_AdminEndVolunteerActivity
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ActivityDetailResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/volunteer-admin/activities/{id}/urgent:
         post:
@@ -11992,30 +12012,12 @@ paths:
                   schema:
                     type: integer
                     format: int32
-                - name: category
-                  in: query
-                  schema:
-                    type: string
-                - name: organization
-                  in: query
-                  schema:
-                    type: string
                 - name: start_at_from
                   in: query
                   schema:
                     type: integer
                     format: int64
                 - name: start_at_to
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: deadline_at_from
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: deadline_at_to
                   in: query
                   schema:
                     type: integer
@@ -12029,10 +12031,6 @@ paths:
                   schema:
                     type: string
                 - name: status
-                  in: query
-                  schema:
-                    type: string
-                - name: created_by_user_id
                   in: query
                   schema:
                     type: string
@@ -12240,48 +12238,14 @@ components:
                     type: string
                 title:
                     type: string
-                category:
-                    type: string
-                organization:
-                    type: string
                 startAt:
                     type: integer
                     format: int64
                 endAt:
                     type: integer
                     format: int64
-                location:
-                    type: string
                 description:
                     type: string
-                recruitmentCount:
-                    type: integer
-                    format: int32
-                registrationChannel:
-                    type: string
-                trainingInfo:
-                    type: string
-                benefits:
-                    type: string
-                requirements:
-                    type: string
-                deadlineAt:
-                    type: integer
-                    format: int64
-                audience:
-                    type: string
-                organizerBackground:
-                    type: string
-                hourRule:
-                    type: string
-                positions:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ActivityPosition'
-                sessions:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ActivitySession'
                 status:
                     type: string
                 isUrgent:
@@ -12289,10 +12253,6 @@ components:
                 urgentAt:
                     type: integer
                     format: int64
-                createdByUserId:
-                    type: string
-                createdByStaffId:
-                    type: string
                 publishedAt:
                     type: integer
                     format: int64
@@ -12394,28 +12354,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        ActivityPosition:
-            type: object
-            properties:
-                id:
-                    type: string
-                name:
-                    type: string
-                description:
-                    type: string
-                sortOrder:
-                    type: integer
-                    format: int32
-            description: |-
-                All timestamps are Unix milliseconds. Status/category values are stable strings
-                so generated OpenAPI clients keep readable JSON instead of numeric Thrift enums.
-        ActivityPositionInput:
-            type: object
-            properties:
-                name:
-                    type: string
-                description:
-                    type: string
         ActivityRegistrationData:
             type: object
             properties:
@@ -12433,39 +12371,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        ActivitySession:
-            type: object
-            properties:
-                id:
-                    type: string
-                name:
-                    type: string
-                startAt:
-                    type: integer
-                    format: int64
-                endAt:
-                    type: integer
-                    format: int64
-                recruitmentCount:
-                    type: integer
-                    format: int32
-                sortOrder:
-                    type: integer
-                    format: int32
-        ActivitySessionInput:
-            type: object
-            properties:
-                name:
-                    type: string
-                start_at:
-                    type: integer
-                    format: int64
-                end_at:
-                    type: integer
-                    format: int64
-                recruitment_count:
-                    type: integer
-                    format: int32
         ActivitySummary:
             type: object
             properties:
@@ -12473,22 +12378,10 @@ components:
                     type: string
                 title:
                     type: string
-                category:
-                    type: string
-                organization:
-                    type: string
                 startAt:
                     type: integer
                     format: int64
                 endAt:
-                    type: integer
-                    format: int64
-                location:
-                    type: string
-                recruitmentCount:
-                    type: integer
-                    format: int32
-                deadlineAt:
                     type: integer
                     format: int64
                 status:
@@ -12507,6 +12400,7 @@ components:
                 updatedAt:
                     type: integer
                     format: int64
+            description: All timestamps are Unix milliseconds. Status values are stable strings.
         AddChunkRequestBody:
             type: object
             properties:
@@ -16247,6 +16141,21 @@ components:
                     type: integer
                     format: int64
                 msg:
+                    type: string
+        CreateVolunteerActivityRequestBody:
+            type: object
+            properties:
+                title:
+                    type: string
+                start_at:
+                    type: integer
+                    format: int64
+                end_at:
+                    type: integer
+                    format: int64
+                description:
+                    type: string
+                status:
                     type: string
         CreateWeChatQRLoginData:
             type: object
@@ -25019,48 +24928,14 @@ components:
             properties:
                 title:
                     type: string
-                category:
-                    type: string
-                organization:
-                    type: string
                 start_at:
                     type: integer
                     format: int64
                 end_at:
                     type: integer
                     format: int64
-                location:
-                    type: string
                 description:
                     type: string
-                recruitment_count:
-                    type: integer
-                    format: int32
-                registration_channel:
-                    type: string
-                training_info:
-                    type: string
-                benefits:
-                    type: string
-                requirements:
-                    type: string
-                deadline_at:
-                    type: integer
-                    format: int64
-                audience:
-                    type: string
-                organizer_background:
-                    type: string
-                hour_rule:
-                    type: string
-                positions:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ActivityPositionInput'
-                sessions:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ActivitySessionInput'
                 status:
                     type: string
         UpdateAdminNoticeRequestBody:
