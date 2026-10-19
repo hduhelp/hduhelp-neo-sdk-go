@@ -1405,7 +1405,10 @@ type AdminUserInfo struct {
 	CreatedAt *int64  `json:"createdAt,omitempty"`
 	Id        *string `json:"id,omitempty"`
 	NickName  *string `json:"nickName,omitempty"`
+	StaffId   *string `json:"staffId,omitempty"`
+	StaffName *string `json:"staffName,omitempty"`
 	Status    *string `json:"status,omitempty"`
+	UnitName  *string `json:"unitName,omitempty"`
 }
 
 // AdminUserState AdminUserState 汇总一个用户在社区里的处置历史，供审核员判断是否惯犯。
@@ -1433,8 +1436,9 @@ type AdminUserStateResponseBody struct {
 // AdminUsersData GET admin/users 的载荷：不带 id 返回搜索结果列表，带 id 返回单用户富详情。
 // 两个字段按请求形态二选一填充。
 type AdminUsersData struct {
-	Items *[]AdminUserInfo `json:"items,omitempty"`
-	User  *AdminUserDetail `json:"user,omitempty"`
+	Items                *[]AdminUserInfo `json:"items,omitempty"`
+	UnitNamesUnavailable *bool            `json:"unitNamesUnavailable,omitempty"`
+	User                 *AdminUserDetail `json:"user,omitempty"`
 }
 
 // AdminWishReviewItem defines model for AdminWishReviewItem.

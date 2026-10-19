@@ -13328,6 +13328,12 @@ components:
                 createdAt:
                     type: integer
                     format: int64
+                staffName:
+                    type: string
+                staffId:
+                    type: string
+                unitName:
+                    type: string
         AdminUserState:
             type: object
             properties:
@@ -13374,6 +13380,8 @@ components:
                         $ref: '#/components/schemas/AdminUserInfo'
                 user:
                     $ref: '#/components/schemas/AdminUserDetail'
+                unitNamesUnavailable:
+                    type: boolean
             description: |-
                 GET admin/users 的载荷：不带 id 返回搜索结果列表，带 id 返回单用户富详情。
                 两个字段按请求形态二选一填充。
