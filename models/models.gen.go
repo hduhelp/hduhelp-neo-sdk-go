@@ -11,6 +11,33 @@ const (
 	UATBearerAuthScopes      uATBearerAuthContextKey      = "UATBearerAuth.Scopes"
 )
 
+// Defines values for CreateFeedbackRequestBodyCategory.
+const (
+	CreateFeedbackRequestBodyCategoryAccount    CreateFeedbackRequestBodyCategory = "account"
+	CreateFeedbackRequestBodyCategoryBug        CreateFeedbackRequestBodyCategory = "bug"
+	CreateFeedbackRequestBodyCategoryContent    CreateFeedbackRequestBodyCategory = "content"
+	CreateFeedbackRequestBodyCategoryOther      CreateFeedbackRequestBodyCategory = "other"
+	CreateFeedbackRequestBodyCategorySuggestion CreateFeedbackRequestBodyCategory = "suggestion"
+)
+
+// Valid indicates whether the value is a known member of the CreateFeedbackRequestBodyCategory enum.
+func (e CreateFeedbackRequestBodyCategory) Valid() bool {
+	switch e {
+	case CreateFeedbackRequestBodyCategoryAccount:
+		return true
+	case CreateFeedbackRequestBodyCategoryBug:
+		return true
+	case CreateFeedbackRequestBodyCategoryContent:
+		return true
+	case CreateFeedbackRequestBodyCategoryOther:
+		return true
+	case CreateFeedbackRequestBodyCategorySuggestion:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for DeliveryGroupMode.
 const (
 	Fallback         DeliveryGroupMode = "fallback"
@@ -47,6 +74,33 @@ func (e DeliveryPreferenceUpdateProvider) Valid() bool {
 	case DeliveryPreferenceUpdateProviderDingtalkWork:
 		return true
 	case DeliveryPreferenceUpdateProviderWechatMp:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for FeedbackItemCategory.
+const (
+	FeedbackItemCategoryAccount    FeedbackItemCategory = "account"
+	FeedbackItemCategoryBug        FeedbackItemCategory = "bug"
+	FeedbackItemCategoryContent    FeedbackItemCategory = "content"
+	FeedbackItemCategoryOther      FeedbackItemCategory = "other"
+	FeedbackItemCategorySuggestion FeedbackItemCategory = "suggestion"
+)
+
+// Valid indicates whether the value is a known member of the FeedbackItemCategory enum.
+func (e FeedbackItemCategory) Valid() bool {
+	switch e {
+	case FeedbackItemCategoryAccount:
+		return true
+	case FeedbackItemCategoryBug:
+		return true
+	case FeedbackItemCategoryContent:
+		return true
+	case FeedbackItemCategoryOther:
+		return true
+	case FeedbackItemCategorySuggestion:
 		return true
 	default:
 		return false
@@ -566,6 +620,33 @@ func (e FeedbackServiceListAdminFeedbacksParamsStatus) Valid() bool {
 	case FeedbackServiceListAdminFeedbacksParamsStatusHandled:
 		return true
 	case FeedbackServiceListAdminFeedbacksParamsStatusPending:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for FeedbackServiceListAdminFeedbacksParamsCategory.
+const (
+	Account    FeedbackServiceListAdminFeedbacksParamsCategory = "account"
+	Bug        FeedbackServiceListAdminFeedbacksParamsCategory = "bug"
+	Content    FeedbackServiceListAdminFeedbacksParamsCategory = "content"
+	Other      FeedbackServiceListAdminFeedbacksParamsCategory = "other"
+	Suggestion FeedbackServiceListAdminFeedbacksParamsCategory = "suggestion"
+)
+
+// Valid indicates whether the value is a known member of the FeedbackServiceListAdminFeedbacksParamsCategory enum.
+func (e FeedbackServiceListAdminFeedbacksParamsCategory) Valid() bool {
+	switch e {
+	case Account:
+		return true
+	case Bug:
+		return true
+	case Content:
+		return true
+	case Other:
+		return true
+	case Suggestion:
 		return true
 	default:
 		return false
@@ -1227,6 +1308,8 @@ type AdminPigeonReviewPageResponseBody struct {
 
 // AdminPostDetailData defines model for AdminPostDetailData.
 type AdminPostDetailData struct {
+	// AnonymousName 同 AdminPostSummary
+	AnonymousName         *string     `json:"anonymous_name,omitempty"`
 	Post                  *PostDetail `json:"post,omitempty"`
 	PublishedByOperatorId *string     `json:"published_by_operator_id,omitempty"`
 	RealAuthorUserId      *string     `json:"real_author_user_id,omitempty"`
@@ -1262,9 +1345,15 @@ type AdminPostListResponseBody struct {
 // AdminPostSummary AdminPostSummary 额外暴露官方号帖背后的操作运营。
 // 该字段只在管理面出现，用户面的 Author 永不携带。
 type AdminPostSummary struct {
+	// AnonymousName anonymousName 只在匿名帖上有值。管理面的 author 始终是真实作者，用户面看到的是这个花名。
+	AnonymousName *string `json:"anonymous_name,omitempty"`
+
 	// Author Author 是作者的展示投影。
 	// // id 对用户作者是平台用户主键、对应用作者是应用 ID，两者都可直接用于对应的主页路径。
 	// 用户不以学号标识：学号可枚举，其编码本身还泄露学院与年级。
+	// // kind=anonymous 是匿名帖的作者（含该作者在自己匿名帖下的评论与互动）：displayName 是
+	// 这条帖子的花名，id 形如 anon_<帖子 ID>，只在同一条帖子内稳定（用于挂「作者」标），
+	// 不对应任何主页，不可关注；不带头像。
 	Author *Author `json:"author,omitempty"`
 	Brief  *string `json:"brief,omitempty"`
 
@@ -1827,12 +1916,15 @@ type AuthenUserInfoRespBody struct {
 // Author Author 是作者的展示投影。
 // // id 对用户作者是平台用户主键、对应用作者是应用 ID，两者都可直接用于对应的主页路径。
 // 用户不以学号标识：学号可枚举，其编码本身还泄露学院与年级。
+// // kind=anonymous 是匿名帖的作者（含该作者在自己匿名帖下的评论与互动）：displayName 是
+// 这条帖子的花名，id 形如 anon_<帖子 ID>，只在同一条帖子内稳定（用于挂「作者」标），
+// 不对应任何主页，不可关注；不带头像。
 type Author struct {
 	AvatarUrl   *string `json:"avatar_url,omitempty"`
 	DisplayName *string `json:"display_name,omitempty"`
 	Id          *string `json:"id,omitempty"`
 
-	// Kind user | app
+	// Kind user | app | anonymous
 	Kind *string `json:"kind,omitempty"`
 
 	// Verified 官方号认证标识
@@ -2708,16 +2800,23 @@ type Comment struct {
 	// Author Author 是作者的展示投影。
 	// // id 对用户作者是平台用户主键、对应用作者是应用 ID，两者都可直接用于对应的主页路径。
 	// 用户不以学号标识：学号可枚举，其编码本身还泄露学院与年级。
-	Author       *Author           `json:"author,omitempty"`
-	CanWithdraw  *bool             `json:"can_withdraw,omitempty"`
-	Content      *[][]RichTextNode `json:"content,omitempty"`
-	CreatedAt    *int64            `json:"created_at,omitempty"`
-	Id           *string           `json:"id,omitempty"`
-	ParentId     *string           `json:"parent_id,omitempty"`
-	PostId       *string           `json:"post_id,omitempty"`
-	Reactions    *ReactionSummary  `json:"reactions,omitempty"`
-	ReplyCount   *int32            `json:"reply_count,omitempty"`
-	ReportedByMe *bool             `json:"reported_by_me,omitempty"`
+	// // kind=anonymous 是匿名帖的作者（含该作者在自己匿名帖下的评论与互动）：displayName 是
+	// 这条帖子的花名，id 形如 anon_<帖子 ID>，只在同一条帖子内稳定（用于挂「作者」标），
+	// 不对应任何主页，不可关注；不带头像。
+	Author      *Author           `json:"author,omitempty"`
+	CanWithdraw *bool             `json:"can_withdraw,omitempty"`
+	Content     *[][]RichTextNode `json:"content,omitempty"`
+	CreatedAt   *int64            `json:"created_at,omitempty"`
+	Id          *string           `json:"id,omitempty"`
+	ParentId    *string           `json:"parent_id,omitempty"`
+
+	// PinnedForFocus pinnedForFocus 只出现在按 focus 置顶的那一条上（值为 true），供客户端闪一下定位；
+	// 其余评论不带这个字段。
+	PinnedForFocus *bool            `json:"pinned_for_focus,omitempty"`
+	PostId         *string          `json:"post_id,omitempty"`
+	Reactions      *ReactionSummary `json:"reactions,omitempty"`
+	ReplyCount     *int32           `json:"reply_count,omitempty"`
+	ReportedByMe   *bool            `json:"reported_by_me,omitempty"`
 
 	// Status published | taken_down
 	Status *string `json:"status,omitempty"`
@@ -3072,10 +3171,17 @@ type CreateElectricityMeterRequestBody struct {
 
 // CreateFeedbackRequestBody defines model for CreateFeedbackRequestBody.
 type CreateFeedbackRequestBody struct {
-	Content   string           `json:"content"`
-	Context   *FeedbackContext `json:"context,omitempty"`
-	ImageKeys *[]string        `json:"imageKeys,omitempty"`
+	// Category bug=功能异常 suggestion=功能建议 content=内容问题 account=账号问题 other=其他。
+	// 缺省或空串按 other 入库，兼容不认识分类的老客户端；其余值返回 400。
+	Category  *CreateFeedbackRequestBodyCategory `json:"category,omitempty"`
+	Content   string                             `json:"content"`
+	Context   *FeedbackContext                   `json:"context,omitempty"`
+	ImageKeys *[]string                          `json:"imageKeys,omitempty"`
 }
+
+// CreateFeedbackRequestBodyCategory bug=功能异常 suggestion=功能建议 content=内容问题 account=账号问题 other=其他。
+// 缺省或空串按 other 入库，兼容不认识分类的老客户端；其余值返回 400。
+type CreateFeedbackRequestBodyCategory string
 
 // CreateGradeChatGroupRequestBody defines model for CreateGradeChatGroupRequestBody.
 type CreateGradeChatGroupRequestBody struct {
@@ -3450,6 +3556,20 @@ type CursorPostListResponseBody struct {
 	Code *int64              `json:"code,omitempty"`
 	Data *CursorPostListData `json:"data,omitempty"`
 	Msg  *string             `json:"msg,omitempty"`
+}
+
+// CursorReactedCommentListData defines model for CursorReactedCommentListData.
+type CursorReactedCommentListData struct {
+	HasMore    *bool             `json:"has_more,omitempty"`
+	List       *[]ReactedComment `json:"list,omitempty"`
+	NextCursor *string           `json:"next_cursor,omitempty"`
+}
+
+// CursorReactedCommentListResponseBody defines model for CursorReactedCommentListResponseBody.
+type CursorReactedCommentListResponseBody struct {
+	Code *int64                        `json:"code,omitempty"`
+	Data *CursorReactedCommentListData `json:"data,omitempty"`
+	Msg  *string                       `json:"msg,omitempty"`
 }
 
 // DeleteAdminNoticeResponseBody defines model for DeleteAdminNoticeResponseBody.
@@ -4274,19 +4394,24 @@ type FeedbackContext struct {
 
 // FeedbackItem defines model for FeedbackItem.
 type FeedbackItem struct {
-	Content      *string          `json:"content,omitempty"`
-	Context      *FeedbackContext `json:"context,omitempty"`
-	CreatedAt    *int64           `json:"createdAt,omitempty"`
-	HandledById  *string          `json:"handledById,omitempty"`
-	Id           *string          `json:"id,omitempty"`
-	ImageKeys    *[]string        `json:"imageKeys,omitempty"`
-	Images       *[]UploadData    `json:"images,omitempty"`
-	ReplyContent *string          `json:"replyContent,omitempty"`
-	ReplyTaskId  *string          `json:"replyTaskId,omitempty"`
-	Status       *string          `json:"status,omitempty"`
-	UpdatedAt    *int64           `json:"updatedAt,omitempty"`
-	UserId       *string          `json:"userId,omitempty"`
+	// Category 老客户端不传分类，入库时记为 other，因此这里恒有值。
+	Category     *FeedbackItemCategory `json:"category,omitempty"`
+	Content      *string               `json:"content,omitempty"`
+	Context      *FeedbackContext      `json:"context,omitempty"`
+	CreatedAt    *int64                `json:"createdAt,omitempty"`
+	HandledById  *string               `json:"handledById,omitempty"`
+	Id           *string               `json:"id,omitempty"`
+	ImageKeys    *[]string             `json:"imageKeys,omitempty"`
+	Images       *[]UploadData         `json:"images,omitempty"`
+	ReplyContent *string               `json:"replyContent,omitempty"`
+	ReplyTaskId  *string               `json:"replyTaskId,omitempty"`
+	Status       *string               `json:"status,omitempty"`
+	UpdatedAt    *int64                `json:"updatedAt,omitempty"`
+	UserId       *string               `json:"userId,omitempty"`
 }
+
+// FeedbackItemCategory 老客户端不传分类，入库时记为 other，因此这里恒有值。
+type FeedbackItemCategory string
 
 // FeedbackPage defines model for FeedbackPage.
 type FeedbackPage struct {
@@ -6477,9 +6602,15 @@ type PopularResponseBody struct {
 // PostCard ---------- 帖子 ----------
 // PostCard 是瀑布流卡片投影：只带封面与摘要，不含正文节点，使列表页不必拉全文。
 type PostCard struct {
+	// Anonymous anonymous 只在匿名帖上出现且为 true，此时 author.kind=anonymous。
+	Anonymous *bool `json:"anonymous,omitempty"`
+
 	// Author Author 是作者的展示投影。
 	// // id 对用户作者是平台用户主键、对应用作者是应用 ID，两者都可直接用于对应的主页路径。
 	// 用户不以学号标识：学号可枚举，其编码本身还泄露学院与年级。
+	// // kind=anonymous 是匿名帖的作者（含该作者在自己匿名帖下的评论与互动）：displayName 是
+	// 这条帖子的花名，id 形如 anon_<帖子 ID>，只在同一条帖子内稳定（用于挂「作者」标），
+	// 不对应任何主页，不可关注；不带头像。
 	Author      *Author   `json:"author,omitempty"`
 	Brief       *string   `json:"brief,omitempty"`
 	CategoryIds *[]string `json:"category_ids,omitempty"`
@@ -6489,11 +6620,14 @@ type PostCard struct {
 
 	// Cover PostImage 携带宽高，供双列瀑布流在图片加载前占位，避免布局跳动。
 	// 上传不限图片比例，展示按定宽等比缩放。
-	Cover     *PostImage    `json:"cover,omitempty"`
-	CreatedAt *int64        `json:"created_at,omitempty"`
-	Hashtags  *[]string     `json:"hashtags,omitempty"`
-	Id        *string       `json:"id,omitempty"`
-	Location  *PostLocation `json:"location,omitempty"`
+	Cover     *PostImage `json:"cover,omitempty"`
+	CreatedAt *int64     `json:"created_at,omitempty"`
+	Hashtags  *[]string  `json:"hashtags,omitempty"`
+	Id        *string    `json:"id,omitempty"`
+
+	// IsMine isMine 同 PostViewerState.isMine，供「我的笔记」与信息流给本人的匿名帖打标。
+	IsMine   *bool         `json:"is_mine,omitempty"`
+	Location *PostLocation `json:"location,omitempty"`
 
 	// ReactedByMe 观察者是否已点「赞」（like 表情），供瀑布流卡片直接点赞。观察者态，只对
 	// 登录用户下发；匿名与应用主体不下发。其他表情不计入。
@@ -6526,9 +6660,15 @@ type PostCountersResponseBody struct {
 
 // PostDetail defines model for PostDetail.
 type PostDetail struct {
+	// Anonymous anonymous 同 PostCard.anonymous。
+	Anonymous *bool `json:"anonymous,omitempty"`
+
 	// Author Author 是作者的展示投影。
 	// // id 对用户作者是平台用户主键、对应用作者是应用 ID，两者都可直接用于对应的主页路径。
 	// 用户不以学号标识：学号可枚举，其编码本身还泄露学院与年级。
+	// // kind=anonymous 是匿名帖的作者（含该作者在自己匿名帖下的评论与互动）：displayName 是
+	// 这条帖子的花名，id 形如 anon_<帖子 ID>，只在同一条帖子内稳定（用于挂「作者」标），
+	// 不对应任何主页，不可关注；不带头像。
 	Author      *Author           `json:"author,omitempty"`
 	CategoryIds *[]string         `json:"category_ids,omitempty"`
 	Content     *[][]RichTextNode `json:"content,omitempty"`
@@ -6614,11 +6754,17 @@ type PostVersionListResponseBody struct {
 
 // PostViewerState PostViewerState 是观察者态，随调用者变化，不可跨用户缓存。
 type PostViewerState struct {
-	CanEdit         *bool `json:"can_edit,omitempty"`
-	CanWithdraw     *bool `json:"can_withdraw,omitempty"`
-	Collected       *bool `json:"collected,omitempty"`
+	CanEdit     *bool `json:"can_edit,omitempty"`
+	CanWithdraw *bool `json:"can_withdraw,omitempty"`
+	Collected   *bool `json:"collected,omitempty"`
+
+	// FollowingAuthor 匿名帖恒为 false
 	FollowingAuthor *bool `json:"following_author,omitempty"`
-	ReportedByMe    *bool `json:"reported_by_me,omitempty"`
+
+	// IsMine isMine 表示调用者就是这条帖子的真实作者。匿名帖的 author 不再能和本人对上，
+	// 客户端靠它给本人显示「匿名发布」。只对用户主体下发。
+	IsMine       *bool `json:"is_mine,omitempty"`
+	ReportedByMe *bool `json:"reported_by_me,omitempty"`
 }
 
 // PostWithdrawData PostWithdrawData 让前端从流里移除卡片并同步作者帖子数，无需重新拉流。
@@ -6818,6 +6964,10 @@ type PublishPostData struct {
 
 // PublishPostRequestBody defines model for PublishPostRequestBody.
 type PublishPostRequestBody struct {
+	// Anonymous anonymous 为 true 时以服务端生成的花名发布（形如「害羞的小鲸鱼」，每帖一个、永不改变）。
+	// 仅用户主体可用；匿名帖不计入作者帖子数、不进他人视角的主页与关注流。发布后不可更改。
+	Anonymous *bool `json:"anonymous,omitempty"`
+
 	// CategoryIds 一帖可属多个板块
 	CategoryIds *[]string         `json:"category_ids,omitempty"`
 	Content     *[][]RichTextNode `json:"content,omitempty"`
@@ -6879,6 +7029,19 @@ type QAStrategyItem struct {
 // ReactRequestBody defines model for ReactRequestBody.
 type ReactRequestBody struct {
 	Type *string `json:"type,omitempty"`
+}
+
+// ReactedComment ReactedComment 是「赞过」里的一条评论。post 是评论所在帖子的卡片，供渲染出处
+// （标题、摘要、封面）并跳到帖子；reactedAt 是本人对这条评论最近一次表情的时间。
+// 同一条评论点过多个表情只出现一次。
+type ReactedComment struct {
+	// Comment ---------- 评论 ----------
+	Comment *Comment `json:"comment,omitempty"`
+
+	// Post ---------- 帖子 ----------
+	// PostCard 是瀑布流卡片投影：只带封面与摘要，不含正文节点，使列表页不必拉全文。
+	Post      *PostCard `json:"post,omitempty"`
+	ReactedAt *int64    `json:"reacted_at,omitempty"`
 }
 
 // ReactionBucket ReactionBucket 是单个表情的聚合。reactedByMe 属于观察者态，随调用者变化。
@@ -10037,13 +10200,17 @@ type AdminServiceUpdateElectricityMeterParams struct {
 
 // FeedbackServiceListAdminFeedbacksParams defines parameters for FeedbackServiceListAdminFeedbacks.
 type FeedbackServiceListAdminFeedbacksParams struct {
-	Status   *FeedbackServiceListAdminFeedbacksParamsStatus `form:"status,omitempty" json:"status,omitempty"`
-	Page     *int32                                         `form:"page,omitempty" json:"page,omitempty"`
-	PageSize *int32                                         `form:"page_size,omitempty" json:"page_size,omitempty"`
+	Status   *FeedbackServiceListAdminFeedbacksParamsStatus   `form:"status,omitempty" json:"status,omitempty"`
+	Category *FeedbackServiceListAdminFeedbacksParamsCategory `form:"category,omitempty" json:"category,omitempty"`
+	Page     *int32                                           `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32                                           `form:"page_size,omitempty" json:"page_size,omitempty"`
 }
 
 // FeedbackServiceListAdminFeedbacksParamsStatus defines parameters for FeedbackServiceListAdminFeedbacks.
 type FeedbackServiceListAdminFeedbacksParamsStatus string
+
+// FeedbackServiceListAdminFeedbacksParamsCategory defines parameters for FeedbackServiceListAdminFeedbacks.
+type FeedbackServiceListAdminFeedbacksParamsCategory string
 
 // KnowledgeServiceAdminListAuditParams defines parameters for KnowledgeServiceAdminListAudit.
 type KnowledgeServiceAdminListAuditParams struct {
@@ -10990,6 +11157,10 @@ type MomentsServiceUnreactCommentParams struct {
 type MomentsServiceListRepliesParams struct {
 	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 	Limit  *int32  `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Focus focus 是要定位的回复 ID，语义同 PostCommentsRequest.focus：只有它属于这条一级评论且仍已发布
+	// 才置顶到首页最前；翻后续页须带上同一个 focus。
+	Focus *string `form:"focus,omitempty" json:"focus,omitempty"`
 }
 
 // MomentsServiceGetFeedParams defines parameters for MomentsServiceGetFeed.
@@ -11010,6 +11181,12 @@ type MomentsServiceSuggestHashtagsParams struct {
 
 // MomentsServiceListMyCollectionsParams defines parameters for MomentsServiceListMyCollections.
 type MomentsServiceListMyCollectionsParams struct {
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit  *int32  `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// MomentsServiceListMyCommentReactionsParams defines parameters for MomentsServiceListMyCommentReactions.
+type MomentsServiceListMyCommentReactionsParams struct {
 	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 	Limit  *int32  `form:"limit,omitempty" json:"limit,omitempty"`
 }
@@ -11051,6 +11228,18 @@ type MomentsServiceListOfficialAccountPostsParams struct {
 type MomentsServiceListCommentsParams struct {
 	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 	Limit  *int32  `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Sort sort 取 default（先发先看，缺省）| latest（最新在前）| most_liked（表情总数多的在前，
+	// 同数按最新在前）；不认识的值按 default。游标与排序绑定，换排序要从首页重新拉，
+	// 带着另一种排序的游标会被当作无效游标拒绝。
+	Sort *string `form:"sort,omitempty" json:"sort,omitempty"`
+
+	// Focus focus 是通知跳转要定位的评论 ID；是回复时取它的一级评论。该一级评论确属本帖且仍已发布时，
+	// 首页（不带 cursor）把它放在最前并标 pinned_for_focus，其后照常按 sort 取满 limit 条——
+	// 置顶那条不占 limit，has_more 与 next_cursor 只看其后的常规条目。翻后续页时客户端须带上
+	// 同一个 focus，服务端据此把它从常规结果里剔除，整串翻下来不重复也不漏。
+	// 评论不存在、已撤回或下架、不属于本帖时静默忽略，照常返回列表（通知可能指向已删的评论）。
+	Focus *string `form:"focus,omitempty" json:"focus,omitempty"`
 }
 
 // MomentsServiceUnreactPostParams defines parameters for MomentsServiceUnreactPost.

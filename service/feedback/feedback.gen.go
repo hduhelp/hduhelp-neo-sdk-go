@@ -38,6 +38,12 @@ func (b *ListAdminFeedbacksReqBuilder) Status(v string) *ListAdminFeedbacksReqBu
 	return b
 }
 
+// Category sets the "category" query parameter.
+func (b *ListAdminFeedbacksReqBuilder) Category(v string) *ListAdminFeedbacksReqBuilder {
+	b.req.queryParams["category"] = v
+	return b
+}
+
 // Page sets the "page" query parameter.
 func (b *ListAdminFeedbacksReqBuilder) Page(v int32) *ListAdminFeedbacksReqBuilder {
 	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)

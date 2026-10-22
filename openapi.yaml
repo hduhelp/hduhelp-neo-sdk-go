@@ -2359,6 +2359,16 @@ paths:
                         - pending
                         - handled
                     type: string
+                - name: category
+                  in: query
+                  schema:
+                    enum:
+                        - bug
+                        - suggestion
+                        - content
+                        - account
+                        - other
+                    type: string
                 - name: page
                   in: query
                   schema:
@@ -10350,6 +10360,13 @@ paths:
                   schema:
                     type: integer
                     format: int32
+                - name: focus
+                  in: query
+                  description: |-
+                    focus 是要定位的回复 ID，语义同 PostCommentsRequest.focus：只有它属于这条一级评论且仍已发布
+                    才置顶到首页最前；翻后续页须带上同一个 focus。
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -10512,6 +10529,33 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/CursorPostListResponseBody'
+            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer'}
+    /hduhelp-neo/moments/me/comment-reactions:
+        get:
+            tags:
+                - MomentsService
+            summary: 我表情回复过的评论
+            description: 按最近一次表情倒序，每条带所在帖子的卡片；已撤回、已下架的评论，所在一级评论已失效的回复，以及帖子已对本人不可见的评论都不列出
+            operationId: MomentsService_ListMyCommentReactions
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: cursor
+                  in: query
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CursorReactedCommentListResponseBody'
             x-hduhelp-http: {'requires_user': true, 'auth': 'bearer'}
     /hduhelp-neo/moments/me/inbox/likes:
         get:
@@ -10961,6 +11005,24 @@ paths:
                   schema:
                     type: integer
                     format: int32
+                - name: sort
+                  in: query
+                  description: |-
+                    sort 取 default（先发先看，缺省）| latest（最新在前）| most_liked（表情总数多的在前，
+                    同数按最新在前）；不认识的值按 default。游标与排序绑定，换排序要从首页重新拉，
+                    带着另一种排序的游标会被当作无效游标拒绝。
+                  schema:
+                    type: string
+                - name: focus
+                  in: query
+                  description: |-
+                    focus 是通知跳转要定位的评论 ID；是回复时取它的一级评论。该一级评论确属本帖且仍已发布时，
+                    首页（不带 cursor）把它放在最前并标 pinned_for_focus，其后照常按 sort 取满 limit 条——
+                    置顶那条不占 limit，has_more 与 next_cursor 只看其后的常规条目。翻后续页时客户端须带上
+                    同一个 focus，服务端据此把它从常规结果里剔除，整串翻下来不重复也不漏。
+                    评论不存在、已撤回或下架、不属于本帖时静默忽略，照常返回列表（通知可能指向已删的评论）。
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -13061,6 +13123,9 @@ components:
                 report_count:
                     type: integer
                     format: int32
+                anonymous_name:
+                    type: string
+                    description: 同 AdminPostSummary
         AdminPostDetailResponseBody:
             type: object
             properties:
@@ -13133,6 +13198,9 @@ components:
                 created_at:
                     type: integer
                     format: int64
+                anonymous_name:
+                    type: string
+                    description: anonymousName 只在匿名帖上有值。管理面的 author 始终是真实作者，用户面看到的是这个花名。
             description: |-
                 AdminPostSummary 额外暴露官方号帖背后的操作运营。
                 该字段只在管理面出现，用户面的 Author 永不携带。
@@ -13957,7 +14025,7 @@ components:
             properties:
                 kind:
                     type: string
-                    description: user | app
+                    description: user | app | anonymous
                 id:
                     type: string
                 display_name:
@@ -13971,6 +14039,9 @@ components:
                 Author 是作者的展示投影。
                 // id 对用户作者是平台用户主键、对应用作者是应用 ID，两者都可直接用于对应的主页路径。
                 用户不以学号标识：学号可枚举，其编码本身还泄露学院与年级。
+                // kind=anonymous 是匿名帖的作者（含该作者在自己匿名帖下的评论与互动）：displayName 是
+                这条帖子的花名，id 形如 anon_<帖子 ID>，只在同一条帖子内稳定（用于挂「作者」标），
+                不对应任何主页，不可关注；不带头像。
         AuthorizationListResponseBody:
             type: object
             properties:
@@ -15246,6 +15317,11 @@ components:
                 created_at:
                     type: integer
                     format: int64
+                pinned_for_focus:
+                    type: boolean
+                    description: |-
+                        pinnedForFocus 只出现在按 focus 置顶的那一条上（值为 true），供客户端闪一下定位；
+                        其余评论不带这个字段。
             description: '---------- 评论 ----------'
         CommentMutationData:
             type: object
@@ -15860,6 +15936,17 @@ components:
                     type: array
                     items:
                         type: string
+                category:
+                    enum:
+                        - bug
+                        - suggestion
+                        - content
+                        - account
+                        - other
+                    type: string
+                    description: |-
+                        bug=功能异常 suggestion=功能建议 content=内容问题 account=账号问题 other=其他。
+                        缺省或空串按 other 入库，兼容不认识分类的老客户端；其余值返回 400。
         CreateGradeChatGroupRequestBody:
             type: object
             properties:
@@ -16374,6 +16461,27 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/CursorPostListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        CursorReactedCommentListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ReactedComment'
+                next_cursor:
+                    type: string
+                has_more:
+                    type: boolean
+        CursorReactedCommentListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/CursorReactedCommentListData'
                 code:
                     type: integer
                     format: int64
@@ -17657,6 +17765,15 @@ components:
                 updatedAt:
                     type: integer
                     format: int64
+                category:
+                    enum:
+                        - bug
+                        - suggestion
+                        - content
+                        - account
+                        - other
+                    type: string
+                    description: 老客户端不传分类，入库时记为 other，因此这里恒有值。
         FeedbackPage:
             type: object
             properties:
@@ -21024,6 +21141,12 @@ components:
                     description: |-
                         观察者是否已点「赞」（like 表情），供瀑布流卡片直接点赞。观察者态，只对
                         登录用户下发；匿名与应用主体不下发。其他表情不计入。
+                anonymous:
+                    type: boolean
+                    description: anonymous 只在匿名帖上出现且为 true，此时 author.kind=anonymous。
+                is_mine:
+                    type: boolean
+                    description: isMine 同 PostViewerState.isMine，供「我的笔记」与信息流给本人的匿名帖打标。
             description: |-
                 ---------- 帖子 ----------
                 PostCard 是瀑布流卡片投影：只带封面与摘要，不含正文节点，使列表页不必拉全文。
@@ -21116,6 +21239,9 @@ components:
                 updated_at:
                     type: integer
                     format: int64
+                anonymous:
+                    type: boolean
+                    description: anonymous 同 PostCard.anonymous。
         PostDetailResponseBody:
             type: object
             properties:
@@ -21208,12 +21334,18 @@ components:
                     type: boolean
                 following_author:
                     type: boolean
+                    description: 匿名帖恒为 false
                 can_withdraw:
                     type: boolean
                 can_edit:
                     type: boolean
                 reported_by_me:
                     type: boolean
+                is_mine:
+                    type: boolean
+                    description: |-
+                        isMine 表示调用者就是这条帖子的真实作者。匿名帖的 author 不再能和本人对上，
+                        客户端靠它给本人显示「匿名发布」。只对用户主体下发。
             description: PostViewerState 是观察者态，随调用者变化，不可跨用户缓存。
         PostWithdrawData:
             type: object
@@ -21542,6 +21674,11 @@ components:
                     items:
                         type: string
                     description: 一帖可属多个板块
+                anonymous:
+                    type: boolean
+                    description: |-
+                        anonymous 为 true 时以服务端生成的花名发布（形如「害羞的小鲸鱼」，每帖一个、永不改变）。
+                        仅用户主体可用；匿名帖不计入作者帖子数、不进他人视角的主页与关注流。发布后不可更改。
         PublishPostResponseBody:
             type: object
             properties:
@@ -21607,6 +21744,20 @@ components:
             properties:
                 type:
                     type: string
+        ReactedComment:
+            type: object
+            properties:
+                comment:
+                    $ref: '#/components/schemas/Comment'
+                post:
+                    $ref: '#/components/schemas/PostCard'
+                reacted_at:
+                    type: integer
+                    format: int64
+            description: |-
+                ReactedComment 是「赞过」里的一条评论。post 是评论所在帖子的卡片，供渲染出处
+                （标题、摘要、封面）并跳到帖子；reactedAt 是本人对这条评论最近一次表情的时间。
+                同一条评论点过多个表情只出现一次。
         ReactionBucket:
             type: object
             properties:

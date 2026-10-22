@@ -1950,6 +1950,12 @@ func (b *ListRepliesReqBuilder) Limit(v int32) *ListRepliesReqBuilder {
 	return b
 }
 
+// Focus sets the "focus" query parameter: focus 是要定位的回复 ID，语义同 PostCommentsRequest.focus：只有它属于这条一级评论且仍已发布
+func (b *ListRepliesReqBuilder) Focus(v string) *ListRepliesReqBuilder {
+	b.req.queryParams["focus"] = v
+	return b
+}
+
 // Build finalizes the request.
 func (b *ListRepliesReqBuilder) Build() *ListRepliesReq { return b.req }
 
@@ -2278,6 +2284,58 @@ func (s *Service) ListMyCollections(ctx context.Context, req *ListMyCollectionsR
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/moments/me/collections",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ListMyCommentReactionsReq is the request for ListMyCommentReactions.
+type ListMyCommentReactionsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListMyCommentReactionsReqBuilder builds a ListMyCommentReactionsReq with a fluent setter per field.
+type ListMyCommentReactionsReqBuilder struct{ req *ListMyCommentReactionsReq }
+
+// NewListMyCommentReactionsReqBuilder creates a request builder for ListMyCommentReactions.
+func NewListMyCommentReactionsReqBuilder() *ListMyCommentReactionsReqBuilder {
+	return &ListMyCommentReactionsReqBuilder{req: &ListMyCommentReactionsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Cursor sets the "cursor" query parameter.
+func (b *ListMyCommentReactionsReqBuilder) Cursor(v string) *ListMyCommentReactionsReqBuilder {
+	b.req.queryParams["cursor"] = v
+	return b
+}
+
+// Limit sets the "limit" query parameter.
+func (b *ListMyCommentReactionsReqBuilder) Limit(v int32) *ListMyCommentReactionsReqBuilder {
+	b.req.queryParams["limit"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *ListMyCommentReactionsReqBuilder) Build() *ListMyCommentReactionsReq { return b.req }
+
+// ListMyCommentReactionsResp is the response for ListMyCommentReactions.
+type ListMyCommentReactionsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.CursorReactedCommentListData `json:"data"`
+}
+
+// ListMyCommentReactions: 我表情回复过的评论
+func (s *Service) ListMyCommentReactions(ctx context.Context, req *ListMyCommentReactionsReq, opts ...core.RequestOption) (*ListMyCommentReactionsResp, error) {
+	resp := &ListMyCommentReactionsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/moments/me/comment-reactions",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -3175,6 +3233,18 @@ func (b *ListCommentsReqBuilder) Cursor(v string) *ListCommentsReqBuilder {
 // Limit sets the "limit" query parameter.
 func (b *ListCommentsReqBuilder) Limit(v int32) *ListCommentsReqBuilder {
 	b.req.queryParams["limit"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Sort sets the "sort" query parameter: sort 取 default（先发先看，缺省）| latest（最新在前）| most_liked（表情总数多的在前，
+func (b *ListCommentsReqBuilder) Sort(v string) *ListCommentsReqBuilder {
+	b.req.queryParams["sort"] = v
+	return b
+}
+
+// Focus sets the "focus" query parameter: focus 是通知跳转要定位的评论 ID；是回复时取它的一级评论。该一级评论确属本帖且仍已发布时，
+func (b *ListCommentsReqBuilder) Focus(v string) *ListCommentsReqBuilder {
+	b.req.queryParams["focus"] = v
 	return b
 }
 
