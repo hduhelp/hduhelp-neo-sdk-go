@@ -472,7 +472,7 @@ paths:
             tags:
                 - AcademicService
             summary: 获取学年学期配置
-            description: 返回学期学年表，以及课程查询/课表/考试/成绩各自的可选学年学期与默认值（读自后台系统配置 academic.terms，与教务Oracle无关，全局公开，无需登录/学号）
+            description: 返回学期学年表，以及课程查询/课表/考试/成绩各自的可选学年学期与默认值（读自后台系统配置 academic.terms，与教务Oracle无关，全局公开，无需登录/学号）。只是界面筛选项，不含日期与教学周；问校历、第几周或剩余周数用 schooltime time 或 semester list-by-date
             operationId: AcademicService_AcademicConfig
             responses:
                 "200":
@@ -1634,14 +1634,19 @@ paths:
             tags:
                 - AcademicService
             summary: 按日期范围查询学期列表
+            description: 返回校历窗口与 [start_date, end_date] 有交集的学期，含各学期第 1 周首日、结束日与总教学周数；state=1 为当前学期。只问当前学期与周次时优先用 schooltime time
             operationId: AcademicService_SemesterListByDate
             parameters:
                 - name: start_date
                   in: query
+                  description: |-
+                    yyyy-MM-dd，含当天。与 end_date 组成闭区间，返回校历窗口与之有交集的学期；
+                    查某一天所在学期就把两者都设为那一天。都不传返回全部学期。
                   schema:
                     type: string
                 - name: end_date
                   in: query
+                  description: yyyy-MM-dd，含当天，不得早于 start_date。
                   schema:
                     type: string
             responses:
@@ -1657,7 +1662,7 @@ paths:
             tags:
                 - AcademicService
             summary: 查询当前校历时间
-            description: '---- 校历时间 ----'
+            description: 返回今天所在的学年、学期、第几教学周、星期几与当前节次，以及本学期第 1 周首日、校历结束日与总教学周数（可直接算剩余周数）。数据来自教务校历，无需登录或学号
             operationId: AcademicService_SchoolTime
             responses:
                 "200":
@@ -6113,6 +6118,27 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SetUserDefaultIdentityResponseBody'
+    /hduhelp-neo/admin/users/impersonation:
+        post:
+            tags:
+                - AdminService
+            summary: 管理员代登录用户
+            description: 仅具备独立代登录权限的管理员可填写原因后签发短时普通用户会话；记录操作者、目标用户和会话 ID。该会话的业务操作按目标用户身份执行。
+            operationId: AdminService_IssueUserSession
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/IssueUserSessionRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/IssueUserSessionResponseBody'
     /hduhelp-neo/admin/volunteer-admin/activities:
         get:
             tags:
@@ -6690,12 +6716,14 @@ paths:
             tags:
                 - CampusLifeService
             summary: 查询校园卡余额
+            description: 返回本人校园卡（一卡通）当前余额（元）
             operationId: CampusLifeService_CardBalance
             security:
                 - BearerAuth: []
             parameters:
                 - name: X-Staff-Id
                   in: header
+                  description: 仅应用（tenant）令牌代查时必填学号；用户本人的令牌调用时不要传，默认查本人
                   schema:
                     type: string
             responses:
@@ -6711,12 +6739,14 @@ paths:
             tags:
                 - CampusLifeService
             summary: 查询校园卡消费流水
+            description: 返回本人校园卡（一卡通）最近最多 100 条交易，新→旧；不支持按日期筛选，问某段时间的花费时按 createdAt 自行筛选并只对负数 totalFee 求和。条数不足以覆盖所问时段时应如实说明
             operationId: CampusLifeService_CardConsume
             security:
                 - BearerAuth: []
             parameters:
                 - name: X-Staff-Id
                   in: header
+                  description: 仅应用（tenant）令牌代查时必填学号；用户本人的令牌调用时不要传，默认查本人
                   schema:
                     type: string
             responses:
@@ -6732,12 +6762,14 @@ paths:
             tags:
                 - CampusLifeService
             summary: 查询校园卡信息
+            description: 一次返回本人校园卡（一卡通）当前余额、今日支出合计和最近最多 100 条流水（同 card consume）。问一卡通概况时优先用它
             operationId: CampusLifeService_CardInfo
             security:
                 - BearerAuth: []
             parameters:
                 - name: X-Staff-Id
                   in: header
+                  description: 仅应用（tenant）令牌代查时必填学号；用户本人的令牌调用时不要传，默认查本人
                   schema:
                     type: string
             responses:
@@ -6780,6 +6812,7 @@ paths:
             tags:
                 - CampusLifeService
             summary: 查询宿舍电费余额(绑定电表)
+            description: 返回本人已绑定电表的当前余额（元）与寝室；未绑定电表时返回业务错误。只有余额，问用电量或某段时间电费用 electric history
             operationId: CampusLifeService_ElectricBalance
             security:
                 - BearerAuth: []
@@ -6893,6 +6926,7 @@ paths:
             tags:
                 - CampusLifeService
             summary: 查询近14天电费历史
+            description: 返回本人绑定电表近 14 天每天 0 点的余额快照（history），以及按用电日拆好、已扣除充值的每日用电消费（daily）和日均消费（average）。问“本周/最近几天电费”时对 daily 按 date 求和；daily 不含今天。无参数
             operationId: CampusLifeService_ElectricHistory
             security:
                 - BearerAuth: []
@@ -14616,23 +14650,27 @@ components:
             properties:
                 deviceName:
                     type: string
+                    description: 交易地点/终端名，如 “第一食堂”
                 deviceNum:
                     type: string
                 totalFee:
                     type: number
-                    description: 交易金额（元）
+                    description: 交易金额（元）：负数为支出，正数为充值或转入
                     format: double
                 feeName:
                     type: string
-                    description: 交易类型
+                    description: 交易类型，如 “消费”“第三方支付平台转账”
                 remaining:
                     type: number
-                    description: 交易后余额（元）
+                    description: 交易后余额（元）；转账类可能是中间快照，当前余额以 card balance 为准
                     format: double
                 createTime:
                     type: integer
-                    description: unix 秒
+                    description: unix 秒；上游时间无法解析时为 0
                     format: int64
+                createdAt:
+                    type: string
+                    description: 交易时间（服务器本地时区 Asia/Shanghai），yyyy-MM-dd HH:mm:ss；createTime 为 0 时不下发
             description: '---- 校园卡消费流水 ----'
         CardConsumeResponseBody:
             type: object
@@ -14653,7 +14691,7 @@ components:
                     format: double
                 todayFee:
                     type: number
-                    description: 今日消费（元）
+                    description: 今日支出合计（元，正数），只统计 flow 里今天的负数交易
                     format: double
                 flow:
                     type: array
@@ -16979,6 +17017,25 @@ components:
                     format: int64
                 msg:
                     type: string
+        ElectricDailyUsage:
+            type: object
+            properties:
+                date:
+                    type: string
+                    description: 用电日 YYYY-MM-DD：该日 0 点到次日 0 点。days>1 时为区间首日
+                days:
+                    type: integer
+                    description: 覆盖天数，通常为 1；中间缺快照时大于 1，此时 usage 是整段合计
+                    format: int32
+                usage:
+                    type: number
+                    description: 用电消费（元）= 期初余额 - 期末余额 + 期间充值；余额上升又找不到对应充值时不下发
+                    format: double
+                recharge:
+                    type: number
+                    description: 期间到账的充值（元）
+                    format: double
+            description: ElectricDailyUsage 是一段相邻快照之间的用电，已把期间到账的充值加回。
         ElectricFloorItem:
             type: object
             properties:
@@ -17006,22 +17063,31 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/ElectricHistoryItem'
+                    description: 新→旧
                 average:
                     type: string
-                    description: 日均消费（元）
+                    description: 日均用电消费（元）= 窗口内净消费 / 首末快照间隔天数；不足两个快照为 "0.00"
+                daily:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ElectricDailyUsage'
+                    description: 按用电日的消费，新→旧；不含今天（今天的快照要到明天 0 点才有）
         ElectricHistoryItem:
             type: object
             properties:
                 fee:
                     type: string
-                    description: 当日余额（元）
+                    description: time 当天 0 点的余额快照（元）
                 change:
                     type: string
-                    description: 相较前一日的变化（元），首日为 "-"
+                    description: 与上一个快照的差（元）：无符号为余额下降，"+" 前缀为余额上升（多为充值），最早一条为 "-"
                 time:
                     type: string
-                    description: 日期 YYYY-MM-DD
-            description: '---- 电费历史（近 14 天） ----'
+                    description: 快照日期 YYYY-MM-DD
+            description: |-
+                ---- 电费历史（近 14 天） ----
+                快照每天本地 0 点采一次，time 那天的 fee 是“当天开始时”的余额，因此 change 反映的是
+                前一天的用电。按日用电请读 ElectricHistoryData.daily，那里已按用电日归属并扣除充值。
         ElectricHistoryResponseBody:
             type: object
             properties:
@@ -17446,6 +17512,14 @@ components:
                         type: integer
                         format: int32
                     description: 端上设置占位
+                skipped:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/FeedItem'
+                    description: |-
+                        因 unbound/unauthorized/unsupported 而未取数的卡片（available=false，带
+                        unavailableReason）。单列而不并入 items，是为了不改变旧客户端对 items 的理解：
+                        items 里 available=false 仍只表示取数失败。
             description: FeedAggData 是信息流聚合结果。
         FeedAggResponseBody:
             type: object
@@ -17516,6 +17590,12 @@ components:
                     description: 该卡片本次是否取数成功
                 data:
                     $ref: '#/components/schemas/FeedCardData'
+                unavailableReason:
+                    type: string
+                    description: |-
+                        available=false 时的原因：unbound（未绑定学号，阳光长跑另要求 8 位学号）/
+                        unauthorized（会话缺该卡片所需 scope）/ upstream_error（已取数但失败或超时）/
+                        unsupported（服务端未接入该能力或未知卡片）。available=true 时不下发。
             description: FeedItem 是信息流中的单个卡片。name 为判别字段，data 只填 name 对应的负载字段。
         FeedTimeInfo:
             type: object
@@ -18585,6 +18665,36 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/InviteData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        IssueUserSessionData:
+            type: object
+            properties:
+                accessToken:
+                    type: string
+                refreshToken:
+                    type: string
+                accessTokenExpireAt:
+                    type: integer
+                    format: int64
+                refreshTokenExpireAt:
+                    type: integer
+                    format: int64
+        IssueUserSessionRequestBody:
+            type: object
+            properties:
+                user_id:
+                    type: string
+                reason:
+                    type: string
+        IssueUserSessionResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/IssueUserSessionData'
                 code:
                     type: integer
                     format: int64
@@ -20909,6 +21019,11 @@ components:
                 created_at:
                     type: integer
                     format: int64
+                reacted_by_me:
+                    type: boolean
+                    description: |-
+                        观察者是否已点「赞」（like 表情），供瀑布流卡片直接点赞。观察者态，只对
+                        登录用户下发；匿名与应用主体不下发。其他表情不计入。
             description: |-
                 ---------- 帖子 ----------
                 PostCard 是瀑布流卡片投影：只带封面与摘要，不含正文节点，使列表页不必拉全文。
@@ -22803,6 +22918,18 @@ components:
                     type: integer
                     description: 服务器时间戳（unix 秒）
                     format: int64
+                termStartDate:
+                    type: string
+                    description: |-
+                        本学期第 1 教学周首日，yyyy-MM-dd。termStartDate/termEndDate/termWeeks 取自覆盖
+                        今天的教务校历行，校历缺当前学期时都不下发（此时 weekNow=0，schoolYear/semester 按月份粗推）。
+                termEndDate:
+                    type: string
+                    description: 本学期校历覆盖的最后一天，yyyy-MM-dd
+                termWeeks:
+                    type: integer
+                    description: 本学期最大教学周；剩余教学周 = termWeeks - weekNow
+                    format: int32
             description: ==================== 校历时间（公开，无需学号） ====================
         SchoolTimeResponseBody:
             type: object
@@ -23134,14 +23261,16 @@ components:
             properties:
                 schoolYear:
                     type: string
+                    description: 学年全称，如 2026-2027
                 semester:
                     type: string
+                    description: 学期号 "1"（秋）/"2"（春）/"3"（短学期）
                 startDate:
                     type: string
-                    description: yyyy-MM-dd
+                    description: 第 1 教学周首日，yyyy-MM-dd
                 endDate:
                     type: string
-                    description: yyyy-MM-dd
+                    description: 校历覆盖的最后一天，yyyy-MM-dd
                 state:
                     type: integer
                     description: 1=当前学期

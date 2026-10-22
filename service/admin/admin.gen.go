@@ -2766,3 +2766,49 @@ func (s *Service) SetUserDefaultIdentity(ctx context.Context, req *SetUserDefaul
 	}, resp, opts...)
 	return resp, err
 }
+
+// IssueUserSessionReq is the request for IssueUserSession.
+type IssueUserSessionReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// IssueUserSessionReqBuilder builds a IssueUserSessionReq with a fluent setter per field.
+type IssueUserSessionReqBuilder struct{ req *IssueUserSessionReq }
+
+// NewIssueUserSessionReqBuilder creates a request builder for IssueUserSession.
+func NewIssueUserSessionReqBuilder() *IssueUserSessionReqBuilder {
+	return &IssueUserSessionReqBuilder{req: &IssueUserSessionReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *IssueUserSessionReqBuilder) Body(body *models.IssueUserSessionRequestBody) *IssueUserSessionReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *IssueUserSessionReqBuilder) Build() *IssueUserSessionReq { return b.req }
+
+// IssueUserSessionResp is the response for IssueUserSession.
+type IssueUserSessionResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.IssueUserSessionData `json:"data"`
+}
+
+// IssueUserSession: 管理员代登录用户
+func (s *Service) IssueUserSession(ctx context.Context, req *IssueUserSessionReq, opts ...core.RequestOption) (*IssueUserSessionResp, error) {
+	resp := &IssueUserSessionResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/users/impersonation",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}

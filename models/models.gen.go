@@ -2310,18 +2310,23 @@ type CardConsumeData struct {
 
 // CardConsumeItem ---- 校园卡消费流水 ----
 type CardConsumeItem struct {
-	// CreateTime unix 秒
-	CreateTime *int64  `json:"createTime,omitempty"`
+	// CreateTime unix 秒；上游时间无法解析时为 0
+	CreateTime *int64 `json:"createTime,omitempty"`
+
+	// CreatedAt 交易时间（服务器本地时区 Asia/Shanghai），yyyy-MM-dd HH:mm:ss；createTime 为 0 时不下发
+	CreatedAt *string `json:"createdAt,omitempty"`
+
+	// DeviceName 交易地点/终端名，如 “第一食堂”
 	DeviceName *string `json:"deviceName,omitempty"`
 	DeviceNum  *string `json:"deviceNum,omitempty"`
 
-	// FeeName 交易类型
+	// FeeName 交易类型，如 “消费”“第三方支付平台转账”
 	FeeName *string `json:"feeName,omitempty"`
 
-	// Remaining 交易后余额（元）
+	// Remaining 交易后余额（元）；转账类可能是中间快照，当前余额以 card balance 为准
 	Remaining *float64 `json:"remaining,omitempty"`
 
-	// TotalFee 交易金额（元）
+	// TotalFee 交易金额（元）：负数为支出，正数为充值或转入
 	TotalFee *float64 `json:"totalFee,omitempty"`
 }
 
@@ -2339,7 +2344,7 @@ type CardInfoData struct {
 	// Remaining 余额（元）
 	Remaining *float64 `json:"remaining,omitempty"`
 
-	// TodayFee 今日消费（元）
+	// TodayFee 今日支出合计（元，正数），只统计 flow 里今天的负数交易
 	TodayFee *float64 `json:"todayFee,omitempty"`
 }
 
@@ -3854,6 +3859,21 @@ type ElectricBuildingListResponseBody struct {
 	Msg  *string                 `json:"msg,omitempty"`
 }
 
+// ElectricDailyUsage ElectricDailyUsage 是一段相邻快照之间的用电，已把期间到账的充值加回。
+type ElectricDailyUsage struct {
+	// Date 用电日 YYYY-MM-DD：该日 0 点到次日 0 点。days>1 时为区间首日
+	Date *string `json:"date,omitempty"`
+
+	// Days 覆盖天数，通常为 1；中间缺快照时大于 1，此时 usage 是整段合计
+	Days *int32 `json:"days,omitempty"`
+
+	// Recharge 期间到账的充值（元）
+	Recharge *float64 `json:"recharge,omitempty"`
+
+	// Usage 用电消费（元）= 期初余额 - 期末余额 + 期间充值；余额上升又找不到对应充值时不下发
+	Usage *float64 `json:"usage,omitempty"`
+}
+
 // ElectricFloorItem defines model for ElectricFloorItem.
 type ElectricFloorItem struct {
 	Id   *int64  `json:"id,omitempty"`
@@ -3869,20 +3889,27 @@ type ElectricFloorListResponseBody struct {
 
 // ElectricHistoryData defines model for ElectricHistoryData.
 type ElectricHistoryData struct {
-	// Average 日均消费（元）
-	Average *string                `json:"average,omitempty"`
+	// Average 日均用电消费（元）= 窗口内净消费 / 首末快照间隔天数；不足两个快照为 "0.00"
+	Average *string `json:"average,omitempty"`
+
+	// Daily 按用电日的消费，新→旧；不含今天（今天的快照要到明天 0 点才有）
+	Daily *[]ElectricDailyUsage `json:"daily,omitempty"`
+
+	// History 新→旧
 	History *[]ElectricHistoryItem `json:"history,omitempty"`
 }
 
 // ElectricHistoryItem ---- 电费历史（近 14 天） ----
+// 快照每天本地 0 点采一次，time 那天的 fee 是“当天开始时”的余额，因此 change 反映的是
+// 前一天的用电。按日用电请读 ElectricHistoryData.daily，那里已按用电日归属并扣除充值。
 type ElectricHistoryItem struct {
-	// Change 相较前一日的变化（元），首日为 "-"
+	// Change 与上一个快照的差（元）：无符号为余额下降，"+" 前缀为余额上升（多为充值），最早一条为 "-"
 	Change *string `json:"change,omitempty"`
 
-	// Fee 当日余额（元）
+	// Fee time 当天 0 点的余额快照（元）
 	Fee *string `json:"fee,omitempty"`
 
-	// Time 日期 YYYY-MM-DD
+	// Time 快照日期 YYYY-MM-DD
 	Time *string `json:"time,omitempty"`
 }
 
@@ -4158,6 +4185,11 @@ type FeedAggData struct {
 	// Settings 端上设置占位
 	Settings *[]int32 `json:"settings,omitempty"`
 
+	// Skipped 因 unbound/unauthorized/unsupported 而未取数的卡片（available=false，带
+	// unavailableReason）。单列而不并入 items，是为了不改变旧客户端对 items 的理解：
+	// items 里 available=false 仍只表示取数失败。
+	Skipped *[]FeedItem `json:"skipped,omitempty"`
+
 	// Sort 成功卡片的展示顺序
 	Sort *[]string `json:"sort,omitempty"`
 
@@ -4217,6 +4249,11 @@ type FeedItem struct {
 
 	// Name 卡片标识：weather/schedule/exam/scores/sunrun_new
 	Name *string `json:"name,omitempty"`
+
+	// UnavailableReason available=false 时的原因：unbound（未绑定学号，阳光长跑另要求 8 位学号）/
+	// unauthorized（会话缺该卡片所需 scope）/ upstream_error（已取数但失败或超时）/
+	// unsupported（服务端未接入该能力或未知卡片）。available=true 时不下发。
+	UnavailableReason *string `json:"unavailableReason,omitempty"`
 }
 
 // FeedTimeInfo FeedTimeInfo 是校历时间信息（best-effort，无上游时为空）。
@@ -4957,6 +4994,27 @@ type InviteResponseBody struct {
 	Code *int64      `json:"code,omitempty"`
 	Data *InviteData `json:"data,omitempty"`
 	Msg  *string     `json:"msg,omitempty"`
+}
+
+// IssueUserSessionData defines model for IssueUserSessionData.
+type IssueUserSessionData struct {
+	AccessToken          *string `json:"accessToken,omitempty"`
+	AccessTokenExpireAt  *int64  `json:"accessTokenExpireAt,omitempty"`
+	RefreshToken         *string `json:"refreshToken,omitempty"`
+	RefreshTokenExpireAt *int64  `json:"refreshTokenExpireAt,omitempty"`
+}
+
+// IssueUserSessionRequestBody defines model for IssueUserSessionRequestBody.
+type IssueUserSessionRequestBody struct {
+	Reason *string `json:"reason,omitempty"`
+	UserId *string `json:"user_id,omitempty"`
+}
+
+// IssueUserSessionResponseBody defines model for IssueUserSessionResponseBody.
+type IssueUserSessionResponseBody struct {
+	Code *int64                `json:"code,omitempty"`
+	Data *IssueUserSessionData `json:"data,omitempty"`
+	Msg  *string               `json:"msg,omitempty"`
 }
 
 // ItemDetailResponseBody defines model for ItemDetailResponseBody.
@@ -6436,7 +6494,11 @@ type PostCard struct {
 	Hashtags  *[]string     `json:"hashtags,omitempty"`
 	Id        *string       `json:"id,omitempty"`
 	Location  *PostLocation `json:"location,omitempty"`
-	Title     *string       `json:"title,omitempty"`
+
+	// ReactedByMe 观察者是否已点「赞」（like 表情），供瀑布流卡片直接点赞。观察者态，只对
+	// 登录用户下发；匿名与应用主体不下发。其他表情不计入。
+	ReactedByMe *bool   `json:"reacted_by_me,omitempty"`
+	Title       *string `json:"title,omitempty"`
 }
 
 // PostCounters PostCounters 是全局计数，与调用者无关，可缓存。
@@ -7669,6 +7731,16 @@ type SchoolTimeData struct {
 	// Semester 学期号
 	Semester *string `json:"semester,omitempty"`
 
+	// TermEndDate 本学期校历覆盖的最后一天，yyyy-MM-dd
+	TermEndDate *string `json:"termEndDate,omitempty"`
+
+	// TermStartDate 本学期第 1 教学周首日，yyyy-MM-dd。termStartDate/termEndDate/termWeeks 取自覆盖
+	// 今天的教务校历行，校历缺当前学期时都不下发（此时 weekNow=0，schoolYear/semester 按月份粗推）。
+	TermStartDate *string `json:"termStartDate,omitempty"`
+
+	// TermWeeks 本学期最大教学周；剩余教学周 = termWeeks - weekNow
+	TermWeeks *int32 `json:"termWeeks,omitempty"`
+
 	// TimeStamp 服务器时间戳（unix 秒）
 	TimeStamp *int64 `json:"timeStamp,omitempty"`
 
@@ -7879,12 +7951,16 @@ type SectionTime struct {
 
 // SemesterInfo defines model for SemesterInfo.
 type SemesterInfo struct {
-	// EndDate yyyy-MM-dd
-	EndDate    *string `json:"endDate,omitempty"`
-	SchoolYear *string `json:"schoolYear,omitempty"`
-	Semester   *string `json:"semester,omitempty"`
+	// EndDate 校历覆盖的最后一天，yyyy-MM-dd
+	EndDate *string `json:"endDate,omitempty"`
 
-	// StartDate yyyy-MM-dd
+	// SchoolYear 学年全称，如 2026-2027
+	SchoolYear *string `json:"schoolYear,omitempty"`
+
+	// Semester 学期号 "1"（秋）/"2"（春）/"3"（短学期）
+	Semester *string `json:"semester,omitempty"`
+
+	// StartDate 第 1 教学周首日，yyyy-MM-dd
 	StartDate *string `json:"startDate,omitempty"`
 
 	// State 1=当前学期
@@ -9864,8 +9940,12 @@ type AcademicServiceStudentSchoolRollStatusParams struct {
 
 // AcademicServiceSemesterListByDateParams defines parameters for AcademicServiceSemesterListByDate.
 type AcademicServiceSemesterListByDateParams struct {
+	// StartDate yyyy-MM-dd，含当天。与 end_date 组成闭区间，返回校历窗口与之有交集的学期；
+	// 查某一天所在学期就把两者都设为那一天。都不传返回全部学期。
 	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
-	EndDate   *string `form:"end_date,omitempty" json:"end_date,omitempty"`
+
+	// EndDate yyyy-MM-dd，含当天，不得早于 start_date。
+	EndDate *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 }
 
 // AcademicServiceStudentHistoryClassMembersParams defines parameters for AcademicServiceStudentHistoryClassMembers.
@@ -10417,16 +10497,19 @@ type CampusLifeServiceCancelActivityParams struct {
 
 // CampusLifeServiceCardBalanceParams defines parameters for CampusLifeServiceCardBalance.
 type CampusLifeServiceCardBalanceParams struct {
+	// XStaffId 仅应用（tenant）令牌代查时必填学号；用户本人的令牌调用时不要传，默认查本人
 	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // CampusLifeServiceCardConsumeParams defines parameters for CampusLifeServiceCardConsume.
 type CampusLifeServiceCardConsumeParams struct {
+	// XStaffId 仅应用（tenant）令牌代查时必填学号；用户本人的令牌调用时不要传，默认查本人
 	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
 // CampusLifeServiceCardInfoParams defines parameters for CampusLifeServiceCardInfo.
 type CampusLifeServiceCardInfoParams struct {
+	// XStaffId 仅应用（tenant）令牌代查时必填学号；用户本人的令牌调用时不要传，默认查本人
 	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
@@ -11357,6 +11440,9 @@ type AdminServiceUpsertUserSocialIdentityJSONRequestBody = UpsertUserSocialIdent
 
 // AdminServiceSetUserDefaultIdentityJSONRequestBody defines body for AdminServiceSetUserDefaultIdentity for application/json ContentType.
 type AdminServiceSetUserDefaultIdentityJSONRequestBody = SetUserDefaultIdentityRequestBody
+
+// AdminServiceIssueUserSessionJSONRequestBody defines body for AdminServiceIssueUserSession for application/json ContentType.
+type AdminServiceIssueUserSessionJSONRequestBody = IssueUserSessionRequestBody
 
 // CampusLifeServiceAdminCreateVolunteerActivityJSONRequestBody defines body for CampusLifeServiceAdminCreateVolunteerActivity for application/json ContentType.
 type CampusLifeServiceAdminCreateVolunteerActivityJSONRequestBody = CreateVolunteerActivityRequestBody

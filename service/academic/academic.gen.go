@@ -2370,13 +2370,13 @@ func NewSemesterListByDateReqBuilder() *SemesterListByDateReqBuilder {
 	return &SemesterListByDateReqBuilder{req: &SemesterListByDateReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// StartDate sets the "start_date" query parameter.
+// StartDate sets the "start_date" query parameter: yyyy-MM-dd，含当天。与 end_date 组成闭区间，返回校历窗口与之有交集的学期；
 func (b *SemesterListByDateReqBuilder) StartDate(v string) *SemesterListByDateReqBuilder {
 	b.req.queryParams["start_date"] = v
 	return b
 }
 
-// EndDate sets the "end_date" query parameter.
+// EndDate sets the "end_date" query parameter: yyyy-MM-dd，含当天，不得早于 start_date。
 func (b *SemesterListByDateReqBuilder) EndDate(v string) *SemesterListByDateReqBuilder {
 	b.req.queryParams["end_date"] = v
 	return b

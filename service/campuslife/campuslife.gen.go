@@ -988,7 +988,7 @@ func NewCardBalanceReqBuilder() *CardBalanceReqBuilder {
 	return &CardBalanceReqBuilder{req: &CardBalanceReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// StaffID sets the "X-Staff-Id" header parameter.
+// StaffID sets the "X-Staff-Id" header parameter: 仅应用（tenant）令牌代查时必填学号；用户本人的令牌调用时不要传，默认查本人
 func (b *CardBalanceReqBuilder) StaffID(v string) *CardBalanceReqBuilder {
 	b.req.headers["X-Staff-Id"] = v
 	return b
@@ -1034,7 +1034,7 @@ func NewCardConsumeReqBuilder() *CardConsumeReqBuilder {
 	return &CardConsumeReqBuilder{req: &CardConsumeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// StaffID sets the "X-Staff-Id" header parameter.
+// StaffID sets the "X-Staff-Id" header parameter: 仅应用（tenant）令牌代查时必填学号；用户本人的令牌调用时不要传，默认查本人
 func (b *CardConsumeReqBuilder) StaffID(v string) *CardConsumeReqBuilder {
 	b.req.headers["X-Staff-Id"] = v
 	return b
@@ -1080,7 +1080,7 @@ func NewCardInfoReqBuilder() *CardInfoReqBuilder {
 	return &CardInfoReqBuilder{req: &CardInfoReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// StaffID sets the "X-Staff-Id" header parameter.
+// StaffID sets the "X-Staff-Id" header parameter: 仅应用（tenant）令牌代查时必填学号；用户本人的令牌调用时不要传，默认查本人
 func (b *CardInfoReqBuilder) StaffID(v string) *CardInfoReqBuilder {
 	b.req.headers["X-Staff-Id"] = v
 	return b
