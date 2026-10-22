@@ -3572,6 +3572,24 @@ type CursorReactedCommentListResponseBody struct {
 	Msg  *string                       `json:"msg,omitempty"`
 }
 
+// CursorRelationListData 带 q 时一次请求只扫有限的互关行，可能出现本页不满甚至为空、但 hasMore 为真的情况，
+// 客户端以 hasMore 而不是条数判断是否到底。
+type CursorRelationListData struct {
+	HasMore    *bool           `json:"has_more,omitempty"`
+	List       *[]RelationUser `json:"list,omitempty"`
+	NextCursor *string         `json:"next_cursor,omitempty"`
+}
+
+// CursorRelationListResponseBody defines model for CursorRelationListResponseBody.
+type CursorRelationListResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data 带 q 时一次请求只扫有限的互关行，可能出现本页不满甚至为空、但 hasMore 为真的情况，
+	// 客户端以 hasMore 而不是条数判断是否到底。
+	Data *CursorRelationListData `json:"data,omitempty"`
+	Msg  *string                 `json:"msg,omitempty"`
+}
+
 // DeleteAdminNoticeResponseBody defines model for DeleteAdminNoticeResponseBody.
 type DeleteAdminNoticeResponseBody struct {
 	Code int64  `json:"code"`
@@ -7459,7 +7477,10 @@ type RevokePATResponseBody struct {
 // list<list<RichTextNode>>。四种 tag：
 // text     纯文本，取 text
 // a        超链接，取 text 与 href
-// at       @提及，取 userId 与 displayName
+// at       @提及，取 userId 与 displayName。发帖、编辑与评论时只能 @ 与作者互关的用户
+// （候选取自 GET /moments/me/mutuals），否则 HTTP 400、code 728000029；
+// 匿名帖与楼主在匿名帖下的评论不能 @ 任何人，HTTP 400、code 728000030。
+// @ 自己不受限但不通知；官方号作者不受限。
 // hashtag  话题，取 text（形如 #话题名）。仅帖子正文支持，评论不支持。
 type RichTextNode struct {
 	DisplayName *string `json:"display_name,omitempty"`
@@ -11199,6 +11220,13 @@ type MomentsServiceListMomentsInboxLikesParams struct {
 
 // MomentsServiceListMomentsInboxMentionsParams defines parameters for MomentsServiceListMomentsInboxMentions.
 type MomentsServiceListMomentsInboxMentionsParams struct {
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit  *int32  `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// MomentsServiceListMyMutualsParams defines parameters for MomentsServiceListMyMutuals.
+type MomentsServiceListMyMutualsParams struct {
+	Q      *string `form:"q,omitempty" json:"q,omitempty"`
 	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 	Limit  *int32  `form:"limit,omitempty" json:"limit,omitempty"`
 }

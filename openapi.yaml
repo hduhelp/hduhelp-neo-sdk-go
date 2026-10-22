@@ -10651,6 +10651,37 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/InboxUnreadResponseBody'
             x-hduhelp-http: {'requires_user': true, 'auth': 'bearer'}
+    /hduhelp-neo/moments/me/mutuals:
+        get:
+            tags:
+                - MomentsService
+            summary: 我的互关
+            description: 与本人互相关注的用户，供 @ 选择器使用：发帖与评论只能 @ 互关的人。按本人关注对方的时间倒序；q 按昵称子串过滤
+            operationId: MomentsService_ListMyMutuals
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: q
+                  in: query
+                  schema:
+                    type: string
+                - name: cursor
+                  in: query
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CursorRelationListResponseBody'
+            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer'}
     /hduhelp-neo/moments/me/posting-identities:
         get:
             tags:
@@ -16482,6 +16513,30 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/CursorReactedCommentListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        CursorRelationListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/RelationUser'
+                next_cursor:
+                    type: string
+                has_more:
+                    type: boolean
+            description: |-
+                带 q 时一次请求只扫有限的互关行，可能出现本页不满甚至为空、但 hasMore 为真的情况，
+                客户端以 hasMore 而不是条数判断是否到底。
+        CursorRelationListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/CursorRelationListData'
                 code:
                     type: integer
                     format: int64
@@ -22374,7 +22429,10 @@ components:
                 list<list<RichTextNode>>。四种 tag：
                 text     纯文本，取 text
                 a        超链接，取 text 与 href
-                at       @提及，取 userId 与 displayName
+                at       @提及，取 userId 与 displayName。发帖、编辑与评论时只能 @ 与作者互关的用户
+                （候选取自 GET /moments/me/mutuals），否则 HTTP 400、code 728000029；
+                匿名帖与楼主在匿名帖下的评论不能 @ 任何人，HTTP 400、code 728000030。
+                @ 自己不受限但不通知；官方号作者不受限。
                 hashtag  话题，取 text（形如 #话题名）。仅帖子正文支持，评论不支持。
         RoleListResponseBody:
             type: object

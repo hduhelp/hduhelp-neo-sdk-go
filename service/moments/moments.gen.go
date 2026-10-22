@@ -2534,6 +2534,64 @@ func (s *Service) GetMomentsInboxUnread(ctx context.Context, req *GetMomentsInbo
 	return resp, err
 }
 
+// ListMyMutualsReq is the request for ListMyMutuals.
+type ListMyMutualsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListMyMutualsReqBuilder builds a ListMyMutualsReq with a fluent setter per field.
+type ListMyMutualsReqBuilder struct{ req *ListMyMutualsReq }
+
+// NewListMyMutualsReqBuilder creates a request builder for ListMyMutuals.
+func NewListMyMutualsReqBuilder() *ListMyMutualsReqBuilder {
+	return &ListMyMutualsReqBuilder{req: &ListMyMutualsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Q sets the "q" query parameter.
+func (b *ListMyMutualsReqBuilder) Q(v string) *ListMyMutualsReqBuilder {
+	b.req.queryParams["q"] = v
+	return b
+}
+
+// Cursor sets the "cursor" query parameter.
+func (b *ListMyMutualsReqBuilder) Cursor(v string) *ListMyMutualsReqBuilder {
+	b.req.queryParams["cursor"] = v
+	return b
+}
+
+// Limit sets the "limit" query parameter.
+func (b *ListMyMutualsReqBuilder) Limit(v int32) *ListMyMutualsReqBuilder {
+	b.req.queryParams["limit"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *ListMyMutualsReqBuilder) Build() *ListMyMutualsReq { return b.req }
+
+// ListMyMutualsResp is the response for ListMyMutuals.
+type ListMyMutualsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.CursorRelationListData `json:"data"`
+}
+
+// ListMyMutuals: 我的互关
+func (s *Service) ListMyMutuals(ctx context.Context, req *ListMyMutualsReq, opts ...core.RequestOption) (*ListMyMutualsResp, error) {
+	resp := &ListMyMutualsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/moments/me/mutuals",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // GetPostingIdentitiesReq is the request for GetPostingIdentities.
 type GetPostingIdentitiesReq struct {
 	pathParams  map[string]string
