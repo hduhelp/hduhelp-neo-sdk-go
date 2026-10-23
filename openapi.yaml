@@ -12295,6 +12295,12 @@ components:
                 semester:
                     type: string
                     description: 学期号 "1"/"2"/"3"（对齐 SchoolTime/SemesterInfo）
+                disabled:
+                    type: boolean
+                    description: 有效禁用状态；禁用项保留在筛选列表
+                disabledReason:
+                    type: string
+                    description: 展示给用户的禁用理由
         Activity:
             type: object
             properties:
@@ -17758,7 +17764,12 @@ components:
                     description: |-
                         available=false 时的原因：unbound（未绑定学号，阳光长跑另要求 8 位学号）/
                         unauthorized（会话缺该卡片所需 scope）/ upstream_error（已取数但失败或超时）/
-                        unsupported（服务端未接入该能力或未知卡片）。available=true 时不下发。
+                        unsupported（服务端未接入该能力或未知卡片）/ disabled（管理员暂停查询）。available=true 时不下发。
+                disabled:
+                    type: boolean
+                    description: 主动暂停查询，与一般取数失败区分
+                disabledReason:
+                    type: string
             description: FeedItem 是信息流中的单个卡片。name 为判别字段，data 只填 name 对应的负载字段。
         FeedTimeInfo:
             type: object

@@ -842,7 +842,12 @@ type AcademicTermItem struct {
 
 // AcademicYearTerm defines model for AcademicYearTerm.
 type AcademicYearTerm struct {
-	SchoolYear *string `json:"schoolYear,omitempty"`
+	// Disabled 有效禁用状态；禁用项保留在筛选列表
+	Disabled *bool `json:"disabled,omitempty"`
+
+	// DisabledReason 展示给用户的禁用理由
+	DisabledReason *string `json:"disabledReason,omitempty"`
+	SchoolYear     *string `json:"schoolYear,omitempty"`
 
 	// Semester 学期号 "1"/"2"/"3"（对齐 SchoolTime/SemesterInfo）
 	Semester *string `json:"semester,omitempty"`
@@ -4385,12 +4390,16 @@ type FeedItem struct {
 	// 其余保持 null（异构负载的扁平 typed struct 表达）。
 	Data *FeedCardData `json:"data,omitempty"`
 
+	// Disabled 主动暂停查询，与一般取数失败区分
+	Disabled       *bool   `json:"disabled,omitempty"`
+	DisabledReason *string `json:"disabledReason,omitempty"`
+
 	// Name 卡片标识：weather/schedule/exam/scores/sunrun_new
 	Name *string `json:"name,omitempty"`
 
 	// UnavailableReason available=false 时的原因：unbound（未绑定学号，阳光长跑另要求 8 位学号）/
 	// unauthorized（会话缺该卡片所需 scope）/ upstream_error（已取数但失败或超时）/
-	// unsupported（服务端未接入该能力或未知卡片）。available=true 时不下发。
+	// unsupported（服务端未接入该能力或未知卡片）/ disabled（管理员暂停查询）。available=true 时不下发。
 	UnavailableReason *string `json:"unavailableReason,omitempty"`
 }
 
