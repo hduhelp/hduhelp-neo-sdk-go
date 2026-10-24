@@ -1596,6 +1596,79 @@ type AllPersonInfoResponseBody struct {
 	Msg  *string       `json:"msg,omitempty"`
 }
 
+// AnalyticsConfigData defines model for AnalyticsConfigData.
+type AnalyticsConfigData struct {
+	Enabled   *bool   `json:"enabled,omitempty"`
+	Endpoint  *string `json:"endpoint,omitempty"`
+	WebsiteId *string `json:"websiteId,omitempty"`
+}
+
+// AnalyticsConfigResponseBody defines model for AnalyticsConfigResponseBody.
+type AnalyticsConfigResponseBody struct {
+	Code *int64               `json:"code,omitempty"`
+	Data *AnalyticsConfigData `json:"data,omitempty"`
+	Msg  *string              `json:"msg,omitempty"`
+}
+
+// AnalyticsData defines model for AnalyticsData.
+type AnalyticsData struct {
+	DetailUrl *string            `json:"detailUrl,omitempty"`
+	Snapshot  *AnalyticsSnapshot `json:"snapshot,omitempty"`
+	Status    *string            `json:"status,omitempty"`
+}
+
+// AnalyticsFeatureData defines model for AnalyticsFeatureData.
+type AnalyticsFeatureData struct {
+	Snapshot *AnalyticsFeatureSnapshot `json:"snapshot,omitempty"`
+	Status   *string                   `json:"status,omitempty"`
+}
+
+// AnalyticsFeatureResponseBody defines model for AnalyticsFeatureResponseBody.
+type AnalyticsFeatureResponseBody struct {
+	Code *int64                `json:"code,omitempty"`
+	Data *AnalyticsFeatureData `json:"data,omitempty"`
+	Msg  *string               `json:"msg,omitempty"`
+}
+
+// AnalyticsFeatureSnapshot defines model for AnalyticsFeatureSnapshot.
+type AnalyticsFeatureSnapshot struct {
+	EndAt           *int64             `json:"endAt,omitempty"`
+	EnteredVisitors *int64             `json:"enteredVisitors,omitempty"`
+	Environments    *[]AnalyticsMetric `json:"environments,omitempty"`
+	FetchedAt       *int64             `json:"fetchedAt,omitempty"`
+	Reasons         *[]AnalyticsMetric `json:"reasons,omitempty"`
+	Results         *[]AnalyticsMetric `json:"results,omitempty"`
+	Sources         *[]AnalyticsMetric `json:"sources,omitempty"`
+	StartAt         *int64             `json:"startAt,omitempty"`
+	UsedVisitors    *int64             `json:"usedVisitors,omitempty"`
+}
+
+// AnalyticsMetric defines model for AnalyticsMetric.
+type AnalyticsMetric struct {
+	X *string `json:"x,omitempty"`
+	Y *int64  `json:"y,omitempty"`
+}
+
+// AnalyticsResponseBody defines model for AnalyticsResponseBody.
+type AnalyticsResponseBody struct {
+	Code *int64         `json:"code,omitempty"`
+	Data *AnalyticsData `json:"data,omitempty"`
+	Msg  *string        `json:"msg,omitempty"`
+}
+
+// AnalyticsSnapshot defines model for AnalyticsSnapshot.
+type AnalyticsSnapshot struct {
+	Devices       *[]AnalyticsMetric `json:"devices,omitempty"`
+	EndAt         *int64             `json:"endAt,omitempty"`
+	Events        *[]AnalyticsMetric `json:"events,omitempty"`
+	FetchedAt     *int64             `json:"fetchedAt,omitempty"`
+	PageviewTrend *[]AnalyticsMetric `json:"pageviewTrend,omitempty"`
+	Pageviews     *int64             `json:"pageviews,omitempty"`
+	StartAt       *int64             `json:"startAt,omitempty"`
+	VisitorTrend  *[]AnalyticsMetric `json:"visitorTrend,omitempty"`
+	Visitors      *int64             `json:"visitors,omitempty"`
+}
+
 // AppAccessTokenData defines model for AppAccessTokenData.
 type AppAccessTokenData struct {
 	AppAccessToken *string `json:"appAccessToken,omitempty"`
@@ -10177,6 +10250,17 @@ type AcademicServiceTeachingClassParams struct {
 	UnitId   *string `form:"unit_id,omitempty" json:"unit_id,omitempty"`
 	Grade    *string `form:"grade,omitempty" json:"grade,omitempty"`
 	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AnalyticsServiceGetAnalyticsParams defines parameters for AnalyticsServiceGetAnalytics.
+type AnalyticsServiceGetAnalyticsParams struct {
+	Days *int32 `form:"days,omitempty" json:"days,omitempty"`
+}
+
+// AnalyticsServiceGetAnalyticsFeatureParams defines parameters for AnalyticsServiceGetAnalyticsFeature.
+type AnalyticsServiceGetAnalyticsFeatureParams struct {
+	Days    *int32  `form:"days,omitempty" json:"days,omitempty"`
+	Feature *string `form:"feature,omitempty" json:"feature,omitempty"`
 }
 
 // AdminServiceDeleteAppParams defines parameters for AdminServiceDeleteApp.

@@ -8,6 +8,7 @@ import (
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/academic"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/admin"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/adminnotice"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/analytics"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/campuslife"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/emptyschedule"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/feed"
@@ -35,6 +36,7 @@ type Client struct {
 	Academic         *academic.Service
 	Admin            *admin.Service
 	AdminNotice      *adminnotice.Service
+	Analytics        *analytics.Service
 	CampusLife       *campuslife.Service
 	EmptySchedule    *emptyschedule.Service
 	Feed             *feed.Service
@@ -59,6 +61,7 @@ func attachServices(c *Client) {
 	c.Academic = academic.NewService(c.config)
 	c.Admin = admin.NewService(c.config)
 	c.AdminNotice = adminnotice.NewService(c.config)
+	c.Analytics = analytics.NewService(c.config)
 	c.CampusLife = campuslife.NewService(c.config)
 	c.EmptySchedule = emptyschedule.NewService(c.config)
 	c.Feed = feed.NewService(c.config)

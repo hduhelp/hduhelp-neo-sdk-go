@@ -1757,6 +1757,54 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/TeachingClassResponseBody'
             x-hduhelp-http: {'requires_user': false, 'auth': 'bearer'}
+    /hduhelp-neo/admin/analytics:
+        get:
+            tags:
+                - AnalyticsService
+            summary: Neo产品运营分析
+            description: 需要 analytics.dashboard:view；days 仅允许 7 或 30。北京时间自然日，访客并非学生人数。未配置或上游不可用时不返回零值统计。
+            operationId: AnalyticsService_GetAnalytics
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: days
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AnalyticsResponseBody'
+    /hduhelp-neo/admin/analytics/feature:
+        get:
+            tags:
+                - AnalyticsService
+            summary: Neo单功能链路分析
+            description: 需要 analytics.dashboard:view。匿名访客进入到获得结果的有序漏斗，相邻步骤窗口30分钟；附带失败原因、结果、入口和终端分布。
+            operationId: AnalyticsService_GetAnalyticsFeature
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: days
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: feature
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AnalyticsFeatureResponseBody'
     /hduhelp-neo/admin/apps:
         get:
             tags:
@@ -6421,6 +6469,22 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ActivityDetailResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/analytics/config:
+        get:
+            tags:
+                - AnalyticsService
+            summary: 产品分析公开配置
+            description: 只返回采集开关与公开站点标识，不包含管理凭据
+            operationId: AnalyticsService_GetAnalyticsConfig
+            security: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AnalyticsConfigResponseBody'
+            x-hduhelp-http: {'auth': 'public', 'catalog': 'exclude', 'requires_user': false}
     /hduhelp-neo/callbacks/dingtalk/blessing-review:
         post:
             tags:
@@ -13677,6 +13741,137 @@ components:
                     format: int64
                 msg:
                     type: string
+        AnalyticsConfigData:
+            type: object
+            properties:
+                enabled:
+                    type: boolean
+                websiteId:
+                    type: string
+                endpoint:
+                    type: string
+        AnalyticsConfigResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AnalyticsConfigData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AnalyticsData:
+            type: object
+            properties:
+                status:
+                    type: string
+                detailUrl:
+                    type: string
+                snapshot:
+                    $ref: '#/components/schemas/AnalyticsSnapshot'
+        AnalyticsFeatureData:
+            type: object
+            properties:
+                status:
+                    type: string
+                snapshot:
+                    $ref: '#/components/schemas/AnalyticsFeatureSnapshot'
+        AnalyticsFeatureResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AnalyticsFeatureData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AnalyticsFeatureSnapshot:
+            type: object
+            properties:
+                startAt:
+                    type: integer
+                    format: int64
+                endAt:
+                    type: integer
+                    format: int64
+                fetchedAt:
+                    type: integer
+                    format: int64
+                enteredVisitors:
+                    type: integer
+                    format: int64
+                usedVisitors:
+                    type: integer
+                    format: int64
+                reasons:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AnalyticsMetric'
+                results:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AnalyticsMetric'
+                sources:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AnalyticsMetric'
+                environments:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AnalyticsMetric'
+        AnalyticsMetric:
+            type: object
+            properties:
+                x:
+                    type: string
+                y:
+                    type: integer
+                    format: int64
+        AnalyticsResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AnalyticsData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AnalyticsSnapshot:
+            type: object
+            properties:
+                startAt:
+                    type: integer
+                    format: int64
+                endAt:
+                    type: integer
+                    format: int64
+                fetchedAt:
+                    type: integer
+                    format: int64
+                pageviews:
+                    type: integer
+                    format: int64
+                visitors:
+                    type: integer
+                    format: int64
+                pageviewTrend:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AnalyticsMetric'
+                visitorTrend:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AnalyticsMetric'
+                events:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AnalyticsMetric'
+                devices:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AnalyticsMetric'
         AppAccessTokenData:
             type: object
             properties:
@@ -26149,6 +26344,7 @@ tags:
     - name: AcademicService
     - name: AdminNoticeService
     - name: AdminService
+    - name: AnalyticsService
     - name: CampusLifeService
     - name: DingTalkWorkbenchService
     - name: EmptyScheduleService
