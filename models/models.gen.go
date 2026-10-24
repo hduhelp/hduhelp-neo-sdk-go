@@ -8328,6 +8328,15 @@ type SessionInfo struct {
 	LastActiveAt *int64  `json:"lastActiveAt,omitempty"`
 }
 
+// SetAcademicSettingsRequestBody defines model for SetAcademicSettingsRequestBody.
+type SetAcademicSettingsRequestBody struct {
+	// QueryPolicy 考试、成绩的全局禁用状态和理由 JSON 对象
+	QueryPolicy *string `json:"queryPolicy,omitempty"`
+
+	// Terms 学期表 JSON 数组，仅含筛选项和默认值
+	Terms *string `json:"terms,omitempty"`
+}
+
 // SetAppEnabledRequestBody defines model for SetAppEnabledRequestBody.
 type SetAppEnabledRequestBody struct {
 	Enabled *bool `json:"enabled,omitempty"`
@@ -11453,6 +11462,9 @@ type AdminServiceSetCaiyunConfigJSONRequestBody = SetCaiyunConfigRequestBody
 
 // AdminServiceSetConfigJSONRequestBody defines body for AdminServiceSetConfig for application/json ContentType.
 type AdminServiceSetConfigJSONRequestBody = SetConfigRequestBody
+
+// AdminServiceSetAcademicSettingsJSONRequestBody defines body for AdminServiceSetAcademicSettings for application/json ContentType.
+type AdminServiceSetAcademicSettingsJSONRequestBody = SetAcademicSettingsRequestBody
 
 // AdminServiceTestConnectionJSONRequestBody defines body for AdminServiceTestConnection for application/json ContentType.
 type AdminServiceTestConnectionJSONRequestBody = TestConnectionRequestBody

@@ -2155,6 +2155,27 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SetConfigResponseBody'
+    /hduhelp-neo/admin/configs/academic:
+        put:
+            tags:
+                - AdminService
+            summary: 保存学期与查询设置
+            description: 校验并原子保存学期表和考试、成绩的全局禁用状态及理由，保存后生效
+            operationId: AdminService_SetAcademicSettings
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SetAcademicSettingsRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SetConfigResponseBody'
     /hduhelp-neo/admin/configs/test:
         post:
             tags:
@@ -23737,6 +23758,15 @@ components:
                 identityType:
                     type: string
             description: 会话信息
+        SetAcademicSettingsRequestBody:
+            type: object
+            properties:
+                terms:
+                    type: string
+                    description: 学期表 JSON 数组，仅含筛选项和默认值
+                queryPolicy:
+                    type: string
+                    description: 考试、成绩的全局禁用状态和理由 JSON 对象
         SetAppEnabledRequestBody:
             type: object
             properties:

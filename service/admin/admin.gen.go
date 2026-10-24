@@ -882,6 +882,51 @@ func (s *Service) SetConfig(ctx context.Context, req *SetConfigReq, opts ...core
 	return resp, err
 }
 
+// SetAcademicSettingsReq is the request for SetAcademicSettings.
+type SetAcademicSettingsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// SetAcademicSettingsReqBuilder builds a SetAcademicSettingsReq with a fluent setter per field.
+type SetAcademicSettingsReqBuilder struct{ req *SetAcademicSettingsReq }
+
+// NewSetAcademicSettingsReqBuilder creates a request builder for SetAcademicSettings.
+func NewSetAcademicSettingsReqBuilder() *SetAcademicSettingsReqBuilder {
+	return &SetAcademicSettingsReqBuilder{req: &SetAcademicSettingsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *SetAcademicSettingsReqBuilder) Body(body *models.SetAcademicSettingsRequestBody) *SetAcademicSettingsReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *SetAcademicSettingsReqBuilder) Build() *SetAcademicSettingsReq { return b.req }
+
+// SetAcademicSettingsResp is the response for SetAcademicSettings.
+type SetAcademicSettingsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// SetAcademicSettings: 保存学期与查询设置
+func (s *Service) SetAcademicSettings(ctx context.Context, req *SetAcademicSettingsReq, opts ...core.RequestOption) (*SetAcademicSettingsResp, error) {
+	resp := &SetAcademicSettingsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/configs/academic",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // TestConnectionReq is the request for TestConnection.
 type TestConnectionReq struct {
 	pathParams  map[string]string
