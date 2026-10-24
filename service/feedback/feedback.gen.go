@@ -38,12 +38,6 @@ func (b *ListAdminFeedbacksReqBuilder) Status(v string) *ListAdminFeedbacksReqBu
 	return b
 }
 
-// Category sets the "category" query parameter.
-func (b *ListAdminFeedbacksReqBuilder) Category(v string) *ListAdminFeedbacksReqBuilder {
-	b.req.queryParams["category"] = v
-	return b
-}
-
 // Page sets the "page" query parameter.
 func (b *ListAdminFeedbacksReqBuilder) Page(v int32) *ListAdminFeedbacksReqBuilder {
 	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
@@ -53,6 +47,12 @@ func (b *ListAdminFeedbacksReqBuilder) Page(v int32) *ListAdminFeedbacksReqBuild
 // PageSize sets the "page_size" query parameter.
 func (b *ListAdminFeedbacksReqBuilder) PageSize(v int32) *ListAdminFeedbacksReqBuilder {
 	b.req.queryParams["page_size"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// FeedbackType sets the "feedback_type" query parameter.
+func (b *ListAdminFeedbacksReqBuilder) FeedbackType(v string) *ListAdminFeedbacksReqBuilder {
+	b.req.queryParams["feedback_type"] = v
 	return b
 }
 
@@ -72,6 +72,69 @@ func (s *Service) ListAdminFeedbacks(ctx context.Context, req *ListAdminFeedback
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/admin/feedbacks",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ExportAdminFeedbacksReq is the request for ExportAdminFeedbacks.
+type ExportAdminFeedbacksReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ExportAdminFeedbacksReqBuilder builds a ExportAdminFeedbacksReq with a fluent setter per field.
+type ExportAdminFeedbacksReqBuilder struct{ req *ExportAdminFeedbacksReq }
+
+// NewExportAdminFeedbacksReqBuilder creates a request builder for ExportAdminFeedbacks.
+func NewExportAdminFeedbacksReqBuilder() *ExportAdminFeedbacksReqBuilder {
+	return &ExportAdminFeedbacksReqBuilder{req: &ExportAdminFeedbacksReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Status sets the "status" query parameter.
+func (b *ExportAdminFeedbacksReqBuilder) Status(v string) *ExportAdminFeedbacksReqBuilder {
+	b.req.queryParams["status"] = v
+	return b
+}
+
+// Page sets the "page" query parameter.
+func (b *ExportAdminFeedbacksReqBuilder) Page(v int32) *ExportAdminFeedbacksReqBuilder {
+	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// PageSize sets the "page_size" query parameter.
+func (b *ExportAdminFeedbacksReqBuilder) PageSize(v int32) *ExportAdminFeedbacksReqBuilder {
+	b.req.queryParams["page_size"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// FeedbackType sets the "feedback_type" query parameter.
+func (b *ExportAdminFeedbacksReqBuilder) FeedbackType(v string) *ExportAdminFeedbacksReqBuilder {
+	b.req.queryParams["feedback_type"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *ExportAdminFeedbacksReqBuilder) Build() *ExportAdminFeedbacksReq { return b.req }
+
+// ExportAdminFeedbacksResp is the response for ExportAdminFeedbacks.
+type ExportAdminFeedbacksResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// ExportAdminFeedbacks: 导出用户反馈 Excel
+func (s *Service) ExportAdminFeedbacks(ctx context.Context, req *ExportAdminFeedbacksReq, opts ...core.RequestOption) (*ExportAdminFeedbacksResp, error) {
+	resp := &ExportAdminFeedbacksResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/feedbacks/export",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

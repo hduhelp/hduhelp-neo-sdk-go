@@ -11,27 +11,18 @@ const (
 	UATBearerAuthScopes      uATBearerAuthContextKey      = "UATBearerAuth.Scopes"
 )
 
-// Defines values for CreateFeedbackRequestBodyCategory.
+// Defines values for CreateFeedbackRequestBodyFeedbackType.
 const (
-	CreateFeedbackRequestBodyCategoryAccount    CreateFeedbackRequestBodyCategory = "account"
-	CreateFeedbackRequestBodyCategoryBug        CreateFeedbackRequestBodyCategory = "bug"
-	CreateFeedbackRequestBodyCategoryContent    CreateFeedbackRequestBodyCategory = "content"
-	CreateFeedbackRequestBodyCategoryOther      CreateFeedbackRequestBodyCategory = "other"
-	CreateFeedbackRequestBodyCategorySuggestion CreateFeedbackRequestBodyCategory = "suggestion"
+	CreateFeedbackRequestBodyFeedbackTypeAssistant CreateFeedbackRequestBodyFeedbackType = "assistant"
+	CreateFeedbackRequestBodyFeedbackTypeSchool    CreateFeedbackRequestBodyFeedbackType = "school"
 )
 
-// Valid indicates whether the value is a known member of the CreateFeedbackRequestBodyCategory enum.
-func (e CreateFeedbackRequestBodyCategory) Valid() bool {
+// Valid indicates whether the value is a known member of the CreateFeedbackRequestBodyFeedbackType enum.
+func (e CreateFeedbackRequestBodyFeedbackType) Valid() bool {
 	switch e {
-	case CreateFeedbackRequestBodyCategoryAccount:
+	case CreateFeedbackRequestBodyFeedbackTypeAssistant:
 		return true
-	case CreateFeedbackRequestBodyCategoryBug:
-		return true
-	case CreateFeedbackRequestBodyCategoryContent:
-		return true
-	case CreateFeedbackRequestBodyCategoryOther:
-		return true
-	case CreateFeedbackRequestBodyCategorySuggestion:
+	case CreateFeedbackRequestBodyFeedbackTypeSchool:
 		return true
 	default:
 		return false
@@ -80,27 +71,18 @@ func (e DeliveryPreferenceUpdateProvider) Valid() bool {
 	}
 }
 
-// Defines values for FeedbackItemCategory.
+// Defines values for FeedbackItemFeedbackType.
 const (
-	FeedbackItemCategoryAccount    FeedbackItemCategory = "account"
-	FeedbackItemCategoryBug        FeedbackItemCategory = "bug"
-	FeedbackItemCategoryContent    FeedbackItemCategory = "content"
-	FeedbackItemCategoryOther      FeedbackItemCategory = "other"
-	FeedbackItemCategorySuggestion FeedbackItemCategory = "suggestion"
+	FeedbackItemFeedbackTypeAssistant FeedbackItemFeedbackType = "assistant"
+	FeedbackItemFeedbackTypeSchool    FeedbackItemFeedbackType = "school"
 )
 
-// Valid indicates whether the value is a known member of the FeedbackItemCategory enum.
-func (e FeedbackItemCategory) Valid() bool {
+// Valid indicates whether the value is a known member of the FeedbackItemFeedbackType enum.
+func (e FeedbackItemFeedbackType) Valid() bool {
 	switch e {
-	case FeedbackItemCategoryAccount:
+	case FeedbackItemFeedbackTypeAssistant:
 		return true
-	case FeedbackItemCategoryBug:
-		return true
-	case FeedbackItemCategoryContent:
-		return true
-	case FeedbackItemCategoryOther:
-		return true
-	case FeedbackItemCategorySuggestion:
+	case FeedbackItemFeedbackTypeSchool:
 		return true
 	default:
 		return false
@@ -626,27 +608,54 @@ func (e FeedbackServiceListAdminFeedbacksParamsStatus) Valid() bool {
 	}
 }
 
-// Defines values for FeedbackServiceListAdminFeedbacksParamsCategory.
+// Defines values for FeedbackServiceListAdminFeedbacksParamsFeedbackType.
 const (
-	Account    FeedbackServiceListAdminFeedbacksParamsCategory = "account"
-	Bug        FeedbackServiceListAdminFeedbacksParamsCategory = "bug"
-	Content    FeedbackServiceListAdminFeedbacksParamsCategory = "content"
-	Other      FeedbackServiceListAdminFeedbacksParamsCategory = "other"
-	Suggestion FeedbackServiceListAdminFeedbacksParamsCategory = "suggestion"
+	FeedbackServiceListAdminFeedbacksParamsFeedbackTypeAssistant FeedbackServiceListAdminFeedbacksParamsFeedbackType = "assistant"
+	FeedbackServiceListAdminFeedbacksParamsFeedbackTypeSchool    FeedbackServiceListAdminFeedbacksParamsFeedbackType = "school"
 )
 
-// Valid indicates whether the value is a known member of the FeedbackServiceListAdminFeedbacksParamsCategory enum.
-func (e FeedbackServiceListAdminFeedbacksParamsCategory) Valid() bool {
+// Valid indicates whether the value is a known member of the FeedbackServiceListAdminFeedbacksParamsFeedbackType enum.
+func (e FeedbackServiceListAdminFeedbacksParamsFeedbackType) Valid() bool {
 	switch e {
-	case Account:
+	case FeedbackServiceListAdminFeedbacksParamsFeedbackTypeAssistant:
 		return true
-	case Bug:
+	case FeedbackServiceListAdminFeedbacksParamsFeedbackTypeSchool:
 		return true
-	case Content:
+	default:
+		return false
+	}
+}
+
+// Defines values for FeedbackServiceExportAdminFeedbacksParamsStatus.
+const (
+	FeedbackServiceExportAdminFeedbacksParamsStatusHandled FeedbackServiceExportAdminFeedbacksParamsStatus = "handled"
+	FeedbackServiceExportAdminFeedbacksParamsStatusPending FeedbackServiceExportAdminFeedbacksParamsStatus = "pending"
+)
+
+// Valid indicates whether the value is a known member of the FeedbackServiceExportAdminFeedbacksParamsStatus enum.
+func (e FeedbackServiceExportAdminFeedbacksParamsStatus) Valid() bool {
+	switch e {
+	case FeedbackServiceExportAdminFeedbacksParamsStatusHandled:
 		return true
-	case Other:
+	case FeedbackServiceExportAdminFeedbacksParamsStatusPending:
 		return true
-	case Suggestion:
+	default:
+		return false
+	}
+}
+
+// Defines values for FeedbackServiceExportAdminFeedbacksParamsFeedbackType.
+const (
+	FeedbackServiceExportAdminFeedbacksParamsFeedbackTypeAssistant FeedbackServiceExportAdminFeedbacksParamsFeedbackType = "assistant"
+	FeedbackServiceExportAdminFeedbacksParamsFeedbackTypeSchool    FeedbackServiceExportAdminFeedbacksParamsFeedbackType = "school"
+)
+
+// Valid indicates whether the value is a known member of the FeedbackServiceExportAdminFeedbacksParamsFeedbackType enum.
+func (e FeedbackServiceExportAdminFeedbacksParamsFeedbackType) Valid() bool {
+	switch e {
+	case FeedbackServiceExportAdminFeedbacksParamsFeedbackTypeAssistant:
+		return true
+	case FeedbackServiceExportAdminFeedbacksParamsFeedbackTypeSchool:
 		return true
 	default:
 		return false
@@ -736,25 +745,25 @@ func (e NotificationServiceListNotificationTasksParamsResult) Valid() bool {
 
 // Defines values for NotificationServiceListNotificationTaskDeliveriesParamsStatus.
 const (
-	Failed     NotificationServiceListNotificationTaskDeliveriesParamsStatus = "failed"
-	Pending    NotificationServiceListNotificationTaskDeliveriesParamsStatus = "pending"
-	Processing NotificationServiceListNotificationTaskDeliveriesParamsStatus = "processing"
-	Skipped    NotificationServiceListNotificationTaskDeliveriesParamsStatus = "skipped"
-	Succeeded  NotificationServiceListNotificationTaskDeliveriesParamsStatus = "succeeded"
+	NotificationServiceListNotificationTaskDeliveriesParamsStatusFailed     NotificationServiceListNotificationTaskDeliveriesParamsStatus = "failed"
+	NotificationServiceListNotificationTaskDeliveriesParamsStatusPending    NotificationServiceListNotificationTaskDeliveriesParamsStatus = "pending"
+	NotificationServiceListNotificationTaskDeliveriesParamsStatusProcessing NotificationServiceListNotificationTaskDeliveriesParamsStatus = "processing"
+	NotificationServiceListNotificationTaskDeliveriesParamsStatusSkipped    NotificationServiceListNotificationTaskDeliveriesParamsStatus = "skipped"
+	NotificationServiceListNotificationTaskDeliveriesParamsStatusSucceeded  NotificationServiceListNotificationTaskDeliveriesParamsStatus = "succeeded"
 )
 
 // Valid indicates whether the value is a known member of the NotificationServiceListNotificationTaskDeliveriesParamsStatus enum.
 func (e NotificationServiceListNotificationTaskDeliveriesParamsStatus) Valid() bool {
 	switch e {
-	case Failed:
+	case NotificationServiceListNotificationTaskDeliveriesParamsStatusFailed:
 		return true
-	case Pending:
+	case NotificationServiceListNotificationTaskDeliveriesParamsStatusPending:
 		return true
-	case Processing:
+	case NotificationServiceListNotificationTaskDeliveriesParamsStatusProcessing:
 		return true
-	case Skipped:
+	case NotificationServiceListNotificationTaskDeliveriesParamsStatusSkipped:
 		return true
-	case Succeeded:
+	case NotificationServiceListNotificationTaskDeliveriesParamsStatusSucceeded:
 		return true
 	default:
 		return false
@@ -3176,17 +3185,17 @@ type CreateElectricityMeterRequestBody struct {
 
 // CreateFeedbackRequestBody defines model for CreateFeedbackRequestBody.
 type CreateFeedbackRequestBody struct {
-	// Category bug=功能异常 suggestion=功能建议 content=内容问题 account=账号问题 other=其他。
-	// 缺省或空串按 other 入库，兼容不认识分类的老客户端；其余值返回 400。
-	Category  *CreateFeedbackRequestBodyCategory `json:"category,omitempty"`
-	Content   string                             `json:"content"`
-	Context   *FeedbackContext                   `json:"context,omitempty"`
-	ImageKeys *[]string                          `json:"imageKeys,omitempty"`
+	Content string           `json:"content"`
+	Context *FeedbackContext `json:"context,omitempty"`
+
+	// FeedbackType 未提供时由服务端默认为 assistant
+	FeedbackType   *CreateFeedbackRequestBodyFeedbackType `json:"feedbackType,omitempty"`
+	ImageKeys      *[]string                              `json:"imageKeys,omitempty"`
+	NotifyPlatform *string                                `json:"notifyPlatform,omitempty"`
 }
 
-// CreateFeedbackRequestBodyCategory bug=功能异常 suggestion=功能建议 content=内容问题 account=账号问题 other=其他。
-// 缺省或空串按 other 入库，兼容不认识分类的老客户端；其余值返回 400。
-type CreateFeedbackRequestBodyCategory string
+// CreateFeedbackRequestBodyFeedbackType 未提供时由服务端默认为 assistant
+type CreateFeedbackRequestBodyFeedbackType string
 
 // CreateGradeChatGroupRequestBody defines model for CreateGradeChatGroupRequestBody.
 type CreateGradeChatGroupRequestBody struct {
@@ -4421,24 +4430,24 @@ type FeedbackContext struct {
 
 // FeedbackItem defines model for FeedbackItem.
 type FeedbackItem struct {
-	// Category 老客户端不传分类，入库时记为 other，因此这里恒有值。
-	Category     *FeedbackItemCategory `json:"category,omitempty"`
-	Content      *string               `json:"content,omitempty"`
-	Context      *FeedbackContext      `json:"context,omitempty"`
-	CreatedAt    *int64                `json:"createdAt,omitempty"`
-	HandledById  *string               `json:"handledById,omitempty"`
-	Id           *string               `json:"id,omitempty"`
-	ImageKeys    *[]string             `json:"imageKeys,omitempty"`
-	Images       *[]UploadData         `json:"images,omitempty"`
-	ReplyContent *string               `json:"replyContent,omitempty"`
-	ReplyTaskId  *string               `json:"replyTaskId,omitempty"`
-	Status       *string               `json:"status,omitempty"`
-	UpdatedAt    *int64                `json:"updatedAt,omitempty"`
-	UserId       *string               `json:"userId,omitempty"`
+	Content        *string                   `json:"content,omitempty"`
+	Context        *FeedbackContext          `json:"context,omitempty"`
+	CreatedAt      *int64                    `json:"createdAt,omitempty"`
+	FeedbackType   *FeedbackItemFeedbackType `json:"feedbackType,omitempty"`
+	HandledById    *string                   `json:"handledById,omitempty"`
+	Id             *string                   `json:"id,omitempty"`
+	ImageKeys      *[]string                 `json:"imageKeys,omitempty"`
+	Images         *[]UploadData             `json:"images,omitempty"`
+	NotifyPlatform *string                   `json:"notifyPlatform,omitempty"`
+	ReplyContent   *string                   `json:"replyContent,omitempty"`
+	ReplyTaskId    *string                   `json:"replyTaskId,omitempty"`
+	Status         *string                   `json:"status,omitempty"`
+	UpdatedAt      *int64                    `json:"updatedAt,omitempty"`
+	UserId         *string                   `json:"userId,omitempty"`
 }
 
-// FeedbackItemCategory 老客户端不传分类，入库时记为 other，因此这里恒有值。
-type FeedbackItemCategory string
+// FeedbackItemFeedbackType defines model for FeedbackItem.FeedbackType.
+type FeedbackItemFeedbackType string
 
 // FeedbackPage defines model for FeedbackPage.
 type FeedbackPage struct {
@@ -10239,17 +10248,31 @@ type AdminServiceUpdateElectricityMeterParams struct {
 
 // FeedbackServiceListAdminFeedbacksParams defines parameters for FeedbackServiceListAdminFeedbacks.
 type FeedbackServiceListAdminFeedbacksParams struct {
-	Status   *FeedbackServiceListAdminFeedbacksParamsStatus   `form:"status,omitempty" json:"status,omitempty"`
-	Category *FeedbackServiceListAdminFeedbacksParamsCategory `form:"category,omitempty" json:"category,omitempty"`
-	Page     *int32                                           `form:"page,omitempty" json:"page,omitempty"`
-	PageSize *int32                                           `form:"page_size,omitempty" json:"page_size,omitempty"`
+	Status       *FeedbackServiceListAdminFeedbacksParamsStatus       `form:"status,omitempty" json:"status,omitempty"`
+	Page         *int32                                               `form:"page,omitempty" json:"page,omitempty"`
+	PageSize     *int32                                               `form:"page_size,omitempty" json:"page_size,omitempty"`
+	FeedbackType *FeedbackServiceListAdminFeedbacksParamsFeedbackType `form:"feedback_type,omitempty" json:"feedback_type,omitempty"`
 }
 
 // FeedbackServiceListAdminFeedbacksParamsStatus defines parameters for FeedbackServiceListAdminFeedbacks.
 type FeedbackServiceListAdminFeedbacksParamsStatus string
 
-// FeedbackServiceListAdminFeedbacksParamsCategory defines parameters for FeedbackServiceListAdminFeedbacks.
-type FeedbackServiceListAdminFeedbacksParamsCategory string
+// FeedbackServiceListAdminFeedbacksParamsFeedbackType defines parameters for FeedbackServiceListAdminFeedbacks.
+type FeedbackServiceListAdminFeedbacksParamsFeedbackType string
+
+// FeedbackServiceExportAdminFeedbacksParams defines parameters for FeedbackServiceExportAdminFeedbacks.
+type FeedbackServiceExportAdminFeedbacksParams struct {
+	Status       *FeedbackServiceExportAdminFeedbacksParamsStatus       `form:"status,omitempty" json:"status,omitempty"`
+	Page         *int32                                                 `form:"page,omitempty" json:"page,omitempty"`
+	PageSize     *int32                                                 `form:"page_size,omitempty" json:"page_size,omitempty"`
+	FeedbackType *FeedbackServiceExportAdminFeedbacksParamsFeedbackType `form:"feedback_type,omitempty" json:"feedback_type,omitempty"`
+}
+
+// FeedbackServiceExportAdminFeedbacksParamsStatus defines parameters for FeedbackServiceExportAdminFeedbacks.
+type FeedbackServiceExportAdminFeedbacksParamsStatus string
+
+// FeedbackServiceExportAdminFeedbacksParamsFeedbackType defines parameters for FeedbackServiceExportAdminFeedbacks.
+type FeedbackServiceExportAdminFeedbacksParamsFeedbackType string
 
 // KnowledgeServiceAdminListAuditParams defines parameters for KnowledgeServiceAdminListAudit.
 type KnowledgeServiceAdminListAuditParams struct {

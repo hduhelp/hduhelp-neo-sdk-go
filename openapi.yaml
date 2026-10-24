@@ -2380,15 +2380,47 @@ paths:
                         - pending
                         - handled
                     type: string
-                - name: category
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: feedback_type
                   in: query
                   schema:
                     enum:
-                        - bug
-                        - suggestion
-                        - content
-                        - account
-                        - other
+                        - assistant
+                        - school
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FeedbackPageResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/feedbacks/export:
+        get:
+            tags:
+                - FeedbackService
+            summary: 导出用户反馈 Excel
+            description: 按类型和状态导出全部匹配反馈，内存生成 XLSX 并作为附件下载，不在服务器保存文件。分页参数不参与导出。
+            operationId: FeedbackService_ExportAdminFeedbacks
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: status
+                  in: query
+                  schema:
+                    enum:
+                        - pending
+                        - handled
                     type: string
                 - name: page
                   in: query
@@ -2400,13 +2432,26 @@ paths:
                   schema:
                     type: integer
                     format: int32
+                - name: feedback_type
+                  in: query
+                  schema:
+                    enum:
+                        - assistant
+                        - school
+                    type: string
             responses:
                 "200":
-                    description: Successful response
-                    content:
-                        application/json:
+                    description: Excel 附件
+                    headers:
+                        Content-Disposition:
+                            description: attachment; filename=feedbacks-YYYYMMDD-HHMMSS.xlsx
                             schema:
-                                $ref: '#/components/schemas/FeedbackPageResponseBody'
+                                type: string
+                    content:
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+                            schema:
+                                type: string
+                                format: binary
             x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/feedbacks/{id}:
         get:
@@ -15994,17 +16039,14 @@ components:
                     type: array
                     items:
                         type: string
-                category:
-                    enum:
-                        - bug
-                        - suggestion
-                        - content
-                        - account
-                        - other
+                notifyPlatform:
                     type: string
-                    description: |-
-                        bug=功能异常 suggestion=功能建议 content=内容问题 account=账号问题 other=其他。
-                        缺省或空串按 other 入库，兼容不认识分类的老客户端；其余值返回 400。
+                feedbackType:
+                    enum:
+                        - assistant
+                        - school
+                    type: string
+                    description: 未提供时由服务端默认为 assistant
         CreateGradeChatGroupRequestBody:
             type: object
             properties:
@@ -17852,15 +17894,13 @@ components:
                 updatedAt:
                     type: integer
                     format: int64
-                category:
-                    enum:
-                        - bug
-                        - suggestion
-                        - content
-                        - account
-                        - other
+                notifyPlatform:
                     type: string
-                    description: 老客户端不传分类，入库时记为 other，因此这里恒有值。
+                feedbackType:
+                    enum:
+                        - assistant
+                        - school
+                    type: string
         FeedbackPage:
             type: object
             properties:
