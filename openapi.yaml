@@ -12172,7 +12172,7 @@ paths:
             tags:
                 - UploadService
             summary: 获取已上传文件
-            description: 按对象 key(query 参数)返回原始字节(公开可读)。Go SDK 不覆盖二进制响应，请使用标准 HTTP 客户端下载。
+            description: 按对象 key(query 参数)读取已上传文件(公开可读)。不带 w 的图片与文档由服务端流式返回原始字节(Cache-Control:public, max-age=31536000, immutable)；视频与带 w 的图片 302 到短期签名的对象存储地址(Cache-Control:private, max-age=3600)，视频地址支持 Range。Go SDK 不覆盖二进制响应，请使用标准 HTTP 客户端下载并跟随重定向。
             operationId: UploadService_Download
             parameters:
                 - name: key
@@ -12181,6 +12181,18 @@ paths:
                   required: true
                   schema:
                     type: string
+                - name: w
+                  in: query
+                  description: Optional target width in px (positive integer), snapped up to 128/256/384/512/768/1080/1440/2048 (capped at 2048). Non-GIF images:webp q80 at that width (never upscaled). Videos:JPEG cover frame at that width. Ignored for GIFs, images over 20MB and other types. Invalid values are rejected with 400.
+                  schema:
+                    type: integer
+                    format: int32
+                - name: t
+                  in: query
+                  description: Optional video frame time in ms (non-negative integer, default 1000) used with w on videos; floored to whole seconds and clamped to the video duration when known. Invalid values are rejected with 400.
+                  schema:
+                    type: integer
+                    format: int32
             responses:
                 "200":
                     description: Successful response
@@ -12244,7 +12256,7 @@ paths:
             tags:
                 - UploadService
             summary: 签发直传地址
-            description: 校验 filename/size/content_type 后生成对象 key 与短期 PUT URL。usage=avatar 时预登记 pending 元数据，PUT 后调用 /upload/complete；业务首次引用会为旧客户端执行同一确认。第三方用户令牌需携带 upload:file:write。
+            description: 校验 filename/size/content_type 后生成对象 key 与短期 PUT URL。usage=avatar 时预登记 pending 元数据，PUT 后调用 /upload/complete；业务首次引用会为旧客户端执行同一确认。usage=moments_video 只接受 video/mp4、video/quicktime，单文件上限 200MB，不受全局类型白名单约束。第三方用户令牌需携带 upload:file:write。
             operationId: UploadService_SignUpload
             security:
                 - BearerAuth: []
@@ -13417,6 +13429,11 @@ components:
                     type: array
                     items:
                         type: string
+                media:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PostMediaInput'
+                    description: 同 PublishPostRequest.media。
         AdminRefreshRequestBody:
             type: object
             properties:
@@ -21482,9 +21499,20 @@ components:
                 is_mine:
                     type: boolean
                     description: isMine 同 PostViewerState.isMine，供「我的笔记」与信息流给本人的匿名帖打标。
+                media:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PostMedia'
+                    description: media 是完整的有序媒体列表；cover 取它的第一项（视频即截帧 cover_url 与视频宽高）。
+                media_count:
+                    type: integer
+                    format: int32
+                has_video:
+                    type: boolean
+                    description: hasVideo 为真时媒体里至少有一个视频，供卡片显示播放角标。
             description: |-
                 ---------- 帖子 ----------
-                PostCard 是瀑布流卡片投影：只带封面与摘要，不含正文节点，使列表页不必拉全文。
+                PostCard 是瀑布流卡片投影：只带媒体与摘要，不含正文节点，使列表页不必拉全文。
         PostCounters:
             type: object
             properties:
@@ -21577,6 +21605,11 @@ components:
                 anonymous:
                     type: boolean
                     description: anonymous 同 PostCard.anonymous。
+                media:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PostMedia'
+                    description: media 是有序媒体列表（图片与视频混排）；images 只含其中的图片项，供旧客户端。
         PostDetailResponseBody:
             type: object
             properties:
@@ -21630,6 +21663,57 @@ components:
                     format: double
                 description:
                     type: string
+        PostMedia:
+            type: object
+            properties:
+                kind:
+                    type: string
+                    description: image | video
+                key:
+                    type: string
+                url:
+                    type: string
+                cover_url:
+                    type: string
+                    description: 仅 video
+                width:
+                    type: integer
+                    format: int32
+                height:
+                    type: integer
+                    format: int32
+                duration_ms:
+                    type: integer
+                    description: 仅 video
+                    format: int32
+            description: |-
+                PostMedia 是笔记媒体列表的一项。笔记的媒体是图片与视频混排的有序列表，第一项是封面。
+                url 是公开读取地址：图片可加 &w=<宽度> 取缩略图；视频 302 到支持 Range 的签名地址。
+                coverUrl 只在视频项上出现，是同一地址加 w=720 的第 1 秒截帧。地址都稳定，可按地址缓存。
+        PostMediaInput:
+            type: object
+            properties:
+                kind:
+                    type: string
+                    description: image | video
+                key:
+                    type: string
+                    description: image 取自 upload/sign（usage=moments），video 取自 upload/sign（usage=moments_video）
+                width:
+                    type: integer
+                    description: 0..20000；video 必填且 >0
+                    format: int32
+                height:
+                    type: integer
+                    description: 0..20000；video 必填且 >0
+                    format: int32
+                duration_ms:
+                    type: integer
+                    description: video 必填，1..300000 毫秒；image 不带
+                    format: int32
+            description: |-
+                PostMediaInput 是发布与编辑时提交的一项媒体。宽高与时长由客户端提供——服务端不解码媒体，
+                宽高供瀑布流占位，时长供角标与审核截帧。
         PostVersion:
             type: object
             properties:
@@ -22014,6 +22098,13 @@ components:
                     description: |-
                         anonymous 为 true 时以服务端生成的花名发布（形如「害羞的小鲸鱼」，每帖一个、永不改变）。
                         仅用户主体可用；匿名帖不计入作者帖子数、不进他人视角的主页与关注流。发布后不可更改。
+                media:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PostMediaInput'
+                    description: |-
+                        media 是图片与视频混排的有序媒体列表，合计至多 9 项。与 images 二选一：同时非空即参数错误；
+                        只传 images 的旧客户端按纯图片处理。
         PublishPostResponseBody:
             type: object
             properties:
@@ -25839,6 +25930,11 @@ components:
                     type: array
                     items:
                         type: string
+                media:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PostMediaInput'
+                    description: 同 PublishPostRequest.media。编辑是整篇替换。
         UpdateRoleRequestBody:
             type: object
             properties:

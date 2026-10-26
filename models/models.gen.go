@@ -1396,10 +1396,13 @@ type AdminPostSummaryResponseBody struct {
 
 // AdminPublishPostRequestBody defines model for AdminPublishPostRequestBody.
 type AdminPublishPostRequestBody struct {
-	CategoryIds    *[]string         `json:"category_ids,omitempty"`
-	Content        *[][]RichTextNode `json:"content,omitempty"`
-	Images         *[]PostImageInput `json:"images,omitempty"`
-	Location       *PostLocation     `json:"location,omitempty"`
+	CategoryIds *[]string         `json:"category_ids,omitempty"`
+	Content     *[][]RichTextNode `json:"content,omitempty"`
+	Images      *[]PostImageInput `json:"images,omitempty"`
+	Location    *PostLocation     `json:"location,omitempty"`
+
+	// Media 同 PublishPostRequest.media。
+	Media          *[]PostMediaInput `json:"media,omitempty"`
 	PublishAsAppId *string           `json:"publish_as_app_id,omitempty"`
 	Title          *string           `json:"title,omitempty"`
 }
@@ -6709,7 +6712,7 @@ type PopularResponseBody struct {
 }
 
 // PostCard ---------- 帖子 ----------
-// PostCard 是瀑布流卡片投影：只带封面与摘要，不含正文节点，使列表页不必拉全文。
+// PostCard 是瀑布流卡片投影：只带媒体与摘要，不含正文节点，使列表页不必拉全文。
 type PostCard struct {
 	// Anonymous anonymous 只在匿名帖上出现且为 true，此时 author.kind=anonymous。
 	Anonymous *bool `json:"anonymous,omitempty"`
@@ -6731,12 +6734,19 @@ type PostCard struct {
 	// 上传不限图片比例，展示按定宽等比缩放。
 	Cover     *PostImage `json:"cover,omitempty"`
 	CreatedAt *int64     `json:"created_at,omitempty"`
-	Hashtags  *[]string  `json:"hashtags,omitempty"`
-	Id        *string    `json:"id,omitempty"`
+
+	// HasVideo hasVideo 为真时媒体里至少有一个视频，供卡片显示播放角标。
+	HasVideo *bool     `json:"has_video,omitempty"`
+	Hashtags *[]string `json:"hashtags,omitempty"`
+	Id       *string   `json:"id,omitempty"`
 
 	// IsMine isMine 同 PostViewerState.isMine，供「我的笔记」与信息流给本人的匿名帖打标。
 	IsMine   *bool         `json:"is_mine,omitempty"`
 	Location *PostLocation `json:"location,omitempty"`
+
+	// Media media 是完整的有序媒体列表；cover 取它的第一项（视频即截帧 cover_url 与视频宽高）。
+	Media      *[]PostMedia `json:"media,omitempty"`
+	MediaCount *int32       `json:"media_count,omitempty"`
 
 	// ReactedByMe 观察者是否已点「赞」（like 表情），供瀑布流卡片直接点赞。观察者态，只对
 	// 登录用户下发；匿名与应用主体不下发。其他表情不计入。
@@ -6783,12 +6793,15 @@ type PostDetail struct {
 	Content     *[][]RichTextNode `json:"content,omitempty"`
 
 	// Counters PostCounters 是全局计数，与调用者无关，可缓存。
-	Counters  *PostCounters    `json:"counters,omitempty"`
-	CreatedAt *int64           `json:"created_at,omitempty"`
-	Hashtags  *[]string        `json:"hashtags,omitempty"`
-	Id        *string          `json:"id,omitempty"`
-	Images    *[]PostImage     `json:"images,omitempty"`
-	Location  *PostLocation    `json:"location,omitempty"`
+	Counters  *PostCounters `json:"counters,omitempty"`
+	CreatedAt *int64        `json:"created_at,omitempty"`
+	Hashtags  *[]string     `json:"hashtags,omitempty"`
+	Id        *string       `json:"id,omitempty"`
+	Images    *[]PostImage  `json:"images,omitempty"`
+	Location  *PostLocation `json:"location,omitempty"`
+
+	// Media media 是有序媒体列表（图片与视频混排）；images 只含其中的图片项，供旧客户端。
+	Media     *[]PostMedia     `json:"media,omitempty"`
 	Reactions *ReactionSummary `json:"reactions,omitempty"`
 
 	// Status published | under_review | taken_down | withdrawn（withdrawn 只对作者本人可见）
@@ -6840,6 +6853,43 @@ type PostLocation struct {
 	Description *string  `json:"description,omitempty"`
 	Latitude    *float64 `json:"latitude,omitempty"`
 	Longitude   *float64 `json:"longitude,omitempty"`
+}
+
+// PostMedia PostMedia 是笔记媒体列表的一项。笔记的媒体是图片与视频混排的有序列表，第一项是封面。
+// url 是公开读取地址：图片可加 &w=<宽度> 取缩略图；视频 302 到支持 Range 的签名地址。
+// coverUrl 只在视频项上出现，是同一地址加 w=720 的第 1 秒截帧。地址都稳定，可按地址缓存。
+type PostMedia struct {
+	// CoverUrl 仅 video
+	CoverUrl *string `json:"cover_url,omitempty"`
+
+	// DurationMs 仅 video
+	DurationMs *int32  `json:"duration_ms,omitempty"`
+	Height     *int32  `json:"height,omitempty"`
+	Key        *string `json:"key,omitempty"`
+
+	// Kind image | video
+	Kind  *string `json:"kind,omitempty"`
+	Url   *string `json:"url,omitempty"`
+	Width *int32  `json:"width,omitempty"`
+}
+
+// PostMediaInput PostMediaInput 是发布与编辑时提交的一项媒体。宽高与时长由客户端提供——服务端不解码媒体，
+// 宽高供瀑布流占位，时长供角标与审核截帧。
+type PostMediaInput struct {
+	// DurationMs video 必填，1..300000 毫秒；image 不带
+	DurationMs *int32 `json:"duration_ms,omitempty"`
+
+	// Height 0..20000；video 必填且 >0
+	Height *int32 `json:"height,omitempty"`
+
+	// Key image 取自 upload/sign（usage=moments），video 取自 upload/sign（usage=moments_video）
+	Key *string `json:"key,omitempty"`
+
+	// Kind image | video
+	Kind *string `json:"kind,omitempty"`
+
+	// Width 0..20000；video 必填且 >0
+	Width *int32 `json:"width,omitempty"`
 }
 
 // PostVersion defines model for PostVersion.
@@ -7085,7 +7135,11 @@ type PublishPostRequestBody struct {
 	// 签名时必须带 usage=moments：社区图片自成一个上传分组，其他分组的 key 会被拒绝。
 	Images   *[]PostImageInput `json:"images,omitempty"`
 	Location *PostLocation     `json:"location,omitempty"`
-	Title    *string           `json:"title,omitempty"`
+
+	// Media media 是图片与视频混排的有序媒体列表，合计至多 9 项。与 images 二选一：同时非空即参数错误；
+	// 只传 images 的旧客户端按纯图片处理。
+	Media *[]PostMediaInput `json:"media,omitempty"`
+	Title *string           `json:"title,omitempty"`
 }
 
 // PublishPostResponseBody defines model for PublishPostResponseBody.
@@ -7148,7 +7202,7 @@ type ReactedComment struct {
 	Comment *Comment `json:"comment,omitempty"`
 
 	// Post ---------- 帖子 ----------
-	// PostCard 是瀑布流卡片投影：只带封面与摘要，不含正文节点，使列表页不必拉全文。
+	// PostCard 是瀑布流卡片投影：只带媒体与摘要，不含正文节点，使列表页不必拉全文。
 	Post      *PostCard `json:"post,omitempty"`
 	ReactedAt *int64    `json:"reacted_at,omitempty"`
 }
@@ -9594,7 +9648,10 @@ type UpdatePostRequestBody struct {
 	Content     *[][]RichTextNode `json:"content,omitempty"`
 	Images      *[]PostImageInput `json:"images,omitempty"`
 	Location    *PostLocation     `json:"location,omitempty"`
-	Title       *string           `json:"title,omitempty"`
+
+	// Media 同 PublishPostRequest.media。编辑是整篇替换。
+	Media *[]PostMediaInput `json:"media,omitempty"`
+	Title *string           `json:"title,omitempty"`
 }
 
 // UpdateRoleRequestBody defines model for UpdateRoleRequestBody.
