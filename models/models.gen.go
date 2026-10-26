@@ -11408,6 +11408,11 @@ type MomentsServiceSearchParams struct {
 	Type   *string `form:"type,omitempty" json:"type,omitempty"`
 	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 	Limit  *int32  `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Sort relevance | latest，缺省 relevance
+	Sort       *string `form:"sort,omitempty" json:"sort,omitempty"`
+	CategoryId *string `form:"category_id,omitempty" json:"category_id,omitempty"`
+	Hashtag    *string `form:"hashtag,omitempty" json:"hashtag,omitempty"`
 }
 
 // MomentsServiceListFollowersParams defines parameters for MomentsServiceListFollowers.

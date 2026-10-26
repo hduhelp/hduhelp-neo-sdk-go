@@ -10553,7 +10553,7 @@ paths:
             tags:
                 - MomentsService
             summary: 信息流
-            description: tab=recommend 为发现流（按时间倒序），tab=following 为关注流；可叠加板块或话题筛选。cursor 分页
+            description: tab=recommend 为推荐流（按口味亲和 × 热度 × 时效 × 已看降权个性化排序，置顶在前，同一用户同一天翻页稳定），tab=following 为关注流（按时间倒序）；可叠加板块或话题筛选。cursor 分页
             operationId: MomentsService_GetFeed
             security:
                 - BearerAuth: []
@@ -11343,7 +11343,7 @@ paths:
             tags:
                 - MomentsService
             summary: 搜索
-            description: type 决定返回帖子、用户、话题或官方号，对应搜索页的四个 tab
+            description: type 决定返回帖子、用户、话题或官方号，对应搜索页的四个 tab。帖子支持 sort=relevance|latest（缺省 relevance：相关度 × 时效 × 热度）与 category_id、hashtag 收窄
             operationId: MomentsService_Search
             security:
                 - BearerAuth: []
@@ -11366,6 +11366,19 @@ paths:
                   schema:
                     type: integer
                     format: int32
+                - name: sort
+                  in: query
+                  description: relevance | latest，缺省 relevance
+                  schema:
+                    type: string
+                - name: category_id
+                  in: query
+                  schema:
+                    type: string
+                - name: hashtag
+                  in: query
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response

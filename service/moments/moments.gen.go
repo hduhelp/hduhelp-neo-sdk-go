@@ -3658,6 +3658,24 @@ func (b *SearchReqBuilder) Limit(v int32) *SearchReqBuilder {
 	return b
 }
 
+// Sort sets the "sort" query parameter: relevance | latest，缺省 relevance
+func (b *SearchReqBuilder) Sort(v string) *SearchReqBuilder {
+	b.req.queryParams["sort"] = v
+	return b
+}
+
+// CategoryId sets the "category_id" query parameter.
+func (b *SearchReqBuilder) CategoryId(v string) *SearchReqBuilder {
+	b.req.queryParams["category_id"] = v
+	return b
+}
+
+// Hashtag sets the "hashtag" query parameter.
+func (b *SearchReqBuilder) Hashtag(v string) *SearchReqBuilder {
+	b.req.queryParams["hashtag"] = v
+	return b
+}
+
 // Build finalizes the request.
 func (b *SearchReqBuilder) Build() *SearchReq { return b.req }
 
