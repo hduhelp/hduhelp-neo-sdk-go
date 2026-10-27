@@ -5910,8 +5910,14 @@ type LoginWithCodeRequestBody struct {
 
 // LoginWithPasswordRequestBody defines model for LoginWithPasswordRequestBody.
 type LoginWithPasswordRequestBody struct {
-	Identifier *string `json:"identifier,omitempty"`
-	Password   *string `json:"password,omitempty"`
+	// CaptchaSceneId 客户端初始化验证码时用的场景 ID（可选），须在服务端白名单内。
+	CaptchaSceneId *string `json:"captcha_scene_id,omitempty"`
+
+	// CaptchaVerifyParam 阿里云验证码 2.0 的 captchaVerifyParam，原样转发验签。服务端开启人机验证时必填，先于查用户、
+	// 校验密码执行，验签失败不计入登录失败次数：缺失返回 710000013，验签未通过返回 710000014。
+	CaptchaVerifyParam *string `json:"captcha_verify_param,omitempty"`
+	Identifier         *string `json:"identifier,omitempty"`
+	Password           *string `json:"password,omitempty"`
 }
 
 // LogoutData defines model for LogoutData.
@@ -8348,6 +8354,13 @@ type SendPigeonResponseBody struct {
 
 // SendVerificationCodeRequestBody defines model for SendVerificationCodeRequestBody.
 type SendVerificationCodeRequestBody struct {
+	// CaptchaSceneId 客户端初始化验证码时用的场景 ID（可选）。传了必须在服务端白名单内，并作为 SceneId 绑定验签。
+	CaptchaSceneId *string `json:"captcha_scene_id,omitempty"`
+
+	// CaptchaVerifyParam 阿里云验证码 2.0 客户端 success 回调给的 captchaVerifyParam，服务端原样转发验签，不得改动。
+	// 服务端开启人机验证时必填：缺失返回 710000013，验签未通过返回 710000014。
+	CaptchaVerifyParam *string `json:"captcha_verify_param,omitempty"`
+
 	// Purpose login | reset_password | bind_phone | bind_email | change_phone | change_email
 	Purpose *string `json:"purpose,omitempty"`
 	Target  *string `json:"target,omitempty"`
@@ -9998,8 +10011,14 @@ type VenueDatesResponseBody struct {
 
 // VerifyPasswordResetCodeRequestBody defines model for VerifyPasswordResetCodeRequestBody.
 type VerifyPasswordResetCodeRequestBody struct {
-	Code   *string `json:"code,omitempty"`
-	Target *string `json:"target,omitempty"`
+	// CaptchaSceneId 客户端初始化验证码时用的场景 ID（可选），须在服务端白名单内。
+	CaptchaSceneId *string `json:"captcha_scene_id,omitempty"`
+
+	// CaptchaVerifyParam 阿里云验证码 2.0 的 captchaVerifyParam，原样转发验签。服务端开启人机验证时必填，先于校验验证码，
+	// 验签失败不计入验证码尝试次数：缺失返回 710000013，验签未通过返回 710000014。
+	CaptchaVerifyParam *string `json:"captcha_verify_param,omitempty"`
+	Code               *string `json:"code,omitempty"`
+	Target             *string `json:"target,omitempty"`
 
 	// Type "sms" | "email"
 	Type *string `json:"type,omitempty"`

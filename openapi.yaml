@@ -8624,7 +8624,7 @@ paths:
             tags:
                 - IdentityService
             summary: 发送验证码
-            description: 向手机号或邮箱发送验证码。支持多种用途：登录、重置密码、绑定手机、绑定邮箱、换绑手机、换绑邮箱等。60 秒发送限流。
+            description: 向手机号或邮箱发送验证码。支持多种用途：登录、重置密码、绑定手机、绑定邮箱、换绑手机、换绑邮箱等。60 秒发送限流。服务端开启人机验证时须携带 captcha_verify_param（阿里云验证码 2.0），先于其它校验执行。重置密码时无论账号是否存在都返回成功，不泄露账号是否注册。
             operationId: IdentityService_SendVerificationCode
             requestBody:
                 description: 发送验证码请求
@@ -8692,7 +8692,7 @@ paths:
             tags:
                 - IdentityService
             summary: 密码登录
-            description: 使用手机号或邮箱和密码进行登录。登录成功后返回访问令牌和刷新令牌。
+            description: 使用手机号或邮箱和密码进行登录。登录成功后返回访问令牌和刷新令牌。服务端开启人机验证时须携带 captcha_verify_param。账号不存在、未设密码与密码错误返回同一错误。
             operationId: IdentityService_LoginWithPassword
             parameters:
                 - name: x-device-id
@@ -8834,7 +8834,7 @@ paths:
             tags:
                 - IdentityService
             summary: 校验找回密码验证码
-            description: 校验邮箱或手机验证码，成功后签发短时、一次性的密码重置凭证。
+            description: 校验邮箱或手机验证码，成功后签发短时、一次性的密码重置凭证。服务端开启人机验证时须携带 captcha_verify_param。账号不存在时与验证码错误返回同一错误。
             operationId: IdentityService_VerifyPasswordResetCode
             requestBody:
                 description: 校验找回密码验证码，成功后签发短时、一次性的重置凭证
@@ -20113,6 +20113,14 @@ components:
                     type: string
                 password:
                     type: string
+                captcha_verify_param:
+                    type: string
+                    description: |-
+                        阿里云验证码 2.0 的 captchaVerifyParam，原样转发验签。服务端开启人机验证时必填，先于查用户、
+                        校验密码执行，验签失败不计入登录失败次数：缺失返回 710000013，验签未通过返回 710000014。
+                captcha_scene_id:
+                    type: string
+                    description: 客户端初始化验证码时用的场景 ID（可选），须在服务端白名单内。
         LogoutData:
             type: object
             properties:
@@ -23957,6 +23965,14 @@ components:
                 purpose:
                     type: string
                     description: login | reset_password | bind_phone | bind_email | change_phone | change_email
+                captcha_verify_param:
+                    type: string
+                    description: |-
+                        阿里云验证码 2.0 客户端 success 回调给的 captchaVerifyParam，服务端原样转发验签，不得改动。
+                        服务端开启人机验证时必填：缺失返回 710000013，验签未通过返回 710000014。
+                captcha_scene_id:
+                    type: string
+                    description: 客户端初始化验证码时用的场景 ID（可选）。传了必须在服务端白名单内，并作为 SceneId 绑定验签。
         SendWishData:
             type: object
             properties:
@@ -26474,6 +26490,14 @@ components:
                 type:
                     type: string
                     description: '"sms" | "email"'
+                captcha_verify_param:
+                    type: string
+                    description: |-
+                        阿里云验证码 2.0 的 captchaVerifyParam，原样转发验签。服务端开启人机验证时必填，先于校验验证码，
+                        验签失败不计入验证码尝试次数：缺失返回 710000013，验签未通过返回 710000014。
+                captcha_scene_id:
+                    type: string
+                    description: 客户端初始化验证码时用的场景 ID（可选），须在服务端白名单内。
         WeatherCard:
             type: object
             properties:
