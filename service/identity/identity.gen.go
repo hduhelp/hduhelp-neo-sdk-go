@@ -2796,6 +2796,46 @@ func (s *Service) Me(ctx context.Context, req *MeReq, opts ...core.RequestOption
 	return resp, err
 }
 
+// GetMyCampusReq is the request for GetMyCampus.
+type GetMyCampusReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// GetMyCampusReqBuilder builds a GetMyCampusReq with a fluent setter per field.
+type GetMyCampusReqBuilder struct{ req *GetMyCampusReq }
+
+// NewGetMyCampusReqBuilder creates a request builder for GetMyCampus.
+func NewGetMyCampusReqBuilder() *GetMyCampusReqBuilder {
+	return &GetMyCampusReqBuilder{req: &GetMyCampusReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *GetMyCampusReqBuilder) Build() *GetMyCampusReq { return b.req }
+
+// GetMyCampusResp is the response for GetMyCampus.
+type GetMyCampusResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.MyCampusData `json:"data"`
+}
+
+// GetMyCampus: 查询我的当前校区
+func (s *Service) GetMyCampus(ctx context.Context, req *GetMyCampusReq, opts ...core.RequestOption) (*GetMyCampusResp, error) {
+	resp := &GetMyCampusResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/identity/me/campus",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // SetCurrentCampusReq is the request for SetCurrentCampus.
 type SetCurrentCampusReq struct {
 	pathParams  map[string]string

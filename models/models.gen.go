@@ -4769,6 +4769,15 @@ type GetGradeChatGroupResponseBody struct {
 	Msg  *string      `json:"msg,omitempty"`
 }
 
+// GetMyCampusResponseBody defines model for GetMyCampusResponseBody.
+type GetMyCampusResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data 读取当前所在校区。current 恒定出现在 JSON 中：用户从未设置(或所设校区已删除)时为 null，客户端据此区分「没设置」。
+	Data *MyCampusData `json:"data,omitempty"`
+	Msg  *string       `json:"msg,omitempty"`
+}
+
 // GlobalScheduleItem defines model for GlobalScheduleItem.
 type GlobalScheduleItem struct {
 	CourseName   *string `json:"courseName,omitempty"`
@@ -6143,6 +6152,24 @@ type MutateOkResponseBody struct {
 type MutateResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
+}
+
+// MyCampusData 读取当前所在校区。current 恒定出现在 JSON 中：用户从未设置(或所设校区已删除)时为 null，客户端据此区分「没设置」。
+type MyCampusData struct {
+	// Campuses 全部可选校区，与 /campuslife/campuses 同源同序
+	Campuses []MyCampusItem `json:"campuses"`
+
+	// Current MyCampusItem 是可选校区的展示信息。short_name 由名称括号内部分推导(「杭州电子科技大学(下沙校区)」→「下沙」)，
+	// 名称没有括号时等于完整名称。
+	Current *MyCampusItem `json:"current,omitempty"`
+}
+
+// MyCampusItem MyCampusItem 是可选校区的展示信息。short_name 由名称括号内部分推导(「杭州电子科技大学(下沙校区)」→「下沙」)，
+// 名称没有括号时等于完整名称。
+type MyCampusItem struct {
+	Id        string `json:"id"`
+	Name      string `json:"name"`
+	ShortName string `json:"short_name"`
 }
 
 // MyGroupsResponseBody defines model for MyGroupsResponseBody.
@@ -7868,7 +7895,7 @@ type ScheduleResponseBody struct {
 	// Pagination OffsetPagination 是 Agent 可直接复用的偏移分页语义。nextOffset 仅在 hasMore=true 时返回。
 	Pagination OffsetPagination `json:"pagination"`
 
-	// SectionTimes 按展示校区读取所选学期时间轴；混合校区优先下沙，仅绍兴时第5节为12:05-12:30、第13节为08:30-09:15占位
+	// SectionTimes 按展示校区读取所选学期时间轴；同时有下沙和绍兴课程时按用户在 App 设置的当前校区(未设置为下沙)，仅绍兴时第5节为12:05-12:30、第13节为08:30-09:15占位
 	SectionTimes *[]SectionTime `json:"sectionTimes,omitempty"`
 }
 

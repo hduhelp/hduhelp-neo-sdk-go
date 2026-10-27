@@ -1047,7 +1047,7 @@ paths:
             tags:
                 - AcademicService
             summary: 获取学期课表
-            description: 返回当前登录本科生的选课课表，或当前教职工的任课课表。若同时存在下沙和绍兴课程，优先展示下沙课程；仅有绍兴课程时展示绍兴课程；校区判断先于周次筛选与分页。不传过滤参数时返回整学期展示条目（数据量可能较大），sectionTimes 提供所选展示校区时间轴，绍兴第5节为12:05–12:30、第13节为08:30–09:15占位，均不生成课程；按当前周查看请传 timestamp；需要指定学年学期时先用 hduhelp.academic.config 查询可选值。
+            description: 返回当前登录本科生的选课课表，或当前教职工的任课课表。若同时存在下沙和绍兴课程，只展示课表所有者在 App 里设置的当前校区的课程（未设置或设为其它校区时为下沙；可用 hduhelp.identity.me.campus.get 查询）；仅有绍兴课程时展示绍兴课程；校区判断先于周次筛选与分页。不传过滤参数时返回整学期展示条目（数据量可能较大），sectionTimes 提供所选展示校区时间轴，绍兴第5节为12:05–12:30、第13节为08:30–09:15占位，均不生成课程；按当前周查看请传 timestamp；需要指定学年学期时先用 hduhelp.academic.config 查询可选值。
             operationId: AcademicService_Schedule
             security:
                 - BearerAuth: []
@@ -7240,6 +7240,7 @@ paths:
             tags:
                 - CampusLifeService
             summary: 获取天气预报(逐小时/逐天)
+            description: 不传 lat/lng 时按用户在 App 里设置的当前校区坐标查询；用户未设置当前校区(或匿名调用)时为默认校区(杭州电子科技大学下沙校区)。可用 hduhelp.identity.me.campus.get 查询用户当前校区与可选校区；问其它校区天气时传该校区坐标(见 hduhelp.campuslife.campuses)。
             operationId: CampusLifeService_Predict
             parameters:
                 - name: days
@@ -7270,6 +7271,7 @@ paths:
             tags:
                 - CampusLifeService
             summary: 获取天气信息流卡片(AQI/温度/停雨)
+            description: 不传 lat/lng 时按用户在 App 里设置的当前校区坐标查询；用户未设置当前校区(或匿名调用)时为默认校区(杭州电子科技大学下沙校区)。可用 hduhelp.identity.me.campus.get 查询用户当前校区与可选校区；问其它校区天气时传该校区坐标(见 hduhelp.campuslife.campuses)。
             operationId: CampusLifeService_InfoStream
             parameters:
                 - name: lat
@@ -7295,6 +7297,7 @@ paths:
             tags:
                 - CampusLifeService
             summary: 获取实时天气(按当前校区坐标)
+            description: 不传 lat/lng 时按用户在 App 里设置的当前校区坐标查询；用户未设置当前校区(或匿名调用)时为默认校区(杭州电子科技大学下沙校区)。可用 hduhelp.identity.me.campus.get 查询用户当前校区与可选校区；问其它校区天气时传该校区坐标(见 hduhelp.campuslife.campuses)。
             operationId: CampusLifeService_RealTime
             parameters:
                 - name: lat
@@ -9633,11 +9636,27 @@ paths:
                                 $ref: '#/components/schemas/MeResponseBody'
             x-hduhelp-http: {'requires_user': true, 'auth': 'bearer'}
     /hduhelp-neo/identity/me/campus:
+        get:
+            tags:
+                - IdentityService
+            summary: 查询我的当前校区
+            description: 返回当前用户在 App 里设置的所在校区(current)与全部可选校区(campuses)。current 为 null 表示用户从未设置，天气等按默认校区(下沙)解析。问「我在哪个校区」或回答与校区有关的问题前可先调用。
+            operationId: IdentityService_GetMyCampus
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetMyCampusResponseBody'
+            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer'}
         put:
             tags:
                 - IdentityService
             summary: 设置当前所在校区
-            description: 设置当前用户的当前所在校区(campuses.id)，天气据此解析坐标；campus_id 留空即清除，回落默认校区。需要用户 Bearer。
+            description: 设置当前用户的当前所在校区(campuses.id，取自 GET /identity/me/campus 的 campuses)，天气据此解析坐标；campus_id 留空即清除，回落默认校区；不存在的 campus_id 返回 40400。设置后 GET /identity/me/campus 立即反映。需要用户 Bearer。
             operationId: IdentityService_SetCurrentCampus
             security:
                 - BearerAuth: []
@@ -18475,6 +18494,16 @@ components:
                     format: int64
                 msg:
                     type: string
+        GetMyCampusResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/MyCampusData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         GlobalScheduleItem:
             type: object
             properties:
@@ -20423,6 +20452,35 @@ components:
                     format: int64
                 msg:
                     type: string
+        MyCampusData:
+            required:
+                - campuses
+            type: object
+            properties:
+                current:
+                    $ref: '#/components/schemas/MyCampusItem'
+                campuses:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/MyCampusItem'
+                    description: 全部可选校区，与 /campuslife/campuses 同源同序
+            description: 读取当前所在校区。current 恒定出现在 JSON 中：用户从未设置(或所设校区已删除)时为 null，客户端据此区分「没设置」。
+        MyCampusItem:
+            required:
+                - id
+                - name
+                - short_name
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                short_name:
+                    type: string
+            description: |-
+                MyCampusItem 是可选校区的展示信息。short_name 由名称括号内部分推导(「杭州电子科技大学(下沙校区)」→「下沙」)，
+                名称没有括号时等于完整名称。
         MyGroupsResponseBody:
             type: object
             properties:
@@ -23183,7 +23241,7 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/SectionTime'
-                    description: 按展示校区读取所选学期时间轴；混合校区优先下沙，仅绍兴时第5节为12:05-12:30、第13节为08:30-09:15占位
+                    description: 按展示校区读取所选学期时间轴；同时有下沙和绍兴课程时按用户在 App 设置的当前校区(未设置为下沙)，仅绍兴时第5节为12:05-12:30、第13节为08:30-09:15占位
                 code:
                     type: integer
                     format: int64
