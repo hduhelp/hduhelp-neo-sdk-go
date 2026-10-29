@@ -4501,7 +4501,6 @@ type FeedTimeInfo struct {
 type FeedbackContext struct {
 	AppVersion *string `json:"appVersion,omitempty"`
 	Platform   *string `json:"platform,omitempty"`
-	Route      *string `json:"route,omitempty"`
 }
 
 // FeedbackItem defines model for FeedbackItem.
@@ -4517,6 +4516,8 @@ type FeedbackItem struct {
 	NotifyPlatform *string                   `json:"notifyPlatform,omitempty"`
 	ReplyContent   *string                   `json:"replyContent,omitempty"`
 	ReplyTaskId    *string                   `json:"replyTaskId,omitempty"`
+	StaffId        *string                   `json:"staffId,omitempty"`
+	StaffName      *string                   `json:"staffName,omitempty"`
 	Status         *string                   `json:"status,omitempty"`
 	UpdatedAt      *int64                    `json:"updatedAt,omitempty"`
 	UserId         *string                   `json:"userId,omitempty"`

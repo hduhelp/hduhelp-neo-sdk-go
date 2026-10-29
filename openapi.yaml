@@ -18099,8 +18099,6 @@ components:
         FeedbackContext:
             type: object
             properties:
-                route:
-                    type: string
                 appVersion:
                     type: string
                 platform:
@@ -18144,6 +18142,10 @@ components:
                     enum:
                         - assistant
                         - school
+                    type: string
+                staffName:
+                    type: string
+                staffId:
                     type: string
         FeedbackPage:
             type: object
