@@ -14432,6 +14432,11 @@ components:
                     type: array
                     items:
                         type: string
+                scopeDetails:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/OAuthScopeItem'
+                    description: 每个 scope 的中文名与敏感标记，供客户端直接展示，省得各端自维护一张表。
             description: 当前用户已授权的应用列表 / 撤销对某应用的授权（用户自助的"已连接应用"管理）。
         AvatarUploadRequestBody:
             required:

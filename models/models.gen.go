@@ -2048,10 +2048,13 @@ type AuthorizeServiceRequestBody struct {
 
 // AuthorizedAppItem 当前用户已授权的应用列表 / 撤销对某应用的授权（用户自助的"已连接应用"管理）。
 type AuthorizedAppItem struct {
-	ClientId    *string   `json:"clientId,omitempty"`
-	Description *string   `json:"description,omitempty"`
-	Name        *string   `json:"name,omitempty"`
-	Scopes      *[]string `json:"scopes,omitempty"`
+	ClientId    *string `json:"clientId,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Name        *string `json:"name,omitempty"`
+
+	// ScopeDetails 每个 scope 的中文名与敏感标记，供客户端直接展示，省得各端自维护一张表。
+	ScopeDetails *[]OAuthScopeItem `json:"scopeDetails,omitempty"`
+	Scopes       *[]string         `json:"scopes,omitempty"`
 }
 
 // AvatarUploadRequestBody defines model for AvatarUploadRequestBody.
