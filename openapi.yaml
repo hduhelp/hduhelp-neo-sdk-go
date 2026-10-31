@@ -7484,7 +7484,7 @@ paths:
             tags:
                 - IdentityService
             summary: 吊销当前个人访问令牌
-            description: 仅允许有效 PAT 通过自身 Bearer 凭据吊销自己。不接受令牌 ID，也不要求额外 scope。
+            description: 通过 PAT 自身 Bearer 凭据幂等吊销自己；已吊销或不存在时返回成功，过期令牌仍可吊销，存储故障返回 5xx。不接受令牌 ID，也不要求额外 scope。
             operationId: IdentityService_RevokeCurrentPAT
             security:
                 - PATBearerAuth: []
@@ -11606,7 +11606,6 @@ paths:
             description: RFC 8628 Device Authorization Grant；hduhelp-cli 无需应用认证；注册应用必须携带匹配 client_id 的 TAT。不签发 UAT/TAT。
             operationId: IdentityService_DeviceAuthorization
             requestBody:
-                description: '---- RFC 8628 device authorization grant (hduhelp-cli only) ----'
                 content:
                     application/x-www-form-urlencoded:
                         schema:
@@ -14005,6 +14004,7 @@ components:
                     type: array
                     items:
                         type: string
+                    description: 用户明确批准的 PAT 权限：精确 [all] 表示包含未来新增权限，或批准的具体 scope 列表；不能超出申请范围。
                 expires_at:
                     type: integer
                     format: int64
@@ -16434,6 +16434,7 @@ components:
                     type: array
                     items:
                         type: string
+                    description: 保存的 PAT 权限选择器：精确 [all] 或具体 scope 列表；all 不在此展开。
                 token:
                     type: string
                     description: 明文，仅返回一次
@@ -16452,6 +16453,7 @@ components:
                     type: array
                     items:
                         type: string
+                    description: PAT 权限：精确 [all] 表示动态全部用户权限（包含未来新增权限），或具体 scope 列表。all 不可混合、重复、改变大小写或带空白。
                 expires_at:
                     type: integer
                     description: unix millis；缺省=永不过期
@@ -17125,7 +17127,7 @@ components:
                     type: string
                 scope:
                     type: string
-                    description: RFC 6749 space-delimited
+                    description: PAT 权限：精确 all 表示动态全部用户权限（包含未来新增权限）；否则为具体 scope 列表，空格或逗号分隔。all 不可混合、重复或带空白。
                 device_name:
                     type: string
                 device_id:
@@ -21235,6 +21237,7 @@ components:
                     type: array
                     items:
                         type: string
+                    description: 保存的 PAT 权限选择器：精确 [all] 或具体 scope 列表；all 不在此展开。
                 tokenPrefix:
                     type: string
                 lastUsedAt:

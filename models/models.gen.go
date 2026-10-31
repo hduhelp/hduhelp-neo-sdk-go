@@ -1738,8 +1738,10 @@ type ApproveDeviceRequestBody struct {
 	ExpiresAt *int64 `json:"expires_at,omitempty"`
 
 	// ExpiryMode requested | custom | never；缺省兼容旧客户端
-	ExpiryMode *string   `json:"expiry_mode,omitempty"`
-	Scopes     *[]string `json:"scopes,omitempty"`
+	ExpiryMode *string `json:"expiry_mode,omitempty"`
+
+	// Scopes 用户明确批准的 PAT 权限：精确 [all] 表示包含未来新增权限，或批准的具体 scope 列表；不能超出申请范围。
+	Scopes *[]string `json:"scopes,omitempty"`
 }
 
 // ApproveDeviceRespBody defines model for ApproveDeviceRespBody.
@@ -3379,10 +3381,12 @@ type CreateOperatorResponseBody struct {
 // CreatePATData defines model for CreatePATData.
 type CreatePATData struct {
 	// ExpiresAt unix millis
-	ExpiresAt *int64    `json:"expiresAt,omitempty"`
-	Id        *string   `json:"id,omitempty"`
-	Name      *string   `json:"name,omitempty"`
-	Scopes    *[]string `json:"scopes,omitempty"`
+	ExpiresAt *int64  `json:"expiresAt,omitempty"`
+	Id        *string `json:"id,omitempty"`
+	Name      *string `json:"name,omitempty"`
+
+	// Scopes 保存的 PAT 权限选择器：精确 [all] 或具体 scope 列表；all 不在此展开。
+	Scopes *[]string `json:"scopes,omitempty"`
 
 	// Token 明文，仅返回一次
 	Token       *string `json:"token,omitempty"`
@@ -3392,9 +3396,11 @@ type CreatePATData struct {
 // CreatePATRequestBody defines model for CreatePATRequestBody.
 type CreatePATRequestBody struct {
 	// ExpiresAt unix millis；缺省=永不过期
-	ExpiresAt *int64    `json:"expires_at,omitempty"`
-	Name      *string   `json:"name,omitempty"`
-	Scopes    *[]string `json:"scopes,omitempty"`
+	ExpiresAt *int64  `json:"expires_at,omitempty"`
+	Name      *string `json:"name,omitempty"`
+
+	// Scopes PAT 权限：精确 [all] 表示动态全部用户权限（包含未来新增权限），或具体 scope 列表。all 不可混合、重复、改变大小写或带空白。
+	Scopes *[]string `json:"scopes,omitempty"`
 }
 
 // CreatePATResponseBody defines model for CreatePATResponseBody.
@@ -3846,7 +3852,7 @@ type DeviceAuthorizationRequestBody struct {
 	// ExpiresAt requested PAT expiry, unix millis
 	ExpiresAt *int64 `json:"expires_at,omitempty"`
 
-	// Scope RFC 6749 space-delimited
+	// Scope PAT 权限：精确 all 表示动态全部用户权限（包含未来新增权限）；否则为具体 scope 列表，空格或逗号分隔。all 不可混合、重复或带空白。
 	Scope *string `json:"scope,omitempty"`
 
 	// SupersedesId replacement flow audit link
@@ -6557,7 +6563,9 @@ type PATItem struct {
 	Name       *string `json:"name,omitempty"`
 
 	// RevokedAt unix millis
-	RevokedAt    *int64    `json:"revokedAt,omitempty"`
+	RevokedAt *int64 `json:"revokedAt,omitempty"`
+
+	// Scopes 保存的 PAT 权限选择器：精确 [all] 或具体 scope 列表；all 不在此展开。
 	Scopes       *[]string `json:"scopes,omitempty"`
 	SupersedesId *string   `json:"supersedesId,omitempty"`
 	TokenPrefix  *string   `json:"tokenPrefix,omitempty"`
