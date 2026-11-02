@@ -5089,6 +5089,23 @@ type IcsLinkResponseBody struct {
 	Msg  *string      `json:"msg,omitempty"`
 }
 
+// ImageSearchRequestBody defines model for ImageSearchRequestBody.
+type ImageSearchRequestBody struct {
+	CategoryId *string `json:"category_id,omitempty"`
+	Cursor     *string `json:"cursor,omitempty"`
+	Hashtag    *string `json:"hashtag,omitempty"`
+
+	// Image 查询图片的 base64（JPEG / PNG / WebP，解码后不超过 2MB；建议客户端先压到 512 像素长边）
+	Image *string `json:"image,omitempty"`
+	Limit *int32  `json:"limit,omitempty"`
+
+	// Q 附加的文字描述，与图片一起参与匹配
+	Q *string `json:"q,omitempty"`
+
+	// Sort relevance | latest，缺省 relevance
+	Sort *string `json:"sort,omitempty"`
+}
+
 // InboxAction defines model for InboxAction.
 type InboxAction struct {
 	Label  *string            `json:"label,omitempty"`

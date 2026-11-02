@@ -11621,6 +11621,31 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/SearchResponseBody'
             x-hduhelp-http: {'requires_user': false, 'auth': 'bearer'}
+    /hduhelp-neo/moments/search/image:
+        post:
+            tags:
+                - MomentsService
+            summary: 以图搜帖
+            description: 用一张图片（可附文字）搜相关的帖子：图片与文字编成一个多模态向量，与帖子的图文向量比相似度，结果的排序与翻页同帖子搜索。需要登录，有频率限制。图片会发送给火山方舟做向量化，不会保存。只给 App 用，不进 CLI 与 MCP 目录。
+            operationId: MomentsService_SearchByImage
+            security:
+                - BearerAuth: []
+            requestBody:
+                description: |-
+                    ImageSearchRequest 是以图搜帖：图片与可选的文字一起编成查询向量，只搜帖子。
+                    翻页时把同一张图与 cursor 一起再发一次（查询向量有缓存，不会重复计费）。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ImageSearchRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SearchResponseBody'
+            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer', 'catalog': 'exclude'}
     /hduhelp-neo/moments/users/{user_id}:
         get:
             tags:
@@ -19146,6 +19171,27 @@ components:
                     type: integer
                     format: int64
                 msg:
+                    type: string
+        ImageSearchRequestBody:
+            type: object
+            properties:
+                image:
+                    type: string
+                    description: 查询图片的 base64（JPEG / PNG / WebP，解码后不超过 2MB；建议客户端先压到 512 像素长边）
+                q:
+                    type: string
+                    description: 附加的文字描述，与图片一起参与匹配
+                cursor:
+                    type: string
+                limit:
+                    type: integer
+                    format: int32
+                sort:
+                    type: string
+                    description: relevance | latest，缺省 relevance
+                category_id:
+                    type: string
+                hashtag:
                     type: string
         InboxAction:
             type: object
