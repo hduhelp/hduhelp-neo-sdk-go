@@ -219,7 +219,7 @@ func (b *AdminListCategoriesReqBuilder) Build() *AdminListCategoriesReq { return
 type AdminListCategoriesResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data []models.Category `json:"data"`
+	Data *models.CategoryListData `json:"data"`
 }
 
 // AdminListCategories: 板块管理列表
@@ -363,7 +363,7 @@ func (b *AdminDeleteCategoryReqBuilder) Build() *AdminDeleteCategoryReq { return
 type AdminDeleteCategoryResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data []models.Category `json:"data"`
+	Data *models.CategoryListData `json:"data"`
 }
 
 // AdminDeleteCategory: 删除板块
@@ -1749,7 +1749,7 @@ func (b *ListCategoriesReqBuilder) Build() *ListCategoriesReq { return b.req }
 type ListCategoriesResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data []models.Category `json:"data"`
+	Data *models.CategoryListData `json:"data"`
 }
 
 // ListCategories: 板块列表
@@ -3683,7 +3683,7 @@ func (b *SearchReqBuilder) Build() *SearchReq { return b.req }
 type SearchResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.SearchPage `json:"data"`
+	Data *models.SearchData `json:"data"`
 }
 
 // Search: 搜索

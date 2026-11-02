@@ -136,7 +136,7 @@ func (b *AdminCreateVolunteerActivityReqBuilder) Build() *AdminCreateVolunteerAc
 type AdminCreateVolunteerActivityResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.ActivityDetail `json:"data"`
+	Data *models.VolunteerActivityDetail `json:"data"`
 }
 
 // AdminCreateVolunteerActivity: 管理员创建志愿活动
@@ -182,7 +182,7 @@ func (b *AdminGetVolunteerActivityReqBuilder) Build() *AdminGetVolunteerActivity
 type AdminGetVolunteerActivityResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.ActivityDetail `json:"data"`
+	Data *models.VolunteerActivityDetail `json:"data"`
 }
 
 // AdminGetVolunteerActivity: 志愿活动管理详情
@@ -238,7 +238,7 @@ func (b *AdminUpdateVolunteerActivityReqBuilder) Build() *AdminUpdateVolunteerAc
 type AdminUpdateVolunteerActivityResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.ActivityDetail `json:"data"`
+	Data *models.VolunteerActivityDetail `json:"data"`
 }
 
 // AdminUpdateVolunteerActivity: 管理员编辑志愿活动
@@ -333,7 +333,7 @@ func (b *AdminEndVolunteerActivityReqBuilder) Build() *AdminEndVolunteerActivity
 type AdminEndVolunteerActivityResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.ActivityDetail `json:"data"`
+	Data *models.VolunteerActivityDetail `json:"data"`
 }
 
 // AdminEndVolunteerActivity: 管理员结束志愿活动
@@ -379,7 +379,7 @@ func (b *AdminSetVolunteerUrgentReqBuilder) Build() *AdminSetVolunteerUrgentReq 
 type AdminSetVolunteerUrgentResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.ActivityDetail `json:"data"`
+	Data *models.VolunteerActivityDetail `json:"data"`
 }
 
 // AdminSetVolunteerUrgent: 设置活动加急
@@ -427,7 +427,7 @@ func (b *AdminCancelVolunteerUrgentReqBuilder) Build() *AdminCancelVolunteerUrge
 type AdminCancelVolunteerUrgentResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.ActivityDetail `json:"data"`
+	Data *models.VolunteerActivityDetail `json:"data"`
 }
 
 // AdminCancelVolunteerUrgent: 取消活动加急
@@ -1534,7 +1534,7 @@ func (b *ListLostFoundCategoriesReqBuilder) Build() *ListLostFoundCategoriesReq 
 type ListLostFoundCategoriesResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data []models.Category `json:"data"`
+	Data []models.LostFoundCategory `json:"data"`
 }
 
 // ListLostFoundCategories: 失物类型目录
@@ -2038,7 +2038,7 @@ func (b *GetVolunteerActivityReqBuilder) Build() *GetVolunteerActivityReq { retu
 type GetVolunteerActivityResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.ActivityDetail `json:"data"`
+	Data *models.VolunteerActivityDetail `json:"data"`
 }
 
 // GetVolunteerActivity: 志愿活动详情

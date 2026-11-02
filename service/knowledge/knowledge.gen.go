@@ -242,7 +242,7 @@ func (b *AdminListAuditReqBuilder) Build() *AdminListAuditReq { return b.req }
 type AdminListAuditResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data []models.AuditEntry `json:"data"`
+	Data []models.KnowledgeAuditEntry `json:"data"`
 }
 
 // AdminListAudit: 操作审计

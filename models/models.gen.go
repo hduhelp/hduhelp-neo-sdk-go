@@ -897,17 +897,7 @@ type Activity struct {
 
 // ActivityDetail defines model for ActivityDetail.
 type ActivityDetail struct {
-	CreatedAt   *int64  `json:"createdAt,omitempty"`
-	Description *string `json:"description,omitempty"`
-	EndAt       *int64  `json:"endAt,omitempty"`
-	Id          *string `json:"id,omitempty"`
-	IsUrgent    *bool   `json:"isUrgent,omitempty"`
-	PublishedAt *int64  `json:"publishedAt,omitempty"`
-	StartAt     *int64  `json:"startAt,omitempty"`
-	Status      *string `json:"status,omitempty"`
-	Title       *string `json:"title,omitempty"`
-	UpdatedAt   *int64  `json:"updatedAt,omitempty"`
-	UrgentAt    *int64  `json:"urgentAt,omitempty"`
+	Activity *Activity `json:"activity,omitempty"`
 }
 
 // ActivityDetailResponseBody defines model for ActivityDetailResponseBody.
@@ -1100,6 +1090,12 @@ type AdminCampusInfo struct {
 
 	// Sort 排序(升序)
 	Sort *int32 `json:"sort,omitempty"`
+}
+
+// AdminChangePasswordRequestBody defines model for AdminChangePasswordRequestBody.
+type AdminChangePasswordRequestBody struct {
+	NewPassword *string `json:"new_password,omitempty"`
+	OldPassword *string `json:"old_password,omitempty"`
 }
 
 // AdminCommentListData defines model for AdminCommentListData.
@@ -1816,26 +1812,15 @@ type AuditData struct {
 	AuditRequired *bool   `json:"auditRequired,omitempty"`
 }
 
-// AuditEntry ============================================================================
-// 管理端：审计历史 与 总览
-// ============================================================================
+// AuditEntry ---------- 运营审计与用户处置态 ----------
 type AuditEntry struct {
-	Action  *string `json:"action,omitempty"`
-	ActorId *string `json:"actorId,omitempty"`
-
-	// ActorType human | crawler | system
-	ActorType *string `json:"actorType,omitempty"`
-
-	// AfterJson 变更后(JSON字符串)
-	AfterJson *string `json:"afterJson,omitempty"`
-
-	// BeforeJson 变更前(JSON字符串)
-	BeforeJson *string `json:"beforeJson,omitempty"`
-	CreatedAt  *int64  `json:"createdAt,omitempty"`
+	Action     *string `json:"action,omitempty"`
+	CreatedAt  *int64  `json:"created_at,omitempty"`
+	Detail     *string `json:"detail,omitempty"`
 	Id         *string `json:"id,omitempty"`
-	Note       *string `json:"note,omitempty"`
-	TargetId   *string `json:"targetId,omitempty"`
-	TargetType *string `json:"targetType,omitempty"`
+	OperatorId *string `json:"operator_id,omitempty"`
+	TargetId   *string `json:"target_id,omitempty"`
+	TargetKind *string `json:"target_kind,omitempty"`
 }
 
 // AuditResponseBody defines model for AuditResponseBody.
@@ -2597,10 +2582,13 @@ type CarrierResponseBody struct {
 	Msg  *string           `json:"msg,omitempty"`
 }
 
-// Category defines model for Category.
+// Category ---------- 板块与话题 ----------
 type Category struct {
-	Id   *int32  `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Id          *string `json:"id,omitempty"`
+	Name        *string `json:"name,omitempty"`
+	PostCount   *int64  `json:"post_count,omitempty"`
+	SortOrder   *int32  `json:"sort_order,omitempty"`
 }
 
 // CategoryListData defines model for CategoryListData.
@@ -2610,14 +2598,16 @@ type CategoryListData struct {
 
 // CategoryListResponseBody defines model for CategoryListResponseBody.
 type CategoryListResponseBody struct {
-	Code *int64      `json:"code,omitempty"`
-	Data *[]Category `json:"data,omitempty"`
-	Msg  *string     `json:"msg,omitempty"`
+	Code *int64            `json:"code,omitempty"`
+	Data *CategoryListData `json:"data,omitempty"`
+	Msg  *string           `json:"msg,omitempty"`
 }
 
 // CategoryResponseBody defines model for CategoryResponseBody.
 type CategoryResponseBody struct {
-	Code *int64    `json:"code,omitempty"`
+	Code *int64 `json:"code,omitempty"`
+
+	// Data ---------- 板块与话题 ----------
 	Data *Category `json:"data,omitempty"`
 	Msg  *string   `json:"msg,omitempty"`
 }
@@ -4002,6 +3992,13 @@ type DingTalkReviewCallbackResponseBody struct {
 	UserPrivateData *ReviewCardPrivateData `json:"userPrivateData,omitempty"`
 }
 
+// DingtalkScheduleResponseBody defines model for DingtalkScheduleResponseBody.
+type DingtalkScheduleResponseBody struct {
+	Code    *int64        `json:"code,omitempty"`
+	Data    *ScheduleData `json:"data,omitempty"`
+	Message *string       `json:"message,omitempty"`
+}
+
 // DomainDeleteResponseBody defines model for DomainDeleteResponseBody.
 type DomainDeleteResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
@@ -5153,9 +5150,9 @@ type InboxEntryResponseBody struct {
 
 // InboxListData defines model for InboxListData.
 type InboxListData struct {
-	HasMore    *bool         `json:"has_more,omitempty"`
-	List       *[]InboxEntry `json:"list,omitempty"`
-	NextCursor *string       `json:"next_cursor,omitempty"`
+	HasMore    *bool                `json:"has_more,omitempty"`
+	List       *[]MomentsInboxEntry `json:"list,omitempty"`
+	NextCursor *string              `json:"next_cursor,omitempty"`
 }
 
 // InboxListResponseBody defines model for InboxListResponseBody.
@@ -5415,6 +5412,28 @@ type KnowledgeAssetResponseBody struct {
 	// ============================================================================
 	Data *KnowledgeAsset `json:"data,omitempty"`
 	Msg  *string         `json:"msg,omitempty"`
+}
+
+// KnowledgeAuditEntry ============================================================================
+// 管理端：审计历史 与 总览
+// ============================================================================
+type KnowledgeAuditEntry struct {
+	Action  *string `json:"action,omitempty"`
+	ActorId *string `json:"actorId,omitempty"`
+
+	// ActorType human | crawler | system
+	ActorType *string `json:"actorType,omitempty"`
+
+	// AfterJson 变更后(JSON字符串)
+	AfterJson *string `json:"afterJson,omitempty"`
+
+	// BeforeJson 变更前(JSON字符串)
+	BeforeJson *string `json:"beforeJson,omitempty"`
+	CreatedAt  *int64  `json:"createdAt,omitempty"`
+	Id         *string `json:"id,omitempty"`
+	Note       *string `json:"note,omitempty"`
+	TargetId   *string `json:"targetId,omitempty"`
+	TargetType *string `json:"targetType,omitempty"`
 }
 
 // KnowledgeCarrier KnowledgeCarrier 是 item 下一个可独立索引/编辑的内容载体。索引对账态
@@ -5878,10 +5897,10 @@ type ListAssetsResponseBody struct {
 
 // ListAuditResponseBody defines model for ListAuditResponseBody.
 type ListAuditResponseBody struct {
-	Code  *int64        `json:"code,omitempty"`
-	Data  *[]AuditEntry `json:"data,omitempty"`
-	Msg   *string       `json:"msg,omitempty"`
-	Total *int64        `json:"total,omitempty"`
+	Code  *int64                 `json:"code,omitempty"`
+	Data  *[]KnowledgeAuditEntry `json:"data,omitempty"`
+	Msg   *string                `json:"msg,omitempty"`
+	Total *int64                 `json:"total,omitempty"`
 }
 
 // ListAuthorizedAppsData defines model for ListAuthorizedAppsData.
@@ -6200,18 +6219,38 @@ type LookUpShareResponseBody struct {
 	Msg  *string          `json:"msg,omitempty"`
 }
 
+// LostFoundCategory defines model for LostFoundCategory.
+type LostFoundCategory struct {
+	Id   *int32  `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+}
+
+// LostFoundCategoryListResponseBody defines model for LostFoundCategoryListResponseBody.
+type LostFoundCategoryListResponseBody struct {
+	Code *int64               `json:"code,omitempty"`
+	Data *[]LostFoundCategory `json:"data,omitempty"`
+	Msg  *string              `json:"msg,omitempty"`
+}
+
+// LostFoundSearchResponseBody defines model for LostFoundSearchResponseBody.
+type LostFoundSearchResponseBody struct {
+	Code *int64      `json:"code,omitempty"`
+	Data *SearchPage `json:"data,omitempty"`
+	Msg  *string     `json:"msg,omitempty"`
+}
+
 // LostItem defines model for LostItem.
 type LostItem struct {
-	CabinetID      *string   `json:"cabinetID,omitempty"`
-	Category       *Category `json:"category,omitempty"`
-	DepartmentName *string   `json:"departmentName,omitempty"`
-	Id             *int64    `json:"id,omitempty"`
-	Name           *string   `json:"name,omitempty"`
-	PickedAt       *string   `json:"pickedAt,omitempty"`
-	Picker         *string   `json:"picker,omitempty"`
-	PictureURL     *string   `json:"pictureURL,omitempty"`
-	Remark         *string   `json:"remark,omitempty"`
-	Scene          *Scene    `json:"scene,omitempty"`
+	CabinetID      *string            `json:"cabinetID,omitempty"`
+	Category       *LostFoundCategory `json:"category,omitempty"`
+	DepartmentName *string            `json:"departmentName,omitempty"`
+	Id             *int64             `json:"id,omitempty"`
+	Name           *string            `json:"name,omitempty"`
+	PickedAt       *string            `json:"pickedAt,omitempty"`
+	Picker         *string            `json:"picker,omitempty"`
+	PictureURL     *string            `json:"pictureURL,omitempty"`
+	Remark         *string            `json:"remark,omitempty"`
+	Scene          *Scene             `json:"scene,omitempty"`
 }
 
 // MaxMonth defines model for MaxMonth.
@@ -6385,6 +6424,40 @@ type MessagePageResponseBody struct {
 	Code *int64           `json:"code,omitempty"`
 	Data *MessagePageData `json:"data,omitempty"`
 	Msg  *string          `json:"msg,omitempty"`
+}
+
+// MomentsInboxEntry ---------- 收件箱 ----------
+// 社区自带一层收件箱，不接平台通知子系统：社区只需要两条清单，不需要跨端推送与
+// 订阅策略，自建比对接更省，也不受平台侧会话类型的限制。
+// // 一条互动一行，不做聚合：清单页本身就是按时间倒排的流水，前端按需折叠即可。
+type MomentsInboxEntry struct {
+	// Action action 取 reaction_post | reaction_comment | collect | comment | reply | mention
+	Action *string `json:"action,omitempty"`
+
+	// Actor Author 是作者的展示投影。
+	// // id 对用户作者是平台用户主键、对应用作者是应用 ID，两者都可直接用于对应的主页路径。
+	// 用户不以学号标识：学号可枚举，其编码本身还泄露学院与年级。
+	// // kind=anonymous 是匿名帖的作者（含该作者在自己匿名帖下的评论与互动）：displayName 是
+	// 这条帖子的花名，id 形如 anon_<帖子 ID>，只在同一条帖子内稳定（用于挂「作者」标），
+	// 不对应任何主页，不可关注；不带头像。
+	Actor        *Author `json:"actor,omitempty"`
+	CommentBrief *string `json:"comment_brief,omitempty"`
+
+	// CommentId commentId 与 commentBrief 在条目挂在某条评论上时有值：评论、回复、评论表情，
+	// 以及写在评论里的 mention。写在帖子正文里的 mention 只有 post。
+	CommentId *string `json:"comment_id,omitempty"`
+	CreatedAt *int64  `json:"created_at,omitempty"`
+	Id        *string `json:"id,omitempty"`
+
+	// MentionedMe mentionedMe 只在 comment、reply 与 mention 上出现。评论或回复同时 @ 了你时只有
+	// 一条 comment / reply（不会再多一条 mention），靠它显示「@了你」；mention 恒为 true。
+	MentionedMe *bool `json:"mentioned_me,omitempty"`
+
+	// Post ---------- 帖子 ----------
+	// PostCard 是瀑布流卡片投影：只带媒体与摘要，不含正文节点，使列表页不必拉全文。
+	Post         *PostCard `json:"post,omitempty"`
+	ReactionType *string   `json:"reaction_type,omitempty"`
+	Read         *bool     `json:"read,omitempty"`
 }
 
 // MonthStat defines model for MonthStat.
@@ -8508,7 +8581,7 @@ type SearchPage struct {
 // SearchResponseBody defines model for SearchResponseBody.
 type SearchResponseBody struct {
 	Code *int64      `json:"code,omitempty"`
-	Data *SearchPage `json:"data,omitempty"`
+	Data *SearchData `json:"data,omitempty"`
 	Msg  *string     `json:"msg,omitempty"`
 }
 
@@ -10336,6 +10409,28 @@ type VerifyPasswordResetCodeRequestBody struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// VolunteerActivityDetail defines model for VolunteerActivityDetail.
+type VolunteerActivityDetail struct {
+	CreatedAt   *int64  `json:"createdAt,omitempty"`
+	Description *string `json:"description,omitempty"`
+	EndAt       *int64  `json:"endAt,omitempty"`
+	Id          *string `json:"id,omitempty"`
+	IsUrgent    *bool   `json:"isUrgent,omitempty"`
+	PublishedAt *int64  `json:"publishedAt,omitempty"`
+	StartAt     *int64  `json:"startAt,omitempty"`
+	Status      *string `json:"status,omitempty"`
+	Title       *string `json:"title,omitempty"`
+	UpdatedAt   *int64  `json:"updatedAt,omitempty"`
+	UrgentAt    *int64  `json:"urgentAt,omitempty"`
+}
+
+// VolunteerActivityDetailResponseBody defines model for VolunteerActivityDetailResponseBody.
+type VolunteerActivityDetailResponseBody struct {
+	Code *int64                   `json:"code,omitempty"`
+	Data *VolunteerActivityDetail `json:"data,omitempty"`
+	Msg  *string                  `json:"msg,omitempty"`
+}
+
 // WeatherCard WeatherCard 是信息流天气卡片负载。
 type WeatherCard struct {
 	// Aqi 空气质量指数
@@ -12002,7 +12097,7 @@ type AdminServiceUpdateAppJSONRequestBody = UpdateAppRequestBody
 type AdminServiceSetAppPermissionsJSONRequestBody = SetAppPermissionsRequestBody
 
 // AdminServiceAdminChangePasswordJSONRequestBody defines body for AdminServiceAdminChangePassword for application/json ContentType.
-type AdminServiceAdminChangePasswordJSONRequestBody = ChangePasswordRequestBody
+type AdminServiceAdminChangePasswordJSONRequestBody = AdminChangePasswordRequestBody
 
 // AdminServiceCreateCampusJSONRequestBody defines body for AdminServiceCreateCampus for application/json ContentType.
 type AdminServiceCreateCampusJSONRequestBody = CreateCampusRequestBody

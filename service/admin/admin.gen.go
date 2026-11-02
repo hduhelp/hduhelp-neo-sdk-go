@@ -364,7 +364,7 @@ func NewAdminChangePasswordReqBuilder() *AdminChangePasswordReqBuilder {
 }
 
 // Body sets the request body.
-func (b *AdminChangePasswordReqBuilder) Body(body *models.ChangePasswordRequestBody) *AdminChangePasswordReqBuilder {
+func (b *AdminChangePasswordReqBuilder) Body(body *models.AdminChangePasswordRequestBody) *AdminChangePasswordReqBuilder {
 	b.req.body = body
 	return b
 }
