@@ -1463,6 +1463,20 @@ type AdminScopeDef struct {
 	SupportsUat          *bool     `json:"supportsUat,omitempty"`
 }
 
+// AdminSearchData defines model for AdminSearchData.
+type AdminSearchData struct {
+	Candidates *[]SearchCandidate `json:"candidates,omitempty"`
+	Hits       *[]SearchHit       `json:"hits,omitempty"`
+	Reranked   *bool              `json:"reranked,omitempty"`
+}
+
+// AdminSearchResponseBody defines model for AdminSearchResponseBody.
+type AdminSearchResponseBody struct {
+	Code *int64           `json:"code,omitempty"`
+	Data *AdminSearchData `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
+}
+
 // AdminSourceTreeResponseBody defines model for AdminSourceTreeResponseBody.
 type AdminSourceTreeResponseBody struct {
 	Code *int64                 `json:"code,omitempty"`
@@ -1590,6 +1604,12 @@ type AdminWishReviewResponseBody struct {
 	Code *int64               `json:"code,omitempty"`
 	Data *AdminWishReviewItem `json:"data,omitempty"`
 	Msg  *string              `json:"msg,omitempty"`
+}
+
+// AdoptRevisionRequestBody defines model for AdoptRevisionRequestBody.
+type AdoptRevisionRequestBody struct {
+	CarrierId  *string `json:"carrier_id,omitempty"`
+	RevisionId *string `json:"revision_id,omitempty"`
 }
 
 // AllPersonInfoResponseBody defines model for AllPersonInfoResponseBody.
@@ -1748,6 +1768,11 @@ type ApproveDeviceRequestBody struct {
 type ApproveDeviceRespBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
+}
+
+// AssetIdRequestBody defines model for AssetIdRequestBody.
+type AssetIdRequestBody struct {
+	Id *string `json:"id,omitempty"`
 }
 
 // AssignOperatorRoleRequestBody defines model for AssignOperatorRoleRequestBody.
@@ -2566,8 +2591,8 @@ type CarrierDownloadURLResponseBody struct {
 type CarrierResponseBody struct {
 	Code *int64 `json:"code,omitempty"`
 
-	// Data KnowledgeCarrier 是 item 下一个可独立索引/编辑的内容载体（= 一个方舟 doc）。方舟对账态
-	// (syncStatus/syncError/arkDocId/syncedAt) 来自其 projection。
+	// Data KnowledgeCarrier 是 item 下一个可独立索引/编辑的内容载体。索引对账态
+	// (syncStatus/syncError/indexStage/unitCount/syncedAt) 来自其 projection。
 	Data *KnowledgeCarrier `json:"data,omitempty"`
 	Msg  *string           `json:"msg,omitempty"`
 }
@@ -2650,21 +2675,16 @@ type CheckUpdateResponseBody struct {
 	Msg  *string          `json:"msg,omitempty"`
 }
 
-// ChunkDeleteResponseBody defines model for ChunkDeleteResponseBody.
-type ChunkDeleteResponseBody struct {
-	Code *int64  `json:"code,omitempty"`
-	Msg  *string `json:"msg,omitempty"`
+// ChunkListData defines model for ChunkListData.
+type ChunkListData struct {
+	Chunks   *[]KnowledgeChunk         `json:"chunks,omitempty"`
+	Orphaned *[]KnowledgeChunkOverride `json:"orphaned,omitempty"`
 }
 
 // ChunkMutateResponseBody defines model for ChunkMutateResponseBody.
 type ChunkMutateResponseBody struct {
-	Code *int64 `json:"code,omitempty"`
-
-	// Data ============================================================================
-	// 管理端：切片管理（file 形态文档：方舟自动切片只读 + 我方补充切片可增删改）
-	// ============================================================================
-	Data *KnowledgeChunk `json:"data,omitempty"`
-	Msg  *string         `json:"msg,omitempty"`
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
 }
 
 // ClassInfo ===== 选课查询（搜索 / 映射 / 批量 / 详情 / 收藏）=====
@@ -3993,7 +4013,7 @@ type DomainMutateResponseBody struct {
 	Code *int64 `json:"code,omitempty"`
 
 	// Data KnowledgeDomainNode 是知识域树的一个节点。ancestorKeys 是从根到本节点(含)
-	// 的稳定 key 链，用于方舟检索时的 domain_ids 过滤（子树命中）。
+	// 的稳定 key 链，用于检索时的知识域过滤（子树命中）。
 	Data *KnowledgeDomainNode `json:"data,omitempty"`
 	Msg  *string              `json:"msg,omitempty"`
 }
@@ -5046,6 +5066,12 @@ type HealthResponseBody struct {
 	Status  *string `json:"status,omitempty"`
 }
 
+// HideChunkRequestBody defines model for HideChunkRequestBody.
+type HideChunkRequestBody struct {
+	CarrierId *string `json:"carrier_id,omitempty"`
+	PointId   *string `json:"point_id,omitempty"`
+}
+
 // IcsLinkData IcsLinkData 携带可重复获取的课表 ICS 订阅链接。hasToken 表示当前是否有有效令牌。
 // 旧版仅保存哈希的令牌返回 link=""、hasToken=true，原链接继续有效，需本人明确轮换后获取新链接。
 type IcsLinkData struct {
@@ -5320,13 +5346,71 @@ type JoinResponseBody struct {
 	Msg  *string   `json:"msg,omitempty"`
 }
 
-// KnowledgeCarrier KnowledgeCarrier 是 item 下一个可独立索引/编辑的内容载体（= 一个方舟 doc）。方舟对账态
-// (syncStatus/syncError/arkDocId/syncedAt) 来自其 projection。
-type KnowledgeCarrier struct {
-	ArkDocId *string `json:"arkDocId,omitempty"`
+// KnowledgeAsset ============================================================================
+// 管理端：图片（入库图片按内容去重；AI 标注可被人工修订，修订后自动重建引用它的载体）
+// ============================================================================
+type KnowledgeAsset struct {
+	AiDescription *string `json:"aiDescription,omitempty"`
+	AiError       *string `json:"aiError,omitempty"`
+	AiKeep        *bool   `json:"aiKeep,omitempty"`
+	AiKind        *string `json:"aiKind,omitempty"`
 
+	// AiStatus pending | done | failed
+	AiStatus    *string `json:"aiStatus,omitempty"`
+	Bytes       *int64  `json:"bytes,omitempty"`
+	ContentType *string `json:"contentType,omitempty"`
+	CreatedAt   *int64  `json:"createdAt,omitempty"`
+
+	// Description 生效值
+	Description      *string `json:"description,omitempty"`
+	HumanAt          *int64  `json:"humanAt,omitempty"`
+	HumanDescription *string `json:"humanDescription,omitempty"`
+	HumanEditorId    *string `json:"humanEditorId,omitempty"`
+	HumanKeep        *bool   `json:"humanKeep,omitempty"`
+	HumanKind        *string `json:"humanKind,omitempty"`
+	Id               *string `json:"id,omitempty"`
+
+	// Keep 生效值
+	Keep *bool `json:"keep,omitempty"`
+
+	// Kind 生效值
+	Kind *string `json:"kind,omitempty"`
+
+	// Refs 被多少个载体引用
+	Refs *int64 `json:"refs,omitempty"`
+
+	// Url 签名直链
+	Url *string `json:"url,omitempty"`
+}
+
+// KnowledgeAssetPage defines model for KnowledgeAssetPage.
+type KnowledgeAssetPage struct {
+	Items *[]KnowledgeAsset `json:"items,omitempty"`
+	Total *int64            `json:"total,omitempty"`
+}
+
+// KnowledgeAssetResponseBody defines model for KnowledgeAssetResponseBody.
+type KnowledgeAssetResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data ============================================================================
+	// 管理端：图片（入库图片按内容去重；AI 标注可被人工修订，修订后自动重建引用它的载体）
+	// ============================================================================
+	Data *KnowledgeAsset `json:"data,omitempty"`
+	Msg  *string         `json:"msg,omitempty"`
+}
+
+// KnowledgeCarrier KnowledgeCarrier 是 item 下一个可独立索引/编辑的内容载体。索引对账态
+// (syncStatus/syncError/indexStage/unitCount/syncedAt) 来自其 projection。
+type KnowledgeCarrier struct {
 	// CarrierType web | pdf | word | image | none
 	CarrierType *string `json:"carrierType,omitempty"`
+
+	// DocReviewNeeded file: 来源文件已更新而正文是人工校订版，待复核
+	DocReviewNeeded *bool `json:"docReviewNeeded,omitempty"`
+
+	// DocRevisionId file: 生效的解析正文版本
+	DocRevisionId *string `json:"docRevisionId,omitempty"`
 
 	// Draft KnowledgeContentVersion 是一个 append-only 内容版本快照。是否 live/draft 只由 carrier
 	// 上的指针决定；version_no=0 为原始版。
@@ -5336,7 +5420,10 @@ type KnowledgeCarrier struct {
 	DraftVersionId *string `json:"draftVersionId,omitempty"`
 	Id             *string `json:"id,omitempty"`
 
-	// IngestRef 交给方舟 fetch 的资源URL(file/md/爬取页)
+	// IndexStage queued | parsing | annotating | indexing | ready | failed
+	IndexStage *string `json:"indexStage,omitempty"`
+
+	// IngestRef 外部资源URL(采集附件等)
 	IngestRef *string `json:"ingestRef,omitempty"`
 	ItemId    *string `json:"itemId,omitempty"`
 
@@ -5361,25 +5448,55 @@ type KnowledgeCarrier struct {
 	SyncStatus *string `json:"syncStatus,omitempty"`
 	SyncedAt   *int64  `json:"syncedAt,omitempty"`
 
+	// UnitCount 当前生效的检索单元数
+	UnitCount *int32 `json:"unitCount,omitempty"`
+
 	// Versions 全部版本(新→旧)，供版本下拉
 	Versions *[]KnowledgeContentVersion `json:"versions,omitempty"`
 }
 
 // KnowledgeChunk ============================================================================
-// 管理端：切片管理（file 形态文档：方舟自动切片只读 + 我方补充切片可增删改）
+// 管理端：切片管理（自动切片可屏蔽 + 我方补充切片可增删改；改动后自动重建该载体）
 // ============================================================================
 type KnowledgeChunk struct {
-	// Attachment 图片/文件切片的可渲染链接
+	// Attachment 图片切片的可渲染链接
 	Attachment *string `json:"attachment,omitempty"`
 
-	// ChunkType text | image | table
+	// ChunkType chunk | faq | table | image | manual | sentence | faq_question
 	ChunkType *string `json:"chunkType,omitempty"`
 	Content   *string `json:"content,omitempty"`
 
-	// Mine true=我方补充(可编辑) / false=方舟自动(只读)
-	Mine    *bool   `json:"mine,omitempty"`
-	PointId *string `json:"pointId,omitempty"`
-	Title   *string `json:"title,omitempty"`
+	// Hidden 已被人工屏蔽，不参与检索
+	Hidden *bool `json:"hidden,omitempty"`
+
+	// Mine true=我方补充(可编辑)
+	Mine *bool `json:"mine,omitempty"`
+
+	// OverrideId 补充切片或屏蔽操作的 id(删除/恢复用)
+	OverrideId *string `json:"overrideId,omitempty"`
+
+	// ParentId 只参与召回的单元所归属的切片
+	ParentId *string `json:"parentId,omitempty"`
+	PointId  *string `json:"pointId,omitempty"`
+	Seq      *int32  `json:"seq,omitempty"`
+
+	// Title 标题路径(以 › 连接)
+	Title *string `json:"title,omitempty"`
+}
+
+// KnowledgeChunkOverride defines model for KnowledgeChunkOverride.
+type KnowledgeChunkOverride struct {
+	// Action hide | add
+	Action  *string `json:"action,omitempty"`
+	Content *string `json:"content,omitempty"`
+	Id      *string `json:"id,omitempty"`
+
+	// Preview hide: 被屏蔽切片的摘要
+	Preview *string `json:"preview,omitempty"`
+
+	// Status active | orphaned(重建后已对不上)
+	Status *string `json:"status,omitempty"`
+	Title  *string `json:"title,omitempty"`
 }
 
 // KnowledgeContentVersion KnowledgeContentVersion 是一个 append-only 内容版本快照。是否 live/draft 只由 carrier
@@ -5398,8 +5515,72 @@ type KnowledgeContentVersion struct {
 	VersionNo *int32  `json:"versionNo,omitempty"`
 }
 
+// KnowledgeDocRevision ============================================================================
+// 管理端：解析正文校订（file 载体）
+// ============================================================================
+type KnowledgeDocRevision struct {
+	CreatedAt *int64  `json:"createdAt,omitempty"`
+	EditorId  *string `json:"editorId,omitempty"`
+	Id        *string `json:"id,omitempty"`
+
+	// InputKey 基于哪份来源文件与解析服务
+	InputKey *string `json:"inputKey,omitempty"`
+
+	// Markdown 列表中省略；单查时返回
+	Markdown *string `json:"markdown,omitempty"`
+	Note     *string `json:"note,omitempty"`
+
+	// Origin ai | human
+	Origin *string `json:"origin,omitempty"`
+	RevNo  *int32  `json:"revNo,omitempty"`
+}
+
+// KnowledgeDocRevisionResponseBody defines model for KnowledgeDocRevisionResponseBody.
+type KnowledgeDocRevisionResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data ============================================================================
+	// 管理端：解析正文校订（file 载体）
+	// ============================================================================
+	Data *KnowledgeDocRevision `json:"data,omitempty"`
+	Msg  *string               `json:"msg,omitempty"`
+}
+
+// KnowledgeDocumentData defines model for KnowledgeDocumentData.
+type KnowledgeDocumentData struct {
+	// AssetUrls asset id → 签名直链，渲染 asset:<id> 图片
+	AssetUrls *map[string]string `json:"assetUrls,omitempty"`
+	CarrierId *string            `json:"carrierId,omitempty"`
+
+	// LatestAi ============================================================================
+	// 管理端：解析正文校订（file 载体）
+	// ============================================================================
+	LatestAi *KnowledgeDocRevision `json:"latestAi,omitempty"`
+
+	// Live ============================================================================
+	// 管理端：解析正文校订（file 载体）
+	// ============================================================================
+	Live         *KnowledgeDocRevision `json:"live,omitempty"`
+	Parse        *KnowledgeParseInfo   `json:"parse,omitempty"`
+	ParsePending *bool                 `json:"parsePending,omitempty"`
+	ReviewNeeded *bool                 `json:"reviewNeeded,omitempty"`
+
+	// Revisions 新→旧，不含正文
+	Revisions *[]KnowledgeDocRevision `json:"revisions,omitempty"`
+
+	// SourceUrl 原文件可读地址
+	SourceUrl *string `json:"sourceUrl,omitempty"`
+}
+
+// KnowledgeDocumentResponseBody defines model for KnowledgeDocumentResponseBody.
+type KnowledgeDocumentResponseBody struct {
+	Code *int64                 `json:"code,omitempty"`
+	Data *KnowledgeDocumentData `json:"data,omitempty"`
+	Msg  *string                `json:"msg,omitempty"`
+}
+
 // KnowledgeDomainNode KnowledgeDomainNode 是知识域树的一个节点。ancestorKeys 是从根到本节点(含)
-// 的稳定 key 链，用于方舟检索时的 domain_ids 过滤（子树命中）。
+// 的稳定 key 链，用于检索时的知识域过滤（子树命中）。
 type KnowledgeDomainNode struct {
 	AncestorKeys *[]string              `json:"ancestorKeys,omitempty"`
 	Children     *[]KnowledgeDomainNode `json:"children,omitempty"`
@@ -5428,6 +5609,31 @@ type KnowledgeGapInfo struct {
 
 	// Status open | ignored | drafted
 	Status *string `json:"status,omitempty"`
+}
+
+// KnowledgeIndexStatusData ============================================================================
+// 管理端：索引状态与重建
+// ============================================================================
+type KnowledgeIndexStatusData struct {
+	// Configured aisearch | bailian | ark → 密钥与地址是否已配置
+	Configured *map[string]bool `json:"configured,omitempty"`
+
+	// DenseEnabled 数据库是否支持向量检索
+	DenseEnabled *bool `json:"denseEnabled,omitempty"`
+
+	// Stages 各阶段载体数
+	Stages *map[string]int64 `json:"stages,omitempty"`
+}
+
+// KnowledgeIndexStatusResponseBody defines model for KnowledgeIndexStatusResponseBody.
+type KnowledgeIndexStatusResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data ============================================================================
+	// 管理端：索引状态与重建
+	// ============================================================================
+	Data *KnowledgeIndexStatusData `json:"data,omitempty"`
+	Msg  *string                   `json:"msg,omitempty"`
 }
 
 // KnowledgeItemDetail KnowledgeItemDetail 是详情页的富对象。附件即 role=attachment 的载体。
@@ -5504,13 +5710,33 @@ type KnowledgeItemSummary struct {
 	Visibility *string `json:"visibility,omitempty"`
 }
 
+// KnowledgeParseInfo defines model for KnowledgeParseInfo.
+type KnowledgeParseInfo struct {
+	CreatedAt *int64  `json:"createdAt,omitempty"`
+	Error     *string `json:"error,omitempty"`
+	PageCount *int32  `json:"pageCount,omitempty"`
+	ServiceId *string `json:"serviceId,omitempty"`
+
+	// Status pending | succeeded | failed
+	Status *string `json:"status,omitempty"`
+
+	// Usage 计量 JSON
+	Usage *string `json:"usage,omitempty"`
+}
+
 // KnowledgeSearchRequestBody defines model for KnowledgeSearchRequestBody.
 type KnowledgeSearchRequestBody struct {
-	// ChunkGroup 文档聚合排序
-	ChunkGroup *bool `json:"chunk_group,omitempty"`
+	// DisableDense 关闭稠密向量召回
+	DisableDense *bool `json:"disable_dense,omitempty"`
 
-	// DenseWeight 稠密(向量)权重
-	DenseWeight *float64 `json:"dense_weight,omitempty"`
+	// DisableKeyword 关闭关键词召回
+	DisableKeyword *bool `json:"disable_keyword,omitempty"`
+
+	// DisableRerank 关闭重排(按融合分排序)
+	DisableRerank *bool `json:"disable_rerank,omitempty"`
+
+	// DisableSentence 关闭句子级/问法召回
+	DisableSentence *bool `json:"disable_sentence,omitempty"`
 
 	// DomainKeys 命中任一子树(set 相交)
 	DomainKeys *[]string `json:"domain_keys,omitempty"`
@@ -5524,20 +5750,11 @@ type KnowledgeSearchRequestBody struct {
 	// Query 要检索的自然语言问题或关键词。
 	Query string `json:"query"`
 
-	// Rerank 重排开关
-	Rerank *bool `json:"rerank,omitempty"`
-
-	// RerankModel 重排模型
-	RerankModel *string `json:"rerank_model,omitempty"`
-
-	// RetrieveCount 进入重排数量
-	RetrieveCount *int32 `json:"retrieve_count,omitempty"`
-
-	// Rewrite 问题改写
-	Rewrite *bool `json:"rewrite,omitempty"`
-
-	// ScoreThreshold 阈值过滤(0=不过滤)
+	// ScoreThreshold 重排分阈值；不传用配置值
 	ScoreThreshold *float64 `json:"score_threshold,omitempty"`
+
+	// Tags 标签过滤(命中任一)
+	Tags *[]string `json:"tags,omitempty"`
 }
 
 // KnowledgeSearchResponseBody defines model for KnowledgeSearchResponseBody.
@@ -5635,6 +5852,13 @@ type LibraryReadingResponseBody struct {
 	Msg  *string             `json:"msg,omitempty"`
 }
 
+// ListAssetsResponseBody defines model for ListAssetsResponseBody.
+type ListAssetsResponseBody struct {
+	Code *int64              `json:"code,omitempty"`
+	Data *KnowledgeAssetPage `json:"data,omitempty"`
+	Msg  *string             `json:"msg,omitempty"`
+}
+
 // ListAuditResponseBody defines model for ListAuditResponseBody.
 type ListAuditResponseBody struct {
 	Code  *int64        `json:"code,omitempty"`
@@ -5657,9 +5881,9 @@ type ListAuthorizedAppsResponseBody struct {
 
 // ListChunksResponseBody defines model for ListChunksResponseBody.
 type ListChunksResponseBody struct {
-	Code *int64            `json:"code,omitempty"`
-	Data *[]KnowledgeChunk `json:"data,omitempty"`
-	Msg  *string           `json:"msg,omitempty"`
+	Code *int64         `json:"code,omitempty"`
+	Data *ChunkListData `json:"data,omitempty"`
+	Msg  *string        `json:"msg,omitempty"`
 }
 
 // ListCollectorsResponseBody defines model for ListCollectorsResponseBody.
@@ -7215,25 +7439,6 @@ type PurgePostResponseBody struct {
 	Msg  *string        `json:"msg,omitempty"`
 }
 
-// QAStrategiesData defines model for QAStrategiesData.
-type QAStrategiesData struct {
-	DefaultName *string           `json:"defaultName,omitempty"`
-	Strategies  *[]QAStrategyItem `json:"strategies,omitempty"`
-}
-
-// QAStrategiesResponseBody defines model for QAStrategiesResponseBody.
-type QAStrategiesResponseBody struct {
-	Code *int64            `json:"code,omitempty"`
-	Data *QAStrategiesData `json:"data,omitempty"`
-	Msg  *string           `json:"msg,omitempty"`
-}
-
-// QAStrategyItem 快速问答策略配置(知识服务数组 + 默认)
-type QAStrategyItem struct {
-	Name      *string `json:"name,omitempty"`
-	ServiceId *string `json:"service_id,omitempty"`
-}
-
 // ReactRequestBody defines model for ReactRequestBody.
 type ReactRequestBody struct {
 	Type *string `json:"type,omitempty"`
@@ -7352,6 +7557,18 @@ type RealTimeResponseBody struct {
 	Msg  *string       `json:"msg,omitempty"`
 }
 
+// RebuildIndexData defines model for RebuildIndexData.
+type RebuildIndexData struct {
+	Carriers *int32 `json:"carriers,omitempty"`
+}
+
+// RebuildIndexResponseBody defines model for RebuildIndexResponseBody.
+type RebuildIndexResponseBody struct {
+	Code *int64            `json:"code,omitempty"`
+	Data *RebuildIndexData `json:"data,omitempty"`
+	Msg  *string           `json:"msg,omitempty"`
+}
+
 // RecruitmentItem defines model for RecruitmentItem.
 type RecruitmentItem struct {
 	Category *string `json:"category,omitempty"`
@@ -7426,6 +7643,14 @@ type RenamePolicyProfileRequestBody struct {
 // RenameScheduleShareRequestBody defines model for RenameScheduleShareRequestBody.
 type RenameScheduleShareRequestBody struct {
 	Name string `json:"name"`
+}
+
+// ReparseRequestBody defines model for ReparseRequestBody.
+type ReparseRequestBody struct {
+	CarrierId *string `json:"carrier_id,omitempty"`
+
+	// ServiceId 空=按文件类型选配置的服务
+	ServiceId *string `json:"service_id,omitempty"`
 }
 
 // ReplaceCourseSimulationRequestBody defines model for ReplaceCourseSimulationRequestBody.
@@ -7765,6 +7990,13 @@ type RuntimeStatusResponseBody struct {
 	Code int64          `json:"code"`
 	Data *RuntimeStatus `json:"data,omitempty"`
 	Msg  string         `json:"msg"`
+}
+
+// SaveDocumentRequestBody defines model for SaveDocumentRequestBody.
+type SaveDocumentRequestBody struct {
+	CarrierId *string `json:"carrier_id,omitempty"`
+	Markdown  *string `json:"markdown,omitempty"`
+	Note      *string `json:"note,omitempty"`
 }
 
 // SaveDraftRequestBody defines model for SaveDraftRequestBody.
@@ -8153,6 +8385,28 @@ type ScoresCard struct {
 	Grades *[]GradeItem `json:"grades,omitempty"`
 }
 
+// SearchCandidate 后台试搜：结果之外给出每个融合候选在各路召回的名次与重排分
+type SearchCandidate struct {
+	// Content 单元正文摘要
+	Content *string `json:"content,omitempty"`
+
+	// DenseRank 稠密召回名次，0=未召回
+	DenseRank *int32 `json:"denseRank,omitempty"`
+
+	// Dropped 未入选原因：threshold | per_item | limit
+	Dropped    *string  `json:"dropped,omitempty"`
+	FusedScore *float64 `json:"fusedScore,omitempty"`
+
+	// KeywordRank 关键词召回名次，0=未召回
+	KeywordRank *int32   `json:"keywordRank,omitempty"`
+	PointId     *string  `json:"pointId,omitempty"`
+	RerankScore *float64 `json:"rerankScore,omitempty"`
+
+	// SentenceRank 句子/问法召回名次，0=未召回
+	SentenceRank *int32  `json:"sentenceRank,omitempty"`
+	Title        *string `json:"title,omitempty"`
+}
+
 // SearchData defines model for SearchData.
 type SearchData struct {
 	HasMore          *bool           `json:"has_more,omitempty"`
@@ -8163,23 +8417,44 @@ type SearchData struct {
 	Users            *[]RelationUser `json:"users,omitempty"`
 }
 
-// SearchHit SearchHit 是一条检索命中，溯源信息足以回链到我方 DB 与方舟切片。
+// SearchHit SearchHit 是一条检索命中，溯源信息足以回链到我方 DB 与检索单元。
 type SearchHit struct {
 	// Authority human | official_school | official_hduhelp
-	Authority  *string   `json:"authority,omitempty"`
-	CarrierId  *string   `json:"carrierId,omitempty"`
-	Content    *string   `json:"content,omitempty"`
+	Authority *string `json:"authority,omitempty"`
+	CarrierId *string `json:"carrierId,omitempty"`
+	Content   *string `json:"content,omitempty"`
+
+	// DocId 载体本代索引 id(cu_<载体>_g<代>)
 	DocId      *string   `json:"docId,omitempty"`
 	DomainKeys *[]string `json:"domainKeys,omitempty"`
-	ItemId     *string   `json:"itemId,omitempty"`
+
+	// FileUrl 原文件可读地址(签名直链或外部链接)
+	FileUrl *string `json:"fileUrl,omitempty"`
+
+	// HeadingPath 切片所在的标题路径(文件 › 章 › 节)
+	HeadingPath *[]string `json:"headingPath,omitempty"`
+
+	// Images 切片附带的有内容图片
+	Images *[]SearchHitImage `json:"images,omitempty"`
+	ItemId *string           `json:"itemId,omitempty"`
+
+	// Kind chunk | faq | table | image | manual
+	Kind *string `json:"kind,omitempty"`
+
+	// Matched 经句子/问法召回时，命中的那句
+	Matched *string `json:"matched,omitempty"`
 
 	// OriginUrl 对外暴露的最初来源
 	OriginUrl *string `json:"originUrl,omitempty"`
-	PointId   *string `json:"pointId,omitempty"`
+
+	// PointId 检索单元 id(cu_<载体>_g<代>-<序号>)
+	PointId *string `json:"pointId,omitempty"`
 
 	// PublishedAt 来源发布时间，Unix 毫秒；未知时省略
-	PublishedAt *int64  `json:"publishedAt,omitempty"`
-	Question    *string `json:"question,omitempty"`
+	PublishedAt *int64 `json:"publishedAt,omitempty"`
+
+	// Question FAQ 命中时的问题
+	Question *string `json:"question,omitempty"`
 
 	// RerankScore 重排得分
 	RerankScore *float64 `json:"rerankScore,omitempty"`
@@ -8187,10 +8462,19 @@ type SearchHit struct {
 	// Restricted 该命中是否为受限(校内)内容，供客户端加标
 	Restricted *bool `json:"restricted,omitempty"`
 
-	// Score 向量语义得分
+	// Score 排序得分：重排分(重排时)或融合分
 	Score  *float64 `json:"score,omitempty"`
 	Source *string  `json:"source,omitempty"`
 	Title  *string  `json:"title,omitempty"`
+}
+
+// SearchHitImage SearchHitImage 是命中切片附带的图片(已过滤公章等无信息图)。
+type SearchHitImage struct {
+	// Description 图中文字与结构的转写
+	Description *string `json:"description,omitempty"`
+
+	// Url 签名直链，短时有效
+	Url *string `json:"url,omitempty"`
 }
 
 // SearchPage defines model for SearchPage.
@@ -8474,14 +8758,11 @@ type ServiceAuthorizationStatusResponseBody struct {
 
 // ServiceChatData defines model for ServiceChatData.
 type ServiceChatData struct {
-	// Answer 生成式回答(问答类型服务才有)
+	// Answer 生成式回答，用 <reference data-ref="pointId"> 标注出处
 	Answer *string `json:"answer,omitempty"`
 
 	// Hits 溯源切片
 	Hits *[]SearchHit `json:"hits,omitempty"`
-
-	// RewriteQuery query 改写结果
-	RewriteQuery *string `json:"rewriteQuery,omitempty"`
 }
 
 // ServiceChatRequestBody defines model for ServiceChatRequestBody.
@@ -8491,9 +8772,6 @@ type ServiceChatRequestBody struct {
 
 	// Query 要回答的自然语言问题。
 	Query string `json:"query"`
-
-	// StrategyName 策略(知识服务)名；空=默认
-	StrategyName *string `json:"strategy_name,omitempty"`
 }
 
 // ServiceChatResponseBody defines model for ServiceChatResponseBody.
@@ -8629,12 +8907,6 @@ type SetOperatorEnabledRequestBody struct {
 type SetOperatorEnabledResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
-}
-
-// SetQAStrategiesRequestBody defines model for SetQAStrategiesRequestBody.
-type SetQAStrategiesRequestBody struct {
-	Default    *string           `json:"default,omitempty"`
-	Strategies *[]QAStrategyItem `json:"strategies,omitempty"`
 }
 
 // SetRankBoostRequestBody defines model for SetRankBoostRequestBody.
@@ -9548,6 +9820,17 @@ type UpdateAppResponseBody struct {
 	Msg  *string         `json:"msg,omitempty"`
 }
 
+// UpdateAssetRequestBody defines model for UpdateAssetRequestBody.
+type UpdateAssetRequestBody struct {
+	Description *string `json:"description,omitempty"`
+	Id          *string `json:"id,omitempty"`
+	Keep        *bool   `json:"keep,omitempty"`
+	Kind        *string `json:"kind,omitempty"`
+
+	// Reset true=清除人工修订，回到 AI 结论
+	Reset *bool `json:"reset,omitempty"`
+}
+
 // UpdateCampusRequestBody defines model for UpdateCampusRequestBody.
 type UpdateCampusRequestBody struct {
 	Code      *string  `json:"code,omitempty"`
@@ -9568,9 +9851,9 @@ type UpdateCategoryRequestBody struct {
 
 // UpdateChunkRequestBody defines model for UpdateChunkRequestBody.
 type UpdateChunkRequestBody struct {
-	Content *string `json:"content,omitempty"`
-	PointId *string `json:"point_id,omitempty"`
-	Title   *string `json:"title,omitempty"`
+	Content    *string `json:"content,omitempty"`
+	OverrideId *string `json:"override_id,omitempty"`
+	Title      *string `json:"title,omitempty"`
 }
 
 // UpdateCollectorRequestBody defines model for UpdateCollectorRequestBody.
@@ -10473,6 +10756,21 @@ type FeedbackServiceExportAdminFeedbacksParamsStatus string
 // FeedbackServiceExportAdminFeedbacksParamsFeedbackType defines parameters for FeedbackServiceExportAdminFeedbacks.
 type FeedbackServiceExportAdminFeedbacksParamsFeedbackType string
 
+// KnowledgeServiceAdminListAssetsParams defines parameters for KnowledgeServiceAdminListAssets.
+type KnowledgeServiceAdminListAssetsParams struct {
+	CarrierId *string `form:"carrier_id,omitempty" json:"carrier_id,omitempty"`
+	Kind      *string `form:"kind,omitempty" json:"kind,omitempty"`
+
+	// Keep true | false
+	Keep *string `form:"keep,omitempty" json:"keep,omitempty"`
+
+	// Origin ai | human
+	Origin   *string `form:"origin,omitempty" json:"origin,omitempty"`
+	AiStatus *string `form:"ai_status,omitempty" json:"ai_status,omitempty"`
+	Page     *int32  `form:"page,omitempty" json:"page,omitempty"`
+	Size     *int32  `form:"size,omitempty" json:"size,omitempty"`
+}
+
 // KnowledgeServiceAdminListAuditParams defines parameters for KnowledgeServiceAdminListAudit.
 type KnowledgeServiceAdminListAuditParams struct {
 	TargetId   *string `form:"target_id,omitempty" json:"target_id,omitempty"`
@@ -10482,6 +10780,17 @@ type KnowledgeServiceAdminListAuditParams struct {
 	Size       *int32  `form:"size,omitempty" json:"size,omitempty"`
 }
 
+// KnowledgeServiceAdminGetDocumentParams defines parameters for KnowledgeServiceAdminGetDocument.
+type KnowledgeServiceAdminGetDocumentParams struct {
+	CarrierId *string `form:"carrier_id,omitempty" json:"carrier_id,omitempty"`
+}
+
+// KnowledgeServiceAdminGetDocRevisionParams defines parameters for KnowledgeServiceAdminGetDocRevision.
+type KnowledgeServiceAdminGetDocRevisionParams struct {
+	CarrierId  *string `form:"carrier_id,omitempty" json:"carrier_id,omitempty"`
+	RevisionId *string `form:"revision_id,omitempty" json:"revision_id,omitempty"`
+}
+
 // KnowledgeServiceAdminCarrierDownloadURLParams defines parameters for KnowledgeServiceAdminCarrierDownloadURL.
 type KnowledgeServiceAdminCarrierDownloadURLParams struct {
 	CarrierId *string `form:"carrier_id,omitempty" json:"carrier_id,omitempty"`
@@ -10489,8 +10798,8 @@ type KnowledgeServiceAdminCarrierDownloadURLParams struct {
 
 // KnowledgeServiceAdminDeleteChunkParams defines parameters for KnowledgeServiceAdminDeleteChunk.
 type KnowledgeServiceAdminDeleteChunkParams struct {
-	CarrierId *string `form:"carrier_id,omitempty" json:"carrier_id,omitempty"`
-	PointId   *string `form:"point_id,omitempty" json:"point_id,omitempty"`
+	CarrierId  *string `form:"carrier_id,omitempty" json:"carrier_id,omitempty"`
+	OverrideId *string `form:"override_id,omitempty" json:"override_id,omitempty"`
 }
 
 // KnowledgeServiceAdminListChunksParams defines parameters for KnowledgeServiceAdminListChunks.
@@ -11711,11 +12020,29 @@ type AdminServiceUpdateElectricityMeterJSONRequestBody = UpdateElectricityMeterR
 // FeedbackServiceReplyAdminFeedbackJSONRequestBody defines body for FeedbackServiceReplyAdminFeedback for application/json ContentType.
 type FeedbackServiceReplyAdminFeedbackJSONRequestBody = ReplyFeedbackRequestBody
 
+// KnowledgeServiceAdminUpdateAssetJSONRequestBody defines body for KnowledgeServiceAdminUpdateAsset for application/json ContentType.
+type KnowledgeServiceAdminUpdateAssetJSONRequestBody = UpdateAssetRequestBody
+
+// KnowledgeServiceAdminReannotateAssetJSONRequestBody defines body for KnowledgeServiceAdminReannotateAsset for application/json ContentType.
+type KnowledgeServiceAdminReannotateAssetJSONRequestBody = AssetIdRequestBody
+
+// KnowledgeServiceAdminSaveDocumentJSONRequestBody defines body for KnowledgeServiceAdminSaveDocument for application/json ContentType.
+type KnowledgeServiceAdminSaveDocumentJSONRequestBody = SaveDocumentRequestBody
+
+// KnowledgeServiceAdminAdoptDocRevisionJSONRequestBody defines body for KnowledgeServiceAdminAdoptDocRevision for application/json ContentType.
+type KnowledgeServiceAdminAdoptDocRevisionJSONRequestBody = AdoptRevisionRequestBody
+
+// KnowledgeServiceAdminReparseCarrierJSONRequestBody defines body for KnowledgeServiceAdminReparseCarrier for application/json ContentType.
+type KnowledgeServiceAdminReparseCarrierJSONRequestBody = ReparseRequestBody
+
 // KnowledgeServiceAdminAddChunkJSONRequestBody defines body for KnowledgeServiceAdminAddChunk for application/json ContentType.
 type KnowledgeServiceAdminAddChunkJSONRequestBody = AddChunkRequestBody
 
 // KnowledgeServiceAdminUpdateChunkJSONRequestBody defines body for KnowledgeServiceAdminUpdateChunk for application/json ContentType.
 type KnowledgeServiceAdminUpdateChunkJSONRequestBody = UpdateChunkRequestBody
+
+// KnowledgeServiceAdminHideChunkJSONRequestBody defines body for KnowledgeServiceAdminHideChunk for application/json ContentType.
+type KnowledgeServiceAdminHideChunkJSONRequestBody = HideChunkRequestBody
 
 // KnowledgeServiceAdminUpdateCollectorJSONRequestBody defines body for KnowledgeServiceAdminUpdateCollector for application/json ContentType.
 type KnowledgeServiceAdminUpdateCollectorJSONRequestBody = UpdateCollectorRequestBody
@@ -11749,9 +12076,6 @@ type KnowledgeServiceAdminAttachFileJSONRequestBody = AttachFileRequestBody
 
 // KnowledgeServiceAdminItemStateJSONRequestBody defines body for KnowledgeServiceAdminItemState for application/json ContentType.
 type KnowledgeServiceAdminItemStateJSONRequestBody = ItemStateRequestBody
-
-// KnowledgeServiceAdminSetQAStrategiesJSONRequestBody defines body for KnowledgeServiceAdminSetQAStrategies for application/json ContentType.
-type KnowledgeServiceAdminSetQAStrategiesJSONRequestBody = SetQAStrategiesRequestBody
 
 // KnowledgeServiceAdminKnowledgeSearchJSONRequestBody defines body for KnowledgeServiceAdminKnowledgeSearch for application/json ContentType.
 type KnowledgeServiceAdminKnowledgeSearchJSONRequestBody = KnowledgeSearchRequestBody

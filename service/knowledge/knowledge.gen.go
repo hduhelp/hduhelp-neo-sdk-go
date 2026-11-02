@@ -16,6 +16,179 @@ type Service struct{ config *core.Config }
 // NewService binds the Knowledge service to a client config.
 func NewService(config *core.Config) *Service { return &Service{config: config} }
 
+// AdminListAssetsReq is the request for AdminListAssets.
+type AdminListAssetsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminListAssetsReqBuilder builds a AdminListAssetsReq with a fluent setter per field.
+type AdminListAssetsReqBuilder struct{ req *AdminListAssetsReq }
+
+// NewAdminListAssetsReqBuilder creates a request builder for AdminListAssets.
+func NewAdminListAssetsReqBuilder() *AdminListAssetsReqBuilder {
+	return &AdminListAssetsReqBuilder{req: &AdminListAssetsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// CarrierId sets the "carrier_id" query parameter.
+func (b *AdminListAssetsReqBuilder) CarrierId(v string) *AdminListAssetsReqBuilder {
+	b.req.queryParams["carrier_id"] = v
+	return b
+}
+
+// Kind sets the "kind" query parameter.
+func (b *AdminListAssetsReqBuilder) Kind(v string) *AdminListAssetsReqBuilder {
+	b.req.queryParams["kind"] = v
+	return b
+}
+
+// Keep sets the "keep" query parameter: true | false
+func (b *AdminListAssetsReqBuilder) Keep(v string) *AdminListAssetsReqBuilder {
+	b.req.queryParams["keep"] = v
+	return b
+}
+
+// Origin sets the "origin" query parameter: ai | human
+func (b *AdminListAssetsReqBuilder) Origin(v string) *AdminListAssetsReqBuilder {
+	b.req.queryParams["origin"] = v
+	return b
+}
+
+// AiStatus sets the "ai_status" query parameter.
+func (b *AdminListAssetsReqBuilder) AiStatus(v string) *AdminListAssetsReqBuilder {
+	b.req.queryParams["ai_status"] = v
+	return b
+}
+
+// Page sets the "page" query parameter.
+func (b *AdminListAssetsReqBuilder) Page(v int32) *AdminListAssetsReqBuilder {
+	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Size sets the "size" query parameter.
+func (b *AdminListAssetsReqBuilder) Size(v int32) *AdminListAssetsReqBuilder {
+	b.req.queryParams["size"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminListAssetsReqBuilder) Build() *AdminListAssetsReq { return b.req }
+
+// AdminListAssetsResp is the response for AdminListAssets.
+type AdminListAssetsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.KnowledgeAssetPage `json:"data"`
+}
+
+// AdminListAssets: 图片列表
+func (s *Service) AdminListAssets(ctx context.Context, req *AdminListAssetsReq, opts ...core.RequestOption) (*AdminListAssetsResp, error) {
+	resp := &AdminListAssetsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/knowledge/assets",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminUpdateAssetReq is the request for AdminUpdateAsset.
+type AdminUpdateAssetReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminUpdateAssetReqBuilder builds a AdminUpdateAssetReq with a fluent setter per field.
+type AdminUpdateAssetReqBuilder struct{ req *AdminUpdateAssetReq }
+
+// NewAdminUpdateAssetReqBuilder creates a request builder for AdminUpdateAsset.
+func NewAdminUpdateAssetReqBuilder() *AdminUpdateAssetReqBuilder {
+	return &AdminUpdateAssetReqBuilder{req: &AdminUpdateAssetReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *AdminUpdateAssetReqBuilder) Body(body *models.UpdateAssetRequestBody) *AdminUpdateAssetReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminUpdateAssetReqBuilder) Build() *AdminUpdateAssetReq { return b.req }
+
+// AdminUpdateAssetResp is the response for AdminUpdateAsset.
+type AdminUpdateAssetResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.KnowledgeAsset `json:"data"`
+}
+
+// AdminUpdateAsset: 修订图片
+func (s *Service) AdminUpdateAsset(ctx context.Context, req *AdminUpdateAssetReq, opts ...core.RequestOption) (*AdminUpdateAssetResp, error) {
+	resp := &AdminUpdateAssetResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/knowledge/assets",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminReannotateAssetReq is the request for AdminReannotateAsset.
+type AdminReannotateAssetReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminReannotateAssetReqBuilder builds a AdminReannotateAssetReq with a fluent setter per field.
+type AdminReannotateAssetReqBuilder struct{ req *AdminReannotateAssetReq }
+
+// NewAdminReannotateAssetReqBuilder creates a request builder for AdminReannotateAsset.
+func NewAdminReannotateAssetReqBuilder() *AdminReannotateAssetReqBuilder {
+	return &AdminReannotateAssetReqBuilder{req: &AdminReannotateAssetReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *AdminReannotateAssetReqBuilder) Body(body *models.AssetIdRequestBody) *AdminReannotateAssetReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminReannotateAssetReqBuilder) Build() *AdminReannotateAssetReq { return b.req }
+
+// AdminReannotateAssetResp is the response for AdminReannotateAsset.
+type AdminReannotateAssetResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// AdminReannotateAsset: 重新标注图片
+func (s *Service) AdminReannotateAsset(ctx context.Context, req *AdminReannotateAssetReq, opts ...core.RequestOption) (*AdminReannotateAssetResp, error) {
+	resp := &AdminReannotateAssetResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/knowledge/assets/reannotate",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // AdminListAuditReq is the request for AdminListAudit.
 type AdminListAuditReq struct {
 	pathParams  map[string]string
@@ -86,6 +259,195 @@ func (s *Service) AdminListAudit(ctx context.Context, req *AdminListAuditReq, op
 	return resp, err
 }
 
+// AdminGetDocumentReq is the request for AdminGetDocument.
+type AdminGetDocumentReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminGetDocumentReqBuilder builds a AdminGetDocumentReq with a fluent setter per field.
+type AdminGetDocumentReqBuilder struct{ req *AdminGetDocumentReq }
+
+// NewAdminGetDocumentReqBuilder creates a request builder for AdminGetDocument.
+func NewAdminGetDocumentReqBuilder() *AdminGetDocumentReqBuilder {
+	return &AdminGetDocumentReqBuilder{req: &AdminGetDocumentReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// CarrierId sets the "carrier_id" query parameter.
+func (b *AdminGetDocumentReqBuilder) CarrierId(v string) *AdminGetDocumentReqBuilder {
+	b.req.queryParams["carrier_id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminGetDocumentReqBuilder) Build() *AdminGetDocumentReq { return b.req }
+
+// AdminGetDocumentResp is the response for AdminGetDocument.
+type AdminGetDocumentResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.KnowledgeDocumentData `json:"data"`
+}
+
+// AdminGetDocument: 解析正文
+func (s *Service) AdminGetDocument(ctx context.Context, req *AdminGetDocumentReq, opts ...core.RequestOption) (*AdminGetDocumentResp, error) {
+	resp := &AdminGetDocumentResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/knowledge/carriers/document",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminSaveDocumentReq is the request for AdminSaveDocument.
+type AdminSaveDocumentReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminSaveDocumentReqBuilder builds a AdminSaveDocumentReq with a fluent setter per field.
+type AdminSaveDocumentReqBuilder struct{ req *AdminSaveDocumentReq }
+
+// NewAdminSaveDocumentReqBuilder creates a request builder for AdminSaveDocument.
+func NewAdminSaveDocumentReqBuilder() *AdminSaveDocumentReqBuilder {
+	return &AdminSaveDocumentReqBuilder{req: &AdminSaveDocumentReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *AdminSaveDocumentReqBuilder) Body(body *models.SaveDocumentRequestBody) *AdminSaveDocumentReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminSaveDocumentReqBuilder) Build() *AdminSaveDocumentReq { return b.req }
+
+// AdminSaveDocumentResp is the response for AdminSaveDocument.
+type AdminSaveDocumentResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.KnowledgeDocRevision `json:"data"`
+}
+
+// AdminSaveDocument: 保存校订
+func (s *Service) AdminSaveDocument(ctx context.Context, req *AdminSaveDocumentReq, opts ...core.RequestOption) (*AdminSaveDocumentResp, error) {
+	resp := &AdminSaveDocumentResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/knowledge/carriers/document",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminAdoptDocRevisionReq is the request for AdminAdoptDocRevision.
+type AdminAdoptDocRevisionReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminAdoptDocRevisionReqBuilder builds a AdminAdoptDocRevisionReq with a fluent setter per field.
+type AdminAdoptDocRevisionReqBuilder struct{ req *AdminAdoptDocRevisionReq }
+
+// NewAdminAdoptDocRevisionReqBuilder creates a request builder for AdminAdoptDocRevision.
+func NewAdminAdoptDocRevisionReqBuilder() *AdminAdoptDocRevisionReqBuilder {
+	return &AdminAdoptDocRevisionReqBuilder{req: &AdminAdoptDocRevisionReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *AdminAdoptDocRevisionReqBuilder) Body(body *models.AdoptRevisionRequestBody) *AdminAdoptDocRevisionReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminAdoptDocRevisionReqBuilder) Build() *AdminAdoptDocRevisionReq { return b.req }
+
+// AdminAdoptDocRevisionResp is the response for AdminAdoptDocRevision.
+type AdminAdoptDocRevisionResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// AdminAdoptDocRevision: 采用正文版本
+func (s *Service) AdminAdoptDocRevision(ctx context.Context, req *AdminAdoptDocRevisionReq, opts ...core.RequestOption) (*AdminAdoptDocRevisionResp, error) {
+	resp := &AdminAdoptDocRevisionResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/knowledge/carriers/document/adopt",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminGetDocRevisionReq is the request for AdminGetDocRevision.
+type AdminGetDocRevisionReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminGetDocRevisionReqBuilder builds a AdminGetDocRevisionReq with a fluent setter per field.
+type AdminGetDocRevisionReqBuilder struct{ req *AdminGetDocRevisionReq }
+
+// NewAdminGetDocRevisionReqBuilder creates a request builder for AdminGetDocRevision.
+func NewAdminGetDocRevisionReqBuilder() *AdminGetDocRevisionReqBuilder {
+	return &AdminGetDocRevisionReqBuilder{req: &AdminGetDocRevisionReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// CarrierId sets the "carrier_id" query parameter.
+func (b *AdminGetDocRevisionReqBuilder) CarrierId(v string) *AdminGetDocRevisionReqBuilder {
+	b.req.queryParams["carrier_id"] = v
+	return b
+}
+
+// RevisionId sets the "revision_id" query parameter.
+func (b *AdminGetDocRevisionReqBuilder) RevisionId(v string) *AdminGetDocRevisionReqBuilder {
+	b.req.queryParams["revision_id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminGetDocRevisionReqBuilder) Build() *AdminGetDocRevisionReq { return b.req }
+
+// AdminGetDocRevisionResp is the response for AdminGetDocRevision.
+type AdminGetDocRevisionResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.KnowledgeDocRevision `json:"data"`
+}
+
+// AdminGetDocRevision: 解析正文版本
+func (s *Service) AdminGetDocRevision(ctx context.Context, req *AdminGetDocRevisionReq, opts ...core.RequestOption) (*AdminGetDocRevisionResp, error) {
+	resp := &AdminGetDocRevisionResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/knowledge/carriers/document/revision",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // AdminCarrierDownloadURLReq is the request for AdminCarrierDownloadURL.
 type AdminCarrierDownloadURLReq struct {
 	pathParams  map[string]string
@@ -132,6 +494,51 @@ func (s *Service) AdminCarrierDownloadURL(ctx context.Context, req *AdminCarrier
 	return resp, err
 }
 
+// AdminReparseCarrierReq is the request for AdminReparseCarrier.
+type AdminReparseCarrierReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminReparseCarrierReqBuilder builds a AdminReparseCarrierReq with a fluent setter per field.
+type AdminReparseCarrierReqBuilder struct{ req *AdminReparseCarrierReq }
+
+// NewAdminReparseCarrierReqBuilder creates a request builder for AdminReparseCarrier.
+func NewAdminReparseCarrierReqBuilder() *AdminReparseCarrierReqBuilder {
+	return &AdminReparseCarrierReqBuilder{req: &AdminReparseCarrierReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *AdminReparseCarrierReqBuilder) Body(body *models.ReparseRequestBody) *AdminReparseCarrierReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminReparseCarrierReqBuilder) Build() *AdminReparseCarrierReq { return b.req }
+
+// AdminReparseCarrierResp is the response for AdminReparseCarrier.
+type AdminReparseCarrierResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// AdminReparseCarrier: 重新解析
+func (s *Service) AdminReparseCarrier(ctx context.Context, req *AdminReparseCarrierReq, opts ...core.RequestOption) (*AdminReparseCarrierResp, error) {
+	resp := &AdminReparseCarrierResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/knowledge/carriers/reparse",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // AdminListChunksReq is the request for AdminListChunks.
 type AdminListChunksReq struct {
 	pathParams  map[string]string
@@ -161,7 +568,7 @@ func (b *AdminListChunksReqBuilder) Build() *AdminListChunksReq { return b.req }
 type AdminListChunksResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data []models.KnowledgeChunk `json:"data"`
+	Data *models.ChunkListData `json:"data"`
 }
 
 // AdminListChunks: 切片列表
@@ -207,7 +614,6 @@ func (b *AdminAddChunkReqBuilder) Build() *AdminAddChunkReq { return b.req }
 type AdminAddChunkResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.KnowledgeChunk `json:"data"`
 }
 
 // AdminAddChunk: 新增补充切片
@@ -259,10 +665,9 @@ func (b *AdminUpdateChunkReqBuilder) Build() *AdminUpdateChunkReq { return b.req
 type AdminUpdateChunkResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.KnowledgeChunk `json:"data"`
 }
 
-// AdminUpdateChunk: 编辑切片
+// AdminUpdateChunk: 编辑补充切片
 func (s *Service) AdminUpdateChunk(ctx context.Context, req *AdminUpdateChunkReq, opts ...core.RequestOption) (*AdminUpdateChunkResp, error) {
 	resp := &AdminUpdateChunkResp{}
 	err := s.config.Do(ctx, &core.APIReq{
@@ -298,9 +703,9 @@ func (b *AdminDeleteChunkReqBuilder) CarrierId(v string) *AdminDeleteChunkReqBui
 	return b
 }
 
-// PointId sets the "point_id" query parameter.
-func (b *AdminDeleteChunkReqBuilder) PointId(v string) *AdminDeleteChunkReqBuilder {
-	b.req.queryParams["point_id"] = v
+// OverrideId sets the "override_id" query parameter.
+func (b *AdminDeleteChunkReqBuilder) OverrideId(v string) *AdminDeleteChunkReqBuilder {
+	b.req.queryParams["override_id"] = v
 	return b
 }
 
@@ -313,12 +718,57 @@ type AdminDeleteChunkResp struct {
 	core.CodeMsg
 }
 
-// AdminDeleteChunk: 删除切片
+// AdminDeleteChunk: 删除补充切片或取消屏蔽
 func (s *Service) AdminDeleteChunk(ctx context.Context, req *AdminDeleteChunkReq, opts ...core.RequestOption) (*AdminDeleteChunkResp, error) {
 	resp := &AdminDeleteChunkResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "DELETE",
 		PathTemplate: "/hduhelp-neo/admin/knowledge/chunks",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminHideChunkReq is the request for AdminHideChunk.
+type AdminHideChunkReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminHideChunkReqBuilder builds a AdminHideChunkReq with a fluent setter per field.
+type AdminHideChunkReqBuilder struct{ req *AdminHideChunkReq }
+
+// NewAdminHideChunkReqBuilder creates a request builder for AdminHideChunk.
+func NewAdminHideChunkReqBuilder() *AdminHideChunkReqBuilder {
+	return &AdminHideChunkReqBuilder{req: &AdminHideChunkReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *AdminHideChunkReqBuilder) Body(body *models.HideChunkRequestBody) *AdminHideChunkReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminHideChunkReqBuilder) Build() *AdminHideChunkReq { return b.req }
+
+// AdminHideChunkResp is the response for AdminHideChunk.
+type AdminHideChunkResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// AdminHideChunk: 屏蔽切片
+func (s *Service) AdminHideChunk(ctx context.Context, req *AdminHideChunkReq, opts ...core.RequestOption) (*AdminHideChunkResp, error) {
+	resp := &AdminHideChunkResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/knowledge/chunks/hide",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -1062,6 +1512,86 @@ func (s *Service) AdminGapAction(ctx context.Context, req *AdminGapActionReq, op
 	return resp, err
 }
 
+// AdminRebuildIndexReq is the request for AdminRebuildIndex.
+type AdminRebuildIndexReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminRebuildIndexReqBuilder builds a AdminRebuildIndexReq with a fluent setter per field.
+type AdminRebuildIndexReqBuilder struct{ req *AdminRebuildIndexReq }
+
+// NewAdminRebuildIndexReqBuilder creates a request builder for AdminRebuildIndex.
+func NewAdminRebuildIndexReqBuilder() *AdminRebuildIndexReqBuilder {
+	return &AdminRebuildIndexReqBuilder{req: &AdminRebuildIndexReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *AdminRebuildIndexReqBuilder) Build() *AdminRebuildIndexReq { return b.req }
+
+// AdminRebuildIndexResp is the response for AdminRebuildIndex.
+type AdminRebuildIndexResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.RebuildIndexData `json:"data"`
+}
+
+// AdminRebuildIndex: 全量重建索引
+func (s *Service) AdminRebuildIndex(ctx context.Context, req *AdminRebuildIndexReq, opts ...core.RequestOption) (*AdminRebuildIndexResp, error) {
+	resp := &AdminRebuildIndexResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/knowledge/index/rebuild",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminIndexStatusReq is the request for AdminIndexStatus.
+type AdminIndexStatusReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminIndexStatusReqBuilder builds a AdminIndexStatusReq with a fluent setter per field.
+type AdminIndexStatusReqBuilder struct{ req *AdminIndexStatusReq }
+
+// NewAdminIndexStatusReqBuilder creates a request builder for AdminIndexStatus.
+func NewAdminIndexStatusReqBuilder() *AdminIndexStatusReqBuilder {
+	return &AdminIndexStatusReqBuilder{req: &AdminIndexStatusReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *AdminIndexStatusReqBuilder) Build() *AdminIndexStatusReq { return b.req }
+
+// AdminIndexStatusResp is the response for AdminIndexStatus.
+type AdminIndexStatusResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.KnowledgeIndexStatusData `json:"data"`
+}
+
+// AdminIndexStatus: 索引状态
+func (s *Service) AdminIndexStatus(ctx context.Context, req *AdminIndexStatusReq, opts ...core.RequestOption) (*AdminIndexStatusResp, error) {
+	resp := &AdminIndexStatusResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/knowledge/index/status",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // AdminListItemsReq is the request for AdminListItems.
 type AdminListItemsReq struct {
 	pathParams  map[string]string
@@ -1593,91 +2123,6 @@ func (s *Service) AdminOverview(ctx context.Context, req *AdminOverviewReq, opts
 	return resp, err
 }
 
-// AdminGetQAStrategiesReq is the request for AdminGetQAStrategies.
-type AdminGetQAStrategiesReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// AdminGetQAStrategiesReqBuilder builds a AdminGetQAStrategiesReq with a fluent setter per field.
-type AdminGetQAStrategiesReqBuilder struct{ req *AdminGetQAStrategiesReq }
-
-// NewAdminGetQAStrategiesReqBuilder creates a request builder for AdminGetQAStrategies.
-func NewAdminGetQAStrategiesReqBuilder() *AdminGetQAStrategiesReqBuilder {
-	return &AdminGetQAStrategiesReqBuilder{req: &AdminGetQAStrategiesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Build finalizes the request.
-func (b *AdminGetQAStrategiesReqBuilder) Build() *AdminGetQAStrategiesReq { return b.req }
-
-// AdminGetQAStrategiesResp is the response for AdminGetQAStrategies.
-type AdminGetQAStrategiesResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.QAStrategiesData `json:"data"`
-}
-
-// AdminGetQAStrategies: 快速问答策略
-func (s *Service) AdminGetQAStrategies(ctx context.Context, req *AdminGetQAStrategiesReq, opts ...core.RequestOption) (*AdminGetQAStrategiesResp, error) {
-	resp := &AdminGetQAStrategiesResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/admin/knowledge/qa-strategies",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// AdminSetQAStrategiesReq is the request for AdminSetQAStrategies.
-type AdminSetQAStrategiesReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// AdminSetQAStrategiesReqBuilder builds a AdminSetQAStrategiesReq with a fluent setter per field.
-type AdminSetQAStrategiesReqBuilder struct{ req *AdminSetQAStrategiesReq }
-
-// NewAdminSetQAStrategiesReqBuilder creates a request builder for AdminSetQAStrategies.
-func NewAdminSetQAStrategiesReqBuilder() *AdminSetQAStrategiesReqBuilder {
-	return &AdminSetQAStrategiesReqBuilder{req: &AdminSetQAStrategiesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *AdminSetQAStrategiesReqBuilder) Body(body *models.SetQAStrategiesRequestBody) *AdminSetQAStrategiesReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *AdminSetQAStrategiesReqBuilder) Build() *AdminSetQAStrategiesReq { return b.req }
-
-// AdminSetQAStrategiesResp is the response for AdminSetQAStrategies.
-type AdminSetQAStrategiesResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-}
-
-// AdminSetQAStrategies: 保存快速问答策略
-func (s *Service) AdminSetQAStrategies(ctx context.Context, req *AdminSetQAStrategiesReq, opts ...core.RequestOption) (*AdminSetQAStrategiesResp, error) {
-	resp := &AdminSetQAStrategiesResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "PUT",
-		PathTemplate: "/hduhelp-neo/admin/knowledge/qa-strategies",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
 // AdminKnowledgeSearchReq is the request for AdminKnowledgeSearch.
 type AdminKnowledgeSearchReq struct {
 	pathParams  map[string]string
@@ -1707,7 +2152,7 @@ func (b *AdminKnowledgeSearchReqBuilder) Build() *AdminKnowledgeSearchReq { retu
 type AdminKnowledgeSearchResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data []models.SearchHit `json:"data"`
+	Data *models.AdminSearchData `json:"data"`
 }
 
 // AdminKnowledgeSearch: 知识检索（后台试搜）
