@@ -218,12 +218,6 @@ func (b *ModelObservationDashboardBreakdownReqBuilder) PoolId(v int64) *ModelObs
 	return b
 }
 
-// ProfileId sets the "profileId" query parameter.
-func (b *ModelObservationDashboardBreakdownReqBuilder) ProfileId(v int64) *ModelObservationDashboardBreakdownReqBuilder {
-	b.req.queryParams["profileId"] = strconv.FormatInt(v, 10)
-	return b
-}
-
 // RequestType sets the "requestType" query parameter.
 func (b *ModelObservationDashboardBreakdownReqBuilder) RequestType(v int64) *ModelObservationDashboardBreakdownReqBuilder {
 	b.req.queryParams["requestType"] = strconv.FormatInt(v, 10)
@@ -459,12 +453,6 @@ func (b *ModelObservationDashboardSnapshotReqBuilder) ConnectorId(v int64) *Mode
 // PoolId sets the "poolId" query parameter.
 func (b *ModelObservationDashboardSnapshotReqBuilder) PoolId(v int64) *ModelObservationDashboardSnapshotReqBuilder {
 	b.req.queryParams["poolId"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// ProfileId sets the "profileId" query parameter.
-func (b *ModelObservationDashboardSnapshotReqBuilder) ProfileId(v int64) *ModelObservationDashboardSnapshotReqBuilder {
-	b.req.queryParams["profileId"] = strconv.FormatInt(v, 10)
 	return b
 }
 
@@ -710,62 +698,6 @@ func (s *Service) ModelObservationPoolUsageDaily(ctx context.Context, req *Model
 	return resp, err
 }
 
-// ModelObservationProfileEventStatsReq is the request for ModelObservationProfileEventStats.
-type ModelObservationProfileEventStatsReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ModelObservationProfileEventStatsReqBuilder builds a ModelObservationProfileEventStatsReq with a fluent setter per field.
-type ModelObservationProfileEventStatsReqBuilder struct {
-	req *ModelObservationProfileEventStatsReq
-}
-
-// NewModelObservationProfileEventStatsReqBuilder creates a request builder for ModelObservationProfileEventStats.
-func NewModelObservationProfileEventStatsReqBuilder() *ModelObservationProfileEventStatsReqBuilder {
-	return &ModelObservationProfileEventStatsReqBuilder{req: &ModelObservationProfileEventStatsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Id sets the "id" path parameter.
-func (b *ModelObservationProfileEventStatsReqBuilder) Id(v int64) *ModelObservationProfileEventStatsReqBuilder {
-	b.req.pathParams["id"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// Range sets the "range" query parameter.
-func (b *ModelObservationProfileEventStatsReqBuilder) Range(v string) *ModelObservationProfileEventStatsReqBuilder {
-	b.req.queryParams["range"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *ModelObservationProfileEventStatsReqBuilder) Build() *ModelObservationProfileEventStatsReq {
-	return b.req
-}
-
-// ModelObservationProfileEventStatsResp is the response for ModelObservationProfileEventStats.
-type ModelObservationProfileEventStatsResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ModelEntityEventStats `json:"data"`
-}
-
-// ModelObservationProfileEventStats calls GET /hduhelp-neo/admin/models/profiles/{id}/event-stats.
-func (s *Service) ModelObservationProfileEventStats(ctx context.Context, req *ModelObservationProfileEventStatsReq, opts ...core.RequestOption) (*ModelObservationProfileEventStatsResp, error) {
-	resp := &ModelObservationProfileEventStatsResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/admin/models/profiles/{id}/event-stats",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
 // ModelObservationPurposeStatsReq is the request for ModelObservationPurposeStats.
 type ModelObservationPurposeStatsReq struct {
 	pathParams  map[string]string
@@ -952,12 +884,6 @@ func (b *ModelObservationRequestsReqBuilder) PoolId(v int64) *ModelObservationRe
 	return b
 }
 
-// ProfileId sets the "profileId" query parameter.
-func (b *ModelObservationRequestsReqBuilder) ProfileId(v int64) *ModelObservationRequestsReqBuilder {
-	b.req.queryParams["profileId"] = strconv.FormatInt(v, 10)
-	return b
-}
-
 // RequestType sets the "requestType" query parameter.
 func (b *ModelObservationRequestsReqBuilder) RequestType(v int64) *ModelObservationRequestsReqBuilder {
 	b.req.queryParams["requestType"] = strconv.FormatInt(v, 10)
@@ -1096,56 +1022,6 @@ func (s *Service) ModelObservationRequests(ctx context.Context, req *ModelObserv
 	return resp, err
 }
 
-// ModelObservationRequestsBodyReq is the request for ModelObservationRequestsBody.
-type ModelObservationRequestsBodyReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ModelObservationRequestsBodyReqBuilder builds a ModelObservationRequestsBodyReq with a fluent setter per field.
-type ModelObservationRequestsBodyReqBuilder struct {
-	req *ModelObservationRequestsBodyReq
-}
-
-// NewModelObservationRequestsBodyReqBuilder creates a request builder for ModelObservationRequestsBody.
-func NewModelObservationRequestsBodyReqBuilder() *ModelObservationRequestsBodyReqBuilder {
-	return &ModelObservationRequestsBodyReqBuilder{req: &ModelObservationRequestsBodyReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *ModelObservationRequestsBodyReqBuilder) Body(body *models.ModelObservationAccessRequestBody) *ModelObservationRequestsBodyReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *ModelObservationRequestsBodyReqBuilder) Build() *ModelObservationRequestsBodyReq {
-	return b.req
-}
-
-// ModelObservationRequestsBodyResp is the response for ModelObservationRequestsBody.
-type ModelObservationRequestsBodyResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ModelTraceParts `json:"data"`
-}
-
-// ModelObservationRequestsBody calls POST /hduhelp-neo/admin/models/requests/body.
-func (s *Service) ModelObservationRequestsBody(ctx context.Context, req *ModelObservationRequestsBodyReq, opts ...core.RequestOption) (*ModelObservationRequestsBodyResp, error) {
-	resp := &ModelObservationRequestsBodyResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/admin/models/requests/body",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
 // ModelObservationRequestsCurlReq is the request for ModelObservationRequestsCurl.
 type ModelObservationRequestsCurlReq struct {
 	pathParams  map[string]string
@@ -1165,7 +1041,7 @@ func NewModelObservationRequestsCurlReqBuilder() *ModelObservationRequestsCurlRe
 }
 
 // Body sets the request body.
-func (b *ModelObservationRequestsCurlReqBuilder) Body(body *models.ModelObservationAccessRequestBody) *ModelObservationRequestsCurlReqBuilder {
+func (b *ModelObservationRequestsCurlReqBuilder) Body(body *models.ModelObservationCurlRequestBody) *ModelObservationRequestsCurlReqBuilder {
 	b.req.body = body
 	return b
 }
@@ -1244,106 +1120,6 @@ func (s *Service) ModelObservationRequestsDetail(ctx context.Context, req *Model
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/admin/models/requests/detail",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ModelObservationRequestsDownloadReq is the request for ModelObservationRequestsDownload.
-type ModelObservationRequestsDownloadReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ModelObservationRequestsDownloadReqBuilder builds a ModelObservationRequestsDownloadReq with a fluent setter per field.
-type ModelObservationRequestsDownloadReqBuilder struct {
-	req *ModelObservationRequestsDownloadReq
-}
-
-// NewModelObservationRequestsDownloadReqBuilder creates a request builder for ModelObservationRequestsDownload.
-func NewModelObservationRequestsDownloadReqBuilder() *ModelObservationRequestsDownloadReqBuilder {
-	return &ModelObservationRequestsDownloadReqBuilder{req: &ModelObservationRequestsDownloadReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *ModelObservationRequestsDownloadReqBuilder) Body(body *models.ModelObservationAccessRequestBody) *ModelObservationRequestsDownloadReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *ModelObservationRequestsDownloadReqBuilder) Build() *ModelObservationRequestsDownloadReq {
-	return b.req
-}
-
-// ModelObservationRequestsDownloadResp is the response for ModelObservationRequestsDownload.
-type ModelObservationRequestsDownloadResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ModelTraceParts `json:"data"`
-}
-
-// ModelObservationRequestsDownload calls POST /hduhelp-neo/admin/models/requests/download.
-func (s *Service) ModelObservationRequestsDownload(ctx context.Context, req *ModelObservationRequestsDownloadReq, opts ...core.RequestOption) (*ModelObservationRequestsDownloadResp, error) {
-	resp := &ModelObservationRequestsDownloadResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/admin/models/requests/download",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ModelObservationRequestsImageReq is the request for ModelObservationRequestsImage.
-type ModelObservationRequestsImageReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ModelObservationRequestsImageReqBuilder builds a ModelObservationRequestsImageReq with a fluent setter per field.
-type ModelObservationRequestsImageReqBuilder struct {
-	req *ModelObservationRequestsImageReq
-}
-
-// NewModelObservationRequestsImageReqBuilder creates a request builder for ModelObservationRequestsImage.
-func NewModelObservationRequestsImageReqBuilder() *ModelObservationRequestsImageReqBuilder {
-	return &ModelObservationRequestsImageReqBuilder{req: &ModelObservationRequestsImageReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *ModelObservationRequestsImageReqBuilder) Body(body *models.ModelObservationAccessRequestBody) *ModelObservationRequestsImageReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *ModelObservationRequestsImageReqBuilder) Build() *ModelObservationRequestsImageReq {
-	return b.req
-}
-
-// ModelObservationRequestsImageResp is the response for ModelObservationRequestsImage.
-type ModelObservationRequestsImageResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ModelImagePage `json:"data"`
-}
-
-// ModelObservationRequestsImage calls POST /hduhelp-neo/admin/models/requests/image.
-func (s *Service) ModelObservationRequestsImage(ctx context.Context, req *ModelObservationRequestsImageReq, opts ...core.RequestOption) (*ModelObservationRequestsImageResp, error) {
-	resp := &ModelObservationRequestsImageResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/admin/models/requests/image",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -1558,12 +1334,6 @@ func (b *ModelObservationRequestsSummaryReqBuilder) PoolId(v int64) *ModelObserv
 	return b
 }
 
-// ProfileId sets the "profileId" query parameter.
-func (b *ModelObservationRequestsSummaryReqBuilder) ProfileId(v int64) *ModelObservationRequestsSummaryReqBuilder {
-	b.req.queryParams["profileId"] = strconv.FormatInt(v, 10)
-	return b
-}
-
 // RequestType sets the "requestType" query parameter.
 func (b *ModelObservationRequestsSummaryReqBuilder) RequestType(v int64) *ModelObservationRequestsSummaryReqBuilder {
 	b.req.queryParams["requestType"] = strconv.FormatInt(v, 10)
@@ -1774,12 +1544,6 @@ func (b *ModelObservationUsageReqBuilder) PoolId(v int64) *ModelObservationUsage
 	return b
 }
 
-// ProfileId sets the "profileId" query parameter.
-func (b *ModelObservationUsageReqBuilder) ProfileId(v int64) *ModelObservationUsageReqBuilder {
-	b.req.queryParams["profileId"] = strconv.FormatInt(v, 10)
-	return b
-}
-
 // RequestType sets the "requestType" query parameter.
 func (b *ModelObservationUsageReqBuilder) RequestType(v int64) *ModelObservationUsageReqBuilder {
 	b.req.queryParams["requestType"] = strconv.FormatInt(v, 10)
@@ -1957,12 +1721,6 @@ func (b *ModelObservationUsageBreakdownReqBuilder) ConnectorId(v int64) *ModelOb
 // PoolId sets the "poolId" query parameter.
 func (b *ModelObservationUsageBreakdownReqBuilder) PoolId(v int64) *ModelObservationUsageBreakdownReqBuilder {
 	b.req.queryParams["poolId"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// ProfileId sets the "profileId" query parameter.
-func (b *ModelObservationUsageBreakdownReqBuilder) ProfileId(v int64) *ModelObservationUsageBreakdownReqBuilder {
-	b.req.queryParams["profileId"] = strconv.FormatInt(v, 10)
 	return b
 }
 
@@ -2288,12 +2046,6 @@ func (b *ModelObservationUsageRankingReqBuilder) PoolId(v int64) *ModelObservati
 	return b
 }
 
-// ProfileId sets the "profileId" query parameter.
-func (b *ModelObservationUsageRankingReqBuilder) ProfileId(v int64) *ModelObservationUsageRankingReqBuilder {
-	b.req.queryParams["profileId"] = strconv.FormatInt(v, 10)
-	return b
-}
-
 // RequestType sets the "requestType" query parameter.
 func (b *ModelObservationUsageRankingReqBuilder) RequestType(v int64) *ModelObservationUsageRankingReqBuilder {
 	b.req.queryParams["requestType"] = strconv.FormatInt(v, 10)
@@ -2470,12 +2222,6 @@ func (b *ModelObservationUsageSummaryReqBuilder) PoolId(v int64) *ModelObservati
 	return b
 }
 
-// ProfileId sets the "profileId" query parameter.
-func (b *ModelObservationUsageSummaryReqBuilder) ProfileId(v int64) *ModelObservationUsageSummaryReqBuilder {
-	b.req.queryParams["profileId"] = strconv.FormatInt(v, 10)
-	return b
-}
-
 // RequestType sets the "requestType" query parameter.
 func (b *ModelObservationUsageSummaryReqBuilder) RequestType(v int64) *ModelObservationUsageSummaryReqBuilder {
 	b.req.queryParams["requestType"] = strconv.FormatInt(v, 10)
@@ -2631,12 +2377,6 @@ func (b *ModelObservationUsageTrendReqBuilder) ConnectorId(v int64) *ModelObserv
 // PoolId sets the "poolId" query parameter.
 func (b *ModelObservationUsageTrendReqBuilder) PoolId(v int64) *ModelObservationUsageTrendReqBuilder {
 	b.req.queryParams["poolId"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// ProfileId sets the "profileId" query parameter.
-func (b *ModelObservationUsageTrendReqBuilder) ProfileId(v int64) *ModelObservationUsageTrendReqBuilder {
-	b.req.queryParams["profileId"] = strconv.FormatInt(v, 10)
 	return b
 }
 

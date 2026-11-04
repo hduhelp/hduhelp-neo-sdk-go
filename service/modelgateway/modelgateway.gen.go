@@ -2724,6 +2724,52 @@ func (s *Service) ModelReplacePoolMembers(ctx context.Context, req *ModelReplace
 	return resp, err
 }
 
+// ModelPoolModelsReq is the request for ModelPoolModels.
+type ModelPoolModelsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ModelPoolModelsReqBuilder builds a ModelPoolModelsReq with a fluent setter per field.
+type ModelPoolModelsReqBuilder struct{ req *ModelPoolModelsReq }
+
+// NewModelPoolModelsReqBuilder creates a request builder for ModelPoolModels.
+func NewModelPoolModelsReqBuilder() *ModelPoolModelsReqBuilder {
+	return &ModelPoolModelsReqBuilder{req: &ModelPoolModelsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" query parameter.
+func (b *ModelPoolModelsReqBuilder) Id(v int64) *ModelPoolModelsReqBuilder {
+	b.req.queryParams["id"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *ModelPoolModelsReqBuilder) Build() *ModelPoolModelsReq { return b.req }
+
+// ModelPoolModelsResp is the response for ModelPoolModels.
+type ModelPoolModelsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ModelStringList `json:"data"`
+}
+
+// ModelPoolModels: 池对外暴露的模型（用途目标的模型候选）
+func (s *Service) ModelPoolModels(ctx context.Context, req *ModelPoolModelsReq, opts ...core.RequestOption) (*ModelPoolModelsResp, error) {
+	resp := &ModelPoolModelsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/models/pools/models",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // ModelPoolOptionsReq is the request for ModelPoolOptions.
 type ModelPoolOptionsReq struct {
 	pathParams  map[string]string
@@ -2960,6 +3006,46 @@ func (s *Service) ModelPriceEstimate(ctx context.Context, req *ModelPriceEstimat
 	return resp, err
 }
 
+// ModelListOurModelsReq is the request for ModelListOurModels.
+type ModelListOurModelsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ModelListOurModelsReqBuilder builds a ModelListOurModelsReq with a fluent setter per field.
+type ModelListOurModelsReqBuilder struct{ req *ModelListOurModelsReq }
+
+// NewModelListOurModelsReqBuilder creates a request builder for ModelListOurModels.
+func NewModelListOurModelsReqBuilder() *ModelListOurModelsReqBuilder {
+	return &ModelListOurModelsReqBuilder{req: &ModelListOurModelsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *ModelListOurModelsReqBuilder) Build() *ModelListOurModelsReq { return b.req }
+
+// ModelListOurModelsResp is the response for ModelListOurModels.
+type ModelListOurModelsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ModelOurModelList `json:"data"`
+}
+
+// ModelListOurModels: 我们的模型：生效价格与缺价
+func (s *Service) ModelListOurModels(ctx context.Context, req *ModelListOurModelsReq, opts ...core.RequestOption) (*ModelListOurModelsResp, error) {
+	resp := &ModelListOurModelsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/models/pricing/models",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // ModelListPricesReq is the request for ModelListPrices.
 type ModelListPricesReq struct {
 	pathParams  map[string]string
@@ -2979,18 +3065,6 @@ func NewModelListPricesReqBuilder() *ModelListPricesReqBuilder {
 // Search sets the "search" query parameter.
 func (b *ModelListPricesReqBuilder) Search(v string) *ModelListPricesReqBuilder {
 	b.req.queryParams["search"] = v
-	return b
-}
-
-// Scope sets the "scope" query parameter.
-func (b *ModelListPricesReqBuilder) Scope(v string) *ModelListPricesReqBuilder {
-	b.req.queryParams["scope"] = v
-	return b
-}
-
-// ProfileId sets the "profile_id" query parameter.
-func (b *ModelListPricesReqBuilder) ProfileId(v int64) *ModelListPricesReqBuilder {
-	b.req.queryParams["profile_id"] = strconv.FormatInt(v, 10)
 	return b
 }
 
@@ -3040,7 +3114,7 @@ type ModelListPricesResp struct {
 	Data *models.ModelPricePage `json:"data"`
 }
 
-// ModelListPrices: 价目表（全局条目与档位覆盖）
+// ModelListPrices: 价目表
 func (s *Service) ModelListPrices(ctx context.Context, req *ModelListPricesReq, opts ...core.RequestOption) (*ModelListPricesResp, error) {
 	resp := &ModelListPricesResp{}
 	err := s.config.Do(ctx, &core.APIReq{
@@ -3210,58 +3284,6 @@ func (s *Service) ModelDeletePrice(ctx context.Context, req *ModelDeletePriceReq
 	return resp, err
 }
 
-// ModelClonePriceReq is the request for ModelClonePrice.
-type ModelClonePriceReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ModelClonePriceReqBuilder builds a ModelClonePriceReq with a fluent setter per field.
-type ModelClonePriceReqBuilder struct{ req *ModelClonePriceReq }
-
-// NewModelClonePriceReqBuilder creates a request builder for ModelClonePrice.
-func NewModelClonePriceReqBuilder() *ModelClonePriceReqBuilder {
-	return &ModelClonePriceReqBuilder{req: &ModelClonePriceReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Id sets the "id" query parameter.
-func (b *ModelClonePriceReqBuilder) Id(v int64) *ModelClonePriceReqBuilder {
-	b.req.queryParams["id"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// Body sets the request body.
-func (b *ModelClonePriceReqBuilder) Body(body *models.ModelPriceCloneRequestBody) *ModelClonePriceReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *ModelClonePriceReqBuilder) Build() *ModelClonePriceReq { return b.req }
-
-// ModelClonePriceResp is the response for ModelClonePrice.
-type ModelClonePriceResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ModelPriceCloneResult `json:"data"`
-}
-
-// ModelClonePrice: 复制为覆盖
-func (s *Service) ModelClonePrice(ctx context.Context, req *ModelClonePriceReq, opts ...core.RequestOption) (*ModelClonePriceResp, error) {
-	resp := &ModelClonePriceResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/admin/models/pricing/prices/clone",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
 // ModelGetPriceReq is the request for ModelGetPrice.
 type ModelGetPriceReq struct {
 	pathParams  map[string]string
@@ -3300,110 +3322,6 @@ func (s *Service) ModelGetPrice(ctx context.Context, req *ModelGetPriceReq, opts
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/admin/models/pricing/prices/detail",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ModelSetProfileOverrideReq is the request for ModelSetProfileOverride.
-type ModelSetProfileOverrideReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ModelSetProfileOverrideReqBuilder builds a ModelSetProfileOverrideReq with a fluent setter per field.
-type ModelSetProfileOverrideReqBuilder struct{ req *ModelSetProfileOverrideReq }
-
-// NewModelSetProfileOverrideReqBuilder creates a request builder for ModelSetProfileOverride.
-func NewModelSetProfileOverrideReqBuilder() *ModelSetProfileOverrideReqBuilder {
-	return &ModelSetProfileOverrideReqBuilder{req: &ModelSetProfileOverrideReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// ProfileId sets the "profile_id" query parameter.
-func (b *ModelSetProfileOverrideReqBuilder) ProfileId(v int64) *ModelSetProfileOverrideReqBuilder {
-	b.req.queryParams["profile_id"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// Body sets the request body.
-func (b *ModelSetProfileOverrideReqBuilder) Body(body *models.ModelProfileOverrideRequestBody) *ModelSetProfileOverrideReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *ModelSetProfileOverrideReqBuilder) Build() *ModelSetProfileOverrideReq { return b.req }
-
-// ModelSetProfileOverrideResp is the response for ModelSetProfileOverride.
-type ModelSetProfileOverrideResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ModelProfile `json:"data"`
-}
-
-// ModelSetProfileOverride: 改档位价格覆盖
-func (s *Service) ModelSetProfileOverride(ctx context.Context, req *ModelSetProfileOverrideReq, opts ...core.RequestOption) (*ModelSetProfileOverrideResp, error) {
-	resp := &ModelSetProfileOverrideResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "PUT",
-		PathTemplate: "/hduhelp-neo/admin/models/pricing/profile-override",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ModelClearProfileOverrideReq is the request for ModelClearProfileOverride.
-type ModelClearProfileOverrideReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ModelClearProfileOverrideReqBuilder builds a ModelClearProfileOverrideReq with a fluent setter per field.
-type ModelClearProfileOverrideReqBuilder struct{ req *ModelClearProfileOverrideReq }
-
-// NewModelClearProfileOverrideReqBuilder creates a request builder for ModelClearProfileOverride.
-func NewModelClearProfileOverrideReqBuilder() *ModelClearProfileOverrideReqBuilder {
-	return &ModelClearProfileOverrideReqBuilder{req: &ModelClearProfileOverrideReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// ProfileId sets the "profile_id" query parameter.
-func (b *ModelClearProfileOverrideReqBuilder) ProfileId(v int64) *ModelClearProfileOverrideReqBuilder {
-	b.req.queryParams["profile_id"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// Version sets the "version" query parameter.
-func (b *ModelClearProfileOverrideReqBuilder) Version(v int64) *ModelClearProfileOverrideReqBuilder {
-	b.req.queryParams["version"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// Build finalizes the request.
-func (b *ModelClearProfileOverrideReqBuilder) Build() *ModelClearProfileOverrideReq { return b.req }
-
-// ModelClearProfileOverrideResp is the response for ModelClearProfileOverride.
-type ModelClearProfileOverrideResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ModelProfile `json:"data"`
-}
-
-// ModelClearProfileOverride: 清空档位价格覆盖
-func (s *Service) ModelClearProfileOverride(ctx context.Context, req *ModelClearProfileOverrideReq, opts ...core.RequestOption) (*ModelClearProfileOverrideResp, error) {
-	resp := &ModelClearProfileOverrideResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "DELETE",
-		PathTemplate: "/hduhelp-neo/admin/models/pricing/profile-override",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -3694,624 +3612,6 @@ func (s *Service) ModelPriceSyncStatus(ctx context.Context, req *ModelPriceSyncS
 	return resp, err
 }
 
-// ModelListProfilesReq is the request for ModelListProfiles.
-type ModelListProfilesReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ModelListProfilesReqBuilder builds a ModelListProfilesReq with a fluent setter per field.
-type ModelListProfilesReqBuilder struct{ req *ModelListProfilesReq }
-
-// NewModelListProfilesReqBuilder creates a request builder for ModelListProfiles.
-func NewModelListProfilesReqBuilder() *ModelListProfilesReqBuilder {
-	return &ModelListProfilesReqBuilder{req: &ModelListProfilesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Page sets the "page" query parameter.
-func (b *ModelListProfilesReqBuilder) Page(v int32) *ModelListProfilesReqBuilder {
-	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
-	return b
-}
-
-// PageSize sets the "page_size" query parameter.
-func (b *ModelListProfilesReqBuilder) PageSize(v int32) *ModelListProfilesReqBuilder {
-	b.req.queryParams["page_size"] = strconv.FormatInt(int64(v), 10)
-	return b
-}
-
-// Search sets the "search" query parameter.
-func (b *ModelListProfilesReqBuilder) Search(v string) *ModelListProfilesReqBuilder {
-	b.req.queryParams["search"] = v
-	return b
-}
-
-// Kind sets the "kind" query parameter.
-func (b *ModelListProfilesReqBuilder) Kind(v string) *ModelListProfilesReqBuilder {
-	b.req.queryParams["kind"] = v
-	return b
-}
-
-// PoolId sets the "pool_id" query parameter.
-func (b *ModelListProfilesReqBuilder) PoolId(v int64) *ModelListProfilesReqBuilder {
-	b.req.queryParams["pool_id"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// Status sets the "status" query parameter.
-func (b *ModelListProfilesReqBuilder) Status(v string) *ModelListProfilesReqBuilder {
-	b.req.queryParams["status"] = v
-	return b
-}
-
-// Bound sets the "bound" query parameter.
-func (b *ModelListProfilesReqBuilder) Bound(v string) *ModelListProfilesReqBuilder {
-	b.req.queryParams["bound"] = v
-	return b
-}
-
-// SortBy sets the "sort_by" query parameter.
-func (b *ModelListProfilesReqBuilder) SortBy(v string) *ModelListProfilesReqBuilder {
-	b.req.queryParams["sort_by"] = v
-	return b
-}
-
-// SortOrder sets the "sort_order" query parameter.
-func (b *ModelListProfilesReqBuilder) SortOrder(v string) *ModelListProfilesReqBuilder {
-	b.req.queryParams["sort_order"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *ModelListProfilesReqBuilder) Build() *ModelListProfilesReq { return b.req }
-
-// ModelListProfilesResp is the response for ModelListProfiles.
-type ModelListProfilesResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ModelProfilePage `json:"data"`
-}
-
-// ModelListProfiles: 档位列表
-func (s *Service) ModelListProfiles(ctx context.Context, req *ModelListProfilesReq, opts ...core.RequestOption) (*ModelListProfilesResp, error) {
-	resp := &ModelListProfilesResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/admin/models/profiles",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ModelCreateProfileReq is the request for ModelCreateProfile.
-type ModelCreateProfileReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ModelCreateProfileReqBuilder builds a ModelCreateProfileReq with a fluent setter per field.
-type ModelCreateProfileReqBuilder struct{ req *ModelCreateProfileReq }
-
-// NewModelCreateProfileReqBuilder creates a request builder for ModelCreateProfile.
-func NewModelCreateProfileReqBuilder() *ModelCreateProfileReqBuilder {
-	return &ModelCreateProfileReqBuilder{req: &ModelCreateProfileReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Id sets the "id" query parameter.
-func (b *ModelCreateProfileReqBuilder) Id(v int64) *ModelCreateProfileReqBuilder {
-	b.req.queryParams["id"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// IdempotencyKey sets the "Idempotency-Key" header parameter.
-func (b *ModelCreateProfileReqBuilder) IdempotencyKey(v string) *ModelCreateProfileReqBuilder {
-	b.req.headers["Idempotency-Key"] = v
-	return b
-}
-
-// Body sets the request body.
-func (b *ModelCreateProfileReqBuilder) Body(body *models.ModelProfileFormBody) *ModelCreateProfileReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *ModelCreateProfileReqBuilder) Build() *ModelCreateProfileReq { return b.req }
-
-// ModelCreateProfileResp is the response for ModelCreateProfile.
-type ModelCreateProfileResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ModelProfile `json:"data"`
-}
-
-// ModelCreateProfile: 新建档位
-func (s *Service) ModelCreateProfile(ctx context.Context, req *ModelCreateProfileReq, opts ...core.RequestOption) (*ModelCreateProfileResp, error) {
-	resp := &ModelCreateProfileResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/admin/models/profiles",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ModelUpdateProfileReq is the request for ModelUpdateProfile.
-type ModelUpdateProfileReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ModelUpdateProfileReqBuilder builds a ModelUpdateProfileReq with a fluent setter per field.
-type ModelUpdateProfileReqBuilder struct{ req *ModelUpdateProfileReq }
-
-// NewModelUpdateProfileReqBuilder creates a request builder for ModelUpdateProfile.
-func NewModelUpdateProfileReqBuilder() *ModelUpdateProfileReqBuilder {
-	return &ModelUpdateProfileReqBuilder{req: &ModelUpdateProfileReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Id sets the "id" query parameter.
-func (b *ModelUpdateProfileReqBuilder) Id(v int64) *ModelUpdateProfileReqBuilder {
-	b.req.queryParams["id"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// IdempotencyKey sets the "Idempotency-Key" header parameter.
-func (b *ModelUpdateProfileReqBuilder) IdempotencyKey(v string) *ModelUpdateProfileReqBuilder {
-	b.req.headers["Idempotency-Key"] = v
-	return b
-}
-
-// Body sets the request body.
-func (b *ModelUpdateProfileReqBuilder) Body(body *models.ModelProfileFormBody) *ModelUpdateProfileReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *ModelUpdateProfileReqBuilder) Build() *ModelUpdateProfileReq { return b.req }
-
-// ModelUpdateProfileResp is the response for ModelUpdateProfile.
-type ModelUpdateProfileResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ModelProfile `json:"data"`
-}
-
-// ModelUpdateProfile: 编辑档位（version、被引用时 reason / probe_id、指纹变化时 confirm_rebuild）
-func (s *Service) ModelUpdateProfile(ctx context.Context, req *ModelUpdateProfileReq, opts ...core.RequestOption) (*ModelUpdateProfileResp, error) {
-	resp := &ModelUpdateProfileResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "PUT",
-		PathTemplate: "/hduhelp-neo/admin/models/profiles",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ModelDeleteProfileReq is the request for ModelDeleteProfile.
-type ModelDeleteProfileReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ModelDeleteProfileReqBuilder builds a ModelDeleteProfileReq with a fluent setter per field.
-type ModelDeleteProfileReqBuilder struct{ req *ModelDeleteProfileReq }
-
-// NewModelDeleteProfileReqBuilder creates a request builder for ModelDeleteProfile.
-func NewModelDeleteProfileReqBuilder() *ModelDeleteProfileReqBuilder {
-	return &ModelDeleteProfileReqBuilder{req: &ModelDeleteProfileReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Id sets the "id" query parameter.
-func (b *ModelDeleteProfileReqBuilder) Id(v int64) *ModelDeleteProfileReqBuilder {
-	b.req.queryParams["id"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// Body sets the request body.
-func (b *ModelDeleteProfileReqBuilder) Body(body any) *ModelDeleteProfileReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *ModelDeleteProfileReqBuilder) Build() *ModelDeleteProfileReq { return b.req }
-
-// ModelDeleteProfileResp is the response for ModelDeleteProfile.
-type ModelDeleteProfileResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.MgOkData `json:"data"`
-}
-
-// ModelDeleteProfile: 删除档位；被引用 409
-func (s *Service) ModelDeleteProfile(ctx context.Context, req *ModelDeleteProfileReq, opts ...core.RequestOption) (*ModelDeleteProfileResp, error) {
-	resp := &ModelDeleteProfileResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "DELETE",
-		PathTemplate: "/hduhelp-neo/admin/models/profiles",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ModelGetProfileReq is the request for ModelGetProfile.
-type ModelGetProfileReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ModelGetProfileReqBuilder builds a ModelGetProfileReq with a fluent setter per field.
-type ModelGetProfileReqBuilder struct{ req *ModelGetProfileReq }
-
-// NewModelGetProfileReqBuilder creates a request builder for ModelGetProfile.
-func NewModelGetProfileReqBuilder() *ModelGetProfileReqBuilder {
-	return &ModelGetProfileReqBuilder{req: &ModelGetProfileReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Id sets the "id" query parameter.
-func (b *ModelGetProfileReqBuilder) Id(v int64) *ModelGetProfileReqBuilder {
-	b.req.queryParams["id"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// Build finalizes the request.
-func (b *ModelGetProfileReqBuilder) Build() *ModelGetProfileReq { return b.req }
-
-// ModelGetProfileResp is the response for ModelGetProfile.
-type ModelGetProfileResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ModelProfile `json:"data"`
-}
-
-// ModelGetProfile: 档位详情
-func (s *Service) ModelGetProfile(ctx context.Context, req *ModelGetProfileReq, opts ...core.RequestOption) (*ModelGetProfileResp, error) {
-	resp := &ModelGetProfileResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/admin/models/profiles/detail",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ModelDuplicateProfileReq is the request for ModelDuplicateProfile.
-type ModelDuplicateProfileReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ModelDuplicateProfileReqBuilder builds a ModelDuplicateProfileReq with a fluent setter per field.
-type ModelDuplicateProfileReqBuilder struct{ req *ModelDuplicateProfileReq }
-
-// NewModelDuplicateProfileReqBuilder creates a request builder for ModelDuplicateProfile.
-func NewModelDuplicateProfileReqBuilder() *ModelDuplicateProfileReqBuilder {
-	return &ModelDuplicateProfileReqBuilder{req: &ModelDuplicateProfileReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Id sets the "id" query parameter.
-func (b *ModelDuplicateProfileReqBuilder) Id(v int64) *ModelDuplicateProfileReqBuilder {
-	b.req.queryParams["id"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// IdempotencyKey sets the "Idempotency-Key" header parameter.
-func (b *ModelDuplicateProfileReqBuilder) IdempotencyKey(v string) *ModelDuplicateProfileReqBuilder {
-	b.req.headers["Idempotency-Key"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *ModelDuplicateProfileReqBuilder) Build() *ModelDuplicateProfileReq { return b.req }
-
-// ModelDuplicateProfileResp is the response for ModelDuplicateProfile.
-type ModelDuplicateProfileResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ModelProfile `json:"data"`
-}
-
-// ModelDuplicateProfile: 复制档位；Idempotency-Key
-func (s *Service) ModelDuplicateProfile(ctx context.Context, req *ModelDuplicateProfileReq, opts ...core.RequestOption) (*ModelDuplicateProfileResp, error) {
-	resp := &ModelDuplicateProfileResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/admin/models/profiles/duplicate",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ModelProfileModelCandidatesReq is the request for ModelProfileModelCandidates.
-type ModelProfileModelCandidatesReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ModelProfileModelCandidatesReqBuilder builds a ModelProfileModelCandidatesReq with a fluent setter per field.
-type ModelProfileModelCandidatesReqBuilder struct {
-	req *ModelProfileModelCandidatesReq
-}
-
-// NewModelProfileModelCandidatesReqBuilder creates a request builder for ModelProfileModelCandidates.
-func NewModelProfileModelCandidatesReqBuilder() *ModelProfileModelCandidatesReqBuilder {
-	return &ModelProfileModelCandidatesReqBuilder{req: &ModelProfileModelCandidatesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// PoolId sets the "pool_id" query parameter.
-func (b *ModelProfileModelCandidatesReqBuilder) PoolId(v int64) *ModelProfileModelCandidatesReqBuilder {
-	b.req.queryParams["pool_id"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// Build finalizes the request.
-func (b *ModelProfileModelCandidatesReqBuilder) Build() *ModelProfileModelCandidatesReq { return b.req }
-
-// ModelProfileModelCandidatesResp is the response for ModelProfileModelCandidates.
-type ModelProfileModelCandidatesResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ModelStringList `json:"data"`
-}
-
-// ModelProfileModelCandidates: 上游模型候选
-func (s *Service) ModelProfileModelCandidates(ctx context.Context, req *ModelProfileModelCandidatesReq, opts ...core.RequestOption) (*ModelProfileModelCandidatesResp, error) {
-	resp := &ModelProfileModelCandidatesResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/admin/models/profiles/model-candidates",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ModelProfileOptionsReq is the request for ModelProfileOptions.
-type ModelProfileOptionsReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ModelProfileOptionsReqBuilder builds a ModelProfileOptionsReq with a fluent setter per field.
-type ModelProfileOptionsReqBuilder struct{ req *ModelProfileOptionsReq }
-
-// NewModelProfileOptionsReqBuilder creates a request builder for ModelProfileOptions.
-func NewModelProfileOptionsReqBuilder() *ModelProfileOptionsReqBuilder {
-	return &ModelProfileOptionsReqBuilder{req: &ModelProfileOptionsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Kind sets the "kind" query parameter.
-func (b *ModelProfileOptionsReqBuilder) Kind(v string) *ModelProfileOptionsReqBuilder {
-	b.req.queryParams["kind"] = v
-	return b
-}
-
-// Purpose sets the "purpose" query parameter.
-func (b *ModelProfileOptionsReqBuilder) Purpose(v string) *ModelProfileOptionsReqBuilder {
-	b.req.queryParams["purpose"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *ModelProfileOptionsReqBuilder) Build() *ModelProfileOptionsReq { return b.req }
-
-// ModelProfileOptionsResp is the response for ModelProfileOptions.
-type ModelProfileOptionsResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ModelProfileList `json:"data"`
-}
-
-// ModelProfileOptions: 用途编辑器用的档位下拉
-func (s *Service) ModelProfileOptions(ctx context.Context, req *ModelProfileOptionsReq, opts ...core.RequestOption) (*ModelProfileOptionsResp, error) {
-	resp := &ModelProfileOptionsResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/admin/models/profiles/options",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ModelProfilePayloadPreviewReq is the request for ModelProfilePayloadPreview.
-type ModelProfilePayloadPreviewReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ModelProfilePayloadPreviewReqBuilder builds a ModelProfilePayloadPreviewReq with a fluent setter per field.
-type ModelProfilePayloadPreviewReqBuilder struct {
-	req *ModelProfilePayloadPreviewReq
-}
-
-// NewModelProfilePayloadPreviewReqBuilder creates a request builder for ModelProfilePayloadPreview.
-func NewModelProfilePayloadPreviewReqBuilder() *ModelProfilePayloadPreviewReqBuilder {
-	return &ModelProfilePayloadPreviewReqBuilder{req: &ModelProfilePayloadPreviewReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *ModelProfilePayloadPreviewReqBuilder) Body(body *models.ModelPayloadPreviewRequestBody) *ModelProfilePayloadPreviewReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *ModelProfilePayloadPreviewReqBuilder) Build() *ModelProfilePayloadPreviewReq { return b.req }
-
-// ModelProfilePayloadPreviewResp is the response for ModelProfilePayloadPreview.
-type ModelProfilePayloadPreviewResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ModelPayloadPreview `json:"data"`
-}
-
-// ModelProfilePayloadPreview: Payload 规则预览（不发上游请求）
-func (s *Service) ModelProfilePayloadPreview(ctx context.Context, req *ModelProfilePayloadPreviewReq, opts ...core.RequestOption) (*ModelProfilePayloadPreviewResp, error) {
-	resp := &ModelProfilePayloadPreviewResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/admin/models/profiles/payload-preview",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ModelProbeProfileReq is the request for ModelProbeProfile.
-type ModelProbeProfileReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ModelProbeProfileReqBuilder builds a ModelProbeProfileReq with a fluent setter per field.
-type ModelProbeProfileReqBuilder struct{ req *ModelProbeProfileReq }
-
-// NewModelProbeProfileReqBuilder creates a request builder for ModelProbeProfile.
-func NewModelProbeProfileReqBuilder() *ModelProbeProfileReqBuilder {
-	return &ModelProbeProfileReqBuilder{req: &ModelProbeProfileReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *ModelProbeProfileReqBuilder) Body(body *models.ModelProfileProbeRequestBody) *ModelProbeProfileReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *ModelProbeProfileReqBuilder) Build() *ModelProbeProfileReq { return b.req }
-
-// ModelProbeProfileResp is the response for ModelProbeProfile.
-type ModelProbeProfileResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ModelProbeResult `json:"data"`
-}
-
-// ModelProbeProfile: 档位探活（已保存档位或表单草稿）
-func (s *Service) ModelProbeProfile(ctx context.Context, req *ModelProbeProfileReq, opts ...core.RequestOption) (*ModelProbeProfileResp, error) {
-	resp := &ModelProbeProfileResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/admin/models/profiles/probe",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// ModelProfileProbesReq is the request for ModelProfileProbes.
-type ModelProfileProbesReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ModelProfileProbesReqBuilder builds a ModelProfileProbesReq with a fluent setter per field.
-type ModelProfileProbesReqBuilder struct{ req *ModelProfileProbesReq }
-
-// NewModelProfileProbesReqBuilder creates a request builder for ModelProfileProbes.
-func NewModelProfileProbesReqBuilder() *ModelProfileProbesReqBuilder {
-	return &ModelProfileProbesReqBuilder{req: &ModelProfileProbesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// ProfileId sets the "profile_id" query parameter.
-func (b *ModelProfileProbesReqBuilder) ProfileId(v int64) *ModelProfileProbesReqBuilder {
-	b.req.queryParams["profile_id"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// ProbeId sets the "probe_id" query parameter.
-func (b *ModelProfileProbesReqBuilder) ProbeId(v string) *ModelProfileProbesReqBuilder {
-	b.req.queryParams["probe_id"] = v
-	return b
-}
-
-// Page sets the "page" query parameter.
-func (b *ModelProfileProbesReqBuilder) Page(v int32) *ModelProfileProbesReqBuilder {
-	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
-	return b
-}
-
-// PageSize sets the "page_size" query parameter.
-func (b *ModelProfileProbesReqBuilder) PageSize(v int32) *ModelProfileProbesReqBuilder {
-	b.req.queryParams["page_size"] = strconv.FormatInt(int64(v), 10)
-	return b
-}
-
-// Build finalizes the request.
-func (b *ModelProfileProbesReqBuilder) Build() *ModelProfileProbesReq { return b.req }
-
-// ModelProfileProbesResp is the response for ModelProfileProbes.
-type ModelProfileProbesResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ModelProbePage `json:"data"`
-}
-
-// ModelProfileProbes: 探活历史或单次结果
-func (s *Service) ModelProfileProbes(ctx context.Context, req *ModelProfileProbesReq, opts ...core.RequestOption) (*ModelProfileProbesResp, error) {
-	resp := &ModelProfileProbesResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/admin/models/profiles/probes",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
 // ModelListPurposesReq is the request for ModelListPurposes.
 type ModelListPurposesReq struct {
 	pathParams  map[string]string
@@ -4498,6 +3798,116 @@ func (s *Service) ModelGetPurpose(ctx context.Context, req *ModelGetPurposeReq, 
 	return resp, err
 }
 
+// ModelProbePurposeTargetReq is the request for ModelProbePurposeTarget.
+type ModelProbePurposeTargetReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ModelProbePurposeTargetReqBuilder builds a ModelProbePurposeTargetReq with a fluent setter per field.
+type ModelProbePurposeTargetReqBuilder struct{ req *ModelProbePurposeTargetReq }
+
+// NewModelProbePurposeTargetReqBuilder creates a request builder for ModelProbePurposeTarget.
+func NewModelProbePurposeTargetReqBuilder() *ModelProbePurposeTargetReqBuilder {
+	return &ModelProbePurposeTargetReqBuilder{req: &ModelProbePurposeTargetReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *ModelProbePurposeTargetReqBuilder) Body(body *models.ModelTargetProbeRequestBody) *ModelProbePurposeTargetReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *ModelProbePurposeTargetReqBuilder) Build() *ModelProbePurposeTargetReq { return b.req }
+
+// ModelProbePurposeTargetResp is the response for ModelProbePurposeTarget.
+type ModelProbePurposeTargetResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ModelProbeResult `json:"data"`
+}
+
+// ModelProbePurposeTarget: 目标探活（已绑定目标或草稿，可带草稿设置）
+func (s *Service) ModelProbePurposeTarget(ctx context.Context, req *ModelProbePurposeTargetReq, opts ...core.RequestOption) (*ModelProbePurposeTargetResp, error) {
+	resp := &ModelProbePurposeTargetResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/models/purposes/probe",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ModelPurposeProbesReq is the request for ModelPurposeProbes.
+type ModelPurposeProbesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ModelPurposeProbesReqBuilder builds a ModelPurposeProbesReq with a fluent setter per field.
+type ModelPurposeProbesReqBuilder struct{ req *ModelPurposeProbesReq }
+
+// NewModelPurposeProbesReqBuilder creates a request builder for ModelPurposeProbes.
+func NewModelPurposeProbesReqBuilder() *ModelPurposeProbesReqBuilder {
+	return &ModelPurposeProbesReqBuilder{req: &ModelPurposeProbesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Purpose sets the "purpose" query parameter.
+func (b *ModelPurposeProbesReqBuilder) Purpose(v string) *ModelPurposeProbesReqBuilder {
+	b.req.queryParams["purpose"] = v
+	return b
+}
+
+// ProbeId sets the "probe_id" query parameter.
+func (b *ModelPurposeProbesReqBuilder) ProbeId(v string) *ModelPurposeProbesReqBuilder {
+	b.req.queryParams["probe_id"] = v
+	return b
+}
+
+// Page sets the "page" query parameter.
+func (b *ModelPurposeProbesReqBuilder) Page(v int32) *ModelPurposeProbesReqBuilder {
+	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// PageSize sets the "page_size" query parameter.
+func (b *ModelPurposeProbesReqBuilder) PageSize(v int32) *ModelPurposeProbesReqBuilder {
+	b.req.queryParams["page_size"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *ModelPurposeProbesReqBuilder) Build() *ModelPurposeProbesReq { return b.req }
+
+// ModelPurposeProbesResp is the response for ModelPurposeProbes.
+type ModelPurposeProbesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ModelProbePage `json:"data"`
+}
+
+// ModelPurposeProbes: 用途目标探活历史或单次结果
+func (s *Service) ModelPurposeProbes(ctx context.Context, req *ModelPurposeProbesReq, opts ...core.RequestOption) (*ModelPurposeProbesResp, error) {
+	resp := &ModelPurposeProbesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/models/purposes/probes",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // ModelPurposeResolvePreviewReq is the request for ModelPurposeResolvePreview.
 type ModelPurposeResolvePreviewReq struct {
 	pathParams  map[string]string
@@ -4532,7 +3942,7 @@ type ModelPurposeResolvePreviewResp struct {
 	Data *models.ModelResolvePreview `json:"data"`
 }
 
-// ModelPurposeResolvePreview: 映射测试：调用方模型名 → 档位 → 池 → 连接器
+// ModelPurposeResolvePreview: 映射测试：调用方模型名 → 目标 → 池 → 连接器
 func (s *Service) ModelPurposeResolvePreview(ctx context.Context, req *ModelPurposeResolvePreviewReq, opts ...core.RequestOption) (*ModelPurposeResolvePreviewResp, error) {
 	resp := &ModelPurposeResolvePreviewResp{}
 	err := s.config.Do(ctx, &core.APIReq{
@@ -4654,6 +4064,58 @@ func (s *Service) ModelPurposeRollbackDraft(ctx context.Context, req *ModelPurpo
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
 		PathTemplate: "/hduhelp-neo/admin/models/purposes/rollback-draft",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ModelSavePurposeSettingsReq is the request for ModelSavePurposeSettings.
+type ModelSavePurposeSettingsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ModelSavePurposeSettingsReqBuilder builds a ModelSavePurposeSettingsReq with a fluent setter per field.
+type ModelSavePurposeSettingsReqBuilder struct{ req *ModelSavePurposeSettingsReq }
+
+// NewModelSavePurposeSettingsReqBuilder creates a request builder for ModelSavePurposeSettings.
+func NewModelSavePurposeSettingsReqBuilder() *ModelSavePurposeSettingsReqBuilder {
+	return &ModelSavePurposeSettingsReqBuilder{req: &ModelSavePurposeSettingsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Key sets the "key" query parameter.
+func (b *ModelSavePurposeSettingsReqBuilder) Key(v string) *ModelSavePurposeSettingsReqBuilder {
+	b.req.queryParams["key"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *ModelSavePurposeSettingsReqBuilder) Body(body *models.ModelPurposeSettingsRequestBody) *ModelSavePurposeSettingsReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *ModelSavePurposeSettingsReqBuilder) Build() *ModelSavePurposeSettingsReq { return b.req }
+
+// ModelSavePurposeSettingsResp is the response for ModelSavePurposeSettings.
+type ModelSavePurposeSettingsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ModelPurpose `json:"data"`
+}
+
+// ModelSavePurposeSettings: 整块替换用途设置（乐观锁、理由；目标须有该设置的时效内成功探活）
+func (s *Service) ModelSavePurposeSettings(ctx context.Context, req *ModelSavePurposeSettingsReq, opts ...core.RequestOption) (*ModelSavePurposeSettingsResp, error) {
+	resp := &ModelSavePurposeSettingsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/models/purposes/settings",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

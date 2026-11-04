@@ -3914,42 +3914,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PreviewTaggingPromptResponseBody'
-    /hduhelp-neo/admin/knowledge/tagging-target:
-        get:
-            tags:
-                - KnowledgeService
-            summary: 打标接入点
-            description: 返回本地网关托管标志 gatewayManaged；未迁移时返回旧接入点与密钥是否已配置，不返回密钥明文。托管不代表用途已启用或已绑定。
-            operationId: KnowledgeService_AdminGetTaggingTarget
-            security:
-                - OperatorBearerAuth: []
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/TaggingTargetResponseBody'
-        put:
-            tags:
-                - KnowledgeService
-            summary: 保存打标接入点
-            description: 仅未迁移实例可保存旧接入点，不做连通性测试；gatewayManaged=true 时拒绝，须在模型网关配置 knowledge.tagging 用途。
-            operationId: KnowledgeService_AdminSetTaggingTarget
-            security:
-                - OperatorBearerAuth: []
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/SetTaggingTargetRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/MutateOkResponseBody'
     /hduhelp-neo/admin/login:
         post:
             tags:
@@ -5519,11 +5483,6 @@ paths:
                   schema:
                     type: integer
                     format: int64
-                - name: profileId
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
                 - name: requestType
                   in: query
                   schema:
@@ -5559,7 +5518,6 @@ paths:
                         - model
                         - connector
                         - pool
-                        - profile
                         - caller_kind
                         - callerKind
                         - user
@@ -5700,11 +5658,6 @@ paths:
                   schema:
                     type: integer
                     format: int64
-                - name: profileId
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
                 - name: requestType
                   in: query
                   schema:
@@ -5758,7 +5711,6 @@ paths:
                         - model
                         - connector
                         - pool
-                        - profile
                         - caller_kind
                         - callerKind
                         - user
@@ -6096,6 +6048,28 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ModelPoolMembersResponseBody'
             x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/models/pools/models:
+        get:
+            tags:
+                - ModelGatewayService
+            summary: 池对外暴露的模型（用途目标的模型候选）
+            operationId: ModelGatewayService_ModelPoolModels
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ModelStringListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/models/pools/options:
         get:
             tags:
@@ -6250,11 +6224,27 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ModelEstimateResponseBody'
             x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/models/pricing/models:
+        get:
+            tags:
+                - ModelGatewayService
+            summary: 我们的模型：生效价格与缺价
+            operationId: ModelGatewayService_ModelListOurModels
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ModelOurModelListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/models/pricing/prices:
         get:
             tags:
                 - ModelGatewayService
-            summary: 价目表（全局条目与档位覆盖）
+            summary: 价目表
             operationId: ModelGatewayService_ModelListPrices
             security:
                 - OperatorBearerAuth: []
@@ -6263,18 +6253,6 @@ paths:
                   in: query
                   schema:
                     type: string
-                - name: scope
-                  in: query
-                  schema:
-                    enum:
-                        - global
-                        - profile
-                    type: string
-                - name: profile_id
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
                 - name: source
                   in: query
                   schema:
@@ -6396,33 +6374,6 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/MgOkResponseBody'
             x-hduhelp-http: {'auth': 'operator', 'request_body_required': false}
-    /hduhelp-neo/admin/models/pricing/prices/clone:
-        post:
-            tags:
-                - ModelGatewayService
-            summary: 复制为覆盖
-            operationId: ModelGatewayService_ModelClonePrice
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: id
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/ModelPriceCloneRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelPriceCloneResponseBody'
-            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/models/pricing/prices/detail:
         get:
             tags:
@@ -6444,60 +6395,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ModelPriceResponseBody'
-            x-hduhelp-http: {'auth': 'operator'}
-    /hduhelp-neo/admin/models/pricing/profile-override:
-        put:
-            tags:
-                - ModelGatewayService
-            summary: 改档位价格覆盖
-            operationId: ModelGatewayService_ModelSetProfileOverride
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: profile_id
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/ModelProfileOverrideRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelProfileResponseBody'
-            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
-        delete:
-            tags:
-                - ModelGatewayService
-            summary: 清空档位价格覆盖
-            operationId: ModelGatewayService_ModelClearProfileOverride
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: profile_id
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: version
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelProfileResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/models/pricing/sync/apply:
         post:
@@ -6633,364 +6530,6 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ModelSyncStatusResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
-    /hduhelp-neo/admin/models/profiles:
-        get:
-            tags:
-                - ModelGatewayService
-            summary: 档位列表
-            operationId: ModelGatewayService_ModelListProfiles
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: page
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-                - name: page_size
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-                - name: search
-                  in: query
-                  schema:
-                    type: string
-                - name: kind
-                  in: query
-                  schema:
-                    type: string
-                - name: pool_id
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: status
-                  in: query
-                  schema:
-                    type: string
-                - name: bound
-                  in: query
-                  schema:
-                    enum:
-                        - bound
-                        - unbound
-                    type: string
-                - name: sort_by
-                  in: query
-                  schema:
-                    type: string
-                - name: sort_order
-                  in: query
-                  schema:
-                    enum:
-                        - asc
-                        - desc
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelProfilePageResponseBody'
-            x-hduhelp-http: {'auth': 'operator'}
-        put:
-            tags:
-                - ModelGatewayService
-            summary: 编辑档位（version、被引用时 reason / probe_id、指纹变化时 confirm_rebuild）
-            operationId: ModelGatewayService_ModelUpdateProfile
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: id
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: Idempotency-Key
-                  in: header
-                  schema:
-                    type: string
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/ModelProfileFormBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelProfileResponseBody'
-            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
-        post:
-            tags:
-                - ModelGatewayService
-            summary: 新建档位
-            operationId: ModelGatewayService_ModelCreateProfile
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: id
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: Idempotency-Key
-                  in: header
-                  schema:
-                    type: string
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/ModelProfileFormBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelProfileResponseBody'
-            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
-        delete:
-            tags:
-                - ModelGatewayService
-            summary: 删除档位；被引用 409
-            operationId: ModelGatewayService_ModelDeleteProfile
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: id
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-            requestBody:
-                required: false
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                reason:
-                                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/MgOkResponseBody'
-            x-hduhelp-http: {'auth': 'operator', 'request_body_required': false}
-    /hduhelp-neo/admin/models/profiles/detail:
-        get:
-            tags:
-                - ModelGatewayService
-            summary: 档位详情
-            operationId: ModelGatewayService_ModelGetProfile
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: id
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelProfileResponseBody'
-            x-hduhelp-http: {'auth': 'operator'}
-    /hduhelp-neo/admin/models/profiles/duplicate:
-        post:
-            tags:
-                - ModelGatewayService
-            summary: 复制档位；Idempotency-Key
-            operationId: ModelGatewayService_ModelDuplicateProfile
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: id
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: Idempotency-Key
-                  in: header
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelProfileResponseBody'
-            x-hduhelp-http: {'auth': 'operator'}
-    /hduhelp-neo/admin/models/profiles/model-candidates:
-        get:
-            tags:
-                - ModelGatewayService
-            summary: 上游模型候选
-            operationId: ModelGatewayService_ModelProfileModelCandidates
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: pool_id
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelStringListResponseBody'
-            x-hduhelp-http: {'auth': 'operator'}
-    /hduhelp-neo/admin/models/profiles/options:
-        get:
-            tags:
-                - ModelGatewayService
-            summary: 用途编辑器用的档位下拉
-            operationId: ModelGatewayService_ModelProfileOptions
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: kind
-                  in: query
-                  schema:
-                    type: string
-                - name: purpose
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelProfileListResponseBody'
-            x-hduhelp-http: {'auth': 'operator'}
-    /hduhelp-neo/admin/models/profiles/payload-preview:
-        post:
-            tags:
-                - ModelGatewayService
-            summary: Payload 规则预览（不发上游请求）
-            operationId: ModelGatewayService_ModelProfilePayloadPreview
-            security:
-                - OperatorBearerAuth: []
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/ModelPayloadPreviewRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelPayloadPreviewResponseBody'
-            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
-    /hduhelp-neo/admin/models/profiles/probe:
-        post:
-            tags:
-                - ModelGatewayService
-            summary: 档位探活（已保存档位或表单草稿）
-            operationId: ModelGatewayService_ModelProbeProfile
-            security:
-                - OperatorBearerAuth: []
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/ModelProfileProbeRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelProbeResultResponseBody'
-            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
-    /hduhelp-neo/admin/models/profiles/probes:
-        get:
-            tags:
-                - ModelGatewayService
-            summary: 探活历史或单次结果
-            operationId: ModelGatewayService_ModelProfileProbes
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: profile_id
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: probe_id
-                  in: query
-                  schema:
-                    type: string
-                - name: page
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-                - name: page_size
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelProbePageResponseBody'
-            x-hduhelp-http: {'auth': 'operator'}
-    /hduhelp-neo/admin/models/profiles/{id}/event-stats:
-        get:
-            tags:
-                - ModelGatewayObservabilityService
-            operationId: ModelGatewayObservabilityService_ModelObservationProfileEventStats
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                    type: integer
-                    format: int64
-                - name: range
-                  in: query
-                  schema:
-                    enum:
-                        - 24h
-                        - 7d
-                        - 30d
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelEntityEventStatsResponseBody'
     /hduhelp-neo/admin/models/purposes:
         get:
             tags:
@@ -7090,11 +6629,68 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ModelPurposeResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/models/purposes/probe:
+        post:
+            tags:
+                - ModelGatewayService
+            summary: 目标探活（已绑定目标或草稿，可带草稿设置）
+            operationId: ModelGatewayService_ModelProbePurposeTarget
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ModelTargetProbeRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ModelProbeResultResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/models/purposes/probes:
+        get:
+            tags:
+                - ModelGatewayService
+            summary: 用途目标探活历史或单次结果
+            operationId: ModelGatewayService_ModelPurposeProbes
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: purpose
+                  in: query
+                  schema:
+                    type: string
+                - name: probe_id
+                  in: query
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ModelProbePageResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/models/purposes/resolve-preview:
         post:
             tags:
                 - ModelGatewayService
-            summary: 映射测试：调用方模型名 → 档位 → 池 → 连接器
+            summary: 映射测试：调用方模型名 → 目标 → 池 → 连接器
             operationId: ModelGatewayService_ModelPurposeResolvePreview
             security:
                 - OperatorBearerAuth: []
@@ -7174,6 +6770,33 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ModelRollbackDraftResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/models/purposes/settings:
+        put:
+            tags:
+                - ModelGatewayService
+            summary: 整块替换用途设置（乐观锁、理由；目标须有该设置的时效内成功探活）
+            operationId: ModelGatewayService_ModelSavePurposeSettings
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: key
+                  in: query
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ModelPurposeSettingsRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ModelPurposeResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
     /hduhelp-neo/admin/models/purposes/stats:
         get:
             tags:
@@ -7319,11 +6942,6 @@ paths:
                   schema:
                     type: integer
                     format: int64
-                - name: profileId
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
                 - name: requestType
                   in: query
                   schema:
@@ -7423,27 +7041,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ModelRequestPageResponseBody'
-    /hduhelp-neo/admin/models/requests/body:
-        post:
-            tags:
-                - ModelGatewayObservabilityService
-            operationId: ModelGatewayObservabilityService_ModelObservationRequestsBody
-            security:
-                - OperatorBearerAuth: []
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/ModelObservationAccessRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelTracePartsResponseBody'
-            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
     /hduhelp-neo/admin/models/requests/curl:
         post:
             tags:
@@ -7456,7 +7053,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/ModelObservationAccessRequestBody'
+                            $ref: '#/components/schemas/ModelObservationCurlRequestBody'
             responses:
                 "200":
                     description: Successful response
@@ -7489,48 +7086,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ModelRequestDetailResponseBody'
-    /hduhelp-neo/admin/models/requests/download:
-        post:
-            tags:
-                - ModelGatewayObservabilityService
-            operationId: ModelGatewayObservabilityService_ModelObservationRequestsDownload
-            security:
-                - OperatorBearerAuth: []
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/ModelObservationAccessRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelTracePartsResponseBody'
-            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
-    /hduhelp-neo/admin/models/requests/image:
-        post:
-            tags:
-                - ModelGatewayObservabilityService
-            operationId: ModelGatewayObservabilityService_ModelObservationRequestsImage
-            security:
-                - OperatorBearerAuth: []
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/ModelObservationAccessRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelImagePageResponseBody'
-            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
     /hduhelp-neo/admin/models/requests/model-options:
         get:
             tags:
@@ -7658,11 +7213,6 @@ paths:
                     type: integer
                     format: int64
                 - name: poolId
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: profileId
                   in: query
                   schema:
                     type: integer
@@ -8048,11 +7598,6 @@ paths:
                   schema:
                     type: integer
                     format: int64
-                - name: profileId
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
                 - name: requestType
                   in: query
                   schema:
@@ -8186,11 +7731,6 @@ paths:
                   schema:
                     type: integer
                     format: int64
-                - name: profileId
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
                 - name: requestType
                   in: query
                   schema:
@@ -8226,7 +7766,6 @@ paths:
                         - model
                         - connector
                         - pool
-                        - profile
                         - caller_kind
                         - callerKind
                         - user
@@ -8246,7 +7785,6 @@ paths:
                         - model
                         - connector
                         - pool
-                        - profile
                         - caller_kind
                         - callerKind
                         - user
@@ -8436,11 +7974,6 @@ paths:
                   schema:
                     type: integer
                     format: int64
-                - name: profileId
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
                 - name: requestType
                   in: query
                   schema:
@@ -8494,7 +8027,6 @@ paths:
                         - model
                         - connector
                         - pool
-                        - profile
                         - caller_kind
                         - callerKind
                         - user
@@ -8584,11 +8116,6 @@ paths:
                     type: integer
                     format: int64
                 - name: poolId
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: profileId
                   in: query
                   schema:
                     type: integer
@@ -8702,11 +8229,6 @@ paths:
                   schema:
                     type: integer
                     format: int64
-                - name: profileId
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
                 - name: requestType
                   in: query
                   schema:
@@ -8749,7 +8271,6 @@ paths:
                         - model
                         - connector
                         - pool
-                        - profile
                         - caller_kind
                         - callerKind
                         - user
@@ -24711,10 +24232,7 @@ components:
                     type: object
                     additionalProperties:
                         type: boolean
-                    description: 托管时 knowledge.* 用途 → 是否配置；旧模式 aisearch | bailian | ark
-                gatewayManaged:
-                    type: boolean
-                    description: 已完成本地 SDK 接线，不代表所有用途均配置
+                    description: knowledge.* 用途 → 是否已在模型网关配置
             description: |-
                 ============================================================================
                 管理端：索引状态与重建
@@ -25944,7 +25462,7 @@ components:
                 - seq
                 - round
                 - sameConnectorRetry
-                - profileId
+                - target
                 - poolId
                 - connectorId
                 - connectorName
@@ -25981,9 +25499,8 @@ components:
                 sameConnectorRetry:
                     type: integer
                     format: int64
-                profileId:
-                    type: integer
-                    format: int64
+                target:
+                    type: string
                 poolId:
                     type: integer
                     format: int64
@@ -26058,8 +25575,6 @@ components:
                     $ref: '#/components/schemas/ModelEvidence'
                 transportCounts:
                     $ref: '#/components/schemas/ModelTransportCounts'
-                profileName:
-                    type: string
                 poolName:
                     type: string
         ModelAuditEntry:
@@ -26420,7 +25935,6 @@ components:
                 - hasProxyPassword
                 - concurrency
                 - priority
-                - rateMultiplier
                 - status
                 - derivedStatus
                 - schedulable
@@ -26429,7 +25943,6 @@ components:
                 - modelMapping
                 - excludedModels
                 - payloadRules
-                - prefix
                 - headerOverrideEnabled
                 - headerOverrides
                 - upstreamRequestIdHeader
@@ -26504,8 +26017,6 @@ components:
                 priority:
                     type: integer
                     format: int32
-                rateMultiplier:
-                    type: string
                 status:
                     type: string
                 derivedStatus:
@@ -26549,8 +26060,6 @@ components:
                     items:
                         type: string
                 payloadRules:
-                    type: string
-                prefix:
                     type: string
                 headerOverrideEnabled:
                     type: boolean
@@ -26874,8 +26383,6 @@ components:
                         type: string
                 payload_rules:
                     type: string
-                prefix:
-                    type: string
                 options:
                     type: string
                 connection_pool:
@@ -26889,8 +26396,6 @@ components:
                 load_factor:
                     type: integer
                     format: int32
-                rate_multiplier:
-                    type: string
                 status:
                     enum:
                         - active
@@ -27010,8 +26515,6 @@ components:
                         type: string
                 payload_rules:
                     type: string
-                prefix:
-                    type: string
                 options:
                     type: string
                 connection_pool:
@@ -27025,8 +26528,6 @@ components:
                 load_factor:
                     type: integer
                     format: int32
-                rate_multiplier:
-                    type: string
                 status:
                     enum:
                         - active
@@ -27275,7 +26776,7 @@ components:
                 references:
                     type: array
                     items:
-                        $ref: '#/components/schemas/ModelProfileReference'
+                        $ref: '#/components/schemas/ModelTargetReference'
                 syncedAt:
                     type: integer
                     format: int64
@@ -27713,10 +27214,7 @@ components:
                 - billingMode
                 - billingTier
                 - longContextBillingApplied
-                - timeMultiplier
-                - reasoningMultiplier
                 - peakMultiplier
-                - connectorRateMultiplier
                 - inputLength
                 - serviceTier
                 - serviceTierMultiplier
@@ -27760,16 +27258,7 @@ components:
                     type: string
                 longContextBillingApplied:
                     type: boolean
-                timeMultiplier:
-                    type: number
-                    format: double
-                reasoningMultiplier:
-                    type: number
-                    format: double
                 peakMultiplier:
-                    type: number
-                    format: double
-                connectorRateMultiplier:
                     type: number
                     format: double
                 inputLength:
@@ -27960,7 +27449,6 @@ components:
                     type: string
                 layer:
                     enum:
-                        - profile
                         - manual
                         - litellm
                     type: string
@@ -28065,7 +27553,7 @@ components:
                 affinityHitRatio:
                     type: number
                     format: double
-                profileFallbackCount:
+                targetFallbackCount:
                     type: integer
                     format: int64
                 connectorSwitchCount:
@@ -28079,16 +27567,6 @@ components:
                 truncatedRequests:
                     type: integer
                     format: int64
-        ModelEntityEventStatsResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/ModelEntityEventStats'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
         ModelEntityUsageStats:
             required:
                 - activeDays
@@ -28110,8 +27588,6 @@ components:
                 byCaller:
                     $ref: '#/components/schemas/ModelUsageBreakdownResult'
                 byConnector:
-                    $ref: '#/components/schemas/ModelUsageBreakdownResult'
-                byProfile:
                     $ref: '#/components/schemas/ModelUsageBreakdownResult'
                 activeDays:
                     type: integer
@@ -28279,24 +27755,21 @@ components:
                     format: double
                 cacheBreakdown:
                     type: boolean
-            description: 按 token 计费时公式实际用的每 token 人民币单价（已含命中档、服务档位、长上下文倍率；不含整单的分时 / 推理倍率）
+            description: 按 token 计费时公式实际用的每 token 人民币单价（已含命中档、服务档位、长上下文倍率）
         ModelEstimateRequestBody:
             required:
+                - model
                 - usage
             type: object
             properties:
-                profile_id:
-                    type: integer
-                    format: int64
                 model:
                     type: string
-                connector_id:
+                pool_id:
                     type: integer
+                    description: 给了就按该池的长上下文计价开关算。
                     format: int64
                 usage:
                     $ref: '#/components/schemas/ModelEstimateUsage'
-                reasoning_effort:
-                    type: string
                 at:
                     type: integer
                     format: int64
@@ -28310,7 +27783,7 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/ModelPriceTier'
-                    description: 阶梯编辑器的未保存分档（按 token 模式校验），预览时当作档位的 price_tiers
+                    description: 阶梯编辑器的未保存分档（按 token 模式校验），预览时当作该模型手动条目的分档
                 draft_currency:
                     enum:
                         - CNY
@@ -28318,12 +27791,6 @@ components:
                     type: string
                 draft_price:
                     $ref: '#/components/schemas/ModelEstimateDraftPrice'
-                draft_scope:
-                    enum:
-                        - profile
-                        - global
-                    type: string
-                    description: 草稿放在哪一层：profile = 档位覆盖层（新建档位时没有 profileId 也按档位层算，留空沿用下层）；global = 该模型的全局手动条目。缺省：有 profileId 为 profile，否则 global
         ModelEstimateResponseBody:
             required:
                 - code
@@ -28506,34 +27973,6 @@ components:
                 score:
                     type: number
                     format: double
-        ModelImagePage:
-            required:
-                - items
-                - source
-                - estimated
-            type: object
-            properties:
-                items:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ModelRequestImageItem'
-                source:
-                    type: string
-                estimated:
-                    type: boolean
-        ModelImagePageResponseBody:
-            required:
-                - code
-                - msg
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/ModelImagePage'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
         ModelImagesToday:
             required:
                 - count
@@ -28796,7 +28235,7 @@ components:
                 syncedAt:
                     type: integer
                     format: int64
-        ModelObservationAccessRequestBody:
+        ModelObservationCurlRequestBody:
             required:
                 - requestId
                 - reason
@@ -28805,12 +28244,6 @@ components:
                 requestId:
                     type: string
                 reason:
-                    type: string
-                slots:
-                    type: array
-                    items:
-                        type: string
-                part:
                     type: string
                 target:
                     type: string
@@ -28903,71 +28336,80 @@ components:
                     format: int64
                 msg:
                     type: string
-        ModelPayloadChange:
+        ModelOurModel:
             required:
-                - group
-                - rule
-                - path
-                - action
-                - reason
+                - model
+                - purposes
+                - pools
+                - source
+                - status
             type: object
             properties:
-                group:
+                model:
                     type: string
-                rule:
-                    type: integer
-                    format: int32
-                path:
-                    type: string
-                action:
-                    type: string
-                reason:
-                    type: string
-        ModelPayloadPreview:
-            required:
-                - original
-                - result
-                - changes
-                - translated
-            type: object
-            properties:
-                original:
-                    type: string
-                result:
-                    type: string
-                changes:
+                purposes:
                     type: array
                     items:
-                        $ref: '#/components/schemas/ModelPayloadChange'
-                translated:
+                        type: string
+                pools:
+                    type: array
+                    items:
+                        type: string
+                source:
+                    enum:
+                        - manual
+                        - litellm
+                        - none
                     type: string
-            description: original = 调用方请求；translated = 翻译成档位端点协议后的上游请求；result = 应用规则后。
-        ModelPayloadPreviewRequestBody:
-            type: object
-            properties:
-                profile_id:
+                status:
+                    enum:
+                        - priced
+                        - missing
+                    type: string
+                billingMode:
+                    type: string
+                input:
+                    type: number
+                    format: double
+                output:
+                    type: number
+                    format: double
+                cacheRead:
+                    type: number
+                    format: double
+                cacheWrite:
+                    type: number
+                    format: double
+                perRequest:
+                    type: number
+                    format: double
+                manualPriceId:
                     type: integer
                     format: int64
-                draft:
-                    $ref: '#/components/schemas/ModelProfileForm'
-                sample:
-                    type: string
-                body:
-                    type: string
-                from_protocol:
-                    type: string
-                headers:
-                    type: object
-                    additionalProperties:
-                        type: string
-        ModelPayloadPreviewResponseBody:
+            description: |-
+                「我们的模型」：用途目标的标准名 ∪ 启用池对外暴露的名字，按手动价 > LiteLLM 价计费。
+                按 token 计价的金额是人民币 / 百万 token，按次计价是人民币 / 次。
+        ModelOurModelList:
+            required:
+                - items
+                - fxRate
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ModelOurModel'
+                fxRate:
+                    type: number
+                    format: double
+        ModelOurModelListResponseBody:
             required:
                 - code
                 - msg
             type: object
             properties:
                 data:
-                    $ref: '#/components/schemas/ModelPayloadPreview'
+                    $ref: '#/components/schemas/ModelOurModelList'
                 code:
                     type: integer
                     format: int64
@@ -29071,12 +28513,11 @@ components:
                 - modelAllowlist
                 - modelRoutingEnabled
                 - modelRouting
-                - defaultMappedModel
                 - longContextPricingEnabled
                 - memberTotal
                 - memberAvailable
                 - memberRateLimited
-                - profileCount
+                - purposeCount
                 - concurrencyMax
                 - members
                 - version
@@ -29110,8 +28551,6 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/ModelPoolRoute'
-                defaultMappedModel:
-                    type: string
                 longContextPricingEnabled:
                     type: boolean
                 fallbackPoolId:
@@ -29129,7 +28568,7 @@ components:
                 memberRateLimited:
                     type: integer
                     format: int32
-                profileCount:
+                purposeCount:
                     type: integer
                     format: int32
                 concurrencyMax:
@@ -29231,8 +28670,6 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/ModelPoolRoute'
-                default_mapped_model:
-                    type: string
                 long_context_pricing_enabled:
                     type: boolean
                 fallback_pool_id:
@@ -29278,7 +28715,6 @@ components:
                 - connectorStatus
                 - schedulable
                 - concurrency
-                - rateMultiplier
                 - trafficShare
             type: object
             properties:
@@ -29305,8 +28741,6 @@ components:
                 concurrencyCurrent:
                     type: integer
                     format: int64
-                rateMultiplier:
-                    type: string
                 trafficShare:
                     type: number
                     format: double
@@ -29584,35 +29018,6 @@ components:
                     type: array
                     items:
                         type: string
-        ModelPriceCloneRequestBody:
-            type: object
-            properties:
-                profile_id:
-                    type: integer
-                    format: int64
-                profile_version:
-                    type: integer
-                    format: int64
-        ModelPriceCloneResponseBody:
-            required:
-                - code
-                - msg
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/ModelPriceCloneResult'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        ModelPriceCloneResult:
-            type: object
-            properties:
-                price:
-                    $ref: '#/components/schemas/ModelPriceEntry'
-                profile:
-                    $ref: '#/components/schemas/ModelProfile'
         ModelPriceEntry:
             required:
                 - id
@@ -29786,67 +29191,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        ModelPriceModifiers:
-            type: object
-            properties:
-                time_pricing:
-                    $ref: '#/components/schemas/ModelTimePricing'
-                fast_multiplier:
-                    type: number
-                    format: double
-                flex_multiplier:
-                    type: number
-                    format: double
-                reasoning_effort_multipliers:
-                    type: object
-                    additionalProperties:
-                        type: number
-                        format: double
-        ModelPriceOverrideForm:
-            type: object
-            properties:
-                currency:
-                    enum:
-                        - CNY
-                        - USD
-                    type: string
-                billing_model_source:
-                    type: string
-                billing_mode:
-                    enum:
-                        - token
-                        - per_request
-                        - image
-                    type: string
-                input_price:
-                    type: string
-                output_price:
-                    type: string
-                cache_write_price:
-                    type: string
-                cache_read_price:
-                    type: string
-                cache_write_1h_price:
-                    type: string
-                image_input_price:
-                    type: string
-                image_output_price:
-                    type: string
-                per_request_price:
-                    type: string
-                input_image_price:
-                    type: string
-                input_images_free:
-                    type: integer
-                    format: int32
-                clear_input_images_free:
-                    type: boolean
-                price_tiers:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ModelPriceTier'
-                price_modifiers:
-                    $ref: '#/components/schemas/ModelPriceModifiers'
         ModelPricePage:
             required:
                 - items
@@ -29900,55 +29244,22 @@ components:
                     type: string
         ModelPriceRow:
             required:
-                - scope
+                - price
                 - usedBy
-                - shadowed
             type: object
             properties:
-                scope:
-                    enum:
-                        - global
-                        - profile
-                    type: string
                 price:
                     $ref: '#/components/schemas/ModelPriceEntry'
-                profile:
-                    $ref: '#/components/schemas/ModelProfile'
                 usedBy:
                     type: array
                     items:
                         $ref: '#/components/schemas/ModelPriceUse'
-                shadowed:
-                    type: boolean
                 inputCny:
                     type: number
                     format: double
                 outputCny:
                     type: number
                     format: double
-        ModelPriceSummary:
-            required:
-                - source
-                - billingMode
-                - tierCount
-            type: object
-            properties:
-                source:
-                    type: string
-                billingMode:
-                    type: string
-                inputCny:
-                    type: number
-                    format: double
-                outputCny:
-                    type: number
-                    format: double
-                perRequestCny:
-                    type: number
-                    format: double
-                tierCount:
-                    type: integer
-                    format: int32
         ModelPriceTier:
             type: object
             properties:
@@ -29992,22 +29303,22 @@ components:
                     format: double
             description: |-
                 ---------------------------------------------------------------------------
-                档位（第 10 章）
+                价格分档、推理映射与探活（第 10 章）
                 ---------------------------------------------------------------------------
         ModelPriceUse:
             required:
-                - profileId
-                - profileName
+                - purpose
+                - model
                 - overridden
             type: object
             properties:
-                profileId:
-                    type: integer
-                    format: int64
-                profileName:
+                purpose:
+                    type: string
+                model:
                     type: string
                 overridden:
                     type: boolean
+            description: 用这条价目计价的用途目标；overridden = LiteLLM 条目的每个价格字段都被手动条目覆盖。
         ModelProbeMember:
             required:
                 - connectorId
@@ -30090,8 +29401,11 @@ components:
         ModelProbeResult:
             required:
                 - probeId
-                - profileId
-                - draftHash
+                - purpose
+                - poolId
+                - model
+                - endpoint
+                - settingsHash
                 - draft
                 - passed
                 - pending
@@ -30102,11 +29416,19 @@ components:
             properties:
                 probeId:
                     type: string
-                profileId:
+                purpose:
+                    type: string
+                poolId:
                     type: integer
                     format: int64
-                draftHash:
+                model:
                     type: string
+                endpoint:
+                    type: string
+                    description: 探活实际调用的端点（目标未填时为推导结果）。
+                settingsHash:
+                    type: string
+                    description: 探活所用用途设置的哈希：只有与用途当前设置一致的成功探活才算数。
                 draft:
                     type: boolean
                 passed:
@@ -30133,615 +29455,6 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/ModelProbeResult'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        ModelProfile:
-            required:
-                - id
-                - slug
-                - name
-                - kind
-                - endpoint
-                - capabilities
-                - poolId
-                - poolName
-                - poolStatus
-                - platform
-                - upstreamModel
-                - thinkingMode
-                - thinkingEffort
-                - thinkingDisplay
-                - thinkingBudgetTokens
-                - maxReasoningEffort
-                - maxReasoningEffortOverLimit
-                - reasoningEffortMappings
-                - useMaxCompletionTokens
-                - params
-                - payloadRules
-                - cacheTtlSeconds
-                - currency
-                - billingModelSource
-                - billingMode
-                - priceTiers
-                - priceModifiers
-                - maxRequestBytes
-                - maxResponseBytes
-                - maxOutputTokens
-                - overMaxOutput
-                - maxBatch
-                - requestTimeoutMs
-                - streamIdleTimeoutMs
-                - maxTurns
-                - maxModelRequests
-                - maxToolCalls
-                - maxBudget
-                - activeExecutionTimeoutMs
-                - approvalMaxWaitMs
-                - probeIntervalSeconds
-                - lastProbeRequestIds
-                - fingerprint
-                - status
-                - version
-                - references
-                - price
-                - createdAt
-                - updatedAt
-            type: object
-            properties:
-                id:
-                    type: integer
-                    format: int64
-                slug:
-                    type: string
-                name:
-                    type: string
-                description:
-                    type: string
-                kind:
-                    type: string
-                endpoint:
-                    type: string
-                capabilities:
-                    type: array
-                    items:
-                        type: string
-                contextLength:
-                    type: integer
-                    format: int32
-                poolId:
-                    type: integer
-                    format: int64
-                poolName:
-                    type: string
-                poolStatus:
-                    type: string
-                platform:
-                    type: string
-                upstreamModel:
-                    type: string
-                thinkingMode:
-                    type: string
-                thinkingEffort:
-                    type: string
-                thinkingDisplay:
-                    type: string
-                thinkingBudgetTokens:
-                    type: integer
-                    format: int32
-                thinkingSupport:
-                    type: string
-                maxReasoningEffort:
-                    type: string
-                maxReasoningEffortOverLimit:
-                    type: string
-                reasoningEffortMappings:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ModelReasoningMapping'
-                useMaxCompletionTokens:
-                    type: boolean
-                params:
-                    type: string
-                payloadRules:
-                    type: string
-                cacheTtlSeconds:
-                    type: integer
-                    format: int32
-                currency:
-                    type: string
-                billingModelSource:
-                    type: string
-                billingMode:
-                    type: string
-                inputPrice:
-                    type: string
-                outputPrice:
-                    type: string
-                cacheWritePrice:
-                    type: string
-                cacheReadPrice:
-                    type: string
-                cacheWrite1hPrice:
-                    type: string
-                imageInputPrice:
-                    type: string
-                imageOutputPrice:
-                    type: string
-                perRequestPrice:
-                    type: string
-                inputImagePrice:
-                    type: string
-                inputImagesFree:
-                    type: integer
-                    format: int32
-                priceTiers:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ModelPriceTier'
-                priceModifiers:
-                    $ref: '#/components/schemas/ModelPriceModifiers'
-                maxRequestBytes:
-                    type: integer
-                    format: int64
-                maxResponseBytes:
-                    type: integer
-                    format: int64
-                maxOutputTokens:
-                    type: integer
-                    format: int32
-                overMaxOutput:
-                    type: string
-                maxBatch:
-                    type: integer
-                    format: int32
-                maxCostPerRequest:
-                    type: string
-                requestTimeoutMs:
-                    type: integer
-                    format: int32
-                streamIdleTimeoutMs:
-                    type: integer
-                    format: int32
-                maxTurns:
-                    type: integer
-                    format: int32
-                maxModelRequests:
-                    type: integer
-                    format: int32
-                maxToolCalls:
-                    type: integer
-                    format: int32
-                maxBudget:
-                    type: string
-                activeExecutionTimeoutMs:
-                    type: integer
-                    format: int64
-                approvalMaxWaitMs:
-                    type: integer
-                    format: int64
-                probeIntervalSeconds:
-                    type: integer
-                    format: int32
-                lastProbeAt:
-                    type: integer
-                    format: int64
-                lastProbeOk:
-                    type: boolean
-                lastProbeRevision:
-                    type: integer
-                    format: int32
-                lastProbeError:
-                    type: string
-                lastProbeRequestIds:
-                    type: array
-                    items:
-                        type: string
-                fingerprint:
-                    type: string
-                status:
-                    type: string
-                version:
-                    type: integer
-                    format: int64
-                references:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ModelProfileRef'
-                price:
-                    $ref: '#/components/schemas/ModelPriceSummary'
-                createdAt:
-                    type: integer
-                    format: int64
-                updatedAt:
-                    type: integer
-                    format: int64
-                disabledReason:
-                    type: string
-                    description: 只在 GET …/profiles/options?purpose= 里出现：不能绑定到该用途的原因。
-                updatedBy:
-                    type: string
-                updatedByName:
-                    type: string
-        ModelProfileForm:
-            type: object
-            properties:
-                id:
-                    type: integer
-                    format: int64
-                Idempotency-Key:
-                    type: string
-                name:
-                    type: string
-                slug:
-                    type: string
-                description:
-                    type: string
-                status:
-                    enum:
-                        - active
-                        - disabled
-                    type: string
-                kind:
-                    enum:
-                        - chat
-                        - embedding
-                        - rerank
-                        - document
-                        - image
-                    type: string
-                pool_id:
-                    type: integer
-                    format: int64
-                endpoint:
-                    type: string
-                upstream_model:
-                    type: string
-                capabilities:
-                    type: array
-                    items:
-                        type: string
-                context_length:
-                    type: integer
-                    format: int32
-                thinking_mode:
-                    type: string
-                thinking_effort:
-                    type: string
-                thinking_display:
-                    type: string
-                thinking_budget_tokens:
-                    type: integer
-                    format: int32
-                thinking_support:
-                    type: string
-                max_reasoning_effort:
-                    type: string
-                max_reasoning_effort_over_limit:
-                    type: string
-                reasoning_effort_mappings:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ModelReasoningMapping'
-                use_max_completion_tokens:
-                    type: boolean
-                params:
-                    type: string
-                payload_rules:
-                    type: string
-                cache_ttl_seconds:
-                    type: integer
-                    format: int32
-                probe_interval_seconds:
-                    type: integer
-                    format: int32
-                price:
-                    $ref: '#/components/schemas/ModelPriceOverrideForm'
-                max_request_bytes:
-                    type: integer
-                    format: int64
-                max_response_bytes:
-                    type: integer
-                    format: int64
-                max_output_tokens:
-                    type: integer
-                    format: int32
-                over_max_output:
-                    enum:
-                        - clamp
-                        - reject
-                    type: string
-                max_batch:
-                    type: integer
-                    format: int32
-                max_cost_per_request:
-                    type: string
-                request_timeout_ms:
-                    type: integer
-                    format: int32
-                stream_idle_timeout_ms:
-                    type: integer
-                    format: int32
-                max_turns:
-                    type: integer
-                    format: int32
-                max_model_requests:
-                    type: integer
-                    format: int32
-                max_tool_calls:
-                    type: integer
-                    format: int32
-                max_budget:
-                    type: string
-                active_execution_timeout_ms:
-                    type: integer
-                    format: int64
-                approval_max_wait_ms:
-                    type: integer
-                    format: int64
-                clear_fields:
-                    type: array
-                    items:
-                        type: string
-                version:
-                    type: integer
-                    format: int64
-                reason:
-                    type: string
-                probe_id:
-                    type: string
-                confirm_rebuild:
-                    type: boolean
-        ModelProfileFormBody:
-            type: object
-            properties:
-                name:
-                    type: string
-                slug:
-                    type: string
-                description:
-                    type: string
-                status:
-                    enum:
-                        - active
-                        - disabled
-                    type: string
-                kind:
-                    enum:
-                        - chat
-                        - embedding
-                        - rerank
-                        - document
-                        - image
-                    type: string
-                pool_id:
-                    type: integer
-                    format: int64
-                endpoint:
-                    type: string
-                upstream_model:
-                    type: string
-                capabilities:
-                    type: array
-                    items:
-                        type: string
-                context_length:
-                    type: integer
-                    format: int32
-                thinking_mode:
-                    type: string
-                thinking_effort:
-                    type: string
-                thinking_display:
-                    type: string
-                thinking_budget_tokens:
-                    type: integer
-                    format: int32
-                thinking_support:
-                    type: string
-                max_reasoning_effort:
-                    type: string
-                max_reasoning_effort_over_limit:
-                    type: string
-                reasoning_effort_mappings:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ModelReasoningMapping'
-                use_max_completion_tokens:
-                    type: boolean
-                params:
-                    type: string
-                payload_rules:
-                    type: string
-                cache_ttl_seconds:
-                    type: integer
-                    format: int32
-                probe_interval_seconds:
-                    type: integer
-                    format: int32
-                price:
-                    $ref: '#/components/schemas/ModelPriceOverrideForm'
-                max_request_bytes:
-                    type: integer
-                    format: int64
-                max_response_bytes:
-                    type: integer
-                    format: int64
-                max_output_tokens:
-                    type: integer
-                    format: int32
-                over_max_output:
-                    enum:
-                        - clamp
-                        - reject
-                    type: string
-                max_batch:
-                    type: integer
-                    format: int32
-                max_cost_per_request:
-                    type: string
-                request_timeout_ms:
-                    type: integer
-                    format: int32
-                stream_idle_timeout_ms:
-                    type: integer
-                    format: int32
-                max_turns:
-                    type: integer
-                    format: int32
-                max_model_requests:
-                    type: integer
-                    format: int32
-                max_tool_calls:
-                    type: integer
-                    format: int32
-                max_budget:
-                    type: string
-                active_execution_timeout_ms:
-                    type: integer
-                    format: int64
-                approval_max_wait_ms:
-                    type: integer
-                    format: int64
-                clear_fields:
-                    type: array
-                    items:
-                        type: string
-                version:
-                    type: integer
-                    format: int64
-                reason:
-                    type: string
-                probe_id:
-                    type: string
-                confirm_rebuild:
-                    type: boolean
-        ModelProfileList:
-            required:
-                - items
-            type: object
-            properties:
-                items:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ModelProfile'
-        ModelProfileListResponseBody:
-            required:
-                - code
-                - msg
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/ModelProfileList'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        ModelProfileOverrideRequestBody:
-            required:
-                - version
-            type: object
-            properties:
-                version:
-                    type: integer
-                    format: int64
-                price:
-                    $ref: '#/components/schemas/ModelPriceOverrideForm'
-        ModelProfilePage:
-            required:
-                - items
-                - total
-                - page
-                - pageSize
-            type: object
-            properties:
-                items:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ModelProfile'
-                total:
-                    type: integer
-                    format: int64
-                page:
-                    type: integer
-                    format: int32
-                pageSize:
-                    type: integer
-                    format: int32
-        ModelProfilePageResponseBody:
-            required:
-                - code
-                - msg
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/ModelProfilePage'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        ModelProfileProbeRequestBody:
-            type: object
-            properties:
-                profile_id:
-                    type: integer
-                    format: int64
-                draft:
-                    $ref: '#/components/schemas/ModelProfileForm'
-                include_unschedulable:
-                    type: boolean
-        ModelProfileRef:
-            required:
-                - purpose
-                - primary
-                - enabled
-            type: object
-            properties:
-                purpose:
-                    type: string
-                primary:
-                    type: boolean
-                enabled:
-                    type: boolean
-        ModelProfileReference:
-            required:
-                - profileId
-                - profileName
-                - poolId
-                - poolName
-                - upstreamModel
-                - allowed
-                - resolution
-            type: object
-            properties:
-                profileId:
-                    type: integer
-                    format: int64
-                profileName:
-                    type: string
-                poolId:
-                    type: integer
-                    format: int64
-                poolName:
-                    type: string
-                upstreamModel:
-                    type: string
-                allowed:
-                    type: boolean
-                resolution:
-                    $ref: '#/components/schemas/ModelMappingResolution'
-        ModelProfileResponseBody:
-            required:
-                - code
-                - msg
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/ModelProfile'
                 code:
                     type: integer
                     format: int64
@@ -30809,8 +29522,9 @@ components:
                 - status
                 - version
                 - entries
-                - requires
                 - drift
+                - settings
+                - settingsHash
             type: object
             properties:
                 key:
@@ -30859,11 +29573,7 @@ components:
                     type: array
                     items:
                         type: string
-                    description: 入口协议（档位端点）与需要的档位能力；空 entries = 种类允许的任意端点。
-                requires:
-                    type: array
-                    items:
-                        type: string
+                    description: 入口协议（目标端点）；空 = 种类允许的任意端点。
                 drift:
                     type: array
                     items:
@@ -30878,6 +29588,64 @@ components:
                     format: double
                 statsUnavailableReason:
                     type: string
+                settings:
+                    $ref: '#/components/schemas/ModelPurposeSettings'
+                settingsHash:
+                    type: string
+                    description: 探活须用这份设置跑过才算数。
+                fingerprint:
+                    type: string
+                    description: 带指纹用途的向量指纹（各目标一致）。
+        ModelPurposeLimits:
+            required:
+                - maxRequestBytes
+                - maxResponseBytes
+                - maxBatch
+                - requestTimeoutMs
+                - streamIdleTimeoutMs
+                - maxTurns
+                - maxModelRequests
+                - maxToolCalls
+                - maxBudget
+                - activeExecutionTimeoutMs
+                - approvalMaxWaitMs
+            type: object
+            properties:
+                maxRequestBytes:
+                    type: integer
+                    format: int64
+                maxResponseBytes:
+                    type: integer
+                    format: int64
+                maxBatch:
+                    type: integer
+                    format: int32
+                maxCostPerRequest:
+                    type: string
+                requestTimeoutMs:
+                    type: integer
+                    format: int32
+                streamIdleTimeoutMs:
+                    type: integer
+                    format: int32
+                maxTurns:
+                    type: integer
+                    format: int32
+                maxModelRequests:
+                    type: integer
+                    format: int32
+                maxToolCalls:
+                    type: integer
+                    format: int32
+                maxBudget:
+                    type: string
+                activeExecutionTimeoutMs:
+                    type: integer
+                    format: int64
+                approvalMaxWaitMs:
+                    type: integer
+                    format: int64
+            description: 单次调用的上限；金额单位人民币，0 / 空 = 不限。
         ModelPurposeList:
             required:
                 - items
@@ -30900,6 +29668,79 @@ components:
                     format: int64
                 msg:
                     type: string
+        ModelPurposeParams:
+            required:
+                - thinkingMode
+                - thinkingEffort
+                - thinkingDisplay
+                - thinkingBudgetTokens
+                - maxReasoningEffort
+                - maxReasoningEffortOverLimit
+                - reasoningEffortMappings
+                - useMaxCompletionTokens
+                - maxOutputTokens
+                - overMaxOutput
+                - cacheTtlSeconds
+                - kindParams
+                - payloadRules
+            type: object
+            properties:
+                thinkingMode:
+                    type: string
+                thinkingEffort:
+                    type: string
+                thinkingDisplay:
+                    type: string
+                thinkingBudgetTokens:
+                    type: integer
+                    format: int32
+                maxReasoningEffort:
+                    type: string
+                maxReasoningEffortOverLimit:
+                    type: string
+                reasoningEffortMappings:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ModelReasoningMapping'
+                useMaxCompletionTokens:
+                    type: boolean
+                maxOutputTokens:
+                    type: integer
+                    format: int32
+                overMaxOutput:
+                    type: string
+                cacheTtlSeconds:
+                    type: integer
+                    format: int32
+                kindParams:
+                    type: string
+                    description: 按种类的参数（JSON 对象）：chat / embedding 维度与指令 / rerank 指令 / image / document。
+                payloadRules:
+                    type: string
+                    description: Payload 规则（JSON 对象）。
+        ModelPurposeProbe:
+            required:
+                - intervalSeconds
+                - autoRecover
+            type: object
+            properties:
+                intervalSeconds:
+                    type: integer
+                    description: 0 = 不定时探活。
+                    format: int32
+                autoRecover:
+                    type: boolean
+                    description: 定时探活成功后清除成员连接器的冷却与错误状态。
+        ModelPurposeQuota:
+            required:
+                - perUser
+                - total
+            type: object
+            properties:
+                perUser:
+                    $ref: '#/components/schemas/ModelQuotaWindows'
+                total:
+                    $ref: '#/components/schemas/ModelQuotaWindows'
         ModelPurposeResponseBody:
             required:
                 - code
@@ -30990,6 +29831,44 @@ components:
                     format: int64
                 msg:
                     type: string
+        ModelPurposeSettings:
+            required:
+                - params
+                - limits
+                - quota
+                - probe
+            type: object
+            properties:
+                params:
+                    $ref: '#/components/schemas/ModelPurposeParams'
+                limits:
+                    $ref: '#/components/schemas/ModelPurposeLimits'
+                quota:
+                    $ref: '#/components/schemas/ModelPurposeQuota'
+                probe:
+                    $ref: '#/components/schemas/ModelPurposeProbe'
+        ModelPurposeSettingsRequestBody:
+            required:
+                - expected_version
+                - settings
+                - reason
+            type: object
+            properties:
+                expected_version:
+                    type: integer
+                    format: int64
+                settings:
+                    $ref: '#/components/schemas/ModelPurposeSettings'
+                reason:
+                    type: string
+                probe_ids:
+                    type: array
+                    items:
+                        type: string
+                confirm_rebuild:
+                    type: boolean
+                confirm_text:
+                    type: string
         ModelPurposeStatistics:
             required:
                 - stats
@@ -31030,12 +29909,19 @@ components:
                     type: string
         ModelPurposeTarget:
             required:
-                - profileId
+                - pool_id
+                - model
             type: object
             properties:
-                profile_id:
+                pool_id:
                     type: integer
                     format: int64
+                model:
+                    type: string
+                    description: 池暴露的标准模型名（计价与指纹都按它）。
+                endpoint:
+                    type: string
+                    description: 空 = 自动推导；池里文本向量与多模态向量能力都有时必须填。
                 priority:
                     type: integer
                     format: int32
@@ -31044,7 +29930,7 @@ components:
                     format: int32
                 enabled:
                     type: boolean
-                model:
+                public_name:
                     type: string
                     description: 公开名：调用方在用途内可选的模型名，只落到带同一公开名的目标（同名即故障切换组）；空 = 用途默认目标。
                 display_name:
@@ -31056,7 +29942,8 @@ components:
                 ---------------------------------------------------------------------------
         ModelPurposeTargetView:
             required:
-                - profileId
+                - poolId
+                - model
                 - priority
                 - weight
                 - enabled
@@ -31066,9 +29953,17 @@ components:
                 - available
             type: object
             properties:
-                profileId:
+                poolId:
                     type: integer
                     format: int64
+                model:
+                    type: string
+                endpoint:
+                    type: string
+                    description: 目标自己填的端点；空表示自动推导。
+                resolvedEndpoint:
+                    type: string
+                    description: SDK 调用与探活实际使用的端点（推导结果）。
                 priority:
                     type: integer
                     format: int32
@@ -31077,17 +29972,10 @@ components:
                     format: int32
                 enabled:
                     type: boolean
-                profileName:
+                publicName:
                     type: string
-                profileSlug:
+                displayName:
                     type: string
-                upstreamModel:
-                    type: string
-                kind:
-                    type: string
-                poolId:
-                    type: integer
-                    format: int64
                 poolName:
                     type: string
                 status:
@@ -31097,20 +29985,26 @@ components:
                     format: double
                 available:
                     type: boolean
+                problem:
+                    type: string
+                    description: 目标不能服务的原因（池不存在、不提供该模型、端点有歧义等）。
+                fingerprint:
+                    type: string
                 lastProbeAt:
                     type: integer
                     format: int64
                 lastProbeOk:
                     type: boolean
-                fingerprint:
+                lastProbeSettingsHash:
                     type: string
-                profileRevision:
+                    description: 最近一次探活所用设置的哈希；与用途 settingsHash 不同表示需要重新探活。
+                contextWindow:
                     type: integer
                     format: int32
-                model:
-                    type: string
-                displayName:
-                    type: string
+                inputModalities:
+                    type: array
+                    items:
+                        type: string
         ModelPurposeTargetsRequestBody:
             required:
                 - targets
@@ -31142,6 +30036,14 @@ components:
                     items:
                         type: string
                     description: 不传 = 保留现有别名；[] = 清空。保存时拒绝与其它用途重叠（第 2 章 model_purposes.aliases）。
+        ModelQuotaWindows:
+            type: object
+            properties:
+                window5h:
+                    type: string
+                window7d:
+                    type: string
+            description: 滚动窗口额度（人民币，十进制字符串）；不填 = 不限。
         ModelReasoningMapping:
             required:
                 - from
@@ -31259,8 +30161,6 @@ components:
                         $ref: '#/components/schemas/ModelRequestItem'
                 otelTraceUrl:
                     type: string
-                profileName:
-                    type: string
                 poolName:
                     type: string
                 connectorName:
@@ -31285,37 +30185,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        ModelRequestImageItem:
-            required:
-                - key
-                - url
-                - thumbnailUrl
-                - sha256
-                - width
-                - height
-                - size
-                - expired
-            type: object
-            properties:
-                key:
-                    type: string
-                url:
-                    type: string
-                thumbnailUrl:
-                    type: string
-                sha256:
-                    type: string
-                width:
-                    type: integer
-                    format: int64
-                height:
-                    type: integer
-                    format: int64
-                size:
-                    type: integer
-                    format: int64
-                expired:
-                    type: boolean
         ModelRequestImageMetadata:
             required:
                 - index
@@ -31422,9 +30291,6 @@ components:
                     type: string
                 purpose:
                     type: string
-                profileId:
-                    type: integer
-                    format: int64
                 poolId:
                     type: integer
                     format: int64
@@ -31513,8 +30379,6 @@ components:
                     type: boolean
                 cacheReadCost:
                     type: string
-                uncachedInputCost:
-                    type: string
                 durationMs:
                     type: integer
                     format: int64
@@ -31545,8 +30409,6 @@ components:
                 user:
                     $ref: '#/components/schemas/AdminUserInfo'
                 purposeName:
-                    type: string
-                profileName:
                     type: string
                 poolName:
                     type: string
@@ -31761,7 +30623,7 @@ components:
                     type: string
                     description: |-
                         入口（第 1 章 调用入口，与 domain/modelgw.Entries 同一份）：sdk:* 是进程内 SDK 方法，只给 internal；
-                        其余是 /hduhelp-neo/ai/v1 下的代理路由，给 session / run，只能落到同协议端点的档位（不做跨协议转换）；
+                        其余是 /hduhelp-neo/ai/v1 下的代理路由，给 session / run，只能落到能调同协议端点的目标（不做跨协议转换）；
                         …/models 列出该协议能调通的名字：指定了用途（session 走 metadata_purpose，即路径或请求体里的用途）时是它的公开名与别名，
                         否则是各用途的精确别名。空 = 不检查入口协议。
                 model:
@@ -31814,6 +30676,7 @@ components:
                 - targets
                 - canRollback
                 - currentVersion
+                - legacy
             type: object
             properties:
                 version:
@@ -31828,6 +30691,9 @@ components:
                 currentVersion:
                     type: integer
                     format: int64
+                legacy:
+                    type: boolean
+                    description: 目标还不是「池 + 模型」时保存的版本：快照无法还原为目标，不能回滚。
         ModelRollbackDraftResponseBody:
             required:
                 - code
@@ -32013,7 +30879,7 @@ components:
         ModelSelectionItem:
             required:
                 - stage
-                - profileId
+                - target
                 - poolId
                 - endpoint
                 - model
@@ -32023,9 +30889,8 @@ components:
             properties:
                 stage:
                     type: string
-                profileId:
-                    type: integer
-                    format: int64
+                target:
+                    type: string
                 poolId:
                     type: integer
                     format: int64
@@ -32125,7 +30990,6 @@ components:
                         - immediate
                         - next_run
                         - rebuild
-                        - restart
                     type: string
                 range:
                     type: string
@@ -32318,7 +31182,7 @@ components:
                 - before
                 - after
                 - impact
-                - profiles
+                - purposes
             type: object
             properties:
                 model:
@@ -32345,7 +31209,7 @@ components:
                         - shadowed
                         - unused
                     type: string
-                profiles:
+                purposes:
                     type: array
                     items:
                         type: string
@@ -32514,33 +31378,62 @@ components:
                     format: int64
                 msg:
                     type: string
-        ModelTargetSnapshot:
+        ModelTargetProbeRequestBody:
             required:
-                - profileId
-                - profileSlug
-                - profileRevision
-                - poolId
-                - upstreamModel
-                - fingerprint
-                - priority
-                - weight
-                - enabled
+                - purpose
+                - target
             type: object
             properties:
-                profileId:
-                    type: integer
-                    format: int64
-                profileSlug:
+                purpose:
                     type: string
-                profileRevision:
-                    type: integer
-                    format: int32
+                target:
+                    $ref: '#/components/schemas/ModelPurposeTarget'
+                settings:
+                    $ref: '#/components/schemas/ModelPurposeSettings'
+                include_unschedulable:
+                    type: boolean
+        ModelTargetReference:
+            required:
+                - purpose
+                - model
+                - poolId
+                - poolName
+                - upstreamModel
+                - allowed
+                - resolution
+            type: object
+            properties:
+                purpose:
+                    type: string
+                model:
+                    type: string
                 poolId:
                     type: integer
                     format: int64
+                poolName:
+                    type: string
                 upstreamModel:
                     type: string
-                fingerprint:
+                allowed:
+                    type: boolean
+                resolution:
+                    $ref: '#/components/schemas/ModelMappingResolution'
+        ModelTargetSnapshot:
+            required:
+                - poolId
+                - model
+                - priority
+                - weight
+                - enabled
+                - settingsHash
+            type: object
+            properties:
+                poolId:
+                    type: integer
+                    format: int64
+                model:
+                    type: string
+                endpoint:
                     type: string
                 priority:
                     type: integer
@@ -32550,9 +31443,13 @@ components:
                     format: int32
                 enabled:
                     type: boolean
-                model:
+                publicName:
                     type: string
                 displayName:
+                    type: string
+                fingerprint:
+                    type: string
+                settingsHash:
                     type: string
         ModelTempUnschedRule:
             required:
@@ -32658,35 +31555,6 @@ components:
                     type: number
                     format: double
             description: 阶梯价预览的一段（与计费同一函数算出；单价为元 / 百万 token）
-        ModelTimePricing:
-            required:
-                - timezone
-                - weekdays_only
-                - periods
-            type: object
-            properties:
-                timezone:
-                    type: string
-                weekdays_only:
-                    type: boolean
-                periods:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ModelTimePricingPeriod'
-        ModelTimePricingPeriod:
-            required:
-                - start_time
-                - end_time
-                - multiplier
-            type: object
-            properties:
-                start_time:
-                    type: string
-                end_time:
-                    type: string
-                multiplier:
-                    type: number
-                    format: double
         ModelTraceAttempt:
             required:
                 - seq
@@ -32723,15 +31591,6 @@ components:
                     type: string
                 response:
                     type: string
-        ModelTraceClockPoint:
-            type: object
-            properties:
-                offset:
-                    type: integer
-                    format: int64
-                ms:
-                    type: integer
-                    format: int64
         ModelTraceImage:
             required:
                 - key
@@ -32809,54 +31668,6 @@ components:
                         type: array
                         items:
                             type: string
-        ModelTraceParts:
-            required:
-                - parts
-                - source
-                - estimated
-            type: object
-            properties:
-                parts:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ModelTracePartItem'
-                source:
-                    type: string
-                estimated:
-                    type: boolean
-                timeline:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ModelTraceTimelineItem'
-                clock:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ModelTraceClockPoint'
-                resolutionMs:
-                    type: integer
-                    format: int64
-                redactions:
-                    type: object
-                    additionalProperties:
-                        type: integer
-                        format: int64
-                dropped:
-                    type: object
-                    additionalProperties:
-                        type: string
-        ModelTracePartsResponseBody:
-            required:
-                - code
-                - msg
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/ModelTraceParts'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
         ModelTraceQueryBody:
             required:
                 - requestId
@@ -33012,26 +31823,6 @@ components:
                     type: string
                 purposeName:
                     type: string
-        ModelTraceTimelineItem:
-            type: object
-            properties:
-                index:
-                    type: integer
-                    format: int64
-                kind:
-                    type: string
-                name:
-                    type: string
-                callId:
-                    type: string
-                incomplete:
-                    type: boolean
-                startedMs:
-                    type: integer
-                    format: int64
-                endedMs:
-                    type: integer
-                    format: int64
         ModelTraceWindow:
             required:
                 - from
@@ -33183,7 +31974,6 @@ components:
             required:
                 - countsRequest
                 - attempt
-                - profileId
                 - poolId
                 - connectorId
                 - model
@@ -33195,7 +31985,6 @@ components:
                 - billingTier
                 - priceCurrency
                 - fxRate
-                - connectorRateMultiplier
                 - inputTokens
                 - outputTokens
                 - cacheReadTokens
@@ -33222,16 +32011,11 @@ components:
                 - reasoningEffort
                 - serviceTier
                 - longContextBillingApplied
-                - reasoningMultiplier
-                - timeMultiplier
             type: object
             properties:
                 countsRequest:
                     type: boolean
                 attempt:
-                    type: integer
-                    format: int64
-                profileId:
                     type: integer
                     format: int64
                 poolId:
@@ -33257,8 +32041,6 @@ components:
                 priceCurrency:
                     type: string
                 fxRate:
-                    type: string
-                connectorRateMultiplier:
                     type: string
                 inputTokens:
                     type: integer
@@ -33327,12 +32109,6 @@ components:
                     type: boolean
                 rates:
                     $ref: '#/components/schemas/ModelAppliedRates'
-                reasoningMultiplier:
-                    type: number
-                    format: double
-                timeMultiplier:
-                    type: number
-                    format: double
                 upstreamEndpoint:
                     type: string
                 imageSize:
@@ -33472,7 +32248,6 @@ components:
                 - imageOutputCost
                 - totalCost
                 - actualCost
-                - connectorRateMultiplier
                 - longContextBillingApplied
                 - requestType
                 - stream
@@ -33505,12 +32280,6 @@ components:
                     type: string
                 purpose:
                     type: string
-                profileId:
-                    type: integer
-                    format: int64
-                profileRevision:
-                    type: integer
-                    format: int64
                 poolId:
                     type: integer
                     format: int64
@@ -33607,8 +32376,6 @@ components:
                     type: string
                 actualCost:
                     type: string
-                connectorRateMultiplier:
-                    type: string
                 longContextBillingApplied:
                     type: boolean
                 requestType:
@@ -33656,8 +32423,6 @@ components:
                 user:
                     $ref: '#/components/schemas/AdminUserInfo'
                 purposeName:
-                    type: string
-                profileName:
                     type: string
                 poolName:
                     type: string
@@ -37845,15 +36610,6 @@ components:
                 template:
                     type: string
                     description: 留空=恢复默认
-        SetTaggingTargetRequestBody:
-            type: object
-            properties:
-                base_url:
-                    type: string
-                api_key:
-                    type: string
-                model:
-                    type: string
         SetTenantEnabledRequestBody:
             type: object
             properties:
@@ -38920,29 +37676,6 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/TaggingPromptData'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        TaggingTargetData:
-            type: object
-            properties:
-                baseUrl:
-                    type: string
-                hasApiKey:
-                    type: boolean
-                model:
-                    type: string
-                gatewayManaged:
-                    type: boolean
-                    description: 已完成本地 SDK 接线；不表示用途已绑定或可用
-            description: 打标接入点配置（密钥只回下发是否已配置，不回明文；写入留空=保持不变）
-        TaggingTargetResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/TaggingTargetData'
                 code:
                     type: integer
                     format: int64

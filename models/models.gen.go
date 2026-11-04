@@ -216,7 +216,6 @@ func (e ModelConnectorFormBodyStatus) Valid() bool {
 const (
 	ModelEffectivePriceFieldLayerLitellm ModelEffectivePriceFieldLayer = "litellm"
 	ModelEffectivePriceFieldLayerManual  ModelEffectivePriceFieldLayer = "manual"
-	ModelEffectivePriceFieldLayerProfile ModelEffectivePriceFieldLayer = "profile"
 )
 
 // Valid indicates whether the value is a known member of the ModelEffectivePriceFieldLayer enum.
@@ -225,8 +224,6 @@ func (e ModelEffectivePriceFieldLayer) Valid() bool {
 	case ModelEffectivePriceFieldLayerLitellm:
 		return true
 	case ModelEffectivePriceFieldLayerManual:
-		return true
-	case ModelEffectivePriceFieldLayerProfile:
 		return true
 	default:
 		return false
@@ -272,24 +269,6 @@ func (e ModelEstimateRequestBodyDraftCurrency) Valid() bool {
 	}
 }
 
-// Defines values for ModelEstimateRequestBodyDraftScope.
-const (
-	ModelEstimateRequestBodyDraftScopeGlobal  ModelEstimateRequestBodyDraftScope = "global"
-	ModelEstimateRequestBodyDraftScopeProfile ModelEstimateRequestBodyDraftScope = "profile"
-)
-
-// Valid indicates whether the value is a known member of the ModelEstimateRequestBodyDraftScope enum.
-func (e ModelEstimateRequestBodyDraftScope) Valid() bool {
-	switch e {
-	case ModelEstimateRequestBodyDraftScopeGlobal:
-		return true
-	case ModelEstimateRequestBodyDraftScopeProfile:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for ModelModelSyncResultSource.
 const (
 	ModelModelSyncResultSourceFallback ModelModelSyncResultSource = "fallback"
@@ -302,6 +281,45 @@ func (e ModelModelSyncResultSource) Valid() bool {
 	case ModelModelSyncResultSourceFallback:
 		return true
 	case ModelModelSyncResultSourceUpstream:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ModelOurModelSource.
+const (
+	ModelOurModelSourceLitellm ModelOurModelSource = "litellm"
+	ModelOurModelSourceManual  ModelOurModelSource = "manual"
+	ModelOurModelSourceNone    ModelOurModelSource = "none"
+)
+
+// Valid indicates whether the value is a known member of the ModelOurModelSource enum.
+func (e ModelOurModelSource) Valid() bool {
+	switch e {
+	case ModelOurModelSourceLitellm:
+		return true
+	case ModelOurModelSourceManual:
+		return true
+	case ModelOurModelSourceNone:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ModelOurModelStatus.
+const (
+	Missing ModelOurModelStatus = "missing"
+	Priced  ModelOurModelStatus = "priced"
+)
+
+// Valid indicates whether the value is a known member of the ModelOurModelStatus enum.
+func (e ModelOurModelStatus) Valid() bool {
+	switch e {
+	case Missing:
+		return true
+	case Priced:
 		return true
 	default:
 		return false
@@ -383,63 +401,6 @@ func (e ModelPriceFormBodyCurrency) Valid() bool {
 	}
 }
 
-// Defines values for ModelPriceOverrideFormBillingMode.
-const (
-	ModelPriceOverrideFormBillingModeImage      ModelPriceOverrideFormBillingMode = "image"
-	ModelPriceOverrideFormBillingModePerRequest ModelPriceOverrideFormBillingMode = "per_request"
-	ModelPriceOverrideFormBillingModeToken      ModelPriceOverrideFormBillingMode = "token"
-)
-
-// Valid indicates whether the value is a known member of the ModelPriceOverrideFormBillingMode enum.
-func (e ModelPriceOverrideFormBillingMode) Valid() bool {
-	switch e {
-	case ModelPriceOverrideFormBillingModeImage:
-		return true
-	case ModelPriceOverrideFormBillingModePerRequest:
-		return true
-	case ModelPriceOverrideFormBillingModeToken:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for ModelPriceOverrideFormCurrency.
-const (
-	CNY ModelPriceOverrideFormCurrency = "CNY"
-	USD ModelPriceOverrideFormCurrency = "USD"
-)
-
-// Valid indicates whether the value is a known member of the ModelPriceOverrideFormCurrency enum.
-func (e ModelPriceOverrideFormCurrency) Valid() bool {
-	switch e {
-	case CNY:
-		return true
-	case USD:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for ModelPriceRowScope.
-const (
-	ModelPriceRowScopeGlobal  ModelPriceRowScope = "global"
-	ModelPriceRowScopeProfile ModelPriceRowScope = "profile"
-)
-
-// Valid indicates whether the value is a known member of the ModelPriceRowScope enum.
-func (e ModelPriceRowScope) Valid() bool {
-	switch e {
-	case ModelPriceRowScopeGlobal:
-		return true
-	case ModelPriceRowScopeProfile:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for ModelProbeMemberStatus.
 const (
 	ModelProbeMemberStatusDegraded    ModelProbeMemberStatus = "degraded"
@@ -461,132 +422,6 @@ func (e ModelProbeMemberStatus) Valid() bool {
 	case ModelProbeMemberStatusOperational:
 		return true
 	case ModelProbeMemberStatusSkipped:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for ModelProfileFormKind.
-const (
-	ModelProfileFormKindChat      ModelProfileFormKind = "chat"
-	ModelProfileFormKindDocument  ModelProfileFormKind = "document"
-	ModelProfileFormKindEmbedding ModelProfileFormKind = "embedding"
-	ModelProfileFormKindImage     ModelProfileFormKind = "image"
-	ModelProfileFormKindRerank    ModelProfileFormKind = "rerank"
-)
-
-// Valid indicates whether the value is a known member of the ModelProfileFormKind enum.
-func (e ModelProfileFormKind) Valid() bool {
-	switch e {
-	case ModelProfileFormKindChat:
-		return true
-	case ModelProfileFormKindDocument:
-		return true
-	case ModelProfileFormKindEmbedding:
-		return true
-	case ModelProfileFormKindImage:
-		return true
-	case ModelProfileFormKindRerank:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for ModelProfileFormOverMaxOutput.
-const (
-	ModelProfileFormOverMaxOutputClamp  ModelProfileFormOverMaxOutput = "clamp"
-	ModelProfileFormOverMaxOutputReject ModelProfileFormOverMaxOutput = "reject"
-)
-
-// Valid indicates whether the value is a known member of the ModelProfileFormOverMaxOutput enum.
-func (e ModelProfileFormOverMaxOutput) Valid() bool {
-	switch e {
-	case ModelProfileFormOverMaxOutputClamp:
-		return true
-	case ModelProfileFormOverMaxOutputReject:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for ModelProfileFormStatus.
-const (
-	ModelProfileFormStatusActive   ModelProfileFormStatus = "active"
-	ModelProfileFormStatusDisabled ModelProfileFormStatus = "disabled"
-)
-
-// Valid indicates whether the value is a known member of the ModelProfileFormStatus enum.
-func (e ModelProfileFormStatus) Valid() bool {
-	switch e {
-	case ModelProfileFormStatusActive:
-		return true
-	case ModelProfileFormStatusDisabled:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for ModelProfileFormBodyKind.
-const (
-	ModelProfileFormBodyKindChat      ModelProfileFormBodyKind = "chat"
-	ModelProfileFormBodyKindDocument  ModelProfileFormBodyKind = "document"
-	ModelProfileFormBodyKindEmbedding ModelProfileFormBodyKind = "embedding"
-	ModelProfileFormBodyKindImage     ModelProfileFormBodyKind = "image"
-	ModelProfileFormBodyKindRerank    ModelProfileFormBodyKind = "rerank"
-)
-
-// Valid indicates whether the value is a known member of the ModelProfileFormBodyKind enum.
-func (e ModelProfileFormBodyKind) Valid() bool {
-	switch e {
-	case ModelProfileFormBodyKindChat:
-		return true
-	case ModelProfileFormBodyKindDocument:
-		return true
-	case ModelProfileFormBodyKindEmbedding:
-		return true
-	case ModelProfileFormBodyKindImage:
-		return true
-	case ModelProfileFormBodyKindRerank:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for ModelProfileFormBodyOverMaxOutput.
-const (
-	ModelProfileFormBodyOverMaxOutputClamp  ModelProfileFormBodyOverMaxOutput = "clamp"
-	ModelProfileFormBodyOverMaxOutputReject ModelProfileFormBodyOverMaxOutput = "reject"
-)
-
-// Valid indicates whether the value is a known member of the ModelProfileFormBodyOverMaxOutput enum.
-func (e ModelProfileFormBodyOverMaxOutput) Valid() bool {
-	switch e {
-	case ModelProfileFormBodyOverMaxOutputClamp:
-		return true
-	case ModelProfileFormBodyOverMaxOutputReject:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for ModelProfileFormBodyStatus.
-const (
-	ModelProfileFormBodyStatusActive   ModelProfileFormBodyStatus = "active"
-	ModelProfileFormBodyStatusDisabled ModelProfileFormBodyStatus = "disabled"
-)
-
-// Valid indicates whether the value is a known member of the ModelProfileFormBodyStatus enum.
-func (e ModelProfileFormBodyStatus) Valid() bool {
-	switch e {
-	case ModelProfileFormBodyStatusActive:
-		return true
-	case ModelProfileFormBodyStatusDisabled:
 		return true
 	default:
 		return false
@@ -718,7 +553,6 @@ const (
 	Immediate ModelSettingItemEffect = "immediate"
 	NextRun   ModelSettingItemEffect = "next_run"
 	Rebuild   ModelSettingItemEffect = "rebuild"
-	Restart   ModelSettingItemEffect = "restart"
 )
 
 // Valid indicates whether the value is a known member of the ModelSettingItemEffect enum.
@@ -729,8 +563,6 @@ func (e ModelSettingItemEffect) Valid() bool {
 	case NextRun:
 		return true
 	case Rebuild:
-		return true
-	case Restart:
 		return true
 	default:
 		return false
@@ -1767,7 +1599,6 @@ const (
 	ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsDimensionModel            ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsDimension = "model"
 	ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsDimensionModelMapping     ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsDimension = "model_mapping"
 	ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsDimensionPool             ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsDimension = "pool"
-	ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsDimensionProfile          ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsDimension = "profile"
 	ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsDimensionPurpose          ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsDimension = "purpose"
 	ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsDimensionUpstreamEndpoint ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsDimension = "upstream_endpoint"
 	ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsDimensionUser             ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsDimension = "user"
@@ -1797,8 +1628,6 @@ func (e ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParams
 	case ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsDimensionModelMapping:
 		return true
 	case ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsDimensionPool:
-		return true
-	case ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsDimensionProfile:
 		return true
 	case ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsDimensionPurpose:
 		return true
@@ -1920,7 +1749,6 @@ const (
 	ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsDimensionModel            ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsDimension = "model"
 	ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsDimensionModelMapping     ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsDimension = "model_mapping"
 	ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsDimensionPool             ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsDimension = "pool"
-	ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsDimensionProfile          ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsDimension = "profile"
 	ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsDimensionPurpose          ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsDimension = "purpose"
 	ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsDimensionUpstreamEndpoint ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsDimension = "upstream_endpoint"
 	ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsDimensionUser             ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsDimension = "user"
@@ -1950,8 +1778,6 @@ func (e ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsD
 	case ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsDimensionModelMapping:
 		return true
 	case ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsDimensionPool:
-		return true
-	case ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsDimensionProfile:
 		return true
 	case ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsDimensionPurpose:
 		return true
@@ -2036,24 +1862,6 @@ func (e ModelGatewayServiceModelListPoolsParamsSortOrder) Valid() bool {
 	}
 }
 
-// Defines values for ModelGatewayServiceModelListPricesParamsScope.
-const (
-	ModelGatewayServiceModelListPricesParamsScopeGlobal  ModelGatewayServiceModelListPricesParamsScope = "global"
-	ModelGatewayServiceModelListPricesParamsScopeProfile ModelGatewayServiceModelListPricesParamsScope = "profile"
-)
-
-// Valid indicates whether the value is a known member of the ModelGatewayServiceModelListPricesParamsScope enum.
-func (e ModelGatewayServiceModelListPricesParamsScope) Valid() bool {
-	switch e {
-	case ModelGatewayServiceModelListPricesParamsScopeGlobal:
-		return true
-	case ModelGatewayServiceModelListPricesParamsScopeProfile:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for ModelGatewayServiceModelListPricesParamsSortOrder.
 const (
 	ModelGatewayServiceModelListPricesParamsSortOrderAsc  ModelGatewayServiceModelListPricesParamsSortOrder = "asc"
@@ -2072,78 +1880,21 @@ func (e ModelGatewayServiceModelListPricesParamsSortOrder) Valid() bool {
 	}
 }
 
-// Defines values for ModelGatewayServiceModelListProfilesParamsBound.
-const (
-	Bound   ModelGatewayServiceModelListProfilesParamsBound = "bound"
-	Unbound ModelGatewayServiceModelListProfilesParamsBound = "unbound"
-)
-
-// Valid indicates whether the value is a known member of the ModelGatewayServiceModelListProfilesParamsBound enum.
-func (e ModelGatewayServiceModelListProfilesParamsBound) Valid() bool {
-	switch e {
-	case Bound:
-		return true
-	case Unbound:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for ModelGatewayServiceModelListProfilesParamsSortOrder.
-const (
-	ModelGatewayServiceModelListProfilesParamsSortOrderAsc  ModelGatewayServiceModelListProfilesParamsSortOrder = "asc"
-	ModelGatewayServiceModelListProfilesParamsSortOrderDesc ModelGatewayServiceModelListProfilesParamsSortOrder = "desc"
-)
-
-// Valid indicates whether the value is a known member of the ModelGatewayServiceModelListProfilesParamsSortOrder enum.
-func (e ModelGatewayServiceModelListProfilesParamsSortOrder) Valid() bool {
-	switch e {
-	case ModelGatewayServiceModelListProfilesParamsSortOrderAsc:
-		return true
-	case ModelGatewayServiceModelListProfilesParamsSortOrderDesc:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for ModelGatewayObservabilityServiceModelObservationProfileEventStatsParamsRange.
-const (
-	ModelGatewayObservabilityServiceModelObservationProfileEventStatsParamsRangeN24h ModelGatewayObservabilityServiceModelObservationProfileEventStatsParamsRange = "24h"
-	ModelGatewayObservabilityServiceModelObservationProfileEventStatsParamsRangeN30d ModelGatewayObservabilityServiceModelObservationProfileEventStatsParamsRange = "30d"
-	ModelGatewayObservabilityServiceModelObservationProfileEventStatsParamsRangeN7d  ModelGatewayObservabilityServiceModelObservationProfileEventStatsParamsRange = "7d"
-)
-
-// Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationProfileEventStatsParamsRange enum.
-func (e ModelGatewayObservabilityServiceModelObservationProfileEventStatsParamsRange) Valid() bool {
-	switch e {
-	case ModelGatewayObservabilityServiceModelObservationProfileEventStatsParamsRangeN24h:
-		return true
-	case ModelGatewayObservabilityServiceModelObservationProfileEventStatsParamsRangeN30d:
-		return true
-	case ModelGatewayObservabilityServiceModelObservationProfileEventStatsParamsRangeN7d:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRange.
 const (
-	ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRangeN24h ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRange = "24h"
-	ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRangeN30d ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRange = "30d"
-	ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRangeN7d  ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRange = "7d"
+	N24h ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRange = "24h"
+	N30d ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRange = "30d"
+	N7d  ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRange = "7d"
 )
 
 // Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRange enum.
 func (e ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRange) Valid() bool {
 	switch e {
-	case ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRangeN24h:
+	case N24h:
 		return true
-	case ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRangeN30d:
+	case N30d:
 		return true
-	case ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRangeN7d:
+	case N7d:
 		return true
 	default:
 		return false
@@ -2338,16 +2089,16 @@ func (e ModelGatewayObservabilityServiceModelObservationUsageParamsSortBy) Valid
 
 // Defines values for ModelGatewayObservabilityServiceModelObservationUsageParamsSortOrder.
 const (
-	ModelGatewayObservabilityServiceModelObservationUsageParamsSortOrderAsc  ModelGatewayObservabilityServiceModelObservationUsageParamsSortOrder = "asc"
-	ModelGatewayObservabilityServiceModelObservationUsageParamsSortOrderDesc ModelGatewayObservabilityServiceModelObservationUsageParamsSortOrder = "desc"
+	Asc  ModelGatewayObservabilityServiceModelObservationUsageParamsSortOrder = "asc"
+	Desc ModelGatewayObservabilityServiceModelObservationUsageParamsSortOrder = "desc"
 )
 
 // Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationUsageParamsSortOrder enum.
 func (e ModelGatewayObservabilityServiceModelObservationUsageParamsSortOrder) Valid() bool {
 	switch e {
-	case ModelGatewayObservabilityServiceModelObservationUsageParamsSortOrderAsc:
+	case Asc:
 		return true
-	case ModelGatewayObservabilityServiceModelObservationUsageParamsSortOrderDesc:
+	case Desc:
 		return true
 	default:
 		return false
@@ -2427,7 +2178,6 @@ const (
 	ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimensionModel            ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension = "model"
 	ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimensionModelMapping     ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension = "model_mapping"
 	ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimensionPool             ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension = "pool"
-	ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimensionProfile          ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension = "profile"
 	ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimensionPurpose          ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension = "purpose"
 	ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimensionUpstreamEndpoint ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension = "upstream_endpoint"
 	ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimensionUser             ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension = "user"
@@ -2458,8 +2208,6 @@ func (e ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDime
 		return true
 	case ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimensionPool:
 		return true
-	case ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimensionProfile:
-		return true
 	case ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimensionPurpose:
 		return true
 	case ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimensionUpstreamEndpoint:
@@ -2484,7 +2232,6 @@ const (
 	ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension2Model            ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension2 = "model"
 	ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension2ModelMapping     ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension2 = "model_mapping"
 	ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension2Pool             ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension2 = "pool"
-	ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension2Profile          ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension2 = "profile"
 	ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension2Purpose          ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension2 = "purpose"
 	ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension2UpstreamEndpoint ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension2 = "upstream_endpoint"
 	ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension2User             ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension2 = "user"
@@ -2514,8 +2261,6 @@ func (e ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDime
 	case ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension2ModelMapping:
 		return true
 	case ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension2Pool:
-		return true
-	case ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension2Profile:
 		return true
 	case ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsDimension2Purpose:
 		return true
@@ -2694,7 +2439,6 @@ const (
 	ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimension2Model            ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimension2 = "model"
 	ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimension2ModelMapping     ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimension2 = "model_mapping"
 	ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimension2Pool             ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimension2 = "pool"
-	ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimension2Profile          ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimension2 = "profile"
 	ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimension2Purpose          ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimension2 = "purpose"
 	ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimension2UpstreamEndpoint ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimension2 = "upstream_endpoint"
 	ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimension2User             ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimension2 = "user"
@@ -2724,8 +2468,6 @@ func (e ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimens
 	case ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimension2ModelMapping:
 		return true
 	case ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimension2Pool:
-		return true
-	case ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimension2Profile:
 		return true
 	case ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimension2Purpose:
 		return true
@@ -2839,19 +2581,19 @@ func (e ModelGatewayObservabilityServiceModelObservationUsageTrendParamsModelSou
 
 // Defines values for ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode.
 const (
-	Image      ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "image"
-	PerRequest ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "per_request"
-	Token      ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "token"
+	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModeImage      ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "image"
+	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModePerRequest ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "per_request"
+	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModeToken      ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "token"
 )
 
 // Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode enum.
 func (e ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode) Valid() bool {
 	switch e {
-	case Image:
+	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModeImage:
 		return true
-	case PerRequest:
+	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModePerRequest:
 		return true
-	case Token:
+	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModeToken:
 		return true
 	default:
 		return false
@@ -2889,7 +2631,6 @@ const (
 	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsDimension2Model            ModelGatewayObservabilityServiceModelObservationUsageTrendParamsDimension2 = "model"
 	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsDimension2ModelMapping     ModelGatewayObservabilityServiceModelObservationUsageTrendParamsDimension2 = "model_mapping"
 	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsDimension2Pool             ModelGatewayObservabilityServiceModelObservationUsageTrendParamsDimension2 = "pool"
-	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsDimension2Profile          ModelGatewayObservabilityServiceModelObservationUsageTrendParamsDimension2 = "profile"
 	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsDimension2Purpose          ModelGatewayObservabilityServiceModelObservationUsageTrendParamsDimension2 = "purpose"
 	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsDimension2UpstreamEndpoint ModelGatewayObservabilityServiceModelObservationUsageTrendParamsDimension2 = "upstream_endpoint"
 	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsDimension2User             ModelGatewayObservabilityServiceModelObservationUsageTrendParamsDimension2 = "user"
@@ -2919,8 +2660,6 @@ func (e ModelGatewayObservabilityServiceModelObservationUsageTrendParamsDimensio
 	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsDimension2ModelMapping:
 		return true
 	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsDimension2Pool:
-		return true
-	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsDimension2Profile:
 		return true
 	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsDimension2Purpose:
 		return true
@@ -7979,14 +7718,11 @@ type KnowledgeGapInfo struct {
 // 管理端：索引状态与重建
 // ============================================================================
 type KnowledgeIndexStatusData struct {
-	// Configured 托管时 knowledge.* 用途 → 是否配置；旧模式 aisearch | bailian | ark
+	// Configured knowledge.* 用途 → 是否已在模型网关配置
 	Configured *map[string]bool `json:"configured,omitempty"`
 
 	// DenseEnabled 数据库是否支持向量检索
 	DenseEnabled *bool `json:"denseEnabled,omitempty"`
-
-	// GatewayManaged 已完成本地 SDK 接线，不代表所有用途均配置
-	GatewayManaged *bool `json:"gatewayManaged,omitempty"`
 
 	// Stages 各阶段载体数
 	Stages *map[string]int64 `json:"stages,omitempty"`
@@ -8843,8 +8579,6 @@ type ModelAttemptItem struct {
 	ModelEvidence       *ModelEvidence        `json:"modelEvidence,omitempty"`
 	PoolId              int64                 `json:"poolId"`
 	PoolName            *string               `json:"poolName,omitempty"`
-	ProfileId           int64                 `json:"profileId"`
-	ProfileName         *string               `json:"profileName,omitempty"`
 	Provider            string                `json:"provider"`
 	ProviderErrorCode   string                `json:"providerErrorCode"`
 	ProviderErrorType   string                `json:"providerErrorType"`
@@ -8857,6 +8591,7 @@ type ModelAttemptItem struct {
 	SlotInUse           *int64                `json:"slotInUse,omitempty"`
 	SlotLimit           *int64                `json:"slotLimit,omitempty"`
 	StatusCode          int64                 `json:"statusCode"`
+	Target              string                `json:"target"`
 	TimingMs            map[string]int64      `json:"timingMs"`
 	TransportCounts     *ModelTransportCounts `json:"transportCounts,omitempty"`
 	UpstreamEndpoint    string                `json:"upstreamEndpoint"`
@@ -9081,7 +8816,6 @@ type ModelConnector struct {
 	PoolModeRetryCount         int32                    `json:"poolModeRetryCount"`
 	PoolModeRetryStatusCodes   *[]int32                 `json:"poolModeRetryStatusCodes,omitempty"`
 	Pools                      []ModelConnectorPoolRef  `json:"pools"`
-	Prefix                     string                   `json:"prefix"`
 	Preset                     string                   `json:"preset"`
 	Priority                   int32                    `json:"priority"`
 	ProbeAutoRecover           bool                     `json:"probeAutoRecover"`
@@ -9091,7 +8825,6 @@ type ModelConnector struct {
 	ProxyUrl                   string                   `json:"proxyUrl"`
 	RateLimitResetAt           *int64                   `json:"rateLimitResetAt,omitempty"`
 	RateLimitedAt              *int64                   `json:"rateLimitedAt,omitempty"`
-	RateMultiplier             string                   `json:"rateMultiplier"`
 	RequestRetry               *int32                   `json:"requestRetry,omitempty"`
 	RequestScopedErrors        []ModelRequestScopedRule `json:"requestScopedErrors"`
 	RequestScopedErrorsInherit bool                     `json:"requestScopedErrorsInherit"`
@@ -9252,7 +8985,6 @@ type ModelConnectorForm struct {
 	PoolModeRetryCount       *int32                      `json:"pool_mode_retry_count,omitempty"`
 	PoolModeRetryStatusCodes *[]int32                    `json:"pool_mode_retry_status_codes,omitempty"`
 	Pools                    *[]ModelPoolMembershipInput `json:"pools,omitempty"`
-	Prefix                   *string                     `json:"prefix,omitempty"`
 	Preset                   *string                     `json:"preset,omitempty"`
 	Priority                 *int32                      `json:"priority,omitempty"`
 	ProbeAutoRecover         *bool                       `json:"probe_auto_recover,omitempty"`
@@ -9260,7 +8992,6 @@ type ModelConnectorForm struct {
 	ProbeIntervalSeconds     *int32                      `json:"probe_interval_seconds,omitempty"`
 	ProbeModel               *string                     `json:"probe_model,omitempty"`
 	ProxyUrl                 *string                     `json:"proxy_url,omitempty"`
-	RateMultiplier           *string                     `json:"rate_multiplier,omitempty"`
 	RequestRetry             *int32                      `json:"request_retry,omitempty"`
 	RequestScopedErrors      *[]ModelRequestScopedRule   `json:"request_scoped_errors,omitempty"`
 	RerankStyle              *string                     `json:"rerank_style,omitempty"`
@@ -9311,7 +9042,6 @@ type ModelConnectorFormBody struct {
 	PoolModeRetryCount       *int32                        `json:"pool_mode_retry_count,omitempty"`
 	PoolModeRetryStatusCodes *[]int32                      `json:"pool_mode_retry_status_codes,omitempty"`
 	Pools                    *[]ModelPoolMembershipInput   `json:"pools,omitempty"`
-	Prefix                   *string                       `json:"prefix,omitempty"`
 	Preset                   *string                       `json:"preset,omitempty"`
 	Priority                 *int32                        `json:"priority,omitempty"`
 	ProbeAutoRecover         *bool                         `json:"probe_auto_recover,omitempty"`
@@ -9319,7 +9049,6 @@ type ModelConnectorFormBody struct {
 	ProbeIntervalSeconds     *int32                        `json:"probe_interval_seconds,omitempty"`
 	ProbeModel               *string                       `json:"probe_model,omitempty"`
 	ProxyUrl                 *string                       `json:"proxy_url,omitempty"`
-	RateMultiplier           *string                       `json:"rate_multiplier,omitempty"`
 	RequestRetry             *int32                        `json:"request_retry,omitempty"`
 	RequestScopedErrors      *[]ModelRequestScopedRule     `json:"request_scoped_errors,omitempty"`
 	RerankStyle              *string                       `json:"rerank_style,omitempty"`
@@ -9421,7 +9150,7 @@ type ModelConnectorImportResponseBody struct {
 type ModelConnectorModels struct {
 	Detail     []ModelUpstreamModelEntry `json:"detail"`
 	Options    []ModelModelOption        `json:"options"`
-	References []ModelProfileReference   `json:"references"`
+	References []ModelTargetReference    `json:"references"`
 
 	// SyncAttemptedAt 最近一次同步尝试的时间（成功或失败）；syncError 非空时就是失败发生的时间
 	SyncAttemptedAt *int64  `json:"syncAttemptedAt,omitempty"`
@@ -9630,7 +9359,6 @@ type ModelCostBreakdown struct {
 	BillingTier               string  `json:"billingTier"`
 	CacheCreationCost         float64 `json:"cacheCreationCost"`
 	CacheReadCost             float64 `json:"cacheReadCost"`
-	ConnectorRateMultiplier   float64 `json:"connectorRateMultiplier"`
 	ImageInputCost            float64 `json:"imageInputCost"`
 	ImageOutputCost           float64 `json:"imageOutputCost"`
 	InputCost                 float64 `json:"inputCost"`
@@ -9641,11 +9369,9 @@ type ModelCostBreakdown struct {
 	PeakMultiplier            float64 `json:"peakMultiplier"`
 	PerRequestCost            float64 `json:"perRequestCost"`
 	PriorityPriceApplied      bool    `json:"priorityPriceApplied"`
-	ReasoningMultiplier       float64 `json:"reasoningMultiplier"`
 	ServiceTier               string  `json:"serviceTier"`
 	ServiceTierDowngraded     bool    `json:"serviceTierDowngraded"`
 	ServiceTierMultiplier     float64 `json:"serviceTierMultiplier"`
-	TimeMultiplier            float64 `json:"timeMultiplier"`
 	TotalCost                 float64 `json:"totalCost"`
 }
 
@@ -9767,20 +9493,13 @@ type ModelEntityEventStats struct {
 	FirstTokenSampleCount int64            `json:"firstTokenSampleCount"`
 	From                  int64            `json:"from"`
 	PoolFallbackCount     *int64           `json:"poolFallbackCount,omitempty"`
-	ProfileFallbackCount  *int64           `json:"profileFallbackCount,omitempty"`
 	RequestCount          int64            `json:"requestCount"`
 	RetentionDays         int64            `json:"retentionDays"`
 	Source                string           `json:"source"`
+	TargetFallbackCount   *int64           `json:"targetFallbackCount,omitempty"`
 	TruncatedRequests     int64            `json:"truncatedRequests"`
 	Until                 int64            `json:"until"`
 	WindowCovered         bool             `json:"windowCovered"`
-}
-
-// ModelEntityEventStatsResponseBody defines model for ModelEntityEventStatsResponseBody.
-type ModelEntityEventStatsResponseBody struct {
-	Code *int64                 `json:"code,omitempty"`
-	Data *ModelEntityEventStats `json:"data,omitempty"`
-	Msg  *string                `json:"msg,omitempty"`
 }
 
 // ModelEntityUsageStats defines model for ModelEntityUsageStats.
@@ -9789,7 +9508,6 @@ type ModelEntityUsageStats struct {
 	ByCaller    *ModelUsageBreakdownResult `json:"byCaller,omitempty"`
 	ByConnector *ModelUsageBreakdownResult `json:"byConnector,omitempty"`
 	ByModel     *ModelUsageBreakdownResult `json:"byModel,omitempty"`
-	ByProfile   *ModelUsageBreakdownResult `json:"byProfile,omitempty"`
 	ByPurpose   *ModelUsageBreakdownResult `json:"byPurpose,omitempty"`
 	Daily       *ModelUsageBreakdownResult `json:"daily,omitempty"`
 	Days        int64                      `json:"days"`
@@ -9858,7 +9576,7 @@ type ModelEstimateDraftPrice struct {
 	OutputPrice       *string `json:"output_price,omitempty"`
 }
 
-// ModelEstimateRates 按 token 计费时公式实际用的每 token 人民币单价（已含命中档、服务档位、长上下文倍率；不含整单的分时 / 推理倍率）
+// ModelEstimateRates 按 token 计费时公式实际用的每 token 人民币单价（已含命中档、服务档位、长上下文倍率）
 type ModelEstimateRates struct {
 	CacheBreakdown bool    `json:"cacheBreakdown"`
 	CacheRead      float64 `json:"cacheRead"`
@@ -9873,19 +9591,16 @@ type ModelEstimateRates struct {
 // ModelEstimateRequestBody defines model for ModelEstimateRequestBody.
 type ModelEstimateRequestBody struct {
 	At            *int64                                 `json:"at,omitempty"`
-	ConnectorId   *int64                                 `json:"connector_id,omitempty"`
 	DraftCurrency *ModelEstimateRequestBodyDraftCurrency `json:"draft_currency,omitempty"`
 	DraftPrice    *ModelEstimateDraftPrice               `json:"draft_price,omitempty"`
 
-	// DraftScope 草稿放在哪一层：profile = 档位覆盖层（新建档位时没有 profileId 也按档位层算，留空沿用下层）；global = 该模型的全局手动条目。缺省：有 profileId 为 profile，否则 global
-	DraftScope *ModelEstimateRequestBodyDraftScope `json:"draft_scope,omitempty"`
+	// DraftTiers 阶梯编辑器的未保存分档（按 token 模式校验），预览时当作该模型手动条目的分档
+	DraftTiers *[]ModelPriceTier `json:"draft_tiers,omitempty"`
+	HitRate    *float64          `json:"hit_rate,omitempty"`
+	Model      string            `json:"model"`
 
-	// DraftTiers 阶梯编辑器的未保存分档（按 token 模式校验），预览时当作档位的 price_tiers
-	DraftTiers      *[]ModelPriceTier `json:"draft_tiers,omitempty"`
-	HitRate         *float64          `json:"hit_rate,omitempty"`
-	Model           *string           `json:"model,omitempty"`
-	ProfileId       *int64            `json:"profile_id,omitempty"`
-	ReasoningEffort *string           `json:"reasoning_effort,omitempty"`
+	// PoolId 给了就按该池的长上下文计价开关算。
+	PoolId *int64 `json:"pool_id,omitempty"`
 
 	// ServiceTier 服务档位（第 6 章 6.6）：priority / fast / flex / ultrafast，空 = default
 	ServiceTier *string            `json:"service_tier,omitempty"`
@@ -9894,9 +9609,6 @@ type ModelEstimateRequestBody struct {
 
 // ModelEstimateRequestBodyDraftCurrency defines model for ModelEstimateRequestBody.DraftCurrency.
 type ModelEstimateRequestBodyDraftCurrency string
-
-// ModelEstimateRequestBodyDraftScope 草稿放在哪一层：profile = 档位覆盖层（新建档位时没有 profileId 也按档位层算，留空沿用下层）；global = 该模型的全局手动条目。缺省：有 profileId 为 profile，否则 global
-type ModelEstimateRequestBodyDraftScope string
 
 // ModelEstimateResponseBody defines model for ModelEstimateResponseBody.
 type ModelEstimateResponseBody struct {
@@ -9920,7 +9632,7 @@ type ModelEstimateResult struct {
 	PerThousand    float64                    `json:"perThousand"`
 	PriceSource    string                     `json:"priceSource"`
 
-	// Rates 按 token 计费时公式实际用的每 token 人民币单价（已含命中档、服务档位、长上下文倍率；不含整单的分时 / 推理倍率）
+	// Rates 按 token 计费时公式实际用的每 token 人民币单价（已含命中档、服务档位、长上下文倍率）
 	Rates         *ModelEstimateRates       `json:"rates,omitempty"`
 	TierCount     int32                     `json:"tierCount"`
 	TierPreview   []ModelTierPreviewSegment `json:"tierPreview"`
@@ -9970,20 +9682,6 @@ type ModelHealthScore struct {
 	Score         *float64 `json:"score,omitempty"`
 	TtftP95Ms     *float64 `json:"ttftP95Ms,omitempty"`
 	TtftScore     *float64 `json:"ttftScore,omitempty"`
-}
-
-// ModelImagePage defines model for ModelImagePage.
-type ModelImagePage struct {
-	Estimated bool                    `json:"estimated"`
-	Items     []ModelRequestImageItem `json:"items"`
-	Source    string                  `json:"source"`
-}
-
-// ModelImagePageResponseBody defines model for ModelImagePageResponseBody.
-type ModelImagePageResponseBody struct {
-	Code int64           `json:"code"`
-	Data *ModelImagePage `json:"data,omitempty"`
-	Msg  string          `json:"msg"`
 }
 
 // ModelImagesToday defines model for ModelImagesToday.
@@ -10104,14 +9802,12 @@ type ModelModelSyncResult struct {
 // ModelModelSyncResultSource defines model for ModelModelSyncResult.Source.
 type ModelModelSyncResultSource string
 
-// ModelObservationAccessRequestBody defines model for ModelObservationAccessRequestBody.
-type ModelObservationAccessRequestBody struct {
-	Attempt   *int64    `json:"attempt,omitempty"`
-	Part      *string   `json:"part,omitempty"`
-	Reason    string    `json:"reason"`
-	RequestId string    `json:"requestId"`
-	Slots     *[]string `json:"slots,omitempty"`
-	Target    *string   `json:"target,omitempty"`
+// ModelObservationCurlRequestBody defines model for ModelObservationCurlRequestBody.
+type ModelObservationCurlRequestBody struct {
+	Attempt   *int64  `json:"attempt,omitempty"`
+	Reason    string  `json:"reason"`
+	RequestId string  `json:"requestId"`
+	Target    *string `json:"target,omitempty"`
 }
 
 // ModelObservationModelOptions defines model for ModelObservationModelOptions.
@@ -10157,40 +9853,40 @@ type ModelOperationalStateResponseBody struct {
 	Msg  *string                `json:"msg,omitempty"`
 }
 
-// ModelPayloadChange defines model for ModelPayloadChange.
-type ModelPayloadChange struct {
-	Action string `json:"action"`
-	Group  string `json:"group"`
-	Path   string `json:"path"`
-	Reason string `json:"reason"`
-	Rule   int32  `json:"rule"`
+// ModelOurModel 「我们的模型」：用途目标的标准名 ∪ 启用池对外暴露的名字，按手动价 > LiteLLM 价计费。
+// 按 token 计价的金额是人民币 / 百万 token，按次计价是人民币 / 次。
+type ModelOurModel struct {
+	BillingMode   *string             `json:"billingMode,omitempty"`
+	CacheRead     *float64            `json:"cacheRead,omitempty"`
+	CacheWrite    *float64            `json:"cacheWrite,omitempty"`
+	Input         *float64            `json:"input,omitempty"`
+	ManualPriceId *int64              `json:"manualPriceId,omitempty"`
+	Model         string              `json:"model"`
+	Output        *float64            `json:"output,omitempty"`
+	PerRequest    *float64            `json:"perRequest,omitempty"`
+	Pools         []string            `json:"pools"`
+	Purposes      []string            `json:"purposes"`
+	Source        ModelOurModelSource `json:"source"`
+	Status        ModelOurModelStatus `json:"status"`
 }
 
-// ModelPayloadPreview original = 调用方请求；translated = 翻译成档位端点协议后的上游请求；result = 应用规则后。
-type ModelPayloadPreview struct {
-	Changes    []ModelPayloadChange `json:"changes"`
-	Original   string               `json:"original"`
-	Result     string               `json:"result"`
-	Translated string               `json:"translated"`
+// ModelOurModelSource defines model for ModelOurModel.Source.
+type ModelOurModelSource string
+
+// ModelOurModelStatus defines model for ModelOurModel.Status.
+type ModelOurModelStatus string
+
+// ModelOurModelList defines model for ModelOurModelList.
+type ModelOurModelList struct {
+	FxRate float64         `json:"fxRate"`
+	Items  []ModelOurModel `json:"items"`
 }
 
-// ModelPayloadPreviewRequestBody defines model for ModelPayloadPreviewRequestBody.
-type ModelPayloadPreviewRequestBody struct {
-	Body         *string            `json:"body,omitempty"`
-	Draft        *ModelProfileForm  `json:"draft,omitempty"`
-	FromProtocol *string            `json:"from_protocol,omitempty"`
-	Headers      *map[string]string `json:"headers,omitempty"`
-	ProfileId    *int64             `json:"profile_id,omitempty"`
-	Sample       *string            `json:"sample,omitempty"`
-}
-
-// ModelPayloadPreviewResponseBody defines model for ModelPayloadPreviewResponseBody.
-type ModelPayloadPreviewResponseBody struct {
-	Code int64 `json:"code"`
-
-	// Data original = 调用方请求；translated = 翻译成档位端点协议后的上游请求；result = 应用规则后。
-	Data *ModelPayloadPreview `json:"data,omitempty"`
-	Msg  string               `json:"msg"`
+// ModelOurModelListResponseBody defines model for ModelOurModelListResponseBody.
+type ModelOurModelListResponseBody struct {
+	Code int64              `json:"code"`
+	Data *ModelOurModelList `json:"data,omitempty"`
+	Msg  string             `json:"msg"`
 }
 
 // ModelPlatformPreset defines model for ModelPlatformPreset.
@@ -10230,7 +9926,6 @@ type ModelPool struct {
 	ConcurrencyMax                 int32             `json:"concurrencyMax"`
 	ConcurrencyUsed                *int64            `json:"concurrencyUsed,omitempty"`
 	CreatedAt                      int64             `json:"createdAt"`
-	DefaultMappedModel             string            `json:"defaultMappedModel"`
 	Description                    *string           `json:"description,omitempty"`
 	FallbackPoolId                 *int64            `json:"fallbackPoolId,omitempty"`
 	FallbackPoolIdOnInvalidRequest *int64            `json:"fallbackPoolIdOnInvalidRequest,omitempty"`
@@ -10249,7 +9944,7 @@ type ModelPool struct {
 	ModelRoutingEnabled bool             `json:"modelRoutingEnabled"`
 	Name                string           `json:"name"`
 	Platform            string           `json:"platform"`
-	ProfileCount        int32            `json:"profileCount"`
+	PurposeCount        int32            `json:"purposeCount"`
 	Slug                string           `json:"slug"`
 	SortOrder           int32            `json:"sortOrder"`
 	Status              string           `json:"status"`
@@ -10283,7 +9978,6 @@ type ModelPoolCapacityResponseBody struct {
 type ModelPoolFormBody struct {
 	ClearFields                    *[]string           `json:"clear_fields,omitempty"`
 	CopyMembersFromPoolIds         *[]int64            `json:"copy_members_from_pool_ids,omitempty"`
-	DefaultMappedModel             *string             `json:"default_mapped_model,omitempty"`
 	Description                    *string             `json:"description,omitempty"`
 	FallbackPoolId                 *int64              `json:"fallback_pool_id,omitempty"`
 	FallbackPoolIdOnInvalidRequest *int64              `json:"fallback_pool_id_on_invalid_request,omitempty"`
@@ -10327,7 +10021,6 @@ type ModelPoolMember struct {
 	ConnectorStatus    string `json:"connectorStatus"`
 	Enabled            bool   `json:"enabled"`
 	Priority           int32  `json:"priority"`
-	RateMultiplier     string `json:"rateMultiplier"`
 	Schedulable        bool   `json:"schedulable"`
 
 	// StatusUntil 限流 / 过载 / 临时不可调度的截止时间（毫秒），其余状态为空。
@@ -10474,28 +10167,6 @@ type ModelPriceChainStep struct {
 	Status   string   `json:"status"`
 }
 
-// ModelPriceCloneRequestBody defines model for ModelPriceCloneRequestBody.
-type ModelPriceCloneRequestBody struct {
-	ProfileId      *int64 `json:"profile_id,omitempty"`
-	ProfileVersion *int64 `json:"profile_version,omitempty"`
-}
-
-// ModelPriceCloneResponseBody defines model for ModelPriceCloneResponseBody.
-type ModelPriceCloneResponseBody struct {
-	Code int64                  `json:"code"`
-	Data *ModelPriceCloneResult `json:"data,omitempty"`
-	Msg  string                 `json:"msg"`
-}
-
-// ModelPriceCloneResult defines model for ModelPriceCloneResult.
-type ModelPriceCloneResult struct {
-	// Price ---------------------------------------------------------------------------
-	// 价目表（第 10 章、第 6 章）
-	// ---------------------------------------------------------------------------
-	Price   *ModelPriceEntry `json:"price,omitempty"`
-	Profile *ModelProfile    `json:"profile,omitempty"`
-}
-
 // ModelPriceEntry ---------------------------------------------------------------------------
 // 价目表（第 10 章、第 6 章）
 // ---------------------------------------------------------------------------
@@ -10574,40 +10245,6 @@ type ModelPriceListResponseBody struct {
 	Msg  string          `json:"msg"`
 }
 
-// ModelPriceModifiers defines model for ModelPriceModifiers.
-type ModelPriceModifiers struct {
-	FastMultiplier             *float64            `json:"fast_multiplier,omitempty"`
-	FlexMultiplier             *float64            `json:"flex_multiplier,omitempty"`
-	ReasoningEffortMultipliers *map[string]float64 `json:"reasoning_effort_multipliers,omitempty"`
-	TimePricing                *ModelTimePricing   `json:"time_pricing,omitempty"`
-}
-
-// ModelPriceOverrideForm defines model for ModelPriceOverrideForm.
-type ModelPriceOverrideForm struct {
-	BillingMode          *ModelPriceOverrideFormBillingMode `json:"billing_mode,omitempty"`
-	BillingModelSource   *string                            `json:"billing_model_source,omitempty"`
-	CacheReadPrice       *string                            `json:"cache_read_price,omitempty"`
-	CacheWrite1hPrice    *string                            `json:"cache_write_1h_price,omitempty"`
-	CacheWritePrice      *string                            `json:"cache_write_price,omitempty"`
-	ClearInputImagesFree *bool                              `json:"clear_input_images_free,omitempty"`
-	Currency             *ModelPriceOverrideFormCurrency    `json:"currency,omitempty"`
-	ImageInputPrice      *string                            `json:"image_input_price,omitempty"`
-	ImageOutputPrice     *string                            `json:"image_output_price,omitempty"`
-	InputImagePrice      *string                            `json:"input_image_price,omitempty"`
-	InputImagesFree      *int32                             `json:"input_images_free,omitempty"`
-	InputPrice           *string                            `json:"input_price,omitempty"`
-	OutputPrice          *string                            `json:"output_price,omitempty"`
-	PerRequestPrice      *string                            `json:"per_request_price,omitempty"`
-	PriceModifiers       *ModelPriceModifiers               `json:"price_modifiers,omitempty"`
-	PriceTiers           *[]ModelPriceTier                  `json:"price_tiers,omitempty"`
-}
-
-// ModelPriceOverrideFormBillingMode defines model for ModelPriceOverrideForm.BillingMode.
-type ModelPriceOverrideFormBillingMode string
-
-// ModelPriceOverrideFormCurrency defines model for ModelPriceOverrideForm.Currency.
-type ModelPriceOverrideFormCurrency string
-
 // ModelPricePage defines model for ModelPricePage.
 type ModelPricePage struct {
 	FxRate   float64         `json:"fxRate"`
@@ -10643,28 +10280,12 @@ type ModelPriceRow struct {
 	// Price ---------------------------------------------------------------------------
 	// 价目表（第 10 章、第 6 章）
 	// ---------------------------------------------------------------------------
-	Price    *ModelPriceEntry   `json:"price,omitempty"`
-	Profile  *ModelProfile      `json:"profile,omitempty"`
-	Scope    ModelPriceRowScope `json:"scope"`
-	Shadowed bool               `json:"shadowed"`
-	UsedBy   []ModelPriceUse    `json:"usedBy"`
-}
-
-// ModelPriceRowScope defines model for ModelPriceRow.Scope.
-type ModelPriceRowScope string
-
-// ModelPriceSummary defines model for ModelPriceSummary.
-type ModelPriceSummary struct {
-	BillingMode   string   `json:"billingMode"`
-	InputCny      *float64 `json:"inputCny,omitempty"`
-	OutputCny     *float64 `json:"outputCny,omitempty"`
-	PerRequestCny *float64 `json:"perRequestCny,omitempty"`
-	Source        string   `json:"source"`
-	TierCount     int32    `json:"tierCount"`
+	Price  ModelPriceEntry `json:"price"`
+	UsedBy []ModelPriceUse `json:"usedBy"`
 }
 
 // ModelPriceTier ---------------------------------------------------------------------------
-// 档位（第 10 章）
+// 价格分档、推理映射与探活（第 10 章）
 // ---------------------------------------------------------------------------
 type ModelPriceTier struct {
 	CacheReadMultiplier  *float64 `json:"cache_read_multiplier,omitempty"`
@@ -10684,11 +10305,11 @@ type ModelPriceTier struct {
 	TierLabel            *string  `json:"tier_label,omitempty"`
 }
 
-// ModelPriceUse defines model for ModelPriceUse.
+// ModelPriceUse 用这条价目计价的用途目标；overridden = LiteLLM 条目的每个价格字段都被手动条目覆盖。
 type ModelPriceUse struct {
-	Overridden  bool   `json:"overridden"`
-	ProfileId   int64  `json:"profileId"`
-	ProfileName string `json:"profileName"`
+	Model      string `json:"model"`
+	Overridden bool   `json:"overridden"`
+	Purpose    string `json:"purpose"`
 }
 
 // ModelProbeMember defines model for ModelProbeMember.
@@ -10725,16 +10346,23 @@ type ModelProbePageResponseBody struct {
 
 // ModelProbeResult defines model for ModelProbeResult.
 type ModelProbeResult struct {
-	At        int64              `json:"at"`
-	Cost      float64            `json:"cost"`
-	Draft     bool               `json:"draft"`
-	DraftHash string             `json:"draftHash"`
-	Members   []ModelProbeMember `json:"members"`
-	Operator  *string            `json:"operator,omitempty"`
-	Passed    bool               `json:"passed"`
-	Pending   bool               `json:"pending"`
-	ProbeId   string             `json:"probeId"`
-	ProfileId int64              `json:"profileId"`
+	At    int64   `json:"at"`
+	Cost  float64 `json:"cost"`
+	Draft bool    `json:"draft"`
+
+	// Endpoint 探活实际调用的端点（目标未填时为推导结果）。
+	Endpoint string             `json:"endpoint"`
+	Members  []ModelProbeMember `json:"members"`
+	Model    string             `json:"model"`
+	Operator *string            `json:"operator,omitempty"`
+	Passed   bool               `json:"passed"`
+	Pending  bool               `json:"pending"`
+	PoolId   int64              `json:"poolId"`
+	ProbeId  string             `json:"probeId"`
+	Purpose  string             `json:"purpose"`
+
+	// SettingsHash 探活所用用途设置的哈希：只有与用途当前设置一致的成功探活才算数。
+	SettingsHash string `json:"settingsHash"`
 }
 
 // ModelProbeResultResponseBody defines model for ModelProbeResultResponseBody.
@@ -10742,261 +10370,6 @@ type ModelProbeResultResponseBody struct {
 	Code int64             `json:"code"`
 	Data *ModelProbeResult `json:"data,omitempty"`
 	Msg  string            `json:"msg"`
-}
-
-// ModelProfile defines model for ModelProfile.
-type ModelProfile struct {
-	ActiveExecutionTimeoutMs int64    `json:"activeExecutionTimeoutMs"`
-	ApprovalMaxWaitMs        int64    `json:"approvalMaxWaitMs"`
-	BillingMode              string   `json:"billingMode"`
-	BillingModelSource       string   `json:"billingModelSource"`
-	CacheReadPrice           *string  `json:"cacheReadPrice,omitempty"`
-	CacheTtlSeconds          int32    `json:"cacheTtlSeconds"`
-	CacheWrite1hPrice        *string  `json:"cacheWrite1hPrice,omitempty"`
-	CacheWritePrice          *string  `json:"cacheWritePrice,omitempty"`
-	Capabilities             []string `json:"capabilities"`
-	ContextLength            *int32   `json:"contextLength,omitempty"`
-	CreatedAt                int64    `json:"createdAt"`
-	Currency                 string   `json:"currency"`
-	Description              *string  `json:"description,omitempty"`
-
-	// DisabledReason 只在 GET …/profiles/options?purpose= 里出现：不能绑定到该用途的原因。
-	DisabledReason              *string                 `json:"disabledReason,omitempty"`
-	Endpoint                    string                  `json:"endpoint"`
-	Fingerprint                 string                  `json:"fingerprint"`
-	Id                          int64                   `json:"id"`
-	ImageInputPrice             *string                 `json:"imageInputPrice,omitempty"`
-	ImageOutputPrice            *string                 `json:"imageOutputPrice,omitempty"`
-	InputImagePrice             *string                 `json:"inputImagePrice,omitempty"`
-	InputImagesFree             *int32                  `json:"inputImagesFree,omitempty"`
-	InputPrice                  *string                 `json:"inputPrice,omitempty"`
-	Kind                        string                  `json:"kind"`
-	LastProbeAt                 *int64                  `json:"lastProbeAt,omitempty"`
-	LastProbeError              *string                 `json:"lastProbeError,omitempty"`
-	LastProbeOk                 *bool                   `json:"lastProbeOk,omitempty"`
-	LastProbeRequestIds         []string                `json:"lastProbeRequestIds"`
-	LastProbeRevision           *int32                  `json:"lastProbeRevision,omitempty"`
-	MaxBatch                    int32                   `json:"maxBatch"`
-	MaxBudget                   string                  `json:"maxBudget"`
-	MaxCostPerRequest           *string                 `json:"maxCostPerRequest,omitempty"`
-	MaxModelRequests            int32                   `json:"maxModelRequests"`
-	MaxOutputTokens             int32                   `json:"maxOutputTokens"`
-	MaxReasoningEffort          string                  `json:"maxReasoningEffort"`
-	MaxReasoningEffortOverLimit string                  `json:"maxReasoningEffortOverLimit"`
-	MaxRequestBytes             int64                   `json:"maxRequestBytes"`
-	MaxResponseBytes            int64                   `json:"maxResponseBytes"`
-	MaxToolCalls                int32                   `json:"maxToolCalls"`
-	MaxTurns                    int32                   `json:"maxTurns"`
-	Name                        string                  `json:"name"`
-	OutputPrice                 *string                 `json:"outputPrice,omitempty"`
-	OverMaxOutput               string                  `json:"overMaxOutput"`
-	Params                      string                  `json:"params"`
-	PayloadRules                string                  `json:"payloadRules"`
-	PerRequestPrice             *string                 `json:"perRequestPrice,omitempty"`
-	Platform                    string                  `json:"platform"`
-	PoolId                      int64                   `json:"poolId"`
-	PoolName                    string                  `json:"poolName"`
-	PoolStatus                  string                  `json:"poolStatus"`
-	Price                       ModelPriceSummary       `json:"price"`
-	PriceModifiers              ModelPriceModifiers     `json:"priceModifiers"`
-	PriceTiers                  []ModelPriceTier        `json:"priceTiers"`
-	ProbeIntervalSeconds        int32                   `json:"probeIntervalSeconds"`
-	ReasoningEffortMappings     []ModelReasoningMapping `json:"reasoningEffortMappings"`
-	References                  []ModelProfileRef       `json:"references"`
-	RequestTimeoutMs            int32                   `json:"requestTimeoutMs"`
-	Slug                        string                  `json:"slug"`
-	Status                      string                  `json:"status"`
-	StreamIdleTimeoutMs         int32                   `json:"streamIdleTimeoutMs"`
-	ThinkingBudgetTokens        int32                   `json:"thinkingBudgetTokens"`
-	ThinkingDisplay             string                  `json:"thinkingDisplay"`
-	ThinkingEffort              string                  `json:"thinkingEffort"`
-	ThinkingMode                string                  `json:"thinkingMode"`
-	ThinkingSupport             *string                 `json:"thinkingSupport,omitempty"`
-	UpdatedAt                   int64                   `json:"updatedAt"`
-	UpdatedBy                   *string                 `json:"updatedBy,omitempty"`
-	UpdatedByName               *string                 `json:"updatedByName,omitempty"`
-	UpstreamModel               string                  `json:"upstreamModel"`
-	UseMaxCompletionTokens      bool                    `json:"useMaxCompletionTokens"`
-	Version                     int64                   `json:"version"`
-}
-
-// ModelProfileForm defines model for ModelProfileForm.
-type ModelProfileForm struct {
-	IdempotencyKey              *string                        `json:"Idempotency-Key,omitempty"`
-	ActiveExecutionTimeoutMs    *int64                         `json:"active_execution_timeout_ms,omitempty"`
-	ApprovalMaxWaitMs           *int64                         `json:"approval_max_wait_ms,omitempty"`
-	CacheTtlSeconds             *int32                         `json:"cache_ttl_seconds,omitempty"`
-	Capabilities                *[]string                      `json:"capabilities,omitempty"`
-	ClearFields                 *[]string                      `json:"clear_fields,omitempty"`
-	ConfirmRebuild              *bool                          `json:"confirm_rebuild,omitempty"`
-	ContextLength               *int32                         `json:"context_length,omitempty"`
-	Description                 *string                        `json:"description,omitempty"`
-	Endpoint                    *string                        `json:"endpoint,omitempty"`
-	Id                          *int64                         `json:"id,omitempty"`
-	Kind                        *ModelProfileFormKind          `json:"kind,omitempty"`
-	MaxBatch                    *int32                         `json:"max_batch,omitempty"`
-	MaxBudget                   *string                        `json:"max_budget,omitempty"`
-	MaxCostPerRequest           *string                        `json:"max_cost_per_request,omitempty"`
-	MaxModelRequests            *int32                         `json:"max_model_requests,omitempty"`
-	MaxOutputTokens             *int32                         `json:"max_output_tokens,omitempty"`
-	MaxReasoningEffort          *string                        `json:"max_reasoning_effort,omitempty"`
-	MaxReasoningEffortOverLimit *string                        `json:"max_reasoning_effort_over_limit,omitempty"`
-	MaxRequestBytes             *int64                         `json:"max_request_bytes,omitempty"`
-	MaxResponseBytes            *int64                         `json:"max_response_bytes,omitempty"`
-	MaxToolCalls                *int32                         `json:"max_tool_calls,omitempty"`
-	MaxTurns                    *int32                         `json:"max_turns,omitempty"`
-	Name                        *string                        `json:"name,omitempty"`
-	OverMaxOutput               *ModelProfileFormOverMaxOutput `json:"over_max_output,omitempty"`
-	Params                      *string                        `json:"params,omitempty"`
-	PayloadRules                *string                        `json:"payload_rules,omitempty"`
-	PoolId                      *int64                         `json:"pool_id,omitempty"`
-	Price                       *ModelPriceOverrideForm        `json:"price,omitempty"`
-	ProbeId                     *string                        `json:"probe_id,omitempty"`
-	ProbeIntervalSeconds        *int32                         `json:"probe_interval_seconds,omitempty"`
-	Reason                      *string                        `json:"reason,omitempty"`
-	ReasoningEffortMappings     *[]ModelReasoningMapping       `json:"reasoning_effort_mappings,omitempty"`
-	RequestTimeoutMs            *int32                         `json:"request_timeout_ms,omitempty"`
-	Slug                        *string                        `json:"slug,omitempty"`
-	Status                      *ModelProfileFormStatus        `json:"status,omitempty"`
-	StreamIdleTimeoutMs         *int32                         `json:"stream_idle_timeout_ms,omitempty"`
-	ThinkingBudgetTokens        *int32                         `json:"thinking_budget_tokens,omitempty"`
-	ThinkingDisplay             *string                        `json:"thinking_display,omitempty"`
-	ThinkingEffort              *string                        `json:"thinking_effort,omitempty"`
-	ThinkingMode                *string                        `json:"thinking_mode,omitempty"`
-	ThinkingSupport             *string                        `json:"thinking_support,omitempty"`
-	UpstreamModel               *string                        `json:"upstream_model,omitempty"`
-	UseMaxCompletionTokens      *bool                          `json:"use_max_completion_tokens,omitempty"`
-	Version                     *int64                         `json:"version,omitempty"`
-}
-
-// ModelProfileFormKind defines model for ModelProfileForm.Kind.
-type ModelProfileFormKind string
-
-// ModelProfileFormOverMaxOutput defines model for ModelProfileForm.OverMaxOutput.
-type ModelProfileFormOverMaxOutput string
-
-// ModelProfileFormStatus defines model for ModelProfileForm.Status.
-type ModelProfileFormStatus string
-
-// ModelProfileFormBody defines model for ModelProfileFormBody.
-type ModelProfileFormBody struct {
-	ActiveExecutionTimeoutMs    *int64                             `json:"active_execution_timeout_ms,omitempty"`
-	ApprovalMaxWaitMs           *int64                             `json:"approval_max_wait_ms,omitempty"`
-	CacheTtlSeconds             *int32                             `json:"cache_ttl_seconds,omitempty"`
-	Capabilities                *[]string                          `json:"capabilities,omitempty"`
-	ClearFields                 *[]string                          `json:"clear_fields,omitempty"`
-	ConfirmRebuild              *bool                              `json:"confirm_rebuild,omitempty"`
-	ContextLength               *int32                             `json:"context_length,omitempty"`
-	Description                 *string                            `json:"description,omitempty"`
-	Endpoint                    *string                            `json:"endpoint,omitempty"`
-	Kind                        *ModelProfileFormBodyKind          `json:"kind,omitempty"`
-	MaxBatch                    *int32                             `json:"max_batch,omitempty"`
-	MaxBudget                   *string                            `json:"max_budget,omitempty"`
-	MaxCostPerRequest           *string                            `json:"max_cost_per_request,omitempty"`
-	MaxModelRequests            *int32                             `json:"max_model_requests,omitempty"`
-	MaxOutputTokens             *int32                             `json:"max_output_tokens,omitempty"`
-	MaxReasoningEffort          *string                            `json:"max_reasoning_effort,omitempty"`
-	MaxReasoningEffortOverLimit *string                            `json:"max_reasoning_effort_over_limit,omitempty"`
-	MaxRequestBytes             *int64                             `json:"max_request_bytes,omitempty"`
-	MaxResponseBytes            *int64                             `json:"max_response_bytes,omitempty"`
-	MaxToolCalls                *int32                             `json:"max_tool_calls,omitempty"`
-	MaxTurns                    *int32                             `json:"max_turns,omitempty"`
-	Name                        *string                            `json:"name,omitempty"`
-	OverMaxOutput               *ModelProfileFormBodyOverMaxOutput `json:"over_max_output,omitempty"`
-	Params                      *string                            `json:"params,omitempty"`
-	PayloadRules                *string                            `json:"payload_rules,omitempty"`
-	PoolId                      *int64                             `json:"pool_id,omitempty"`
-	Price                       *ModelPriceOverrideForm            `json:"price,omitempty"`
-	ProbeId                     *string                            `json:"probe_id,omitempty"`
-	ProbeIntervalSeconds        *int32                             `json:"probe_interval_seconds,omitempty"`
-	Reason                      *string                            `json:"reason,omitempty"`
-	ReasoningEffortMappings     *[]ModelReasoningMapping           `json:"reasoning_effort_mappings,omitempty"`
-	RequestTimeoutMs            *int32                             `json:"request_timeout_ms,omitempty"`
-	Slug                        *string                            `json:"slug,omitempty"`
-	Status                      *ModelProfileFormBodyStatus        `json:"status,omitempty"`
-	StreamIdleTimeoutMs         *int32                             `json:"stream_idle_timeout_ms,omitempty"`
-	ThinkingBudgetTokens        *int32                             `json:"thinking_budget_tokens,omitempty"`
-	ThinkingDisplay             *string                            `json:"thinking_display,omitempty"`
-	ThinkingEffort              *string                            `json:"thinking_effort,omitempty"`
-	ThinkingMode                *string                            `json:"thinking_mode,omitempty"`
-	ThinkingSupport             *string                            `json:"thinking_support,omitempty"`
-	UpstreamModel               *string                            `json:"upstream_model,omitempty"`
-	UseMaxCompletionTokens      *bool                              `json:"use_max_completion_tokens,omitempty"`
-	Version                     *int64                             `json:"version,omitempty"`
-}
-
-// ModelProfileFormBodyKind defines model for ModelProfileFormBody.Kind.
-type ModelProfileFormBodyKind string
-
-// ModelProfileFormBodyOverMaxOutput defines model for ModelProfileFormBody.OverMaxOutput.
-type ModelProfileFormBodyOverMaxOutput string
-
-// ModelProfileFormBodyStatus defines model for ModelProfileFormBody.Status.
-type ModelProfileFormBodyStatus string
-
-// ModelProfileList defines model for ModelProfileList.
-type ModelProfileList struct {
-	Items []ModelProfile `json:"items"`
-}
-
-// ModelProfileListResponseBody defines model for ModelProfileListResponseBody.
-type ModelProfileListResponseBody struct {
-	Code int64             `json:"code"`
-	Data *ModelProfileList `json:"data,omitempty"`
-	Msg  string            `json:"msg"`
-}
-
-// ModelProfileOverrideRequestBody defines model for ModelProfileOverrideRequestBody.
-type ModelProfileOverrideRequestBody struct {
-	Price   *ModelPriceOverrideForm `json:"price,omitempty"`
-	Version int64                   `json:"version"`
-}
-
-// ModelProfilePage defines model for ModelProfilePage.
-type ModelProfilePage struct {
-	Items    []ModelProfile `json:"items"`
-	Page     int32          `json:"page"`
-	PageSize int32          `json:"pageSize"`
-	Total    int64          `json:"total"`
-}
-
-// ModelProfilePageResponseBody defines model for ModelProfilePageResponseBody.
-type ModelProfilePageResponseBody struct {
-	Code int64             `json:"code"`
-	Data *ModelProfilePage `json:"data,omitempty"`
-	Msg  string            `json:"msg"`
-}
-
-// ModelProfileProbeRequestBody defines model for ModelProfileProbeRequestBody.
-type ModelProfileProbeRequestBody struct {
-	Draft                *ModelProfileForm `json:"draft,omitempty"`
-	IncludeUnschedulable *bool             `json:"include_unschedulable,omitempty"`
-	ProfileId            *int64            `json:"profile_id,omitempty"`
-}
-
-// ModelProfileRef defines model for ModelProfileRef.
-type ModelProfileRef struct {
-	Enabled bool   `json:"enabled"`
-	Primary bool   `json:"primary"`
-	Purpose string `json:"purpose"`
-}
-
-// ModelProfileReference defines model for ModelProfileReference.
-type ModelProfileReference struct {
-	Allowed       bool                   `json:"allowed"`
-	PoolId        int64                  `json:"poolId"`
-	PoolName      string                 `json:"poolName"`
-	ProfileId     int64                  `json:"profileId"`
-	ProfileName   string                 `json:"profileName"`
-	Resolution    ModelMappingResolution `json:"resolution"`
-	UpstreamModel string                 `json:"upstreamModel"`
-}
-
-// ModelProfileResponseBody defines model for ModelProfileResponseBody.
-type ModelProfileResponseBody struct {
-	Code int64         `json:"code"`
-	Data *ModelProfile `json:"data,omitempty"`
-	Msg  string        `json:"msg"`
 }
 
 // ModelProxyTestRequestBody defines model for ModelProxyTestRequestBody.
@@ -11035,14 +10408,20 @@ type ModelPurpose struct {
 	Drift   []string `json:"drift"`
 	Enabled bool     `json:"enabled"`
 
-	// Entries 入口协议（档位端点）与需要的档位能力；空 entries = 种类允许的任意端点。
-	Entries                []string                 `json:"entries"`
-	Family                 string                   `json:"family"`
-	Fingerprinted          bool                     `json:"fingerprinted"`
-	Key                    string                   `json:"key"`
-	Kind                   string                   `json:"kind"`
-	Registered             bool                     `json:"registered"`
-	Requires               []string                 `json:"requires"`
+	// Entries 入口协议（目标端点）；空 = 种类允许的任意端点。
+	Entries []string `json:"entries"`
+	Family  string   `json:"family"`
+
+	// Fingerprint 带指纹用途的向量指纹（各目标一致）。
+	Fingerprint   *string              `json:"fingerprint,omitempty"`
+	Fingerprinted bool                 `json:"fingerprinted"`
+	Key           string               `json:"key"`
+	Kind          string               `json:"kind"`
+	Registered    bool                 `json:"registered"`
+	Settings      ModelPurposeSettings `json:"settings"`
+
+	// SettingsHash 探活须用这份设置跑过才算数。
+	SettingsHash           string                   `json:"settingsHash"`
 	SharedPrefixBatch      bool                     `json:"sharedPrefixBatch"`
 	Stats7d                *ModelUsageBucket        `json:"stats7d,omitempty"`
 	StatsUnavailableReason *string                  `json:"statsUnavailableReason,omitempty"`
@@ -11052,6 +10431,22 @@ type ModelPurpose struct {
 	UpdatedBy              *string                  `json:"updatedBy,omitempty"`
 	UpdatedByName          *string                  `json:"updatedByName,omitempty"`
 	Version                int64                    `json:"version"`
+}
+
+// ModelPurposeLimits 单次调用的上限；金额单位人民币，0 / 空 = 不限。
+type ModelPurposeLimits struct {
+	ActiveExecutionTimeoutMs int64   `json:"activeExecutionTimeoutMs"`
+	ApprovalMaxWaitMs        int64   `json:"approvalMaxWaitMs"`
+	MaxBatch                 int32   `json:"maxBatch"`
+	MaxBudget                string  `json:"maxBudget"`
+	MaxCostPerRequest        *string `json:"maxCostPerRequest,omitempty"`
+	MaxModelRequests         int32   `json:"maxModelRequests"`
+	MaxRequestBytes          int64   `json:"maxRequestBytes"`
+	MaxResponseBytes         int64   `json:"maxResponseBytes"`
+	MaxToolCalls             int32   `json:"maxToolCalls"`
+	MaxTurns                 int32   `json:"maxTurns"`
+	RequestTimeoutMs         int32   `json:"requestTimeoutMs"`
+	StreamIdleTimeoutMs      int32   `json:"streamIdleTimeoutMs"`
 }
 
 // ModelPurposeList defines model for ModelPurposeList.
@@ -11064,6 +10459,45 @@ type ModelPurposeListResponseBody struct {
 	Code int64             `json:"code"`
 	Data *ModelPurposeList `json:"data,omitempty"`
 	Msg  string            `json:"msg"`
+}
+
+// ModelPurposeParams defines model for ModelPurposeParams.
+type ModelPurposeParams struct {
+	CacheTtlSeconds int32 `json:"cacheTtlSeconds"`
+
+	// KindParams 按种类的参数（JSON 对象）：chat / embedding 维度与指令 / rerank 指令 / image / document。
+	KindParams                  string `json:"kindParams"`
+	MaxOutputTokens             int32  `json:"maxOutputTokens"`
+	MaxReasoningEffort          string `json:"maxReasoningEffort"`
+	MaxReasoningEffortOverLimit string `json:"maxReasoningEffortOverLimit"`
+	OverMaxOutput               string `json:"overMaxOutput"`
+
+	// PayloadRules Payload 规则（JSON 对象）。
+	PayloadRules            string                  `json:"payloadRules"`
+	ReasoningEffortMappings []ModelReasoningMapping `json:"reasoningEffortMappings"`
+	ThinkingBudgetTokens    int32                   `json:"thinkingBudgetTokens"`
+	ThinkingDisplay         string                  `json:"thinkingDisplay"`
+	ThinkingEffort          string                  `json:"thinkingEffort"`
+	ThinkingMode            string                  `json:"thinkingMode"`
+	UseMaxCompletionTokens  bool                    `json:"useMaxCompletionTokens"`
+}
+
+// ModelPurposeProbe defines model for ModelPurposeProbe.
+type ModelPurposeProbe struct {
+	// AutoRecover 定时探活成功后清除成员连接器的冷却与错误状态。
+	AutoRecover bool `json:"autoRecover"`
+
+	// IntervalSeconds 0 = 不定时探活。
+	IntervalSeconds int32 `json:"intervalSeconds"`
+}
+
+// ModelPurposeQuota defines model for ModelPurposeQuota.
+type ModelPurposeQuota struct {
+	// PerUser 滚动窗口额度（人民币，十进制字符串）；不填 = 不限。
+	PerUser ModelQuotaWindows `json:"perUser"`
+
+	// Total 滚动窗口额度（人民币，十进制字符串）；不填 = 不限。
+	Total ModelQuotaWindows `json:"total"`
 }
 
 // ModelPurposeResponseBody defines model for ModelPurposeResponseBody.
@@ -11105,6 +10539,25 @@ type ModelPurposeRevisionPageResponseBody struct {
 	Msg  string                    `json:"msg"`
 }
 
+// ModelPurposeSettings defines model for ModelPurposeSettings.
+type ModelPurposeSettings struct {
+	// Limits 单次调用的上限；金额单位人民币，0 / 空 = 不限。
+	Limits ModelPurposeLimits `json:"limits"`
+	Params ModelPurposeParams `json:"params"`
+	Probe  ModelPurposeProbe  `json:"probe"`
+	Quota  ModelPurposeQuota  `json:"quota"`
+}
+
+// ModelPurposeSettingsRequestBody defines model for ModelPurposeSettingsRequestBody.
+type ModelPurposeSettingsRequestBody struct {
+	ConfirmRebuild  *bool                `json:"confirm_rebuild,omitempty"`
+	ConfirmText     *string              `json:"confirm_text,omitempty"`
+	ExpectedVersion int64                `json:"expected_version"`
+	ProbeIds        *[]string            `json:"probe_ids,omitempty"`
+	Reason          string               `json:"reason"`
+	Settings        ModelPurposeSettings `json:"settings"`
+}
+
 // ModelPurposeStatistics defines model for ModelPurposeStatistics.
 type ModelPurposeStatistics struct {
 	Estimated bool                     `json:"estimated"`
@@ -11131,34 +10584,49 @@ type ModelPurposeTarget struct {
 	DisplayName *string `json:"display_name,omitempty"`
 	Enabled     *bool   `json:"enabled,omitempty"`
 
-	// Model 公开名：调用方在用途内可选的模型名，只落到带同一公开名的目标（同名即故障切换组）；空 = 用途默认目标。
-	Model     *string `json:"model,omitempty"`
-	Priority  *int32  `json:"priority,omitempty"`
-	ProfileId *int64  `json:"profile_id,omitempty"`
-	Weight    *int32  `json:"weight,omitempty"`
+	// Endpoint 空 = 自动推导；池里文本向量与多模态向量能力都有时必须填。
+	Endpoint *string `json:"endpoint,omitempty"`
+
+	// Model 池暴露的标准模型名（计价与指纹都按它）。
+	Model    string `json:"model"`
+	PoolId   int64  `json:"pool_id"`
+	Priority *int32 `json:"priority,omitempty"`
+
+	// PublicName 公开名：调用方在用途内可选的模型名，只落到带同一公开名的目标（同名即故障切换组）；空 = 用途默认目标。
+	PublicName *string `json:"public_name,omitempty"`
+	Weight     *int32  `json:"weight,omitempty"`
 }
 
 // ModelPurposeTargetView defines model for ModelPurposeTargetView.
 type ModelPurposeTargetView struct {
-	Available       bool    `json:"available"`
-	DisplayName     *string `json:"displayName,omitempty"`
-	Enabled         bool    `json:"enabled"`
-	Fingerprint     *string `json:"fingerprint,omitempty"`
-	Kind            *string `json:"kind,omitempty"`
-	LastProbeAt     *int64  `json:"lastProbeAt,omitempty"`
-	LastProbeOk     *bool   `json:"lastProbeOk,omitempty"`
-	Model           *string `json:"model,omitempty"`
-	PoolId          *int64  `json:"poolId,omitempty"`
-	PoolName        string  `json:"poolName"`
-	Priority        int32   `json:"priority"`
-	ProfileId       int64   `json:"profileId"`
-	ProfileName     *string `json:"profileName,omitempty"`
-	ProfileRevision *int32  `json:"profileRevision,omitempty"`
-	ProfileSlug     *string `json:"profileSlug,omitempty"`
-	Share           float64 `json:"share"`
-	Status          string  `json:"status"`
-	UpstreamModel   *string `json:"upstreamModel,omitempty"`
-	Weight          int32   `json:"weight"`
+	Available     bool    `json:"available"`
+	ContextWindow *int32  `json:"contextWindow,omitempty"`
+	DisplayName   *string `json:"displayName,omitempty"`
+	Enabled       bool    `json:"enabled"`
+
+	// Endpoint 目标自己填的端点；空表示自动推导。
+	Endpoint        *string   `json:"endpoint,omitempty"`
+	Fingerprint     *string   `json:"fingerprint,omitempty"`
+	InputModalities *[]string `json:"inputModalities,omitempty"`
+	LastProbeAt     *int64    `json:"lastProbeAt,omitempty"`
+	LastProbeOk     *bool     `json:"lastProbeOk,omitempty"`
+
+	// LastProbeSettingsHash 最近一次探活所用设置的哈希；与用途 settingsHash 不同表示需要重新探活。
+	LastProbeSettingsHash *string `json:"lastProbeSettingsHash,omitempty"`
+	Model                 string  `json:"model"`
+	PoolId                int64   `json:"poolId"`
+	PoolName              string  `json:"poolName"`
+	Priority              int32   `json:"priority"`
+
+	// Problem 目标不能服务的原因（池不存在、不提供该模型、端点有歧义等）。
+	Problem    *string `json:"problem,omitempty"`
+	PublicName *string `json:"publicName,omitempty"`
+
+	// ResolvedEndpoint SDK 调用与探活实际使用的端点（推导结果）。
+	ResolvedEndpoint *string `json:"resolvedEndpoint,omitempty"`
+	Share            float64 `json:"share"`
+	Status           string  `json:"status"`
+	Weight           int32   `json:"weight"`
 }
 
 // ModelPurposeTargetsRequestBody defines model for ModelPurposeTargetsRequestBody.
@@ -11172,6 +10640,12 @@ type ModelPurposeTargetsRequestBody struct {
 	Reason              string               `json:"reason"`
 	RollbackFromVersion *int64               `json:"rollback_from_version,omitempty"`
 	Targets             []ModelPurposeTarget `json:"targets"`
+}
+
+// ModelQuotaWindows 滚动窗口额度（人民币，十进制字符串）；不填 = 不限。
+type ModelQuotaWindows struct {
+	Window5h *string `json:"window5h,omitempty"`
+	Window7d *string `json:"window7d,omitempty"`
 }
 
 // ModelReasoningMapping defines model for ModelReasoningMapping.
@@ -11223,7 +10697,6 @@ type ModelRequestDetail struct {
 	OtelTraceUrl    *string                     `json:"otelTraceUrl,omitempty"`
 	Parts           []ModelTracePartItem        `json:"parts"`
 	PoolName        *string                     `json:"poolName,omitempty"`
-	ProfileName     *string                     `json:"profileName,omitempty"`
 	PurposeName     *string                     `json:"purposeName,omitempty"`
 	RedactionsTotal *int64                      `json:"redactionsTotal,omitempty"`
 	Related         []ModelRequestItem          `json:"related"`
@@ -11236,18 +10709,6 @@ type ModelRequestDetailResponseBody struct {
 	Code int64               `json:"code"`
 	Data *ModelRequestDetail `json:"data,omitempty"`
 	Msg  string              `json:"msg"`
-}
-
-// ModelRequestImageItem defines model for ModelRequestImageItem.
-type ModelRequestImageItem struct {
-	Expired      bool   `json:"expired"`
-	Height       int64  `json:"height"`
-	Key          string `json:"key"`
-	Sha256       string `json:"sha256"`
-	Size         int64  `json:"size"`
-	ThumbnailUrl string `json:"thumbnailUrl"`
-	Url          string `json:"url"`
-	Width        int64  `json:"width"`
 }
 
 // ModelRequestImageMetadata defines model for ModelRequestImageMetadata.
@@ -11296,8 +10757,6 @@ type ModelRequestItem struct {
 	OutputTokens          int64          `json:"outputTokens"`
 	PoolId                *int64         `json:"poolId,omitempty"`
 	PoolName              *string        `json:"poolName,omitempty"`
-	ProfileId             *int64         `json:"profileId,omitempty"`
-	ProfileName           *string        `json:"profileName,omitempty"`
 	PromptTokensTotal     int64          `json:"promptTokensTotal"`
 	Protocol              string         `json:"protocol"`
 	Provider              string         `json:"provider"`
@@ -11322,7 +10781,6 @@ type ModelRequestItem struct {
 	TotalCost             string         `json:"totalCost"`
 	TraceCapture          string         `json:"traceCapture"`
 	TraceCaptured         *bool          `json:"traceCaptured,omitempty"`
-	UncachedInputCost     *string        `json:"uncachedInputCost,omitempty"`
 	Units                 int64          `json:"units"`
 	UpstreamModel         string         `json:"upstreamModel"`
 	UsageMeasured         bool           `json:"usageMeasured"`
@@ -11411,7 +10869,7 @@ type ModelResolvePreviewRequestBody struct {
 	CallerKind *ModelResolvePreviewRequestBodyCallerKind `json:"caller_kind,omitempty"`
 
 	// Entry 入口（第 1 章 调用入口，与 domain/modelgw.Entries 同一份）：sdk:* 是进程内 SDK 方法，只给 internal；
-	// 其余是 /hduhelp-neo/ai/v1 下的代理路由，给 session / run，只能落到同协议端点的档位（不做跨协议转换）；
+	// 其余是 /hduhelp-neo/ai/v1 下的代理路由，给 session / run，只能落到能调同协议端点的目标（不做跨协议转换）；
 	// …/models 列出该协议能调通的名字：指定了用途（session 走 metadata_purpose，即路径或请求体里的用途）时是它的公开名与别名，
 	// 否则是各用途的精确别名。空 = 不检查入口协议。
 	Entry           *ModelResolvePreviewRequestBodyEntry `json:"entry,omitempty"`
@@ -11426,7 +10884,7 @@ type ModelResolvePreviewRequestBody struct {
 type ModelResolvePreviewRequestBodyCallerKind string
 
 // ModelResolvePreviewRequestBodyEntry 入口（第 1 章 调用入口，与 domain/modelgw.Entries 同一份）：sdk:* 是进程内 SDK 方法，只给 internal；
-// 其余是 /hduhelp-neo/ai/v1 下的代理路由，给 session / run，只能落到同协议端点的档位（不做跨协议转换）；
+// 其余是 /hduhelp-neo/ai/v1 下的代理路由，给 session / run，只能落到能调同协议端点的目标（不做跨协议转换）；
 // …/models 列出该协议能调通的名字：指定了用途（session 走 metadata_purpose，即路径或请求体里的用途）时是它的公开名与别名，
 // 否则是各用途的精确别名。空 = 不检查入口协议。
 type ModelResolvePreviewRequestBodyEntry string
@@ -11449,10 +10907,13 @@ type ModelResolveStep struct {
 
 // ModelRollbackDraft defines model for ModelRollbackDraft.
 type ModelRollbackDraft struct {
-	CanRollback    bool                       `json:"canRollback"`
-	CurrentVersion int64                      `json:"currentVersion"`
-	Targets        []ModelRollbackDraftTarget `json:"targets"`
-	Version        int64                      `json:"version"`
+	CanRollback    bool  `json:"canRollback"`
+	CurrentVersion int64 `json:"currentVersion"`
+
+	// Legacy 目标还不是「池 + 模型」时保存的版本：快照无法还原为目标，不能回滚。
+	Legacy  bool                       `json:"legacy"`
+	Targets []ModelRollbackDraftTarget `json:"targets"`
+	Version int64                      `json:"version"`
 }
 
 // ModelRollbackDraftResponseBody defines model for ModelRollbackDraftResponseBody.
@@ -11538,13 +10999,13 @@ type ModelSchedulableResult struct {
 
 // ModelSelectionItem defines model for ModelSelectionItem.
 type ModelSelectionItem struct {
-	Counts    map[string]int64   `json:"counts"`
-	Endpoint  string             `json:"endpoint"`
-	Model     string             `json:"model"`
-	PoolId    int64              `json:"poolId"`
-	ProfileId int64              `json:"profileId"`
-	Samples   map[string][]int64 `json:"samples"`
-	Stage     string             `json:"stage"`
+	Counts   map[string]int64   `json:"counts"`
+	Endpoint string             `json:"endpoint"`
+	Model    string             `json:"model"`
+	PoolId   int64              `json:"poolId"`
+	Samples  map[string][]int64 `json:"samples"`
+	Stage    string             `json:"stage"`
+	Target   string             `json:"target"`
 }
 
 // ModelSettingDiff defines model for ModelSettingDiff.
@@ -11686,8 +11147,8 @@ type ModelSyncDiffEntry struct {
 	Change   ModelSyncDiffEntryChange `json:"change"`
 	Impact   ModelSyncDiffEntryImpact `json:"impact"`
 	Model    string                   `json:"model"`
-	Profiles []string                 `json:"profiles"`
 	Provider string                   `json:"provider"`
+	Purposes []string                 `json:"purposes"`
 }
 
 // ModelSyncDiffEntryChange defines model for ModelSyncDiffEntry.Change.
@@ -11769,19 +11230,41 @@ type ModelSyncStatusResponseBody struct {
 	Msg  string           `json:"msg"`
 }
 
+// ModelTargetProbeRequestBody defines model for ModelTargetProbeRequestBody.
+type ModelTargetProbeRequestBody struct {
+	IncludeUnschedulable *bool                 `json:"include_unschedulable,omitempty"`
+	Purpose              string                `json:"purpose"`
+	Settings             *ModelPurposeSettings `json:"settings,omitempty"`
+
+	// Target ---------------------------------------------------------------------------
+	// 用途与路由（第 10 章）
+	// ---------------------------------------------------------------------------
+	Target ModelPurposeTarget `json:"target"`
+}
+
+// ModelTargetReference defines model for ModelTargetReference.
+type ModelTargetReference struct {
+	Allowed       bool                   `json:"allowed"`
+	Model         string                 `json:"model"`
+	PoolId        int64                  `json:"poolId"`
+	PoolName      string                 `json:"poolName"`
+	Purpose       string                 `json:"purpose"`
+	Resolution    ModelMappingResolution `json:"resolution"`
+	UpstreamModel string                 `json:"upstreamModel"`
+}
+
 // ModelTargetSnapshot defines model for ModelTargetSnapshot.
 type ModelTargetSnapshot struct {
-	DisplayName     *string `json:"displayName,omitempty"`
-	Enabled         bool    `json:"enabled"`
-	Fingerprint     string  `json:"fingerprint"`
-	Model           *string `json:"model,omitempty"`
-	PoolId          int64   `json:"poolId"`
-	Priority        int32   `json:"priority"`
-	ProfileId       int64   `json:"profileId"`
-	ProfileRevision int32   `json:"profileRevision"`
-	ProfileSlug     string  `json:"profileSlug"`
-	UpstreamModel   string  `json:"upstreamModel"`
-	Weight          int32   `json:"weight"`
+	DisplayName  *string `json:"displayName,omitempty"`
+	Enabled      bool    `json:"enabled"`
+	Endpoint     *string `json:"endpoint,omitempty"`
+	Fingerprint  *string `json:"fingerprint,omitempty"`
+	Model        string  `json:"model"`
+	PoolId       int64   `json:"poolId"`
+	Priority     int32   `json:"priority"`
+	PublicName   *string `json:"publicName,omitempty"`
+	SettingsHash string  `json:"settingsHash"`
+	Weight       int32   `json:"weight"`
 }
 
 // ModelTempUnschedRule defines model for ModelTempUnschedRule.
@@ -11828,20 +11311,6 @@ type ModelTierPreviewSegment struct {
 	Output     float64 `json:"output"`
 }
 
-// ModelTimePricing defines model for ModelTimePricing.
-type ModelTimePricing struct {
-	Periods      []ModelTimePricingPeriod `json:"periods"`
-	Timezone     string                   `json:"timezone"`
-	WeekdaysOnly bool                     `json:"weekdays_only"`
-}
-
-// ModelTimePricingPeriod defines model for ModelTimePricingPeriod.
-type ModelTimePricingPeriod struct {
-	EndTime    string  `json:"end_time"`
-	Multiplier float64 `json:"multiplier"`
-	StartTime  string  `json:"start_time"`
-}
-
 // ModelTraceAttempt defines model for ModelTraceAttempt.
 type ModelTraceAttempt struct {
 	ConnectorId   int64   `json:"connectorId"`
@@ -11854,12 +11323,6 @@ type ModelTraceAttempt struct {
 	Seq           int64   `json:"seq"`
 	StatusCode    int64   `json:"statusCode"`
 	UpstreamModel string  `json:"upstreamModel"`
-}
-
-// ModelTraceClockPoint defines model for ModelTraceClockPoint.
-type ModelTraceClockPoint struct {
-	Ms     *int64 `json:"ms,omitempty"`
-	Offset *int64 `json:"offset,omitempty"`
 }
 
 // ModelTraceImage defines model for ModelTraceImage.
@@ -11896,25 +11359,6 @@ type ModelTracePartItem struct {
 	Size     int64                `json:"size"`
 	Slot     string               `json:"slot"`
 	TooLarge bool                 `json:"tooLarge"`
-}
-
-// ModelTraceParts defines model for ModelTraceParts.
-type ModelTraceParts struct {
-	Clock        *[]ModelTraceClockPoint   `json:"clock,omitempty"`
-	Dropped      *map[string]string        `json:"dropped,omitempty"`
-	Estimated    bool                      `json:"estimated"`
-	Parts        []ModelTracePartItem      `json:"parts"`
-	Redactions   *map[string]int64         `json:"redactions,omitempty"`
-	ResolutionMs *int64                    `json:"resolutionMs,omitempty"`
-	Source       string                    `json:"source"`
-	Timeline     *[]ModelTraceTimelineItem `json:"timeline,omitempty"`
-}
-
-// ModelTracePartsResponseBody defines model for ModelTracePartsResponseBody.
-type ModelTracePartsResponseBody struct {
-	Code int64            `json:"code"`
-	Data *ModelTraceParts `json:"data,omitempty"`
-	Msg  string           `json:"msg"`
 }
 
 // ModelTraceQueryBody defines model for ModelTraceQueryBody.
@@ -11979,17 +11423,6 @@ type ModelTraceSummary struct {
 	StatusCode     int64   `json:"statusCode"`
 	TraceCaptured  bool    `json:"traceCaptured"`
 	UpstreamModel  string  `json:"upstreamModel"`
-}
-
-// ModelTraceTimelineItem defines model for ModelTraceTimelineItem.
-type ModelTraceTimelineItem struct {
-	CallId     *string `json:"callId,omitempty"`
-	EndedMs    *int64  `json:"endedMs,omitempty"`
-	Incomplete *bool   `json:"incomplete,omitempty"`
-	Index      *int64  `json:"index,omitempty"`
-	Kind       *string `json:"kind,omitempty"`
-	Name       *string `json:"name,omitempty"`
-	StartedMs  *int64  `json:"startedMs,omitempty"`
 }
 
 // ModelTraceWindow defines model for ModelTraceWindow.
@@ -12073,7 +11506,6 @@ type ModelUsageBillingPart struct {
 	CacheReadCost             string  `json:"cacheReadCost"`
 	CacheReadTokens           int64   `json:"cacheReadTokens"`
 	ConnectorId               int64   `json:"connectorId"`
-	ConnectorRateMultiplier   string  `json:"connectorRateMultiplier"`
 	CountsRequest             bool    `json:"countsRequest"`
 	FxRate                    string  `json:"fxRate"`
 	ImageCacheReadTokens      int64   `json:"imageCacheReadTokens"`
@@ -12094,21 +11526,18 @@ type ModelUsageBillingPart struct {
 	PriceCurrency             string  `json:"priceCurrency"`
 	PriceSource               string  `json:"priceSource"`
 	PricingIncomplete         bool    `json:"pricingIncomplete"`
-	ProfileId                 int64   `json:"profileId"`
 
 	// Rates Explicit payload-safe, camelCase observation contracts.
 	// Absolute times are Unix timestamps in milliseconds; durations retain their named units.
-	Rates               *ModelAppliedRates `json:"rates,omitempty"`
-	ReasoningEffort     string             `json:"reasoningEffort"`
-	ReasoningMultiplier float64            `json:"reasoningMultiplier"`
-	ReasoningTokens     int64              `json:"reasoningTokens"`
-	ServiceTier         string             `json:"serviceTier"`
-	TimeMultiplier      float64            `json:"timeMultiplier"`
-	TotalCost           string             `json:"totalCost"`
-	UpstreamEndpoint    *string            `json:"upstreamEndpoint,omitempty"`
-	UpstreamModel       string             `json:"upstreamModel"`
-	UsageTrusted        bool               `json:"usageTrusted"`
-	UsageUnits          int64              `json:"usageUnits"`
+	Rates            *ModelAppliedRates `json:"rates,omitempty"`
+	ReasoningEffort  string             `json:"reasoningEffort"`
+	ReasoningTokens  int64              `json:"reasoningTokens"`
+	ServiceTier      string             `json:"serviceTier"`
+	TotalCost        string             `json:"totalCost"`
+	UpstreamEndpoint *string            `json:"upstreamEndpoint,omitempty"`
+	UpstreamModel    string             `json:"upstreamModel"`
+	UsageTrusted     bool               `json:"usageTrusted"`
+	UsageUnits       int64              `json:"usageUnits"`
 }
 
 // ModelUsageBreakdownResult defines model for ModelUsageBreakdownResult.
@@ -12168,7 +11597,6 @@ type ModelUsageItem struct {
 	CallerKind                string                  `json:"callerKind"`
 	ConnectorId               int64                   `json:"connectorId"`
 	ConnectorName             *string                 `json:"connectorName,omitempty"`
-	ConnectorRateMultiplier   string                  `json:"connectorRateMultiplier"`
 	CreatedAt                 int64                   `json:"createdAt"`
 	DurationMs                int64                   `json:"durationMs"`
 	FirstTokenMs              *int64                  `json:"firstTokenMs,omitempty"`
@@ -12202,9 +11630,6 @@ type ModelUsageItem struct {
 	PriceCurrency             *string                 `json:"priceCurrency,omitempty"`
 	PriceSource               string                  `json:"priceSource"`
 	PricingIncomplete         bool                    `json:"pricingIncomplete"`
-	ProfileId                 *int64                  `json:"profileId,omitempty"`
-	ProfileName               *string                 `json:"profileName,omitempty"`
-	ProfileRevision           *int64                  `json:"profileRevision,omitempty"`
 	Purpose                   string                  `json:"purpose"`
 	PurposeName               *string                 `json:"purposeName,omitempty"`
 	ReasoningEffort           *string                 `json:"reasoningEffort,omitempty"`
@@ -14899,13 +14324,6 @@ type SetTaggingPromptRequestBody struct {
 	Template *string `json:"template,omitempty"`
 }
 
-// SetTaggingTargetRequestBody defines model for SetTaggingTargetRequestBody.
-type SetTaggingTargetRequestBody struct {
-	ApiKey  *string `json:"api_key,omitempty"`
-	BaseUrl *string `json:"base_url,omitempty"`
-	Model   *string `json:"model,omitempty"`
-}
-
 // SetTenantEnabledRequestBody defines model for SetTenantEnabledRequestBody.
 type SetTenantEnabledRequestBody struct {
 	Enabled *bool `json:"enabled,omitempty"`
@@ -15571,25 +14989,6 @@ type TaggingPromptData struct {
 type TaggingPromptResponseBody struct {
 	Code *int64             `json:"code,omitempty"`
 	Data *TaggingPromptData `json:"data,omitempty"`
-	Msg  *string            `json:"msg,omitempty"`
-}
-
-// TaggingTargetData 打标接入点配置（密钥只回下发是否已配置，不回明文；写入留空=保持不变）
-type TaggingTargetData struct {
-	BaseUrl *string `json:"baseUrl,omitempty"`
-
-	// GatewayManaged 已完成本地 SDK 接线；不表示用途已绑定或可用
-	GatewayManaged *bool   `json:"gatewayManaged,omitempty"`
-	HasApiKey      *bool   `json:"hasApiKey,omitempty"`
-	Model          *string `json:"model,omitempty"`
-}
-
-// TaggingTargetResponseBody defines model for TaggingTargetResponseBody.
-type TaggingTargetResponseBody struct {
-	Code *int64 `json:"code,omitempty"`
-
-	// Data 打标接入点配置（密钥只回下发是否已配置，不回明文；写入留空=保持不变）
-	Data *TaggingTargetData `json:"data,omitempty"`
 	Msg  *string            `json:"msg,omitempty"`
 }
 
@@ -17161,7 +16560,6 @@ type ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParams st
 	ImageSize             *string                                                                              `form:"imageSize,omitempty" json:"imageSize,omitempty"`
 	ConnectorId           *int64                                                                               `form:"connectorId,omitempty" json:"connectorId,omitempty"`
 	PoolId                *int64                                                                               `form:"poolId,omitempty" json:"poolId,omitempty"`
-	ProfileId             *int64                                                                               `form:"profileId,omitempty" json:"profileId,omitempty"`
 	RequestType           *int64                                                                               `form:"requestType,omitempty" json:"requestType,omitempty"`
 	MinFirstTokenMs       *int64                                                                               `form:"minFirstTokenMs,omitempty" json:"minFirstTokenMs,omitempty"`
 	MinDurationMs         *int64                                                                               `form:"minDurationMs,omitempty" json:"minDurationMs,omitempty"`
@@ -17210,7 +16608,6 @@ type ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParams str
 	ImageSize             *string                                                                             `form:"imageSize,omitempty" json:"imageSize,omitempty"`
 	ConnectorId           *int64                                                                              `form:"connectorId,omitempty" json:"connectorId,omitempty"`
 	PoolId                *int64                                                                              `form:"poolId,omitempty" json:"poolId,omitempty"`
-	ProfileId             *int64                                                                              `form:"profileId,omitempty" json:"profileId,omitempty"`
 	RequestType           *int64                                                                              `form:"requestType,omitempty" json:"requestType,omitempty"`
 	MinFirstTokenMs       *int64                                                                              `form:"minFirstTokenMs,omitempty" json:"minFirstTokenMs,omitempty"`
 	MinDurationMs         *int64                                                                              `form:"minDurationMs,omitempty" json:"minDurationMs,omitempty"`
@@ -17304,6 +16701,11 @@ type ModelGatewayServiceModelReplacePoolMembersParams struct {
 	PoolId *int64 `form:"pool_id,omitempty" json:"pool_id,omitempty"`
 }
 
+// ModelGatewayServiceModelPoolModelsParams defines parameters for ModelGatewayServiceModelPoolModels.
+type ModelGatewayServiceModelPoolModelsParams struct {
+	Id *int64 `form:"id,omitempty" json:"id,omitempty"`
+}
+
 // ModelGatewayServiceModelPoolOptionsParams defines parameters for ModelGatewayServiceModelPoolOptions.
 type ModelGatewayServiceModelPoolOptionsParams struct {
 	Protocol        *string `form:"protocol,omitempty" json:"protocol,omitempty"`
@@ -17333,8 +16735,6 @@ type ModelGatewayServiceModelDeletePriceParams struct {
 // ModelGatewayServiceModelListPricesParams defines parameters for ModelGatewayServiceModelListPrices.
 type ModelGatewayServiceModelListPricesParams struct {
 	Search    *string                                            `form:"search,omitempty" json:"search,omitempty"`
-	Scope     *ModelGatewayServiceModelListPricesParamsScope     `form:"scope,omitempty" json:"scope,omitempty"`
-	ProfileId *int64                                             `form:"profile_id,omitempty" json:"profile_id,omitempty"`
 	Source    *string                                            `form:"source,omitempty" json:"source,omitempty"`
 	UsedOnly  *bool                                              `form:"used_only,omitempty" json:"used_only,omitempty"`
 	SortBy    *string                                            `form:"sort_by,omitempty" json:"sort_by,omitempty"`
@@ -17342,9 +16742,6 @@ type ModelGatewayServiceModelListPricesParams struct {
 	Page      *int32                                             `form:"page,omitempty" json:"page,omitempty"`
 	PageSize  *int32                                             `form:"page_size,omitempty" json:"page_size,omitempty"`
 }
-
-// ModelGatewayServiceModelListPricesParamsScope defines parameters for ModelGatewayServiceModelListPrices.
-type ModelGatewayServiceModelListPricesParamsScope string
 
 // ModelGatewayServiceModelListPricesParamsSortOrder defines parameters for ModelGatewayServiceModelListPrices.
 type ModelGatewayServiceModelListPricesParamsSortOrder string
@@ -17359,25 +16756,9 @@ type ModelGatewayServiceModelUpdatePriceParams struct {
 	Id *int64 `form:"id,omitempty" json:"id,omitempty"`
 }
 
-// ModelGatewayServiceModelClonePriceParams defines parameters for ModelGatewayServiceModelClonePrice.
-type ModelGatewayServiceModelClonePriceParams struct {
-	Id *int64 `form:"id,omitempty" json:"id,omitempty"`
-}
-
 // ModelGatewayServiceModelGetPriceParams defines parameters for ModelGatewayServiceModelGetPrice.
 type ModelGatewayServiceModelGetPriceParams struct {
 	Id *int64 `form:"id,omitempty" json:"id,omitempty"`
-}
-
-// ModelGatewayServiceModelClearProfileOverrideParams defines parameters for ModelGatewayServiceModelClearProfileOverride.
-type ModelGatewayServiceModelClearProfileOverrideParams struct {
-	ProfileId *int64 `form:"profile_id,omitempty" json:"profile_id,omitempty"`
-	Version   *int64 `form:"version,omitempty" json:"version,omitempty"`
-}
-
-// ModelGatewayServiceModelSetProfileOverrideParams defines parameters for ModelGatewayServiceModelSetProfileOverride.
-type ModelGatewayServiceModelSetProfileOverrideParams struct {
-	ProfileId *int64 `form:"profile_id,omitempty" json:"profile_id,omitempty"`
 }
 
 // ModelGatewayServiceModelPriceSyncHistoryParams defines parameters for ModelGatewayServiceModelPriceSyncHistory.
@@ -17392,85 +16773,6 @@ type ModelGatewayServiceModelPriceSyncPendingParams struct {
 	Page       *int32 `form:"page,omitempty" json:"page,omitempty"`
 	PageSize   *int32 `form:"page_size,omitempty" json:"page_size,omitempty"`
 }
-
-// ModelGatewayServiceModelDeleteProfileJSONBody defines parameters for ModelGatewayServiceModelDeleteProfile.
-type ModelGatewayServiceModelDeleteProfileJSONBody struct {
-	Reason *string `json:"reason,omitempty"`
-}
-
-// ModelGatewayServiceModelDeleteProfileParams defines parameters for ModelGatewayServiceModelDeleteProfile.
-type ModelGatewayServiceModelDeleteProfileParams struct {
-	Id *int64 `form:"id,omitempty" json:"id,omitempty"`
-}
-
-// ModelGatewayServiceModelListProfilesParams defines parameters for ModelGatewayServiceModelListProfiles.
-type ModelGatewayServiceModelListProfilesParams struct {
-	Page      *int32                                               `form:"page,omitempty" json:"page,omitempty"`
-	PageSize  *int32                                               `form:"page_size,omitempty" json:"page_size,omitempty"`
-	Search    *string                                              `form:"search,omitempty" json:"search,omitempty"`
-	Kind      *string                                              `form:"kind,omitempty" json:"kind,omitempty"`
-	PoolId    *int64                                               `form:"pool_id,omitempty" json:"pool_id,omitempty"`
-	Status    *string                                              `form:"status,omitempty" json:"status,omitempty"`
-	Bound     *ModelGatewayServiceModelListProfilesParamsBound     `form:"bound,omitempty" json:"bound,omitempty"`
-	SortBy    *string                                              `form:"sort_by,omitempty" json:"sort_by,omitempty"`
-	SortOrder *ModelGatewayServiceModelListProfilesParamsSortOrder `form:"sort_order,omitempty" json:"sort_order,omitempty"`
-}
-
-// ModelGatewayServiceModelListProfilesParamsBound defines parameters for ModelGatewayServiceModelListProfiles.
-type ModelGatewayServiceModelListProfilesParamsBound string
-
-// ModelGatewayServiceModelListProfilesParamsSortOrder defines parameters for ModelGatewayServiceModelListProfiles.
-type ModelGatewayServiceModelListProfilesParamsSortOrder string
-
-// ModelGatewayServiceModelCreateProfileParams defines parameters for ModelGatewayServiceModelCreateProfile.
-type ModelGatewayServiceModelCreateProfileParams struct {
-	Id             *int64  `form:"id,omitempty" json:"id,omitempty"`
-	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
-}
-
-// ModelGatewayServiceModelUpdateProfileParams defines parameters for ModelGatewayServiceModelUpdateProfile.
-type ModelGatewayServiceModelUpdateProfileParams struct {
-	Id             *int64  `form:"id,omitempty" json:"id,omitempty"`
-	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
-}
-
-// ModelGatewayServiceModelGetProfileParams defines parameters for ModelGatewayServiceModelGetProfile.
-type ModelGatewayServiceModelGetProfileParams struct {
-	Id *int64 `form:"id,omitempty" json:"id,omitempty"`
-}
-
-// ModelGatewayServiceModelDuplicateProfileParams defines parameters for ModelGatewayServiceModelDuplicateProfile.
-type ModelGatewayServiceModelDuplicateProfileParams struct {
-	Id             *int64  `form:"id,omitempty" json:"id,omitempty"`
-	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
-}
-
-// ModelGatewayServiceModelProfileModelCandidatesParams defines parameters for ModelGatewayServiceModelProfileModelCandidates.
-type ModelGatewayServiceModelProfileModelCandidatesParams struct {
-	PoolId *int64 `form:"pool_id,omitempty" json:"pool_id,omitempty"`
-}
-
-// ModelGatewayServiceModelProfileOptionsParams defines parameters for ModelGatewayServiceModelProfileOptions.
-type ModelGatewayServiceModelProfileOptionsParams struct {
-	Kind    *string `form:"kind,omitempty" json:"kind,omitempty"`
-	Purpose *string `form:"purpose,omitempty" json:"purpose,omitempty"`
-}
-
-// ModelGatewayServiceModelProfileProbesParams defines parameters for ModelGatewayServiceModelProfileProbes.
-type ModelGatewayServiceModelProfileProbesParams struct {
-	ProfileId *int64  `form:"profile_id,omitempty" json:"profile_id,omitempty"`
-	ProbeId   *string `form:"probe_id,omitempty" json:"probe_id,omitempty"`
-	Page      *int32  `form:"page,omitempty" json:"page,omitempty"`
-	PageSize  *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
-}
-
-// ModelGatewayObservabilityServiceModelObservationProfileEventStatsParams defines parameters for ModelGatewayObservabilityServiceModelObservationProfileEventStats.
-type ModelGatewayObservabilityServiceModelObservationProfileEventStatsParams struct {
-	Range *ModelGatewayObservabilityServiceModelObservationProfileEventStatsParamsRange `form:"range,omitempty" json:"range,omitempty"`
-}
-
-// ModelGatewayObservabilityServiceModelObservationProfileEventStatsParamsRange defines parameters for ModelGatewayObservabilityServiceModelObservationProfileEventStats.
-type ModelGatewayObservabilityServiceModelObservationProfileEventStatsParamsRange string
 
 // ModelGatewayServiceModelDeletePurposeJSONBody defines parameters for ModelGatewayServiceModelDeletePurpose.
 type ModelGatewayServiceModelDeletePurposeJSONBody struct {
@@ -17499,6 +16801,14 @@ type ModelGatewayServiceModelGetPurposeParams struct {
 	Key *string `form:"key,omitempty" json:"key,omitempty"`
 }
 
+// ModelGatewayServiceModelPurposeProbesParams defines parameters for ModelGatewayServiceModelPurposeProbes.
+type ModelGatewayServiceModelPurposeProbesParams struct {
+	Purpose  *string `form:"purpose,omitempty" json:"purpose,omitempty"`
+	ProbeId  *string `form:"probe_id,omitempty" json:"probe_id,omitempty"`
+	Page     *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+}
+
 // ModelGatewayServiceModelPurposeRevisionsParams defines parameters for ModelGatewayServiceModelPurposeRevisions.
 type ModelGatewayServiceModelPurposeRevisionsParams struct {
 	Key      *string `form:"key,omitempty" json:"key,omitempty"`
@@ -17511,6 +16821,11 @@ type ModelGatewayServiceModelPurposeRevisionsParams struct {
 type ModelGatewayServiceModelPurposeRollbackDraftParams struct {
 	Key     *string `form:"key,omitempty" json:"key,omitempty"`
 	Version *int64  `form:"version,omitempty" json:"version,omitempty"`
+}
+
+// ModelGatewayServiceModelSavePurposeSettingsParams defines parameters for ModelGatewayServiceModelSavePurposeSettings.
+type ModelGatewayServiceModelSavePurposeSettingsParams struct {
+	Key *string `form:"key,omitempty" json:"key,omitempty"`
 }
 
 // ModelGatewayObservabilityServiceModelObservationPurposeStatsParams defines parameters for ModelGatewayObservabilityServiceModelObservationPurposeStats.
@@ -17548,7 +16863,6 @@ type ModelGatewayObservabilityServiceModelObservationRequestsParams struct {
 	Status             *string                                                                   `form:"status,omitempty" json:"status,omitempty"`
 	ConnectorId        *int64                                                                    `form:"connectorId,omitempty" json:"connectorId,omitempty"`
 	PoolId             *int64                                                                    `form:"poolId,omitempty" json:"poolId,omitempty"`
-	ProfileId          *int64                                                                    `form:"profileId,omitempty" json:"profileId,omitempty"`
 	RequestType        *int64                                                                    `form:"requestType,omitempty" json:"requestType,omitempty"`
 	MinDurationMs      *int64                                                                    `form:"minDurationMs,omitempty" json:"minDurationMs,omitempty"`
 	Stream             *bool                                                                     `form:"stream,omitempty" json:"stream,omitempty"`
@@ -17615,7 +16929,6 @@ type ModelGatewayObservabilityServiceModelObservationRequestsSummaryParams struc
 	Status             *string                                                                          `form:"status,omitempty" json:"status,omitempty"`
 	ConnectorId        *int64                                                                           `form:"connectorId,omitempty" json:"connectorId,omitempty"`
 	PoolId             *int64                                                                           `form:"poolId,omitempty" json:"poolId,omitempty"`
-	ProfileId          *int64                                                                           `form:"profileId,omitempty" json:"profileId,omitempty"`
 	RequestType        *int64                                                                           `form:"requestType,omitempty" json:"requestType,omitempty"`
 	MinDurationMs      *int64                                                                           `form:"minDurationMs,omitempty" json:"minDurationMs,omitempty"`
 	Stream             *bool                                                                            `form:"stream,omitempty" json:"stream,omitempty"`
@@ -17665,7 +16978,6 @@ type ModelGatewayObservabilityServiceModelObservationUsageParams struct {
 	ImageSize             *string                                                                 `form:"imageSize,omitempty" json:"imageSize,omitempty"`
 	ConnectorId           *int64                                                                  `form:"connectorId,omitempty" json:"connectorId,omitempty"`
 	PoolId                *int64                                                                  `form:"poolId,omitempty" json:"poolId,omitempty"`
-	ProfileId             *int64                                                                  `form:"profileId,omitempty" json:"profileId,omitempty"`
 	RequestType           *int64                                                                  `form:"requestType,omitempty" json:"requestType,omitempty"`
 	MinFirstTokenMs       *int64                                                                  `form:"minFirstTokenMs,omitempty" json:"minFirstTokenMs,omitempty"`
 	MinDurationMs         *int64                                                                  `form:"minDurationMs,omitempty" json:"minDurationMs,omitempty"`
@@ -17708,7 +17020,6 @@ type ModelGatewayObservabilityServiceModelObservationUsageBreakdownParams struct
 	ImageSize             *string                                                                          `form:"imageSize,omitempty" json:"imageSize,omitempty"`
 	ConnectorId           *int64                                                                           `form:"connectorId,omitempty" json:"connectorId,omitempty"`
 	PoolId                *int64                                                                           `form:"poolId,omitempty" json:"poolId,omitempty"`
-	ProfileId             *int64                                                                           `form:"profileId,omitempty" json:"profileId,omitempty"`
 	RequestType           *int64                                                                           `form:"requestType,omitempty" json:"requestType,omitempty"`
 	MinFirstTokenMs       *int64                                                                           `form:"minFirstTokenMs,omitempty" json:"minFirstTokenMs,omitempty"`
 	MinDurationMs         *int64                                                                           `form:"minDurationMs,omitempty" json:"minDurationMs,omitempty"`
@@ -17774,7 +17085,6 @@ type ModelGatewayObservabilityServiceModelObservationUsageRankingParams struct {
 	ImageSize             *string                                                                        `form:"imageSize,omitempty" json:"imageSize,omitempty"`
 	ConnectorId           *int64                                                                         `form:"connectorId,omitempty" json:"connectorId,omitempty"`
 	PoolId                *int64                                                                         `form:"poolId,omitempty" json:"poolId,omitempty"`
-	ProfileId             *int64                                                                         `form:"profileId,omitempty" json:"profileId,omitempty"`
 	RequestType           *int64                                                                         `form:"requestType,omitempty" json:"requestType,omitempty"`
 	MinFirstTokenMs       *int64                                                                         `form:"minFirstTokenMs,omitempty" json:"minFirstTokenMs,omitempty"`
 	MinDurationMs         *int64                                                                         `form:"minDurationMs,omitempty" json:"minDurationMs,omitempty"`
@@ -17816,7 +17126,6 @@ type ModelGatewayObservabilityServiceModelObservationUsageSummaryParams struct {
 	ImageSize             *string                                                                        `form:"imageSize,omitempty" json:"imageSize,omitempty"`
 	ConnectorId           *int64                                                                         `form:"connectorId,omitempty" json:"connectorId,omitempty"`
 	PoolId                *int64                                                                         `form:"poolId,omitempty" json:"poolId,omitempty"`
-	ProfileId             *int64                                                                         `form:"profileId,omitempty" json:"profileId,omitempty"`
 	RequestType           *int64                                                                         `form:"requestType,omitempty" json:"requestType,omitempty"`
 	MinFirstTokenMs       *int64                                                                         `form:"minFirstTokenMs,omitempty" json:"minFirstTokenMs,omitempty"`
 	MinDurationMs         *int64                                                                         `form:"minDurationMs,omitempty" json:"minDurationMs,omitempty"`
@@ -17849,7 +17158,6 @@ type ModelGatewayObservabilityServiceModelObservationUsageTrendParams struct {
 	ImageSize             *string                                                                      `form:"imageSize,omitempty" json:"imageSize,omitempty"`
 	ConnectorId           *int64                                                                       `form:"connectorId,omitempty" json:"connectorId,omitempty"`
 	PoolId                *int64                                                                       `form:"poolId,omitempty" json:"poolId,omitempty"`
-	ProfileId             *int64                                                                       `form:"profileId,omitempty" json:"profileId,omitempty"`
 	RequestType           *int64                                                                       `form:"requestType,omitempty" json:"requestType,omitempty"`
 	MinFirstTokenMs       *int64                                                                       `form:"minFirstTokenMs,omitempty" json:"minFirstTokenMs,omitempty"`
 	MinDurationMs         *int64                                                                       `form:"minDurationMs,omitempty" json:"minDurationMs,omitempty"`
@@ -18998,9 +18306,6 @@ type KnowledgeServiceAdminSetTaggingPromptJSONRequestBody = SetTaggingPromptRequ
 // KnowledgeServiceAdminPreviewTaggingPromptJSONRequestBody defines body for KnowledgeServiceAdminPreviewTaggingPrompt for application/json ContentType.
 type KnowledgeServiceAdminPreviewTaggingPromptJSONRequestBody = SetTaggingPromptRequestBody
 
-// KnowledgeServiceAdminSetTaggingTargetJSONRequestBody defines body for KnowledgeServiceAdminSetTaggingTarget for application/json ContentType.
-type KnowledgeServiceAdminSetTaggingTargetJSONRequestBody = SetTaggingTargetRequestBody
-
 // AdminServiceAdminLoginJSONRequestBody defines body for AdminServiceAdminLogin for application/json ContentType.
 type AdminServiceAdminLoginJSONRequestBody = AdminLoginRequestBody
 
@@ -19118,53 +18423,29 @@ type ModelGatewayServiceModelCreatePriceJSONRequestBody = ModelPriceFormBody
 // ModelGatewayServiceModelUpdatePriceJSONRequestBody defines body for ModelGatewayServiceModelUpdatePrice for application/json ContentType.
 type ModelGatewayServiceModelUpdatePriceJSONRequestBody = ModelPriceFormBody
 
-// ModelGatewayServiceModelClonePriceJSONRequestBody defines body for ModelGatewayServiceModelClonePrice for application/json ContentType.
-type ModelGatewayServiceModelClonePriceJSONRequestBody = ModelPriceCloneRequestBody
-
-// ModelGatewayServiceModelSetProfileOverrideJSONRequestBody defines body for ModelGatewayServiceModelSetProfileOverride for application/json ContentType.
-type ModelGatewayServiceModelSetProfileOverrideJSONRequestBody = ModelProfileOverrideRequestBody
-
 // ModelGatewayServiceModelPriceSyncApplyJSONRequestBody defines body for ModelGatewayServiceModelPriceSyncApply for application/json ContentType.
 type ModelGatewayServiceModelPriceSyncApplyJSONRequestBody = ModelSyncHashRequestBody
 
 // ModelGatewayServiceModelPriceSyncIgnoreJSONRequestBody defines body for ModelGatewayServiceModelPriceSyncIgnore for application/json ContentType.
 type ModelGatewayServiceModelPriceSyncIgnoreJSONRequestBody = ModelSyncHashRequestBody
 
-// ModelGatewayServiceModelDeleteProfileJSONRequestBody defines body for ModelGatewayServiceModelDeleteProfile for application/json ContentType.
-type ModelGatewayServiceModelDeleteProfileJSONRequestBody ModelGatewayServiceModelDeleteProfileJSONBody
-
-// ModelGatewayServiceModelCreateProfileJSONRequestBody defines body for ModelGatewayServiceModelCreateProfile for application/json ContentType.
-type ModelGatewayServiceModelCreateProfileJSONRequestBody = ModelProfileFormBody
-
-// ModelGatewayServiceModelUpdateProfileJSONRequestBody defines body for ModelGatewayServiceModelUpdateProfile for application/json ContentType.
-type ModelGatewayServiceModelUpdateProfileJSONRequestBody = ModelProfileFormBody
-
-// ModelGatewayServiceModelProfilePayloadPreviewJSONRequestBody defines body for ModelGatewayServiceModelProfilePayloadPreview for application/json ContentType.
-type ModelGatewayServiceModelProfilePayloadPreviewJSONRequestBody = ModelPayloadPreviewRequestBody
-
-// ModelGatewayServiceModelProbeProfileJSONRequestBody defines body for ModelGatewayServiceModelProbeProfile for application/json ContentType.
-type ModelGatewayServiceModelProbeProfileJSONRequestBody = ModelProfileProbeRequestBody
-
 // ModelGatewayServiceModelDeletePurposeJSONRequestBody defines body for ModelGatewayServiceModelDeletePurpose for application/json ContentType.
 type ModelGatewayServiceModelDeletePurposeJSONRequestBody ModelGatewayServiceModelDeletePurposeJSONBody
+
+// ModelGatewayServiceModelProbePurposeTargetJSONRequestBody defines body for ModelGatewayServiceModelProbePurposeTarget for application/json ContentType.
+type ModelGatewayServiceModelProbePurposeTargetJSONRequestBody = ModelTargetProbeRequestBody
 
 // ModelGatewayServiceModelPurposeResolvePreviewJSONRequestBody defines body for ModelGatewayServiceModelPurposeResolvePreview for application/json ContentType.
 type ModelGatewayServiceModelPurposeResolvePreviewJSONRequestBody = ModelResolvePreviewRequestBody
 
+// ModelGatewayServiceModelSavePurposeSettingsJSONRequestBody defines body for ModelGatewayServiceModelSavePurposeSettings for application/json ContentType.
+type ModelGatewayServiceModelSavePurposeSettingsJSONRequestBody = ModelPurposeSettingsRequestBody
+
 // ModelGatewayServiceModelSavePurposeTargetsJSONRequestBody defines body for ModelGatewayServiceModelSavePurposeTargets for application/json ContentType.
 type ModelGatewayServiceModelSavePurposeTargetsJSONRequestBody = ModelPurposeTargetsRequestBody
 
-// ModelGatewayObservabilityServiceModelObservationRequestsBodyJSONRequestBody defines body for ModelGatewayObservabilityServiceModelObservationRequestsBody for application/json ContentType.
-type ModelGatewayObservabilityServiceModelObservationRequestsBodyJSONRequestBody = ModelObservationAccessRequestBody
-
 // ModelGatewayObservabilityServiceModelObservationRequestsCurlJSONRequestBody defines body for ModelGatewayObservabilityServiceModelObservationRequestsCurl for application/json ContentType.
-type ModelGatewayObservabilityServiceModelObservationRequestsCurlJSONRequestBody = ModelObservationAccessRequestBody
-
-// ModelGatewayObservabilityServiceModelObservationRequestsDownloadJSONRequestBody defines body for ModelGatewayObservabilityServiceModelObservationRequestsDownload for application/json ContentType.
-type ModelGatewayObservabilityServiceModelObservationRequestsDownloadJSONRequestBody = ModelObservationAccessRequestBody
-
-// ModelGatewayObservabilityServiceModelObservationRequestsImageJSONRequestBody defines body for ModelGatewayObservabilityServiceModelObservationRequestsImage for application/json ContentType.
-type ModelGatewayObservabilityServiceModelObservationRequestsImageJSONRequestBody = ModelObservationAccessRequestBody
+type ModelGatewayObservabilityServiceModelObservationRequestsCurlJSONRequestBody = ModelObservationCurlRequestBody
 
 // ModelGatewayServiceModelUpdateSettingsJSONRequestBody defines body for ModelGatewayServiceModelUpdateSettings for application/json ContentType.
 type ModelGatewayServiceModelUpdateSettingsJSONRequestBody = ModelSettingsUpdateRequestBody
