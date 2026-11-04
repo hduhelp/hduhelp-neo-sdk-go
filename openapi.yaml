@@ -5317,35 +5317,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ModelEntityUsageStatsResponseBody'
-    /hduhelp-neo/admin/models/connectors/{id}/temp-unschedulable-rules:
-        put:
-            tags:
-                - ModelGatewayService
-            summary: 临时不可调度规则
-            operationId: ModelGatewayService_ModelSetConnectorTempRules
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                    type: integer
-                    format: int64
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/ModelTempRulesRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelConnectorResponseBody'
-            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
     /hduhelp-neo/admin/models/connectors/{id}/test:
         post:
             tags:
@@ -7355,58 +7326,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ModelRequestPageResponseBody'
-    /hduhelp-neo/admin/models/requests/access-audits:
-        get:
-            tags:
-                - ModelGatewayObservabilityService
-            operationId: ModelGatewayObservabilityService_ModelObservationAccessAudits
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: from
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: until
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: actorId
-                  in: query
-                  schema:
-                    type: string
-                - name: subjectUserId
-                  in: query
-                  schema:
-                    type: string
-                - name: requestId
-                  in: query
-                  schema:
-                    type: string
-                - name: afterCreatedAt
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: afterId
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: limit
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelAccessAuditPageResponseBody'
     /hduhelp-neo/admin/models/requests/body:
         post:
             tags:
@@ -7879,20 +7798,6 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ModelSettingResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
-    /hduhelp-neo/admin/models/trace-status:
-        get:
-            tags:
-                - ModelGatewayObservabilityService
-            operationId: ModelGatewayObservabilityService_ModelObservationTraceStatus
-            security:
-                - OperatorBearerAuth: []
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelTraceStatusResponseBody'
     /hduhelp-neo/admin/models/traces/query:
         post:
             tags:
@@ -8311,61 +8216,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ModelUsageItemResponseBody'
-    /hduhelp-neo/admin/models/usage/hourly:
-        get:
-            tags:
-                - ModelGatewayObservabilityService
-            operationId: ModelGatewayObservabilityService_ModelObservationUsageHourly
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: from
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: until
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: purpose
-                  in: query
-                  schema:
-                    type: string
-                - name: callerKind
-                  in: query
-                  schema:
-                    enum:
-                        - session
-                        - internal
-                    type: string
-                - name: model
-                  in: query
-                  schema:
-                    type: string
-                - name: connectorId
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: poolId
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: profileId
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelHourlyPageResponseBody'
     /hduhelp-neo/admin/models/usage/model-options:
         get:
             tags:
@@ -8566,139 +8416,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ModelUsageBreakdownResultResponseBody'
-    /hduhelp-neo/admin/models/usage/recompute:
-        post:
-            tags:
-                - ModelGatewayObservabilityService
-            operationId: ModelGatewayObservabilityService_ModelObservationUsageRecompute
-            security:
-                - OperatorBearerAuth: []
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/ModelObservationRecomputeRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelObservationOKResponseBody'
-    /hduhelp-neo/admin/models/usage/stats:
-        get:
-            tags:
-                - ModelGatewayObservabilityService
-            operationId: ModelGatewayObservabilityService_ModelObservationUsageStats
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: from
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: until
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: purpose
-                  in: query
-                  schema:
-                    type: string
-                - name: userId
-                  in: query
-                  schema:
-                    type: string
-                - name: callerKind
-                  in: query
-                  schema:
-                    enum:
-                        - session
-                        - internal
-                    type: string
-                - name: model
-                  in: query
-                  schema:
-                    type: string
-                - name: modelSource
-                  in: query
-                  schema:
-                    enum:
-                        - requested
-                        - upstream
-                        - billing
-                    type: string
-                - name: requestId
-                  in: query
-                  schema:
-                    type: string
-                - name: outcome
-                  in: query
-                  schema:
-                    type: string
-                - name: billingMode
-                  in: query
-                  schema:
-                    enum:
-                        - token
-                        - per_request
-                        - image
-                    type: string
-                - name: imageSize
-                  in: query
-                  schema:
-                    type: string
-                - name: connectorId
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: poolId
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: profileId
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: requestType
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: minFirstTokenMs
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: minDurationMs
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: stream
-                  in: query
-                  schema:
-                    type: boolean
-                - name: upstreamModelMismatch
-                  in: query
-                  schema:
-                    type: boolean
-                - name: runId
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ModelUsageStatsResponseBody'
     /hduhelp-neo/admin/models/usage/summary:
         get:
             tags:
@@ -25900,75 +25617,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        ModelAccessAuditCursor:
-            required:
-                - createdAt
-                - id
-            type: object
-            properties:
-                createdAt:
-                    type: integer
-                    format: int64
-                id:
-                    type: integer
-                    format: int64
-        ModelAccessAuditItem:
-            required:
-                - id
-                - createdAt
-                - action
-            type: object
-            properties:
-                id:
-                    type: integer
-                    format: int64
-                createdAt:
-                    type: integer
-                    format: int64
-                actorId:
-                    type: string
-                actorName:
-                    type: string
-                action:
-                    type: string
-                requestId:
-                    type: string
-                reason:
-                    type: string
-                subjectUserId:
-                    type: string
-                statusCode:
-                    type: integer
-                    format: int64
-                subjectUser:
-                    $ref: '#/components/schemas/AdminUserInfo'
-        ModelAccessAuditPage:
-            required:
-                - items
-                - source
-                - estimated
-            type: object
-            properties:
-                items:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ModelAccessAuditItem'
-                nextCursor:
-                    $ref: '#/components/schemas/ModelAccessAuditCursor'
-                source:
-                    type: string
-                estimated:
-                    type: boolean
-        ModelAccessAuditPageResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/ModelAccessAuditPage'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
         ModelAllowlist:
             required:
                 - enabled
@@ -28615,183 +28263,6 @@ components:
                 score:
                     type: number
                     format: double
-        ModelHourlyItem:
-            required:
-                - bucketStart
-                - rollup
-                - purpose
-                - profileId
-                - poolId
-                - connectorId
-                - callerKind
-                - model
-                - requestCount
-                - successCount
-                - errorCount
-                - businessLimitedCount
-                - failoverCount
-                - attemptCount
-                - probeCount
-                - billedCount
-                - streamTruncatedCount
-                - clientCanceledCount
-                - inputTokens
-                - outputTokens
-                - cacheReadTokens
-                - cacheCreationTokens
-                - cacheCreation5MTokens
-                - cacheCreation1HTokens
-                - imageInputTokens
-                - imageOutputTokens
-                - reasoningTokens
-                - usageUnits
-                - imageCount
-                - totalCost
-                - actualCost
-                - probeActualCost
-                - durationMsSum
-                - firstTokenMsSum
-                - firstTokenCount
-                - peakQpm
-                - peakTpm
-                - computedAt
-            type: object
-            properties:
-                bucketStart:
-                    type: integer
-                    format: int64
-                rollup:
-                    type: boolean
-                purpose:
-                    type: string
-                profileId:
-                    type: integer
-                    format: int64
-                poolId:
-                    type: integer
-                    format: int64
-                connectorId:
-                    type: integer
-                    format: int64
-                callerKind:
-                    type: string
-                model:
-                    type: string
-                requestCount:
-                    type: integer
-                    format: int64
-                successCount:
-                    type: integer
-                    format: int64
-                errorCount:
-                    type: integer
-                    format: int64
-                businessLimitedCount:
-                    type: integer
-                    format: int64
-                failoverCount:
-                    type: integer
-                    format: int64
-                attemptCount:
-                    type: integer
-                    format: int64
-                probeCount:
-                    type: integer
-                    format: int64
-                billedCount:
-                    type: integer
-                    format: int64
-                streamTruncatedCount:
-                    type: integer
-                    format: int64
-                clientCanceledCount:
-                    type: integer
-                    format: int64
-                inputTokens:
-                    type: integer
-                    format: int64
-                outputTokens:
-                    type: integer
-                    format: int64
-                cacheReadTokens:
-                    type: integer
-                    format: int64
-                cacheCreationTokens:
-                    type: integer
-                    format: int64
-                cacheCreation5MTokens:
-                    type: integer
-                    format: int64
-                cacheCreation1HTokens:
-                    type: integer
-                    format: int64
-                imageInputTokens:
-                    type: integer
-                    format: int64
-                imageOutputTokens:
-                    type: integer
-                    format: int64
-                reasoningTokens:
-                    type: integer
-                    format: int64
-                usageUnits:
-                    type: integer
-                    format: int64
-                imageCount:
-                    type: integer
-                    format: int64
-                totalCost:
-                    type: string
-                actualCost:
-                    type: string
-                probeActualCost:
-                    type: string
-                durationMsSum:
-                    type: integer
-                    format: int64
-                firstTokenMsSum:
-                    type: integer
-                    format: int64
-                firstTokenCount:
-                    type: integer
-                    format: int64
-                peakQpm:
-                    type: integer
-                    format: int64
-                peakTpm:
-                    type: integer
-                    format: int64
-                computedAt:
-                    type: integer
-                    format: int64
-        ModelHourlyPage:
-            required:
-                - items
-                - source
-                - estimated
-            type: object
-            properties:
-                items:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ModelHourlyItem'
-                source:
-                    type: string
-                estimated:
-                    type: boolean
-        ModelHourlyPageResponseBody:
-            required:
-                - code
-                - msg
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/ModelHourlyPage'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
         ModelImagePage:
             required:
                 - items
@@ -28929,6 +28400,21 @@ components:
                         /responses was missing and only the Chat fallback answered.
                 fallbackUsed:
                     type: boolean
+        ModelListedModel:
+            required:
+                - id
+                - displayName
+                - createdAt
+            type: object
+            properties:
+                id:
+                    type: string
+                displayName:
+                    type: string
+                createdAt:
+                    type: integer
+                    format: int64
+            description: …/models 的一行：id 即调用时的 model；displayName 是 Anthropic 列表的 display_name；createdAt 为 Unix 毫秒。
         ModelMappingResolution:
             required:
                 - model
@@ -29109,21 +28595,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        ModelObservationOK:
-            type: object
-            properties:
-                ok:
-                    type: boolean
-        ModelObservationOKResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/ModelObservationOK'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
         ModelObservationPoint:
             required:
                 - at
@@ -29136,15 +28607,6 @@ components:
                 value:
                     type: number
                     format: double
-        ModelObservationRecomputeRequestBody:
-            type: object
-            properties:
-                from:
-                    type: integer
-                    format: int64
-                until:
-                    type: integer
-                    format: int64
         ModelObservationSeries:
             required:
                 - metric
@@ -31339,6 +30801,12 @@ components:
                     format: int32
                 enabled:
                     type: boolean
+                model:
+                    type: string
+                    description: 公开名：调用方在用途内可选的模型名，只落到带同一公开名的目标（同名即故障切换组）；空 = 用途默认目标。
+                display_name:
+                    type: string
+                    description: 展示名：Anthropic 风格模型列表的 display_name；空 = 与公开名相同。
             description: |-
                 ---------------------------------------------------------------------------
                 用途与路由（第 10 章）
@@ -31396,6 +30864,10 @@ components:
                 profileRevision:
                     type: integer
                     format: int32
+                model:
+                    type: string
+                displayName:
+                    type: string
         ModelPurposeTargetsRequestBody:
             required:
                 - targets
@@ -32016,7 +31488,7 @@ components:
                 models:
                     type: array
                     items:
-                        type: string
+                        $ref: '#/components/schemas/ModelListedModel'
         ModelResolvePreviewRequestBody:
             type: object
             properties:
@@ -32042,11 +31514,13 @@ components:
                         - /openai/v1/images/generations
                         - /openai/v1/images/edits
                         - /openai/v1/models
+                        - /anthropic/v1/models
                     type: string
                     description: |-
                         入口（第 1 章 调用入口，与 domain/modelgw.Entries 同一份）：sdk:* 是进程内 SDK 方法，只给 internal；
                         其余是 /hduhelp-neo/ai/v1 下的代理路由，给 session / run，只能落到同协议端点的档位（不做跨协议转换）；
-                        /openai/v1/models 只列调用方可见的别名。空 = 不检查入口协议。
+                        …/models 列出该协议能调通的名字：指定了用途（session 走 metadata_purpose，即路径或请求体里的用途）时是它的公开名与别名，
+                        否则是各用途的精确别名。空 = 不检查入口协议。
                 model:
                     type: string
                 purpose:
@@ -32833,21 +32307,10 @@ components:
                     format: int32
                 enabled:
                     type: boolean
-        ModelTempRulesRequestBody:
-            required:
-                - enabled
-                - rules
-            type: object
-            properties:
-                enabled:
-                    type: boolean
-                rules:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ModelTempUnschedRule'
-                expected_version:
-                    type: integer
-                    format: int64
+                model:
+                    type: string
+                displayName:
+                    type: string
         ModelTempUnschedRule:
             required:
                 - errorCode
@@ -33254,44 +32717,6 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/ModelTraceReplay'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        ModelTraceStatus:
-            required:
-                - retentionDays
-                - droppedLastHour
-                - source
-                - estimated
-            type: object
-            properties:
-                ready:
-                    type: boolean
-                queueDepth:
-                    type: number
-                    format: double
-                queueBytes:
-                    type: number
-                    format: double
-                retentionDays:
-                    type: integer
-                    format: int64
-                droppedLastHour:
-                    type: object
-                    additionalProperties:
-                        type: number
-                        format: double
-                source:
-                    type: string
-                estimated:
-                    type: boolean
-        ModelTraceStatusResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/ModelTraceStatus'
                 code:
                     type: integer
                     format: int64
@@ -34046,117 +33471,6 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/ModelUsagePage'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        ModelUsageStats:
-            required:
-                - cacheCreationTokens
-                - totalTokens
-                - requestCount
-                - inputTokens
-                - outputTokens
-                - cacheReadTokens
-                - imageCount
-                - totalCost
-                - actualCost
-                - source
-                - estimated
-                - endpoints
-                - upstreamEndpoints
-            type: object
-            properties:
-                cacheCreationTokens:
-                    type: integer
-                    format: int64
-                totalTokens:
-                    type: integer
-                    format: int64
-                durationMsAvg:
-                    type: number
-                    format: double
-                firstTokenMsAvg:
-                    type: number
-                    format: double
-                requestCount:
-                    type: integer
-                    format: int64
-                inputTokens:
-                    type: integer
-                    format: int64
-                outputTokens:
-                    type: integer
-                    format: int64
-                cacheReadTokens:
-                    type: integer
-                    format: int64
-                imageCount:
-                    type: integer
-                    format: int64
-                totalCost:
-                    type: string
-                actualCost:
-                    type: string
-                source:
-                    type: string
-                estimated:
-                    type: boolean
-                endpoints:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ModelUsageBucket'
-                upstreamEndpoints:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ModelUsageBucket'
-                cacheCreation5MTokens:
-                    type: integer
-                    format: int64
-                cacheCreation1HTokens:
-                    type: integer
-                    format: int64
-                imageInputCount:
-                    type: integer
-                    format: int64
-                usageUnits:
-                    type: integer
-                    format: int64
-                imageCost:
-                    type: string
-                inputCost:
-                    type: string
-                outputCost:
-                    type: string
-                cacheReadCost:
-                    type: string
-                cacheCreationCost:
-                    type: string
-                imageInputCost:
-                    type: string
-                imageOutputCost:
-                    type: string
-                retriedCount:
-                    type: integer
-                    format: int64
-                clientCanceledCount:
-                    type: integer
-                    format: int64
-                streamTruncatedCount:
-                    type: integer
-                    format: int64
-                cacheHitRatio:
-                    type: number
-                    format: double
-        ModelUsageStatsResponseBody:
-            required:
-                - code
-                - msg
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/ModelUsageStats'
                 code:
                     type: integer
                     format: int64

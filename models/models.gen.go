@@ -660,6 +660,7 @@ func (e ModelResolvePreviewRequestBodyCallerKind) Valid() bool {
 const (
 	Anthropicv1messages            ModelResolvePreviewRequestBodyEntry = "/anthropic/v1/messages"
 	Anthropicv1messagescountTokens ModelResolvePreviewRequestBodyEntry = "/anthropic/v1/messages/count_tokens"
+	Anthropicv1models              ModelResolvePreviewRequestBodyEntry = "/anthropic/v1/models"
 	Openaiv1chatcompletions        ModelResolvePreviewRequestBodyEntry = "/openai/v1/chat/completions"
 	Openaiv1embeddings             ModelResolvePreviewRequestBodyEntry = "/openai/v1/embeddings"
 	Openaiv1imagesedits            ModelResolvePreviewRequestBodyEntry = "/openai/v1/images/edits"
@@ -680,6 +681,8 @@ func (e ModelResolvePreviewRequestBodyEntry) Valid() bool {
 	case Anthropicv1messages:
 		return true
 	case Anthropicv1messagescountTokens:
+		return true
+	case Anthropicv1models:
 		return true
 	case Openaiv1chatcompletions:
 		return true
@@ -2561,24 +2564,6 @@ func (e ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsMetr
 	}
 }
 
-// Defines values for ModelGatewayObservabilityServiceModelObservationUsageHourlyParamsCallerKind.
-const (
-	ModelGatewayObservabilityServiceModelObservationUsageHourlyParamsCallerKindInternal ModelGatewayObservabilityServiceModelObservationUsageHourlyParamsCallerKind = "internal"
-	ModelGatewayObservabilityServiceModelObservationUsageHourlyParamsCallerKindSession  ModelGatewayObservabilityServiceModelObservationUsageHourlyParamsCallerKind = "session"
-)
-
-// Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationUsageHourlyParamsCallerKind enum.
-func (e ModelGatewayObservabilityServiceModelObservationUsageHourlyParamsCallerKind) Valid() bool {
-	switch e {
-	case ModelGatewayObservabilityServiceModelObservationUsageHourlyParamsCallerKindInternal:
-		return true
-	case ModelGatewayObservabilityServiceModelObservationUsageHourlyParamsCallerKindSession:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for ModelGatewayObservabilityServiceModelObservationUsageModelOptionsParamsModelSource.
 const (
 	ModelGatewayObservabilityServiceModelObservationUsageModelOptionsParamsModelSourceBilling   ModelGatewayObservabilityServiceModelObservationUsageModelOptionsParamsModelSource = "billing"
@@ -2753,66 +2738,6 @@ func (e ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimens
 	}
 }
 
-// Defines values for ModelGatewayObservabilityServiceModelObservationUsageStatsParamsCallerKind.
-const (
-	ModelGatewayObservabilityServiceModelObservationUsageStatsParamsCallerKindInternal ModelGatewayObservabilityServiceModelObservationUsageStatsParamsCallerKind = "internal"
-	ModelGatewayObservabilityServiceModelObservationUsageStatsParamsCallerKindSession  ModelGatewayObservabilityServiceModelObservationUsageStatsParamsCallerKind = "session"
-)
-
-// Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationUsageStatsParamsCallerKind enum.
-func (e ModelGatewayObservabilityServiceModelObservationUsageStatsParamsCallerKind) Valid() bool {
-	switch e {
-	case ModelGatewayObservabilityServiceModelObservationUsageStatsParamsCallerKindInternal:
-		return true
-	case ModelGatewayObservabilityServiceModelObservationUsageStatsParamsCallerKindSession:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for ModelGatewayObservabilityServiceModelObservationUsageStatsParamsModelSource.
-const (
-	ModelGatewayObservabilityServiceModelObservationUsageStatsParamsModelSourceBilling   ModelGatewayObservabilityServiceModelObservationUsageStatsParamsModelSource = "billing"
-	ModelGatewayObservabilityServiceModelObservationUsageStatsParamsModelSourceRequested ModelGatewayObservabilityServiceModelObservationUsageStatsParamsModelSource = "requested"
-	ModelGatewayObservabilityServiceModelObservationUsageStatsParamsModelSourceUpstream  ModelGatewayObservabilityServiceModelObservationUsageStatsParamsModelSource = "upstream"
-)
-
-// Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationUsageStatsParamsModelSource enum.
-func (e ModelGatewayObservabilityServiceModelObservationUsageStatsParamsModelSource) Valid() bool {
-	switch e {
-	case ModelGatewayObservabilityServiceModelObservationUsageStatsParamsModelSourceBilling:
-		return true
-	case ModelGatewayObservabilityServiceModelObservationUsageStatsParamsModelSourceRequested:
-		return true
-	case ModelGatewayObservabilityServiceModelObservationUsageStatsParamsModelSourceUpstream:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for ModelGatewayObservabilityServiceModelObservationUsageStatsParamsBillingMode.
-const (
-	ModelGatewayObservabilityServiceModelObservationUsageStatsParamsBillingModeImage      ModelGatewayObservabilityServiceModelObservationUsageStatsParamsBillingMode = "image"
-	ModelGatewayObservabilityServiceModelObservationUsageStatsParamsBillingModePerRequest ModelGatewayObservabilityServiceModelObservationUsageStatsParamsBillingMode = "per_request"
-	ModelGatewayObservabilityServiceModelObservationUsageStatsParamsBillingModeToken      ModelGatewayObservabilityServiceModelObservationUsageStatsParamsBillingMode = "token"
-)
-
-// Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationUsageStatsParamsBillingMode enum.
-func (e ModelGatewayObservabilityServiceModelObservationUsageStatsParamsBillingMode) Valid() bool {
-	switch e {
-	case ModelGatewayObservabilityServiceModelObservationUsageStatsParamsBillingModeImage:
-		return true
-	case ModelGatewayObservabilityServiceModelObservationUsageStatsParamsBillingModePerRequest:
-		return true
-	case ModelGatewayObservabilityServiceModelObservationUsageStatsParamsBillingModeToken:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for ModelGatewayObservabilityServiceModelObservationUsageSummaryParamsCallerKind.
 const (
 	ModelGatewayObservabilityServiceModelObservationUsageSummaryParamsCallerKindInternal ModelGatewayObservabilityServiceModelObservationUsageSummaryParamsCallerKind = "internal"
@@ -2893,19 +2818,19 @@ func (e ModelGatewayObservabilityServiceModelObservationUsageTrendParamsCallerKi
 
 // Defines values for ModelGatewayObservabilityServiceModelObservationUsageTrendParamsModelSource.
 const (
-	Billing   ModelGatewayObservabilityServiceModelObservationUsageTrendParamsModelSource = "billing"
-	Requested ModelGatewayObservabilityServiceModelObservationUsageTrendParamsModelSource = "requested"
-	Upstream  ModelGatewayObservabilityServiceModelObservationUsageTrendParamsModelSource = "upstream"
+	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsModelSourceBilling   ModelGatewayObservabilityServiceModelObservationUsageTrendParamsModelSource = "billing"
+	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsModelSourceRequested ModelGatewayObservabilityServiceModelObservationUsageTrendParamsModelSource = "requested"
+	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsModelSourceUpstream  ModelGatewayObservabilityServiceModelObservationUsageTrendParamsModelSource = "upstream"
 )
 
 // Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationUsageTrendParamsModelSource enum.
 func (e ModelGatewayObservabilityServiceModelObservationUsageTrendParamsModelSource) Valid() bool {
 	switch e {
-	case Billing:
+	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsModelSourceBilling:
 		return true
-	case Requested:
+	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsModelSourceRequested:
 		return true
-	case Upstream:
+	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsModelSourceUpstream:
 		return true
 	default:
 		return false
@@ -2914,19 +2839,19 @@ func (e ModelGatewayObservabilityServiceModelObservationUsageTrendParamsModelSou
 
 // Defines values for ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode.
 const (
-	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModeImage      ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "image"
-	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModePerRequest ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "per_request"
-	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModeToken      ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "token"
+	Image      ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "image"
+	PerRequest ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "per_request"
+	Token      ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "token"
 )
 
 // Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode enum.
 func (e ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode) Valid() bool {
 	switch e {
-	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModeImage:
+	case Image:
 		return true
-	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModePerRequest:
+	case PerRequest:
 		return true
-	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModeToken:
+	case Token:
 		return true
 	default:
 		return false
@@ -8787,41 +8712,6 @@ type MgOkResponseBody struct {
 	Msg  string    `json:"msg"`
 }
 
-// ModelAccessAuditCursor defines model for ModelAccessAuditCursor.
-type ModelAccessAuditCursor struct {
-	CreatedAt int64 `json:"createdAt"`
-	Id        int64 `json:"id"`
-}
-
-// ModelAccessAuditItem defines model for ModelAccessAuditItem.
-type ModelAccessAuditItem struct {
-	Action        string         `json:"action"`
-	ActorId       *string        `json:"actorId,omitempty"`
-	ActorName     *string        `json:"actorName,omitempty"`
-	CreatedAt     int64          `json:"createdAt"`
-	Id            int64          `json:"id"`
-	Reason        *string        `json:"reason,omitempty"`
-	RequestId     *string        `json:"requestId,omitempty"`
-	StatusCode    *int64         `json:"statusCode,omitempty"`
-	SubjectUser   *AdminUserInfo `json:"subjectUser,omitempty"`
-	SubjectUserId *string        `json:"subjectUserId,omitempty"`
-}
-
-// ModelAccessAuditPage defines model for ModelAccessAuditPage.
-type ModelAccessAuditPage struct {
-	Estimated  bool                    `json:"estimated"`
-	Items      []ModelAccessAuditItem  `json:"items"`
-	NextCursor *ModelAccessAuditCursor `json:"nextCursor,omitempty"`
-	Source     string                  `json:"source"`
-}
-
-// ModelAccessAuditPageResponseBody defines model for ModelAccessAuditPageResponseBody.
-type ModelAccessAuditPageResponseBody struct {
-	Code *int64                `json:"code,omitempty"`
-	Data *ModelAccessAuditPage `json:"data,omitempty"`
-	Msg  *string               `json:"msg,omitempty"`
-}
-
 // ModelAllowlist ---------------------------------------------------------------------------
 // 连接器池（第 10 章）
 // ---------------------------------------------------------------------------
@@ -9999,62 +9889,6 @@ type ModelHealthScore struct {
 	TtftScore     *float64 `json:"ttftScore,omitempty"`
 }
 
-// ModelHourlyItem defines model for ModelHourlyItem.
-type ModelHourlyItem struct {
-	ActualCost            string `json:"actualCost"`
-	AttemptCount          int64  `json:"attemptCount"`
-	BilledCount           int64  `json:"billedCount"`
-	BucketStart           int64  `json:"bucketStart"`
-	BusinessLimitedCount  int64  `json:"businessLimitedCount"`
-	CacheCreation1HTokens int64  `json:"cacheCreation1HTokens"`
-	CacheCreation5MTokens int64  `json:"cacheCreation5MTokens"`
-	CacheCreationTokens   int64  `json:"cacheCreationTokens"`
-	CacheReadTokens       int64  `json:"cacheReadTokens"`
-	CallerKind            string `json:"callerKind"`
-	ClientCanceledCount   int64  `json:"clientCanceledCount"`
-	ComputedAt            int64  `json:"computedAt"`
-	ConnectorId           int64  `json:"connectorId"`
-	DurationMsSum         int64  `json:"durationMsSum"`
-	ErrorCount            int64  `json:"errorCount"`
-	FailoverCount         int64  `json:"failoverCount"`
-	FirstTokenCount       int64  `json:"firstTokenCount"`
-	FirstTokenMsSum       int64  `json:"firstTokenMsSum"`
-	ImageCount            int64  `json:"imageCount"`
-	ImageInputTokens      int64  `json:"imageInputTokens"`
-	ImageOutputTokens     int64  `json:"imageOutputTokens"`
-	InputTokens           int64  `json:"inputTokens"`
-	Model                 string `json:"model"`
-	OutputTokens          int64  `json:"outputTokens"`
-	PeakQpm               int64  `json:"peakQpm"`
-	PeakTpm               int64  `json:"peakTpm"`
-	PoolId                int64  `json:"poolId"`
-	ProbeActualCost       string `json:"probeActualCost"`
-	ProbeCount            int64  `json:"probeCount"`
-	ProfileId             int64  `json:"profileId"`
-	Purpose               string `json:"purpose"`
-	ReasoningTokens       int64  `json:"reasoningTokens"`
-	RequestCount          int64  `json:"requestCount"`
-	Rollup                bool   `json:"rollup"`
-	StreamTruncatedCount  int64  `json:"streamTruncatedCount"`
-	SuccessCount          int64  `json:"successCount"`
-	TotalCost             string `json:"totalCost"`
-	UsageUnits            int64  `json:"usageUnits"`
-}
-
-// ModelHourlyPage defines model for ModelHourlyPage.
-type ModelHourlyPage struct {
-	Estimated bool              `json:"estimated"`
-	Items     []ModelHourlyItem `json:"items"`
-	Source    string            `json:"source"`
-}
-
-// ModelHourlyPageResponseBody defines model for ModelHourlyPageResponseBody.
-type ModelHourlyPageResponseBody struct {
-	Code int64            `json:"code"`
-	Data *ModelHourlyPage `json:"data,omitempty"`
-	Msg  string           `json:"msg"`
-}
-
 // ModelImagePage defines model for ModelImagePage.
 type ModelImagePage struct {
 	Estimated bool                    `json:"estimated"`
@@ -10113,6 +9947,13 @@ type ModelLastTest struct {
 	NotTested *bool  `json:"notTested,omitempty"`
 	Ok        bool   `json:"ok"`
 	RequestId string `json:"requestId"`
+}
+
+// ModelListedModel …/models 的一行：id 即调用时的 model；displayName 是 Anthropic 列表的 display_name；createdAt 为 Unix 毫秒。
+type ModelListedModel struct {
+	CreatedAt   int64  `json:"createdAt"`
+	DisplayName string `json:"displayName"`
+	Id          string `json:"id"`
 }
 
 // ModelMappingResolution defines model for ModelMappingResolution.
@@ -10203,28 +10044,10 @@ type ModelObservationModelOptionsResponseBody struct {
 	Msg  *string                       `json:"msg,omitempty"`
 }
 
-// ModelObservationOK defines model for ModelObservationOK.
-type ModelObservationOK struct {
-	Ok *bool `json:"ok,omitempty"`
-}
-
-// ModelObservationOKResponseBody defines model for ModelObservationOKResponseBody.
-type ModelObservationOKResponseBody struct {
-	Code *int64              `json:"code,omitempty"`
-	Data *ModelObservationOK `json:"data,omitempty"`
-	Msg  *string             `json:"msg,omitempty"`
-}
-
 // ModelObservationPoint defines model for ModelObservationPoint.
 type ModelObservationPoint struct {
 	At    int64   `json:"at"`
 	Value float64 `json:"value"`
-}
-
-// ModelObservationRecomputeRequestBody defines model for ModelObservationRecomputeRequestBody.
-type ModelObservationRecomputeRequestBody struct {
-	From  *int64 `json:"from,omitempty"`
-	Until *int64 `json:"until,omitempty"`
 }
 
 // ModelObservationSeries defines model for ModelObservationSeries.
@@ -11221,20 +11044,27 @@ type ModelPurposeStatisticsResponseBody struct {
 // 用途与路由（第 10 章）
 // ---------------------------------------------------------------------------
 type ModelPurposeTarget struct {
-	Enabled   *bool  `json:"enabled,omitempty"`
-	Priority  *int32 `json:"priority,omitempty"`
-	ProfileId *int64 `json:"profile_id,omitempty"`
-	Weight    *int32 `json:"weight,omitempty"`
+	// DisplayName 展示名：Anthropic 风格模型列表的 display_name；空 = 与公开名相同。
+	DisplayName *string `json:"display_name,omitempty"`
+	Enabled     *bool   `json:"enabled,omitempty"`
+
+	// Model 公开名：调用方在用途内可选的模型名，只落到带同一公开名的目标（同名即故障切换组）；空 = 用途默认目标。
+	Model     *string `json:"model,omitempty"`
+	Priority  *int32  `json:"priority,omitempty"`
+	ProfileId *int64  `json:"profile_id,omitempty"`
+	Weight    *int32  `json:"weight,omitempty"`
 }
 
 // ModelPurposeTargetView defines model for ModelPurposeTargetView.
 type ModelPurposeTargetView struct {
 	Available       bool    `json:"available"`
+	DisplayName     *string `json:"displayName,omitempty"`
 	Enabled         bool    `json:"enabled"`
 	Fingerprint     *string `json:"fingerprint,omitempty"`
 	Kind            *string `json:"kind,omitempty"`
 	LastProbeAt     *int64  `json:"lastProbeAt,omitempty"`
 	LastProbeOk     *bool   `json:"lastProbeOk,omitempty"`
+	Model           *string `json:"model,omitempty"`
 	PoolId          *int64  `json:"poolId,omitempty"`
 	PoolName        string  `json:"poolName"`
 	Priority        int32   `json:"priority"`
@@ -11489,7 +11319,7 @@ type ModelRequestSummaryResponseBody struct {
 
 // ModelResolvePreview defines model for ModelResolvePreview.
 type ModelResolvePreview struct {
-	Models []string           `json:"models"`
+	Models []ModelListedModel `json:"models"`
 	Steps  []ModelResolveStep `json:"steps"`
 }
 
@@ -11499,7 +11329,8 @@ type ModelResolvePreviewRequestBody struct {
 
 	// Entry 入口（第 1 章 调用入口，与 domain/modelgw.Entries 同一份）：sdk:* 是进程内 SDK 方法，只给 internal；
 	// 其余是 /hduhelp-neo/ai/v1 下的代理路由，给 session / run，只能落到同协议端点的档位（不做跨协议转换）；
-	// /openai/v1/models 只列调用方可见的别名。空 = 不检查入口协议。
+	// …/models 列出该协议能调通的名字：指定了用途（session 走 metadata_purpose，即路径或请求体里的用途）时是它的公开名与别名，
+	// 否则是各用途的精确别名。空 = 不检查入口协议。
 	Entry           *ModelResolvePreviewRequestBodyEntry `json:"entry,omitempty"`
 	InputTokens     *int64                               `json:"input_tokens,omitempty"`
 	MetadataPurpose *string                              `json:"metadata_purpose,omitempty"`
@@ -11513,7 +11344,8 @@ type ModelResolvePreviewRequestBodyCallerKind string
 
 // ModelResolvePreviewRequestBodyEntry 入口（第 1 章 调用入口，与 domain/modelgw.Entries 同一份）：sdk:* 是进程内 SDK 方法，只给 internal；
 // 其余是 /hduhelp-neo/ai/v1 下的代理路由，给 session / run，只能落到同协议端点的档位（不做跨协议转换）；
-// /openai/v1/models 只列调用方可见的别名。空 = 不检查入口协议。
+// …/models 列出该协议能调通的名字：指定了用途（session 走 metadata_purpose，即路径或请求体里的用途）时是它的公开名与别名，
+// 否则是各用途的精确别名。空 = 不检查入口协议。
 type ModelResolvePreviewRequestBodyEntry string
 
 // ModelResolvePreviewResponseBody defines model for ModelResolvePreviewResponseBody.
@@ -11856,22 +11688,17 @@ type ModelSyncStatusResponseBody struct {
 
 // ModelTargetSnapshot defines model for ModelTargetSnapshot.
 type ModelTargetSnapshot struct {
-	Enabled         bool   `json:"enabled"`
-	Fingerprint     string `json:"fingerprint"`
-	PoolId          int64  `json:"poolId"`
-	Priority        int32  `json:"priority"`
-	ProfileId       int64  `json:"profileId"`
-	ProfileRevision int32  `json:"profileRevision"`
-	ProfileSlug     string `json:"profileSlug"`
-	UpstreamModel   string `json:"upstreamModel"`
-	Weight          int32  `json:"weight"`
-}
-
-// ModelTempRulesRequestBody defines model for ModelTempRulesRequestBody.
-type ModelTempRulesRequestBody struct {
-	Enabled         bool                   `json:"enabled"`
-	ExpectedVersion *int64                 `json:"expected_version,omitempty"`
-	Rules           []ModelTempUnschedRule `json:"rules"`
+	DisplayName     *string `json:"displayName,omitempty"`
+	Enabled         bool    `json:"enabled"`
+	Fingerprint     string  `json:"fingerprint"`
+	Model           *string `json:"model,omitempty"`
+	PoolId          int64   `json:"poolId"`
+	Priority        int32   `json:"priority"`
+	ProfileId       int64   `json:"profileId"`
+	ProfileRevision int32   `json:"profileRevision"`
+	ProfileSlug     string  `json:"profileSlug"`
+	UpstreamModel   string  `json:"upstreamModel"`
+	Weight          int32   `json:"weight"`
 }
 
 // ModelTempUnschedRule defines model for ModelTempUnschedRule.
@@ -12051,24 +11878,6 @@ type ModelTraceReplayQueryBody struct {
 type ModelTraceReplayResponseBody struct {
 	Code *int64            `json:"code,omitempty"`
 	Data *ModelTraceReplay `json:"data,omitempty"`
-	Msg  *string           `json:"msg,omitempty"`
-}
-
-// ModelTraceStatus defines model for ModelTraceStatus.
-type ModelTraceStatus struct {
-	DroppedLastHour map[string]float64 `json:"droppedLastHour"`
-	Estimated       bool               `json:"estimated"`
-	QueueBytes      *float64           `json:"queueBytes,omitempty"`
-	QueueDepth      *float64           `json:"queueDepth,omitempty"`
-	Ready           *bool              `json:"ready,omitempty"`
-	RetentionDays   int64              `json:"retentionDays"`
-	Source          string             `json:"source"`
-}
-
-// ModelTraceStatusResponseBody defines model for ModelTraceStatusResponseBody.
-type ModelTraceStatusResponseBody struct {
-	Code *int64            `json:"code,omitempty"`
-	Data *ModelTraceStatus `json:"data,omitempty"`
 	Msg  *string           `json:"msg,omitempty"`
 }
 
@@ -12362,47 +12171,6 @@ type ModelUsagePageResponseBody struct {
 	Code int64           `json:"code"`
 	Data *ModelUsagePage `json:"data,omitempty"`
 	Msg  string          `json:"msg"`
-}
-
-// ModelUsageStats defines model for ModelUsageStats.
-type ModelUsageStats struct {
-	ActualCost            string             `json:"actualCost"`
-	CacheCreation1HTokens *int64             `json:"cacheCreation1HTokens,omitempty"`
-	CacheCreation5MTokens *int64             `json:"cacheCreation5MTokens,omitempty"`
-	CacheCreationCost     *string            `json:"cacheCreationCost,omitempty"`
-	CacheCreationTokens   int64              `json:"cacheCreationTokens"`
-	CacheHitRatio         *float64           `json:"cacheHitRatio,omitempty"`
-	CacheReadCost         *string            `json:"cacheReadCost,omitempty"`
-	CacheReadTokens       int64              `json:"cacheReadTokens"`
-	ClientCanceledCount   *int64             `json:"clientCanceledCount,omitempty"`
-	DurationMsAvg         *float64           `json:"durationMsAvg,omitempty"`
-	Endpoints             []ModelUsageBucket `json:"endpoints"`
-	Estimated             bool               `json:"estimated"`
-	FirstTokenMsAvg       *float64           `json:"firstTokenMsAvg,omitempty"`
-	ImageCost             *string            `json:"imageCost,omitempty"`
-	ImageCount            int64              `json:"imageCount"`
-	ImageInputCost        *string            `json:"imageInputCost,omitempty"`
-	ImageInputCount       *int64             `json:"imageInputCount,omitempty"`
-	ImageOutputCost       *string            `json:"imageOutputCost,omitempty"`
-	InputCost             *string            `json:"inputCost,omitempty"`
-	InputTokens           int64              `json:"inputTokens"`
-	OutputCost            *string            `json:"outputCost,omitempty"`
-	OutputTokens          int64              `json:"outputTokens"`
-	RequestCount          int64              `json:"requestCount"`
-	RetriedCount          *int64             `json:"retriedCount,omitempty"`
-	Source                string             `json:"source"`
-	StreamTruncatedCount  *int64             `json:"streamTruncatedCount,omitempty"`
-	TotalCost             string             `json:"totalCost"`
-	TotalTokens           int64              `json:"totalTokens"`
-	UpstreamEndpoints     []ModelUsageBucket `json:"upstreamEndpoints"`
-	UsageUnits            *int64             `json:"usageUnits,omitempty"`
-}
-
-// ModelUsageStatsResponseBody defines model for ModelUsageStatsResponseBody.
-type ModelUsageStatsResponseBody struct {
-	Code int64            `json:"code"`
-	Data *ModelUsageStats `json:"data,omitempty"`
-	Msg  string           `json:"msg"`
 }
 
 // ModelUsageSummary defines model for ModelUsageSummary.
@@ -17701,18 +17469,6 @@ type ModelGatewayObservabilityServiceModelObservationRequestsParamsCacheHit stri
 // ModelGatewayObservabilityServiceModelObservationRequestsParamsOrder defines parameters for ModelGatewayObservabilityServiceModelObservationRequests.
 type ModelGatewayObservabilityServiceModelObservationRequestsParamsOrder string
 
-// ModelGatewayObservabilityServiceModelObservationAccessAuditsParams defines parameters for ModelGatewayObservabilityServiceModelObservationAccessAudits.
-type ModelGatewayObservabilityServiceModelObservationAccessAuditsParams struct {
-	From           *int64  `form:"from,omitempty" json:"from,omitempty"`
-	Until          *int64  `form:"until,omitempty" json:"until,omitempty"`
-	ActorId        *string `form:"actorId,omitempty" json:"actorId,omitempty"`
-	SubjectUserId  *string `form:"subjectUserId,omitempty" json:"subjectUserId,omitempty"`
-	RequestId      *string `form:"requestId,omitempty" json:"requestId,omitempty"`
-	AfterCreatedAt *int64  `form:"afterCreatedAt,omitempty" json:"afterCreatedAt,omitempty"`
-	AfterId        *int64  `form:"afterId,omitempty" json:"afterId,omitempty"`
-	Limit          *int64  `form:"limit,omitempty" json:"limit,omitempty"`
-}
-
 // ModelGatewayObservabilityServiceModelObservationRequestsDetailParams defines parameters for ModelGatewayObservabilityServiceModelObservationRequestsDetail.
 type ModelGatewayObservabilityServiceModelObservationRequestsDetailParams struct {
 	RequestId string  `form:"requestId" json:"requestId"`
@@ -17880,21 +17636,6 @@ type ModelGatewayObservabilityServiceModelObservationUsageDetailParams struct {
 	CreatedAt int64  `form:"createdAt" json:"createdAt"`
 }
 
-// ModelGatewayObservabilityServiceModelObservationUsageHourlyParams defines parameters for ModelGatewayObservabilityServiceModelObservationUsageHourly.
-type ModelGatewayObservabilityServiceModelObservationUsageHourlyParams struct {
-	From        *int64                                                                       `form:"from,omitempty" json:"from,omitempty"`
-	Until       *int64                                                                       `form:"until,omitempty" json:"until,omitempty"`
-	Purpose     *string                                                                      `form:"purpose,omitempty" json:"purpose,omitempty"`
-	CallerKind  *ModelGatewayObservabilityServiceModelObservationUsageHourlyParamsCallerKind `form:"callerKind,omitempty" json:"callerKind,omitempty"`
-	Model       *string                                                                      `form:"model,omitempty" json:"model,omitempty"`
-	ConnectorId *int64                                                                       `form:"connectorId,omitempty" json:"connectorId,omitempty"`
-	PoolId      *int64                                                                       `form:"poolId,omitempty" json:"poolId,omitempty"`
-	ProfileId   *int64                                                                       `form:"profileId,omitempty" json:"profileId,omitempty"`
-}
-
-// ModelGatewayObservabilityServiceModelObservationUsageHourlyParamsCallerKind defines parameters for ModelGatewayObservabilityServiceModelObservationUsageHourly.
-type ModelGatewayObservabilityServiceModelObservationUsageHourlyParamsCallerKind string
-
 // ModelGatewayObservabilityServiceModelObservationUsageModelOptionsParams defines parameters for ModelGatewayObservabilityServiceModelObservationUsageModelOptions.
 type ModelGatewayObservabilityServiceModelObservationUsageModelOptionsParams struct {
 	From        int64                                                                               `form:"from" json:"from"`
@@ -17949,39 +17690,6 @@ type ModelGatewayObservabilityServiceModelObservationUsageRankingParamsMetric st
 
 // ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimension2 defines parameters for ModelGatewayObservabilityServiceModelObservationUsageRanking.
 type ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimension2 string
-
-// ModelGatewayObservabilityServiceModelObservationUsageStatsParams defines parameters for ModelGatewayObservabilityServiceModelObservationUsageStats.
-type ModelGatewayObservabilityServiceModelObservationUsageStatsParams struct {
-	From                  *int64                                                                       `form:"from,omitempty" json:"from,omitempty"`
-	Until                 *int64                                                                       `form:"until,omitempty" json:"until,omitempty"`
-	Purpose               *string                                                                      `form:"purpose,omitempty" json:"purpose,omitempty"`
-	UserId                *string                                                                      `form:"userId,omitempty" json:"userId,omitempty"`
-	CallerKind            *ModelGatewayObservabilityServiceModelObservationUsageStatsParamsCallerKind  `form:"callerKind,omitempty" json:"callerKind,omitempty"`
-	Model                 *string                                                                      `form:"model,omitempty" json:"model,omitempty"`
-	ModelSource           *ModelGatewayObservabilityServiceModelObservationUsageStatsParamsModelSource `form:"modelSource,omitempty" json:"modelSource,omitempty"`
-	RequestId             *string                                                                      `form:"requestId,omitempty" json:"requestId,omitempty"`
-	Outcome               *string                                                                      `form:"outcome,omitempty" json:"outcome,omitempty"`
-	BillingMode           *ModelGatewayObservabilityServiceModelObservationUsageStatsParamsBillingMode `form:"billingMode,omitempty" json:"billingMode,omitempty"`
-	ImageSize             *string                                                                      `form:"imageSize,omitempty" json:"imageSize,omitempty"`
-	ConnectorId           *int64                                                                       `form:"connectorId,omitempty" json:"connectorId,omitempty"`
-	PoolId                *int64                                                                       `form:"poolId,omitempty" json:"poolId,omitempty"`
-	ProfileId             *int64                                                                       `form:"profileId,omitempty" json:"profileId,omitempty"`
-	RequestType           *int64                                                                       `form:"requestType,omitempty" json:"requestType,omitempty"`
-	MinFirstTokenMs       *int64                                                                       `form:"minFirstTokenMs,omitempty" json:"minFirstTokenMs,omitempty"`
-	MinDurationMs         *int64                                                                       `form:"minDurationMs,omitempty" json:"minDurationMs,omitempty"`
-	Stream                *bool                                                                        `form:"stream,omitempty" json:"stream,omitempty"`
-	UpstreamModelMismatch *bool                                                                        `form:"upstreamModelMismatch,omitempty" json:"upstreamModelMismatch,omitempty"`
-	RunId                 *string                                                                      `form:"runId,omitempty" json:"runId,omitempty"`
-}
-
-// ModelGatewayObservabilityServiceModelObservationUsageStatsParamsCallerKind defines parameters for ModelGatewayObservabilityServiceModelObservationUsageStats.
-type ModelGatewayObservabilityServiceModelObservationUsageStatsParamsCallerKind string
-
-// ModelGatewayObservabilityServiceModelObservationUsageStatsParamsModelSource defines parameters for ModelGatewayObservabilityServiceModelObservationUsageStats.
-type ModelGatewayObservabilityServiceModelObservationUsageStatsParamsModelSource string
-
-// ModelGatewayObservabilityServiceModelObservationUsageStatsParamsBillingMode defines parameters for ModelGatewayObservabilityServiceModelObservationUsageStats.
-type ModelGatewayObservabilityServiceModelObservationUsageStatsParamsBillingMode string
 
 // ModelGatewayObservabilityServiceModelObservationUsageSummaryParams defines parameters for ModelGatewayObservabilityServiceModelObservationUsageSummary.
 type ModelGatewayObservabilityServiceModelObservationUsageSummaryParams struct {
@@ -19264,9 +18972,6 @@ type ModelGatewayServiceModelSetConnectorRequestScopedErrorsJSONRequestBody = Mo
 // ModelGatewayServiceModelSetConnectorSchedulableJSONRequestBody defines body for ModelGatewayServiceModelSetConnectorSchedulable for application/json ContentType.
 type ModelGatewayServiceModelSetConnectorSchedulableJSONRequestBody = ModelConnectorSchedulableRequestBody
 
-// ModelGatewayServiceModelSetConnectorTempRulesJSONRequestBody defines body for ModelGatewayServiceModelSetConnectorTempRules for application/json ContentType.
-type ModelGatewayServiceModelSetConnectorTempRulesJSONRequestBody = ModelTempRulesRequestBody
-
 // ModelGatewayServiceModelTestConnectorJSONRequestBody defines body for ModelGatewayServiceModelTestConnector for application/json ContentType.
 type ModelGatewayServiceModelTestConnectorJSONRequestBody = ModelConnectorTestRequestBody
 
@@ -19365,9 +19070,6 @@ type ModelGatewayTraceBrowserServiceModelExportTraceJSONRequestBody = ModelTrace
 
 // ModelGatewayTraceBrowserServiceModelReplayTraceJSONRequestBody defines body for ModelGatewayTraceBrowserServiceModelReplayTrace for application/json ContentType.
 type ModelGatewayTraceBrowserServiceModelReplayTraceJSONRequestBody = ModelTraceReplayQueryBody
-
-// ModelGatewayObservabilityServiceModelObservationUsageRecomputeJSONRequestBody defines body for ModelGatewayObservabilityServiceModelObservationUsageRecompute for application/json ContentType.
-type ModelGatewayObservabilityServiceModelObservationUsageRecomputeJSONRequestBody = ModelObservationRecomputeRequestBody
 
 // MomentsServiceAdminResolveAppealJSONRequestBody defines body for MomentsServiceAdminResolveAppeal for application/json ContentType.
 type MomentsServiceAdminResolveAppealJSONRequestBody = ResolveAppealRequestBody

@@ -2102,60 +2102,6 @@ func (s *Service) ModelSetConnectorSchedulable(ctx context.Context, req *ModelSe
 	return resp, err
 }
 
-// ModelSetConnectorTempRulesReq is the request for ModelSetConnectorTempRules.
-type ModelSetConnectorTempRulesReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ModelSetConnectorTempRulesReqBuilder builds a ModelSetConnectorTempRulesReq with a fluent setter per field.
-type ModelSetConnectorTempRulesReqBuilder struct {
-	req *ModelSetConnectorTempRulesReq
-}
-
-// NewModelSetConnectorTempRulesReqBuilder creates a request builder for ModelSetConnectorTempRules.
-func NewModelSetConnectorTempRulesReqBuilder() *ModelSetConnectorTempRulesReqBuilder {
-	return &ModelSetConnectorTempRulesReqBuilder{req: &ModelSetConnectorTempRulesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Id sets the "id" path parameter.
-func (b *ModelSetConnectorTempRulesReqBuilder) Id(v int64) *ModelSetConnectorTempRulesReqBuilder {
-	b.req.pathParams["id"] = strconv.FormatInt(v, 10)
-	return b
-}
-
-// Body sets the request body.
-func (b *ModelSetConnectorTempRulesReqBuilder) Body(body *models.ModelTempRulesRequestBody) *ModelSetConnectorTempRulesReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *ModelSetConnectorTempRulesReqBuilder) Build() *ModelSetConnectorTempRulesReq { return b.req }
-
-// ModelSetConnectorTempRulesResp is the response for ModelSetConnectorTempRules.
-type ModelSetConnectorTempRulesResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.ModelConnector `json:"data"`
-}
-
-// ModelSetConnectorTempRules: 临时不可调度规则
-func (s *Service) ModelSetConnectorTempRules(ctx context.Context, req *ModelSetConnectorTempRulesReq, opts ...core.RequestOption) (*ModelSetConnectorTempRulesResp, error) {
-	resp := &ModelSetConnectorTempRulesResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "PUT",
-		PathTemplate: "/hduhelp-neo/admin/models/connectors/{id}/temp-unschedulable-rules",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
 // ModelTestConnectorReq is the request for ModelTestConnector.
 type ModelTestConnectorReq struct {
 	pathParams  map[string]string
