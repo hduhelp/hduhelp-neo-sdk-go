@@ -8591,6 +8591,25 @@ type LostItem struct {
 	Scene          *Scene             `json:"scene,omitempty"`
 }
 
+// MCPToolInfo defines model for MCPToolInfo.
+type MCPToolInfo struct {
+	Name        *string `json:"name,omitempty"`
+	OperationId *string `json:"operationId,omitempty"`
+	Risk        *string `json:"risk,omitempty"`
+	Title       *string `json:"title,omitempty"`
+}
+
+// MCPToolsResponseBody defines model for MCPToolsResponseBody.
+type MCPToolsResponseBody struct {
+	Code             *int64         `json:"code,omitempty"`
+	Data             *[]MCPToolInfo `json:"data,omitempty"`
+	Msg              *string        `json:"msg,omitempty"`
+	Policy           *string        `json:"policy,omitempty"`
+	RuntimeAvailable *bool          `json:"runtimeAvailable,omitempty"`
+	UpdatedAt        *int64         `json:"updatedAt,omitempty"`
+	UpdatedBy        *string        `json:"updatedBy,omitempty"`
+}
+
 // MaxMonth defines model for MaxMonth.
 type MaxMonth struct {
 	Count *int32 `json:"count,omitempty"`

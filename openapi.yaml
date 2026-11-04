@@ -2224,6 +2224,22 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SetConfigResponseBody'
+    /hduhelp-neo/admin/configs/mcp:
+        get:
+            tags:
+                - AdminService
+            summary: MCP工具启停目录
+            description: 返回全部生成的MCP工具（含停用工具）及当前启停策略，经系统配置接口保存；不改变REST和CLI权限
+            operationId: AdminService_GetMCPTools
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/MCPToolsResponseBody'
     /hduhelp-neo/admin/configs/test:
         post:
             tags:
@@ -25546,6 +25562,38 @@ components:
                 cabinetID:
                     type: string
                 remark:
+                    type: string
+        MCPToolInfo:
+            type: object
+            properties:
+                operationId:
+                    type: string
+                name:
+                    type: string
+                title:
+                    type: string
+                risk:
+                    type: string
+        MCPToolsResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/MCPToolInfo'
+                policy:
+                    type: string
+                runtimeAvailable:
+                    type: boolean
+                updatedBy:
+                    type: string
+                updatedAt:
+                    type: integer
+                    format: int64
+                code:
+                    type: integer
+                    format: int64
+                msg:
                     type: string
         MaxMonth:
             type: object

@@ -927,6 +927,46 @@ func (s *Service) SetAcademicSettings(ctx context.Context, req *SetAcademicSetti
 	return resp, err
 }
 
+// GetMCPToolsReq is the request for GetMCPTools.
+type GetMCPToolsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// GetMCPToolsReqBuilder builds a GetMCPToolsReq with a fluent setter per field.
+type GetMCPToolsReqBuilder struct{ req *GetMCPToolsReq }
+
+// NewGetMCPToolsReqBuilder creates a request builder for GetMCPTools.
+func NewGetMCPToolsReqBuilder() *GetMCPToolsReqBuilder {
+	return &GetMCPToolsReqBuilder{req: &GetMCPToolsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *GetMCPToolsReqBuilder) Build() *GetMCPToolsReq { return b.req }
+
+// GetMCPToolsResp is the response for GetMCPTools.
+type GetMCPToolsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.MCPToolInfo `json:"data"`
+}
+
+// GetMCPTools: MCP工具启停目录
+func (s *Service) GetMCPTools(ctx context.Context, req *GetMCPToolsReq, opts ...core.RequestOption) (*GetMCPToolsResp, error) {
+	resp := &GetMCPToolsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/configs/mcp",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // TestConnectionReq is the request for TestConnection.
 type TestConnectionReq struct {
 	pathParams  map[string]string
