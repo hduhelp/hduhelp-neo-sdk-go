@@ -21,6 +21,9 @@ import (
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/knowledge"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/librarybooking"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/messaging"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/modelgateway"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/modelgatewayobservability"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/modelgatewaytracebrowser"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/moments"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/notification"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/siteannouncement"
@@ -33,27 +36,30 @@ import (
 type Client struct {
 	config *core.Config
 
-	Academic         *academic.Service
-	Admin            *admin.Service
-	AdminNotice      *adminnotice.Service
-	Analytics        *analytics.Service
-	CampusLife       *campuslife.Service
-	EmptySchedule    *emptyschedule.Service
-	Feed             *feed.Service
-	Feedback         *feedback.Service
-	Graduate         *graduate.Service
-	GroupChat        *groupchat.Service
-	Health           *health.Service
-	Identity         *identity.Service
-	Inbox            *inbox.Service
-	Knowledge        *knowledge.Service
-	LibraryBooking   *librarybooking.Service
-	Messaging        *messaging.Service
-	Moments          *moments.Service
-	Notification     *notification.Service
-	SiteAnnouncement *siteannouncement.Service
-	Subscription     *subscription.Service
-	Upload           *upload.Service
+	Academic                  *academic.Service
+	Admin                     *admin.Service
+	AdminNotice               *adminnotice.Service
+	Analytics                 *analytics.Service
+	CampusLife                *campuslife.Service
+	EmptySchedule             *emptyschedule.Service
+	Feed                      *feed.Service
+	Feedback                  *feedback.Service
+	Graduate                  *graduate.Service
+	GroupChat                 *groupchat.Service
+	Health                    *health.Service
+	Identity                  *identity.Service
+	Inbox                     *inbox.Service
+	Knowledge                 *knowledge.Service
+	LibraryBooking            *librarybooking.Service
+	Messaging                 *messaging.Service
+	ModelGateway              *modelgateway.Service
+	ModelGatewayObservability *modelgatewayobservability.Service
+	ModelGatewayTraceBrowser  *modelgatewaytracebrowser.Service
+	Moments                   *moments.Service
+	Notification              *notification.Service
+	SiteAnnouncement          *siteannouncement.Service
+	Subscription              *subscription.Service
+	Upload                    *upload.Service
 }
 
 // attachServices wires every generated service to the client config.
@@ -74,6 +80,9 @@ func attachServices(c *Client) {
 	c.Knowledge = knowledge.NewService(c.config)
 	c.LibraryBooking = librarybooking.NewService(c.config)
 	c.Messaging = messaging.NewService(c.config)
+	c.ModelGateway = modelgateway.NewService(c.config)
+	c.ModelGatewayObservability = modelgatewayobservability.NewService(c.config)
+	c.ModelGatewayTraceBrowser = modelgatewaytracebrowser.NewService(c.config)
 	c.Moments = moments.NewService(c.config)
 	c.Notification = notification.NewService(c.config)
 	c.SiteAnnouncement = siteannouncement.NewService(c.config)
