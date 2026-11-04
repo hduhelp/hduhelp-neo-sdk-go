@@ -3415,6 +3415,41 @@ type AdminElectricityMeter struct {
 	UpdatedAt *int64 `json:"updatedAt,omitempty"`
 }
 
+// AdminImpersonationLog defines model for AdminImpersonationLog.
+type AdminImpersonationLog struct {
+	// CompletedAt Unix 毫秒
+	CompletedAt *int64 `json:"completedAt,omitempty"`
+
+	// CreatedAt Unix 毫秒
+	CreatedAt         *int64  `json:"createdAt,omitempty"`
+	ErrorCode         *string `json:"errorCode,omitempty"`
+	Id                *string `json:"id,omitempty"`
+	OperatorId        *string `json:"operatorId,omitempty"`
+	OperatorName      *string `json:"operatorName,omitempty"`
+	OperatorStaffId   *string `json:"operatorStaffId,omitempty"`
+	OperatorStaffName *string `json:"operatorStaffName,omitempty"`
+	Reason            *string `json:"reason,omitempty"`
+
+	// Result pending | succeeded | failed | timeout | unconfirmed（旧记录）
+	Result            *string `json:"result,omitempty"`
+	ResultCompletedAt *int64  `json:"resultCompletedAt,omitempty"`
+	ResultErrorCode   *string `json:"resultErrorCode,omitempty"`
+	RoleKind          *string `json:"roleKind,omitempty"`
+	SessionId         *string `json:"sessionId,omitempty"`
+
+	// Status 凭据签发结果：pending（签发中）| issued（已签发）| failed（签发失败）
+	Status          *string `json:"status,omitempty"`
+	TargetStaffId   *string `json:"targetStaffId,omitempty"`
+	TargetStaffName *string `json:"targetStaffName,omitempty"`
+	TargetUserId    *string `json:"targetUserId,omitempty"`
+}
+
+// AdminImpersonationLogsData defines model for AdminImpersonationLogsData.
+type AdminImpersonationLogsData struct {
+	HasMore *bool                    `json:"hasMore,omitempty"`
+	Items   *[]AdminImpersonationLog `json:"items,omitempty"`
+}
+
 // AdminLoginClientInfo 第一方登录客户端：仅这些客户端可以接收 CAS/微信/钉钉等 provider 登录后的
 // Neo 原生会话 handoff。与 OAuth apps.redirect_uris（外部应用授权码回调）严格分离。
 type AdminLoginClientInfo struct {
@@ -5297,6 +5332,12 @@ type ConfigListResponseBody struct {
 	Code *int64        `json:"code,omitempty"`
 	Data *[]ConfigItem `json:"data,omitempty"`
 	Msg  *string       `json:"msg,omitempty"`
+}
+
+// ConfirmImpersonationRequestBody defines model for ConfirmImpersonationRequestBody.
+type ConfirmImpersonationRequestBody struct {
+	AuditId           *string `json:"audit_id,omitempty"`
+	ConfirmationToken *string `json:"confirmation_token,omitempty"`
 }
 
 // Course defines model for Course.
@@ -7374,6 +7415,18 @@ type ImageSearchRequestBody struct {
 	Sort *string `json:"sort,omitempty"`
 }
 
+// ImpersonationResultData defines model for ImpersonationResultData.
+type ImpersonationResultData struct {
+	Result *string `json:"result,omitempty"`
+}
+
+// ImpersonationResultResponseBody defines model for ImpersonationResultResponseBody.
+type ImpersonationResultResponseBody struct {
+	Code *int64                   `json:"code,omitempty"`
+	Data *ImpersonationResultData `json:"data,omitempty"`
+	Msg  *string                  `json:"msg,omitempty"`
+}
+
 // InboxAction defines model for InboxAction.
 type InboxAction struct {
 	Label  *string            `json:"label,omitempty"`
@@ -7567,14 +7620,18 @@ type InviteResponseBody struct {
 type IssueUserSessionData struct {
 	AccessToken          *string `json:"accessToken,omitempty"`
 	AccessTokenExpireAt  *int64  `json:"accessTokenExpireAt,omitempty"`
+	AuditId              *string `json:"auditId,omitempty"`
+	ConfirmationToken    *string `json:"confirmationToken,omitempty"`
 	RefreshToken         *string `json:"refreshToken,omitempty"`
 	RefreshTokenExpireAt *int64  `json:"refreshTokenExpireAt,omitempty"`
 }
 
 // IssueUserSessionRequestBody defines model for IssueUserSessionRequestBody.
 type IssueUserSessionRequestBody struct {
-	Reason *string `json:"reason,omitempty"`
-	UserId *string `json:"user_id,omitempty"`
+	OperatorStaffId   *string `json:"operator_staff_id,omitempty"`
+	OperatorStaffName *string `json:"operator_staff_name,omitempty"`
+	Reason            *string `json:"reason,omitempty"`
+	UserId            *string `json:"user_id,omitempty"`
 }
 
 // IssueUserSessionResponseBody defines model for IssueUserSessionResponseBody.
@@ -8217,6 +8274,13 @@ type ListGapsResponseBody struct {
 	Data  *[]KnowledgeGapInfo `json:"data,omitempty"`
 	Msg   *string             `json:"msg,omitempty"`
 	Total *int64              `json:"total,omitempty"`
+}
+
+// ListImpersonationLogsResponseBody defines model for ListImpersonationLogsResponseBody.
+type ListImpersonationLogsResponseBody struct {
+	Code *int64                      `json:"code,omitempty"`
+	Data *AdminImpersonationLogsData `json:"data,omitempty"`
+	Msg  *string                     `json:"msg,omitempty"`
 }
 
 // ListItemsResponseBody defines model for ListItemsResponseBody.
@@ -13593,6 +13657,14 @@ type ReportGapResponseBody struct {
 	Msg  *string `json:"msg,omitempty"`
 }
 
+// ReportImpersonationRequestBody defines model for ReportImpersonationRequestBody.
+type ReportImpersonationRequestBody struct {
+	AuditId *string `json:"audit_id,omitempty"`
+
+	// ErrorCode 留空仅查询；超时和关闭窗口不判定失败
+	ErrorCode *string `json:"error_code,omitempty"`
+}
+
 // ReportReason ---------- 举报 ----------
 type ReportReason struct {
 	Code  *string `json:"code,omitempty"`
@@ -16657,6 +16729,25 @@ type FeedbackServiceExportAdminFeedbacksParamsStatus string
 // FeedbackServiceExportAdminFeedbacksParamsFeedbackType defines parameters for FeedbackServiceExportAdminFeedbacks.
 type FeedbackServiceExportAdminFeedbacksParamsFeedbackType string
 
+// AdminServiceListImpersonationLogsParams defines parameters for AdminServiceListImpersonationLogs.
+type AdminServiceListImpersonationLogsParams struct {
+	Result *string `form:"result,omitempty" json:"result,omitempty"`
+
+	// Keyword 代登录人或被代登录人的姓名、学号/工号
+	Keyword      *string `form:"keyword,omitempty" json:"keyword,omitempty"`
+	OperatorId   *string `form:"operator_id,omitempty" json:"operator_id,omitempty"`
+	TargetUserId *string `form:"target_user_id,omitempty" json:"target_user_id,omitempty"`
+	Status       *string `form:"status,omitempty" json:"status,omitempty"`
+
+	// From Unix 毫秒
+	From *int64 `form:"from,omitempty" json:"from,omitempty"`
+
+	// To Unix 毫秒
+	To   *int64 `form:"to,omitempty" json:"to,omitempty"`
+	Page *int32 `form:"page,omitempty" json:"page,omitempty"`
+	Size *int32 `form:"size,omitempty" json:"size,omitempty"`
+}
+
 // KnowledgeServiceAdminListAssetsParams defines parameters for KnowledgeServiceAdminListAssets.
 type KnowledgeServiceAdminListAssetsParams struct {
 	CarrierId *string `form:"carrier_id,omitempty" json:"carrier_id,omitempty"`
@@ -18810,6 +18901,9 @@ type AdminServiceUpdateElectricityMeterJSONRequestBody = UpdateElectricityMeterR
 // FeedbackServiceReplyAdminFeedbackJSONRequestBody defines body for FeedbackServiceReplyAdminFeedback for application/json ContentType.
 type FeedbackServiceReplyAdminFeedbackJSONRequestBody = ReplyFeedbackRequestBody
 
+// AdminServiceReportImpersonationJSONRequestBody defines body for AdminServiceReportImpersonation for application/json ContentType.
+type AdminServiceReportImpersonationJSONRequestBody = ReportImpersonationRequestBody
+
 // KnowledgeServiceAdminUpdateAssetJSONRequestBody defines body for KnowledgeServiceAdminUpdateAsset for application/json ContentType.
 type KnowledgeServiceAdminUpdateAssetJSONRequestBody = UpdateAssetRequestBody
 
@@ -19289,6 +19383,9 @@ type IdentityServiceChangePhoneJSONRequestBody = ChangePhoneRequestBody
 
 // IdentityServiceSendVerificationCodeJSONRequestBody defines body for IdentityServiceSendVerificationCode for application/json ContentType.
 type IdentityServiceSendVerificationCodeJSONRequestBody = SendVerificationCodeRequestBody
+
+// AdminServiceConfirmImpersonationJSONRequestBody defines body for AdminServiceConfirmImpersonation for application/json ContentType.
+type AdminServiceConfirmImpersonationJSONRequestBody = ConfirmImpersonationRequestBody
 
 // IdentityServiceLoginWithEmailJSONRequestBody defines body for IdentityServiceLoginWithEmail for application/json ContentType.
 type IdentityServiceLoginWithEmailJSONRequestBody = LoginWithCodeRequestBody

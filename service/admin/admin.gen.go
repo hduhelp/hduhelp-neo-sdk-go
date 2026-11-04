@@ -1321,6 +1321,146 @@ func (s *Service) DeleteElectricityMeter(ctx context.Context, req *DeleteElectri
 	return resp, err
 }
 
+// ListImpersonationLogsReq is the request for ListImpersonationLogs.
+type ListImpersonationLogsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListImpersonationLogsReqBuilder builds a ListImpersonationLogsReq with a fluent setter per field.
+type ListImpersonationLogsReqBuilder struct{ req *ListImpersonationLogsReq }
+
+// NewListImpersonationLogsReqBuilder creates a request builder for ListImpersonationLogs.
+func NewListImpersonationLogsReqBuilder() *ListImpersonationLogsReqBuilder {
+	return &ListImpersonationLogsReqBuilder{req: &ListImpersonationLogsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Result sets the "result" query parameter.
+func (b *ListImpersonationLogsReqBuilder) Result(v string) *ListImpersonationLogsReqBuilder {
+	b.req.queryParams["result"] = v
+	return b
+}
+
+// Keyword sets the "keyword" query parameter: 代登录人或被代登录人的姓名、学号/工号
+func (b *ListImpersonationLogsReqBuilder) Keyword(v string) *ListImpersonationLogsReqBuilder {
+	b.req.queryParams["keyword"] = v
+	return b
+}
+
+// OperatorId sets the "operator_id" query parameter.
+func (b *ListImpersonationLogsReqBuilder) OperatorId(v string) *ListImpersonationLogsReqBuilder {
+	b.req.queryParams["operator_id"] = v
+	return b
+}
+
+// TargetUserId sets the "target_user_id" query parameter.
+func (b *ListImpersonationLogsReqBuilder) TargetUserId(v string) *ListImpersonationLogsReqBuilder {
+	b.req.queryParams["target_user_id"] = v
+	return b
+}
+
+// Status sets the "status" query parameter.
+func (b *ListImpersonationLogsReqBuilder) Status(v string) *ListImpersonationLogsReqBuilder {
+	b.req.queryParams["status"] = v
+	return b
+}
+
+// From sets the "from" query parameter: Unix 毫秒
+func (b *ListImpersonationLogsReqBuilder) From(v int64) *ListImpersonationLogsReqBuilder {
+	b.req.queryParams["from"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// To sets the "to" query parameter: Unix 毫秒
+func (b *ListImpersonationLogsReqBuilder) To(v int64) *ListImpersonationLogsReqBuilder {
+	b.req.queryParams["to"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// Page sets the "page" query parameter.
+func (b *ListImpersonationLogsReqBuilder) Page(v int32) *ListImpersonationLogsReqBuilder {
+	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Size sets the "size" query parameter.
+func (b *ListImpersonationLogsReqBuilder) Size(v int32) *ListImpersonationLogsReqBuilder {
+	b.req.queryParams["size"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *ListImpersonationLogsReqBuilder) Build() *ListImpersonationLogsReq { return b.req }
+
+// ListImpersonationLogsResp is the response for ListImpersonationLogs.
+type ListImpersonationLogsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AdminImpersonationLogsData `json:"data"`
+}
+
+// ListImpersonationLogs: 查询代登录审计记录
+func (s *Service) ListImpersonationLogs(ctx context.Context, req *ListImpersonationLogsReq, opts ...core.RequestOption) (*ListImpersonationLogsResp, error) {
+	resp := &ListImpersonationLogsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/impersonation-logs",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ReportImpersonationReq is the request for ReportImpersonation.
+type ReportImpersonationReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ReportImpersonationReqBuilder builds a ReportImpersonationReq with a fluent setter per field.
+type ReportImpersonationReqBuilder struct{ req *ReportImpersonationReq }
+
+// NewReportImpersonationReqBuilder creates a request builder for ReportImpersonation.
+func NewReportImpersonationReqBuilder() *ReportImpersonationReqBuilder {
+	return &ReportImpersonationReqBuilder{req: &ReportImpersonationReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *ReportImpersonationReqBuilder) Body(body *models.ReportImpersonationRequestBody) *ReportImpersonationReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *ReportImpersonationReqBuilder) Build() *ReportImpersonationReq { return b.req }
+
+// ReportImpersonationResp is the response for ReportImpersonation.
+type ReportImpersonationResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ImpersonationResultData `json:"data"`
+}
+
+// ReportImpersonation: 查询或报告本次代登录结果
+func (s *Service) ReportImpersonation(ctx context.Context, req *ReportImpersonationReq, opts ...core.RequestOption) (*ReportImpersonationResp, error) {
+	resp := &ReportImpersonationResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/impersonation-logs/result",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // AdminLoginReq is the request for AdminLogin.
 type AdminLoginReq struct {
 	pathParams  map[string]string
@@ -2850,6 +2990,52 @@ func (s *Service) IssueUserSession(ctx context.Context, req *IssueUserSessionReq
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
 		PathTemplate: "/hduhelp-neo/admin/users/impersonation",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ConfirmImpersonationReq is the request for ConfirmImpersonation.
+type ConfirmImpersonationReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ConfirmImpersonationReqBuilder builds a ConfirmImpersonationReq with a fluent setter per field.
+type ConfirmImpersonationReqBuilder struct{ req *ConfirmImpersonationReq }
+
+// NewConfirmImpersonationReqBuilder creates a request builder for ConfirmImpersonation.
+func NewConfirmImpersonationReqBuilder() *ConfirmImpersonationReqBuilder {
+	return &ConfirmImpersonationReqBuilder{req: &ConfirmImpersonationReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *ConfirmImpersonationReqBuilder) Body(body *models.ConfirmImpersonationRequestBody) *ConfirmImpersonationReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *ConfirmImpersonationReqBuilder) Build() *ConfirmImpersonationReq { return b.req }
+
+// ConfirmImpersonationResp is the response for ConfirmImpersonation.
+type ConfirmImpersonationResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ImpersonationResultData `json:"data"`
+}
+
+// ConfirmImpersonation: 确认代登录成功
+func (s *Service) ConfirmImpersonation(ctx context.Context, req *ConfirmImpersonationReq, opts ...core.RequestOption) (*ConfirmImpersonationResp, error) {
+	resp := &ConfirmImpersonationResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/identity/auth/impersonation/confirm",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
