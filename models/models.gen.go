@@ -9418,6 +9418,7 @@ type ModelConnectorTestRequestBody struct {
 	// Connection 未保存的连接信息；带 connector_id 时空 key / **** 代理密码沿用已保存的。
 	Connection       *ModelUnsavedConnection `json:"connection,omitempty"`
 	Documents        *[]string               `json:"documents,omitempty"`
+	GenerateImage    *bool                   `json:"generate_image,omitempty"`
 	ImageUrl         *string                 `json:"image_url,omitempty"`
 	Model            *string                 `json:"model,omitempty"`
 	Prompt           *string                 `json:"prompt,omitempty"`

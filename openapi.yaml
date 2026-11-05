@@ -27459,6 +27459,8 @@ components:
                     type: boolean
                 connection:
                     $ref: '#/components/schemas/ModelUnsavedConnection'
+                generate_image:
+                    type: boolean
         ModelConversationStats:
             type: object
             properties:
