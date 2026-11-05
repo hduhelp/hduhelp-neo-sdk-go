@@ -30155,6 +30155,10 @@ components:
                     type: object
                     additionalProperties:
                         $ref: '#/components/schemas/ModelProxyAnthropicCapability'
+                max_input_tokens:
+                    type: integer
+                    description: 上下文窗口（token），字段名同 Anthropic List Models。同名多个目标取最小值；未知不返回。
+                    format: int32
         ModelProxyAnthropicModelListBody:
             required:
                 - data
@@ -30340,6 +30344,10 @@ components:
                     additionalProperties:
                         type: boolean
                     description: 能力名到是否支持；未知的能力不返回。
+                context_window:
+                    type: integer
+                    description: 上下文窗口（token）。同名多个目标取最小值；未知不返回。
+                    format: int32
         ModelProxyOpenAIModelListBody:
             required:
                 - object

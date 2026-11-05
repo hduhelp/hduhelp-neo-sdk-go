@@ -10657,10 +10657,13 @@ type ModelProxyAnthropicModel struct {
 	Capabilities *map[string]ModelProxyAnthropicCapability `json:"capabilities,omitempty"`
 
 	// CreatedAt RFC 3339 时间
-	CreatedAt                string    `json:"created_at"`
-	DefaultReasoningLevel    *string   `json:"default_reasoning_level,omitempty"`
-	DisplayName              string    `json:"display_name"`
-	Id                       string    `json:"id"`
+	CreatedAt             string  `json:"created_at"`
+	DefaultReasoningLevel *string `json:"default_reasoning_level,omitempty"`
+	DisplayName           string  `json:"display_name"`
+	Id                    string  `json:"id"`
+
+	// MaxInputTokens 上下文窗口（token），字段名同 Anthropic List Models。同名多个目标取最小值；未知不返回。
+	MaxInputTokens           *int32    `json:"max_input_tokens,omitempty"`
 	SupportedReasoningLevels *[]string `json:"supported_reasoning_levels,omitempty"`
 	Type                     string    `json:"type"`
 }
@@ -10765,13 +10768,16 @@ type ModelProxyImagesResponseBody struct {
 // ModelProxyOpenAIModel defines model for ModelProxyOpenAIModel.
 type ModelProxyOpenAIModel struct {
 	// Capabilities 能力名到是否支持；未知的能力不返回。
-	Capabilities          *map[string]bool `json:"capabilities,omitempty"`
-	Created               int64            `json:"created"`
-	DefaultReasoningLevel *string          `json:"default_reasoning_level,omitempty"`
-	DisplayName           string           `json:"display_name"`
-	Id                    string           `json:"id"`
-	Object                string           `json:"object"`
-	OwnedBy               string           `json:"owned_by"`
+	Capabilities *map[string]bool `json:"capabilities,omitempty"`
+
+	// ContextWindow 上下文窗口（token）。同名多个目标取最小值；未知不返回。
+	ContextWindow         *int32  `json:"context_window,omitempty"`
+	Created               int64   `json:"created"`
+	DefaultReasoningLevel *string `json:"default_reasoning_level,omitempty"`
+	DisplayName           string  `json:"display_name"`
+	Id                    string  `json:"id"`
+	Object                string  `json:"object"`
+	OwnedBy               string  `json:"owned_by"`
 
 	// SupportedReasoningLevels 不返回表示未知；空数组表示这个模型不能思考。
 	SupportedReasoningLevels *[]string `json:"supported_reasoning_levels,omitempty"`
