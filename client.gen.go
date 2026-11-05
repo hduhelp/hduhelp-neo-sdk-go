@@ -24,6 +24,7 @@ import (
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/modelgateway"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/modelgatewayobservability"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/modelgatewaytracebrowser"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/modelproxy"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/moments"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/notification"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/siteannouncement"
@@ -55,6 +56,7 @@ type Client struct {
 	ModelGateway              *modelgateway.Service
 	ModelGatewayObservability *modelgatewayobservability.Service
 	ModelGatewayTraceBrowser  *modelgatewaytracebrowser.Service
+	ModelProxy                *modelproxy.Service
 	Moments                   *moments.Service
 	Notification              *notification.Service
 	SiteAnnouncement          *siteannouncement.Service
@@ -83,6 +85,7 @@ func attachServices(c *Client) {
 	c.ModelGateway = modelgateway.NewService(c.config)
 	c.ModelGatewayObservability = modelgatewayobservability.NewService(c.config)
 	c.ModelGatewayTraceBrowser = modelgatewaytracebrowser.NewService(c.config)
+	c.ModelProxy = modelproxy.NewService(c.config)
 	c.Moments = moments.NewService(c.config)
 	c.Notification = notification.NewService(c.config)
 	c.SiteAnnouncement = siteannouncement.NewService(c.config)

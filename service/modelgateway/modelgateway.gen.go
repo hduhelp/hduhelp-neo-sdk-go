@@ -116,6 +116,12 @@ func (b *ModelListAuditsReqBuilder) ActorType(v string) *ModelListAuditsReqBuild
 	return b
 }
 
+// SubjectUserId sets the "subject_user_id" query parameter.
+func (b *ModelListAuditsReqBuilder) SubjectUserId(v string) *ModelListAuditsReqBuilder {
+	b.req.queryParams["subject_user_id"] = v
+	return b
+}
+
 // Build finalizes the request.
 func (b *ModelListAuditsReqBuilder) Build() *ModelListAuditsReq { return b.req }
 
@@ -2154,6 +2160,184 @@ func (s *Service) ModelTestConnector(ctx context.Context, req *ModelTestConnecto
 	return resp, err
 }
 
+// ModelListMetadataReq is the request for ModelListMetadata.
+type ModelListMetadataReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ModelListMetadataReqBuilder builds a ModelListMetadataReq with a fluent setter per field.
+type ModelListMetadataReqBuilder struct{ req *ModelListMetadataReq }
+
+// NewModelListMetadataReqBuilder creates a request builder for ModelListMetadata.
+func NewModelListMetadataReqBuilder() *ModelListMetadataReqBuilder {
+	return &ModelListMetadataReqBuilder{req: &ModelListMetadataReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *ModelListMetadataReqBuilder) Build() *ModelListMetadataReq { return b.req }
+
+// ModelListMetadataResp is the response for ModelListMetadata.
+type ModelListMetadataResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ModelMetadataList `json:"data"`
+}
+
+// ModelListMetadata: 模型元数据全部行
+func (s *Service) ModelListMetadata(ctx context.Context, req *ModelListMetadataReq, opts ...core.RequestOption) (*ModelListMetadataResp, error) {
+	resp := &ModelListMetadataResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/models/metadata",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ModelSaveMetadataReq is the request for ModelSaveMetadata.
+type ModelSaveMetadataReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ModelSaveMetadataReqBuilder builds a ModelSaveMetadataReq with a fluent setter per field.
+type ModelSaveMetadataReqBuilder struct{ req *ModelSaveMetadataReq }
+
+// NewModelSaveMetadataReqBuilder creates a request builder for ModelSaveMetadata.
+func NewModelSaveMetadataReqBuilder() *ModelSaveMetadataReqBuilder {
+	return &ModelSaveMetadataReqBuilder{req: &ModelSaveMetadataReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *ModelSaveMetadataReqBuilder) Body(body *models.ModelMetadataFormBody) *ModelSaveMetadataReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *ModelSaveMetadataReqBuilder) Build() *ModelSaveMetadataReq { return b.req }
+
+// ModelSaveMetadataResp is the response for ModelSaveMetadata.
+type ModelSaveMetadataResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ModelMetadataEntry `json:"data"`
+}
+
+// ModelSaveMetadata: 新建或修改一个模型的元数据（带 version，版本不符 409）
+func (s *Service) ModelSaveMetadata(ctx context.Context, req *ModelSaveMetadataReq, opts ...core.RequestOption) (*ModelSaveMetadataResp, error) {
+	resp := &ModelSaveMetadataResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/models/metadata",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ModelGetMetadataReq is the request for ModelGetMetadata.
+type ModelGetMetadataReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ModelGetMetadataReqBuilder builds a ModelGetMetadataReq with a fluent setter per field.
+type ModelGetMetadataReqBuilder struct{ req *ModelGetMetadataReq }
+
+// NewModelGetMetadataReqBuilder creates a request builder for ModelGetMetadata.
+func NewModelGetMetadataReqBuilder() *ModelGetMetadataReqBuilder {
+	return &ModelGetMetadataReqBuilder{req: &ModelGetMetadataReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Model sets the "model" query parameter.
+func (b *ModelGetMetadataReqBuilder) Model(v string) *ModelGetMetadataReqBuilder {
+	b.req.queryParams["model"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *ModelGetMetadataReqBuilder) Build() *ModelGetMetadataReq { return b.req }
+
+// ModelGetMetadataResp is the response for ModelGetMetadata.
+type ModelGetMetadataResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ModelMetadataDetail `json:"data"`
+}
+
+// ModelGetMetadata: 单个模型的元数据与建议值
+func (s *Service) ModelGetMetadata(ctx context.Context, req *ModelGetMetadataReq, opts ...core.RequestOption) (*ModelGetMetadataResp, error) {
+	resp := &ModelGetMetadataResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/models/metadata/detail",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ModelImportMetadataReq is the request for ModelImportMetadata.
+type ModelImportMetadataReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ModelImportMetadataReqBuilder builds a ModelImportMetadataReq with a fluent setter per field.
+type ModelImportMetadataReqBuilder struct{ req *ModelImportMetadataReq }
+
+// NewModelImportMetadataReqBuilder creates a request builder for ModelImportMetadata.
+func NewModelImportMetadataReqBuilder() *ModelImportMetadataReqBuilder {
+	return &ModelImportMetadataReqBuilder{req: &ModelImportMetadataReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *ModelImportMetadataReqBuilder) Body(body *models.ModelMetadataImportBodyBody) *ModelImportMetadataReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *ModelImportMetadataReqBuilder) Build() *ModelImportMetadataReq { return b.req }
+
+// ModelImportMetadataResp is the response for ModelImportMetadata.
+type ModelImportMetadataResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ModelMetadataImportResult `json:"data"`
+}
+
+// ModelImportMetadata: 批量导入模型元数据（全部成功或全部不写）
+func (s *Service) ModelImportMetadata(ctx context.Context, req *ModelImportMetadataReq, opts ...core.RequestOption) (*ModelImportMetadataResp, error) {
+	resp := &ModelImportMetadataResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/models/metadata/import",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // ModelListPlatformPresetsReq is the request for ModelListPlatformPresets.
 type ModelListPlatformPresetsReq struct {
 	pathParams  map[string]string
@@ -4168,6 +4352,88 @@ func (s *Service) ModelSavePurposeTargets(ctx context.Context, req *ModelSavePur
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "PUT",
 		PathTemplate: "/hduhelp-neo/admin/models/purposes/targets",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ModelListAccessAuditsReq is the request for ModelListAccessAudits.
+type ModelListAccessAuditsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ModelListAccessAuditsReqBuilder builds a ModelListAccessAuditsReq with a fluent setter per field.
+type ModelListAccessAuditsReqBuilder struct{ req *ModelListAccessAuditsReq }
+
+// NewModelListAccessAuditsReqBuilder creates a request builder for ModelListAccessAudits.
+func NewModelListAccessAuditsReqBuilder() *ModelListAccessAuditsReqBuilder {
+	return &ModelListAccessAuditsReqBuilder{req: &ModelListAccessAuditsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// OperatorId sets the "operator_id" query parameter.
+func (b *ModelListAccessAuditsReqBuilder) OperatorId(v string) *ModelListAccessAuditsReqBuilder {
+	b.req.queryParams["operator_id"] = v
+	return b
+}
+
+// SubjectUserId sets the "subject_user_id" query parameter.
+func (b *ModelListAccessAuditsReqBuilder) SubjectUserId(v string) *ModelListAccessAuditsReqBuilder {
+	b.req.queryParams["subject_user_id"] = v
+	return b
+}
+
+// RequestId sets the "request_id" query parameter.
+func (b *ModelListAccessAuditsReqBuilder) RequestId(v string) *ModelListAccessAuditsReqBuilder {
+	b.req.queryParams["request_id"] = v
+	return b
+}
+
+// Since sets the "since" query parameter.
+func (b *ModelListAccessAuditsReqBuilder) Since(v int64) *ModelListAccessAuditsReqBuilder {
+	b.req.queryParams["since"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// Before sets the "before" query parameter.
+func (b *ModelListAccessAuditsReqBuilder) Before(v int64) *ModelListAccessAuditsReqBuilder {
+	b.req.queryParams["before"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// Cursor sets the "cursor" query parameter.
+func (b *ModelListAccessAuditsReqBuilder) Cursor(v string) *ModelListAccessAuditsReqBuilder {
+	b.req.queryParams["cursor"] = v
+	return b
+}
+
+// Limit sets the "limit" query parameter.
+func (b *ModelListAccessAuditsReqBuilder) Limit(v int32) *ModelListAccessAuditsReqBuilder {
+	b.req.queryParams["limit"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *ModelListAccessAuditsReqBuilder) Build() *ModelListAccessAuditsReq { return b.req }
+
+// ModelListAccessAuditsResp is the response for ModelListAccessAudits.
+type ModelListAccessAuditsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ModelAccessAuditPage `json:"data"`
+}
+
+// ModelListAccessAudits: 请求内容的查看记录
+func (s *Service) ModelListAccessAudits(ctx context.Context, req *ModelListAccessAuditsReq, opts ...core.RequestOption) (*ModelListAccessAuditsResp, error) {
+	resp := &ModelListAccessAuditsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/models/requests/access-audits",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

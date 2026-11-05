@@ -61,6 +61,57 @@ func (s *Service) ModelQueryTraces(ctx context.Context, req *ModelQueryTracesReq
 	return resp, err
 }
 
+// ModelReadTraceBodyReq is the request for ModelReadTraceBody.
+type ModelReadTraceBodyReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ModelReadTraceBodyReqBuilder builds a ModelReadTraceBodyReq with a fluent setter per field.
+type ModelReadTraceBodyReqBuilder struct{ req *ModelReadTraceBodyReq }
+
+// NewModelReadTraceBodyReqBuilder creates a request builder for ModelReadTraceBody.
+func NewModelReadTraceBodyReqBuilder() *ModelReadTraceBodyReqBuilder {
+	return &ModelReadTraceBodyReqBuilder{req: &ModelReadTraceBodyReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// RequestId sets the "requestId" path parameter.
+func (b *ModelReadTraceBodyReqBuilder) RequestId(v string) *ModelReadTraceBodyReqBuilder {
+	b.req.pathParams["requestId"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *ModelReadTraceBodyReqBuilder) Body(body *models.ModelTraceBodyQueryBody) *ModelReadTraceBodyReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *ModelReadTraceBodyReqBuilder) Build() *ModelReadTraceBodyReq { return b.req }
+
+// ModelReadTraceBodyResp is the response for ModelReadTraceBody.
+type ModelReadTraceBodyResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// ModelReadTraceBody calls POST /hduhelp-neo/admin/models/traces/{requestId}/body.
+func (s *Service) ModelReadTraceBody(ctx context.Context, req *ModelReadTraceBodyReq, opts ...core.RequestOption) (*ModelReadTraceBodyResp, error) {
+	resp := &ModelReadTraceBodyResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/models/traces/{requestId}/body",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // ModelExportTraceReq is the request for ModelExportTrace.
 type ModelExportTraceReq struct {
 	pathParams  map[string]string
@@ -105,6 +156,58 @@ func (s *Service) ModelExportTrace(ctx context.Context, req *ModelExportTraceReq
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
 		PathTemplate: "/hduhelp-neo/admin/models/traces/{requestId}/export",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ModelSignTraceMediaReq is the request for ModelSignTraceMedia.
+type ModelSignTraceMediaReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ModelSignTraceMediaReqBuilder builds a ModelSignTraceMediaReq with a fluent setter per field.
+type ModelSignTraceMediaReqBuilder struct{ req *ModelSignTraceMediaReq }
+
+// NewModelSignTraceMediaReqBuilder creates a request builder for ModelSignTraceMedia.
+func NewModelSignTraceMediaReqBuilder() *ModelSignTraceMediaReqBuilder {
+	return &ModelSignTraceMediaReqBuilder{req: &ModelSignTraceMediaReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// RequestId sets the "requestId" path parameter.
+func (b *ModelSignTraceMediaReqBuilder) RequestId(v string) *ModelSignTraceMediaReqBuilder {
+	b.req.pathParams["requestId"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *ModelSignTraceMediaReqBuilder) Body(body *models.ModelTraceMediaLinksQueryBody) *ModelSignTraceMediaReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *ModelSignTraceMediaReqBuilder) Build() *ModelSignTraceMediaReq { return b.req }
+
+// ModelSignTraceMediaResp is the response for ModelSignTraceMedia.
+type ModelSignTraceMediaResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ModelTraceMediaLinks `json:"data"`
+}
+
+// ModelSignTraceMedia calls POST /hduhelp-neo/admin/models/traces/{requestId}/media-links.
+func (s *Service) ModelSignTraceMedia(ctx context.Context, req *ModelSignTraceMediaReq, opts ...core.RequestOption) (*ModelSignTraceMediaResp, error) {
+	resp := &ModelSignTraceMediaResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/models/traces/{requestId}/media-links",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

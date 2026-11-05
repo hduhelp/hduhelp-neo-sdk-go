@@ -269,6 +269,84 @@ func (e ModelEstimateRequestBodyDraftCurrency) Valid() bool {
 	}
 }
 
+// Defines values for ModelMetadataFormKind.
+const (
+	ModelMetadataFormKindChat        ModelMetadataFormKind = "chat"
+	ModelMetadataFormKindEmbedding   ModelMetadataFormKind = "embedding"
+	ModelMetadataFormKindImage       ModelMetadataFormKind = "image"
+	ModelMetadataFormKindLessThannil ModelMetadataFormKind = "<nil>"
+	ModelMetadataFormKindOther       ModelMetadataFormKind = "other"
+	ModelMetadataFormKindRerank      ModelMetadataFormKind = "rerank"
+)
+
+// Valid indicates whether the value is a known member of the ModelMetadataFormKind enum.
+func (e ModelMetadataFormKind) Valid() bool {
+	switch e {
+	case ModelMetadataFormKindChat:
+		return true
+	case ModelMetadataFormKindEmbedding:
+		return true
+	case ModelMetadataFormKindImage:
+		return true
+	case ModelMetadataFormKindLessThannil:
+		return true
+	case ModelMetadataFormKindOther:
+		return true
+	case ModelMetadataFormKindRerank:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ModelMetadataFormBodyKind.
+const (
+	ModelMetadataFormBodyKindChat        ModelMetadataFormBodyKind = "chat"
+	ModelMetadataFormBodyKindEmbedding   ModelMetadataFormBodyKind = "embedding"
+	ModelMetadataFormBodyKindImage       ModelMetadataFormBodyKind = "image"
+	ModelMetadataFormBodyKindLessThannil ModelMetadataFormBodyKind = "<nil>"
+	ModelMetadataFormBodyKindOther       ModelMetadataFormBodyKind = "other"
+	ModelMetadataFormBodyKindRerank      ModelMetadataFormBodyKind = "rerank"
+)
+
+// Valid indicates whether the value is a known member of the ModelMetadataFormBodyKind enum.
+func (e ModelMetadataFormBodyKind) Valid() bool {
+	switch e {
+	case ModelMetadataFormBodyKindChat:
+		return true
+	case ModelMetadataFormBodyKindEmbedding:
+		return true
+	case ModelMetadataFormBodyKindImage:
+		return true
+	case ModelMetadataFormBodyKindLessThannil:
+		return true
+	case ModelMetadataFormBodyKindOther:
+		return true
+	case ModelMetadataFormBodyKindRerank:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ModelMetadataSuggestionViewSource.
+const (
+	ModelMetadataSuggestionViewSourceLitellm  ModelMetadataSuggestionViewSource = "litellm"
+	ModelMetadataSuggestionViewSourceUpstream ModelMetadataSuggestionViewSource = "upstream"
+)
+
+// Valid indicates whether the value is a known member of the ModelMetadataSuggestionViewSource enum.
+func (e ModelMetadataSuggestionViewSource) Valid() bool {
+	switch e {
+	case ModelMetadataSuggestionViewSourceLitellm:
+		return true
+	case ModelMetadataSuggestionViewSourceUpstream:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ModelModelSyncResultSource.
 const (
 	ModelModelSyncResultSourceFallback ModelModelSyncResultSource = "fallback"
@@ -281,6 +359,24 @@ func (e ModelModelSyncResultSource) Valid() bool {
 	case ModelModelSyncResultSourceFallback:
 		return true
 	case ModelModelSyncResultSourceUpstream:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ModelOurModelMetadataStatus.
+const (
+	ModelOurModelMetadataStatusMissing ModelOurModelMetadataStatus = "missing"
+	ModelOurModelMetadataStatusPresent ModelOurModelMetadataStatus = "present"
+)
+
+// Valid indicates whether the value is a known member of the ModelOurModelMetadataStatus enum.
+func (e ModelOurModelMetadataStatus) Valid() bool {
+	switch e {
+	case ModelOurModelMetadataStatusMissing:
+		return true
+	case ModelOurModelMetadataStatusPresent:
 		return true
 	default:
 		return false
@@ -310,16 +406,16 @@ func (e ModelOurModelSource) Valid() bool {
 
 // Defines values for ModelOurModelStatus.
 const (
-	Missing ModelOurModelStatus = "missing"
-	Priced  ModelOurModelStatus = "priced"
+	ModelOurModelStatusMissing ModelOurModelStatus = "missing"
+	ModelOurModelStatusPriced  ModelOurModelStatus = "priced"
 )
 
 // Valid indicates whether the value is a known member of the ModelOurModelStatus enum.
 func (e ModelOurModelStatus) Valid() bool {
 	switch e {
-	case Missing:
+	case ModelOurModelStatusMissing:
 		return true
-	case Priced:
+	case ModelOurModelStatusPriced:
 		return true
 	default:
 		return false
@@ -2782,34 +2878,34 @@ func (e NotificationServiceListNotificationTaskDeliveriesParamsStatus) Valid() b
 
 // Defines values for NotificationServiceListNotificationTaskDeliveriesParamsFailureKind.
 const (
-	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindDeadLetterParked   NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "dead_letter_parked"
-	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindExpired            NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "expired"
-	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindPermanent          NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "permanent"
-	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindProvider           NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "provider"
-	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindReconcileExhausted NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "reconcile_exhausted"
-	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindRetryExhausted     NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "retry_exhausted"
-	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindUncertain          NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "uncertain"
-	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindUnreachable        NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "unreachable"
+	DeadLetterParked   NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "dead_letter_parked"
+	Expired            NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "expired"
+	Permanent          NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "permanent"
+	Provider           NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "provider"
+	ReconcileExhausted NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "reconcile_exhausted"
+	RetryExhausted     NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "retry_exhausted"
+	Uncertain          NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "uncertain"
+	Unreachable        NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "unreachable"
 )
 
 // Valid indicates whether the value is a known member of the NotificationServiceListNotificationTaskDeliveriesParamsFailureKind enum.
 func (e NotificationServiceListNotificationTaskDeliveriesParamsFailureKind) Valid() bool {
 	switch e {
-	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindDeadLetterParked:
+	case DeadLetterParked:
 		return true
-	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindExpired:
+	case Expired:
 		return true
-	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindPermanent:
+	case Permanent:
 		return true
-	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindProvider:
+	case Provider:
 		return true
-	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindReconcileExhausted:
+	case ReconcileExhausted:
 		return true
-	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindRetryExhausted:
+	case RetryExhausted:
 		return true
-	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindUncertain:
+	case Uncertain:
 		return true
-	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindUnreachable:
+	case Unreachable:
 		return true
 	default:
 		return false
@@ -8531,6 +8627,19 @@ type MgOkResponseBody struct {
 	Msg  string    `json:"msg"`
 }
 
+// ModelAccessAuditPage defines model for ModelAccessAuditPage.
+type ModelAccessAuditPage struct {
+	Items      []ModelAuditEntry `json:"items"`
+	NextCursor *string           `json:"nextCursor,omitempty"`
+}
+
+// ModelAccessAuditPageResponseBody defines model for ModelAccessAuditPageResponseBody.
+type ModelAccessAuditPageResponseBody struct {
+	Code int64                 `json:"code"`
+	Data *ModelAccessAuditPage `json:"data,omitempty"`
+	Msg  string                `json:"msg"`
+}
+
 // ModelAllowlist ---------------------------------------------------------------------------
 // 连接器池（第 10 章）
 // ---------------------------------------------------------------------------
@@ -8736,6 +8845,15 @@ type ModelCacheHints struct {
 	ClaudeSessionHeader      *bool   `json:"claudeSessionHeader,omitempty"`
 	PromptCacheKey           *string `json:"promptCacheKey,omitempty"`
 	UserField                *string `json:"userField,omitempty"`
+}
+
+// ModelCapabilitiesView defines model for ModelCapabilitiesView.
+type ModelCapabilitiesView struct {
+	AudioInput   *bool `json:"audioInput,omitempty"`
+	FunctionCall *bool `json:"functionCall,omitempty"`
+	ImageInput   *bool `json:"imageInput,omitempty"`
+	PdfInput     *bool `json:"pdfInput,omitempty"`
+	VideoInput   *bool `json:"videoInput,omitempty"`
 }
 
 // ModelCapabilityInfo defines model for ModelCapabilityInfo.
@@ -9425,11 +9543,14 @@ type ModelDashboardSources struct {
 	CoverageKnown   bool               `json:"coverageKnown"`
 	HourlyStale     bool               `json:"hourlyStale"`
 	HourlyUpdatedAt *int64             `json:"hourlyUpdatedAt,omitempty"`
-	PartialCoverage bool               `json:"partialCoverage"`
-	PrometheusError *string            `json:"prometheusError,omitempty"`
-	PrometheusOk    bool               `json:"prometheusOk"`
-	PrometheusStart *int64             `json:"prometheusStart,omitempty"`
-	SplitAt         *int64             `json:"splitAt,omitempty"`
+
+	// NoTraffic 所选范围内确认没有请求（探活不算），与没采到（partialCoverage）区分
+	NoTraffic       bool    `json:"noTraffic"`
+	PartialCoverage bool    `json:"partialCoverage"`
+	PrometheusError *string `json:"prometheusError,omitempty"`
+	PrometheusOk    bool    `json:"prometheusOk"`
+	PrometheusStart *int64  `json:"prometheusStart,omitempty"`
+	SplitAt         *int64  `json:"splitAt,omitempty"`
 }
 
 // ModelDiscoveredModel defines model for ModelDiscoveredModel.
@@ -9775,6 +9896,154 @@ type ModelMemberInput struct {
 	Weight      *int32 `json:"weight,omitempty"`
 }
 
+// ModelMetadataCapabilitiesBody defines model for ModelMetadataCapabilitiesBody.
+type ModelMetadataCapabilitiesBody struct {
+	AudioInput   *bool `json:"audio_input,omitempty"`
+	FunctionCall *bool `json:"function_call,omitempty"`
+	ImageInput   *bool `json:"image_input,omitempty"`
+	PdfInput     *bool `json:"pdf_input,omitempty"`
+	VideoInput   *bool `json:"video_input,omitempty"`
+}
+
+// ModelMetadataDetail defines model for ModelMetadataDetail.
+type ModelMetadataDetail struct {
+	Metadata    *ModelMetadataEntry           `json:"metadata,omitempty"`
+	Suggestions []ModelMetadataSuggestionView `json:"suggestions"`
+}
+
+// ModelMetadataDetailResponseBody defines model for ModelMetadataDetailResponseBody.
+type ModelMetadataDetailResponseBody struct {
+	Code int64                `json:"code"`
+	Data *ModelMetadataDetail `json:"data,omitempty"`
+	Msg  string               `json:"msg"`
+}
+
+// ModelMetadataEntry defines model for ModelMetadataEntry.
+type ModelMetadataEntry struct {
+	Capabilities    ModelCapabilitiesView     `json:"capabilities"`
+	ContextWindow   *int32                    `json:"contextWindow,omitempty"`
+	DisplayName     string                    `json:"displayName"`
+	Id              int64                     `json:"id"`
+	Kind            string                    `json:"kind"`
+	MaxOutputTokens *int32                    `json:"maxOutputTokens,omitempty"`
+	Model           string                    `json:"model"`
+	Note            string                    `json:"note"`
+	ReasoningEffort *ModelReasoningEffortView `json:"reasoningEffort,omitempty"`
+	SourceUrl       string                    `json:"sourceUrl"`
+	UpdatedAt       int64                     `json:"updatedAt"`
+	Vendor          string                    `json:"vendor"`
+	Version         int64                     `json:"version"`
+}
+
+// ModelMetadataForm defines model for ModelMetadataForm.
+type ModelMetadataForm struct {
+	Capabilities    *ModelMetadataCapabilitiesBody `json:"capabilities,omitempty"`
+	ContextWindow   *int32                         `json:"context_window,omitempty"`
+	DisplayName     *string                        `json:"display_name,omitempty"`
+	Kind            *ModelMetadataFormKind         `json:"kind,omitempty"`
+	MaxOutputTokens *int32                         `json:"max_output_tokens,omitempty"`
+	Model           string                         `json:"model"`
+	Note            *string                        `json:"note,omitempty"`
+	Params          *ModelMetadataParamsBody       `json:"params,omitempty"`
+	Reason          *string                        `json:"reason,omitempty"`
+	SourceUrl       *string                        `json:"source_url,omitempty"`
+	Vendor          *string                        `json:"vendor,omitempty"`
+
+	// Version 读到的版本；没有读到（新建）传 0 或不传
+	Version *int64 `json:"version,omitempty"`
+}
+
+// ModelMetadataFormKind defines model for ModelMetadataForm.Kind.
+type ModelMetadataFormKind string
+
+// ModelMetadataFormBody defines model for ModelMetadataFormBody.
+type ModelMetadataFormBody struct {
+	Capabilities    *ModelMetadataCapabilitiesBody `json:"capabilities,omitempty"`
+	ContextWindow   *int32                         `json:"context_window,omitempty"`
+	DisplayName     *string                        `json:"display_name,omitempty"`
+	Kind            *ModelMetadataFormBodyKind     `json:"kind,omitempty"`
+	MaxOutputTokens *int32                         `json:"max_output_tokens,omitempty"`
+	Model           string                         `json:"model"`
+	Note            *string                        `json:"note,omitempty"`
+	Params          *ModelMetadataParamsBody       `json:"params,omitempty"`
+	Reason          *string                        `json:"reason,omitempty"`
+	SourceUrl       *string                        `json:"source_url,omitempty"`
+	Vendor          *string                        `json:"vendor,omitempty"`
+
+	// Version 读到的版本；没有读到（新建）传 0 或不传
+	Version *int64 `json:"version,omitempty"`
+}
+
+// ModelMetadataFormBodyKind defines model for ModelMetadataFormBody.Kind.
+type ModelMetadataFormBodyKind string
+
+// ModelMetadataImportBodyBody defines model for ModelMetadataImportBodyBody.
+type ModelMetadataImportBodyBody struct {
+	Items  []ModelMetadataForm `json:"items"`
+	Reason *string             `json:"reason,omitempty"`
+}
+
+// ModelMetadataImportResponseBody defines model for ModelMetadataImportResponseBody.
+type ModelMetadataImportResponseBody struct {
+	Code int64                      `json:"code"`
+	Data *ModelMetadataImportResult `json:"data,omitempty"`
+	Msg  string                     `json:"msg"`
+}
+
+// ModelMetadataImportResult defines model for ModelMetadataImportResult.
+type ModelMetadataImportResult struct {
+	Created   int32                `json:"created"`
+	Items     []ModelMetadataEntry `json:"items"`
+	Unchanged int32                `json:"unchanged"`
+	Updated   int32                `json:"updated"`
+}
+
+// ModelMetadataList defines model for ModelMetadataList.
+type ModelMetadataList struct {
+	Items []ModelMetadataEntry `json:"items"`
+}
+
+// ModelMetadataListResponseBody defines model for ModelMetadataListResponseBody.
+type ModelMetadataListResponseBody struct {
+	Code int64              `json:"code"`
+	Data *ModelMetadataList `json:"data,omitempty"`
+	Msg  string             `json:"msg"`
+}
+
+// ModelMetadataParamsBody defines model for ModelMetadataParamsBody.
+type ModelMetadataParamsBody struct {
+	ReasoningEffort *ModelMetadataReasoningBody `json:"reasoning_effort,omitempty"`
+}
+
+// ModelMetadataReasoningBody defines model for ModelMetadataReasoningBody.
+type ModelMetadataReasoningBody struct {
+	Default *string   `json:"default,omitempty"`
+	Levels  *[]string `json:"levels,omitempty"`
+}
+
+// ModelMetadataResponseBody defines model for ModelMetadataResponseBody.
+type ModelMetadataResponseBody struct {
+	Code int64               `json:"code"`
+	Data *ModelMetadataEntry `json:"data,omitempty"`
+	Msg  string              `json:"msg"`
+}
+
+// ModelMetadataSuggestionView defines model for ModelMetadataSuggestionView.
+type ModelMetadataSuggestionView struct {
+	Capabilities    ModelCapabilitiesView             `json:"capabilities"`
+	ContextWindow   *int32                            `json:"contextWindow,omitempty"`
+	DisplayName     *string                           `json:"displayName,omitempty"`
+	From            []string                          `json:"from"`
+	Kind            *string                           `json:"kind,omitempty"`
+	MaxOutputTokens *int32                            `json:"maxOutputTokens,omitempty"`
+	ReasoningEffort *ModelReasoningEffortView         `json:"reasoningEffort,omitempty"`
+	Source          ModelMetadataSuggestionViewSource `json:"source"`
+	Vendor          *string                           `json:"vendor,omitempty"`
+}
+
+// ModelMetadataSuggestionViewSource defines model for ModelMetadataSuggestionView.Source.
+type ModelMetadataSuggestionViewSource string
+
 // ModelModelOption defines model for ModelModelOption.
 type ModelModelOption struct {
 	Model  string `json:"model"`
@@ -9856,19 +10125,24 @@ type ModelOperationalStateResponseBody struct {
 // ModelOurModel 「我们的模型」：用途目标的标准名 ∪ 启用池对外暴露的名字，按手动价 > LiteLLM 价计费。
 // 按 token 计价的金额是人民币 / 百万 token，按次计价是人民币 / 次。
 type ModelOurModel struct {
-	BillingMode   *string             `json:"billingMode,omitempty"`
-	CacheRead     *float64            `json:"cacheRead,omitempty"`
-	CacheWrite    *float64            `json:"cacheWrite,omitempty"`
-	Input         *float64            `json:"input,omitempty"`
-	ManualPriceId *int64              `json:"manualPriceId,omitempty"`
-	Model         string              `json:"model"`
-	Output        *float64            `json:"output,omitempty"`
-	PerRequest    *float64            `json:"perRequest,omitempty"`
-	Pools         []string            `json:"pools"`
-	Purposes      []string            `json:"purposes"`
-	Source        ModelOurModelSource `json:"source"`
-	Status        ModelOurModelStatus `json:"status"`
+	BillingMode    *string                     `json:"billingMode,omitempty"`
+	CacheRead      *float64                    `json:"cacheRead,omitempty"`
+	CacheWrite     *float64                    `json:"cacheWrite,omitempty"`
+	Input          *float64                    `json:"input,omitempty"`
+	ManualPriceId  *int64                      `json:"manualPriceId,omitempty"`
+	Metadata       *ModelMetadataEntry         `json:"metadata,omitempty"`
+	MetadataStatus ModelOurModelMetadataStatus `json:"metadataStatus"`
+	Model          string                      `json:"model"`
+	Output         *float64                    `json:"output,omitempty"`
+	PerRequest     *float64                    `json:"perRequest,omitempty"`
+	Pools          []string                    `json:"pools"`
+	Purposes       []string                    `json:"purposes"`
+	Source         ModelOurModelSource         `json:"source"`
+	Status         ModelOurModelStatus         `json:"status"`
 }
+
+// ModelOurModelMetadataStatus defines model for ModelOurModel.MetadataStatus.
+type ModelOurModelMetadataStatus string
 
 // ModelOurModelSource defines model for ModelOurModel.Source.
 type ModelOurModelSource string
@@ -10372,6 +10646,142 @@ type ModelProbeResultResponseBody struct {
 	Msg  string            `json:"msg"`
 }
 
+// ModelProxyAnthropicCapability defines model for ModelProxyAnthropicCapability.
+type ModelProxyAnthropicCapability struct {
+	Supported bool `json:"supported"`
+}
+
+// ModelProxyAnthropicModel defines model for ModelProxyAnthropicModel.
+type ModelProxyAnthropicModel struct {
+	Capabilities *map[string]ModelProxyAnthropicCapability `json:"capabilities,omitempty"`
+
+	// CreatedAt RFC 3339 时间
+	CreatedAt                string    `json:"created_at"`
+	DefaultReasoningLevel    *string   `json:"default_reasoning_level,omitempty"`
+	DisplayName              string    `json:"display_name"`
+	Id                       string    `json:"id"`
+	SupportedReasoningLevels *[]string `json:"supported_reasoning_levels,omitempty"`
+	Type                     string    `json:"type"`
+}
+
+// ModelProxyAnthropicModelListBody defines model for ModelProxyAnthropicModelListBody.
+type ModelProxyAnthropicModelListBody struct {
+	Data []ModelProxyAnthropicModel `json:"data"`
+
+	// FirstId 空页时为 null。
+	FirstId *string `json:"first_id,omitempty"`
+	HasMore bool    `json:"has_more"`
+	LastId  *string `json:"last_id,omitempty"`
+}
+
+// ModelProxyErrorBody 请求失败时的 OpenAI 错误信封。
+type ModelProxyErrorBody struct {
+	Code    string  `json:"code"`
+	Message string  `json:"message"`
+	Param   *string `json:"param,omitempty"`
+	Type    string  `json:"type"`
+}
+
+// ModelProxyImage defines model for ModelProxyImage.
+type ModelProxyImage struct {
+	// B64Json response_format=b64_json 时带上
+	B64Json     *string `json:"b64_json,omitempty"`
+	Bytes       *int64  `json:"bytes,omitempty"`
+	ContentType *string `json:"content_type,omitempty"`
+
+	// Error 这一张失败时才有，此时没有 url、b64_json。上游原样的错误对象，常见字段 code、message
+	Error  *map[string]interface{} `json:"error,omitempty"`
+	Height *int32                  `json:"height,omitempty"`
+
+	// Key 上传体系里的对象键
+	Key           *string `json:"key,omitempty"`
+	RevisedPrompt *string `json:"revised_prompt,omitempty"`
+	Sha256        *string `json:"sha256,omitempty"`
+
+	// Size 宽x高
+	Size  *string `json:"size,omitempty"`
+	Url   *string `json:"url,omitempty"`
+	Width *int32  `json:"width,omitempty"`
+}
+
+// ModelProxyImageEditRequestBody defines model for ModelProxyImageEditRequestBody.
+type ModelProxyImageEditRequestBody struct {
+	Background *string `json:"background,omitempty"`
+
+	// Image 要编辑的图片，可多张；字段名写 image 或 image[] 都行
+	Image *[]string `json:"image,omitempty"`
+
+	// Mask 蒙版
+	Mask *string `json:"mask,omitempty"`
+
+	// Model 公开名或别名；不填用这个用途的默认模型
+	Model             *string `json:"model,omitempty"`
+	N                 *int32  `json:"n,omitempty"`
+	OutputCompression *int32  `json:"output_compression,omitempty"`
+	OutputFormat      *string `json:"output_format,omitempty"`
+	Prompt            string  `json:"prompt"`
+	Quality           *string `json:"quality,omitempty"`
+
+	// ResponseFormat url 或 b64_json；url 总是返回，b64_json 额外带上图片内容
+	ResponseFormat *string `json:"response_format,omitempty"`
+	Size           *string `json:"size,omitempty"`
+	Style          *string `json:"style,omitempty"`
+}
+
+// ModelProxyImageGenerationRequestBody defines model for ModelProxyImageGenerationRequestBody.
+type ModelProxyImageGenerationRequestBody struct {
+	Background *string `json:"background,omitempty"`
+
+	// Image 参考图 URL（http、https 或 data:）
+	Image *[]string `json:"image,omitempty"`
+
+	// Model 公开名或别名；不填用这个用途的默认模型
+	Model             *string `json:"model,omitempty"`
+	N                 *int32  `json:"n,omitempty"`
+	OutputCompression *int32  `json:"output_compression,omitempty"`
+	OutputFormat      *string `json:"output_format,omitempty"`
+	Prompt            string  `json:"prompt"`
+	Quality           *string `json:"quality,omitempty"`
+
+	// ResponseFormat url 或 b64_json；url 总是返回，b64_json 额外带上图片内容
+	ResponseFormat *string `json:"response_format,omitempty"`
+	Size           *string `json:"size,omitempty"`
+	Style          *string `json:"style,omitempty"`
+}
+
+// ModelProxyImagesResponseBody defines model for ModelProxyImagesResponseBody.
+type ModelProxyImagesResponseBody struct {
+	Created *int64             `json:"created,omitempty"`
+	Data    *[]ModelProxyImage `json:"data,omitempty"`
+
+	// Error 请求失败时的 OpenAI 错误信封。
+	Error *ModelProxyErrorBody `json:"error,omitempty"`
+
+	// Usage 上游原样的用量，字段因模型而异
+	Usage *map[string]interface{} `json:"usage,omitempty"`
+}
+
+// ModelProxyOpenAIModel defines model for ModelProxyOpenAIModel.
+type ModelProxyOpenAIModel struct {
+	// Capabilities 能力名到是否支持；未知的能力不返回。
+	Capabilities          *map[string]bool `json:"capabilities,omitempty"`
+	Created               int64            `json:"created"`
+	DefaultReasoningLevel *string          `json:"default_reasoning_level,omitempty"`
+	DisplayName           string           `json:"display_name"`
+	Id                    string           `json:"id"`
+	Object                string           `json:"object"`
+	OwnedBy               string           `json:"owned_by"`
+
+	// SupportedReasoningLevels 不返回表示未知；空数组表示这个模型不能思考。
+	SupportedReasoningLevels *[]string `json:"supported_reasoning_levels,omitempty"`
+}
+
+// ModelProxyOpenAIModelListBody defines model for ModelProxyOpenAIModelListBody.
+type ModelProxyOpenAIModelListBody struct {
+	Data   []ModelProxyOpenAIModel `json:"data"`
+	Object string                  `json:"object"`
+}
+
 // ModelProxyTestRequestBody defines model for ModelProxyTestRequestBody.
 type ModelProxyTestRequestBody struct {
 	ConnectorId *int64  `json:"connector_id,omitempty"`
@@ -10646,6 +11056,12 @@ type ModelPurposeTargetsRequestBody struct {
 type ModelQuotaWindows struct {
 	Window5h *string `json:"window5h,omitempty"`
 	Window7d *string `json:"window7d,omitempty"`
+}
+
+// ModelReasoningEffortView defines model for ModelReasoningEffortView.
+type ModelReasoningEffortView struct {
+	DefaultLevel *string  `json:"defaultLevel,omitempty"`
+	Levels       []string `json:"levels"`
 }
 
 // ModelReasoningMapping defines model for ModelReasoningMapping.
@@ -11325,6 +11741,26 @@ type ModelTraceAttempt struct {
 	UpstreamModel string  `json:"upstreamModel"`
 }
 
+// ModelTraceBodyPart defines model for ModelTraceBodyPart.
+type ModelTraceBodyPart struct {
+	Bytes    int64  `json:"bytes"`
+	Slot     string `json:"slot"`
+	TooLarge bool   `json:"tooLarge"`
+}
+
+// ModelTraceBodyQueryBody defines model for ModelTraceBodyQueryBody.
+type ModelTraceBodyQueryBody struct {
+	Reason       string `json:"reason"`
+	RestoreMedia *bool  `json:"restoreMedia,omitempty"`
+	Slot         string `json:"slot"`
+}
+
+// ModelTraceBodyResponseBody defines model for ModelTraceBodyResponseBody.
+type ModelTraceBodyResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
 // ModelTraceImage defines model for ModelTraceImage.
 type ModelTraceImage struct {
 	Expired      bool    `json:"expired"`
@@ -11352,6 +11788,42 @@ type ModelTraceIndexResponseBody struct {
 	Msg  *string          `json:"msg,omitempty"`
 }
 
+// ModelTraceMediaItem defines model for ModelTraceMediaItem.
+type ModelTraceMediaItem struct {
+	Bytes      int64  `json:"bytes"`
+	Date       string `json:"date"`
+	Hash       string `json:"hash"`
+	Kind       string `json:"kind"`
+	MediaType  string `json:"mediaType"`
+	Renderable bool   `json:"renderable"`
+}
+
+// ModelTraceMediaLink defines model for ModelTraceMediaLink.
+type ModelTraceMediaLink struct {
+	Disposition string `json:"disposition"`
+	ExpiresAt   int64  `json:"expiresAt"`
+	Hash        string `json:"hash"`
+	Url         string `json:"url"`
+}
+
+// ModelTraceMediaLinks defines model for ModelTraceMediaLinks.
+type ModelTraceMediaLinks struct {
+	Items []ModelTraceMediaLink `json:"items"`
+}
+
+// ModelTraceMediaLinksQueryBody defines model for ModelTraceMediaLinksQueryBody.
+type ModelTraceMediaLinksQueryBody struct {
+	Hashes []string `json:"hashes"`
+	Reason string   `json:"reason"`
+}
+
+// ModelTraceMediaLinksResponseBody defines model for ModelTraceMediaLinksResponseBody.
+type ModelTraceMediaLinksResponseBody struct {
+	Code *int64                `json:"code,omitempty"`
+	Data *ModelTraceMediaLinks `json:"data,omitempty"`
+	Msg  *string               `json:"msg,omitempty"`
+}
+
 // ModelTracePartItem defines model for ModelTracePartItem.
 type ModelTracePartItem struct {
 	Body     *string              `json:"body,omitempty"`
@@ -11371,29 +11843,31 @@ type ModelTraceQueryBody struct {
 
 // ModelTraceReplay defines model for ModelTraceReplay.
 type ModelTraceReplay struct {
-	Attempts       []ModelTraceAttempt `json:"attempts"`
-	CallerKind     string              `json:"callerKind"`
-	CaptureState   string              `json:"captureState"`
-	CreatedAt      int64               `json:"createdAt"`
-	DurationMs     int64               `json:"durationMs"`
-	EventId        *string             `json:"eventId,omitempty"`
-	Images         []ModelTraceImage   `json:"images"`
-	InputTokens    int64               `json:"inputTokens"`
-	OutputTokens   int64               `json:"outputTokens"`
-	Protocol       string              `json:"protocol"`
-	Purpose        string              `json:"purpose"`
-	PurposeName    *string             `json:"purposeName,omitempty"`
-	Request        *string             `json:"request,omitempty"`
-	RequestId      string              `json:"requestId"`
-	RequestedModel string              `json:"requestedModel"`
-	Response       *string             `json:"response,omitempty"`
-	SessionId      *string             `json:"sessionId,omitempty"`
-	StatusCode     int64               `json:"statusCode"`
-	TraceId        *string             `json:"traceId,omitempty"`
-	UpstreamModel  string              `json:"upstreamModel"`
-	User           *AdminUserInfo      `json:"user,omitempty"`
-	UserId         *string             `json:"userId,omitempty"`
-	Warnings       []string            `json:"warnings"`
+	Attempts       []ModelTraceAttempt   `json:"attempts"`
+	CallerKind     string                `json:"callerKind"`
+	CaptureState   string                `json:"captureState"`
+	CreatedAt      int64                 `json:"createdAt"`
+	DurationMs     int64                 `json:"durationMs"`
+	EventId        *string               `json:"eventId,omitempty"`
+	Images         []ModelTraceImage     `json:"images"`
+	InputTokens    int64                 `json:"inputTokens"`
+	Media          []ModelTraceMediaItem `json:"media"`
+	OutputTokens   int64                 `json:"outputTokens"`
+	Parts          []ModelTraceBodyPart  `json:"parts"`
+	Protocol       string                `json:"protocol"`
+	Purpose        string                `json:"purpose"`
+	PurposeName    *string               `json:"purposeName,omitempty"`
+	Request        *string               `json:"request,omitempty"`
+	RequestId      string                `json:"requestId"`
+	RequestedModel string                `json:"requestedModel"`
+	Response       *string               `json:"response,omitempty"`
+	SessionId      *string               `json:"sessionId,omitempty"`
+	StatusCode     int64                 `json:"statusCode"`
+	TraceId        *string               `json:"traceId,omitempty"`
+	UpstreamModel  string                `json:"upstreamModel"`
+	User           *AdminUserInfo        `json:"user,omitempty"`
+	UserId         *string               `json:"userId,omitempty"`
+	Warnings       []string              `json:"warnings"`
 }
 
 // ModelTraceReplayQueryBody defines model for ModelTraceReplayQueryBody.
@@ -16387,20 +16861,21 @@ type MessagingServiceListAdminWishReviewsParams struct {
 
 // ModelGatewayServiceModelListAuditsParams defines parameters for ModelGatewayServiceModelListAudits.
 type ModelGatewayServiceModelListAuditsParams struct {
-	Q            *string                                            `form:"q,omitempty" json:"q,omitempty"`
-	ActorId      *string                                            `form:"actor_id,omitempty" json:"actor_id,omitempty"`
-	TargetType   *string                                            `form:"target_type,omitempty" json:"target_type,omitempty"`
-	TargetId     *string                                            `form:"target_id,omitempty" json:"target_id,omitempty"`
-	Action       *string                                            `form:"action,omitempty" json:"action,omitempty"`
-	ChangedField *string                                            `form:"changed_field,omitempty" json:"changed_field,omitempty"`
-	Method       *string                                            `form:"method,omitempty" json:"method,omitempty"`
-	Result       *ModelGatewayServiceModelListAuditsParamsResult    `form:"result,omitempty" json:"result,omitempty"`
-	ClientIp     *string                                            `form:"client_ip,omitempty" json:"client_ip,omitempty"`
-	StartTime    *int64                                             `form:"start_time,omitempty" json:"start_time,omitempty"`
-	EndTime      *int64                                             `form:"end_time,omitempty" json:"end_time,omitempty"`
-	Page         *int32                                             `form:"page,omitempty" json:"page,omitempty"`
-	PageSize     *int32                                             `form:"page_size,omitempty" json:"page_size,omitempty"`
-	ActorType    *ModelGatewayServiceModelListAuditsParamsActorType `form:"actor_type,omitempty" json:"actor_type,omitempty"`
+	Q             *string                                            `form:"q,omitempty" json:"q,omitempty"`
+	ActorId       *string                                            `form:"actor_id,omitempty" json:"actor_id,omitempty"`
+	TargetType    *string                                            `form:"target_type,omitempty" json:"target_type,omitempty"`
+	TargetId      *string                                            `form:"target_id,omitempty" json:"target_id,omitempty"`
+	Action        *string                                            `form:"action,omitempty" json:"action,omitempty"`
+	ChangedField  *string                                            `form:"changed_field,omitempty" json:"changed_field,omitempty"`
+	Method        *string                                            `form:"method,omitempty" json:"method,omitempty"`
+	Result        *ModelGatewayServiceModelListAuditsParamsResult    `form:"result,omitempty" json:"result,omitempty"`
+	ClientIp      *string                                            `form:"client_ip,omitempty" json:"client_ip,omitempty"`
+	StartTime     *int64                                             `form:"start_time,omitempty" json:"start_time,omitempty"`
+	EndTime       *int64                                             `form:"end_time,omitempty" json:"end_time,omitempty"`
+	Page          *int32                                             `form:"page,omitempty" json:"page,omitempty"`
+	PageSize      *int32                                             `form:"page_size,omitempty" json:"page_size,omitempty"`
+	ActorType     *ModelGatewayServiceModelListAuditsParamsActorType `form:"actor_type,omitempty" json:"actor_type,omitempty"`
+	SubjectUserId *string                                            `form:"subject_user_id,omitempty" json:"subject_user_id,omitempty"`
 }
 
 // ModelGatewayServiceModelListAuditsParamsResult defines parameters for ModelGatewayServiceModelListAudits.
@@ -16636,6 +17111,11 @@ type ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsDime
 
 // ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsMetric defines parameters for ModelGatewayObservabilityServiceModelObservationDashboardSnapshot.
 type ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsMetric string
+
+// ModelGatewayServiceModelGetMetadataParams defines parameters for ModelGatewayServiceModelGetMetadata.
+type ModelGatewayServiceModelGetMetadataParams struct {
+	Model *string `form:"model,omitempty" json:"model,omitempty"`
+}
 
 // ModelGatewayServiceModelDeletePoolJSONBody defines parameters for ModelGatewayServiceModelDeletePool.
 type ModelGatewayServiceModelDeletePoolJSONBody struct {
@@ -16892,6 +17372,17 @@ type ModelGatewayObservabilityServiceModelObservationRequestsParamsCacheHit stri
 
 // ModelGatewayObservabilityServiceModelObservationRequestsParamsOrder defines parameters for ModelGatewayObservabilityServiceModelObservationRequests.
 type ModelGatewayObservabilityServiceModelObservationRequestsParamsOrder string
+
+// ModelGatewayServiceModelListAccessAuditsParams defines parameters for ModelGatewayServiceModelListAccessAudits.
+type ModelGatewayServiceModelListAccessAuditsParams struct {
+	OperatorId    *string `form:"operator_id,omitempty" json:"operator_id,omitempty"`
+	SubjectUserId *string `form:"subject_user_id,omitempty" json:"subject_user_id,omitempty"`
+	RequestId     *string `form:"request_id,omitempty" json:"request_id,omitempty"`
+	Since         *int64  `form:"since,omitempty" json:"since,omitempty"`
+	Before        *int64  `form:"before,omitempty" json:"before,omitempty"`
+	Cursor        *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit         *int32  `form:"limit,omitempty" json:"limit,omitempty"`
+}
 
 // ModelGatewayObservabilityServiceModelObservationRequestsDetailParams defines parameters for ModelGatewayObservabilityServiceModelObservationRequestsDetail.
 type ModelGatewayObservabilityServiceModelObservationRequestsDetailParams struct {
@@ -17390,6 +17881,18 @@ type CampusLifeServiceAdminListVolunteerActivitiesParams struct {
 	IsUrgent    *bool   `form:"is_urgent,omitempty" json:"is_urgent,omitempty"`
 	Keyword     *string `form:"keyword,omitempty" json:"keyword,omitempty"`
 	Status      *string `form:"status,omitempty" json:"status,omitempty"`
+}
+
+// ModelProxyServiceListPurposeAnthropicModelsParams defines parameters for ModelProxyServiceListPurposeAnthropicModels.
+type ModelProxyServiceListPurposeAnthropicModelsParams struct {
+	// Limit 每页条数，1–1000，默认 20
+	Limit *int32 `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// AfterId 上一页的 last_id；与 before_id 只能给一个
+	AfterId *string `form:"after_id,omitempty" json:"after_id,omitempty"`
+
+	// BeforeId 上一页的 first_id；与 after_id 只能给一个
+	BeforeId *string `form:"before_id,omitempty" json:"before_id,omitempty"`
 }
 
 // MessagingServiceDingTalkBlessReviewCallbackParams defines parameters for MessagingServiceDingTalkBlessReviewCallback.
@@ -18393,6 +18896,12 @@ type ModelGatewayServiceModelSetConnectorSchedulableJSONRequestBody = ModelConne
 // ModelGatewayServiceModelTestConnectorJSONRequestBody defines body for ModelGatewayServiceModelTestConnector for application/json ContentType.
 type ModelGatewayServiceModelTestConnectorJSONRequestBody = ModelConnectorTestRequestBody
 
+// ModelGatewayServiceModelSaveMetadataJSONRequestBody defines body for ModelGatewayServiceModelSaveMetadata for application/json ContentType.
+type ModelGatewayServiceModelSaveMetadataJSONRequestBody = ModelMetadataFormBody
+
+// ModelGatewayServiceModelImportMetadataJSONRequestBody defines body for ModelGatewayServiceModelImportMetadata for application/json ContentType.
+type ModelGatewayServiceModelImportMetadataJSONRequestBody = ModelMetadataImportBodyBody
+
 // ModelGatewayServiceModelDeletePoolJSONRequestBody defines body for ModelGatewayServiceModelDeletePool for application/json ContentType.
 type ModelGatewayServiceModelDeletePoolJSONRequestBody ModelGatewayServiceModelDeletePoolJSONBody
 
@@ -18459,8 +18968,14 @@ type ModelGatewayServiceModelValidateSettingsJSONRequestBody = ModelSettingsVali
 // ModelGatewayTraceBrowserServiceModelQueryTracesJSONRequestBody defines body for ModelGatewayTraceBrowserServiceModelQueryTraces for application/json ContentType.
 type ModelGatewayTraceBrowserServiceModelQueryTracesJSONRequestBody = ModelTraceQueryBody
 
+// ModelGatewayTraceBrowserServiceModelReadTraceBodyJSONRequestBody defines body for ModelGatewayTraceBrowserServiceModelReadTraceBody for application/json ContentType.
+type ModelGatewayTraceBrowserServiceModelReadTraceBodyJSONRequestBody = ModelTraceBodyQueryBody
+
 // ModelGatewayTraceBrowserServiceModelExportTraceJSONRequestBody defines body for ModelGatewayTraceBrowserServiceModelExportTrace for application/json ContentType.
 type ModelGatewayTraceBrowserServiceModelExportTraceJSONRequestBody = ModelTraceReplayQueryBody
+
+// ModelGatewayTraceBrowserServiceModelSignTraceMediaJSONRequestBody defines body for ModelGatewayTraceBrowserServiceModelSignTraceMedia for application/json ContentType.
+type ModelGatewayTraceBrowserServiceModelSignTraceMediaJSONRequestBody = ModelTraceMediaLinksQueryBody
 
 // ModelGatewayTraceBrowserServiceModelReplayTraceJSONRequestBody defines body for ModelGatewayTraceBrowserServiceModelReplayTrace for application/json ContentType.
 type ModelGatewayTraceBrowserServiceModelReplayTraceJSONRequestBody = ModelTraceReplayQueryBody
@@ -18590,6 +19105,9 @@ type CampusLifeServiceAdminCreateVolunteerActivityJSONRequestBody = CreateVolunt
 
 // CampusLifeServiceAdminUpdateVolunteerActivityJSONRequestBody defines body for CampusLifeServiceAdminUpdateVolunteerActivity for application/json ContentType.
 type CampusLifeServiceAdminUpdateVolunteerActivityJSONRequestBody = UpdateActivityRequestBody
+
+// ModelProxyServiceGeneratePurposeImagesJSONRequestBody defines body for ModelProxyServiceGeneratePurposeImages for application/json ContentType.
+type ModelProxyServiceGeneratePurposeImagesJSONRequestBody = ModelProxyImageGenerationRequestBody
 
 // MessagingServiceDingTalkBlessReviewCallbackJSONRequestBody defines body for MessagingServiceDingTalkBlessReviewCallback for application/json ContentType.
 type MessagingServiceDingTalkBlessReviewCallbackJSONRequestBody = DingTalkReviewCallbackRequestBody

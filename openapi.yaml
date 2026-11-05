@@ -4247,6 +4247,10 @@ paths:
                         - human
                         - system
                     type: string
+                - name: subject_user_id
+                  in: query
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -5742,6 +5746,88 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ModelDashboardSnapshotResponseBody'
+    /hduhelp-neo/admin/models/metadata:
+        get:
+            tags:
+                - ModelGatewayService
+            summary: 模型元数据全部行
+            operationId: ModelGatewayService_ModelListMetadata
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ModelMetadataListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        put:
+            tags:
+                - ModelGatewayService
+            summary: 新建或修改一个模型的元数据（带 version，版本不符 409）
+            operationId: ModelGatewayService_ModelSaveMetadata
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ModelMetadataFormBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ModelMetadataResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/models/metadata/detail:
+        get:
+            tags:
+                - ModelGatewayService
+            summary: 单个模型的元数据与建议值
+            description: metadata 缺失表示还没有这一行；suggestions 是 LiteLLM 与上游返回的值，不会自动生效
+            operationId: ModelGatewayService_ModelGetMetadata
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: model
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ModelMetadataDetailResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/models/metadata/import:
+        post:
+            tags:
+                - ModelGatewayService
+            summary: 批量导入模型元数据（全部成功或全部不写）
+            description: 每项的 version 是读到的版本，新建传 0；任一项版本不符整批 409 并列出模型。内容与现有行相同的项跳过，可安全重发
+            operationId: ModelGatewayService_ModelImportMetadata
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ModelMetadataImportBodyBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ModelMetadataImportResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
     /hduhelp-neo/admin/models/operational-state:
         get:
             tags:
@@ -7041,6 +7127,55 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ModelRequestPageResponseBody'
+    /hduhelp-neo/admin/models/requests/access-audits:
+        get:
+            tags:
+                - ModelGatewayService
+            summary: 请求内容的查看记录
+            description: 按操作者、学生或请求查谁看过请求内容；since、before 为毫秒时间戳，翻页传上一页的 nextCursor
+            operationId: ModelGatewayService_ModelListAccessAudits
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: operator_id
+                  in: query
+                  schema:
+                    type: string
+                - name: subject_user_id
+                  in: query
+                  schema:
+                    type: string
+                - name: request_id
+                  in: query
+                  schema:
+                    type: string
+                - name: since
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: before
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: cursor
+                  in: query
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ModelAccessAuditPageResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/models/requests/curl:
         post:
             tags:
@@ -7469,10 +7604,39 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ModelTraceIndexResponseBody'
             x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/models/traces/{requestId}/body:
+        post:
+            tags:
+                - ModelGatewayTraceBrowserService
+            description: Success is the raw body stream, not this envelope; failures use the envelope.
+            operationId: ModelGatewayTraceBrowserService_ModelReadTraceBody
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: requestId
+                  required: true
+                  in: path
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ModelTraceBodyQueryBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ModelTraceBodyResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
     /hduhelp-neo/admin/models/traces/{requestId}/export:
         post:
             tags:
                 - ModelGatewayTraceBrowserService
+            description: Streams the whole record, with media restored, inside the usual envelope.
             operationId: ModelGatewayTraceBrowserService_ModelExportTrace
             security:
                 - OperatorBearerAuth: []
@@ -7495,6 +7659,33 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ModelTraceReplayResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/models/traces/{requestId}/media-links:
+        post:
+            tags:
+                - ModelGatewayTraceBrowserService
+            operationId: ModelGatewayTraceBrowserService_ModelSignTraceMedia
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: requestId
+                  required: true
+                  in: path
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ModelTraceMediaLinksQueryBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ModelTraceMediaLinksResponseBody'
             x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
     /hduhelp-neo/admin/models/traces/{requestId}/replay:
         post:
@@ -10862,6 +11053,137 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/VolunteerActivityDetailResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/ai/v1/purposes/{purpose}/anthropic/v1/models:
+        get:
+            tags:
+                - ModelProxyService
+            summary: 用途的模型列表（Anthropic 格式）
+            description: 分页字段同 Anthropic List Models，capabilities 是 {supported} 树形。只接受原生用户会话，需要 ai:model:invoke。错误是 Anthropic 错误信封。只给 App 用，不进 CLI 与 MCP 目录。
+            operationId: ModelProxyService_ListPurposeAnthropicModels
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: purpose
+                  required: true
+                  in: path
+                  description: 用途键
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  description: 每页条数，1–1000，默认 20
+                  schema:
+                    type: integer
+                    format: int32
+                - name: after_id
+                  in: query
+                  description: 上一页的 last_id；与 before_id 只能给一个
+                  schema:
+                    type: string
+                - name: before_id
+                  in: query
+                  description: 上一页的 first_id；与 after_id 只能给一个
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ModelProxyAnthropicModelListBody'
+            x-hduhelp-http: {'requires_user': true, 'auth': 'native_session', 'catalog': 'sdk_only'}
+    /hduhelp-neo/ai/v1/purposes/{purpose}/openai/v1/images/edits:
+        post:
+            tags:
+                - ModelProxyService
+            summary: 改图
+            description: multipart/form-data。响应与错误同生图。只接受原生用户会话，需要 ai:model:invoke。SDK 不生成这个方法（multipart 不在生成范围）：用 HTTP 客户端发表单，用生成的响应类型解析。不进 CLI 与 MCP 目录。
+            operationId: ModelProxyService_EditPurposeImages
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: purpose
+                  required: true
+                  in: path
+                  description: 用途键
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                description: |-
+                    文件部分不看字段名：mask 之外都是参考图。OpenAI SDK 发的 image[] 与 image 等价，但不能都声明成字段，
+                    Go SDK 的模型会生成两个 Image。
+                content:
+                    multipart/form-data:
+                        schema:
+                            $ref: '#/components/schemas/ModelProxyImageEditRequestBody'
+            responses:
+                "200":
+                    description: |-
+                        等待期间服务端已经写出 200 和空白保活，之后才失败时，HTTP 状态只能是 200，data 为空、error 有值，
+                        调用方要检查 error。保活空白在 JSON 开头，解析器会忽略。
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ModelProxyImagesResponseBody'
+            x-hduhelp-http: {'requires_user': true, 'auth': 'native_session', 'catalog': 'exclude', 'request_body_required': true, 'request_content_type': 'multipart/form-data'}
+    /hduhelp-neo/ai/v1/purposes/{purpose}/openai/v1/images/generations:
+        post:
+            tags:
+                - ModelProxyService
+            summary: 生图
+            description: 只接受原生用户会话，需要 ai:model:invoke。等待期间可能先写 200 和空白保活，之后失败时 200 的正文是 {error}，调用方要检查 error；未开始写响应时的错误是对应状态码的 OpenAI 错误信封。不接受 stream=true。只给 App 用，不进 CLI 与 MCP 目录。
+            operationId: ModelProxyService_GeneratePurposeImages
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: purpose
+                  required: true
+                  in: path
+                  description: 用途键
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ModelProxyImageGenerationRequestBody'
+            responses:
+                "200":
+                    description: |-
+                        等待期间服务端已经写出 200 和空白保活，之后才失败时，HTTP 状态只能是 200，data 为空、error 有值，
+                        调用方要检查 error。保活空白在 JSON 开头，解析器会忽略。
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ModelProxyImagesResponseBody'
+            x-hduhelp-http: {'requires_user': true, 'auth': 'native_session', 'catalog': 'sdk_only', 'request_body_required': true}
+    /hduhelp-neo/ai/v1/purposes/{purpose}/openai/v1/models:
+        get:
+            tags:
+                - ModelProxyService
+            summary: 用途的模型列表（OpenAI 格式）
+            description: 只接受原生用户会话，需要 ai:model:invoke。错误是 OpenAI 错误信封，不是 Neo 的 code / msg。只给 App 用，不进 CLI 与 MCP 目录。
+            operationId: ModelProxyService_ListPurposeOpenAIModels
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: purpose
+                  required: true
+                  in: path
+                  description: 用途键，如 app.mate.chat
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: 第一项是这个用途的默认模型。
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ModelProxyOpenAIModelListBody'
+            x-hduhelp-http: {'requires_user': true, 'auth': 'native_session', 'catalog': 'sdk_only'}
     /hduhelp-neo/analytics/config:
         get:
             tags:
@@ -25378,6 +25700,30 @@ components:
                     format: int64
                 msg:
                     type: string
+        ModelAccessAuditPage:
+            required:
+                - items
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ModelAuditEntry'
+                nextCursor:
+                    type: string
+        ModelAccessAuditPageResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ModelAccessAuditPage'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         ModelAllowlist:
             required:
                 - enabled
@@ -25873,6 +26219,19 @@ components:
             description: |-
                 连接器缓存开关（extra.cache_hints，决策 51）：未设的项按平台缺省。
                 promptCacheKey: send / strip；userField: safety_identifier / user / user_id / none。
+        ModelCapabilitiesView:
+            type: object
+            properties:
+                functionCall:
+                    type: boolean
+                imageInput:
+                    type: boolean
+                videoInput:
+                    type: boolean
+                audioInput:
+                    type: boolean
+                pdfInput:
+                    type: boolean
         ModelCapabilityInfo:
             required:
                 - key
@@ -27371,6 +27730,7 @@ components:
                 - coverageKnown
                 - partialCoverage
                 - coverageGaps
+                - noTraffic
             type: object
             properties:
                 prometheusOk:
@@ -27396,6 +27756,9 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/ModelCoverageGap'
+                noTraffic:
+                    type: boolean
+                    description: 所选范围内确认没有请求（探活不算），与没采到（partialCoverage）区分
         ModelDiscoveredModel:
             required:
                 - id
@@ -28177,6 +28540,294 @@ components:
                     format: int32
                 enabled:
                     type: boolean
+        ModelMetadataCapabilitiesBody:
+            type: object
+            properties:
+                function_call:
+                    type: boolean
+                image_input:
+                    type: boolean
+                video_input:
+                    type: boolean
+                audio_input:
+                    type: boolean
+                pdf_input:
+                    type: boolean
+        ModelMetadataDetail:
+            required:
+                - suggestions
+            type: object
+            properties:
+                metadata:
+                    $ref: '#/components/schemas/ModelMetadataEntry'
+                suggestions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ModelMetadataSuggestionView'
+        ModelMetadataDetailResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ModelMetadataDetail'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ModelMetadataEntry:
+            required:
+                - id
+                - model
+                - displayName
+                - vendor
+                - kind
+                - capabilities
+                - sourceUrl
+                - note
+                - version
+                - updatedAt
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int64
+                model:
+                    type: string
+                displayName:
+                    type: string
+                vendor:
+                    type: string
+                kind:
+                    type: string
+                contextWindow:
+                    type: integer
+                    format: int32
+                maxOutputTokens:
+                    type: integer
+                    format: int32
+                capabilities:
+                    $ref: '#/components/schemas/ModelCapabilitiesView'
+                reasoningEffort:
+                    $ref: '#/components/schemas/ModelReasoningEffortView'
+                sourceUrl:
+                    type: string
+                note:
+                    type: string
+                version:
+                    type: integer
+                    format: int64
+                updatedAt:
+                    type: integer
+                    format: int64
+        ModelMetadataForm:
+            required:
+                - model
+            type: object
+            properties:
+                model:
+                    type: string
+                display_name:
+                    type: string
+                vendor:
+                    type: string
+                kind:
+                    enum:
+                        - null
+                        - chat
+                        - embedding
+                        - rerank
+                        - image
+                        - other
+                    type: string
+                context_window:
+                    type: integer
+                    format: int32
+                max_output_tokens:
+                    type: integer
+                    format: int32
+                capabilities:
+                    $ref: '#/components/schemas/ModelMetadataCapabilitiesBody'
+                params:
+                    $ref: '#/components/schemas/ModelMetadataParamsBody'
+                source_url:
+                    type: string
+                note:
+                    type: string
+                version:
+                    type: integer
+                    description: 读到的版本；没有读到（新建）传 0 或不传
+                    format: int64
+                reason:
+                    type: string
+        ModelMetadataFormBody:
+            required:
+                - model
+            type: object
+            properties:
+                model:
+                    type: string
+                display_name:
+                    type: string
+                vendor:
+                    type: string
+                kind:
+                    enum:
+                        - null
+                        - chat
+                        - embedding
+                        - rerank
+                        - image
+                        - other
+                    type: string
+                context_window:
+                    type: integer
+                    format: int32
+                max_output_tokens:
+                    type: integer
+                    format: int32
+                capabilities:
+                    $ref: '#/components/schemas/ModelMetadataCapabilitiesBody'
+                params:
+                    $ref: '#/components/schemas/ModelMetadataParamsBody'
+                source_url:
+                    type: string
+                note:
+                    type: string
+                version:
+                    type: integer
+                    description: 读到的版本；没有读到（新建）传 0 或不传
+                    format: int64
+                reason:
+                    type: string
+        ModelMetadataImportBodyBody:
+            required:
+                - items
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ModelMetadataForm'
+                reason:
+                    type: string
+        ModelMetadataImportResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ModelMetadataImportResult'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ModelMetadataImportResult:
+            required:
+                - created
+                - updated
+                - unchanged
+                - items
+            type: object
+            properties:
+                created:
+                    type: integer
+                    format: int32
+                updated:
+                    type: integer
+                    format: int32
+                unchanged:
+                    type: integer
+                    format: int32
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ModelMetadataEntry'
+        ModelMetadataList:
+            required:
+                - items
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ModelMetadataEntry'
+        ModelMetadataListResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ModelMetadataList'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ModelMetadataParamsBody:
+            type: object
+            properties:
+                reasoning_effort:
+                    $ref: '#/components/schemas/ModelMetadataReasoningBody'
+        ModelMetadataReasoningBody:
+            type: object
+            properties:
+                levels:
+                    type: array
+                    items:
+                        type: string
+                default:
+                    type: string
+        ModelMetadataResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ModelMetadataEntry'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ModelMetadataSuggestionView:
+            required:
+                - source
+                - from
+                - capabilities
+            type: object
+            properties:
+                source:
+                    enum:
+                        - litellm
+                        - upstream
+                    type: string
+                from:
+                    type: array
+                    items:
+                        type: string
+                displayName:
+                    type: string
+                vendor:
+                    type: string
+                kind:
+                    type: string
+                contextWindow:
+                    type: integer
+                    format: int32
+                maxOutputTokens:
+                    type: integer
+                    format: int32
+                capabilities:
+                    $ref: '#/components/schemas/ModelCapabilitiesView'
+                reasoningEffort:
+                    $ref: '#/components/schemas/ModelReasoningEffortView'
         ModelModelOption:
             required:
                 - model
@@ -28343,6 +28994,7 @@ components:
                 - pools
                 - source
                 - status
+                - metadataStatus
             type: object
             properties:
                 model:
@@ -28386,6 +29038,13 @@ components:
                 manualPriceId:
                     type: integer
                     format: int64
+                metadataStatus:
+                    enum:
+                        - present
+                        - missing
+                    type: string
+                metadata:
+                    $ref: '#/components/schemas/ModelMetadataEntry'
             description: |-
                 「我们的模型」：用途目标的标准名 ∪ 启用池对外暴露的名字，按手动价 > LiteLLM 价计费。
                 按 token 计价的金额是人民币 / 百万 token，按次计价是人民币 / 次。
@@ -29460,6 +30119,237 @@ components:
                     format: int64
                 msg:
                     type: string
+        ModelProxyAnthropicCapability:
+            required:
+                - supported
+            type: object
+            properties:
+                supported:
+                    type: boolean
+        ModelProxyAnthropicModel:
+            required:
+                - type
+                - id
+                - display_name
+                - created_at
+            type: object
+            properties:
+                type:
+                    type: string
+                id:
+                    type: string
+                display_name:
+                    type: string
+                created_at:
+                    type: string
+                    description: RFC 3339 时间
+                supported_reasoning_levels:
+                    type: array
+                    items:
+                        type: string
+                default_reasoning_level:
+                    type: string
+                capabilities:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/ModelProxyAnthropicCapability'
+        ModelProxyAnthropicModelListBody:
+            required:
+                - data
+                - has_more
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ModelProxyAnthropicModel'
+                has_more:
+                    type: boolean
+                first_id:
+                    type: string
+                    description: 空页时为 null。
+                last_id:
+                    type: string
+        ModelProxyErrorBody:
+            required:
+                - message
+                - type
+                - code
+            type: object
+            properties:
+                message:
+                    type: string
+                type:
+                    type: string
+                param:
+                    type: string
+                code:
+                    type: string
+            description: 请求失败时的 OpenAI 错误信封。
+        ModelProxyImage:
+            type: object
+            properties:
+                url:
+                    type: string
+                key:
+                    type: string
+                    description: 上传体系里的对象键
+                width:
+                    type: integer
+                    format: int32
+                height:
+                    type: integer
+                    format: int32
+                size:
+                    type: string
+                    description: 宽x高
+                content_type:
+                    type: string
+                bytes:
+                    type: integer
+                    format: int64
+                sha256:
+                    type: string
+                revised_prompt:
+                    type: string
+                b64_json:
+                    type: string
+                    description: response_format=b64_json 时带上
+                error:
+                    type: object
+                    description: 这一张失败时才有，此时没有 url、b64_json。上游原样的错误对象，常见字段 code、message
+        ModelProxyImageEditRequestBody:
+            required:
+                - prompt
+            type: object
+            properties:
+                image:
+                    type: array
+                    items:
+                        type: string
+                        format: binary
+                    description: 要编辑的图片，可多张；字段名写 image 或 image[] 都行
+                mask:
+                    type: string
+                    description: 蒙版
+                    format: binary
+                prompt:
+                    type: string
+                model:
+                    type: string
+                    description: 公开名或别名；不填用这个用途的默认模型
+                n:
+                    type: integer
+                    format: int32
+                size:
+                    type: string
+                quality:
+                    type: string
+                style:
+                    type: string
+                response_format:
+                    type: string
+                    description: url 或 b64_json；url 总是返回，b64_json 额外带上图片内容
+                background:
+                    type: string
+                output_format:
+                    type: string
+                output_compression:
+                    type: integer
+                    format: int32
+        ModelProxyImageGenerationRequestBody:
+            required:
+                - prompt
+            type: object
+            properties:
+                model:
+                    type: string
+                    description: 公开名或别名；不填用这个用途的默认模型
+                prompt:
+                    type: string
+                n:
+                    type: integer
+                    format: int32
+                size:
+                    type: string
+                quality:
+                    type: string
+                style:
+                    type: string
+                response_format:
+                    type: string
+                    description: url 或 b64_json；url 总是返回，b64_json 额外带上图片内容
+                background:
+                    type: string
+                output_format:
+                    type: string
+                output_compression:
+                    type: integer
+                    format: int32
+                image:
+                    type: array
+                    items:
+                        type: string
+                    description: 参考图 URL（http、https 或 data:）
+        ModelProxyImagesResponseBody:
+            type: object
+            properties:
+                created:
+                    type: integer
+                    format: int64
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ModelProxyImage'
+                usage:
+                    type: object
+                    description: 上游原样的用量，字段因模型而异
+                error:
+                    $ref: '#/components/schemas/ModelProxyErrorBody'
+        ModelProxyOpenAIModel:
+            required:
+                - id
+                - object
+                - created
+                - owned_by
+                - display_name
+            type: object
+            properties:
+                id:
+                    type: string
+                object:
+                    type: string
+                created:
+                    type: integer
+                    format: int64
+                owned_by:
+                    type: string
+                display_name:
+                    type: string
+                supported_reasoning_levels:
+                    type: array
+                    items:
+                        type: string
+                    description: 不返回表示未知；空数组表示这个模型不能思考。
+                default_reasoning_level:
+                    type: string
+                capabilities:
+                    type: object
+                    additionalProperties:
+                        type: boolean
+                    description: 能力名到是否支持；未知的能力不返回。
+        ModelProxyOpenAIModelListBody:
+            required:
+                - object
+                - data
+            type: object
+            properties:
+                object:
+                    type: string
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ModelProxyOpenAIModel'
         ModelProxyTestRequestBody:
             type: object
             properties:
@@ -30044,6 +30934,17 @@ components:
                 window7d:
                     type: string
             description: 滚动窗口额度（人民币，十进制字符串）；不填 = 不限。
+        ModelReasoningEffortView:
+            required:
+                - levels
+            type: object
+            properties:
+                levels:
+                    type: array
+                    items:
+                        type: string
+                defaultLevel:
+                    type: string
         ModelReasoningMapping:
             required:
                 - from
@@ -31591,6 +32492,40 @@ components:
                     type: string
                 response:
                     type: string
+        ModelTraceBodyPart:
+            required:
+                - slot
+                - bytes
+                - tooLarge
+            type: object
+            properties:
+                slot:
+                    type: string
+                bytes:
+                    type: integer
+                    format: int64
+                tooLarge:
+                    type: boolean
+        ModelTraceBodyQueryBody:
+            required:
+                - reason
+                - slot
+            type: object
+            properties:
+                reason:
+                    type: string
+                slot:
+                    type: string
+                restoreMedia:
+                    type: boolean
+        ModelTraceBodyResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         ModelTraceImage:
             required:
                 - key
@@ -31641,6 +32576,77 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/ModelTraceIndex'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ModelTraceMediaItem:
+            required:
+                - hash
+                - date
+                - mediaType
+                - kind
+                - bytes
+                - renderable
+            type: object
+            properties:
+                hash:
+                    type: string
+                date:
+                    type: string
+                mediaType:
+                    type: string
+                kind:
+                    type: string
+                bytes:
+                    type: integer
+                    format: int64
+                renderable:
+                    type: boolean
+        ModelTraceMediaLink:
+            required:
+                - hash
+                - url
+                - expiresAt
+                - disposition
+            type: object
+            properties:
+                hash:
+                    type: string
+                url:
+                    type: string
+                expiresAt:
+                    type: integer
+                    format: int64
+                disposition:
+                    type: string
+        ModelTraceMediaLinks:
+            required:
+                - items
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ModelTraceMediaLink'
+        ModelTraceMediaLinksQueryBody:
+            required:
+                - reason
+                - hashes
+            type: object
+            properties:
+                reason:
+                    type: string
+                hashes:
+                    type: array
+                    items:
+                        type: string
+        ModelTraceMediaLinksResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ModelTraceMediaLinks'
                 code:
                     type: integer
                     format: int64
@@ -31698,6 +32704,8 @@ components:
                 - outputTokens
                 - attempts
                 - images
+                - media
+                - parts
                 - captureState
                 - warnings
             type: object
@@ -31759,6 +32767,14 @@ components:
                     $ref: '#/components/schemas/AdminUserInfo'
                 purposeName:
                     type: string
+                media:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ModelTraceMediaItem'
+                parts:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ModelTraceBodyPart'
         ModelTraceReplayQueryBody:
             required:
                 - reason
@@ -38844,6 +39860,7 @@ tags:
     - name: ModelGatewayObservabilityService
     - name: ModelGatewayService
     - name: ModelGatewayTraceBrowserService
+    - name: ModelProxyService
     - name: MomentsService
     - name: NotificationService
     - name: SiteAnnouncementService
