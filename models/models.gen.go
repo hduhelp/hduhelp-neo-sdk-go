@@ -10724,7 +10724,10 @@ type ModelProxyImageEditRequestBody struct {
 	OutputCompression *int32  `json:"output_compression,omitempty"`
 	OutputFormat      *string `json:"output_format,omitempty"`
 	Prompt            string  `json:"prompt"`
-	Quality           *string `json:"quality,omitempty"`
+
+	// PromptCacheKey 所属对话的编号，含义同生图。只用于关联，不发给上游
+	PromptCacheKey *string `json:"prompt_cache_key,omitempty"`
+	Quality        *string `json:"quality,omitempty"`
 
 	// ResponseFormat url 或 b64_json；url 总是返回，b64_json 额外带上图片内容
 	ResponseFormat *string `json:"response_format,omitempty"`
@@ -10745,7 +10748,10 @@ type ModelProxyImageGenerationRequestBody struct {
 	OutputCompression *int32  `json:"output_compression,omitempty"`
 	OutputFormat      *string `json:"output_format,omitempty"`
 	Prompt            string  `json:"prompt"`
-	Quality           *string `json:"quality,omitempty"`
+
+	// PromptCacheKey 所属对话的编号，与这段对话的 Responses 请求传同一个值，生图就进同一条会话轨迹。只用于关联，不发给上游
+	PromptCacheKey *string `json:"prompt_cache_key,omitempty"`
+	Quality        *string `json:"quality,omitempty"`
 
 	// ResponseFormat url 或 b64_json；url 总是返回，b64_json 额外带上图片内容
 	ResponseFormat *string `json:"response_format,omitempty"`
@@ -11850,31 +11856,37 @@ type ModelTraceQueryBody struct {
 
 // ModelTraceReplay defines model for ModelTraceReplay.
 type ModelTraceReplay struct {
-	Attempts       []ModelTraceAttempt   `json:"attempts"`
-	CallerKind     string                `json:"callerKind"`
-	CaptureState   string                `json:"captureState"`
-	CreatedAt      int64                 `json:"createdAt"`
-	DurationMs     int64                 `json:"durationMs"`
-	EventId        *string               `json:"eventId,omitempty"`
-	Images         []ModelTraceImage     `json:"images"`
-	InputTokens    int64                 `json:"inputTokens"`
-	Media          []ModelTraceMediaItem `json:"media"`
-	OutputTokens   int64                 `json:"outputTokens"`
-	Parts          []ModelTraceBodyPart  `json:"parts"`
-	Protocol       string                `json:"protocol"`
-	Purpose        string                `json:"purpose"`
-	PurposeName    *string               `json:"purposeName,omitempty"`
-	Request        *string               `json:"request,omitempty"`
-	RequestId      string                `json:"requestId"`
-	RequestedModel string                `json:"requestedModel"`
-	Response       *string               `json:"response,omitempty"`
-	SessionId      *string               `json:"sessionId,omitempty"`
-	StatusCode     int64                 `json:"statusCode"`
-	TraceId        *string               `json:"traceId,omitempty"`
-	UpstreamModel  string                `json:"upstreamModel"`
-	User           *AdminUserInfo        `json:"user,omitempty"`
-	UserId         *string               `json:"userId,omitempty"`
-	Warnings       []string              `json:"warnings"`
+	Attempts     []ModelTraceAttempt `json:"attempts"`
+	CallerKind   string              `json:"callerKind"`
+	CaptureState string              `json:"captureState"`
+	CreatedAt    int64               `json:"createdAt"`
+	DurationMs   int64               `json:"durationMs"`
+	EventId      *string             `json:"eventId,omitempty"`
+
+	// Final neo.final.v1: the delivered answer rebuilt without the stream's echoes. Absent when too large to inline.
+	Final        *string               `json:"final,omitempty"`
+	Images       []ModelTraceImage     `json:"images"`
+	InputTokens  int64                 `json:"inputTokens"`
+	Media        []ModelTraceMediaItem `json:"media"`
+	OutputTokens int64                 `json:"outputTokens"`
+	Parts        []ModelTraceBodyPart  `json:"parts"`
+	Protocol     string                `json:"protocol"`
+	Purpose      string                `json:"purpose"`
+	PurposeName  *string               `json:"purposeName,omitempty"`
+	Request      *string               `json:"request,omitempty"`
+	RequestId    string                `json:"requestId"`
+
+	// RequestView An image edit's multipart request as JSON (prompt, fields, input images as media references).
+	RequestView    *string        `json:"requestView,omitempty"`
+	RequestedModel string         `json:"requestedModel"`
+	Response       *string        `json:"response,omitempty"`
+	SessionId      *string        `json:"sessionId,omitempty"`
+	StatusCode     int64          `json:"statusCode"`
+	TraceId        *string        `json:"traceId,omitempty"`
+	UpstreamModel  string         `json:"upstreamModel"`
+	User           *AdminUserInfo `json:"user,omitempty"`
+	UserId         *string        `json:"userId,omitempty"`
+	Warnings       []string       `json:"warnings"`
 }
 
 // ModelTraceReplayQueryBody defines model for ModelTraceReplayQueryBody.

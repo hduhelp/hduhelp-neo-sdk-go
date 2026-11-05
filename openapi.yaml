@@ -30263,6 +30263,9 @@ components:
                 output_compression:
                     type: integer
                     format: int32
+                prompt_cache_key:
+                    type: string
+                    description: 所属对话的编号，含义同生图。只用于关联，不发给上游
         ModelProxyImageGenerationRequestBody:
             required:
                 - prompt
@@ -30297,6 +30300,9 @@ components:
                     items:
                         type: string
                     description: 参考图 URL（http、https 或 data:）
+                prompt_cache_key:
+                    type: string
+                    description: 所属对话的编号，与这段对话的 Responses 请求传同一个值，生图就进同一条会话轨迹。只用于关联，不发给上游
         ModelProxyImagesResponseBody:
             type: object
             properties:
@@ -32785,6 +32791,12 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/ModelTraceBodyPart'
+                final:
+                    type: string
+                    description: 'neo.final.v1: the delivered answer rebuilt without the stream''s echoes. Absent when too large to inline.'
+                requestView:
+                    type: string
+                    description: An image edit's multipart request as JSON (prompt, fields, input images as media references).
         ModelTraceReplayQueryBody:
             required:
                 - reason
