@@ -8867,20 +8867,23 @@ type ModelConnector struct {
 	DisableCooling          *bool   `json:"disableCooling,omitempty"`
 
 	// EffectiveCacheHints 实际生效的缓存开关（显式值优先，其余按平台缺省与 support_prompt_cache_key）。
-	EffectiveCacheHints        ModelEffectiveCacheHints `json:"effectiveCacheHints"`
-	ErrorMessage               *string                  `json:"errorMessage,omitempty"`
-	ExcludedModels             []string                 `json:"excludedModels"`
-	ExpiresAt                  *int64                   `json:"expiresAt,omitempty"`
-	HasKey                     bool                     `json:"hasKey"`
-	HasProxyPassword           bool                     `json:"hasProxyPassword"`
-	HeaderOverrideEnabled      bool                     `json:"headerOverrideEnabled"`
-	HeaderOverrides            map[string]string        `json:"headerOverrides"`
-	Id                         int64                    `json:"id"`
-	KeyHint                    string                   `json:"keyHint"`
-	LastTest                   *ModelLastTest           `json:"lastTest,omitempty"`
-	LastUsedAt                 *int64                   `json:"lastUsedAt,omitempty"`
-	LoadFactor                 *int32                   `json:"loadFactor,omitempty"`
-	ModelCooldowns             []ModelCooldownEntry     `json:"modelCooldowns"`
+	EffectiveCacheHints   ModelEffectiveCacheHints `json:"effectiveCacheHints"`
+	ErrorMessage          *string                  `json:"errorMessage,omitempty"`
+	ExcludedModels        []string                 `json:"excludedModels"`
+	ExpiresAt             *int64                   `json:"expiresAt,omitempty"`
+	HasKey                bool                     `json:"hasKey"`
+	HasProxyPassword      bool                     `json:"hasProxyPassword"`
+	HeaderOverrideEnabled bool                     `json:"headerOverrideEnabled"`
+	HeaderOverrides       map[string]string        `json:"headerOverrides"`
+	Id                    int64                    `json:"id"`
+	KeyHint               string                   `json:"keyHint"`
+	LastTest              *ModelLastTest           `json:"lastTest,omitempty"`
+	LastUsedAt            *int64                   `json:"lastUsedAt,omitempty"`
+	LoadFactor            *int32                   `json:"loadFactor,omitempty"`
+	ModelCooldowns        []ModelCooldownEntry     `json:"modelCooldowns"`
+
+	// ModelInputLimits 上游模型真实名 → 它不接受的输入（image / pdf）；带这些输入的请求跳过它。
+	ModelInputLimits           *map[string][]string     `json:"modelInputLimits,omitempty"`
 	ModelMapping               map[string]string        `json:"modelMapping"`
 	Name                       string                   `json:"name"`
 	Notes                      *string                  `json:"notes,omitempty"`
@@ -9050,6 +9053,7 @@ type ModelConnectorForm struct {
 	HeaderOverrides          *map[string]string          `json:"header_overrides,omitempty"`
 	Id                       *int64                      `json:"id,omitempty"`
 	LoadFactor               *int32                      `json:"load_factor,omitempty"`
+	ModelInputLimits         *map[string][]string        `json:"model_input_limits,omitempty"`
 	ModelMapping             *map[string]string          `json:"model_mapping,omitempty"`
 	Name                     *string                     `json:"name,omitempty"`
 	Notes                    *string                     `json:"notes,omitempty"`
@@ -9107,6 +9111,7 @@ type ModelConnectorFormBody struct {
 	HeaderOverrideEnabled    *bool                         `json:"header_override_enabled,omitempty"`
 	HeaderOverrides          *map[string]string            `json:"header_overrides,omitempty"`
 	LoadFactor               *int32                        `json:"load_factor,omitempty"`
+	ModelInputLimits         *map[string][]string          `json:"model_input_limits,omitempty"`
 	ModelMapping             *map[string]string            `json:"model_mapping,omitempty"`
 	Name                     *string                       `json:"name,omitempty"`
 	Notes                    *string                       `json:"notes,omitempty"`

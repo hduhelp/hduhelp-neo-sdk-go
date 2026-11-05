@@ -26410,6 +26410,13 @@ components:
                     type: array
                     items:
                         type: string
+                modelInputLimits:
+                    type: object
+                    additionalProperties:
+                        type: array
+                        items:
+                            type: string
+                    description: 上游模型真实名 → 它不接受的输入（image / pdf）；带这些输入的请求跳过它。
                 payloadRules:
                     type: string
                 headerOverrideEnabled:
@@ -26730,6 +26737,12 @@ components:
                     type: array
                     items:
                         type: string
+                model_input_limits:
+                    type: object
+                    additionalProperties:
+                        type: array
+                        items:
+                            type: string
                 payload_rules:
                     type: string
                 options:
@@ -26862,6 +26875,12 @@ components:
                     type: array
                     items:
                         type: string
+                model_input_limits:
+                    type: object
+                    additionalProperties:
+                        type: array
+                        items:
+                            type: string
                 payload_rules:
                     type: string
                 options:
