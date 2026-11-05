@@ -8989,8 +8989,7 @@ type ModelConnectorBatchUpdateRequestBodyRulesMode string
 type ModelConnectorDuplicateRequestBody struct {
 	ApiKey *string `json:"api_key,omitempty"`
 
-	// BaseUrl A copy must bring a new api_key or a different base_url (the (base_url,
-	// key) pair is unique among live connectors); other settings are copied.
+	// BaseUrl Empty keeps the source's address and API key; other settings are copied.
 	BaseUrl *string `json:"base_url,omitempty"`
 }
 
