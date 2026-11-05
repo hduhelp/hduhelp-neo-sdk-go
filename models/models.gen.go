@@ -11748,8 +11748,12 @@ type ModelTraceImage struct {
 type ModelTraceIndex struct {
 	Items      []ModelTraceSummary `json:"items"`
 	NextCursor *string             `json:"nextCursor,omitempty"`
-	SessionId  *string             `json:"sessionId,omitempty"`
-	Window     ModelTraceWindow    `json:"window"`
+
+	// SessionGrant Signed, short lived, renewed by every index call. Absent when the request has no session.
+	SessionGrant          *string          `json:"sessionGrant,omitempty"`
+	SessionGrantExpiresAt *int64           `json:"sessionGrantExpiresAt,omitempty"`
+	SessionId             *string          `json:"sessionId,omitempty"`
+	Window                ModelTraceWindow `json:"window"`
 }
 
 // ModelTraceIndexResponseBody defines model for ModelTraceIndexResponseBody.
@@ -11849,7 +11853,9 @@ type ModelTraceReplay struct {
 
 // ModelTraceReplayQueryBody defines model for ModelTraceReplayQueryBody.
 type ModelTraceReplayQueryBody struct {
-	Reason string `json:"reason"`
+	// Grant From the session index. With a valid one, this read is covered by the index's audit row.
+	Grant  *string `json:"grant,omitempty"`
+	Reason string  `json:"reason"`
 }
 
 // ModelTraceReplayResponseBody defines model for ModelTraceReplayResponseBody.
@@ -11861,19 +11867,26 @@ type ModelTraceReplayResponseBody struct {
 
 // ModelTraceSummary defines model for ModelTraceSummary.
 type ModelTraceSummary struct {
-	CreatedAt      int64   `json:"createdAt"`
-	DurationMs     int64   `json:"durationMs"`
-	EventId        string  `json:"eventId"`
-	InputTokens    int64   `json:"inputTokens"`
-	OutputTokens   int64   `json:"outputTokens"`
-	Protocol       string  `json:"protocol"`
-	Purpose        string  `json:"purpose"`
-	PurposeName    *string `json:"purposeName,omitempty"`
-	RequestId      string  `json:"requestId"`
-	RequestedModel string  `json:"requestedModel"`
-	StatusCode     int64   `json:"statusCode"`
-	TraceCaptured  bool    `json:"traceCaptured"`
-	UpstreamModel  string  `json:"upstreamModel"`
+	CreatedAt         int64   `json:"createdAt"`
+	DurationMs        int64   `json:"durationMs"`
+	ErrorCategory     *string `json:"errorCategory,omitempty"`
+	ErrorMessage      *string `json:"errorMessage,omitempty"`
+	EventId           string  `json:"eventId"`
+	InputTokens       int64   `json:"inputTokens"`
+	OutputTokens      int64   `json:"outputTokens"`
+	Protocol          string  `json:"protocol"`
+	ProviderErrorCode *string `json:"providerErrorCode,omitempty"`
+	ProviderErrorType *string `json:"providerErrorType,omitempty"`
+	Purpose           string  `json:"purpose"`
+	PurposeName       *string `json:"purposeName,omitempty"`
+	RequestId         string  `json:"requestId"`
+	RequestedModel    string  `json:"requestedModel"`
+	StatusCode        int64   `json:"statusCode"`
+
+	// TraceCapture Why a row may have no stored body: queued, disabled, too large and the like.
+	TraceCapture  *string `json:"traceCapture,omitempty"`
+	TraceCaptured bool    `json:"traceCaptured"`
+	UpstreamModel string  `json:"upstreamModel"`
 }
 
 // ModelTraceWindow defines model for ModelTraceWindow.

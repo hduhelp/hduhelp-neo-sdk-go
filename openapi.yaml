@@ -32579,6 +32579,12 @@ components:
                     type: string
                 window:
                     $ref: '#/components/schemas/ModelTraceWindow'
+                sessionGrant:
+                    type: string
+                    description: Signed, short lived, renewed by every index call. Absent when the request has no session.
+                sessionGrantExpiresAt:
+                    type: integer
+                    format: int64
         ModelTraceIndexResponseBody:
             type: object
             properties:
@@ -32796,6 +32802,9 @@ components:
             properties:
                 reason:
                     type: string
+                grant:
+                    type: string
+                    description: From the session index. With a valid one, this read is covered by the index's audit row.
         ModelTraceReplayResponseBody:
             type: object
             properties:
@@ -32853,6 +32862,17 @@ components:
                     type: string
                 purposeName:
                     type: string
+                errorCategory:
+                    type: string
+                errorMessage:
+                    type: string
+                providerErrorCode:
+                    type: string
+                providerErrorType:
+                    type: string
+                traceCapture:
+                    type: string
+                    description: 'Why a row may have no stored body: queued, disabled, too large and the like.'
         ModelTraceWindow:
             required:
                 - from
