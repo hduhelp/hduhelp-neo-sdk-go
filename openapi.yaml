@@ -6860,7 +6860,7 @@ paths:
         put:
             tags:
                 - ModelGatewayService
-            summary: 整块替换用途设置（乐观锁、理由；目标须有该设置的时效内成功探活）
+            summary: 整块替换用途设置（乐观锁、理由；立即生效，不要求探活）
             operationId: ModelGatewayService_ModelSavePurposeSettings
             security:
                 - OperatorBearerAuth: []

@@ -4294,7 +4294,7 @@ type ModelSavePurposeSettingsResp struct {
 	Data *models.ModelPurpose `json:"data"`
 }
 
-// ModelSavePurposeSettings: 整块替换用途设置（乐观锁、理由；目标须有该设置的时效内成功探活）
+// ModelSavePurposeSettings: 整块替换用途设置（乐观锁、理由；立即生效，不要求探活）
 func (s *Service) ModelSavePurposeSettings(ctx context.Context, req *ModelSavePurposeSettingsReq, opts ...core.RequestOption) (*ModelSavePurposeSettingsResp, error) {
 	resp := &ModelSavePurposeSettingsResp{}
 	err := s.config.Do(ctx, &core.APIReq{
