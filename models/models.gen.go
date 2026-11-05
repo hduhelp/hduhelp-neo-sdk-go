@@ -1250,48 +1250,6 @@ func (e AcademicServiceGetClassroomsParamsStatus) Valid() bool {
 	}
 }
 
-// Defines values for AcademicServiceGetClassroomsParamsSemester.
-const (
-	AcademicServiceGetClassroomsParamsSemesterN1 AcademicServiceGetClassroomsParamsSemester = 1
-	AcademicServiceGetClassroomsParamsSemesterN2 AcademicServiceGetClassroomsParamsSemester = 2
-	AcademicServiceGetClassroomsParamsSemesterN3 AcademicServiceGetClassroomsParamsSemester = 3
-)
-
-// Valid indicates whether the value is a known member of the AcademicServiceGetClassroomsParamsSemester enum.
-func (e AcademicServiceGetClassroomsParamsSemester) Valid() bool {
-	switch e {
-	case AcademicServiceGetClassroomsParamsSemesterN1:
-		return true
-	case AcademicServiceGetClassroomsParamsSemesterN2:
-		return true
-	case AcademicServiceGetClassroomsParamsSemesterN3:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for AcademicServiceScheduleParamsSemester.
-const (
-	AcademicServiceScheduleParamsSemesterN1 AcademicServiceScheduleParamsSemester = 1
-	AcademicServiceScheduleParamsSemesterN2 AcademicServiceScheduleParamsSemester = 2
-	AcademicServiceScheduleParamsSemesterN3 AcademicServiceScheduleParamsSemester = 3
-)
-
-// Valid indicates whether the value is a known member of the AcademicServiceScheduleParamsSemester enum.
-func (e AcademicServiceScheduleParamsSemester) Valid() bool {
-	switch e {
-	case AcademicServiceScheduleParamsSemesterN1:
-		return true
-	case AcademicServiceScheduleParamsSemesterN2:
-		return true
-	case AcademicServiceScheduleParamsSemesterN3:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for FeedbackServiceListAdminFeedbacksParamsStatus.
 const (
 	FeedbackServiceListAdminFeedbacksParamsStatusHandled FeedbackServiceListAdminFeedbacksParamsStatus = "handled"
@@ -16287,7 +16245,7 @@ type AcademicServiceGetClassroomsParams struct {
 	SchoolYear *string `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
 
 	// Semester 学期编号，只能为 1、2 或 3。
-	Semester *AcademicServiceGetClassroomsParamsSemester `form:"semester,omitempty" json:"semester,omitempty"`
+	Semester *int32 `form:"semester,omitempty" json:"semester,omitempty"`
 
 	// Limit 单页最多返回教室数，1-200。MCP 省略时默认 50；REST 旧客户端省略时保持兼容。
 	Limit *int32 `form:"limit,omitempty" json:"limit,omitempty"`
@@ -16298,9 +16256,6 @@ type AcademicServiceGetClassroomsParams struct {
 
 // AcademicServiceGetClassroomsParamsStatus defines parameters for AcademicServiceGetClassrooms.
 type AcademicServiceGetClassroomsParamsStatus string
-
-// AcademicServiceGetClassroomsParamsSemester defines parameters for AcademicServiceGetClassrooms.
-type AcademicServiceGetClassroomsParamsSemester int32
 
 // AcademicServiceClassroomUsageParams defines parameters for AcademicServiceClassroomUsage.
 type AcademicServiceClassroomUsageParams struct {
@@ -16430,7 +16385,7 @@ type AcademicServiceScheduleParams struct {
 	SchoolYear *string `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
 
 	// Semester 学期编号，只能为 1、2 或 3。
-	Semester *AcademicServiceScheduleParamsSemester `form:"semester,omitempty" json:"semester,omitempty"`
+	Semester *int32 `form:"semester,omitempty" json:"semester,omitempty"`
 
 	// Week 教学周，1-30；省略时返回所选学期全部周次。
 	Week *int32 `form:"week,omitempty" json:"week,omitempty"`
@@ -16442,9 +16397,6 @@ type AcademicServiceScheduleParams struct {
 	Offset   *int32  `form:"offset,omitempty" json:"offset,omitempty"`
 	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
-
-// AcademicServiceScheduleParamsSemester defines parameters for AcademicServiceSchedule.
-type AcademicServiceScheduleParamsSemester int32
 
 // AcademicServiceGlobalScheduleParams defines parameters for AcademicServiceGlobalSchedule.
 type AcademicServiceGlobalScheduleParams struct {

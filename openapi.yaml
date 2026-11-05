@@ -411,10 +411,6 @@ paths:
                   schema:
                     maximum: !!float 3
                     minimum: !!float 1
-                    enum:
-                        - 1
-                        - 2
-                        - 3
                     type: integer
                     format: int32
                 - name: limit
@@ -1070,10 +1066,6 @@ paths:
                   schema:
                     maximum: !!float 3
                     minimum: !!float 1
-                    enum:
-                        - 1
-                        - 2
-                        - 3
                     type: integer
                     format: int32
                 - name: week
