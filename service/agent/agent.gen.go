@@ -1984,6 +1984,229 @@ func (s *Service) AgentSyncSkill(ctx context.Context, req *AgentSyncSkillReq, op
 	return resp, err
 }
 
+// AgentGetAssetLinkReq is the request for AgentGetAssetLink.
+type AgentGetAssetLinkReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentGetAssetLinkReqBuilder builds a AgentGetAssetLinkReq with a fluent setter per field.
+type AgentGetAssetLinkReqBuilder struct{ req *AgentGetAssetLinkReq }
+
+// NewAgentGetAssetLinkReqBuilder creates a request builder for AgentGetAssetLink.
+func NewAgentGetAssetLinkReqBuilder() *AgentGetAssetLinkReqBuilder {
+	return &AgentGetAssetLinkReqBuilder{req: &AgentGetAssetLinkReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentGetAssetLinkReqBuilder) Id(v string) *AgentGetAssetLinkReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentGetAssetLinkReqBuilder) Build() *AgentGetAssetLinkReq { return b.req }
+
+// AgentGetAssetLinkResp is the response for AgentGetAssetLink.
+type AgentGetAssetLinkResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentAssetLink `json:"data"`
+}
+
+// AgentGetAssetLink: 打开工作资产：预览站给一次性链接，产出文件给 10 分钟下载地址
+func (s *Service) AgentGetAssetLink(ctx context.Context, req *AgentGetAssetLinkReq, opts ...core.RequestOption) (*AgentGetAssetLinkResp, error) {
+	resp := &AgentGetAssetLinkResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/agent/assets/{id}/link",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentRenewAssetReq is the request for AgentRenewAsset.
+type AgentRenewAssetReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentRenewAssetReqBuilder builds a AgentRenewAssetReq with a fluent setter per field.
+type AgentRenewAssetReqBuilder struct{ req *AgentRenewAssetReq }
+
+// NewAgentRenewAssetReqBuilder creates a request builder for AgentRenewAsset.
+func NewAgentRenewAssetReqBuilder() *AgentRenewAssetReqBuilder {
+	return &AgentRenewAssetReqBuilder{req: &AgentRenewAssetReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentRenewAssetReqBuilder) Id(v string) *AgentRenewAssetReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentRenewAssetReqBuilder) Build() *AgentRenewAssetReq { return b.req }
+
+// AgentRenewAssetResp is the response for AgentRenewAsset.
+type AgentRenewAssetResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentWorkAsset `json:"data"`
+}
+
+// AgentRenewAsset: 产出文件续期（从现在起 30 天）
+func (s *Service) AgentRenewAsset(ctx context.Context, req *AgentRenewAssetReq, opts ...core.RequestOption) (*AgentRenewAssetResp, error) {
+	resp := &AgentRenewAssetResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/agent/assets/{id}/renew",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentListEndpointsReq is the request for AgentListEndpoints.
+type AgentListEndpointsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentListEndpointsReqBuilder builds a AgentListEndpointsReq with a fluent setter per field.
+type AgentListEndpointsReqBuilder struct{ req *AgentListEndpointsReq }
+
+// NewAgentListEndpointsReqBuilder creates a request builder for AgentListEndpoints.
+func NewAgentListEndpointsReqBuilder() *AgentListEndpointsReqBuilder {
+	return &AgentListEndpointsReqBuilder{req: &AgentListEndpointsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *AgentListEndpointsReqBuilder) Build() *AgentListEndpointsReq { return b.req }
+
+// AgentListEndpointsResp is the response for AgentListEndpoints.
+type AgentListEndpointsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.AgentAppEndpoint `json:"data"`
+}
+
+// AgentListEndpoints: 自配模型接入点列表（key 只显示尾号）
+func (s *Service) AgentListEndpoints(ctx context.Context, req *AgentListEndpointsReq, opts ...core.RequestOption) (*AgentListEndpointsResp, error) {
+	resp := &AgentListEndpointsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/agent/endpoints",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentCreateEndpointReq is the request for AgentCreateEndpoint.
+type AgentCreateEndpointReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentCreateEndpointReqBuilder builds a AgentCreateEndpointReq with a fluent setter per field.
+type AgentCreateEndpointReqBuilder struct{ req *AgentCreateEndpointReq }
+
+// NewAgentCreateEndpointReqBuilder creates a request builder for AgentCreateEndpoint.
+func NewAgentCreateEndpointReqBuilder() *AgentCreateEndpointReqBuilder {
+	return &AgentCreateEndpointReqBuilder{req: &AgentCreateEndpointReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *AgentCreateEndpointReqBuilder) Body(body *models.AgentEndpointCreateRequestBody) *AgentCreateEndpointReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentCreateEndpointReqBuilder) Build() *AgentCreateEndpointReq { return b.req }
+
+// AgentCreateEndpointResp is the response for AgentCreateEndpoint.
+type AgentCreateEndpointResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentAppEndpoint `json:"data"`
+}
+
+// AgentCreateEndpoint: 新增自配模型接入点
+func (s *Service) AgentCreateEndpoint(ctx context.Context, req *AgentCreateEndpointReq, opts ...core.RequestOption) (*AgentCreateEndpointResp, error) {
+	resp := &AgentCreateEndpointResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/agent/endpoints",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentDeleteEndpointReq is the request for AgentDeleteEndpoint.
+type AgentDeleteEndpointReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentDeleteEndpointReqBuilder builds a AgentDeleteEndpointReq with a fluent setter per field.
+type AgentDeleteEndpointReqBuilder struct{ req *AgentDeleteEndpointReq }
+
+// NewAgentDeleteEndpointReqBuilder creates a request builder for AgentDeleteEndpoint.
+func NewAgentDeleteEndpointReqBuilder() *AgentDeleteEndpointReqBuilder {
+	return &AgentDeleteEndpointReqBuilder{req: &AgentDeleteEndpointReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentDeleteEndpointReqBuilder) Id(v string) *AgentDeleteEndpointReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentDeleteEndpointReqBuilder) Build() *AgentDeleteEndpointReq { return b.req }
+
+// AgentDeleteEndpointResp is the response for AgentDeleteEndpoint.
+type AgentDeleteEndpointResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// AgentDeleteEndpoint: 删除自配模型接入点（用到它的会话下一回合提示换一个）
+func (s *Service) AgentDeleteEndpoint(ctx context.Context, req *AgentDeleteEndpointReq, opts ...core.RequestOption) (*AgentDeleteEndpointResp, error) {
+	resp := &AgentDeleteEndpointResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/agent/endpoints/{id}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // AgentAppModelsReq is the request for AgentAppModels.
 type AgentAppModelsReq struct {
 	pathParams  map[string]string

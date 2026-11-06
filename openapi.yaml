@@ -12092,6 +12092,113 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/VolunteerActivityDetailResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/agent/assets/{id}/link:
+        get:
+            tags:
+                - AgentService
+            summary: 打开工作资产：预览站给一次性链接，产出文件给 10 分钟下载地址
+            operationId: AgentService_AgentGetAssetLink
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentAssetLinkResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/agent/assets/{id}/renew:
+        post:
+            tags:
+                - AgentService
+            summary: 产出文件续期（从现在起 30 天）
+            operationId: AgentService_AgentRenewAsset
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentWorkAssetResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/agent/endpoints:
+        get:
+            tags:
+                - AgentService
+            summary: 自配模型接入点列表（key 只显示尾号）
+            operationId: AgentService_AgentListEndpoints
+            security:
+                - NativeSessionAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentEndpointListResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+        post:
+            tags:
+                - AgentService
+            summary: 新增自配模型接入点
+            operationId: AgentService_AgentCreateEndpoint
+            security:
+                - NativeSessionAuth: []
+            requestBody:
+                required: true
+                description: api_key 只写：保存后只返回尾号。base_url 是 https 公网地址（即 ANTHROPIC_BASE_URL），每人最多 5 个，同一域名只能配一个。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentEndpointCreateRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentEndpointResponseBody'
+            x-hduhelp-http: {'auth': 'native_session', 'request_body_required': true}
+    /hduhelp-neo/agent/endpoints/{id}:
+        delete:
+            tags:
+                - AgentService
+            summary: 删除自配模型接入点（用到它的会话下一回合提示换一个）
+            operationId: AgentService_AgentDeleteEndpoint
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: |-
+                        工作模式配置管理：代理库、模块设置、Skill、MCP 服务器、预设，以及 App 读预设。
+                        写操作带 expected_version（乐观锁）与 reason（进 agent_audits）。被引用的对象
+                        删除或停用时返回 409，data.references 列出引用方。
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentMutationResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/agent/models:
         get:
             tags:
@@ -20073,6 +20180,86 @@ components:
                     type: string
                 path:
                     type: string
+        AgentAssetLink:
+            required:
+                - asset_id
+                - kind
+                - url
+                - expires_at
+            type: object
+            properties:
+                asset_id:
+                    type: string
+                kind:
+                    enum:
+                        - preview
+                        - file
+                    type: string
+                url:
+                    type: string
+                expires_at:
+                    type: integer
+                    format: int64
+            description: |-
+                预览站：url 是带一次性票据的地址（2 分钟内打开一次，浏览器随后凭只对该子域有效的 Cookie 访问）；
+                产出文件：url 是 10 分钟有效的下载地址。已失效返回 410。
+        AgentAssetLinkResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentAssetLink'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentEndpointCreateRequestBody:
+            required:
+                - name
+                - base_url
+                - api_key
+            type: object
+            properties:
+                id:
+                    type: string
+                    description: 可选：客户端生成的 ULID，作幂等键
+                name:
+                    type: string
+                base_url:
+                    type: string
+                api_key:
+                    type: string
+        AgentEndpointListResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentAppEndpoint'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentEndpointResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentAppEndpoint'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AgentGitHubSource:
             required:
                 - repo
@@ -21545,6 +21732,7 @@ components:
                 - kind
                 - name
                 - created_at
+                - state
             type: object
             properties:
                 id:
@@ -21572,6 +21760,32 @@ components:
                 created_at:
                     type: integer
                     format: int64
+                state:
+                    enum:
+                        - open
+                        - expired
+                        - ready
+                        - uploading
+                    type: string
+                url:
+                    type: string
+                    description: 预览站的地址（只有本人用一次性链接打开后才能访问）
+            description: |-
+                预览站：state 为 open 或 expired（沙箱已归档，「已失效，发消息让 Agent 重新运行」），不显示倒计时；url 是预览域名，
+                要用 GET /assets/:id/link 拿一次性链接打开。产出文件：state 为 ready、uploading 或 expired，expires_at 是到期时间（可续期）。
+        AgentWorkAssetResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentWorkAsset'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AgentWorkAttachmentInput:
             required:
                 - key
@@ -21636,6 +21850,8 @@ components:
                         - status
                         - turn
                         - subagent
+                        - background_task
+                        - preview
                     type: string
                 state:
                     enum:

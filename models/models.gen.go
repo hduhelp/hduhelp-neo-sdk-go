@@ -11,6 +11,24 @@ const (
 	UATBearerAuthScopes      uATBearerAuthContextKey      = "UATBearerAuth.Scopes"
 )
 
+// Defines values for AgentAssetLinkKind.
+const (
+	AgentAssetLinkKindFile    AgentAssetLinkKind = "file"
+	AgentAssetLinkKindPreview AgentAssetLinkKind = "preview"
+)
+
+// Valid indicates whether the value is a known member of the AgentAssetLinkKind enum.
+func (e AgentAssetLinkKind) Valid() bool {
+	switch e {
+	case AgentAssetLinkKindFile:
+		return true
+	case AgentAssetLinkKindPreview:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AgentMcpServerInputProxyMode.
 const (
 	AgentMcpServerInputProxyModeDefault AgentMcpServerInputProxyMode = "default"
@@ -239,25 +257,53 @@ func (e AgentWorkAssetKind) Valid() bool {
 	}
 }
 
+// Defines values for AgentWorkAssetState.
+const (
+	AgentWorkAssetStateExpired   AgentWorkAssetState = "expired"
+	AgentWorkAssetStateOpen      AgentWorkAssetState = "open"
+	AgentWorkAssetStateReady     AgentWorkAssetState = "ready"
+	AgentWorkAssetStateUploading AgentWorkAssetState = "uploading"
+)
+
+// Valid indicates whether the value is a known member of the AgentWorkAssetState enum.
+func (e AgentWorkAssetState) Valid() bool {
+	switch e {
+	case AgentWorkAssetStateExpired:
+		return true
+	case AgentWorkAssetStateOpen:
+		return true
+	case AgentWorkAssetStateReady:
+		return true
+	case AgentWorkAssetStateUploading:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AgentWorkItemKind.
 const (
-	AgentWorkItemKindDiff       AgentWorkItemKind = "diff"
-	AgentWorkItemKindFile       AgentWorkItemKind = "file"
-	AgentWorkItemKindImage      AgentWorkItemKind = "image"
-	AgentWorkItemKindMessage    AgentWorkItemKind = "message"
-	AgentWorkItemKindPrompt     AgentWorkItemKind = "prompt"
-	AgentWorkItemKindReasoning  AgentWorkItemKind = "reasoning"
-	AgentWorkItemKindStatus     AgentWorkItemKind = "status"
-	AgentWorkItemKindSubagent   AgentWorkItemKind = "subagent"
-	AgentWorkItemKindToolCall   AgentWorkItemKind = "tool_call"
-	AgentWorkItemKindToolResult AgentWorkItemKind = "tool_result"
-	AgentWorkItemKindTurn       AgentWorkItemKind = "turn"
-	AgentWorkItemKindUser       AgentWorkItemKind = "user"
+	AgentWorkItemKindBackgroundTask AgentWorkItemKind = "background_task"
+	AgentWorkItemKindDiff           AgentWorkItemKind = "diff"
+	AgentWorkItemKindFile           AgentWorkItemKind = "file"
+	AgentWorkItemKindImage          AgentWorkItemKind = "image"
+	AgentWorkItemKindMessage        AgentWorkItemKind = "message"
+	AgentWorkItemKindPreview        AgentWorkItemKind = "preview"
+	AgentWorkItemKindPrompt         AgentWorkItemKind = "prompt"
+	AgentWorkItemKindReasoning      AgentWorkItemKind = "reasoning"
+	AgentWorkItemKindStatus         AgentWorkItemKind = "status"
+	AgentWorkItemKindSubagent       AgentWorkItemKind = "subagent"
+	AgentWorkItemKindToolCall       AgentWorkItemKind = "tool_call"
+	AgentWorkItemKindToolResult     AgentWorkItemKind = "tool_result"
+	AgentWorkItemKindTurn           AgentWorkItemKind = "turn"
+	AgentWorkItemKindUser           AgentWorkItemKind = "user"
 )
 
 // Valid indicates whether the value is a known member of the AgentWorkItemKind enum.
 func (e AgentWorkItemKind) Valid() bool {
 	switch e {
+	case AgentWorkItemKindBackgroundTask:
+		return true
 	case AgentWorkItemKindDiff:
 		return true
 	case AgentWorkItemKindFile:
@@ -265,6 +311,8 @@ func (e AgentWorkItemKind) Valid() bool {
 	case AgentWorkItemKindImage:
 		return true
 	case AgentWorkItemKindMessage:
+		return true
+	case AgentWorkItemKindPreview:
 		return true
 	case AgentWorkItemKindPrompt:
 		return true
@@ -3124,19 +3172,19 @@ func (e ModelGatewayObservabilityServiceModelObservationUsageTrendParamsModelSou
 
 // Defines values for ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode.
 const (
-	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModeImage      ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "image"
-	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModePerRequest ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "per_request"
-	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModeToken      ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "token"
+	Image      ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "image"
+	PerRequest ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "per_request"
+	Token      ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "token"
 )
 
 // Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode enum.
 func (e ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode) Valid() bool {
 	switch e {
-	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModeImage:
+	case Image:
 		return true
-	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModePerRequest:
+	case PerRequest:
 		return true
-	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModeToken:
+	case Token:
 		return true
 	default:
 		return false
@@ -3325,34 +3373,34 @@ func (e NotificationServiceListNotificationTaskDeliveriesParamsStatus) Valid() b
 
 // Defines values for NotificationServiceListNotificationTaskDeliveriesParamsFailureKind.
 const (
-	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindDeadLetterParked   NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "dead_letter_parked"
-	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindExpired            NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "expired"
-	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindPermanent          NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "permanent"
-	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindProvider           NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "provider"
-	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindReconcileExhausted NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "reconcile_exhausted"
-	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindRetryExhausted     NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "retry_exhausted"
-	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindUncertain          NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "uncertain"
-	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindUnreachable        NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "unreachable"
+	DeadLetterParked   NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "dead_letter_parked"
+	Expired            NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "expired"
+	Permanent          NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "permanent"
+	Provider           NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "provider"
+	ReconcileExhausted NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "reconcile_exhausted"
+	RetryExhausted     NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "retry_exhausted"
+	Uncertain          NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "uncertain"
+	Unreachable        NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "unreachable"
 )
 
 // Valid indicates whether the value is a known member of the NotificationServiceListNotificationTaskDeliveriesParamsFailureKind enum.
 func (e NotificationServiceListNotificationTaskDeliveriesParamsFailureKind) Valid() bool {
 	switch e {
-	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindDeadLetterParked:
+	case DeadLetterParked:
 		return true
-	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindExpired:
+	case Expired:
 		return true
-	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindPermanent:
+	case Permanent:
 		return true
-	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindProvider:
+	case Provider:
 		return true
-	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindReconcileExhausted:
+	case ReconcileExhausted:
 		return true
-	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindRetryExhausted:
+	case RetryExhausted:
 		return true
-	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindUncertain:
+	case Uncertain:
 		return true
-	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindUnreachable:
+	case Unreachable:
 		return true
 	default:
 		return false
@@ -4255,6 +4303,52 @@ type AgentArchiveSource struct {
 	Path     string `json:"path"`
 }
 
+// AgentAssetLink 预览站：url 是带一次性票据的地址（2 分钟内打开一次，浏览器随后凭只对该子域有效的 Cookie 访问）；
+// 产出文件：url 是 10 分钟有效的下载地址。已失效返回 410。
+type AgentAssetLink struct {
+	AssetId   string             `json:"asset_id"`
+	ExpiresAt int64              `json:"expires_at"`
+	Kind      AgentAssetLinkKind `json:"kind"`
+	Url       string             `json:"url"`
+}
+
+// AgentAssetLinkKind defines model for AgentAssetLink.Kind.
+type AgentAssetLinkKind string
+
+// AgentAssetLinkResponseBody defines model for AgentAssetLinkResponseBody.
+type AgentAssetLinkResponseBody struct {
+	Code int64 `json:"code"`
+
+	// Data 预览站：url 是带一次性票据的地址（2 分钟内打开一次，浏览器随后凭只对该子域有效的 Cookie 访问）；
+	// 产出文件：url 是 10 分钟有效的下载地址。已失效返回 410。
+	Data *AgentAssetLink `json:"data,omitempty"`
+	Msg  string          `json:"msg"`
+}
+
+// AgentEndpointCreateRequestBody defines model for AgentEndpointCreateRequestBody.
+type AgentEndpointCreateRequestBody struct {
+	ApiKey  string `json:"api_key"`
+	BaseUrl string `json:"base_url"`
+
+	// Id 可选：客户端生成的 ULID，作幂等键
+	Id   *string `json:"id,omitempty"`
+	Name string  `json:"name"`
+}
+
+// AgentEndpointListResponseBody defines model for AgentEndpointListResponseBody.
+type AgentEndpointListResponseBody struct {
+	Code int64               `json:"code"`
+	Data *[]AgentAppEndpoint `json:"data,omitempty"`
+	Msg  string              `json:"msg"`
+}
+
+// AgentEndpointResponseBody defines model for AgentEndpointResponseBody.
+type AgentEndpointResponseBody struct {
+	Code int64             `json:"code"`
+	Data *AgentAppEndpoint `json:"data,omitempty"`
+	Msg  string            `json:"msg"`
+}
+
 // AgentGitHubSource defines model for AgentGitHubSource.
 type AgentGitHubSource struct {
 	Path string `json:"path"`
@@ -4934,21 +5028,39 @@ type AgentStreamTokenResponseBody struct {
 	Msg  string            `json:"msg"`
 }
 
-// AgentWorkAsset defines model for AgentWorkAsset.
+// AgentWorkAsset 预览站：state 为 open 或 expired（沙箱已归档，「已失效，发消息让 Agent 重新运行」），不显示倒计时；url 是预览域名，
+// 要用 GET /assets/:id/link 拿一次性链接打开。产出文件：state 为 ready、uploading 或 expired，expires_at 是到期时间（可续期）。
 type AgentWorkAsset struct {
-	CreatedAt int64              `json:"created_at"`
-	ExpiresAt *int64             `json:"expires_at,omitempty"`
-	Id        string             `json:"id"`
-	Kind      AgentWorkAssetKind `json:"kind"`
-	Mime      *string            `json:"mime,omitempty"`
-	Name      string             `json:"name"`
-	Path      *string            `json:"path,omitempty"`
-	Port      *int32             `json:"port,omitempty"`
-	Size      *int64             `json:"size,omitempty"`
+	CreatedAt int64               `json:"created_at"`
+	ExpiresAt *int64              `json:"expires_at,omitempty"`
+	Id        string              `json:"id"`
+	Kind      AgentWorkAssetKind  `json:"kind"`
+	Mime      *string             `json:"mime,omitempty"`
+	Name      string              `json:"name"`
+	Path      *string             `json:"path,omitempty"`
+	Port      *int32              `json:"port,omitempty"`
+	Size      *int64              `json:"size,omitempty"`
+	State     AgentWorkAssetState `json:"state"`
+
+	// Url 预览站的地址（只有本人用一次性链接打开后才能访问）
+	Url *string `json:"url,omitempty"`
 }
 
 // AgentWorkAssetKind defines model for AgentWorkAsset.Kind.
 type AgentWorkAssetKind string
+
+// AgentWorkAssetState defines model for AgentWorkAsset.State.
+type AgentWorkAssetState string
+
+// AgentWorkAssetResponseBody defines model for AgentWorkAssetResponseBody.
+type AgentWorkAssetResponseBody struct {
+	Code int64 `json:"code"`
+
+	// Data 预览站：state 为 open 或 expired（沙箱已归档，「已失效，发消息让 Agent 重新运行」），不显示倒计时；url 是预览域名，
+	// 要用 GET /assets/:id/link 拿一次性链接打开。产出文件：state 为 ready、uploading 或 expired，expires_at 是到期时间（可续期）。
+	Data *AgentWorkAsset `json:"data,omitempty"`
+	Msg  string          `json:"msg"`
+}
 
 // AgentWorkAttachmentInput defines model for AgentWorkAttachmentInput.
 type AgentWorkAttachmentInput struct {
@@ -20704,6 +20816,9 @@ type CampusLifeServiceAdminCreateVolunteerActivityJSONRequestBody = CreateVolunt
 
 // CampusLifeServiceAdminUpdateVolunteerActivityJSONRequestBody defines body for CampusLifeServiceAdminUpdateVolunteerActivity for application/json ContentType.
 type CampusLifeServiceAdminUpdateVolunteerActivityJSONRequestBody = UpdateActivityRequestBody
+
+// AgentServiceAgentCreateEndpointJSONRequestBody defines body for AgentServiceAgentCreateEndpoint for application/json ContentType.
+type AgentServiceAgentCreateEndpointJSONRequestBody = AgentEndpointCreateRequestBody
 
 // AgentServiceAgentCreateWorkSessionJSONRequestBody defines body for AgentServiceAgentCreateWorkSession for application/json ContentType.
 type AgentServiceAgentCreateWorkSessionJSONRequestBody = AgentWorkSessionCreateRequestBody
