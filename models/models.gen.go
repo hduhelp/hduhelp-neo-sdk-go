@@ -29,6 +29,30 @@ func (e AgentAssetLinkKind) Valid() bool {
 	}
 }
 
+// Defines values for AgentCredentialLoginStatus.
+const (
+	AgentCredentialLoginStatusConnected AgentCredentialLoginStatus = "connected"
+	AgentCredentialLoginStatusFailed    AgentCredentialLoginStatus = "failed"
+	AgentCredentialLoginStatusPending   AgentCredentialLoginStatus = "pending"
+	AgentCredentialLoginStatusStarting  AgentCredentialLoginStatus = "starting"
+)
+
+// Valid indicates whether the value is a known member of the AgentCredentialLoginStatus enum.
+func (e AgentCredentialLoginStatus) Valid() bool {
+	switch e {
+	case AgentCredentialLoginStatusConnected:
+		return true
+	case AgentCredentialLoginStatusFailed:
+		return true
+	case AgentCredentialLoginStatusPending:
+		return true
+	case AgentCredentialLoginStatusStarting:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AgentMcpServerInputProxyMode.
 const (
 	AgentMcpServerInputProxyModeDefault AgentMcpServerInputProxyMode = "default"
@@ -1748,6 +1772,39 @@ const (
 func (e AcademicServiceGetClassroomsParamsStatus) Valid() bool {
 	switch e {
 	case AcademicServiceGetClassroomsParamsStatusUnused:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentOpsServiceAgentListRunsParamsStatus.
+const (
+	AgentOpsServiceAgentListRunsParamsStatusCancelled  AgentOpsServiceAgentListRunsParamsStatus = "cancelled"
+	AgentOpsServiceAgentListRunsParamsStatusCompleted  AgentOpsServiceAgentListRunsParamsStatus = "completed"
+	AgentOpsServiceAgentListRunsParamsStatusDispatched AgentOpsServiceAgentListRunsParamsStatus = "dispatched"
+	AgentOpsServiceAgentListRunsParamsStatusFailed     AgentOpsServiceAgentListRunsParamsStatus = "failed"
+	AgentOpsServiceAgentListRunsParamsStatusQueued     AgentOpsServiceAgentListRunsParamsStatus = "queued"
+	AgentOpsServiceAgentListRunsParamsStatusRunning    AgentOpsServiceAgentListRunsParamsStatus = "running"
+	AgentOpsServiceAgentListRunsParamsStatusWaiting    AgentOpsServiceAgentListRunsParamsStatus = "waiting"
+)
+
+// Valid indicates whether the value is a known member of the AgentOpsServiceAgentListRunsParamsStatus enum.
+func (e AgentOpsServiceAgentListRunsParamsStatus) Valid() bool {
+	switch e {
+	case AgentOpsServiceAgentListRunsParamsStatusCancelled:
+		return true
+	case AgentOpsServiceAgentListRunsParamsStatusCompleted:
+		return true
+	case AgentOpsServiceAgentListRunsParamsStatusDispatched:
+		return true
+	case AgentOpsServiceAgentListRunsParamsStatusFailed:
+		return true
+	case AgentOpsServiceAgentListRunsParamsStatusQueued:
+		return true
+	case AgentOpsServiceAgentListRunsParamsStatusRunning:
+		return true
+	case AgentOpsServiceAgentListRunsParamsStatusWaiting:
 		return true
 	default:
 		return false
@@ -4325,6 +4382,68 @@ type AgentAssetLinkResponseBody struct {
 	Msg  string          `json:"msg"`
 }
 
+// AgentCredential defines model for AgentCredential.
+type AgentCredential struct {
+	Connected bool   `json:"connected"`
+	Kind      string `json:"kind"`
+
+	// Login ---- 已连接的账号（CLI 凭据） ----
+	Login     *AgentCredentialLogin `json:"login,omitempty"`
+	Name      string                `json:"name"`
+	UpdatedAt *int64                `json:"updated_at,omitempty"`
+}
+
+// AgentCredentialDeleteResponseBody defines model for AgentCredentialDeleteResponseBody.
+type AgentCredentialDeleteResponseBody struct {
+	Code int64  `json:"code"`
+	Msg  string `json:"msg"`
+}
+
+// AgentCredentialList defines model for AgentCredentialList.
+type AgentCredentialList struct {
+	// DingtalkEnabled 学校钉钉组织已开通 CLI 访问；关闭时不显示钉钉
+	DingtalkEnabled bool              `json:"dingtalk_enabled"`
+	Items           []AgentCredential `json:"items"`
+}
+
+// AgentCredentialListResponseBody defines model for AgentCredentialListResponseBody.
+type AgentCredentialListResponseBody struct {
+	Code int64                `json:"code"`
+	Data *AgentCredentialList `json:"data,omitempty"`
+	Msg  string               `json:"msg"`
+}
+
+// AgentCredentialLogin ---- 已连接的账号（CLI 凭据） ----
+type AgentCredentialLogin struct {
+	Error *string `json:"error,omitempty"`
+
+	// ExpiresAt 设备码过期时间（毫秒）
+	ExpiresAt *int64                     `json:"expires_at,omitempty"`
+	Kind      string                     `json:"kind"`
+	RequestId string                     `json:"request_id"`
+	Status    AgentCredentialLoginStatus `json:"status"`
+	UpdatedAt int64                      `json:"updated_at"`
+
+	// UserCode 设备码，用户在钉钉授权页输入
+	UserCode        *string `json:"user_code,omitempty"`
+	VerificationUri *string `json:"verification_uri,omitempty"`
+
+	// VerificationUriComplete 已带设备码的授权链接，App 直接打开
+	VerificationUriComplete *string `json:"verification_uri_complete,omitempty"`
+}
+
+// AgentCredentialLoginStatus defines model for AgentCredentialLogin.Status.
+type AgentCredentialLoginStatus string
+
+// AgentCredentialLoginResponseBody defines model for AgentCredentialLoginResponseBody.
+type AgentCredentialLoginResponseBody struct {
+	Code int64 `json:"code"`
+
+	// Data ---- 已连接的账号（CLI 凭据） ----
+	Data *AgentCredentialLogin `json:"data,omitempty"`
+	Msg  string                `json:"msg"`
+}
+
 // AgentEndpointCreateRequestBody defines model for AgentEndpointCreateRequestBody.
 type AgentEndpointCreateRequestBody struct {
 	ApiKey  string `json:"api_key"`
@@ -4479,6 +4598,59 @@ type AgentMcpTool struct {
 	Description string `json:"description"`
 	Name        string `json:"name"`
 	ReadOnly    bool   `json:"readOnly"`
+}
+
+// AgentMemory ---- 用户记忆 ----
+type AgentMemory struct {
+	Content   string `json:"content"`
+	CreatedAt int64  `json:"created_at"`
+	Id        string `json:"id"`
+
+	// SourceSessionId 记下它的工作会话；App 里手动添加的为空
+	SourceSessionId string `json:"source_session_id"`
+	UpdatedAt       int64  `json:"updated_at"`
+}
+
+// AgentMemoryCreateRequestBody defines model for AgentMemoryCreateRequestBody.
+type AgentMemoryCreateRequestBody struct {
+	// Content 一条记忆，最长 1000 字：一个事实或偏好，不要整段文档
+	Content string `json:"content"`
+
+	// SourceSessionId 记下它的工作会话 id（工作会话里的 CLAUDE.md 给出）
+	SourceSessionId *string `json:"source_session_id,omitempty"`
+}
+
+// AgentMemoryDeleteResponseBody defines model for AgentMemoryDeleteResponseBody.
+type AgentMemoryDeleteResponseBody struct {
+	Code int64  `json:"code"`
+	Msg  string `json:"msg"`
+}
+
+// AgentMemoryList defines model for AgentMemoryList.
+type AgentMemoryList struct {
+	Items []AgentMemory `json:"items"`
+	Total int32         `json:"total"`
+}
+
+// AgentMemoryListResponseBody defines model for AgentMemoryListResponseBody.
+type AgentMemoryListResponseBody struct {
+	Code int64            `json:"code"`
+	Data *AgentMemoryList `json:"data,omitempty"`
+	Msg  string           `json:"msg"`
+}
+
+// AgentMemoryResponseBody defines model for AgentMemoryResponseBody.
+type AgentMemoryResponseBody struct {
+	Code int64 `json:"code"`
+
+	// Data ---- 用户记忆 ----
+	Data *AgentMemory `json:"data,omitempty"`
+	Msg  string       `json:"msg"`
+}
+
+// AgentMemoryUpdateRequestBody defines model for AgentMemoryUpdateRequestBody.
+type AgentMemoryUpdateRequestBody struct {
+	Content string `json:"content"`
 }
 
 // AgentModelOptionsResponseBody defines model for AgentModelOptionsResponseBody.
@@ -4696,6 +4868,86 @@ type AgentReference struct {
 	Name string `json:"name"`
 }
 
+// AgentRun 时间均为毫秒时间戳。
+type AgentRun struct {
+	Attempt           int32           `json:"attempt"`
+	CacheReadTokens   int64           `json:"cacheReadTokens"`
+	CacheWriteTokens  int64           `json:"cacheWriteTokens"`
+	CompletedAt       *int64          `json:"completedAt,omitempty"`
+	Cost              float64         `json:"cost"`
+	DispatchedAt      *int64          `json:"dispatchedAt,omitempty"`
+	Error             string          `json:"error"`
+	FailureKind       string          `json:"failureKind"`
+	FirstOutputAt     *int64          `json:"firstOutputAt,omitempty"`
+	FirstTokenAt      *int64          `json:"firstTokenAt,omitempty"`
+	Id                string          `json:"id"`
+	InputTokens       int64           `json:"inputTokens"`
+	Model             string          `json:"model"`
+	OutputTokens      int64           `json:"outputTokens"`
+	ParentRunId       string          `json:"parentRunId"`
+	QueuedAt          int64           `json:"queuedAt"`
+	SandboxGeneration int32           `json:"sandboxGeneration"`
+	SessionId         string          `json:"sessionId"`
+	SessionTitle      string          `json:"sessionTitle"`
+	Stages            []AgentRunStage `json:"stages"`
+	Status            string          `json:"status"`
+	TextPreview       string          `json:"textPreview"`
+	TurnId            string          `json:"turnId"`
+	UserId            string          `json:"userId"`
+	WrittenAt         *int64          `json:"writtenAt,omitempty"`
+}
+
+// AgentRunDetail defines model for AgentRunDetail.
+type AgentRunDetail struct {
+	Items          []AgentRunItem `json:"items"`
+	ItemsTruncated bool           `json:"itemsTruncated"`
+
+	// Run 时间均为毫秒时间戳。
+	Run AgentRun `json:"run"`
+}
+
+// AgentRunDetailResponseBody defines model for AgentRunDetailResponseBody.
+type AgentRunDetailResponseBody struct {
+	Code int64           `json:"code"`
+	Data *AgentRunDetail `json:"data,omitempty"`
+	Msg  string          `json:"msg"`
+}
+
+// AgentRunItem 回合所属轮次的条目（会话记录查看器）；body 原样。
+type AgentRunItem struct {
+	Body       map[string]interface{} `json:"body"`
+	Kind       string                 `json:"kind"`
+	ObservedAt int64                  `json:"observedAt"`
+	Seq        int64                  `json:"seq"`
+	State      string                 `json:"state"`
+}
+
+// AgentRunPage defines model for AgentRunPage.
+type AgentRunPage struct {
+	Items    []AgentRun `json:"items"`
+	Page     int32      `json:"page"`
+	PageSize int32      `json:"pageSize"`
+	Total    int64      `json:"total"`
+}
+
+// AgentRunPageResponseBody defines model for AgentRunPageResponseBody.
+type AgentRunPageResponseBody struct {
+	Code int64         `json:"code"`
+	Data *AgentRunPage `json:"data,omitempty"`
+	Msg  string        `json:"msg"`
+}
+
+// AgentRunStage 工作模式第四阶段：管理台的回合与手动归档；用户记忆（App 与 Neo MCP 共用）；
+// App「已连接的账号」（CLI 凭据）。
+// ---- 管理台：回合 ----
+type AgentRunStage struct {
+	// Ms 距消息入队的毫秒数
+	Ms int64 `json:"ms"`
+
+	// Stage dispatched / written / first_output / first_token / completed
+	Stage string `json:"stage"`
+}
+
 // AgentSandbox 时间均为毫秒时间戳。idlePauseAt / archiveAt / maxRunAt 是按当前状态推算的下一次暂停、归档、20 小时上限。
 // today* 是北京时间当天（含尚未入账的部分）。
 type AgentSandbox struct {
@@ -4796,7 +5048,10 @@ type AgentSandboxSpecRequestBody struct {
 type AgentSettings struct {
 	CurrentTemplate string `json:"currentTemplate"`
 	DefaultProxyId  string `json:"defaultProxyId"`
-	GithubTokenSet  bool   `json:"githubTokenSet"`
+
+	// DingtalkCliEnabled 学校钉钉组织已开通 CLI 访问；关闭时不提供钉钉登录、不挂载钉钉凭据
+	DingtalkCliEnabled bool `json:"dingtalkCliEnabled"`
+	GithubTokenSet     bool `json:"githubTokenSet"`
 
 	// Lifecycle 沙箱生命周期参数与 Std 计划单价（元）。
 	Lifecycle        AgentLifecycleSettings `json:"lifecycle"`
@@ -4816,13 +5071,14 @@ type AgentSettingsResponseBody struct {
 
 // AgentSettingsUpdateRequestBody defines model for AgentSettingsUpdateRequestBody.
 type AgentSettingsUpdateRequestBody struct {
-	ClearGithubToken *bool                `json:"clear_github_token,omitempty"`
-	DefaultProxyId   *string              `json:"default_proxy_id,omitempty"`
-	ExpectedVersion  int64                `json:"expected_version"`
-	GithubToken      *string              `json:"github_token,omitempty"`
-	Lifecycle        *AgentLifecycleInput `json:"lifecycle,omitempty"`
-	Reason           *string              `json:"reason,omitempty"`
-	SkillSyncEnabled bool                 `json:"skill_sync_enabled"`
+	ClearGithubToken   *bool                `json:"clear_github_token,omitempty"`
+	DefaultProxyId     *string              `json:"default_proxy_id,omitempty"`
+	DingtalkCliEnabled *bool                `json:"dingtalk_cli_enabled,omitempty"`
+	ExpectedVersion    int64                `json:"expected_version"`
+	GithubToken        *string              `json:"github_token,omitempty"`
+	Lifecycle          *AgentLifecycleInput `json:"lifecycle,omitempty"`
+	Reason             *string              `json:"reason,omitempty"`
+	SkillSyncEnabled   bool                 `json:"skill_sync_enabled"`
 }
 
 // AgentSkill defines model for AgentSkill.
@@ -18113,6 +18369,19 @@ type AgentServiceAgentDeleteProxyParams struct {
 	Reason          *string `form:"reason,omitempty" json:"reason,omitempty"`
 }
 
+// AgentOpsServiceAgentListRunsParams defines parameters for AgentOpsServiceAgentListRuns.
+type AgentOpsServiceAgentListRunsParams struct {
+	UserId      *string                                   `form:"user_id,omitempty" json:"user_id,omitempty"`
+	SessionId   *string                                   `form:"session_id,omitempty" json:"session_id,omitempty"`
+	Status      *AgentOpsServiceAgentListRunsParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	FailureKind *string                                   `form:"failure_kind,omitempty" json:"failure_kind,omitempty"`
+	Page        *int32                                    `form:"page,omitempty" json:"page,omitempty"`
+	PageSize    *int32                                    `form:"page_size,omitempty" json:"page_size,omitempty"`
+}
+
+// AgentOpsServiceAgentListRunsParamsStatus defines parameters for AgentOpsServiceAgentListRuns.
+type AgentOpsServiceAgentListRunsParamsStatus string
+
 // AgentServiceAgentListSandboxesParams defines parameters for AgentServiceAgentListSandboxes.
 type AgentServiceAgentListSandboxesParams struct {
 	Status   *AgentServiceAgentListSandboxesParamsStatus `form:"status,omitempty" json:"status,omitempty"`
@@ -19515,6 +19784,24 @@ type CampusLifeServiceAdminListVolunteerActivitiesParams struct {
 	Status      *string `form:"status,omitempty" json:"status,omitempty"`
 }
 
+// AgentOpsServiceAgentListMemoriesParams defines parameters for AgentOpsServiceAgentListMemories.
+type AgentOpsServiceAgentListMemoriesParams struct {
+	// Q 只返回包含全部关键词（空格分隔，不区分大小写）的记忆
+	Q *string `form:"q,omitempty" json:"q,omitempty"`
+
+	// Limit 最多返回几条，默认与上限 200
+	Limit *int32 `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// AgentOpsServiceAgentSearchMemoriesParams defines parameters for AgentOpsServiceAgentSearchMemories.
+type AgentOpsServiceAgentSearchMemoriesParams struct {
+	// Q 关键词，空格分隔；包含任一关键词即命中，命中越多越靠前
+	Q *string `form:"q,omitempty" json:"q,omitempty"`
+
+	// Limit 最多返回几条，默认 20，上限 50
+	Limit *int32 `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
 // AgentServiceAgentListWorkSessionsParams defines parameters for AgentServiceAgentListWorkSessions.
 type AgentServiceAgentListWorkSessionsParams struct {
 	// Since 上次拿到的 change_seq；不传从头
@@ -20370,6 +20657,9 @@ type AgentServiceAgentTestProxyFormJSONRequestBody = AgentProxyTestRequestBody
 // AgentServiceAgentUpdateProxyJSONRequestBody defines body for AgentServiceAgentUpdateProxy for application/json ContentType.
 type AgentServiceAgentUpdateProxyJSONRequestBody = AgentProxyUpdateRequestBody
 
+// AgentOpsServiceAgentArchiveSandboxJSONRequestBody defines body for AgentOpsServiceAgentArchiveSandbox for application/json ContentType.
+type AgentOpsServiceAgentArchiveSandboxJSONRequestBody = AgentSandboxActionRequestBody
+
 // AgentServiceAgentDestroySandboxJSONRequestBody defines body for AgentServiceAgentDestroySandbox for application/json ContentType.
 type AgentServiceAgentDestroySandboxJSONRequestBody = AgentSandboxDestroyRequestBody
 
@@ -20819,6 +21109,12 @@ type CampusLifeServiceAdminUpdateVolunteerActivityJSONRequestBody = UpdateActivi
 
 // AgentServiceAgentCreateEndpointJSONRequestBody defines body for AgentServiceAgentCreateEndpoint for application/json ContentType.
 type AgentServiceAgentCreateEndpointJSONRequestBody = AgentEndpointCreateRequestBody
+
+// AgentOpsServiceAgentAddMemoryJSONRequestBody defines body for AgentOpsServiceAgentAddMemory for application/json ContentType.
+type AgentOpsServiceAgentAddMemoryJSONRequestBody = AgentMemoryCreateRequestBody
+
+// AgentOpsServiceAgentUpdateMemoryJSONRequestBody defines body for AgentOpsServiceAgentUpdateMemory for application/json ContentType.
+type AgentOpsServiceAgentUpdateMemoryJSONRequestBody = AgentMemoryUpdateRequestBody
 
 // AgentServiceAgentCreateWorkSessionJSONRequestBody defines body for AgentServiceAgentCreateWorkSession for application/json ContentType.
 type AgentServiceAgentCreateWorkSessionJSONRequestBody = AgentWorkSessionCreateRequestBody
