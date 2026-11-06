@@ -1984,6 +1984,46 @@ func (s *Service) AgentSyncSkill(ctx context.Context, req *AgentSyncSkillReq, op
 	return resp, err
 }
 
+// AgentAppModelsReq is the request for AgentAppModels.
+type AgentAppModelsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentAppModelsReqBuilder builds a AgentAppModelsReq with a fluent setter per field.
+type AgentAppModelsReqBuilder struct{ req *AgentAppModelsReq }
+
+// NewAgentAppModelsReqBuilder creates a request builder for AgentAppModels.
+func NewAgentAppModelsReqBuilder() *AgentAppModelsReqBuilder {
+	return &AgentAppModelsReqBuilder{req: &AgentAppModelsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *AgentAppModelsReqBuilder) Build() *AgentAppModelsReq { return b.req }
+
+// AgentAppModelsResp is the response for AgentAppModels.
+type AgentAppModelsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentAppModels `json:"data"`
+}
+
+// AgentAppModels: 工作模式可选模型（agent.work 公开模型与自配接入点）
+func (s *Service) AgentAppModels(ctx context.Context, req *AgentAppModelsReq, opts ...core.RequestOption) (*AgentAppModelsResp, error) {
+	resp := &AgentAppModelsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/agent/models",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // AgentAppPresetsReq is the request for AgentAppPresets.
 type AgentAppPresetsReq struct {
 	pathParams  map[string]string
@@ -2016,6 +2056,421 @@ func (s *Service) AgentAppPresets(ctx context.Context, req *AgentAppPresetsReq, 
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/agent/presets",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentListWorkSessionsReq is the request for AgentListWorkSessions.
+type AgentListWorkSessionsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentListWorkSessionsReqBuilder builds a AgentListWorkSessionsReq with a fluent setter per field.
+type AgentListWorkSessionsReqBuilder struct{ req *AgentListWorkSessionsReq }
+
+// NewAgentListWorkSessionsReqBuilder creates a request builder for AgentListWorkSessions.
+func NewAgentListWorkSessionsReqBuilder() *AgentListWorkSessionsReqBuilder {
+	return &AgentListWorkSessionsReqBuilder{req: &AgentListWorkSessionsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Since sets the "since" query parameter: 上次拿到的 change_seq；不传从头
+func (b *AgentListWorkSessionsReqBuilder) Since(v int64) *AgentListWorkSessionsReqBuilder {
+	b.req.queryParams["since"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// Limit sets the "limit" query parameter.
+func (b *AgentListWorkSessionsReqBuilder) Limit(v int32) *AgentListWorkSessionsReqBuilder {
+	b.req.queryParams["limit"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentListWorkSessionsReqBuilder) Build() *AgentListWorkSessionsReq { return b.req }
+
+// AgentListWorkSessionsResp is the response for AgentListWorkSessions.
+type AgentListWorkSessionsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentWorkSessionPage `json:"data"`
+}
+
+// AgentListWorkSessions: 工作会话列表增量（含删除墓碑）
+func (s *Service) AgentListWorkSessions(ctx context.Context, req *AgentListWorkSessionsReq, opts ...core.RequestOption) (*AgentListWorkSessionsResp, error) {
+	resp := &AgentListWorkSessionsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/agent/sessions",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentCreateWorkSessionReq is the request for AgentCreateWorkSession.
+type AgentCreateWorkSessionReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentCreateWorkSessionReqBuilder builds a AgentCreateWorkSessionReq with a fluent setter per field.
+type AgentCreateWorkSessionReqBuilder struct{ req *AgentCreateWorkSessionReq }
+
+// NewAgentCreateWorkSessionReqBuilder creates a request builder for AgentCreateWorkSession.
+func NewAgentCreateWorkSessionReqBuilder() *AgentCreateWorkSessionReqBuilder {
+	return &AgentCreateWorkSessionReqBuilder{req: &AgentCreateWorkSessionReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *AgentCreateWorkSessionReqBuilder) Body(body *models.AgentWorkSessionCreateRequestBody) *AgentCreateWorkSessionReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentCreateWorkSessionReqBuilder) Build() *AgentCreateWorkSessionReq { return b.req }
+
+// AgentCreateWorkSessionResp is the response for AgentCreateWorkSession.
+type AgentCreateWorkSessionResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentWorkSession `json:"data"`
+}
+
+// AgentCreateWorkSession: 新建工作会话（id 由客户端生成，重放返回原会话）
+func (s *Service) AgentCreateWorkSession(ctx context.Context, req *AgentCreateWorkSessionReq, opts ...core.RequestOption) (*AgentCreateWorkSessionResp, error) {
+	resp := &AgentCreateWorkSessionResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/agent/sessions",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentGetWorkSessionReq is the request for AgentGetWorkSession.
+type AgentGetWorkSessionReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentGetWorkSessionReqBuilder builds a AgentGetWorkSessionReq with a fluent setter per field.
+type AgentGetWorkSessionReqBuilder struct{ req *AgentGetWorkSessionReq }
+
+// NewAgentGetWorkSessionReqBuilder creates a request builder for AgentGetWorkSession.
+func NewAgentGetWorkSessionReqBuilder() *AgentGetWorkSessionReqBuilder {
+	return &AgentGetWorkSessionReqBuilder{req: &AgentGetWorkSessionReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentGetWorkSessionReqBuilder) Id(v string) *AgentGetWorkSessionReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentGetWorkSessionReqBuilder) Build() *AgentGetWorkSessionReq { return b.req }
+
+// AgentGetWorkSessionResp is the response for AgentGetWorkSession.
+type AgentGetWorkSessionResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentWorkSessionDetail `json:"data"`
+}
+
+// AgentGetWorkSession: 工作会话详情（含待回答的卡片与当前资产）
+func (s *Service) AgentGetWorkSession(ctx context.Context, req *AgentGetWorkSessionReq, opts ...core.RequestOption) (*AgentGetWorkSessionResp, error) {
+	resp := &AgentGetWorkSessionResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/agent/sessions/{id}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentDeleteWorkSessionReq is the request for AgentDeleteWorkSession.
+type AgentDeleteWorkSessionReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentDeleteWorkSessionReqBuilder builds a AgentDeleteWorkSessionReq with a fluent setter per field.
+type AgentDeleteWorkSessionReqBuilder struct{ req *AgentDeleteWorkSessionReq }
+
+// NewAgentDeleteWorkSessionReqBuilder creates a request builder for AgentDeleteWorkSession.
+func NewAgentDeleteWorkSessionReqBuilder() *AgentDeleteWorkSessionReqBuilder {
+	return &AgentDeleteWorkSessionReqBuilder{req: &AgentDeleteWorkSessionReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentDeleteWorkSessionReqBuilder) Id(v string) *AgentDeleteWorkSessionReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Version sets the "version" query parameter.
+func (b *AgentDeleteWorkSessionReqBuilder) Version(v int64) *AgentDeleteWorkSessionReqBuilder {
+	b.req.queryParams["version"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentDeleteWorkSessionReqBuilder) Build() *AgentDeleteWorkSessionReq { return b.req }
+
+// AgentDeleteWorkSessionResp is the response for AgentDeleteWorkSession.
+type AgentDeleteWorkSessionResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// AgentDeleteWorkSession: 删除工作会话及其条目、会话记录、工作区归档与资产
+func (s *Service) AgentDeleteWorkSession(ctx context.Context, req *AgentDeleteWorkSessionReq, opts ...core.RequestOption) (*AgentDeleteWorkSessionResp, error) {
+	resp := &AgentDeleteWorkSessionResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/agent/sessions/{id}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentPatchWorkSessionReq is the request for AgentPatchWorkSession.
+type AgentPatchWorkSessionReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentPatchWorkSessionReqBuilder builds a AgentPatchWorkSessionReq with a fluent setter per field.
+type AgentPatchWorkSessionReqBuilder struct{ req *AgentPatchWorkSessionReq }
+
+// NewAgentPatchWorkSessionReqBuilder creates a request builder for AgentPatchWorkSession.
+func NewAgentPatchWorkSessionReqBuilder() *AgentPatchWorkSessionReqBuilder {
+	return &AgentPatchWorkSessionReqBuilder{req: &AgentPatchWorkSessionReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentPatchWorkSessionReqBuilder) Id(v string) *AgentPatchWorkSessionReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AgentPatchWorkSessionReqBuilder) Body(body *models.AgentWorkSessionPatchRequestBody) *AgentPatchWorkSessionReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentPatchWorkSessionReqBuilder) Build() *AgentPatchWorkSessionReq { return b.req }
+
+// AgentPatchWorkSessionResp is the response for AgentPatchWorkSession.
+type AgentPatchWorkSessionResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentWorkSession `json:"data"`
+}
+
+// AgentPatchWorkSession: 修改工作会话：标题、归档、模型
+func (s *Service) AgentPatchWorkSession(ctx context.Context, req *AgentPatchWorkSessionReq, opts ...core.RequestOption) (*AgentPatchWorkSessionResp, error) {
+	resp := &AgentPatchWorkSessionResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PATCH",
+		PathTemplate: "/hduhelp-neo/agent/sessions/{id}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentCancelWorkTurnReq is the request for AgentCancelWorkTurn.
+type AgentCancelWorkTurnReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentCancelWorkTurnReqBuilder builds a AgentCancelWorkTurnReq with a fluent setter per field.
+type AgentCancelWorkTurnReqBuilder struct{ req *AgentCancelWorkTurnReq }
+
+// NewAgentCancelWorkTurnReqBuilder creates a request builder for AgentCancelWorkTurn.
+func NewAgentCancelWorkTurnReqBuilder() *AgentCancelWorkTurnReqBuilder {
+	return &AgentCancelWorkTurnReqBuilder{req: &AgentCancelWorkTurnReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentCancelWorkTurnReqBuilder) Id(v string) *AgentCancelWorkTurnReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AgentCancelWorkTurnReqBuilder) Body(body *models.AgentWorkCancelRequestBody) *AgentCancelWorkTurnReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentCancelWorkTurnReqBuilder) Build() *AgentCancelWorkTurnReq { return b.req }
+
+// AgentCancelWorkTurnResp is the response for AgentCancelWorkTurn.
+type AgentCancelWorkTurnResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentWorkTurn `json:"data"`
+}
+
+// AgentCancelWorkTurn: 取消进行中的回合或撤下排队的消息
+func (s *Service) AgentCancelWorkTurn(ctx context.Context, req *AgentCancelWorkTurnReq, opts ...core.RequestOption) (*AgentCancelWorkTurnResp, error) {
+	resp := &AgentCancelWorkTurnResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/agent/sessions/{id}/cancel",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentListWorkItemsReq is the request for AgentListWorkItems.
+type AgentListWorkItemsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentListWorkItemsReqBuilder builds a AgentListWorkItemsReq with a fluent setter per field.
+type AgentListWorkItemsReqBuilder struct{ req *AgentListWorkItemsReq }
+
+// NewAgentListWorkItemsReqBuilder creates a request builder for AgentListWorkItems.
+func NewAgentListWorkItemsReqBuilder() *AgentListWorkItemsReqBuilder {
+	return &AgentListWorkItemsReqBuilder{req: &AgentListWorkItemsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentListWorkItemsReqBuilder) Id(v string) *AgentListWorkItemsReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Before sets the "before" query parameter: 只要 seq 小于它的条目；不传为最后一页
+func (b *AgentListWorkItemsReqBuilder) Before(v int64) *AgentListWorkItemsReqBuilder {
+	b.req.queryParams["before"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// Limit sets the "limit" query parameter.
+func (b *AgentListWorkItemsReqBuilder) Limit(v int32) *AgentListWorkItemsReqBuilder {
+	b.req.queryParams["limit"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentListWorkItemsReqBuilder) Build() *AgentListWorkItemsReq { return b.req }
+
+// AgentListWorkItemsResp is the response for AgentListWorkItems.
+type AgentListWorkItemsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentWorkItemPage `json:"data"`
+}
+
+// AgentListWorkItems: 工作会话条目倒序翻页
+func (s *Service) AgentListWorkItems(ctx context.Context, req *AgentListWorkItemsReq, opts ...core.RequestOption) (*AgentListWorkItemsResp, error) {
+	resp := &AgentListWorkItemsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/agent/sessions/{id}/items",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentAnswerWorkPromptReq is the request for AgentAnswerWorkPrompt.
+type AgentAnswerWorkPromptReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentAnswerWorkPromptReqBuilder builds a AgentAnswerWorkPromptReq with a fluent setter per field.
+type AgentAnswerWorkPromptReqBuilder struct{ req *AgentAnswerWorkPromptReq }
+
+// NewAgentAnswerWorkPromptReqBuilder creates a request builder for AgentAnswerWorkPrompt.
+func NewAgentAnswerWorkPromptReqBuilder() *AgentAnswerWorkPromptReqBuilder {
+	return &AgentAnswerWorkPromptReqBuilder{req: &AgentAnswerWorkPromptReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentAnswerWorkPromptReqBuilder) Id(v string) *AgentAnswerWorkPromptReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// PromptId sets the "prompt_id" path parameter.
+func (b *AgentAnswerWorkPromptReqBuilder) PromptId(v string) *AgentAnswerWorkPromptReqBuilder {
+	b.req.pathParams["prompt_id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AgentAnswerWorkPromptReqBuilder) Body(body *models.AgentWorkPromptAnswerRequestBody) *AgentAnswerWorkPromptReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentAnswerWorkPromptReqBuilder) Build() *AgentAnswerWorkPromptReq { return b.req }
+
+// AgentAnswerWorkPromptResp is the response for AgentAnswerWorkPrompt.
+type AgentAnswerWorkPromptResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentWorkPrompt `json:"data"`
+}
+
+// AgentAnswerWorkPrompt: 回答权限、计划或提问卡片
+func (s *Service) AgentAnswerWorkPrompt(ctx context.Context, req *AgentAnswerWorkPromptReq, opts ...core.RequestOption) (*AgentAnswerWorkPromptResp, error) {
+	resp := &AgentAnswerWorkPromptResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/agent/sessions/{id}/prompts/{prompt_id}",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -2062,6 +2517,58 @@ func (s *Service) AgentCreateStreamToken(ctx context.Context, req *AgentCreateSt
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
 		PathTemplate: "/hduhelp-neo/agent/sessions/{id}/stream-token",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentSendWorkTurnReq is the request for AgentSendWorkTurn.
+type AgentSendWorkTurnReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentSendWorkTurnReqBuilder builds a AgentSendWorkTurnReq with a fluent setter per field.
+type AgentSendWorkTurnReqBuilder struct{ req *AgentSendWorkTurnReq }
+
+// NewAgentSendWorkTurnReqBuilder creates a request builder for AgentSendWorkTurn.
+func NewAgentSendWorkTurnReqBuilder() *AgentSendWorkTurnReqBuilder {
+	return &AgentSendWorkTurnReqBuilder{req: &AgentSendWorkTurnReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentSendWorkTurnReqBuilder) Id(v string) *AgentSendWorkTurnReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AgentSendWorkTurnReqBuilder) Body(body *models.AgentWorkTurnRequestBody) *AgentSendWorkTurnReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentSendWorkTurnReqBuilder) Build() *AgentSendWorkTurnReq { return b.req }
+
+// AgentSendWorkTurnResp is the response for AgentSendWorkTurn.
+type AgentSendWorkTurnResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentWorkTurn `json:"data"`
+}
+
+// AgentSendWorkTurn: 发送一条消息（排队或立即发送）
+func (s *Service) AgentSendWorkTurn(ctx context.Context, req *AgentSendWorkTurnReq, opts ...core.RequestOption) (*AgentSendWorkTurnResp, error) {
+	resp := &AgentSendWorkTurnResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/agent/sessions/{id}/turns",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

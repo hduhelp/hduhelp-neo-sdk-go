@@ -221,6 +221,252 @@ func (e AgentSkillUpdateRequestBodyStatus) Valid() bool {
 	}
 }
 
+// Defines values for AgentWorkAssetKind.
+const (
+	AgentWorkAssetKindFile    AgentWorkAssetKind = "file"
+	AgentWorkAssetKindPreview AgentWorkAssetKind = "preview"
+)
+
+// Valid indicates whether the value is a known member of the AgentWorkAssetKind enum.
+func (e AgentWorkAssetKind) Valid() bool {
+	switch e {
+	case AgentWorkAssetKindFile:
+		return true
+	case AgentWorkAssetKindPreview:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentWorkItemKind.
+const (
+	AgentWorkItemKindDiff       AgentWorkItemKind = "diff"
+	AgentWorkItemKindFile       AgentWorkItemKind = "file"
+	AgentWorkItemKindImage      AgentWorkItemKind = "image"
+	AgentWorkItemKindMessage    AgentWorkItemKind = "message"
+	AgentWorkItemKindPrompt     AgentWorkItemKind = "prompt"
+	AgentWorkItemKindReasoning  AgentWorkItemKind = "reasoning"
+	AgentWorkItemKindStatus     AgentWorkItemKind = "status"
+	AgentWorkItemKindSubagent   AgentWorkItemKind = "subagent"
+	AgentWorkItemKindToolCall   AgentWorkItemKind = "tool_call"
+	AgentWorkItemKindToolResult AgentWorkItemKind = "tool_result"
+	AgentWorkItemKindTurn       AgentWorkItemKind = "turn"
+	AgentWorkItemKindUser       AgentWorkItemKind = "user"
+)
+
+// Valid indicates whether the value is a known member of the AgentWorkItemKind enum.
+func (e AgentWorkItemKind) Valid() bool {
+	switch e {
+	case AgentWorkItemKindDiff:
+		return true
+	case AgentWorkItemKindFile:
+		return true
+	case AgentWorkItemKindImage:
+		return true
+	case AgentWorkItemKindMessage:
+		return true
+	case AgentWorkItemKindPrompt:
+		return true
+	case AgentWorkItemKindReasoning:
+		return true
+	case AgentWorkItemKindStatus:
+		return true
+	case AgentWorkItemKindSubagent:
+		return true
+	case AgentWorkItemKindToolCall:
+		return true
+	case AgentWorkItemKindToolResult:
+		return true
+	case AgentWorkItemKindTurn:
+		return true
+	case AgentWorkItemKindUser:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentWorkItemState.
+const (
+	AgentWorkItemStateCompleted   AgentWorkItemState = "completed"
+	AgentWorkItemStateExpired     AgentWorkItemState = "expired"
+	AgentWorkItemStateFailed      AgentWorkItemState = "failed"
+	AgentWorkItemStateInterrupted AgentWorkItemState = "interrupted"
+	AgentWorkItemStateLessThannil AgentWorkItemState = "<nil>"
+	AgentWorkItemStateRunning     AgentWorkItemState = "running"
+	AgentWorkItemStateWaiting     AgentWorkItemState = "waiting"
+)
+
+// Valid indicates whether the value is a known member of the AgentWorkItemState enum.
+func (e AgentWorkItemState) Valid() bool {
+	switch e {
+	case AgentWorkItemStateCompleted:
+		return true
+	case AgentWorkItemStateExpired:
+		return true
+	case AgentWorkItemStateFailed:
+		return true
+	case AgentWorkItemStateInterrupted:
+		return true
+	case AgentWorkItemStateLessThannil:
+		return true
+	case AgentWorkItemStateRunning:
+		return true
+	case AgentWorkItemStateWaiting:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentWorkPromptKind.
+const (
+	Permission AgentWorkPromptKind = "permission"
+	Plan       AgentWorkPromptKind = "plan"
+	Question   AgentWorkPromptKind = "question"
+)
+
+// Valid indicates whether the value is a known member of the AgentWorkPromptKind enum.
+func (e AgentWorkPromptKind) Valid() bool {
+	switch e {
+	case Permission:
+		return true
+	case Plan:
+		return true
+	case Question:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentWorkPromptStatus.
+const (
+	AgentWorkPromptStatusAnswered  AgentWorkPromptStatus = "answered"
+	AgentWorkPromptStatusCancelled AgentWorkPromptStatus = "cancelled"
+	AgentWorkPromptStatusExpired   AgentWorkPromptStatus = "expired"
+	AgentWorkPromptStatusWaiting   AgentWorkPromptStatus = "waiting"
+)
+
+// Valid indicates whether the value is a known member of the AgentWorkPromptStatus enum.
+func (e AgentWorkPromptStatus) Valid() bool {
+	switch e {
+	case AgentWorkPromptStatusAnswered:
+		return true
+	case AgentWorkPromptStatusCancelled:
+		return true
+	case AgentWorkPromptStatusExpired:
+		return true
+	case AgentWorkPromptStatusWaiting:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentWorkSessionStateSandbox.
+const (
+	AgentWorkSessionStateSandboxPaused   AgentWorkSessionStateSandbox = "paused"
+	AgentWorkSessionStateSandboxReady    AgentWorkSessionStateSandbox = "ready"
+	AgentWorkSessionStateSandboxStarting AgentWorkSessionStateSandbox = "starting"
+)
+
+// Valid indicates whether the value is a known member of the AgentWorkSessionStateSandbox enum.
+func (e AgentWorkSessionStateSandbox) Valid() bool {
+	switch e {
+	case AgentWorkSessionStateSandboxPaused:
+		return true
+	case AgentWorkSessionStateSandboxReady:
+		return true
+	case AgentWorkSessionStateSandboxStarting:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentWorkSessionStateStatus.
+const (
+	AgentWorkSessionStateStatusIdle    AgentWorkSessionStateStatus = "idle"
+	AgentWorkSessionStateStatusQueued  AgentWorkSessionStateStatus = "queued"
+	AgentWorkSessionStateStatusRunning AgentWorkSessionStateStatus = "running"
+	AgentWorkSessionStateStatusWaiting AgentWorkSessionStateStatus = "waiting"
+)
+
+// Valid indicates whether the value is a known member of the AgentWorkSessionStateStatus enum.
+func (e AgentWorkSessionStateStatus) Valid() bool {
+	switch e {
+	case AgentWorkSessionStateStatusIdle:
+		return true
+	case AgentWorkSessionStateStatusQueued:
+		return true
+	case AgentWorkSessionStateStatusRunning:
+		return true
+	case AgentWorkSessionStateStatusWaiting:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentWorkTurnStatus.
+const (
+	AgentWorkTurnStatusCancelled  AgentWorkTurnStatus = "cancelled"
+	AgentWorkTurnStatusCompleted  AgentWorkTurnStatus = "completed"
+	AgentWorkTurnStatusDispatched AgentWorkTurnStatus = "dispatched"
+	AgentWorkTurnStatusFailed     AgentWorkTurnStatus = "failed"
+	AgentWorkTurnStatusIdle       AgentWorkTurnStatus = "idle"
+	AgentWorkTurnStatusQueued     AgentWorkTurnStatus = "queued"
+	AgentWorkTurnStatusRunning    AgentWorkTurnStatus = "running"
+	AgentWorkTurnStatusSteered    AgentWorkTurnStatus = "steered"
+	AgentWorkTurnStatusWaiting    AgentWorkTurnStatus = "waiting"
+)
+
+// Valid indicates whether the value is a known member of the AgentWorkTurnStatus enum.
+func (e AgentWorkTurnStatus) Valid() bool {
+	switch e {
+	case AgentWorkTurnStatusCancelled:
+		return true
+	case AgentWorkTurnStatusCompleted:
+		return true
+	case AgentWorkTurnStatusDispatched:
+		return true
+	case AgentWorkTurnStatusFailed:
+		return true
+	case AgentWorkTurnStatusIdle:
+		return true
+	case AgentWorkTurnStatusQueued:
+		return true
+	case AgentWorkTurnStatusRunning:
+		return true
+	case AgentWorkTurnStatusSteered:
+		return true
+	case AgentWorkTurnStatusWaiting:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentWorkTurnRequestBodyMode.
+const (
+	Interrupt AgentWorkTurnRequestBodyMode = "interrupt"
+	Queue     AgentWorkTurnRequestBodyMode = "queue"
+)
+
+// Valid indicates whether the value is a known member of the AgentWorkTurnRequestBodyMode enum.
+func (e AgentWorkTurnRequestBodyMode) Valid() bool {
+	switch e {
+	case Interrupt:
+		return true
+	case Queue:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CreateFeedbackRequestBodyFeedbackType.
 const (
 	CreateFeedbackRequestBodyFeedbackTypeAssistant CreateFeedbackRequestBodyFeedbackType = "assistant"
@@ -3079,34 +3325,34 @@ func (e NotificationServiceListNotificationTaskDeliveriesParamsStatus) Valid() b
 
 // Defines values for NotificationServiceListNotificationTaskDeliveriesParamsFailureKind.
 const (
-	DeadLetterParked   NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "dead_letter_parked"
-	Expired            NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "expired"
-	Permanent          NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "permanent"
-	Provider           NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "provider"
-	ReconcileExhausted NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "reconcile_exhausted"
-	RetryExhausted     NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "retry_exhausted"
-	Uncertain          NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "uncertain"
-	Unreachable        NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "unreachable"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindDeadLetterParked   NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "dead_letter_parked"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindExpired            NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "expired"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindPermanent          NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "permanent"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindProvider           NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "provider"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindReconcileExhausted NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "reconcile_exhausted"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindRetryExhausted     NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "retry_exhausted"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindUncertain          NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "uncertain"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindUnreachable        NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "unreachable"
 )
 
 // Valid indicates whether the value is a known member of the NotificationServiceListNotificationTaskDeliveriesParamsFailureKind enum.
 func (e NotificationServiceListNotificationTaskDeliveriesParamsFailureKind) Valid() bool {
 	switch e {
-	case DeadLetterParked:
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindDeadLetterParked:
 		return true
-	case Expired:
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindExpired:
 		return true
-	case Permanent:
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindPermanent:
 		return true
-	case Provider:
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindProvider:
 		return true
-	case ReconcileExhausted:
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindReconcileExhausted:
 		return true
-	case RetryExhausted:
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindRetryExhausted:
 		return true
-	case Uncertain:
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindUncertain:
 		return true
-	case Unreachable:
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindUnreachable:
 		return true
 	default:
 		return false
@@ -3950,6 +4196,41 @@ type AdoptRevisionRequestBody struct {
 	RevisionId *string `json:"revision_id,omitempty"`
 }
 
+// AgentAppEndpoint defines model for AgentAppEndpoint.
+type AgentAppEndpoint struct {
+	BaseUrl string `json:"base_url"`
+	Id      string `json:"id"`
+	KeyTail string `json:"key_tail"`
+	Name    string `json:"name"`
+}
+
+// AgentAppModel ---- 工作会话（App）----
+// 应答字段一律 snake_case，与 SSE 条目同形。写接口以客户端 ULID 为幂等键（会话 id、turn_id、op_id），
+// 或以 version 做乐观锁。时间均为毫秒时间戳。
+type AgentAppModel struct {
+	ContextWindow *int32 `json:"context_window,omitempty"`
+	Id            string `json:"id"`
+
+	// ImageInput 模型能否看图；未知时不返回（按支持处理）
+	ImageInput      *bool    `json:"image_input,omitempty"`
+	Name            string   `json:"name"`
+	ReasoningLevels []string `json:"reasoning_levels"`
+}
+
+// AgentAppModels defines model for AgentAppModels.
+type AgentAppModels struct {
+	DefaultModel string             `json:"default_model"`
+	Endpoints    []AgentAppEndpoint `json:"endpoints"`
+	Models       []AgentAppModel    `json:"models"`
+}
+
+// AgentAppModelsResponseBody defines model for AgentAppModelsResponseBody.
+type AgentAppModelsResponseBody struct {
+	Code int64           `json:"code"`
+	Data *AgentAppModels `json:"data,omitempty"`
+	Msg  string          `json:"msg"`
+}
+
 // AgentAppPreset defines model for AgentAppPreset.
 type AgentAppPreset struct {
 	AllowPreview bool   `json:"allowPreview"`
@@ -4651,6 +4932,244 @@ type AgentStreamTokenResponseBody struct {
 	Code int64             `json:"code"`
 	Data *AgentStreamToken `json:"data,omitempty"`
 	Msg  string            `json:"msg"`
+}
+
+// AgentWorkAsset defines model for AgentWorkAsset.
+type AgentWorkAsset struct {
+	CreatedAt int64              `json:"created_at"`
+	ExpiresAt *int64             `json:"expires_at,omitempty"`
+	Id        string             `json:"id"`
+	Kind      AgentWorkAssetKind `json:"kind"`
+	Mime      *string            `json:"mime,omitempty"`
+	Name      string             `json:"name"`
+	Path      *string            `json:"path,omitempty"`
+	Port      *int32             `json:"port,omitempty"`
+	Size      *int64             `json:"size,omitempty"`
+}
+
+// AgentWorkAssetKind defines model for AgentWorkAsset.Kind.
+type AgentWorkAssetKind string
+
+// AgentWorkAttachmentInput defines model for AgentWorkAttachmentInput.
+type AgentWorkAttachmentInput struct {
+	// Key 签名直传（用途 agent_input）完成后的 key
+	Key  string  `json:"key"`
+	Mime *string `json:"mime,omitempty"`
+	Name string  `json:"name"`
+	Size *int64  `json:"size,omitempty"`
+}
+
+// AgentWorkCancelRequestBody defines model for AgentWorkCancelRequestBody.
+type AgentWorkCancelRequestBody struct {
+	// TurnId 排队中的消息从队列撤下；不传取消进行中的回合
+	TurnId *string `json:"turn_id,omitempty"`
+}
+
+// AgentWorkItem defines model for AgentWorkItem.
+type AgentWorkItem struct {
+	AgentId *string `json:"agent_id,omitempty"`
+
+	// Body 各 kind 自己的字段，见工作模式条目模型
+	Body          map[string]interface{} `json:"body"`
+	CallId        *string                `json:"call_id,omitempty"`
+	Id            string                 `json:"id"`
+	Kind          AgentWorkItemKind      `json:"kind"`
+	ObservedAt    int64                  `json:"observed_at"`
+	ParentAgentId *string                `json:"parent_agent_id,omitempty"`
+	Rev           int32                  `json:"rev"`
+	Seq           int64                  `json:"seq"`
+	State         AgentWorkItemState     `json:"state"`
+	TurnId        string                 `json:"turn_id"`
+}
+
+// AgentWorkItemKind defines model for AgentWorkItem.Kind.
+type AgentWorkItemKind string
+
+// AgentWorkItemState defines model for AgentWorkItem.State.
+type AgentWorkItemState string
+
+// AgentWorkItemPage defines model for AgentWorkItemPage.
+type AgentWorkItemPage struct {
+	HasMore bool            `json:"has_more"`
+	HeadSeq int64           `json:"head_seq"`
+	Items   []AgentWorkItem `json:"items"`
+}
+
+// AgentWorkItemPageResponseBody defines model for AgentWorkItemPageResponseBody.
+type AgentWorkItemPageResponseBody struct {
+	Code int64              `json:"code"`
+	Data *AgentWorkItemPage `json:"data,omitempty"`
+	Msg  string             `json:"msg"`
+}
+
+// AgentWorkPrompt defines model for AgentWorkPrompt.
+type AgentWorkPrompt struct {
+	AnsweredAt *int64 `json:"answered_at,omitempty"`
+
+	// Answers 提问卡片的回答：键是问题原文，单选为字符串，多选为字符串数组
+	Answers   *map[string]interface{} `json:"answers,omitempty"`
+	Choice    *string                 `json:"choice,omitempty"`
+	CreatedAt int64                   `json:"created_at"`
+
+	// Input 工具入参原样（超过 64 KB 截断）
+	Input map[string]interface{} `json:"input"`
+	Kind  AgentWorkPromptKind    `json:"kind"`
+
+	// Options title、display_name、description、decision_reason、decision_reason_type、blocked_path、suggestions、requires_user_interaction、suppress_always_allow_rule、default_to_no、mcp_server、request_id
+	Options   map[string]interface{} `json:"options"`
+	PromptId  string                 `json:"prompt_id"`
+	RunId     string                 `json:"run_id"`
+	SessionId string                 `json:"session_id"`
+	Status    AgentWorkPromptStatus  `json:"status"`
+	ToolName  string                 `json:"tool_name"`
+	ToolUseId string                 `json:"tool_use_id"`
+}
+
+// AgentWorkPromptKind defines model for AgentWorkPrompt.Kind.
+type AgentWorkPromptKind string
+
+// AgentWorkPromptStatus defines model for AgentWorkPrompt.Status.
+type AgentWorkPromptStatus string
+
+// AgentWorkPromptAnswerRequestBody defines model for AgentWorkPromptAnswerRequestBody.
+type AgentWorkPromptAnswerRequestBody struct {
+	// Answers submit 时必填：键是问题原文，单选为选项 label（「其他」的文字优先），多选为数组（「其他」的文字追加）
+	Answers *map[string]interface{} `json:"answers,omitempty"`
+	Choice  string                  `json:"choice"`
+	OpId    string                  `json:"op_id"`
+}
+
+// AgentWorkPromptResponseBody defines model for AgentWorkPromptResponseBody.
+type AgentWorkPromptResponseBody struct {
+	Code int64            `json:"code"`
+	Data *AgentWorkPrompt `json:"data,omitempty"`
+	Msg  string           `json:"msg"`
+}
+
+// AgentWorkSession deleted=true 是墓碑：只有 id、deleted、change_seq 有意义。
+type AgentWorkSession struct {
+	Archived  *bool `json:"archived,omitempty"`
+	ChangeSeq int64 `json:"change_seq"`
+
+	// ContextLost 之前的上下文无法恢复，下一回合从新的 Claude 会话开始
+	ContextLost *bool   `json:"context_lost,omitempty"`
+	CreatedAt   *int64  `json:"created_at,omitempty"`
+	Deleted     *bool   `json:"deleted,omitempty"`
+	EndpointId  *string `json:"endpoint_id,omitempty"`
+	HeadSeq     *int64  `json:"head_seq,omitempty"`
+	Id          string  `json:"id"`
+	LastTurnAt  *int64  `json:"last_turn_at,omitempty"`
+	Model       *string `json:"model,omitempty"`
+	PresetId    *string `json:"preset_id,omitempty"`
+	Title       *string `json:"title,omitempty"`
+	UpdatedAt   *int64  `json:"updated_at,omitempty"`
+	Version     *int64  `json:"version,omitempty"`
+}
+
+// AgentWorkSessionCreateRequestBody defines model for AgentWorkSessionCreateRequestBody.
+type AgentWorkSessionCreateRequestBody struct {
+	EndpointId *string `json:"endpoint_id,omitempty"`
+
+	// Id 客户端生成的 ULID，也是幂等键
+	Id       string  `json:"id"`
+	Model    *string `json:"model,omitempty"`
+	PresetId string  `json:"preset_id"`
+	Title    *string `json:"title,omitempty"`
+}
+
+// AgentWorkSessionDetail defines model for AgentWorkSessionDetail.
+type AgentWorkSessionDetail struct {
+	Assets  []AgentWorkAsset  `json:"assets"`
+	Prompts []AgentWorkPrompt `json:"prompts"`
+
+	// Session deleted=true 是墓碑：只有 id、deleted、change_seq 有意义。
+	Session AgentWorkSession      `json:"session"`
+	State   AgentWorkSessionState `json:"state"`
+}
+
+// AgentWorkSessionDetailResponseBody defines model for AgentWorkSessionDetailResponseBody.
+type AgentWorkSessionDetailResponseBody struct {
+	Code int64                   `json:"code"`
+	Data *AgentWorkSessionDetail `json:"data,omitempty"`
+	Msg  string                  `json:"msg"`
+}
+
+// AgentWorkSessionPage defines model for AgentWorkSessionPage.
+type AgentWorkSessionPage struct {
+	ChangeSeq int64              `json:"change_seq"`
+	HasMore   bool               `json:"has_more"`
+	Sessions  []AgentWorkSession `json:"sessions"`
+}
+
+// AgentWorkSessionPageResponseBody defines model for AgentWorkSessionPageResponseBody.
+type AgentWorkSessionPageResponseBody struct {
+	Code int64                 `json:"code"`
+	Data *AgentWorkSessionPage `json:"data,omitempty"`
+	Msg  string                `json:"msg"`
+}
+
+// AgentWorkSessionPatchRequestBody defines model for AgentWorkSessionPatchRequestBody.
+type AgentWorkSessionPatchRequestBody struct {
+	Archived   *bool   `json:"archived,omitempty"`
+	EndpointId *string `json:"endpoint_id,omitempty"`
+	Model      *string `json:"model,omitempty"`
+	Title      *string `json:"title,omitempty"`
+	Version    int64   `json:"version"`
+}
+
+// AgentWorkSessionResponseBody defines model for AgentWorkSessionResponseBody.
+type AgentWorkSessionResponseBody struct {
+	Code int64 `json:"code"`
+
+	// Data deleted=true 是墓碑：只有 id、deleted、change_seq 有意义。
+	Data *AgentWorkSession `json:"data,omitempty"`
+	Msg  string            `json:"msg"`
+}
+
+// AgentWorkSessionState defines model for AgentWorkSessionState.
+type AgentWorkSessionState struct {
+	ContextLost *bool                        `json:"context_lost,omitempty"`
+	HeadSeq     int64                        `json:"head_seq"`
+	Queued      int32                        `json:"queued"`
+	Sandbox     AgentWorkSessionStateSandbox `json:"sandbox"`
+	SessionId   string                       `json:"session_id"`
+	Status      AgentWorkSessionStateStatus  `json:"status"`
+}
+
+// AgentWorkSessionStateSandbox defines model for AgentWorkSessionState.Sandbox.
+type AgentWorkSessionStateSandbox string
+
+// AgentWorkSessionStateStatus defines model for AgentWorkSessionState.Status.
+type AgentWorkSessionStateStatus string
+
+// AgentWorkTurn defines model for AgentWorkTurn.
+type AgentWorkTurn struct {
+	HeadSeq int64               `json:"head_seq"`
+	Queued  int32               `json:"queued"`
+	Status  AgentWorkTurnStatus `json:"status"`
+	TurnId  string              `json:"turn_id"`
+}
+
+// AgentWorkTurnStatus defines model for AgentWorkTurn.Status.
+type AgentWorkTurnStatus string
+
+// AgentWorkTurnRequestBody defines model for AgentWorkTurnRequestBody.
+type AgentWorkTurnRequestBody struct {
+	Attachments  *[]AgentWorkAttachmentInput   `json:"attachments,omitempty"`
+	ExpectedHead int64                         `json:"expected_head"`
+	Mode         *AgentWorkTurnRequestBodyMode `json:"mode,omitempty"`
+	Text         *string                       `json:"text,omitempty"`
+	TurnId       string                        `json:"turn_id"`
+}
+
+// AgentWorkTurnRequestBodyMode defines model for AgentWorkTurnRequestBody.Mode.
+type AgentWorkTurnRequestBodyMode string
+
+// AgentWorkTurnResponseBody defines model for AgentWorkTurnResponseBody.
+type AgentWorkTurnResponseBody struct {
+	Code int64          `json:"code"`
+	Data *AgentWorkTurn `json:"data,omitempty"`
+	Msg  string         `json:"msg"`
 }
 
 // AgentWriteRequestBody defines model for AgentWriteRequestBody.
@@ -18884,6 +19403,25 @@ type CampusLifeServiceAdminListVolunteerActivitiesParams struct {
 	Status      *string `form:"status,omitempty" json:"status,omitempty"`
 }
 
+// AgentServiceAgentListWorkSessionsParams defines parameters for AgentServiceAgentListWorkSessions.
+type AgentServiceAgentListWorkSessionsParams struct {
+	// Since 上次拿到的 change_seq；不传从头
+	Since *int64 `form:"since,omitempty" json:"since,omitempty"`
+	Limit *int32 `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// AgentServiceAgentDeleteWorkSessionParams defines parameters for AgentServiceAgentDeleteWorkSession.
+type AgentServiceAgentDeleteWorkSessionParams struct {
+	Version *int64 `form:"version,omitempty" json:"version,omitempty"`
+}
+
+// AgentServiceAgentListWorkItemsParams defines parameters for AgentServiceAgentListWorkItems.
+type AgentServiceAgentListWorkItemsParams struct {
+	// Before 只要 seq 小于它的条目；不传为最后一页
+	Before *int64 `form:"before,omitempty" json:"before,omitempty"`
+	Limit  *int32 `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
 // ModelProxyServiceListPurposeAnthropicModelsParams defines parameters for ModelProxyServiceListPurposeAnthropicModels.
 type ModelProxyServiceListPurposeAnthropicModelsParams struct {
 	// Limit 每页条数，1–1000，默认 20
@@ -20166,6 +20704,21 @@ type CampusLifeServiceAdminCreateVolunteerActivityJSONRequestBody = CreateVolunt
 
 // CampusLifeServiceAdminUpdateVolunteerActivityJSONRequestBody defines body for CampusLifeServiceAdminUpdateVolunteerActivity for application/json ContentType.
 type CampusLifeServiceAdminUpdateVolunteerActivityJSONRequestBody = UpdateActivityRequestBody
+
+// AgentServiceAgentCreateWorkSessionJSONRequestBody defines body for AgentServiceAgentCreateWorkSession for application/json ContentType.
+type AgentServiceAgentCreateWorkSessionJSONRequestBody = AgentWorkSessionCreateRequestBody
+
+// AgentServiceAgentPatchWorkSessionJSONRequestBody defines body for AgentServiceAgentPatchWorkSession for application/json ContentType.
+type AgentServiceAgentPatchWorkSessionJSONRequestBody = AgentWorkSessionPatchRequestBody
+
+// AgentServiceAgentCancelWorkTurnJSONRequestBody defines body for AgentServiceAgentCancelWorkTurn for application/json ContentType.
+type AgentServiceAgentCancelWorkTurnJSONRequestBody = AgentWorkCancelRequestBody
+
+// AgentServiceAgentAnswerWorkPromptJSONRequestBody defines body for AgentServiceAgentAnswerWorkPrompt for application/json ContentType.
+type AgentServiceAgentAnswerWorkPromptJSONRequestBody = AgentWorkPromptAnswerRequestBody
+
+// AgentServiceAgentSendWorkTurnJSONRequestBody defines body for AgentServiceAgentSendWorkTurn for application/json ContentType.
+type AgentServiceAgentSendWorkTurnJSONRequestBody = AgentWorkTurnRequestBody
 
 // ModelProxyServiceGeneratePurposeImagesJSONRequestBody defines body for ModelProxyServiceGeneratePurposeImages for application/json ContentType.
 type ModelProxyServiceGeneratePurposeImagesJSONRequestBody = ModelProxyImageGenerationRequestBody

@@ -12092,6 +12092,22 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/VolunteerActivityDetailResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/agent/models:
+        get:
+            tags:
+                - AgentService
+            summary: 工作模式可选模型（agent.work 公开模型与自配接入点）
+            operationId: AgentService_AgentAppModels
+            security:
+                - NativeSessionAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentAppModelsResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/agent/presets:
         get:
             tags:
@@ -12108,6 +12124,230 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/AgentAppPresetListResponseBody'
             x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/agent/sessions:
+        get:
+            tags:
+                - AgentService
+            summary: 工作会话列表增量（含删除墓碑）
+            operationId: AgentService_AgentListWorkSessions
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: since
+                  in: query
+                  description: 上次拿到的 change_seq；不传从头
+                  schema:
+                    type: integer
+                    format: int64
+                - name: limit
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentWorkSessionPageResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+        post:
+            tags:
+                - AgentService
+            summary: 新建工作会话（id 由客户端生成，重放返回原会话）
+            operationId: AgentService_AgentCreateWorkSession
+            security:
+                - NativeSessionAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentWorkSessionCreateRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentWorkSessionResponseBody'
+            x-hduhelp-http: {'auth': 'native_session', 'request_body_required': true}
+    /hduhelp-neo/agent/sessions/{id}:
+        get:
+            tags:
+                - AgentService
+            summary: 工作会话详情（含待回答的卡片与当前资产）
+            operationId: AgentService_AgentGetWorkSession
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentWorkSessionDetailResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+        delete:
+            tags:
+                - AgentService
+            summary: 删除工作会话及其条目、会话记录、工作区归档与资产
+            operationId: AgentService_AgentDeleteWorkSession
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: version
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+            responses:
+                "200":
+                    description: |-
+                        工作模式配置管理：代理库、模块设置、Skill、MCP 服务器、预设，以及 App 读预设。
+                        写操作带 expected_version（乐观锁）与 reason（进 agent_audits）。被引用的对象
+                        删除或停用时返回 409，data.references 列出引用方。
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentMutationResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+        patch:
+            tags:
+                - AgentService
+            summary: 修改工作会话：标题、归档、模型
+            operationId: AgentService_AgentPatchWorkSession
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                description: 只改传了的字段；换模型或接入点在下一回合生效。version 落后返回 409。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentWorkSessionPatchRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentWorkSessionResponseBody'
+            x-hduhelp-http: {'auth': 'native_session', 'request_body_required': true}
+    /hduhelp-neo/agent/sessions/{id}/cancel:
+        post:
+            tags:
+                - AgentService
+            summary: 取消进行中的回合或撤下排队的消息
+            operationId: AgentService_AgentCancelWorkTurn
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentWorkCancelRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentWorkTurnResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/agent/sessions/{id}/items:
+        get:
+            tags:
+                - AgentService
+            summary: 工作会话条目倒序翻页
+            operationId: AgentService_AgentListWorkItems
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: before
+                  in: query
+                  description: 只要 seq 小于它的条目；不传为最后一页
+                  schema:
+                    type: integer
+                    format: int64
+                - name: limit
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentWorkItemPageResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/agent/sessions/{id}/prompts/{prompt_id}:
+        post:
+            tags:
+                - AgentService
+            summary: 回答权限、计划或提问卡片
+            operationId: AgentService_AgentAnswerWorkPrompt
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: prompt_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                description: |-
+                    choice：权限卡 allow | allow_session | deny | dismiss；计划卡 approve_plan | keep_planning | dismiss；
+                    提问卡 submit | stop | dismiss。已被回答返回 409，data 是已生效的卡片。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentWorkPromptAnswerRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentWorkPromptResponseBody'
+            x-hduhelp-http: {'auth': 'native_session', 'request_body_required': true}
     /hduhelp-neo/agent/sessions/{id}/stream-token:
         post:
             tags:
@@ -12131,6 +12371,38 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/AgentStreamTokenResponseBody'
             x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/agent/sessions/{id}/turns:
+        post:
+            tags:
+                - AgentService
+            summary: 发送一条消息（排队或立即发送）
+            operationId: AgentService_AgentSendWorkTurn
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                description: |-
+                    expected_head 落后于最近一次被接受的消息（别的设备发过）返回 409，data 带 head_seq、turn_seq。
+                    mode=interrupt 即「立即发送」（照 Orca 的 Steer）：回合正在跑时把这条消息送进正在跑的回合（status=steered），
+                    回合在等卡片回答或没有回合时排到队首；对已排队的 turn_id 重发 interrupt 也是立即发送它。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentWorkTurnRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentWorkTurnResponseBody'
+            x-hduhelp-http: {'auth': 'native_session', 'request_body_required': true}
     /hduhelp-neo/ai/v1/purposes/{purpose}/anthropic/v1/models:
         get:
             tags:
@@ -19680,6 +19952,77 @@ components:
                     type: string
                 revision_id:
                     type: string
+        AgentAppEndpoint:
+            required:
+                - id
+                - name
+                - base_url
+                - key_tail
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                base_url:
+                    type: string
+                key_tail:
+                    type: string
+        AgentAppModel:
+            required:
+                - id
+                - name
+                - reasoning_levels
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                image_input:
+                    type: boolean
+                    description: 模型能否看图；未知时不返回（按支持处理）
+                reasoning_levels:
+                    type: array
+                    items:
+                        type: string
+                context_window:
+                    type: integer
+                    format: int32
+            description: |-
+                ---- 工作会话（App）----
+                应答字段一律 snake_case，与 SSE 条目同形。写接口以客户端 ULID 为幂等键（会话 id、turn_id、op_id），
+                或以 version 做乐观锁。时间均为毫秒时间戳。
+        AgentAppModels:
+            required:
+                - models
+                - default_model
+                - endpoints
+            type: object
+            properties:
+                models:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentAppModel'
+                default_model:
+                    type: string
+                endpoints:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentAppEndpoint'
+        AgentAppModelsResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentAppModels'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AgentAppPreset:
             required:
                 - id
@@ -21191,6 +21534,474 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/AgentStreamToken'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentWorkAsset:
+            required:
+                - id
+                - kind
+                - name
+                - created_at
+            type: object
+            properties:
+                id:
+                    type: string
+                kind:
+                    enum:
+                        - preview
+                        - file
+                    type: string
+                name:
+                    type: string
+                path:
+                    type: string
+                size:
+                    type: integer
+                    format: int64
+                mime:
+                    type: string
+                port:
+                    type: integer
+                    format: int32
+                expires_at:
+                    type: integer
+                    format: int64
+                created_at:
+                    type: integer
+                    format: int64
+        AgentWorkAttachmentInput:
+            required:
+                - key
+                - name
+            type: object
+            properties:
+                key:
+                    type: string
+                    description: 签名直传（用途 agent_input）完成后的 key
+                name:
+                    type: string
+                mime:
+                    type: string
+                size:
+                    type: integer
+                    format: int64
+        AgentWorkCancelRequestBody:
+            type: object
+            properties:
+                turn_id:
+                    type: string
+                    description: 排队中的消息从队列撤下；不传取消进行中的回合
+        AgentWorkItem:
+            required:
+                - id
+                - rev
+                - seq
+                - turn_id
+                - kind
+                - state
+                - body
+                - observed_at
+            type: object
+            properties:
+                id:
+                    type: string
+                rev:
+                    type: integer
+                    format: int32
+                seq:
+                    type: integer
+                    format: int64
+                turn_id:
+                    type: string
+                agent_id:
+                    type: string
+                parent_agent_id:
+                    type: string
+                call_id:
+                    type: string
+                kind:
+                    enum:
+                        - user
+                        - message
+                        - reasoning
+                        - tool_call
+                        - tool_result
+                        - diff
+                        - image
+                        - file
+                        - prompt
+                        - status
+                        - turn
+                        - subagent
+                    type: string
+                state:
+                    enum:
+                        - null
+                        - running
+                        - completed
+                        - failed
+                        - interrupted
+                        - waiting
+                        - expired
+                    type: string
+                body:
+                    type: object
+                    description: 各 kind 自己的字段，见工作模式条目模型
+                observed_at:
+                    type: integer
+                    format: int64
+        AgentWorkItemPage:
+            required:
+                - items
+                - head_seq
+                - has_more
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentWorkItem'
+                head_seq:
+                    type: integer
+                    format: int64
+                has_more:
+                    type: boolean
+        AgentWorkItemPageResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentWorkItemPage'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentWorkPrompt:
+            required:
+                - prompt_id
+                - session_id
+                - run_id
+                - tool_use_id
+                - kind
+                - tool_name
+                - input
+                - options
+                - status
+                - created_at
+            type: object
+            properties:
+                prompt_id:
+                    type: string
+                session_id:
+                    type: string
+                run_id:
+                    type: string
+                tool_use_id:
+                    type: string
+                kind:
+                    enum:
+                        - permission
+                        - plan
+                        - question
+                    type: string
+                tool_name:
+                    type: string
+                input:
+                    type: object
+                    description: 工具入参原样（超过 64 KB 截断）
+                options:
+                    type: object
+                    description: title、display_name、description、decision_reason、decision_reason_type、blocked_path、suggestions、requires_user_interaction、suppress_always_allow_rule、default_to_no、mcp_server、request_id
+                status:
+                    enum:
+                        - waiting
+                        - answered
+                        - cancelled
+                        - expired
+                    type: string
+                choice:
+                    type: string
+                answers:
+                    type: object
+                    description: 提问卡片的回答：键是问题原文，单选为字符串，多选为字符串数组
+                answered_at:
+                    type: integer
+                    format: int64
+                created_at:
+                    type: integer
+                    format: int64
+        AgentWorkPromptAnswerRequestBody:
+            required:
+                - op_id
+                - choice
+            type: object
+            properties:
+                op_id:
+                    type: string
+                choice:
+                    type: string
+                answers:
+                    type: object
+                    description: submit 时必填：键是问题原文，单选为选项 label（「其他」的文字优先），多选为数组（「其他」的文字追加）
+        AgentWorkPromptResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentWorkPrompt'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentWorkSession:
+            required:
+                - id
+                - change_seq
+            type: object
+            properties:
+                id:
+                    type: string
+                deleted:
+                    type: boolean
+                preset_id:
+                    type: string
+                model:
+                    type: string
+                endpoint_id:
+                    type: string
+                title:
+                    type: string
+                archived:
+                    type: boolean
+                head_seq:
+                    type: integer
+                    format: int64
+                change_seq:
+                    type: integer
+                    format: int64
+                version:
+                    type: integer
+                    format: int64
+                context_lost:
+                    type: boolean
+                    description: 之前的上下文无法恢复，下一回合从新的 Claude 会话开始
+                last_turn_at:
+                    type: integer
+                    format: int64
+                created_at:
+                    type: integer
+                    format: int64
+                updated_at:
+                    type: integer
+                    format: int64
+            description: deleted=true 是墓碑：只有 id、deleted、change_seq 有意义。
+        AgentWorkSessionCreateRequestBody:
+            required:
+                - id
+                - preset_id
+            type: object
+            properties:
+                id:
+                    type: string
+                    description: 客户端生成的 ULID，也是幂等键
+                preset_id:
+                    type: string
+                model:
+                    type: string
+                endpoint_id:
+                    type: string
+                title:
+                    type: string
+        AgentWorkSessionDetail:
+            required:
+                - session
+                - state
+                - prompts
+                - assets
+            type: object
+            properties:
+                session:
+                    $ref: '#/components/schemas/AgentWorkSession'
+                state:
+                    $ref: '#/components/schemas/AgentWorkSessionState'
+                prompts:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentWorkPrompt'
+                assets:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentWorkAsset'
+        AgentWorkSessionDetailResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentWorkSessionDetail'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentWorkSessionPage:
+            required:
+                - sessions
+                - change_seq
+                - has_more
+            type: object
+            properties:
+                sessions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentWorkSession'
+                change_seq:
+                    type: integer
+                    format: int64
+                has_more:
+                    type: boolean
+        AgentWorkSessionPageResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentWorkSessionPage'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentWorkSessionPatchRequestBody:
+            required:
+                - version
+            type: object
+            properties:
+                version:
+                    type: integer
+                    format: int64
+                title:
+                    type: string
+                archived:
+                    type: boolean
+                model:
+                    type: string
+                endpoint_id:
+                    type: string
+        AgentWorkSessionResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentWorkSession'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentWorkSessionState:
+            required:
+                - session_id
+                - status
+                - sandbox
+                - queued
+                - head_seq
+            type: object
+            properties:
+                session_id:
+                    type: string
+                status:
+                    enum:
+                        - idle
+                        - queued
+                        - running
+                        - waiting
+                    type: string
+                sandbox:
+                    enum:
+                        - ready
+                        - starting
+                        - paused
+                    type: string
+                queued:
+                    type: integer
+                    format: int32
+                head_seq:
+                    type: integer
+                    format: int64
+                context_lost:
+                    type: boolean
+        AgentWorkTurn:
+            required:
+                - turn_id
+                - status
+                - head_seq
+                - queued
+            type: object
+            properties:
+                turn_id:
+                    type: string
+                status:
+                    enum:
+                        - queued
+                        - dispatched
+                        - running
+                        - waiting
+                        - completed
+                        - failed
+                        - cancelled
+                        - steered
+                        - idle
+                    type: string
+                head_seq:
+                    type: integer
+                    format: int64
+                queued:
+                    type: integer
+                    format: int32
+        AgentWorkTurnRequestBody:
+            required:
+                - turn_id
+                - expected_head
+            type: object
+            properties:
+                turn_id:
+                    type: string
+                text:
+                    type: string
+                attachments:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentWorkAttachmentInput'
+                expected_head:
+                    type: integer
+                    format: int64
+                mode:
+                    enum:
+                        - queue
+                        - interrupt
+                    type: string
+        AgentWorkTurnResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentWorkTurn'
                 code:
                     type: integer
                     format: int64
