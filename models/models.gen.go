@@ -1460,6 +1460,39 @@ func (e AcademicServiceGetClassroomsParamsStatus) Valid() bool {
 	}
 }
 
+// Defines values for AgentServiceAgentListSandboxesParamsStatus.
+const (
+	AgentServiceAgentListSandboxesParamsStatusArchiving    AgentServiceAgentListSandboxesParamsStatus = "archiving"
+	AgentServiceAgentListSandboxesParamsStatusDestroyed    AgentServiceAgentListSandboxesParamsStatus = "destroyed"
+	AgentServiceAgentListSandboxesParamsStatusFailed       AgentServiceAgentListSandboxesParamsStatus = "failed"
+	AgentServiceAgentListSandboxesParamsStatusNone         AgentServiceAgentListSandboxesParamsStatus = "none"
+	AgentServiceAgentListSandboxesParamsStatusPaused       AgentServiceAgentListSandboxesParamsStatus = "paused"
+	AgentServiceAgentListSandboxesParamsStatusProvisioning AgentServiceAgentListSandboxesParamsStatus = "provisioning"
+	AgentServiceAgentListSandboxesParamsStatusRunning      AgentServiceAgentListSandboxesParamsStatus = "running"
+)
+
+// Valid indicates whether the value is a known member of the AgentServiceAgentListSandboxesParamsStatus enum.
+func (e AgentServiceAgentListSandboxesParamsStatus) Valid() bool {
+	switch e {
+	case AgentServiceAgentListSandboxesParamsStatusArchiving:
+		return true
+	case AgentServiceAgentListSandboxesParamsStatusDestroyed:
+		return true
+	case AgentServiceAgentListSandboxesParamsStatusFailed:
+		return true
+	case AgentServiceAgentListSandboxesParamsStatusNone:
+		return true
+	case AgentServiceAgentListSandboxesParamsStatusPaused:
+		return true
+	case AgentServiceAgentListSandboxesParamsStatusProvisioning:
+		return true
+	case AgentServiceAgentListSandboxesParamsStatusRunning:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for FeedbackServiceListAdminFeedbacksParamsStatus.
 const (
 	FeedbackServiceListAdminFeedbacksParamsStatusHandled FeedbackServiceListAdminFeedbacksParamsStatus = "handled"
@@ -1750,22 +1783,22 @@ func (e ModelGatewayServiceModelConnectorHealthEventsParamsType) Valid() bool {
 
 // Defines values for ModelGatewayServiceModelConnectorProbesParamsTrigger.
 const (
-	ModelGatewayServiceModelConnectorProbesParamsTriggerAfterCreate ModelGatewayServiceModelConnectorProbesParamsTrigger = "after_create"
-	ModelGatewayServiceModelConnectorProbesParamsTriggerBatch       ModelGatewayServiceModelConnectorProbesParamsTrigger = "batch"
-	ModelGatewayServiceModelConnectorProbesParamsTriggerInterval    ModelGatewayServiceModelConnectorProbesParamsTrigger = "interval"
-	ModelGatewayServiceModelConnectorProbesParamsTriggerManual      ModelGatewayServiceModelConnectorProbesParamsTrigger = "manual"
+	AfterCreate ModelGatewayServiceModelConnectorProbesParamsTrigger = "after_create"
+	Batch       ModelGatewayServiceModelConnectorProbesParamsTrigger = "batch"
+	Interval    ModelGatewayServiceModelConnectorProbesParamsTrigger = "interval"
+	Manual      ModelGatewayServiceModelConnectorProbesParamsTrigger = "manual"
 )
 
 // Valid indicates whether the value is a known member of the ModelGatewayServiceModelConnectorProbesParamsTrigger enum.
 func (e ModelGatewayServiceModelConnectorProbesParamsTrigger) Valid() bool {
 	switch e {
-	case ModelGatewayServiceModelConnectorProbesParamsTriggerAfterCreate:
+	case AfterCreate:
 		return true
-	case ModelGatewayServiceModelConnectorProbesParamsTriggerBatch:
+	case Batch:
 		return true
-	case ModelGatewayServiceModelConnectorProbesParamsTriggerInterval:
+	case Interval:
 		return true
-	case ModelGatewayServiceModelConnectorProbesParamsTriggerManual:
+	case Manual:
 		return true
 	default:
 		return false
@@ -3948,6 +3981,32 @@ type AgentGitHubSource struct {
 	Repo string `json:"repo"`
 }
 
+// AgentLifecycleInput defines model for AgentLifecycleInput.
+type AgentLifecycleInput struct {
+	ArchiveAfterPausedSeconds int32   `json:"archive_after_paused_seconds"`
+	DailyActiveMinutes        int32   `json:"daily_active_minutes"`
+	IdlePauseSeconds          int32   `json:"idle_pause_seconds"`
+	PreviewKeepaliveSeconds   int32   `json:"preview_keepalive_seconds"`
+	PriceDiskGibHour          float64 `json:"price_disk_gib_hour"`
+	PriceMemoryGibHour        float64 `json:"price_memory_gib_hour"`
+	PricePausedGibHour        float64 `json:"price_paused_gib_hour"`
+	PriceVcpuHour             float64 `json:"price_vcpu_hour"`
+	WarmMinIntervalSeconds    int32   `json:"warm_min_interval_seconds"`
+}
+
+// AgentLifecycleSettings 沙箱生命周期参数与 Std 计划单价（元）。
+type AgentLifecycleSettings struct {
+	ArchiveAfterPausedSeconds int32   `json:"archiveAfterPausedSeconds"`
+	DailyActiveMinutes        int32   `json:"dailyActiveMinutes"`
+	IdlePauseSeconds          int32   `json:"idlePauseSeconds"`
+	PreviewKeepaliveSeconds   int32   `json:"previewKeepaliveSeconds"`
+	PriceDiskGibHour          float64 `json:"priceDiskGibHour"`
+	PriceMemoryGibHour        float64 `json:"priceMemoryGibHour"`
+	PricePausedGibHour        float64 `json:"pricePausedGibHour"`
+	PriceVcpuHour             float64 `json:"priceVcpuHour"`
+	WarmMinIntervalSeconds    int32   `json:"warmMinIntervalSeconds"`
+}
+
 // AgentMcpServer defines model for AgentMcpServer.
 type AgentMcpServer struct {
 	Args              []string          `json:"args"`
@@ -4262,29 +4321,133 @@ type AgentReference struct {
 	Name string `json:"name"`
 }
 
-// AgentSettings defines model for AgentSettings.
+// AgentSandbox 时间均为毫秒时间戳。idlePauseAt / archiveAt / maxRunAt 是按当前状态推算的下一次暂停、归档、20 小时上限。
+// today* 是北京时间当天（含尚未入账的部分）。
+type AgentSandbox struct {
+	ArchiveAt       *int64 `json:"archiveAt,omitempty"`
+	ExecutorVersion string `json:"executorVersion"`
+	ExternalId      string `json:"externalId"`
+	FailCount       int32  `json:"failCount"`
+	Generation      int32  `json:"generation"`
+	HasSessions     bool   `json:"hasSessions"`
+	Id              string `json:"id"`
+	IdlePauseAt     *int64 `json:"idlePauseAt,omitempty"`
+	LastActiveAt    *int64 `json:"lastActiveAt,omitempty"`
+	LastError       string `json:"lastError"`
+	LastPreviewAt   *int64 `json:"lastPreviewAt,omitempty"`
+	LastViewedAt    *int64 `json:"lastViewedAt,omitempty"`
+	LastWarmAt      *int64 `json:"lastWarmAt,omitempty"`
+	MaxRunAt        *int64 `json:"maxRunAt,omitempty"`
+	Provider        string `json:"provider"`
+
+	// Spec ---- 沙箱控制台 ----
+	Spec AgentSandboxSpec `json:"spec"`
+
+	// SpecOverride ---- 沙箱控制台 ----
+	SpecOverride        *AgentSandboxSpec `json:"specOverride,omitempty"`
+	StateSince          int64             `json:"stateSince"`
+	Status              string            `json:"status"`
+	Template            string            `json:"template"`
+	TodayCost           float64           `json:"todayCost"`
+	TodayPausedSeconds  int64             `json:"todayPausedSeconds"`
+	TodayRunningSeconds int64             `json:"todayRunningSeconds"`
+	UpdatedAt           int64             `json:"updatedAt"`
+	UserId              string            `json:"userId"`
+	Version             int64             `json:"version"`
+}
+
+// AgentSandboxActionRequestBody defines model for AgentSandboxActionRequestBody.
+type AgentSandboxActionRequestBody struct {
+	ExpectedVersion int64   `json:"expected_version"`
+	Reason          *string `json:"reason,omitempty"`
+}
+
+// AgentSandboxDestroyRequestBody defines model for AgentSandboxDestroyRequestBody.
+type AgentSandboxDestroyRequestBody struct {
+	ExpectedVersion int64   `json:"expected_version"`
+	Reason          *string `json:"reason,omitempty"`
+	WithSessions    *bool   `json:"with_sessions,omitempty"`
+}
+
+// AgentSandboxPage defines model for AgentSandboxPage.
+type AgentSandboxPage struct {
+	Items    []AgentSandbox `json:"items"`
+	Page     int32          `json:"page"`
+	PageSize int32          `json:"pageSize"`
+	Total    int64          `json:"total"`
+}
+
+// AgentSandboxPageResponseBody defines model for AgentSandboxPageResponseBody.
+type AgentSandboxPageResponseBody struct {
+	Code int64             `json:"code"`
+	Data *AgentSandboxPage `json:"data,omitempty"`
+	Msg  string            `json:"msg"`
+}
+
+// AgentSandboxResponseBody defines model for AgentSandboxResponseBody.
+type AgentSandboxResponseBody struct {
+	Code int64 `json:"code"`
+
+	// Data 时间均为毫秒时间戳。idlePauseAt / archiveAt / maxRunAt 是按当前状态推算的下一次暂停、归档、20 小时上限。
+	// today* 是北京时间当天（含尚未入账的部分）。
+	Data *AgentSandbox `json:"data,omitempty"`
+	Msg  string        `json:"msg"`
+}
+
+// AgentSandboxSpec ---- 沙箱控制台 ----
+type AgentSandboxSpec struct {
+	Cpu       int32 `json:"cpu"`
+	DiskMib   int32 `json:"diskMib"`
+	MemoryMib int32 `json:"memoryMib"`
+}
+
+// AgentSandboxSpecInput 整数核；内存为整数 GiB 且与 CPU 之比 1–4；磁盘 512 MB 或 10 GiB 的整数倍；上限 16 核。
+type AgentSandboxSpecInput struct {
+	Cpu       int32 `json:"cpu"`
+	DiskMib   int32 `json:"disk_mib"`
+	MemoryMib int32 `json:"memory_mib"`
+}
+
+// AgentSandboxSpecRequestBody defines model for AgentSandboxSpecRequestBody.
+type AgentSandboxSpecRequestBody struct {
+	ExpectedVersion int64   `json:"expected_version"`
+	Reason          *string `json:"reason,omitempty"`
+
+	// Spec 整数核；内存为整数 GiB 且与 CPU 之比 1–4；磁盘 512 MB 或 10 GiB 的整数倍；上限 16 核。
+	Spec AgentSandboxSpecInput `json:"spec"`
+}
+
+// AgentSettings sandboxEnabled 与 currentTemplate 来自部署（配置与 AGENT_EXECUTOR_TEMPLATE），只读。
 type AgentSettings struct {
-	DefaultProxyId   string `json:"defaultProxyId"`
-	GithubTokenSet   bool   `json:"githubTokenSet"`
-	SkillSyncEnabled bool   `json:"skillSyncEnabled"`
-	Version          int64  `json:"version"`
+	CurrentTemplate string `json:"currentTemplate"`
+	DefaultProxyId  string `json:"defaultProxyId"`
+	GithubTokenSet  bool   `json:"githubTokenSet"`
+
+	// Lifecycle 沙箱生命周期参数与 Std 计划单价（元）。
+	Lifecycle        AgentLifecycleSettings `json:"lifecycle"`
+	SandboxEnabled   bool                   `json:"sandboxEnabled"`
+	SkillSyncEnabled bool                   `json:"skillSyncEnabled"`
+	Version          int64                  `json:"version"`
 }
 
 // AgentSettingsResponseBody defines model for AgentSettingsResponseBody.
 type AgentSettingsResponseBody struct {
-	Code int64          `json:"code"`
+	Code int64 `json:"code"`
+
+	// Data sandboxEnabled 与 currentTemplate 来自部署（配置与 AGENT_EXECUTOR_TEMPLATE），只读。
 	Data *AgentSettings `json:"data,omitempty"`
 	Msg  string         `json:"msg"`
 }
 
 // AgentSettingsUpdateRequestBody defines model for AgentSettingsUpdateRequestBody.
 type AgentSettingsUpdateRequestBody struct {
-	ClearGithubToken *bool   `json:"clear_github_token,omitempty"`
-	DefaultProxyId   *string `json:"default_proxy_id,omitempty"`
-	ExpectedVersion  int64   `json:"expected_version"`
-	GithubToken      *string `json:"github_token,omitempty"`
-	Reason           *string `json:"reason,omitempty"`
-	SkillSyncEnabled bool    `json:"skill_sync_enabled"`
+	ClearGithubToken *bool                `json:"clear_github_token,omitempty"`
+	DefaultProxyId   *string              `json:"default_proxy_id,omitempty"`
+	ExpectedVersion  int64                `json:"expected_version"`
+	GithubToken      *string              `json:"github_token,omitempty"`
+	Lifecycle        *AgentLifecycleInput `json:"lifecycle,omitempty"`
+	Reason           *string              `json:"reason,omitempty"`
+	SkillSyncEnabled bool                 `json:"skill_sync_enabled"`
 }
 
 // AgentSkill defines model for AgentSkill.
@@ -17305,6 +17468,23 @@ type AgentServiceAgentDeleteProxyParams struct {
 	Reason          *string `form:"reason,omitempty" json:"reason,omitempty"`
 }
 
+// AgentServiceAgentListSandboxesParams defines parameters for AgentServiceAgentListSandboxes.
+type AgentServiceAgentListSandboxesParams struct {
+	Status   *AgentServiceAgentListSandboxesParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	UserId   *string                                     `form:"user_id,omitempty" json:"user_id,omitempty"`
+	Page     *int32                                      `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32                                      `form:"page_size,omitempty" json:"page_size,omitempty"`
+}
+
+// AgentServiceAgentListSandboxesParamsStatus defines parameters for AgentServiceAgentListSandboxes.
+type AgentServiceAgentListSandboxesParamsStatus string
+
+// AgentServiceAgentClearSandboxSpecParams defines parameters for AgentServiceAgentClearSandboxSpec.
+type AgentServiceAgentClearSandboxSpecParams struct {
+	ExpectedVersion *int64  `form:"expected_version,omitempty" json:"expected_version,omitempty"`
+	Reason          *string `form:"reason,omitempty" json:"reason,omitempty"`
+}
+
 // AgentServiceAgentListSkillsParams defines parameters for AgentServiceAgentListSkills.
 type AgentServiceAgentListSkillsParams struct {
 	SourceKind *string `form:"source_kind,omitempty" json:"source_kind,omitempty"`
@@ -19525,6 +19705,15 @@ type AgentServiceAgentTestProxyFormJSONRequestBody = AgentProxyTestRequestBody
 
 // AgentServiceAgentUpdateProxyJSONRequestBody defines body for AgentServiceAgentUpdateProxy for application/json ContentType.
 type AgentServiceAgentUpdateProxyJSONRequestBody = AgentProxyUpdateRequestBody
+
+// AgentServiceAgentDestroySandboxJSONRequestBody defines body for AgentServiceAgentDestroySandbox for application/json ContentType.
+type AgentServiceAgentDestroySandboxJSONRequestBody = AgentSandboxDestroyRequestBody
+
+// AgentServiceAgentPauseSandboxJSONRequestBody defines body for AgentServiceAgentPauseSandbox for application/json ContentType.
+type AgentServiceAgentPauseSandboxJSONRequestBody = AgentSandboxActionRequestBody
+
+// AgentServiceAgentSetSandboxSpecJSONRequestBody defines body for AgentServiceAgentSetSandboxSpec for application/json ContentType.
+type AgentServiceAgentSetSandboxSpecJSONRequestBody = AgentSandboxSpecRequestBody
 
 // AgentServiceAgentUpdateSettingsJSONRequestBody defines body for AgentServiceAgentUpdateSettings for application/json ContentType.
 type AgentServiceAgentUpdateSettingsJSONRequestBody = AgentSettingsUpdateRequestBody

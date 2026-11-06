@@ -2321,6 +2321,187 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/AgentProxyTestResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/agent/sandboxes:
+        get:
+            tags:
+                - AgentService
+            summary: 沙箱列表（每人一行，含今日时长与估算费用）
+            operationId: AgentService_AgentListSandboxes
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: status
+                  in: query
+                  schema:
+                    enum:
+                        - none
+                        - provisioning
+                        - running
+                        - paused
+                        - archiving
+                        - destroyed
+                        - failed
+                    type: string
+                - name: user_id
+                  in: query
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentSandboxPageResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/agent/sandboxes/{user_id}:
+        get:
+            tags:
+                - AgentService
+            summary: 某个用户的沙箱
+            operationId: AgentService_AgentGetSandbox
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentSandboxResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/agent/sandboxes/{user_id}/destroy:
+        post:
+            tags:
+                - AgentService
+            summary: 销毁沙箱（有工作会话时需确认）
+            operationId: AgentService_AgentDestroySandbox
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                description: 用户还有工作会话时须 with_sessions=true（会丢掉未归档的工作区）。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentSandboxDestroyRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentSandboxResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/agent/sandboxes/{user_id}/pause:
+        post:
+            tags:
+                - AgentService
+            summary: 立即暂停沙箱
+            operationId: AgentService_AgentPauseSandbox
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentSandboxActionRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentSandboxResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/agent/sandboxes/{user_id}/spec:
+        put:
+            tags:
+                - AgentService
+            summary: 设置用户的沙箱规格（下一次重建生效）
+            operationId: AgentService_AgentSetSandboxSpec
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                description: 规格在下一次归档重建时生效；设置后立即开始构建派生模板。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentSandboxSpecRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentSandboxResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+        delete:
+            tags:
+                - AgentService
+            summary: 恢复默认沙箱规格
+            operationId: AgentService_AgentClearSandboxSpec
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: expected_version
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: reason
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentSandboxResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/agent/settings:
         get:
             tags:
@@ -19539,6 +19720,87 @@ components:
                     type: string
                 path:
                     type: string
+        AgentLifecycleInput:
+            required:
+                - idle_pause_seconds
+                - preview_keepalive_seconds
+                - archive_after_paused_seconds
+                - warm_min_interval_seconds
+                - daily_active_minutes
+                - price_vcpu_hour
+                - price_memory_gib_hour
+                - price_disk_gib_hour
+                - price_paused_gib_hour
+            type: object
+            properties:
+                idle_pause_seconds:
+                    type: integer
+                    format: int32
+                preview_keepalive_seconds:
+                    type: integer
+                    format: int32
+                archive_after_paused_seconds:
+                    type: integer
+                    format: int32
+                warm_min_interval_seconds:
+                    type: integer
+                    format: int32
+                daily_active_minutes:
+                    type: integer
+                    format: int32
+                price_vcpu_hour:
+                    type: number
+                    format: double
+                price_memory_gib_hour:
+                    type: number
+                    format: double
+                price_disk_gib_hour:
+                    type: number
+                    format: double
+                price_paused_gib_hour:
+                    type: number
+                    format: double
+        AgentLifecycleSettings:
+            required:
+                - idlePauseSeconds
+                - previewKeepaliveSeconds
+                - archiveAfterPausedSeconds
+                - warmMinIntervalSeconds
+                - dailyActiveMinutes
+                - priceVcpuHour
+                - priceMemoryGibHour
+                - priceDiskGibHour
+                - pricePausedGibHour
+            type: object
+            properties:
+                idlePauseSeconds:
+                    type: integer
+                    format: int32
+                previewKeepaliveSeconds:
+                    type: integer
+                    format: int32
+                archiveAfterPausedSeconds:
+                    type: integer
+                    format: int32
+                warmMinIntervalSeconds:
+                    type: integer
+                    format: int32
+                dailyActiveMinutes:
+                    type: integer
+                    format: int32
+                priceVcpuHour:
+                    type: number
+                    format: double
+                priceMemoryGibHour:
+                    type: number
+                    format: double
+                priceDiskGibHour:
+                    type: number
+                    format: double
+                pricePausedGibHour:
+                    type: number
+                    format: double
+            description: 沙箱生命周期参数与 Std 计划单价（元）。
         AgentMcpServer:
             required:
                 - id
@@ -20225,12 +20487,223 @@ components:
                     type: string
                 name:
                     type: string
+        AgentSandbox:
+            required:
+                - id
+                - userId
+                - provider
+                - externalId
+                - generation
+                - status
+                - template
+                - executorVersion
+                - spec
+                - failCount
+                - lastError
+                - stateSince
+                - todayRunningSeconds
+                - todayPausedSeconds
+                - todayCost
+                - hasSessions
+                - version
+                - updatedAt
+            type: object
+            properties:
+                id:
+                    type: string
+                userId:
+                    type: string
+                provider:
+                    type: string
+                externalId:
+                    type: string
+                generation:
+                    type: integer
+                    format: int32
+                status:
+                    type: string
+                template:
+                    type: string
+                executorVersion:
+                    type: string
+                spec:
+                    $ref: '#/components/schemas/AgentSandboxSpec'
+                specOverride:
+                    $ref: '#/components/schemas/AgentSandboxSpec'
+                failCount:
+                    type: integer
+                    format: int32
+                lastError:
+                    type: string
+                stateSince:
+                    type: integer
+                    format: int64
+                lastActiveAt:
+                    type: integer
+                    format: int64
+                lastViewedAt:
+                    type: integer
+                    format: int64
+                lastPreviewAt:
+                    type: integer
+                    format: int64
+                lastWarmAt:
+                    type: integer
+                    format: int64
+                idlePauseAt:
+                    type: integer
+                    format: int64
+                archiveAt:
+                    type: integer
+                    format: int64
+                maxRunAt:
+                    type: integer
+                    format: int64
+                todayRunningSeconds:
+                    type: integer
+                    format: int64
+                todayPausedSeconds:
+                    type: integer
+                    format: int64
+                todayCost:
+                    type: number
+                    format: double
+                hasSessions:
+                    type: boolean
+                version:
+                    type: integer
+                    format: int64
+                updatedAt:
+                    type: integer
+                    format: int64
+            description: |-
+                时间均为毫秒时间戳。idlePauseAt / archiveAt / maxRunAt 是按当前状态推算的下一次暂停、归档、20 小时上限。
+                today* 是北京时间当天（含尚未入账的部分）。
+        AgentSandboxActionRequestBody:
+            required:
+                - expected_version
+            type: object
+            properties:
+                expected_version:
+                    type: integer
+                    format: int64
+                reason:
+                    type: string
+        AgentSandboxDestroyRequestBody:
+            required:
+                - expected_version
+            type: object
+            properties:
+                expected_version:
+                    type: integer
+                    format: int64
+                reason:
+                    type: string
+                with_sessions:
+                    type: boolean
+        AgentSandboxPage:
+            required:
+                - items
+                - total
+                - page
+                - pageSize
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentSandbox'
+                total:
+                    type: integer
+                    format: int64
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+        AgentSandboxPageResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentSandboxPage'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentSandboxResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentSandbox'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentSandboxSpec:
+            required:
+                - cpu
+                - memoryMib
+                - diskMib
+            type: object
+            properties:
+                cpu:
+                    type: integer
+                    format: int32
+                memoryMib:
+                    type: integer
+                    format: int32
+                diskMib:
+                    type: integer
+                    format: int32
+            description: '---- 沙箱控制台 ----'
+        AgentSandboxSpecInput:
+            required:
+                - cpu
+                - memory_mib
+                - disk_mib
+            type: object
+            properties:
+                cpu:
+                    type: integer
+                    format: int32
+                memory_mib:
+                    type: integer
+                    format: int32
+                disk_mib:
+                    type: integer
+                    format: int32
+            description: 整数核；内存为整数 GiB 且与 CPU 之比 1–4；磁盘 512 MB 或 10 GiB 的整数倍；上限 16 核。
+        AgentSandboxSpecRequestBody:
+            required:
+                - spec
+                - expected_version
+            type: object
+            properties:
+                spec:
+                    $ref: '#/components/schemas/AgentSandboxSpecInput'
+                expected_version:
+                    type: integer
+                    format: int64
+                reason:
+                    type: string
         AgentSettings:
             required:
                 - defaultProxyId
                 - githubTokenSet
                 - skillSyncEnabled
                 - version
+                - lifecycle
+                - sandboxEnabled
+                - currentTemplate
             type: object
             properties:
                 defaultProxyId:
@@ -20242,6 +20715,13 @@ components:
                 version:
                     type: integer
                     format: int64
+                lifecycle:
+                    $ref: '#/components/schemas/AgentLifecycleSettings'
+                sandboxEnabled:
+                    type: boolean
+                currentTemplate:
+                    type: string
+            description: sandboxEnabled 与 currentTemplate 来自部署（配置与 AGENT_EXECUTOR_TEMPLATE），只读。
         AgentSettingsResponseBody:
             required:
                 - code
@@ -20274,6 +20754,8 @@ components:
                     format: int64
                 reason:
                     type: string
+                lifecycle:
+                    $ref: '#/components/schemas/AgentLifecycleInput'
         AgentSkill:
             required:
                 - id

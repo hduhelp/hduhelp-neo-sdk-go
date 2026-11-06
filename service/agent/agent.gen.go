@@ -1171,6 +1171,330 @@ func (s *Service) AgentTestProxy(ctx context.Context, req *AgentTestProxyReq, op
 	return resp, err
 }
 
+// AgentListSandboxesReq is the request for AgentListSandboxes.
+type AgentListSandboxesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentListSandboxesReqBuilder builds a AgentListSandboxesReq with a fluent setter per field.
+type AgentListSandboxesReqBuilder struct{ req *AgentListSandboxesReq }
+
+// NewAgentListSandboxesReqBuilder creates a request builder for AgentListSandboxes.
+func NewAgentListSandboxesReqBuilder() *AgentListSandboxesReqBuilder {
+	return &AgentListSandboxesReqBuilder{req: &AgentListSandboxesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Status sets the "status" query parameter.
+func (b *AgentListSandboxesReqBuilder) Status(v string) *AgentListSandboxesReqBuilder {
+	b.req.queryParams["status"] = v
+	return b
+}
+
+// UserId sets the "user_id" query parameter.
+func (b *AgentListSandboxesReqBuilder) UserId(v string) *AgentListSandboxesReqBuilder {
+	b.req.queryParams["user_id"] = v
+	return b
+}
+
+// Page sets the "page" query parameter.
+func (b *AgentListSandboxesReqBuilder) Page(v int32) *AgentListSandboxesReqBuilder {
+	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// PageSize sets the "page_size" query parameter.
+func (b *AgentListSandboxesReqBuilder) PageSize(v int32) *AgentListSandboxesReqBuilder {
+	b.req.queryParams["page_size"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentListSandboxesReqBuilder) Build() *AgentListSandboxesReq { return b.req }
+
+// AgentListSandboxesResp is the response for AgentListSandboxes.
+type AgentListSandboxesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentSandboxPage `json:"data"`
+}
+
+// AgentListSandboxes: 沙箱列表（每人一行，含今日时长与估算费用）
+func (s *Service) AgentListSandboxes(ctx context.Context, req *AgentListSandboxesReq, opts ...core.RequestOption) (*AgentListSandboxesResp, error) {
+	resp := &AgentListSandboxesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/agent/sandboxes",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentGetSandboxReq is the request for AgentGetSandbox.
+type AgentGetSandboxReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentGetSandboxReqBuilder builds a AgentGetSandboxReq with a fluent setter per field.
+type AgentGetSandboxReqBuilder struct{ req *AgentGetSandboxReq }
+
+// NewAgentGetSandboxReqBuilder creates a request builder for AgentGetSandbox.
+func NewAgentGetSandboxReqBuilder() *AgentGetSandboxReqBuilder {
+	return &AgentGetSandboxReqBuilder{req: &AgentGetSandboxReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// UserId sets the "user_id" path parameter.
+func (b *AgentGetSandboxReqBuilder) UserId(v string) *AgentGetSandboxReqBuilder {
+	b.req.pathParams["user_id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentGetSandboxReqBuilder) Build() *AgentGetSandboxReq { return b.req }
+
+// AgentGetSandboxResp is the response for AgentGetSandbox.
+type AgentGetSandboxResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentSandbox `json:"data"`
+}
+
+// AgentGetSandbox: 某个用户的沙箱
+func (s *Service) AgentGetSandbox(ctx context.Context, req *AgentGetSandboxReq, opts ...core.RequestOption) (*AgentGetSandboxResp, error) {
+	resp := &AgentGetSandboxResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/agent/sandboxes/{user_id}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentDestroySandboxReq is the request for AgentDestroySandbox.
+type AgentDestroySandboxReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentDestroySandboxReqBuilder builds a AgentDestroySandboxReq with a fluent setter per field.
+type AgentDestroySandboxReqBuilder struct{ req *AgentDestroySandboxReq }
+
+// NewAgentDestroySandboxReqBuilder creates a request builder for AgentDestroySandbox.
+func NewAgentDestroySandboxReqBuilder() *AgentDestroySandboxReqBuilder {
+	return &AgentDestroySandboxReqBuilder{req: &AgentDestroySandboxReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// UserId sets the "user_id" path parameter.
+func (b *AgentDestroySandboxReqBuilder) UserId(v string) *AgentDestroySandboxReqBuilder {
+	b.req.pathParams["user_id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AgentDestroySandboxReqBuilder) Body(body *models.AgentSandboxDestroyRequestBody) *AgentDestroySandboxReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentDestroySandboxReqBuilder) Build() *AgentDestroySandboxReq { return b.req }
+
+// AgentDestroySandboxResp is the response for AgentDestroySandbox.
+type AgentDestroySandboxResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentSandbox `json:"data"`
+}
+
+// AgentDestroySandbox: 销毁沙箱（有工作会话时需确认）
+func (s *Service) AgentDestroySandbox(ctx context.Context, req *AgentDestroySandboxReq, opts ...core.RequestOption) (*AgentDestroySandboxResp, error) {
+	resp := &AgentDestroySandboxResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/agent/sandboxes/{user_id}/destroy",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentPauseSandboxReq is the request for AgentPauseSandbox.
+type AgentPauseSandboxReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentPauseSandboxReqBuilder builds a AgentPauseSandboxReq with a fluent setter per field.
+type AgentPauseSandboxReqBuilder struct{ req *AgentPauseSandboxReq }
+
+// NewAgentPauseSandboxReqBuilder creates a request builder for AgentPauseSandbox.
+func NewAgentPauseSandboxReqBuilder() *AgentPauseSandboxReqBuilder {
+	return &AgentPauseSandboxReqBuilder{req: &AgentPauseSandboxReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// UserId sets the "user_id" path parameter.
+func (b *AgentPauseSandboxReqBuilder) UserId(v string) *AgentPauseSandboxReqBuilder {
+	b.req.pathParams["user_id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AgentPauseSandboxReqBuilder) Body(body *models.AgentSandboxActionRequestBody) *AgentPauseSandboxReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentPauseSandboxReqBuilder) Build() *AgentPauseSandboxReq { return b.req }
+
+// AgentPauseSandboxResp is the response for AgentPauseSandbox.
+type AgentPauseSandboxResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentSandbox `json:"data"`
+}
+
+// AgentPauseSandbox: 立即暂停沙箱
+func (s *Service) AgentPauseSandbox(ctx context.Context, req *AgentPauseSandboxReq, opts ...core.RequestOption) (*AgentPauseSandboxResp, error) {
+	resp := &AgentPauseSandboxResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/agent/sandboxes/{user_id}/pause",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentSetSandboxSpecReq is the request for AgentSetSandboxSpec.
+type AgentSetSandboxSpecReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentSetSandboxSpecReqBuilder builds a AgentSetSandboxSpecReq with a fluent setter per field.
+type AgentSetSandboxSpecReqBuilder struct{ req *AgentSetSandboxSpecReq }
+
+// NewAgentSetSandboxSpecReqBuilder creates a request builder for AgentSetSandboxSpec.
+func NewAgentSetSandboxSpecReqBuilder() *AgentSetSandboxSpecReqBuilder {
+	return &AgentSetSandboxSpecReqBuilder{req: &AgentSetSandboxSpecReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// UserId sets the "user_id" path parameter.
+func (b *AgentSetSandboxSpecReqBuilder) UserId(v string) *AgentSetSandboxSpecReqBuilder {
+	b.req.pathParams["user_id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AgentSetSandboxSpecReqBuilder) Body(body *models.AgentSandboxSpecRequestBody) *AgentSetSandboxSpecReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentSetSandboxSpecReqBuilder) Build() *AgentSetSandboxSpecReq { return b.req }
+
+// AgentSetSandboxSpecResp is the response for AgentSetSandboxSpec.
+type AgentSetSandboxSpecResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentSandbox `json:"data"`
+}
+
+// AgentSetSandboxSpec: 设置用户的沙箱规格（下一次重建生效）
+func (s *Service) AgentSetSandboxSpec(ctx context.Context, req *AgentSetSandboxSpecReq, opts ...core.RequestOption) (*AgentSetSandboxSpecResp, error) {
+	resp := &AgentSetSandboxSpecResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/agent/sandboxes/{user_id}/spec",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentClearSandboxSpecReq is the request for AgentClearSandboxSpec.
+type AgentClearSandboxSpecReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentClearSandboxSpecReqBuilder builds a AgentClearSandboxSpecReq with a fluent setter per field.
+type AgentClearSandboxSpecReqBuilder struct{ req *AgentClearSandboxSpecReq }
+
+// NewAgentClearSandboxSpecReqBuilder creates a request builder for AgentClearSandboxSpec.
+func NewAgentClearSandboxSpecReqBuilder() *AgentClearSandboxSpecReqBuilder {
+	return &AgentClearSandboxSpecReqBuilder{req: &AgentClearSandboxSpecReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// UserId sets the "user_id" path parameter.
+func (b *AgentClearSandboxSpecReqBuilder) UserId(v string) *AgentClearSandboxSpecReqBuilder {
+	b.req.pathParams["user_id"] = v
+	return b
+}
+
+// ExpectedVersion sets the "expected_version" query parameter.
+func (b *AgentClearSandboxSpecReqBuilder) ExpectedVersion(v int64) *AgentClearSandboxSpecReqBuilder {
+	b.req.queryParams["expected_version"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// Reason sets the "reason" query parameter.
+func (b *AgentClearSandboxSpecReqBuilder) Reason(v string) *AgentClearSandboxSpecReqBuilder {
+	b.req.queryParams["reason"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentClearSandboxSpecReqBuilder) Build() *AgentClearSandboxSpecReq { return b.req }
+
+// AgentClearSandboxSpecResp is the response for AgentClearSandboxSpec.
+type AgentClearSandboxSpecResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentSandbox `json:"data"`
+}
+
+// AgentClearSandboxSpec: 恢复默认沙箱规格
+func (s *Service) AgentClearSandboxSpec(ctx context.Context, req *AgentClearSandboxSpecReq, opts ...core.RequestOption) (*AgentClearSandboxSpecResp, error) {
+	resp := &AgentClearSandboxSpecResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/admin/agent/sandboxes/{user_id}/spec",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // AgentGetSettingsReq is the request for AgentGetSettings.
 type AgentGetSettingsReq struct {
 	pathParams  map[string]string
