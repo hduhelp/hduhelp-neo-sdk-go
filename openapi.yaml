@@ -12108,6 +12108,29 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/AgentAppPresetListResponseBody'
             x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/agent/sessions/{id}/stream-token:
+        post:
+            tags:
+                - AgentService
+            summary: 签工作会话的 SSE 连接令牌（5 分钟，绑定用户与会话）
+            description: 用返回的 streamPath 连 GET /hduhelp-neo/agent-rt/stream（实时网关）。
+            operationId: AgentService_AgentCreateStreamToken
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentStreamTokenResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/ai/v1/purposes/{purpose}/anthropic/v1/models:
         get:
             tags:
@@ -21145,6 +21168,33 @@ components:
                     type: integer
                     format: int64
                 reason:
+                    type: string
+        AgentStreamToken:
+            required:
+                - token
+                - expiresAt
+                - streamPath
+            type: object
+            properties:
+                token:
+                    type: string
+                expiresAt:
+                    type: integer
+                    format: int64
+                streamPath:
+                    type: string
+        AgentStreamTokenResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentStreamToken'
+                code:
+                    type: integer
+                    format: int64
+                msg:
                     type: string
         AgentWriteRequestBody:
             required:

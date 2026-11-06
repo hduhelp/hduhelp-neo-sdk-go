@@ -2023,3 +2023,49 @@ func (s *Service) AgentAppPresets(ctx context.Context, req *AgentAppPresetsReq, 
 	}, resp, opts...)
 	return resp, err
 }
+
+// AgentCreateStreamTokenReq is the request for AgentCreateStreamToken.
+type AgentCreateStreamTokenReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentCreateStreamTokenReqBuilder builds a AgentCreateStreamTokenReq with a fluent setter per field.
+type AgentCreateStreamTokenReqBuilder struct{ req *AgentCreateStreamTokenReq }
+
+// NewAgentCreateStreamTokenReqBuilder creates a request builder for AgentCreateStreamToken.
+func NewAgentCreateStreamTokenReqBuilder() *AgentCreateStreamTokenReqBuilder {
+	return &AgentCreateStreamTokenReqBuilder{req: &AgentCreateStreamTokenReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentCreateStreamTokenReqBuilder) Id(v string) *AgentCreateStreamTokenReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentCreateStreamTokenReqBuilder) Build() *AgentCreateStreamTokenReq { return b.req }
+
+// AgentCreateStreamTokenResp is the response for AgentCreateStreamToken.
+type AgentCreateStreamTokenResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentStreamToken `json:"data"`
+}
+
+// AgentCreateStreamToken: 签工作会话的 SSE 连接令牌（5 分钟，绑定用户与会话）
+func (s *Service) AgentCreateStreamToken(ctx context.Context, req *AgentCreateStreamTokenReq, opts ...core.RequestOption) (*AgentCreateStreamTokenResp, error) {
+	resp := &AgentCreateStreamTokenResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/agent/sessions/{id}/stream-token",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}

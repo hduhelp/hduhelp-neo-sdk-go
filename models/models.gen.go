@@ -4639,6 +4639,20 @@ type AgentSkillUpdateRequestBodyProxyMode string
 // AgentSkillUpdateRequestBodyStatus defines model for AgentSkillUpdateRequestBody.Status.
 type AgentSkillUpdateRequestBodyStatus string
 
+// AgentStreamToken defines model for AgentStreamToken.
+type AgentStreamToken struct {
+	ExpiresAt  int64  `json:"expiresAt"`
+	StreamPath string `json:"streamPath"`
+	Token      string `json:"token"`
+}
+
+// AgentStreamTokenResponseBody defines model for AgentStreamTokenResponseBody.
+type AgentStreamTokenResponseBody struct {
+	Code int64             `json:"code"`
+	Data *AgentStreamToken `json:"data,omitempty"`
+	Msg  string            `json:"msg"`
+}
+
 // AgentWriteRequestBody defines model for AgentWriteRequestBody.
 type AgentWriteRequestBody struct {
 	ExpectedVersion int64   `json:"expected_version"`
