@@ -11,6 +11,216 @@ const (
 	UATBearerAuthScopes      uATBearerAuthContextKey      = "UATBearerAuth.Scopes"
 )
 
+// Defines values for AgentMcpServerInputProxyMode.
+const (
+	AgentMcpServerInputProxyModeDefault AgentMcpServerInputProxyMode = "default"
+	AgentMcpServerInputProxyModeDirect  AgentMcpServerInputProxyMode = "direct"
+	AgentMcpServerInputProxyModePreset  AgentMcpServerInputProxyMode = "preset"
+)
+
+// Valid indicates whether the value is a known member of the AgentMcpServerInputProxyMode enum.
+func (e AgentMcpServerInputProxyMode) Valid() bool {
+	switch e {
+	case AgentMcpServerInputProxyModeDefault:
+		return true
+	case AgentMcpServerInputProxyModeDirect:
+		return true
+	case AgentMcpServerInputProxyModePreset:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentMcpServerInputStatus.
+const (
+	AgentMcpServerInputStatusActive   AgentMcpServerInputStatus = "active"
+	AgentMcpServerInputStatusDisabled AgentMcpServerInputStatus = "disabled"
+)
+
+// Valid indicates whether the value is a known member of the AgentMcpServerInputStatus enum.
+func (e AgentMcpServerInputStatus) Valid() bool {
+	switch e {
+	case AgentMcpServerInputStatusActive:
+		return true
+	case AgentMcpServerInputStatusDisabled:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentMcpServerInputTransport.
+const (
+	AgentMcpServerInputTransportHttp  AgentMcpServerInputTransport = "http"
+	AgentMcpServerInputTransportStdio AgentMcpServerInputTransport = "stdio"
+)
+
+// Valid indicates whether the value is a known member of the AgentMcpServerInputTransport enum.
+func (e AgentMcpServerInputTransport) Valid() bool {
+	switch e {
+	case AgentMcpServerInputTransportHttp:
+		return true
+	case AgentMcpServerInputTransportStdio:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentPresetInputReasoning.
+const (
+	AgentPresetInputReasoningAuto   AgentPresetInputReasoning = "auto"
+	AgentPresetInputReasoningHigh   AgentPresetInputReasoning = "high"
+	AgentPresetInputReasoningLow    AgentPresetInputReasoning = "low"
+	AgentPresetInputReasoningMax    AgentPresetInputReasoning = "max"
+	AgentPresetInputReasoningMedium AgentPresetInputReasoning = "medium"
+	AgentPresetInputReasoningXhigh  AgentPresetInputReasoning = "xhigh"
+)
+
+// Valid indicates whether the value is a known member of the AgentPresetInputReasoning enum.
+func (e AgentPresetInputReasoning) Valid() bool {
+	switch e {
+	case AgentPresetInputReasoningAuto:
+		return true
+	case AgentPresetInputReasoningHigh:
+		return true
+	case AgentPresetInputReasoningLow:
+		return true
+	case AgentPresetInputReasoningMax:
+		return true
+	case AgentPresetInputReasoningMedium:
+		return true
+	case AgentPresetInputReasoningXhigh:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentProxyInputProtocol.
+const (
+	AgentProxyInputProtocolHttp    AgentProxyInputProtocol = "http"
+	AgentProxyInputProtocolHttps   AgentProxyInputProtocol = "https"
+	AgentProxyInputProtocolSocks5  AgentProxyInputProtocol = "socks5"
+	AgentProxyInputProtocolSocks5h AgentProxyInputProtocol = "socks5h"
+)
+
+// Valid indicates whether the value is a known member of the AgentProxyInputProtocol enum.
+func (e AgentProxyInputProtocol) Valid() bool {
+	switch e {
+	case AgentProxyInputProtocolHttp:
+		return true
+	case AgentProxyInputProtocolHttps:
+		return true
+	case AgentProxyInputProtocolSocks5:
+		return true
+	case AgentProxyInputProtocolSocks5h:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentSkillCreateRequestBodyProxyMode.
+const (
+	AgentSkillCreateRequestBodyProxyModeDefault AgentSkillCreateRequestBodyProxyMode = "default"
+	AgentSkillCreateRequestBodyProxyModeDirect  AgentSkillCreateRequestBodyProxyMode = "direct"
+	AgentSkillCreateRequestBodyProxyModePreset  AgentSkillCreateRequestBodyProxyMode = "preset"
+)
+
+// Valid indicates whether the value is a known member of the AgentSkillCreateRequestBodyProxyMode enum.
+func (e AgentSkillCreateRequestBodyProxyMode) Valid() bool {
+	switch e {
+	case AgentSkillCreateRequestBodyProxyModeDefault:
+		return true
+	case AgentSkillCreateRequestBodyProxyModeDirect:
+		return true
+	case AgentSkillCreateRequestBodyProxyModePreset:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentSkillCreateRequestBodySourceKind.
+const (
+	Archive AgentSkillCreateRequestBodySourceKind = "archive"
+	Github  AgentSkillCreateRequestBodySourceKind = "github"
+)
+
+// Valid indicates whether the value is a known member of the AgentSkillCreateRequestBodySourceKind enum.
+func (e AgentSkillCreateRequestBodySourceKind) Valid() bool {
+	switch e {
+	case Archive:
+		return true
+	case Github:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentSkillScanGitHubRequestBodyProxyMode.
+const (
+	AgentSkillScanGitHubRequestBodyProxyModeDefault AgentSkillScanGitHubRequestBodyProxyMode = "default"
+	AgentSkillScanGitHubRequestBodyProxyModeDirect  AgentSkillScanGitHubRequestBodyProxyMode = "direct"
+	AgentSkillScanGitHubRequestBodyProxyModePreset  AgentSkillScanGitHubRequestBodyProxyMode = "preset"
+)
+
+// Valid indicates whether the value is a known member of the AgentSkillScanGitHubRequestBodyProxyMode enum.
+func (e AgentSkillScanGitHubRequestBodyProxyMode) Valid() bool {
+	switch e {
+	case AgentSkillScanGitHubRequestBodyProxyModeDefault:
+		return true
+	case AgentSkillScanGitHubRequestBodyProxyModeDirect:
+		return true
+	case AgentSkillScanGitHubRequestBodyProxyModePreset:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentSkillUpdateRequestBodyProxyMode.
+const (
+	AgentSkillUpdateRequestBodyProxyModeDefault AgentSkillUpdateRequestBodyProxyMode = "default"
+	AgentSkillUpdateRequestBodyProxyModeDirect  AgentSkillUpdateRequestBodyProxyMode = "direct"
+	AgentSkillUpdateRequestBodyProxyModePreset  AgentSkillUpdateRequestBodyProxyMode = "preset"
+)
+
+// Valid indicates whether the value is a known member of the AgentSkillUpdateRequestBodyProxyMode enum.
+func (e AgentSkillUpdateRequestBodyProxyMode) Valid() bool {
+	switch e {
+	case AgentSkillUpdateRequestBodyProxyModeDefault:
+		return true
+	case AgentSkillUpdateRequestBodyProxyModeDirect:
+		return true
+	case AgentSkillUpdateRequestBodyProxyModePreset:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentSkillUpdateRequestBodyStatus.
+const (
+	AgentSkillUpdateRequestBodyStatusActive   AgentSkillUpdateRequestBodyStatus = "active"
+	AgentSkillUpdateRequestBodyStatusDisabled AgentSkillUpdateRequestBodyStatus = "disabled"
+)
+
+// Valid indicates whether the value is a known member of the AgentSkillUpdateRequestBodyStatus enum.
+func (e AgentSkillUpdateRequestBodyStatus) Valid() bool {
+	switch e {
+	case AgentSkillUpdateRequestBodyStatusActive:
+		return true
+	case AgentSkillUpdateRequestBodyStatusDisabled:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CreateFeedbackRequestBodyFeedbackType.
 const (
 	CreateFeedbackRequestBodyFeedbackTypeAssistant CreateFeedbackRequestBodyFeedbackType = "assistant"
@@ -1540,22 +1750,22 @@ func (e ModelGatewayServiceModelConnectorHealthEventsParamsType) Valid() bool {
 
 // Defines values for ModelGatewayServiceModelConnectorProbesParamsTrigger.
 const (
-	AfterCreate ModelGatewayServiceModelConnectorProbesParamsTrigger = "after_create"
-	Batch       ModelGatewayServiceModelConnectorProbesParamsTrigger = "batch"
-	Interval    ModelGatewayServiceModelConnectorProbesParamsTrigger = "interval"
-	Manual      ModelGatewayServiceModelConnectorProbesParamsTrigger = "manual"
+	ModelGatewayServiceModelConnectorProbesParamsTriggerAfterCreate ModelGatewayServiceModelConnectorProbesParamsTrigger = "after_create"
+	ModelGatewayServiceModelConnectorProbesParamsTriggerBatch       ModelGatewayServiceModelConnectorProbesParamsTrigger = "batch"
+	ModelGatewayServiceModelConnectorProbesParamsTriggerInterval    ModelGatewayServiceModelConnectorProbesParamsTrigger = "interval"
+	ModelGatewayServiceModelConnectorProbesParamsTriggerManual      ModelGatewayServiceModelConnectorProbesParamsTrigger = "manual"
 )
 
 // Valid indicates whether the value is a known member of the ModelGatewayServiceModelConnectorProbesParamsTrigger enum.
 func (e ModelGatewayServiceModelConnectorProbesParamsTrigger) Valid() bool {
 	switch e {
-	case AfterCreate:
+	case ModelGatewayServiceModelConnectorProbesParamsTriggerAfterCreate:
 		return true
-	case Batch:
+	case ModelGatewayServiceModelConnectorProbesParamsTriggerBatch:
 		return true
-	case Interval:
+	case ModelGatewayServiceModelConnectorProbesParamsTriggerInterval:
 		return true
-	case Manual:
+	case ModelGatewayServiceModelConnectorProbesParamsTriggerManual:
 		return true
 	default:
 		return false
@@ -3705,6 +3915,571 @@ type AdminWishReviewResponseBody struct {
 type AdoptRevisionRequestBody struct {
 	CarrierId  *string `json:"carrier_id,omitempty"`
 	RevisionId *string `json:"revision_id,omitempty"`
+}
+
+// AgentAppPreset defines model for AgentAppPreset.
+type AgentAppPreset struct {
+	AllowPreview bool   `json:"allowPreview"`
+	DefaultModel string `json:"defaultModel"`
+	Description  string `json:"description"`
+	Icon         string `json:"icon"`
+	Id           string `json:"id"`
+	IsDefault    bool   `json:"isDefault"`
+	Name         string `json:"name"`
+}
+
+// AgentAppPresetListResponseBody defines model for AgentAppPresetListResponseBody.
+type AgentAppPresetListResponseBody struct {
+	Code int64             `json:"code"`
+	Data *[]AgentAppPreset `json:"data,omitempty"`
+	Msg  string            `json:"msg"`
+}
+
+// AgentArchiveSource defines model for AgentArchiveSource.
+type AgentArchiveSource struct {
+	Filename string `json:"filename"`
+	Path     string `json:"path"`
+}
+
+// AgentGitHubSource defines model for AgentGitHubSource.
+type AgentGitHubSource struct {
+	Path string `json:"path"`
+	Ref  string `json:"ref"`
+	Repo string `json:"repo"`
+}
+
+// AgentMcpServer defines model for AgentMcpServer.
+type AgentMcpServer struct {
+	Args              []string          `json:"args"`
+	Command           string            `json:"command"`
+	CreatedAt         int64             `json:"createdAt"`
+	CreatedBy         string            `json:"createdBy"`
+	Description       string            `json:"description"`
+	DiscoveredAt      *int64            `json:"discoveredAt,omitempty"`
+	DiscoveredTools   []AgentMcpTool    `json:"discoveredTools"`
+	Env               map[string]string `json:"env"`
+	Headers           map[string]string `json:"headers"`
+	Id                string            `json:"id"`
+	Name              string            `json:"name"`
+	ProxyId           *string           `json:"proxyId,omitempty"`
+	ProxyMode         string            `json:"proxyMode"`
+	RefCount          int32             `json:"refCount"`
+	SecretEnvNames    []string          `json:"secretEnvNames"`
+	SecretHeaderNames []string          `json:"secretHeaderNames"`
+	Slug              string            `json:"slug"`
+	Status            string            `json:"status"`
+	ToolAllowlist     []string          `json:"toolAllowlist"`
+	Transport         string            `json:"transport"`
+	UpdatedAt         int64             `json:"updatedAt"`
+	UpdatedBy         string            `json:"updatedBy"`
+	Url               string            `json:"url"`
+	Version           int64             `json:"version"`
+}
+
+// AgentMcpServerCreateRequestBody defines model for AgentMcpServerCreateRequestBody.
+type AgentMcpServerCreateRequestBody struct {
+	Reason *string `json:"reason,omitempty"`
+
+	// Server secret_headers / secret_env 给出全部密钥名：值为空 = 保留已保存的，缺席的名字被清除。
+	Server AgentMcpServerInput `json:"server"`
+}
+
+// AgentMcpServerInput secret_headers / secret_env 给出全部密钥名：值为空 = 保留已保存的，缺席的名字被清除。
+type AgentMcpServerInput struct {
+	Args          *[]string                    `json:"args,omitempty"`
+	Command       *string                      `json:"command,omitempty"`
+	Description   *string                      `json:"description,omitempty"`
+	Env           *map[string]string           `json:"env,omitempty"`
+	Headers       *map[string]string           `json:"headers,omitempty"`
+	Name          string                       `json:"name"`
+	ProxyId       *string                      `json:"proxy_id,omitempty"`
+	ProxyMode     AgentMcpServerInputProxyMode `json:"proxy_mode"`
+	SecretEnv     *map[string]string           `json:"secret_env,omitempty"`
+	SecretHeaders *map[string]string           `json:"secret_headers,omitempty"`
+	Slug          string                       `json:"slug"`
+	Status        AgentMcpServerInputStatus    `json:"status"`
+	ToolAllowlist []string                     `json:"tool_allowlist"`
+	Transport     AgentMcpServerInputTransport `json:"transport"`
+	Url           *string                      `json:"url,omitempty"`
+}
+
+// AgentMcpServerInputProxyMode defines model for AgentMcpServerInput.ProxyMode.
+type AgentMcpServerInputProxyMode string
+
+// AgentMcpServerInputStatus defines model for AgentMcpServerInput.Status.
+type AgentMcpServerInputStatus string
+
+// AgentMcpServerInputTransport defines model for AgentMcpServerInput.Transport.
+type AgentMcpServerInputTransport string
+
+// AgentMcpServerListResponseBody defines model for AgentMcpServerListResponseBody.
+type AgentMcpServerListResponseBody struct {
+	Code int64             `json:"code"`
+	Data *[]AgentMcpServer `json:"data,omitempty"`
+	Msg  string            `json:"msg"`
+}
+
+// AgentMcpServerResponseBody defines model for AgentMcpServerResponseBody.
+type AgentMcpServerResponseBody struct {
+	Code int64           `json:"code"`
+	Data *AgentMcpServer `json:"data,omitempty"`
+	Msg  string          `json:"msg"`
+}
+
+// AgentMcpServerTestRequestBody defines model for AgentMcpServerTestRequestBody.
+type AgentMcpServerTestRequestBody struct {
+	Reason *string `json:"reason,omitempty"`
+}
+
+// AgentMcpServerUpdateRequestBody defines model for AgentMcpServerUpdateRequestBody.
+type AgentMcpServerUpdateRequestBody struct {
+	ExpectedVersion int64   `json:"expected_version"`
+	Reason          *string `json:"reason,omitempty"`
+
+	// Server secret_headers / secret_env 给出全部密钥名：值为空 = 保留已保存的，缺席的名字被清除。
+	Server AgentMcpServerInput `json:"server"`
+}
+
+// AgentMcpTool defines model for AgentMcpTool.
+type AgentMcpTool struct {
+	Description string `json:"description"`
+	Name        string `json:"name"`
+	ReadOnly    bool   `json:"readOnly"`
+}
+
+// AgentModelOptionsResponseBody defines model for AgentModelOptionsResponseBody.
+type AgentModelOptionsResponseBody struct {
+	Code int64     `json:"code"`
+	Data *[]string `json:"data,omitempty"`
+	Msg  string    `json:"msg"`
+}
+
+// AgentMutationResponseBody defines model for AgentMutationResponseBody.
+type AgentMutationResponseBody struct {
+	Code int64  `json:"code"`
+	Msg  string `json:"msg"`
+}
+
+// AgentPreset defines model for AgentPreset.
+type AgentPreset struct {
+	AllowPreview bool                  `json:"allowPreview"`
+	ConfigHash   string                `json:"configHash"`
+	CreatedAt    int64                 `json:"createdAt"`
+	CreatedBy    string                `json:"createdBy"`
+	DefaultModel string                `json:"defaultModel"`
+	Description  string                `json:"description"`
+	Icon         string                `json:"icon"`
+	Id           string                `json:"id"`
+	Instructions string                `json:"instructions"`
+	IsDefault    bool                  `json:"isDefault"`
+	McpServers   []AgentPresetMcpMount `json:"mcpServers"`
+	Name         string                `json:"name"`
+	Reasoning    string                `json:"reasoning"`
+	Skills       []string              `json:"skills"`
+	Slug         string                `json:"slug"`
+	SortOrder    int32                 `json:"sortOrder"`
+	Status       string                `json:"status"`
+	UpdatedAt    int64                 `json:"updatedAt"`
+	UpdatedBy    string                `json:"updatedBy"`
+	Version      int64                 `json:"version"`
+}
+
+// AgentPresetCreateRequestBody defines model for AgentPresetCreateRequestBody.
+type AgentPresetCreateRequestBody struct {
+	Preset AgentPresetInput `json:"preset"`
+	Reason *string          `json:"reason,omitempty"`
+}
+
+// AgentPresetInput defines model for AgentPresetInput.
+type AgentPresetInput struct {
+	AllowPreview bool                       `json:"allow_preview"`
+	DefaultModel string                     `json:"default_model"`
+	Description  *string                    `json:"description,omitempty"`
+	Icon         *string                    `json:"icon,omitempty"`
+	Instructions *string                    `json:"instructions,omitempty"`
+	McpServers   []AgentPresetMcpMount      `json:"mcp_servers"`
+	Name         string                     `json:"name"`
+	Reasoning    *AgentPresetInputReasoning `json:"reasoning,omitempty"`
+	Skills       []string                   `json:"skills"`
+	Slug         *string                    `json:"slug,omitempty"`
+	SortOrder    *int32                     `json:"sort_order,omitempty"`
+}
+
+// AgentPresetInputReasoning defines model for AgentPresetInput.Reasoning.
+type AgentPresetInputReasoning string
+
+// AgentPresetListResponseBody defines model for AgentPresetListResponseBody.
+type AgentPresetListResponseBody struct {
+	Code int64          `json:"code"`
+	Data *[]AgentPreset `json:"data,omitempty"`
+	Msg  string         `json:"msg"`
+}
+
+// AgentPresetMcpMount follow_server = true 时用服务器自己的白名单，tool_allowlist 被忽略；否则
+// tool_allowlist 必须是服务器白名单的子集（空列表 = 不开放任何工具）。
+type AgentPresetMcpMount struct {
+	FollowServer  bool     `json:"follow_server"`
+	ServerId      string   `json:"server_id"`
+	ToolAllowlist []string `json:"tool_allowlist"`
+}
+
+// AgentPresetResponseBody defines model for AgentPresetResponseBody.
+type AgentPresetResponseBody struct {
+	Code int64        `json:"code"`
+	Data *AgentPreset `json:"data,omitempty"`
+	Msg  string       `json:"msg"`
+}
+
+// AgentPresetUpdateRequestBody defines model for AgentPresetUpdateRequestBody.
+type AgentPresetUpdateRequestBody struct {
+	ExpectedVersion int64            `json:"expected_version"`
+	Preset          AgentPresetInput `json:"preset"`
+	Reason          *string          `json:"reason,omitempty"`
+}
+
+// AgentProxy defines model for AgentProxy.
+type AgentProxy struct {
+	CreatedAt         int64   `json:"createdAt"`
+	CreatedBy         string  `json:"createdBy"`
+	Display           string  `json:"display"`
+	HasPassword       bool    `json:"hasPassword"`
+	Host              string  `json:"host"`
+	Id                string  `json:"id"`
+	LastTestAt        *int64  `json:"lastTestAt,omitempty"`
+	LastTestError     *string `json:"lastTestError,omitempty"`
+	LastTestExitIp    *string `json:"lastTestExitIp,omitempty"`
+	LastTestLatencyMs *int64  `json:"lastTestLatencyMs,omitempty"`
+	LastTestOk        *bool   `json:"lastTestOk,omitempty"`
+	Name              string  `json:"name"`
+	Notes             string  `json:"notes"`
+	Port              int32   `json:"port"`
+	Protocol          string  `json:"protocol"`
+	RefCount          int32   `json:"refCount"`
+	UpdatedAt         int64   `json:"updatedAt"`
+	UpdatedBy         string  `json:"updatedBy"`
+	Username          string  `json:"username"`
+	Version           int64   `json:"version"`
+}
+
+// AgentProxyCreateRequestBody defines model for AgentProxyCreateRequestBody.
+type AgentProxyCreateRequestBody struct {
+	// Proxy password 留空 = 不改；clear_password 清除已保存的密码。
+	Proxy  AgentProxyInput `json:"proxy"`
+	Reason *string         `json:"reason,omitempty"`
+}
+
+// AgentProxyImportItem defines model for AgentProxyImportItem.
+type AgentProxyImportItem struct {
+	Name string `json:"name"`
+	Url  string `json:"url"`
+}
+
+// AgentProxyImportRequestBody defines model for AgentProxyImportRequestBody.
+type AgentProxyImportRequestBody struct {
+	Items  []AgentProxyImportItem `json:"items"`
+	Reason *string                `json:"reason,omitempty"`
+}
+
+// AgentProxyInput password 留空 = 不改；clear_password 清除已保存的密码。
+type AgentProxyInput struct {
+	ClearPassword *bool                   `json:"clear_password,omitempty"`
+	Host          string                  `json:"host"`
+	Name          string                  `json:"name"`
+	Notes         *string                 `json:"notes,omitempty"`
+	Password      *string                 `json:"password,omitempty"`
+	Port          int32                   `json:"port"`
+	Protocol      AgentProxyInputProtocol `json:"protocol"`
+	Username      *string                 `json:"username,omitempty"`
+}
+
+// AgentProxyInputProtocol defines model for AgentProxyInput.Protocol.
+type AgentProxyInputProtocol string
+
+// AgentProxyListResponseBody defines model for AgentProxyListResponseBody.
+type AgentProxyListResponseBody struct {
+	Code int64         `json:"code"`
+	Data *[]AgentProxy `json:"data,omitempty"`
+	Msg  string        `json:"msg"`
+}
+
+// AgentProxyRelationship defines model for AgentProxyRelationship.
+type AgentProxyRelationship struct {
+	ProxyId   string           `json:"proxyId"`
+	ProxyName string           `json:"proxyName"`
+	Refs      []AgentReference `json:"refs"`
+}
+
+// AgentProxyRelationshipsResponseBody defines model for AgentProxyRelationshipsResponseBody.
+type AgentProxyRelationshipsResponseBody struct {
+	Code int64                     `json:"code"`
+	Data *[]AgentProxyRelationship `json:"data,omitempty"`
+	Msg  string                    `json:"msg"`
+}
+
+// AgentProxyResponseBody defines model for AgentProxyResponseBody.
+type AgentProxyResponseBody struct {
+	Code int64       `json:"code"`
+	Data *AgentProxy `json:"data,omitempty"`
+	Msg  string      `json:"msg"`
+}
+
+// AgentProxyTestRequestBody defines model for AgentProxyTestRequestBody.
+type AgentProxyTestRequestBody struct {
+	// Proxy password 留空 = 不改；clear_password 清除已保存的密码。
+	Proxy   AgentProxyInput `json:"proxy"`
+	ProxyId *string         `json:"proxy_id,omitempty"`
+}
+
+// AgentProxyTestResponseBody defines model for AgentProxyTestResponseBody.
+type AgentProxyTestResponseBody struct {
+	Code int64                 `json:"code"`
+	Data *AgentProxyTestResult `json:"data,omitempty"`
+	Msg  string                `json:"msg"`
+}
+
+// AgentProxyTestResult defines model for AgentProxyTestResult.
+type AgentProxyTestResult struct {
+	City      string `json:"city"`
+	Country   string `json:"country"`
+	Ip        string `json:"ip"`
+	LatencyMs int64  `json:"latencyMs"`
+	Region    string `json:"region"`
+}
+
+// AgentProxyUpdateRequestBody defines model for AgentProxyUpdateRequestBody.
+type AgentProxyUpdateRequestBody struct {
+	ExpectedVersion int64 `json:"expected_version"`
+
+	// Proxy password 留空 = 不改；clear_password 清除已保存的密码。
+	Proxy  AgentProxyInput `json:"proxy"`
+	Reason *string         `json:"reason,omitempty"`
+}
+
+// AgentReference defines model for AgentReference.
+type AgentReference struct {
+	Id   string `json:"id"`
+	Kind string `json:"kind"`
+	Name string `json:"name"`
+}
+
+// AgentSettings defines model for AgentSettings.
+type AgentSettings struct {
+	DefaultProxyId   string `json:"defaultProxyId"`
+	GithubTokenSet   bool   `json:"githubTokenSet"`
+	SkillSyncEnabled bool   `json:"skillSyncEnabled"`
+	Version          int64  `json:"version"`
+}
+
+// AgentSettingsResponseBody defines model for AgentSettingsResponseBody.
+type AgentSettingsResponseBody struct {
+	Code int64          `json:"code"`
+	Data *AgentSettings `json:"data,omitempty"`
+	Msg  string         `json:"msg"`
+}
+
+// AgentSettingsUpdateRequestBody defines model for AgentSettingsUpdateRequestBody.
+type AgentSettingsUpdateRequestBody struct {
+	ClearGithubToken *bool   `json:"clear_github_token,omitempty"`
+	DefaultProxyId   *string `json:"default_proxy_id,omitempty"`
+	ExpectedVersion  int64   `json:"expected_version"`
+	GithubToken      *string `json:"github_token,omitempty"`
+	Reason           *string `json:"reason,omitempty"`
+	SkillSyncEnabled bool    `json:"skill_sync_enabled"`
+}
+
+// AgentSkill defines model for AgentSkill.
+type AgentSkill struct {
+	Archive           *AgentArchiveSource `json:"archive,omitempty"`
+	ContentHash       string              `json:"contentHash"`
+	CreatedAt         int64               `json:"createdAt"`
+	CreatedBy         string              `json:"createdBy"`
+	Description       string              `json:"description"`
+	FileCount         int32               `json:"fileCount"`
+	Files             *[]AgentSkillFile   `json:"files,omitempty"`
+	Github            *AgentGitHubSource  `json:"github,omitempty"`
+	Id                string              `json:"id"`
+	LastSyncAt        *int64              `json:"lastSyncAt,omitempty"`
+	LastSyncError     *string             `json:"lastSyncError,omitempty"`
+	Name              string              `json:"name"`
+	ProxyId           *string             `json:"proxyId,omitempty"`
+	ProxyMode         string              `json:"proxyMode"`
+	RefCount          int32               `json:"refCount"`
+	Slug              string              `json:"slug"`
+	SourceKind        string              `json:"sourceKind"`
+	SourceRef         string              `json:"sourceRef"`
+	Status            string              `json:"status"`
+	SyncEnabled       bool                `json:"syncEnabled"`
+	SyncIntervalHours int32               `json:"syncIntervalHours"`
+	TotalBytes        int64               `json:"totalBytes"`
+	UpdatedAt         int64               `json:"updatedAt"`
+	UpdatedBy         string              `json:"updatedBy"`
+	Version           int64               `json:"version"`
+}
+
+// AgentSkillContentResponseBody defines model for AgentSkillContentResponseBody.
+type AgentSkillContentResponseBody struct {
+	Code int64                    `json:"code"`
+	Data *AgentSkillContentResult `json:"data,omitempty"`
+	Msg  string                   `json:"msg"`
+}
+
+// AgentSkillContentResult defines model for AgentSkillContentResult.
+type AgentSkillContentResult struct {
+	Changed bool       `json:"changed"`
+	Skill   AgentSkill `json:"skill"`
+}
+
+// AgentSkillCreateItem defines model for AgentSkillCreateItem.
+type AgentSkillCreateItem struct {
+	ContentHash string  `json:"content_hash"`
+	Name        *string `json:"name,omitempty"`
+	Path        string  `json:"path"`
+	Slug        string  `json:"slug"`
+}
+
+// AgentSkillCreateRequestBody defines model for AgentSkillCreateRequestBody.
+type AgentSkillCreateRequestBody struct {
+	Filename          *string                               `json:"filename,omitempty"`
+	Github            *AgentGitHubSource                    `json:"github,omitempty"`
+	Items             []AgentSkillCreateItem                `json:"items"`
+	ProxyId           *string                               `json:"proxy_id,omitempty"`
+	ProxyMode         AgentSkillCreateRequestBodyProxyMode  `json:"proxy_mode"`
+	Reason            *string                               `json:"reason,omitempty"`
+	SourceKind        AgentSkillCreateRequestBodySourceKind `json:"source_kind"`
+	SourceRef         *string                               `json:"source_ref,omitempty"`
+	SyncEnabled       *bool                                 `json:"sync_enabled,omitempty"`
+	SyncIntervalHours *int32                                `json:"sync_interval_hours,omitempty"`
+}
+
+// AgentSkillCreateRequestBodyProxyMode defines model for AgentSkillCreateRequestBody.ProxyMode.
+type AgentSkillCreateRequestBodyProxyMode string
+
+// AgentSkillCreateRequestBodySourceKind defines model for AgentSkillCreateRequestBody.SourceKind.
+type AgentSkillCreateRequestBodySourceKind string
+
+// AgentSkillCreateResponseBody defines model for AgentSkillCreateResponseBody.
+type AgentSkillCreateResponseBody struct {
+	Code int64         `json:"code"`
+	Data *[]AgentSkill `json:"data,omitempty"`
+	Msg  string        `json:"msg"`
+}
+
+// AgentSkillFile defines model for AgentSkillFile.
+type AgentSkillFile struct {
+	Path   string `json:"path"`
+	Sha256 string `json:"sha256"`
+	Size   int64  `json:"size"`
+}
+
+// AgentSkillFilePreview defines model for AgentSkillFilePreview.
+type AgentSkillFilePreview struct {
+	Content   string `json:"content"`
+	Path      string `json:"path"`
+	Size      int64  `json:"size"`
+	Text      bool   `json:"text"`
+	Truncated bool   `json:"truncated"`
+}
+
+// AgentSkillFileResponseBody defines model for AgentSkillFileResponseBody.
+type AgentSkillFileResponseBody struct {
+	Code int64                  `json:"code"`
+	Data *AgentSkillFilePreview `json:"data,omitempty"`
+	Msg  string                 `json:"msg"`
+}
+
+// AgentSkillListResponseBody defines model for AgentSkillListResponseBody.
+type AgentSkillListResponseBody struct {
+	Code int64         `json:"code"`
+	Data *[]AgentSkill `json:"data,omitempty"`
+	Msg  string        `json:"msg"`
+}
+
+// AgentSkillResponseBody defines model for AgentSkillResponseBody.
+type AgentSkillResponseBody struct {
+	Code int64       `json:"code"`
+	Data *AgentSkill `json:"data,omitempty"`
+	Msg  string      `json:"msg"`
+}
+
+// AgentSkillReuploadRequestBody defines model for AgentSkillReuploadRequestBody.
+type AgentSkillReuploadRequestBody struct {
+	// File zip 文件，multipart 字段 file，不超过 8 MiB。
+	File string `json:"file"`
+}
+
+// AgentSkillScanArchiveRequestBody defines model for AgentSkillScanArchiveRequestBody.
+type AgentSkillScanArchiveRequestBody struct {
+	// File zip 文件，multipart 字段 file，不超过 8 MiB。
+	File string `json:"file"`
+}
+
+// AgentSkillScanGitHubRequestBody defines model for AgentSkillScanGitHubRequestBody.
+type AgentSkillScanGitHubRequestBody struct {
+	ProxyId   *string                                  `json:"proxy_id,omitempty"`
+	ProxyMode AgentSkillScanGitHubRequestBodyProxyMode `json:"proxy_mode"`
+	Url       string                                   `json:"url"`
+}
+
+// AgentSkillScanGitHubRequestBodyProxyMode defines model for AgentSkillScanGitHubRequestBody.ProxyMode.
+type AgentSkillScanGitHubRequestBodyProxyMode string
+
+// AgentSkillScanItem defines model for AgentSkillScanItem.
+type AgentSkillScanItem struct {
+	ContentHash string `json:"contentHash"`
+	Description string `json:"description"`
+	Error       string `json:"error"`
+	FileCount   int32  `json:"fileCount"`
+	Name        string `json:"name"`
+	Path        string `json:"path"`
+	Slug        string `json:"slug"`
+	SlugTaken   bool   `json:"slugTaken"`
+	TotalBytes  int64  `json:"totalBytes"`
+}
+
+// AgentSkillScanResponseBody defines model for AgentSkillScanResponseBody.
+type AgentSkillScanResponseBody struct {
+	Code int64                 `json:"code"`
+	Data *AgentSkillScanResult `json:"data,omitempty"`
+	Msg  string                `json:"msg"`
+}
+
+// AgentSkillScanResult defines model for AgentSkillScanResult.
+type AgentSkillScanResult struct {
+	Filename   string               `json:"filename"`
+	Github     *AgentGitHubSource   `json:"github,omitempty"`
+	Items      []AgentSkillScanItem `json:"items"`
+	SourceKind string               `json:"sourceKind"`
+	SourceRef  string               `json:"sourceRef"`
+}
+
+// AgentSkillSyncRequestBody defines model for AgentSkillSyncRequestBody.
+type AgentSkillSyncRequestBody struct {
+	Reason *string `json:"reason,omitempty"`
+}
+
+// AgentSkillUpdateRequestBody defines model for AgentSkillUpdateRequestBody.
+type AgentSkillUpdateRequestBody struct {
+	ExpectedVersion   int64                                `json:"expected_version"`
+	Github            *AgentGitHubSource                   `json:"github,omitempty"`
+	Name              string                               `json:"name"`
+	ProxyId           *string                              `json:"proxy_id,omitempty"`
+	ProxyMode         AgentSkillUpdateRequestBodyProxyMode `json:"proxy_mode"`
+	Reason            *string                              `json:"reason,omitempty"`
+	Status            AgentSkillUpdateRequestBodyStatus    `json:"status"`
+	SyncEnabled       bool                                 `json:"sync_enabled"`
+	SyncIntervalHours int32                                `json:"sync_interval_hours"`
+}
+
+// AgentSkillUpdateRequestBodyProxyMode defines model for AgentSkillUpdateRequestBody.ProxyMode.
+type AgentSkillUpdateRequestBodyProxyMode string
+
+// AgentSkillUpdateRequestBodyStatus defines model for AgentSkillUpdateRequestBody.Status.
+type AgentSkillUpdateRequestBodyStatus string
+
+// AgentWriteRequestBody defines model for AgentWriteRequestBody.
+type AgentWriteRequestBody struct {
+	ExpectedVersion int64   `json:"expected_version"`
+	Reason          *string `json:"reason,omitempty"`
 }
 
 // AllPersonInfoResponseBody defines model for AllPersonInfoResponseBody.
@@ -16507,6 +17282,46 @@ type AcademicServiceTeachingClassParams struct {
 	XStaffId *string `json:"X-Staff-Id,omitempty"`
 }
 
+// AgentServiceAgentDeleteMcpServerParams defines parameters for AgentServiceAgentDeleteMcpServer.
+type AgentServiceAgentDeleteMcpServerParams struct {
+	ExpectedVersion *int64  `form:"expected_version,omitempty" json:"expected_version,omitempty"`
+	Reason          *string `form:"reason,omitempty" json:"reason,omitempty"`
+}
+
+// AgentServiceAgentListPresetsParams defines parameters for AgentServiceAgentListPresets.
+type AgentServiceAgentListPresetsParams struct {
+	Status *string `form:"status,omitempty" json:"status,omitempty"`
+}
+
+// AgentServiceAgentDeletePresetParams defines parameters for AgentServiceAgentDeletePreset.
+type AgentServiceAgentDeletePresetParams struct {
+	ExpectedVersion *int64  `form:"expected_version,omitempty" json:"expected_version,omitempty"`
+	Reason          *string `form:"reason,omitempty" json:"reason,omitempty"`
+}
+
+// AgentServiceAgentDeleteProxyParams defines parameters for AgentServiceAgentDeleteProxy.
+type AgentServiceAgentDeleteProxyParams struct {
+	ExpectedVersion *int64  `form:"expected_version,omitempty" json:"expected_version,omitempty"`
+	Reason          *string `form:"reason,omitempty" json:"reason,omitempty"`
+}
+
+// AgentServiceAgentListSkillsParams defines parameters for AgentServiceAgentListSkills.
+type AgentServiceAgentListSkillsParams struct {
+	SourceKind *string `form:"source_kind,omitempty" json:"source_kind,omitempty"`
+	Status     *string `form:"status,omitempty" json:"status,omitempty"`
+}
+
+// AgentServiceAgentDeleteSkillParams defines parameters for AgentServiceAgentDeleteSkill.
+type AgentServiceAgentDeleteSkillParams struct {
+	ExpectedVersion *int64  `form:"expected_version,omitempty" json:"expected_version,omitempty"`
+	Reason          *string `form:"reason,omitempty" json:"reason,omitempty"`
+}
+
+// AgentServiceAgentGetSkillFileParams defines parameters for AgentServiceAgentGetSkillFile.
+type AgentServiceAgentGetSkillFileParams struct {
+	Path *string `form:"path,omitempty" json:"path,omitempty"`
+}
+
 // AnalyticsServiceGetAnalyticsParams defines parameters for AnalyticsServiceGetAnalytics.
 type AnalyticsServiceGetAnalyticsParams struct {
 	Days *int32 `form:"days,omitempty" json:"days,omitempty"`
@@ -18674,6 +19489,57 @@ type AcademicServiceCreateScheduleShareJSONRequestBody = CreateScheduleShareRequ
 
 // AcademicServiceRenameScheduleShareJSONRequestBody defines body for AcademicServiceRenameScheduleShare for application/json ContentType.
 type AcademicServiceRenameScheduleShareJSONRequestBody = RenameScheduleShareRequestBody
+
+// AgentServiceAgentCreateMcpServerJSONRequestBody defines body for AgentServiceAgentCreateMcpServer for application/json ContentType.
+type AgentServiceAgentCreateMcpServerJSONRequestBody = AgentMcpServerCreateRequestBody
+
+// AgentServiceAgentUpdateMcpServerJSONRequestBody defines body for AgentServiceAgentUpdateMcpServer for application/json ContentType.
+type AgentServiceAgentUpdateMcpServerJSONRequestBody = AgentMcpServerUpdateRequestBody
+
+// AgentServiceAgentTestMcpServerJSONRequestBody defines body for AgentServiceAgentTestMcpServer for application/json ContentType.
+type AgentServiceAgentTestMcpServerJSONRequestBody = AgentMcpServerTestRequestBody
+
+// AgentServiceAgentCreatePresetJSONRequestBody defines body for AgentServiceAgentCreatePreset for application/json ContentType.
+type AgentServiceAgentCreatePresetJSONRequestBody = AgentPresetCreateRequestBody
+
+// AgentServiceAgentUpdatePresetJSONRequestBody defines body for AgentServiceAgentUpdatePreset for application/json ContentType.
+type AgentServiceAgentUpdatePresetJSONRequestBody = AgentPresetUpdateRequestBody
+
+// AgentServiceAgentArchivePresetJSONRequestBody defines body for AgentServiceAgentArchivePreset for application/json ContentType.
+type AgentServiceAgentArchivePresetJSONRequestBody = AgentWriteRequestBody
+
+// AgentServiceAgentSetDefaultPresetJSONRequestBody defines body for AgentServiceAgentSetDefaultPreset for application/json ContentType.
+type AgentServiceAgentSetDefaultPresetJSONRequestBody = AgentWriteRequestBody
+
+// AgentServiceAgentUnarchivePresetJSONRequestBody defines body for AgentServiceAgentUnarchivePreset for application/json ContentType.
+type AgentServiceAgentUnarchivePresetJSONRequestBody = AgentWriteRequestBody
+
+// AgentServiceAgentCreateProxyJSONRequestBody defines body for AgentServiceAgentCreateProxy for application/json ContentType.
+type AgentServiceAgentCreateProxyJSONRequestBody = AgentProxyCreateRequestBody
+
+// AgentServiceAgentImportProxiesJSONRequestBody defines body for AgentServiceAgentImportProxies for application/json ContentType.
+type AgentServiceAgentImportProxiesJSONRequestBody = AgentProxyImportRequestBody
+
+// AgentServiceAgentTestProxyFormJSONRequestBody defines body for AgentServiceAgentTestProxyForm for application/json ContentType.
+type AgentServiceAgentTestProxyFormJSONRequestBody = AgentProxyTestRequestBody
+
+// AgentServiceAgentUpdateProxyJSONRequestBody defines body for AgentServiceAgentUpdateProxy for application/json ContentType.
+type AgentServiceAgentUpdateProxyJSONRequestBody = AgentProxyUpdateRequestBody
+
+// AgentServiceAgentUpdateSettingsJSONRequestBody defines body for AgentServiceAgentUpdateSettings for application/json ContentType.
+type AgentServiceAgentUpdateSettingsJSONRequestBody = AgentSettingsUpdateRequestBody
+
+// AgentServiceAgentCreateSkillsJSONRequestBody defines body for AgentServiceAgentCreateSkills for application/json ContentType.
+type AgentServiceAgentCreateSkillsJSONRequestBody = AgentSkillCreateRequestBody
+
+// AgentServiceAgentScanGitHubSkillsJSONRequestBody defines body for AgentServiceAgentScanGitHubSkills for application/json ContentType.
+type AgentServiceAgentScanGitHubSkillsJSONRequestBody = AgentSkillScanGitHubRequestBody
+
+// AgentServiceAgentUpdateSkillJSONRequestBody defines body for AgentServiceAgentUpdateSkill for application/json ContentType.
+type AgentServiceAgentUpdateSkillJSONRequestBody = AgentSkillUpdateRequestBody
+
+// AgentServiceAgentSyncSkillJSONRequestBody defines body for AgentServiceAgentSyncSkill for application/json ContentType.
+type AgentServiceAgentSyncSkillJSONRequestBody = AgentSkillSyncRequestBody
 
 // AdminServiceSetAppEnabledJSONRequestBody defines body for AdminServiceSetAppEnabled for application/json ContentType.
 type AdminServiceSetAppEnabledJSONRequestBody = SetAppEnabledRequestBody

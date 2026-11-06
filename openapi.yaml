@@ -1749,6 +1749,872 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/TeachingClassResponseBody'
             x-hduhelp-http: {'requires_user': false, 'auth': 'bearer'}
+    /hduhelp-neo/admin/agent/mcp-servers:
+        get:
+            tags:
+                - AgentService
+            summary: MCP 服务器列表
+            operationId: AgentService_AgentListMcpServers
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentMcpServerListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        post:
+            tags:
+                - AgentService
+            summary: 新建 MCP 服务器
+            operationId: AgentService_AgentCreateMcpServer
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentMcpServerCreateRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentMcpServerResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/agent/mcp-servers/{id}:
+        get:
+            tags:
+                - AgentService
+            summary: MCP 服务器详情
+            operationId: AgentService_AgentGetMcpServer
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentMcpServerResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        put:
+            tags:
+                - AgentService
+            summary: 修改 MCP 服务器
+            operationId: AgentService_AgentUpdateMcpServer
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentMcpServerUpdateRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentMcpServerResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+        delete:
+            tags:
+                - AgentService
+            summary: 删除 MCP 服务器（被预设使用时 409）
+            operationId: AgentService_AgentDeleteMcpServer
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: expected_version
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: reason
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: |-
+                        工作模式配置管理：代理库、模块设置、Skill、MCP 服务器、预设，以及 App 读预设。
+                        写操作带 expected_version（乐观锁）与 reason（进 agent_audits）。被引用的对象
+                        删除或停用时返回 409，data.references 列出引用方。
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentMutationResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/agent/mcp-servers/{id}/test:
+        post:
+            tags:
+                - AgentService
+            summary: 连接 MCP 服务器并拉取工具
+            operationId: AgentService_AgentTestMcpServer
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentMcpServerTestRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentMcpServerResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/agent/presets:
+        get:
+            tags:
+                - AgentService
+            summary: 预设列表
+            operationId: AgentService_AgentListPresets
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentPresetListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        post:
+            tags:
+                - AgentService
+            summary: 新建预设
+            operationId: AgentService_AgentCreatePreset
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentPresetCreateRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentPresetResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/agent/presets/model-options:
+        get:
+            tags:
+                - AgentService
+            summary: 预设可选的默认模型（agent.work 当前公开的模型）
+            operationId: AgentService_AgentPresetModelOptions
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentModelOptionsResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/agent/presets/{id}:
+        get:
+            tags:
+                - AgentService
+            summary: 预设详情
+            operationId: AgentService_AgentGetPreset
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentPresetResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        put:
+            tags:
+                - AgentService
+            summary: 保存预设（对新会话立即生效）
+            operationId: AgentService_AgentUpdatePreset
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentPresetUpdateRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentPresetResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+        delete:
+            tags:
+                - AgentService
+            summary: 删除已归档的预设
+            operationId: AgentService_AgentDeletePreset
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: expected_version
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: reason
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: |-
+                        工作模式配置管理：代理库、模块设置、Skill、MCP 服务器、预设，以及 App 读预设。
+                        写操作带 expected_version（乐观锁）与 reason（进 agent_audits）。被引用的对象
+                        删除或停用时返回 409，data.references 列出引用方。
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentMutationResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/agent/presets/{id}/archive:
+        post:
+            tags:
+                - AgentService
+            summary: 归档预设
+            operationId: AgentService_AgentArchivePreset
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentWriteRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentPresetResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/agent/presets/{id}/set-default:
+        post:
+            tags:
+                - AgentService
+            summary: 设为默认预设
+            operationId: AgentService_AgentSetDefaultPreset
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentWriteRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentPresetResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/agent/presets/{id}/unarchive:
+        post:
+            tags:
+                - AgentService
+            summary: 取消归档
+            operationId: AgentService_AgentUnarchivePreset
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentWriteRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentPresetResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/agent/proxies:
+        get:
+            tags:
+                - AgentService
+            summary: 工作模式代理列表
+            operationId: AgentService_AgentListProxies
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentProxyListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        post:
+            tags:
+                - AgentService
+            summary: 新建代理
+            operationId: AgentService_AgentCreateProxy
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentProxyCreateRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentProxyResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/agent/proxies/batch-import:
+        post:
+            tags:
+                - AgentService
+            summary: 批量导入代理（全部成功或全部不导入）
+            operationId: AgentService_AgentImportProxies
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentProxyImportRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentProxyListResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/agent/proxies/relationships:
+        get:
+            tags:
+                - AgentService
+            summary: 代理被哪些 Skill、MCP、设置使用
+            operationId: AgentService_AgentProxyRelationships
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentProxyRelationshipsResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/agent/proxies/test:
+        post:
+            tags:
+                - AgentService
+            summary: 测试未保存的代理表单
+            operationId: AgentService_AgentTestProxyForm
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                required: true
+                description: proxy_id 指向已保存代理时，表单没填密码就用它保存的密码。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentProxyTestRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentProxyTestResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/agent/proxies/{id}:
+        get:
+            tags:
+                - AgentService
+            summary: 工作模式代理详情
+            operationId: AgentService_AgentGetProxy
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentProxyResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        put:
+            tags:
+                - AgentService
+            summary: 修改代理
+            operationId: AgentService_AgentUpdateProxy
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentProxyUpdateRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentProxyResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+        delete:
+            tags:
+                - AgentService
+            summary: 删除代理（被引用时 409）
+            operationId: AgentService_AgentDeleteProxy
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: expected_version
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: reason
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: |-
+                        工作模式配置管理：代理库、模块设置、Skill、MCP 服务器、预设，以及 App 读预设。
+                        写操作带 expected_version（乐观锁）与 reason（进 agent_audits）。被引用的对象
+                        删除或停用时返回 409，data.references 列出引用方。
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentMutationResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/agent/proxies/{id}/test:
+        post:
+            tags:
+                - AgentService
+            summary: 测试已保存的代理并记录结果
+            operationId: AgentService_AgentTestProxy
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentProxyTestResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/agent/settings:
+        get:
+            tags:
+                - AgentService
+            summary: 工作模式设置
+            operationId: AgentService_AgentGetSettings
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentSettingsResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        put:
+            tags:
+                - AgentService
+            summary: 修改工作模式设置
+            operationId: AgentService_AgentUpdateSettings
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                required: true
+                description: github_token 留空 = 不改；default_proxy_id 为空 = 直连。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentSettingsUpdateRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentSettingsResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/agent/skills:
+        get:
+            tags:
+                - AgentService
+            summary: Skill 列表
+            operationId: AgentService_AgentListSkills
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: source_kind
+                  in: query
+                  schema:
+                    type: string
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentSkillListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        post:
+            tags:
+                - AgentService
+            summary: 从扫描结果批量新建 Skill
+            operationId: AgentService_AgentCreateSkills
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentSkillCreateRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentSkillCreateResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/agent/skills/scan-archive:
+        post:
+            tags:
+                - AgentService
+            summary: 扫描上传的 zip 里的 Skill
+            description: multipart 表单字段 file。
+            operationId: AgentService_AgentScanArchiveSkills
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                required: true
+                description: 与 upload 一样：文件经 c.FormFile 读取，这里只为生成 multipart 契约。
+                content:
+                    multipart/form-data:
+                        schema:
+                            $ref: '#/components/schemas/AgentSkillScanArchiveRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentSkillScanResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_content_type': 'multipart/form-data', 'file_field': 'file'}
+    /hduhelp-neo/admin/agent/skills/scan-github:
+        post:
+            tags:
+                - AgentService
+            summary: 扫描 GitHub 链接里的 Skill
+            operationId: AgentService_AgentScanGitHubSkills
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentSkillScanGitHubRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentSkillScanResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/agent/skills/{id}:
+        get:
+            tags:
+                - AgentService
+            summary: Skill 详情（含文件清单）
+            operationId: AgentService_AgentGetSkill
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentSkillResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        put:
+            tags:
+                - AgentService
+            summary: 修改 Skill
+            operationId: AgentService_AgentUpdateSkill
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentSkillUpdateRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentSkillResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+        delete:
+            tags:
+                - AgentService
+            summary: 删除 Skill（被预设使用时 409）
+            operationId: AgentService_AgentDeleteSkill
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: expected_version
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: reason
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: |-
+                        工作模式配置管理：代理库、模块设置、Skill、MCP 服务器、预设，以及 App 读预设。
+                        写操作带 expected_version（乐观锁）与 reason（进 agent_audits）。被引用的对象
+                        删除或停用时返回 409，data.references 列出引用方。
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentMutationResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/agent/skills/{id}/files:
+        get:
+            tags:
+                - AgentService
+            summary: 预览 Skill 里的一个文件（文本 ≤ 256 KiB）
+            operationId: AgentService_AgentGetSkillFile
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: path
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentSkillFileResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/agent/skills/{id}/reupload:
+        post:
+            tags:
+                - AgentService
+            summary: 重新上传 zip 替换内容
+            description: multipart 表单字段 file。
+            operationId: AgentService_AgentReuploadSkill
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            $ref: '#/components/schemas/AgentSkillReuploadRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentSkillContentResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_content_type': 'multipart/form-data', 'file_field': 'file'}
+    /hduhelp-neo/admin/agent/skills/{id}/sync-now:
+        post:
+            tags:
+                - AgentService
+            summary: 立即从 GitHub 同步
+            operationId: AgentService_AgentSyncSkill
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentSkillSyncRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentSkillContentResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/analytics:
         get:
             tags:
@@ -11045,6 +11911,22 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/VolunteerActivityDetailResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/agent/presets:
+        get:
+            tags:
+                - AgentService
+            summary: 工作模式可选预设
+            operationId: AgentService_AgentAppPresets
+            security:
+                - NativeSessionAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentAppPresetListResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/ai/v1/purposes/{purpose}/anthropic/v1/models:
         get:
             tags:
@@ -18593,6 +19475,1204 @@ components:
                 carrier_id:
                     type: string
                 revision_id:
+                    type: string
+        AgentAppPreset:
+            required:
+                - id
+                - name
+                - description
+                - icon
+                - defaultModel
+                - allowPreview
+                - isDefault
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                icon:
+                    type: string
+                defaultModel:
+                    type: string
+                allowPreview:
+                    type: boolean
+                isDefault:
+                    type: boolean
+        AgentAppPresetListResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentAppPreset'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentArchiveSource:
+            required:
+                - filename
+                - path
+            type: object
+            properties:
+                filename:
+                    type: string
+                path:
+                    type: string
+        AgentGitHubSource:
+            required:
+                - repo
+                - ref
+                - path
+            type: object
+            properties:
+                repo:
+                    type: string
+                ref:
+                    type: string
+                path:
+                    type: string
+        AgentMcpServer:
+            required:
+                - id
+                - slug
+                - name
+                - description
+                - transport
+                - url
+                - headers
+                - secretHeaderNames
+                - command
+                - args
+                - env
+                - secretEnvNames
+                - toolAllowlist
+                - discoveredTools
+                - proxyMode
+                - status
+                - refCount
+                - createdBy
+                - updatedBy
+                - version
+                - createdAt
+                - updatedAt
+            type: object
+            properties:
+                id:
+                    type: string
+                slug:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                transport:
+                    type: string
+                url:
+                    type: string
+                headers:
+                    type: object
+                    additionalProperties:
+                        type: string
+                secretHeaderNames:
+                    type: array
+                    items:
+                        type: string
+                command:
+                    type: string
+                args:
+                    type: array
+                    items:
+                        type: string
+                env:
+                    type: object
+                    additionalProperties:
+                        type: string
+                secretEnvNames:
+                    type: array
+                    items:
+                        type: string
+                toolAllowlist:
+                    type: array
+                    items:
+                        type: string
+                discoveredTools:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentMcpTool'
+                discoveredAt:
+                    type: integer
+                    format: int64
+                proxyMode:
+                    type: string
+                proxyId:
+                    type: string
+                status:
+                    type: string
+                refCount:
+                    type: integer
+                    format: int32
+                createdBy:
+                    type: string
+                updatedBy:
+                    type: string
+                version:
+                    type: integer
+                    format: int64
+                createdAt:
+                    type: integer
+                    format: int64
+                updatedAt:
+                    type: integer
+                    format: int64
+        AgentMcpServerCreateRequestBody:
+            required:
+                - server
+            type: object
+            properties:
+                server:
+                    $ref: '#/components/schemas/AgentMcpServerInput'
+                reason:
+                    type: string
+        AgentMcpServerInput:
+            required:
+                - slug
+                - name
+                - transport
+                - tool_allowlist
+                - proxy_mode
+                - status
+            type: object
+            properties:
+                slug:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                transport:
+                    enum:
+                        - http
+                        - stdio
+                    type: string
+                url:
+                    type: string
+                headers:
+                    type: object
+                    additionalProperties:
+                        type: string
+                secret_headers:
+                    type: object
+                    additionalProperties:
+                        type: string
+                command:
+                    type: string
+                args:
+                    type: array
+                    items:
+                        type: string
+                env:
+                    type: object
+                    additionalProperties:
+                        type: string
+                secret_env:
+                    type: object
+                    additionalProperties:
+                        type: string
+                tool_allowlist:
+                    type: array
+                    items:
+                        type: string
+                proxy_mode:
+                    enum:
+                        - default
+                        - direct
+                        - preset
+                    type: string
+                proxy_id:
+                    type: string
+                status:
+                    enum:
+                        - active
+                        - disabled
+                    type: string
+            description: secret_headers / secret_env 给出全部密钥名：值为空 = 保留已保存的，缺席的名字被清除。
+        AgentMcpServerListResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentMcpServer'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentMcpServerResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentMcpServer'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentMcpServerTestRequestBody:
+            type: object
+            properties:
+                reason:
+                    type: string
+        AgentMcpServerUpdateRequestBody:
+            required:
+                - server
+                - expected_version
+            type: object
+            properties:
+                server:
+                    $ref: '#/components/schemas/AgentMcpServerInput'
+                expected_version:
+                    type: integer
+                    format: int64
+                reason:
+                    type: string
+        AgentMcpTool:
+            required:
+                - name
+                - description
+                - readOnly
+            type: object
+            properties:
+                name:
+                    type: string
+                description:
+                    type: string
+                readOnly:
+                    type: boolean
+        AgentModelOptionsResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        type: string
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentMutationResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentPreset:
+            required:
+                - id
+                - slug
+                - name
+                - description
+                - icon
+                - status
+                - isDefault
+                - sortOrder
+                - instructions
+                - defaultModel
+                - reasoning
+                - skills
+                - mcpServers
+                - allowPreview
+                - configHash
+                - createdBy
+                - updatedBy
+                - version
+                - createdAt
+                - updatedAt
+            type: object
+            properties:
+                id:
+                    type: string
+                slug:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                icon:
+                    type: string
+                status:
+                    type: string
+                isDefault:
+                    type: boolean
+                sortOrder:
+                    type: integer
+                    format: int32
+                instructions:
+                    type: string
+                defaultModel:
+                    type: string
+                reasoning:
+                    type: string
+                skills:
+                    type: array
+                    items:
+                        type: string
+                mcpServers:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentPresetMcpMount'
+                allowPreview:
+                    type: boolean
+                configHash:
+                    type: string
+                createdBy:
+                    type: string
+                updatedBy:
+                    type: string
+                version:
+                    type: integer
+                    format: int64
+                createdAt:
+                    type: integer
+                    format: int64
+                updatedAt:
+                    type: integer
+                    format: int64
+        AgentPresetCreateRequestBody:
+            required:
+                - preset
+            type: object
+            properties:
+                preset:
+                    $ref: '#/components/schemas/AgentPresetInput'
+                reason:
+                    type: string
+        AgentPresetInput:
+            required:
+                - name
+                - default_model
+                - skills
+                - mcp_servers
+                - allow_preview
+            type: object
+            properties:
+                slug:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                icon:
+                    type: string
+                sort_order:
+                    type: integer
+                    format: int32
+                instructions:
+                    type: string
+                default_model:
+                    type: string
+                reasoning:
+                    enum:
+                        - auto
+                        - low
+                        - medium
+                        - high
+                        - xhigh
+                        - max
+                    type: string
+                skills:
+                    type: array
+                    items:
+                        type: string
+                mcp_servers:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentPresetMcpMount'
+                allow_preview:
+                    type: boolean
+        AgentPresetListResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentPreset'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentPresetMcpMount:
+            required:
+                - server_id
+                - follow_server
+                - tool_allowlist
+            type: object
+            properties:
+                server_id:
+                    type: string
+                follow_server:
+                    type: boolean
+                tool_allowlist:
+                    type: array
+                    items:
+                        type: string
+            description: |-
+                follow_server = true 时用服务器自己的白名单，tool_allowlist 被忽略；否则
+                tool_allowlist 必须是服务器白名单的子集（空列表 = 不开放任何工具）。
+        AgentPresetResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentPreset'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentPresetUpdateRequestBody:
+            required:
+                - preset
+                - expected_version
+            type: object
+            properties:
+                preset:
+                    $ref: '#/components/schemas/AgentPresetInput'
+                expected_version:
+                    type: integer
+                    format: int64
+                reason:
+                    type: string
+        AgentProxy:
+            required:
+                - id
+                - name
+                - protocol
+                - host
+                - port
+                - username
+                - hasPassword
+                - display
+                - notes
+                - refCount
+                - createdBy
+                - updatedBy
+                - version
+                - createdAt
+                - updatedAt
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                protocol:
+                    type: string
+                host:
+                    type: string
+                port:
+                    type: integer
+                    format: int32
+                username:
+                    type: string
+                hasPassword:
+                    type: boolean
+                display:
+                    type: string
+                notes:
+                    type: string
+                lastTestAt:
+                    type: integer
+                    format: int64
+                lastTestOk:
+                    type: boolean
+                lastTestLatencyMs:
+                    type: integer
+                    format: int64
+                lastTestExitIp:
+                    type: string
+                lastTestError:
+                    type: string
+                refCount:
+                    type: integer
+                    format: int32
+                createdBy:
+                    type: string
+                updatedBy:
+                    type: string
+                version:
+                    type: integer
+                    format: int64
+                createdAt:
+                    type: integer
+                    format: int64
+                updatedAt:
+                    type: integer
+                    format: int64
+        AgentProxyCreateRequestBody:
+            required:
+                - proxy
+            type: object
+            properties:
+                proxy:
+                    $ref: '#/components/schemas/AgentProxyInput'
+                reason:
+                    type: string
+        AgentProxyImportItem:
+            required:
+                - name
+                - url
+            type: object
+            properties:
+                name:
+                    type: string
+                url:
+                    type: string
+        AgentProxyImportRequestBody:
+            required:
+                - items
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentProxyImportItem'
+                reason:
+                    type: string
+        AgentProxyInput:
+            required:
+                - name
+                - protocol
+                - host
+                - port
+            type: object
+            properties:
+                name:
+                    type: string
+                protocol:
+                    enum:
+                        - socks5
+                        - socks5h
+                        - http
+                        - https
+                    type: string
+                host:
+                    type: string
+                port:
+                    type: integer
+                    format: int32
+                username:
+                    type: string
+                password:
+                    type: string
+                clear_password:
+                    type: boolean
+                notes:
+                    type: string
+            description: password 留空 = 不改；clear_password 清除已保存的密码。
+        AgentProxyListResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentProxy'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentProxyRelationship:
+            required:
+                - proxyId
+                - proxyName
+                - refs
+            type: object
+            properties:
+                proxyId:
+                    type: string
+                proxyName:
+                    type: string
+                refs:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentReference'
+        AgentProxyRelationshipsResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentProxyRelationship'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentProxyResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentProxy'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentProxyTestRequestBody:
+            required:
+                - proxy
+            type: object
+            properties:
+                proxy:
+                    $ref: '#/components/schemas/AgentProxyInput'
+                proxy_id:
+                    type: string
+        AgentProxyTestResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentProxyTestResult'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentProxyTestResult:
+            required:
+                - ip
+                - country
+                - region
+                - city
+                - latencyMs
+            type: object
+            properties:
+                ip:
+                    type: string
+                country:
+                    type: string
+                region:
+                    type: string
+                city:
+                    type: string
+                latencyMs:
+                    type: integer
+                    format: int64
+        AgentProxyUpdateRequestBody:
+            required:
+                - proxy
+                - expected_version
+            type: object
+            properties:
+                proxy:
+                    $ref: '#/components/schemas/AgentProxyInput'
+                expected_version:
+                    type: integer
+                    format: int64
+                reason:
+                    type: string
+        AgentReference:
+            required:
+                - kind
+                - id
+                - name
+            type: object
+            properties:
+                kind:
+                    type: string
+                id:
+                    type: string
+                name:
+                    type: string
+        AgentSettings:
+            required:
+                - defaultProxyId
+                - githubTokenSet
+                - skillSyncEnabled
+                - version
+            type: object
+            properties:
+                defaultProxyId:
+                    type: string
+                githubTokenSet:
+                    type: boolean
+                skillSyncEnabled:
+                    type: boolean
+                version:
+                    type: integer
+                    format: int64
+        AgentSettingsResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentSettings'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentSettingsUpdateRequestBody:
+            required:
+                - skill_sync_enabled
+                - expected_version
+            type: object
+            properties:
+                default_proxy_id:
+                    type: string
+                github_token:
+                    type: string
+                clear_github_token:
+                    type: boolean
+                skill_sync_enabled:
+                    type: boolean
+                expected_version:
+                    type: integer
+                    format: int64
+                reason:
+                    type: string
+        AgentSkill:
+            required:
+                - id
+                - slug
+                - name
+                - description
+                - sourceKind
+                - proxyMode
+                - syncEnabled
+                - syncIntervalHours
+                - contentHash
+                - fileCount
+                - totalBytes
+                - sourceRef
+                - status
+                - refCount
+                - createdBy
+                - updatedBy
+                - version
+                - createdAt
+                - updatedAt
+            type: object
+            properties:
+                id:
+                    type: string
+                slug:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                sourceKind:
+                    type: string
+                github:
+                    $ref: '#/components/schemas/AgentGitHubSource'
+                archive:
+                    $ref: '#/components/schemas/AgentArchiveSource'
+                proxyMode:
+                    type: string
+                proxyId:
+                    type: string
+                syncEnabled:
+                    type: boolean
+                syncIntervalHours:
+                    type: integer
+                    format: int32
+                contentHash:
+                    type: string
+                fileCount:
+                    type: integer
+                    format: int32
+                totalBytes:
+                    type: integer
+                    format: int64
+                sourceRef:
+                    type: string
+                status:
+                    type: string
+                lastSyncAt:
+                    type: integer
+                    format: int64
+                lastSyncError:
+                    type: string
+                refCount:
+                    type: integer
+                    format: int32
+                files:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentSkillFile'
+                createdBy:
+                    type: string
+                updatedBy:
+                    type: string
+                version:
+                    type: integer
+                    format: int64
+                createdAt:
+                    type: integer
+                    format: int64
+                updatedAt:
+                    type: integer
+                    format: int64
+        AgentSkillContentResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentSkillContentResult'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentSkillContentResult:
+            required:
+                - changed
+                - skill
+            type: object
+            properties:
+                changed:
+                    type: boolean
+                skill:
+                    $ref: '#/components/schemas/AgentSkill'
+        AgentSkillCreateItem:
+            required:
+                - content_hash
+                - path
+                - slug
+            type: object
+            properties:
+                content_hash:
+                    type: string
+                path:
+                    type: string
+                slug:
+                    type: string
+                name:
+                    type: string
+        AgentSkillCreateRequestBody:
+            required:
+                - source_kind
+                - proxy_mode
+                - items
+            type: object
+            properties:
+                source_kind:
+                    enum:
+                        - github
+                        - archive
+                    type: string
+                github:
+                    $ref: '#/components/schemas/AgentGitHubSource'
+                source_ref:
+                    type: string
+                filename:
+                    type: string
+                proxy_mode:
+                    enum:
+                        - default
+                        - direct
+                        - preset
+                    type: string
+                proxy_id:
+                    type: string
+                sync_enabled:
+                    type: boolean
+                sync_interval_hours:
+                    type: integer
+                    format: int32
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentSkillCreateItem'
+                reason:
+                    type: string
+        AgentSkillCreateResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentSkill'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentSkillFile:
+            required:
+                - path
+                - size
+                - sha256
+            type: object
+            properties:
+                path:
+                    type: string
+                size:
+                    type: integer
+                    format: int64
+                sha256:
+                    type: string
+        AgentSkillFilePreview:
+            required:
+                - path
+                - size
+                - text
+                - content
+                - truncated
+            type: object
+            properties:
+                path:
+                    type: string
+                size:
+                    type: integer
+                    format: int64
+                text:
+                    type: boolean
+                content:
+                    type: string
+                truncated:
+                    type: boolean
+        AgentSkillFileResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentSkillFilePreview'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentSkillListResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentSkill'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentSkillResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentSkill'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentSkillReuploadRequestBody:
+            required:
+                - file
+            type: object
+            properties:
+                file:
+                    type: string
+                    description: zip 文件，multipart 字段 file，不超过 8 MiB。
+                    format: binary
+        AgentSkillScanArchiveRequestBody:
+            required:
+                - file
+            type: object
+            properties:
+                file:
+                    type: string
+                    description: zip 文件，multipart 字段 file，不超过 8 MiB。
+                    format: binary
+        AgentSkillScanGitHubRequestBody:
+            required:
+                - url
+                - proxy_mode
+            type: object
+            properties:
+                url:
+                    type: string
+                proxy_mode:
+                    enum:
+                        - default
+                        - direct
+                        - preset
+                    type: string
+                proxy_id:
+                    type: string
+        AgentSkillScanItem:
+            required:
+                - path
+                - slug
+                - name
+                - description
+                - fileCount
+                - totalBytes
+                - contentHash
+                - error
+                - slugTaken
+            type: object
+            properties:
+                path:
+                    type: string
+                slug:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                fileCount:
+                    type: integer
+                    format: int32
+                totalBytes:
+                    type: integer
+                    format: int64
+                contentHash:
+                    type: string
+                error:
+                    type: string
+                slugTaken:
+                    type: boolean
+        AgentSkillScanResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentSkillScanResult'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentSkillScanResult:
+            required:
+                - sourceKind
+                - sourceRef
+                - filename
+                - items
+            type: object
+            properties:
+                sourceKind:
+                    type: string
+                github:
+                    $ref: '#/components/schemas/AgentGitHubSource'
+                sourceRef:
+                    type: string
+                filename:
+                    type: string
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentSkillScanItem'
+        AgentSkillSyncRequestBody:
+            type: object
+            properties:
+                reason:
+                    type: string
+        AgentSkillUpdateRequestBody:
+            required:
+                - name
+                - proxy_mode
+                - sync_enabled
+                - sync_interval_hours
+                - status
+                - expected_version
+            type: object
+            properties:
+                name:
+                    type: string
+                github:
+                    $ref: '#/components/schemas/AgentGitHubSource'
+                proxy_mode:
+                    enum:
+                        - default
+                        - direct
+                        - preset
+                    type: string
+                proxy_id:
+                    type: string
+                sync_enabled:
+                    type: boolean
+                sync_interval_hours:
+                    type: integer
+                    format: int32
+                status:
+                    enum:
+                        - active
+                        - disabled
+                    type: string
+                expected_version:
+                    type: integer
+                    format: int64
+                reason:
+                    type: string
+        AgentWriteRequestBody:
+            required:
+                - expected_version
+            type: object
+            properties:
+                expected_version:
+                    type: integer
+                    format: int64
+                reason:
                     type: string
         AllPersonInfoResponseBody:
             type: object
@@ -39893,6 +41973,7 @@ tags:
     - name: AcademicService
     - name: AdminNoticeService
     - name: AdminService
+    - name: AgentService
     - name: AnalyticsService
     - name: CampusLifeService
     - name: DingTalkWorkbenchService
