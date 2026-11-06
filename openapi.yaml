@@ -26633,6 +26633,13 @@ components:
                     description: Empty keeps the source's address and API key; other settings are copied.
                 api_key:
                     type: string
+                platform:
+                    type: string
+                    description: 换协议族：必须同时给能力；副本清空预设，不加入源连接器所在的池。
+                capabilities:
+                    type: array
+                    items:
+                        type: string
         ModelConnectorExport:
             required:
                 - filename

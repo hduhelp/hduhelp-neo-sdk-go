@@ -8993,7 +8993,11 @@ type ModelConnectorDuplicateRequestBody struct {
 	ApiKey *string `json:"api_key,omitempty"`
 
 	// BaseUrl Empty keeps the source's address and API key; other settings are copied.
-	BaseUrl *string `json:"base_url,omitempty"`
+	BaseUrl      *string   `json:"base_url,omitempty"`
+	Capabilities *[]string `json:"capabilities,omitempty"`
+
+	// Platform 换协议族：必须同时给能力；副本清空预设，不加入源连接器所在的池。
+	Platform *string `json:"platform,omitempty"`
 }
 
 // ModelConnectorExport defines model for ModelConnectorExport.
