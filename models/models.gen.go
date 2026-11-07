@@ -374,6 +374,27 @@ func (e AgentProxyInputProtocol) Valid() bool {
 	}
 }
 
+// Defines values for AgentRunUpstream.
+const (
+	Hdumate AgentRunUpstream = "hdumate"
+	Own     AgentRunUpstream = "own"
+	Partner AgentRunUpstream = "partner"
+)
+
+// Valid indicates whether the value is a known member of the AgentRunUpstream enum.
+func (e AgentRunUpstream) Valid() bool {
+	switch e {
+	case Hdumate:
+		return true
+	case Own:
+		return true
+	case Partner:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AgentSkillCreateRequestBodyProxyMode.
 const (
 	AgentSkillCreateRequestBodyProxyModeDefault AgentSkillCreateRequestBodyProxyMode = "default"
@@ -5441,21 +5462,24 @@ type AgentReference struct {
 
 // AgentRun 时间均为毫秒时间戳。
 type AgentRun struct {
-	Attempt           int32           `json:"attempt"`
-	CacheReadTokens   int64           `json:"cacheReadTokens"`
-	CacheWriteTokens  int64           `json:"cacheWriteTokens"`
-	CompletedAt       *int64          `json:"completedAt,omitempty"`
-	Cost              float64         `json:"cost"`
-	DispatchedAt      *int64          `json:"dispatchedAt,omitempty"`
-	Error             string          `json:"error"`
-	FailureKind       string          `json:"failureKind"`
-	FirstOutputAt     *int64          `json:"firstOutputAt,omitempty"`
-	FirstTokenAt      *int64          `json:"firstTokenAt,omitempty"`
-	Id                string          `json:"id"`
-	InputTokens       int64           `json:"inputTokens"`
-	Model             string          `json:"model"`
-	OutputTokens      int64           `json:"outputTokens"`
-	ParentRunId       string          `json:"parentRunId"`
+	Attempt          int32   `json:"attempt"`
+	CacheReadTokens  int64   `json:"cacheReadTokens"`
+	CacheWriteTokens int64   `json:"cacheWriteTokens"`
+	CompletedAt      *int64  `json:"completedAt,omitempty"`
+	Cost             float64 `json:"cost"`
+	DispatchedAt     *int64  `json:"dispatchedAt,omitempty"`
+	Error            string  `json:"error"`
+	FailureKind      string  `json:"failureKind"`
+	FirstOutputAt    *int64  `json:"firstOutputAt,omitempty"`
+	FirstTokenAt     *int64  `json:"firstTokenAt,omitempty"`
+	Id               string  `json:"id"`
+	InputTokens      int64   `json:"inputTokens"`
+	Model            string  `json:"model"`
+	OutputTokens     int64   `json:"outputTokens"`
+	ParentRunId      string  `json:"parentRunId"`
+
+	// PartnerName upstream=partner 时的合作方名称
+	PartnerName       *string         `json:"partnerName,omitempty"`
 	QueuedAt          int64           `json:"queuedAt"`
 	SandboxGeneration int32           `json:"sandboxGeneration"`
 	SessionId         string          `json:"sessionId"`
@@ -5464,9 +5488,15 @@ type AgentRun struct {
 	Status            string          `json:"status"`
 	TextPreview       string          `json:"textPreview"`
 	TurnId            string          `json:"turnId"`
-	UserId            string          `json:"userId"`
-	WrittenAt         *int64          `json:"writtenAt,omitempty"`
+
+	// Upstream 模型调用走的上游：hdumate = agent.work（我们计费）；partner = 合作方；own = 用户自配接入点。后两种由对方计费，cost 为 0
+	Upstream  AgentRunUpstream `json:"upstream"`
+	UserId    string           `json:"userId"`
+	WrittenAt *int64           `json:"writtenAt,omitempty"`
 }
+
+// AgentRunUpstream 模型调用走的上游：hdumate = agent.work（我们计费）；partner = 合作方；own = 用户自配接入点。后两种由对方计费，cost 为 0
+type AgentRunUpstream string
 
 // AgentRunDetail defines model for AgentRunDetail.
 type AgentRunDetail struct {

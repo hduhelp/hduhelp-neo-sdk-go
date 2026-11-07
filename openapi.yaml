@@ -22642,6 +22642,7 @@ components:
                 - textPreview
                 - queuedAt
                 - stages
+                - upstream
             type: object
             properties:
                 id:
@@ -22709,6 +22710,16 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/AgentRunStage'
+                upstream:
+                    enum:
+                        - hdumate
+                        - partner
+                        - own
+                    type: string
+                    description: 模型调用走的上游：hdumate = agent.work（我们计费）；partner = 合作方；own = 用户自配接入点。后两种由对方计费，cost 为 0
+                partnerName:
+                    type: string
+                    description: upstream=partner 时的合作方名称
             description: 时间均为毫秒时间戳。
         AgentRunDetail:
             required:
