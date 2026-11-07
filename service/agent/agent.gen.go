@@ -309,6 +309,386 @@ func (s *Service) AgentTestMcpServer(ctx context.Context, req *AgentTestMcpServe
 	return resp, err
 }
 
+// AgentListPartnersAdminReq is the request for AgentListPartnersAdmin.
+type AgentListPartnersAdminReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentListPartnersAdminReqBuilder builds a AgentListPartnersAdminReq with a fluent setter per field.
+type AgentListPartnersAdminReqBuilder struct{ req *AgentListPartnersAdminReq }
+
+// NewAgentListPartnersAdminReqBuilder creates a request builder for AgentListPartnersAdmin.
+func NewAgentListPartnersAdminReqBuilder() *AgentListPartnersAdminReqBuilder {
+	return &AgentListPartnersAdminReqBuilder{req: &AgentListPartnersAdminReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *AgentListPartnersAdminReqBuilder) Build() *AgentListPartnersAdminReq { return b.req }
+
+// AgentListPartnersAdminResp is the response for AgentListPartnersAdmin.
+type AgentListPartnersAdminResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.AgentPartner `json:"data"`
+}
+
+// AgentListPartnersAdmin: 合作方实例列表（含连接数、近 7 天回合与健康）
+func (s *Service) AgentListPartnersAdmin(ctx context.Context, req *AgentListPartnersAdminReq, opts ...core.RequestOption) (*AgentListPartnersAdminResp, error) {
+	resp := &AgentListPartnersAdminResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/agent/partners",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentCreatePartnerReq is the request for AgentCreatePartner.
+type AgentCreatePartnerReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentCreatePartnerReqBuilder builds a AgentCreatePartnerReq with a fluent setter per field.
+type AgentCreatePartnerReqBuilder struct{ req *AgentCreatePartnerReq }
+
+// NewAgentCreatePartnerReqBuilder creates a request builder for AgentCreatePartner.
+func NewAgentCreatePartnerReqBuilder() *AgentCreatePartnerReqBuilder {
+	return &AgentCreatePartnerReqBuilder{req: &AgentCreatePartnerReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *AgentCreatePartnerReqBuilder) Body(body *models.AgentPartnerCreateRequestBody) *AgentCreatePartnerReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentCreatePartnerReqBuilder) Build() *AgentCreatePartnerReq { return b.req }
+
+// AgentCreatePartnerResp is the response for AgentCreatePartner.
+type AgentCreatePartnerResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentPartner `json:"data"`
+}
+
+// AgentCreatePartner: 新建合作方实例（草稿）
+func (s *Service) AgentCreatePartner(ctx context.Context, req *AgentCreatePartnerReq, opts ...core.RequestOption) (*AgentCreatePartnerResp, error) {
+	resp := &AgentCreatePartnerResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/agent/partners",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentListPartnerAdaptersReq is the request for AgentListPartnerAdapters.
+type AgentListPartnerAdaptersReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentListPartnerAdaptersReqBuilder builds a AgentListPartnerAdaptersReq with a fluent setter per field.
+type AgentListPartnerAdaptersReqBuilder struct{ req *AgentListPartnerAdaptersReq }
+
+// NewAgentListPartnerAdaptersReqBuilder creates a request builder for AgentListPartnerAdapters.
+func NewAgentListPartnerAdaptersReqBuilder() *AgentListPartnerAdaptersReqBuilder {
+	return &AgentListPartnerAdaptersReqBuilder{req: &AgentListPartnerAdaptersReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *AgentListPartnerAdaptersReqBuilder) Build() *AgentListPartnerAdaptersReq { return b.req }
+
+// AgentListPartnerAdaptersResp is the response for AgentListPartnerAdapters.
+type AgentListPartnerAdaptersResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.AgentPartnerAdapter `json:"data"`
+}
+
+// AgentListPartnerAdapters: 合作方适配器与配置表单
+func (s *Service) AgentListPartnerAdapters(ctx context.Context, req *AgentListPartnerAdaptersReq, opts ...core.RequestOption) (*AgentListPartnerAdaptersResp, error) {
+	resp := &AgentListPartnerAdaptersResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/agent/partners/adapters",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentGetPartnerAdminReq is the request for AgentGetPartnerAdmin.
+type AgentGetPartnerAdminReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentGetPartnerAdminReqBuilder builds a AgentGetPartnerAdminReq with a fluent setter per field.
+type AgentGetPartnerAdminReqBuilder struct{ req *AgentGetPartnerAdminReq }
+
+// NewAgentGetPartnerAdminReqBuilder creates a request builder for AgentGetPartnerAdmin.
+func NewAgentGetPartnerAdminReqBuilder() *AgentGetPartnerAdminReqBuilder {
+	return &AgentGetPartnerAdminReqBuilder{req: &AgentGetPartnerAdminReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentGetPartnerAdminReqBuilder) Id(v string) *AgentGetPartnerAdminReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentGetPartnerAdminReqBuilder) Build() *AgentGetPartnerAdminReq { return b.req }
+
+// AgentGetPartnerAdminResp is the response for AgentGetPartnerAdmin.
+type AgentGetPartnerAdminResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentPartner `json:"data"`
+}
+
+// AgentGetPartnerAdmin: 合作方实例详情
+func (s *Service) AgentGetPartnerAdmin(ctx context.Context, req *AgentGetPartnerAdminReq, opts ...core.RequestOption) (*AgentGetPartnerAdminResp, error) {
+	resp := &AgentGetPartnerAdminResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/agent/partners/{id}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentUpdatePartnerReq is the request for AgentUpdatePartner.
+type AgentUpdatePartnerReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentUpdatePartnerReqBuilder builds a AgentUpdatePartnerReq with a fluent setter per field.
+type AgentUpdatePartnerReqBuilder struct{ req *AgentUpdatePartnerReq }
+
+// NewAgentUpdatePartnerReqBuilder creates a request builder for AgentUpdatePartner.
+func NewAgentUpdatePartnerReqBuilder() *AgentUpdatePartnerReqBuilder {
+	return &AgentUpdatePartnerReqBuilder{req: &AgentUpdatePartnerReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentUpdatePartnerReqBuilder) Id(v string) *AgentUpdatePartnerReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AgentUpdatePartnerReqBuilder) Body(body *models.AgentPartnerUpdateRequestBody) *AgentUpdatePartnerReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentUpdatePartnerReqBuilder) Build() *AgentUpdatePartnerReq { return b.req }
+
+// AgentUpdatePartnerResp is the response for AgentUpdatePartner.
+type AgentUpdatePartnerResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentPartner `json:"data"`
+}
+
+// AgentUpdatePartner: 修改合作方实例
+func (s *Service) AgentUpdatePartner(ctx context.Context, req *AgentUpdatePartnerReq, opts ...core.RequestOption) (*AgentUpdatePartnerResp, error) {
+	resp := &AgentUpdatePartnerResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/agent/partners/{id}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentPartnerStatsReq is the request for AgentPartnerStats.
+type AgentPartnerStatsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentPartnerStatsReqBuilder builds a AgentPartnerStatsReq with a fluent setter per field.
+type AgentPartnerStatsReqBuilder struct{ req *AgentPartnerStatsReq }
+
+// NewAgentPartnerStatsReqBuilder creates a request builder for AgentPartnerStats.
+func NewAgentPartnerStatsReqBuilder() *AgentPartnerStatsReqBuilder {
+	return &AgentPartnerStatsReqBuilder{req: &AgentPartnerStatsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentPartnerStatsReqBuilder) Id(v string) *AgentPartnerStatsReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Days sets the "days" query parameter.
+func (b *AgentPartnerStatsReqBuilder) Days(v int32) *AgentPartnerStatsReqBuilder {
+	b.req.queryParams["days"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentPartnerStatsReqBuilder) Build() *AgentPartnerStatsReq { return b.req }
+
+// AgentPartnerStatsResp is the response for AgentPartnerStats.
+type AgentPartnerStatsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentPartnerStats `json:"data"`
+}
+
+// AgentPartnerStats: 合作方按日监控（来自回合、接入点与审计）
+func (s *Service) AgentPartnerStats(ctx context.Context, req *AgentPartnerStatsReq, opts ...core.RequestOption) (*AgentPartnerStatsResp, error) {
+	resp := &AgentPartnerStatsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/agent/partners/{id}/stats",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentSetPartnerStatusReq is the request for AgentSetPartnerStatus.
+type AgentSetPartnerStatusReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentSetPartnerStatusReqBuilder builds a AgentSetPartnerStatusReq with a fluent setter per field.
+type AgentSetPartnerStatusReqBuilder struct{ req *AgentSetPartnerStatusReq }
+
+// NewAgentSetPartnerStatusReqBuilder creates a request builder for AgentSetPartnerStatus.
+func NewAgentSetPartnerStatusReqBuilder() *AgentSetPartnerStatusReqBuilder {
+	return &AgentSetPartnerStatusReqBuilder{req: &AgentSetPartnerStatusReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentSetPartnerStatusReqBuilder) Id(v string) *AgentSetPartnerStatusReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AgentSetPartnerStatusReqBuilder) Body(body *models.AgentPartnerStatusRequestBody) *AgentSetPartnerStatusReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentSetPartnerStatusReqBuilder) Build() *AgentSetPartnerStatusReq { return b.req }
+
+// AgentSetPartnerStatusResp is the response for AgentSetPartnerStatus.
+type AgentSetPartnerStatusResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentPartner `json:"data"`
+}
+
+// AgentSetPartnerStatus: 切换合作方状态（须写原因）
+func (s *Service) AgentSetPartnerStatus(ctx context.Context, req *AgentSetPartnerStatusReq, opts ...core.RequestOption) (*AgentSetPartnerStatusResp, error) {
+	resp := &AgentSetPartnerStatusResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/agent/partners/{id}/status",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentTestPartnerReq is the request for AgentTestPartner.
+type AgentTestPartnerReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentTestPartnerReqBuilder builds a AgentTestPartnerReq with a fluent setter per field.
+type AgentTestPartnerReqBuilder struct{ req *AgentTestPartnerReq }
+
+// NewAgentTestPartnerReqBuilder creates a request builder for AgentTestPartner.
+func NewAgentTestPartnerReqBuilder() *AgentTestPartnerReqBuilder {
+	return &AgentTestPartnerReqBuilder{req: &AgentTestPartnerReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentTestPartnerReqBuilder) Id(v string) *AgentTestPartnerReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AgentTestPartnerReqBuilder) Body(body *models.AgentPartnerTestRequestBody) *AgentTestPartnerReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentTestPartnerReqBuilder) Build() *AgentTestPartnerReq { return b.req }
+
+// AgentTestPartnerResp is the response for AgentTestPartner.
+type AgentTestPartnerResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentPartnerTestResult `json:"data"`
+}
+
+// AgentTestPartner: 合作方测试：拉模型目录、健康检查、生成连接第一步
+func (s *Service) AgentTestPartner(ctx context.Context, req *AgentTestPartnerReq, opts ...core.RequestOption) (*AgentTestPartnerResp, error) {
+	resp := &AgentTestPartnerResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/agent/partners/{id}/test",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // AgentListPresetsReq is the request for AgentListPresets.
 type AgentListPresetsReq struct {
 	pathParams  map[string]string
@@ -2239,6 +2619,353 @@ func (s *Service) AgentAppModels(ctx context.Context, req *AgentAppModelsReq, op
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/agent/models",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentListPartnersReq is the request for AgentListPartners.
+type AgentListPartnersReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentListPartnersReqBuilder builds a AgentListPartnersReq with a fluent setter per field.
+type AgentListPartnersReqBuilder struct{ req *AgentListPartnersReq }
+
+// NewAgentListPartnersReqBuilder creates a request builder for AgentListPartners.
+func NewAgentListPartnersReqBuilder() *AgentListPartnersReqBuilder {
+	return &AgentListPartnersReqBuilder{req: &AgentListPartnersReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *AgentListPartnersReqBuilder) Build() *AgentListPartnersReq { return b.req }
+
+// AgentListPartnersResp is the response for AgentListPartners.
+type AgentListPartnersResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentPartnerList `json:"data"`
+}
+
+// AgentListPartners: 合作方列表（当前用户可见的，含余额）
+func (s *Service) AgentListPartners(ctx context.Context, req *AgentListPartnersReq, opts ...core.RequestOption) (*AgentListPartnersResp, error) {
+	resp := &AgentListPartnersResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/agent/partners",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentDisconnectPartnerReq is the request for AgentDisconnectPartner.
+type AgentDisconnectPartnerReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentDisconnectPartnerReqBuilder builds a AgentDisconnectPartnerReq with a fluent setter per field.
+type AgentDisconnectPartnerReqBuilder struct{ req *AgentDisconnectPartnerReq }
+
+// NewAgentDisconnectPartnerReqBuilder creates a request builder for AgentDisconnectPartner.
+func NewAgentDisconnectPartnerReqBuilder() *AgentDisconnectPartnerReqBuilder {
+	return &AgentDisconnectPartnerReqBuilder{req: &AgentDisconnectPartnerReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Slug sets the "slug" path parameter.
+func (b *AgentDisconnectPartnerReqBuilder) Slug(v string) *AgentDisconnectPartnerReqBuilder {
+	b.req.pathParams["slug"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentDisconnectPartnerReqBuilder) Build() *AgentDisconnectPartnerReq { return b.req }
+
+// AgentDisconnectPartnerResp is the response for AgentDisconnectPartner.
+type AgentDisconnectPartnerResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// AgentDisconnectPartner: 断开合作方（删除接入点与密文）
+func (s *Service) AgentDisconnectPartner(ctx context.Context, req *AgentDisconnectPartnerReq, opts ...core.RequestOption) (*AgentDisconnectPartnerResp, error) {
+	resp := &AgentDisconnectPartnerResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/agent/partners/{slug}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentConnectPartnerReq is the request for AgentConnectPartner.
+type AgentConnectPartnerReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentConnectPartnerReqBuilder builds a AgentConnectPartnerReq with a fluent setter per field.
+type AgentConnectPartnerReqBuilder struct{ req *AgentConnectPartnerReq }
+
+// NewAgentConnectPartnerReqBuilder creates a request builder for AgentConnectPartner.
+func NewAgentConnectPartnerReqBuilder() *AgentConnectPartnerReqBuilder {
+	return &AgentConnectPartnerReqBuilder{req: &AgentConnectPartnerReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Slug sets the "slug" path parameter.
+func (b *AgentConnectPartnerReqBuilder) Slug(v string) *AgentConnectPartnerReqBuilder {
+	b.req.pathParams["slug"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AgentConnectPartnerReqBuilder) Body(body *models.AgentPartnerConnectRequestBody) *AgentConnectPartnerReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentConnectPartnerReqBuilder) Build() *AgentConnectPartnerReq { return b.req }
+
+// AgentConnectPartnerResp is the response for AgentConnectPartner.
+type AgentConnectPartnerResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentConnectStep `json:"data"`
+}
+
+// AgentConnectPartner: 连接合作方：返回下一步（browser / form / done）
+func (s *Service) AgentConnectPartner(ctx context.Context, req *AgentConnectPartnerReq, opts ...core.RequestOption) (*AgentConnectPartnerResp, error) {
+	resp := &AgentConnectPartnerResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/agent/partners/{slug}/connect",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentCompletePartnerConnectReq is the request for AgentCompletePartnerConnect.
+type AgentCompletePartnerConnectReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentCompletePartnerConnectReqBuilder builds a AgentCompletePartnerConnectReq with a fluent setter per field.
+type AgentCompletePartnerConnectReqBuilder struct {
+	req *AgentCompletePartnerConnectReq
+}
+
+// NewAgentCompletePartnerConnectReqBuilder creates a request builder for AgentCompletePartnerConnect.
+func NewAgentCompletePartnerConnectReqBuilder() *AgentCompletePartnerConnectReqBuilder {
+	return &AgentCompletePartnerConnectReqBuilder{req: &AgentCompletePartnerConnectReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Slug sets the "slug" path parameter.
+func (b *AgentCompletePartnerConnectReqBuilder) Slug(v string) *AgentCompletePartnerConnectReqBuilder {
+	b.req.pathParams["slug"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AgentCompletePartnerConnectReqBuilder) Body(body *models.AgentPartnerCompleteRequestBody) *AgentCompletePartnerConnectReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentCompletePartnerConnectReqBuilder) Build() *AgentCompletePartnerConnectReq { return b.req }
+
+// AgentCompletePartnerConnectResp is the response for AgentCompletePartnerConnect.
+type AgentCompletePartnerConnectResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentConnectSubmitted `json:"data"`
+}
+
+// AgentCompletePartnerConnect: 完成浏览器式连接：用回跳带回的票据保存凭据（只认发起连接的账号，他人 403）
+func (s *Service) AgentCompletePartnerConnect(ctx context.Context, req *AgentCompletePartnerConnectReq, opts ...core.RequestOption) (*AgentCompletePartnerConnectResp, error) {
+	resp := &AgentCompletePartnerConnectResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/agent/partners/{slug}/connect/complete",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentSubmitPartnerConnectReq is the request for AgentSubmitPartnerConnect.
+type AgentSubmitPartnerConnectReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentSubmitPartnerConnectReqBuilder builds a AgentSubmitPartnerConnectReq with a fluent setter per field.
+type AgentSubmitPartnerConnectReqBuilder struct{ req *AgentSubmitPartnerConnectReq }
+
+// NewAgentSubmitPartnerConnectReqBuilder creates a request builder for AgentSubmitPartnerConnect.
+func NewAgentSubmitPartnerConnectReqBuilder() *AgentSubmitPartnerConnectReqBuilder {
+	return &AgentSubmitPartnerConnectReqBuilder{req: &AgentSubmitPartnerConnectReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Slug sets the "slug" path parameter.
+func (b *AgentSubmitPartnerConnectReqBuilder) Slug(v string) *AgentSubmitPartnerConnectReqBuilder {
+	b.req.pathParams["slug"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AgentSubmitPartnerConnectReqBuilder) Body(body *models.AgentPartnerSubmitRequestBody) *AgentSubmitPartnerConnectReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentSubmitPartnerConnectReqBuilder) Build() *AgentSubmitPartnerConnectReq { return b.req }
+
+// AgentSubmitPartnerConnectResp is the response for AgentSubmitPartnerConnect.
+type AgentSubmitPartnerConnectResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentConnectSubmitted `json:"data"`
+}
+
+// AgentSubmitPartnerConnect: 提交表单式连接
+func (s *Service) AgentSubmitPartnerConnect(ctx context.Context, req *AgentSubmitPartnerConnectReq, opts ...core.RequestOption) (*AgentSubmitPartnerConnectResp, error) {
+	resp := &AgentSubmitPartnerConnectResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/agent/partners/{slug}/connect/submit",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentTopupPartnerReq is the request for AgentTopupPartner.
+type AgentTopupPartnerReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentTopupPartnerReqBuilder builds a AgentTopupPartnerReq with a fluent setter per field.
+type AgentTopupPartnerReqBuilder struct{ req *AgentTopupPartnerReq }
+
+// NewAgentTopupPartnerReqBuilder creates a request builder for AgentTopupPartner.
+func NewAgentTopupPartnerReqBuilder() *AgentTopupPartnerReqBuilder {
+	return &AgentTopupPartnerReqBuilder{req: &AgentTopupPartnerReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Slug sets the "slug" path parameter.
+func (b *AgentTopupPartnerReqBuilder) Slug(v string) *AgentTopupPartnerReqBuilder {
+	b.req.pathParams["slug"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AgentTopupPartnerReqBuilder) Body(body *models.AgentPartnerTopupRequestBody) *AgentTopupPartnerReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentTopupPartnerReqBuilder) Build() *AgentTopupPartnerReq { return b.req }
+
+// AgentTopupPartnerResp is the response for AgentTopupPartner.
+type AgentTopupPartnerResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentPartnerTopup `json:"data"`
+}
+
+// AgentTopupPartner: 合作方充值：建支付会话
+func (s *Service) AgentTopupPartner(ctx context.Context, req *AgentTopupPartnerReq, opts ...core.RequestOption) (*AgentTopupPartnerResp, error) {
+	resp := &AgentTopupPartnerResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/agent/partners/{slug}/topup",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentPartnerTopupStateReq is the request for AgentPartnerTopupState.
+type AgentPartnerTopupStateReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentPartnerTopupStateReqBuilder builds a AgentPartnerTopupStateReq with a fluent setter per field.
+type AgentPartnerTopupStateReqBuilder struct{ req *AgentPartnerTopupStateReq }
+
+// NewAgentPartnerTopupStateReqBuilder creates a request builder for AgentPartnerTopupState.
+func NewAgentPartnerTopupStateReqBuilder() *AgentPartnerTopupStateReqBuilder {
+	return &AgentPartnerTopupStateReqBuilder{req: &AgentPartnerTopupStateReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Slug sets the "slug" path parameter.
+func (b *AgentPartnerTopupStateReqBuilder) Slug(v string) *AgentPartnerTopupStateReqBuilder {
+	b.req.pathParams["slug"] = v
+	return b
+}
+
+// SessionId sets the "session_id" path parameter.
+func (b *AgentPartnerTopupStateReqBuilder) SessionId(v string) *AgentPartnerTopupStateReqBuilder {
+	b.req.pathParams["session_id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentPartnerTopupStateReqBuilder) Build() *AgentPartnerTopupStateReq { return b.req }
+
+// AgentPartnerTopupStateResp is the response for AgentPartnerTopupState.
+type AgentPartnerTopupStateResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentPartnerTopupStatus `json:"data"`
+}
+
+// AgentPartnerTopupState: 合作方充值状态
+func (s *Service) AgentPartnerTopupState(ctx context.Context, req *AgentPartnerTopupStateReq, opts ...core.RequestOption) (*AgentPartnerTopupStateResp, error) {
+	resp := &AgentPartnerTopupStateResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/agent/partners/{slug}/topup/{session_id}",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

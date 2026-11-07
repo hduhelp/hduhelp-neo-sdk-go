@@ -1895,6 +1895,191 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/AgentMcpServerResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/agent/partners:
+        get:
+            tags:
+                - AgentService
+            summary: 合作方实例列表（含连接数、近 7 天回合与健康）
+            operationId: AgentService_AgentListPartnersAdmin
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentPartnerAdminListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        post:
+            tags:
+                - AgentService
+            summary: 新建合作方实例（草稿）
+            operationId: AgentService_AgentCreatePartner
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentPartnerCreateRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentPartnerAdminResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/agent/partners/adapters:
+        get:
+            tags:
+                - AgentService
+            summary: 合作方适配器与配置表单
+            operationId: AgentService_AgentListPartnerAdapters
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentPartnerAdapterListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/agent/partners/{id}:
+        get:
+            tags:
+                - AgentService
+            summary: 合作方实例详情
+            operationId: AgentService_AgentGetPartnerAdmin
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentPartnerAdminResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        put:
+            tags:
+                - AgentService
+            summary: 修改合作方实例
+            operationId: AgentService_AgentUpdatePartner
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentPartnerUpdateRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentPartnerAdminResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/agent/partners/{id}/stats:
+        get:
+            tags:
+                - AgentService
+            summary: 合作方按日监控（来自回合、接入点与审计）
+            operationId: AgentService_AgentPartnerStats
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: days
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentPartnerStatsResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/agent/partners/{id}/status:
+        post:
+            tags:
+                - AgentService
+            summary: 切换合作方状态（须写原因）
+            operationId: AgentService_AgentSetPartnerStatus
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentPartnerStatusRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentPartnerAdminResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/agent/partners/{id}/test:
+        post:
+            tags:
+                - AgentService
+            summary: 合作方测试：拉模型目录、健康检查、生成连接第一步
+            operationId: AgentService_AgentTestPartner
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentPartnerTestRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentPartnerTestResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
     /hduhelp-neo/admin/agent/presets:
         get:
             tags:
@@ -12506,6 +12691,186 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/AgentAppModelsResponseBody'
             x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/agent/partners:
+        get:
+            tags:
+                - AgentService
+            summary: 合作方列表（当前用户可见的，含余额）
+            operationId: AgentService_AgentListPartners
+            security:
+                - NativeSessionAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentPartnerListResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/agent/partners/{slug}:
+        delete:
+            tags:
+                - AgentService
+            summary: 断开合作方（删除接入点与密文）
+            operationId: AgentService_AgentDisconnectPartner
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: slug
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: |-
+                        工作模式配置管理：代理库、模块设置、Skill、MCP 服务器、预设，以及 App 读预设。
+                        写操作带 expected_version（乐观锁）与 reason（进 agent_audits）。被引用的对象
+                        删除或停用时返回 409，data.references 列出引用方。
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentMutationResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/agent/partners/{slug}/connect:
+        post:
+            tags:
+                - AgentService
+            summary: 连接合作方：返回下一步（browser / form / done）
+            operationId: AgentService_AgentConnectPartner
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: slug
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentPartnerConnectRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentConnectStepResponseBody'
+            x-hduhelp-http: {'auth': 'native_session', 'request_body_required': true}
+    /hduhelp-neo/agent/partners/{slug}/connect/complete:
+        post:
+            tags:
+                - AgentService
+            summary: 完成浏览器式连接：用回跳带回的票据保存凭据（只认发起连接的账号，他人 403）
+            operationId: AgentService_AgentCompletePartnerConnect
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: slug
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentPartnerCompleteRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentConnectSubmittedResponseBody'
+            x-hduhelp-http: {'auth': 'native_session', 'request_body_required': true}
+    /hduhelp-neo/agent/partners/{slug}/connect/submit:
+        post:
+            tags:
+                - AgentService
+            summary: 提交表单式连接
+            operationId: AgentService_AgentSubmitPartnerConnect
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: slug
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentPartnerSubmitRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentConnectSubmittedResponseBody'
+            x-hduhelp-http: {'auth': 'native_session', 'request_body_required': true}
+    /hduhelp-neo/agent/partners/{slug}/topup:
+        post:
+            tags:
+                - AgentService
+            summary: 合作方充值：建支付会话
+            operationId: AgentService_AgentTopupPartner
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: slug
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentPartnerTopupRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentPartnerTopupResponseBody'
+            x-hduhelp-http: {'auth': 'native_session', 'request_body_required': true}
+    /hduhelp-neo/agent/partners/{slug}/topup/{session_id}:
+        get:
+            tags:
+                - AgentService
+            summary: 合作方充值状态
+            operationId: AgentService_AgentPartnerTopupState
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: slug
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: session_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentPartnerTopupStatusResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/agent/presets:
         get:
             tags:
@@ -18078,6 +18443,38 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/CursorPostListResponseBody'
             x-hduhelp-http: {'requires_user': false, 'auth': 'bearer'}
+    /hduhelp-neo/oauth/partners/{slug}/callback:
+        get:
+            tags:
+                - AgentService
+            summary: 合作方授权回调（公开，凭一次性 state，交给适配器；成功时只发一次性票据，不保存）
+            operationId: AgentService_AgentPartnerCallback
+            security: []
+            parameters:
+                - name: slug
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: state
+                  in: query
+                  schema:
+                    type: string
+                - name: code
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: |-
+                        工作模式配置管理：代理库、模块设置、Skill、MCP 服务器、预设，以及 App 读预设。
+                        写操作带 expected_version（乐观锁）与 reason（进 agent_audits）。被引用的对象
+                        删除或停用时返回 409，data.references 列出引用方。
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentMutationResponseBody'
+            x-hduhelp-http: {'auth': 'public', 'catalog': 'exclude'}
     /hduhelp-neo/open-apis/auth/app-access-token/internal:
         post:
             tags:
@@ -20356,6 +20753,7 @@ components:
                 - name
                 - base_url
                 - key_tail
+                - partner
             type: object
             properties:
                 id:
@@ -20366,6 +20764,18 @@ components:
                     type: string
                 key_tail:
                     type: string
+                partner:
+                    type: string
+                models:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentAppModel'
+                default_model:
+                    type: string
+            description: |-
+                partner：空 = 用户手填的接入点；否则是创建它的合作方 slug（每个合作方每人至多一个）。
+                models / default_model 只在 GET /agent/models 里给：合作方接入点列出它的模型目录（过白名单），
+                用它建会话或改模型时同时带 endpoint_id 与 model（不带 model 用 default_model）；手填接入点 models 为空，不能带 model。
         AgentAppModel:
             required:
                 - id
@@ -20502,6 +20912,88 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/AgentAssetLink'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentConnectField:
+            required:
+                - name
+                - label
+                - type
+            type: object
+            properties:
+                name:
+                    type: string
+                label:
+                    type: string
+                type:
+                    enum:
+                        - text
+                        - secret
+                    type: string
+                placeholder:
+                    type: string
+                help:
+                    type: string
+        AgentConnectStep:
+            required:
+                - kind
+            type: object
+            properties:
+                kind:
+                    enum:
+                        - browser
+                        - form
+                        - done
+                    type: string
+                url:
+                    type: string
+                callback_scheme:
+                    type: string
+                expires_at:
+                    type: integer
+                    format: int64
+                fields:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentConnectField'
+            description: |-
+                browser：用认证浏览器打开 url，回跳 return_to 并追加 partner=<slug>&status=pending&ticket=<票据>，
+                或 status=cancelled|error[&reason=中文短句]（callback_scheme 是 return_to 的 scheme，state 10 分钟有效、一次性）。
+                pending 时 2 分钟内用登录会话调 connect/complete 才算连上（回调没有会话，防止别人的授权落到自己账号上）；
+                网页版 return_to 同样要带会话调 complete。form：按 fields 画表单提交到 connect/submit；done：服务端已连好。
+        AgentConnectStepResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentConnectStep'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentConnectSubmitted:
+            required:
+                - status
+            type: object
+            properties:
+                status:
+                    enum:
+                        - connected
+                    type: string
+        AgentConnectSubmittedResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentConnectSubmitted'
                 code:
                     type: integer
                     format: int64
@@ -21090,6 +21582,607 @@ components:
                     type: integer
                     format: int64
                 msg:
+                    type: string
+        AgentPartner:
+            required:
+                - id
+                - slug
+                - adapter
+                - adapterLabel
+                - name
+                - iconUrl
+                - description
+                - badge
+                - status
+                - rolloutUserIds
+                - config
+                - secretTails
+                - defaultModel
+                - modelAllowlist
+                - shareNote
+                - callbackUrl
+                - health
+                - connectedUsers
+                - turns7d
+                - failedTurns7d
+                - version
+                - createdAt
+                - updatedAt
+            type: object
+            properties:
+                id:
+                    type: string
+                slug:
+                    type: string
+                adapter:
+                    type: string
+                adapterLabel:
+                    type: string
+                name:
+                    type: string
+                iconUrl:
+                    type: string
+                description:
+                    type: string
+                badge:
+                    type: string
+                status:
+                    enum:
+                        - draft
+                        - active
+                        - paused
+                        - disabled
+                    type: string
+                rolloutUserIds:
+                    type: array
+                    items:
+                        type: string
+                config:
+                    type: object
+                    additionalProperties:
+                        type: string
+                secretTails:
+                    type: object
+                    additionalProperties:
+                        type: string
+                defaultModel:
+                    type: string
+                modelAllowlist:
+                    type: array
+                    items:
+                        type: string
+                shareNote:
+                    type: string
+                callbackUrl:
+                    type: string
+                health:
+                    $ref: '#/components/schemas/AgentPartnerHealth'
+                connectedUsers:
+                    type: integer
+                    format: int64
+                turns7d:
+                    type: integer
+                    format: int64
+                failedTurns7d:
+                    type: integer
+                    format: int64
+                version:
+                    type: integer
+                    format: int64
+                createdAt:
+                    type: integer
+                    format: int64
+                updatedAt:
+                    type: integer
+                    format: int64
+            description: config 只含非密钥字段；secretTails 是已设置的密钥字段的尾号。
+        AgentPartnerAdapter:
+            required:
+                - kind
+                - label
+                - configSchema
+            type: object
+            properties:
+                kind:
+                    type: string
+                label:
+                    type: string
+                configSchema:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentPartnerConfigField'
+        AgentPartnerAdapterListResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentPartnerAdapter'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentPartnerAdminListResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentPartner'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentPartnerAdminResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentPartner'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentPartnerCapabilities:
+            required:
+                - balance
+                - topup
+            type: object
+            properties:
+                balance:
+                    type: boolean
+                topup:
+                    type: boolean
+            description: |-
+                ---- 合作方（App）----
+                只列当前用户可见的合作方（draft 只给灰度名单，disabled 不列）。金额单位元，时间为毫秒时间戳。
+        AgentPartnerCard:
+            required:
+                - slug
+                - name
+                - icon_url
+                - description
+                - badge
+                - status
+                - connected
+                - capabilities
+            type: object
+            properties:
+                slug:
+                    type: string
+                name:
+                    type: string
+                icon_url:
+                    type: string
+                description:
+                    type: string
+                badge:
+                    type: string
+                status:
+                    enum:
+                        - draft
+                        - active
+                        - paused
+                    type: string
+                    description: paused = 暂停新连接，已有的照常可用
+                connected:
+                    type: boolean
+                endpoint_id:
+                    type: string
+                capabilities:
+                    $ref: '#/components/schemas/AgentPartnerCapabilities'
+                balance_yuan:
+                    type: number
+                    format: double
+                balance_at:
+                    type: integer
+                    format: int64
+                key_state:
+                    enum:
+                        - ok
+                        - reauthorize
+                        - quota
+                    type: string
+                topup_amounts:
+                    type: array
+                    items:
+                        type: integer
+                        format: int64
+            description: balance_yuan / balance_at / key_state 只在已连接、有余额能力且查询成功时给（缓存 60 秒）。
+        AgentPartnerCompleteRequestBody:
+            required:
+                - ticket
+            type: object
+            properties:
+                ticket:
+                    type: string
+                    description: 回跳 status=pending 时带回的一次性票据（2 分钟）
+        AgentPartnerConfigField:
+            required:
+                - name
+                - label
+                - type
+                - group
+                - required
+            type: object
+            properties:
+                name:
+                    type: string
+                label:
+                    type: string
+                type:
+                    enum:
+                        - text
+                        - url
+                        - number
+                        - json
+                        - secret
+                    type: string
+                group:
+                    type: string
+                required:
+                    type: boolean
+                default:
+                    type: string
+                help:
+                    type: string
+            description: '---- 合作方（管理台）----'
+        AgentPartnerConnectRequestBody:
+            required:
+                - return_to
+            type: object
+            properties:
+                return_to:
+                    type: string
+                    description: 连接结束的回跳地址：poplar://partner/<slug>、poplarbeta://partner/<slug> 或 https://*.hduhelp.com/…
+        AgentPartnerCreateRequestBody:
+            required:
+                - partner
+            type: object
+            properties:
+                partner:
+                    $ref: '#/components/schemas/AgentPartnerInput'
+                reason:
+                    type: string
+        AgentPartnerDay:
+            required:
+                - date
+                - connects
+                - connectFailures
+                - disconnects
+                - turns
+                - failedTurns
+                - recoveries
+                - topups
+                - topupYuan
+                - paid
+                - paidYuan
+            type: object
+            properties:
+                date:
+                    type: string
+                connects:
+                    type: integer
+                    format: int64
+                connectFailures:
+                    type: integer
+                    format: int64
+                disconnects:
+                    type: integer
+                    format: int64
+                turns:
+                    type: integer
+                    format: int64
+                failedTurns:
+                    type: integer
+                    format: int64
+                recoveries:
+                    type: object
+                    additionalProperties:
+                        type: integer
+                        format: int64
+                topups:
+                    type: integer
+                    format: int64
+                topupYuan:
+                    type: integer
+                    format: int64
+                paid:
+                    type: integer
+                    format: int64
+                paidYuan:
+                    type: integer
+                    format: int64
+        AgentPartnerHealth:
+            required:
+                - status
+                - error
+                - failures
+            type: object
+            properties:
+                status:
+                    type: string
+                error:
+                    type: string
+                failures:
+                    type: integer
+                    format: int32
+                checkedAt:
+                    type: integer
+                    format: int64
+        AgentPartnerInput:
+            required:
+                - name
+            type: object
+            properties:
+                slug:
+                    type: string
+                adapter:
+                    type: string
+                name:
+                    type: string
+                icon_url:
+                    type: string
+                description:
+                    type: string
+                badge:
+                    type: string
+                rollout_user_ids:
+                    type: array
+                    items:
+                        type: string
+                config:
+                    type: object
+                    additionalProperties:
+                        type: string
+                clear_secrets:
+                    type: array
+                    items:
+                        type: string
+                default_model:
+                    type: string
+                model_allowlist:
+                    type: array
+                    items:
+                        type: string
+                share_note:
+                    type: string
+            description: 密钥字段留空 = 不改，clear_secrets 列出要清除的。slug 与 adapter 只在新建时生效。
+        AgentPartnerList:
+            required:
+                - items
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentPartnerCard'
+        AgentPartnerListResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentPartnerList'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentPartnerModelShare:
+            required:
+                - model
+                - turns
+            type: object
+            properties:
+                model:
+                    type: string
+                turns:
+                    type: integer
+                    format: int64
+        AgentPartnerStats:
+            required:
+                - connectedUsers
+                - days
+                - models
+            type: object
+            properties:
+                connectedUsers:
+                    type: integer
+                    format: int64
+                days:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentPartnerDay'
+                models:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentPartnerModelShare'
+        AgentPartnerStatsResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentPartnerStats'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentPartnerStatusRequestBody:
+            required:
+                - status
+                - expected_version
+                - reason
+            type: object
+            properties:
+                status:
+                    enum:
+                        - draft
+                        - active
+                        - paused
+                        - disabled
+                    type: string
+                expected_version:
+                    type: integer
+                    format: int64
+                reason:
+                    type: string
+        AgentPartnerSubmitRequestBody:
+            required:
+                - fields
+            type: object
+            properties:
+                fields:
+                    type: object
+                    additionalProperties:
+                        type: string
+        AgentPartnerTestRequestBody:
+            required:
+                - action
+            type: object
+            properties:
+                action:
+                    enum:
+                        - models
+                        - health
+                        - connect
+                    type: string
+        AgentPartnerTestResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentPartnerTestResult'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentPartnerTestResult:
+            required:
+                - ok
+                - message
+                - callbackUrl
+            type: object
+            properties:
+                ok:
+                    type: boolean
+                message:
+                    type: string
+                models:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentAppModel'
+                step:
+                    $ref: '#/components/schemas/AgentConnectStep'
+                callbackUrl:
+                    type: string
+        AgentPartnerTopup:
+            required:
+                - session_id
+                - amount
+                - status
+                - expired_at
+            type: object
+            properties:
+                session_id:
+                    type: string
+                amount:
+                    type: integer
+                    format: int64
+                status:
+                    type: string
+                pay_url:
+                    type: string
+                pay_kind:
+                    enum:
+                        - alipay_app
+                        - web
+                    type: string
+                expired_at:
+                    type: integer
+                    format: int64
+            description: |-
+                pay_kind=alipay_app：用户点按钮才外部打开 pay_url；web：应用内浏览器打开。没有 pay_url 时提示改用电脑充值。
+                唤起或从支付页返回都不算成功，轮询到 paid 才算。
+        AgentPartnerTopupRequestBody:
+            required:
+                - amount
+            type: object
+            properties:
+                amount:
+                    type: integer
+                    description: 充值金额（整数元，1–100000）
+                    format: int64
+        AgentPartnerTopupResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentPartnerTopup'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentPartnerTopupStatus:
+            required:
+                - session_id
+                - status
+            type: object
+            properties:
+                session_id:
+                    type: string
+                status:
+                    type: string
+                paid_at:
+                    type: integer
+                    format: int64
+            description: status：pending、paid、failed、closed、refunded；建议 3 秒查一次，过了 expired_at 停。
+        AgentPartnerTopupStatusResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentPartnerTopupStatus'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentPartnerUpdateRequestBody:
+            required:
+                - partner
+                - expected_version
+            type: object
+            properties:
+                partner:
+                    $ref: '#/components/schemas/AgentPartnerInput'
+                expected_version:
+                    type: integer
+                    format: int64
+                reason:
                     type: string
         AgentPreset:
             required:

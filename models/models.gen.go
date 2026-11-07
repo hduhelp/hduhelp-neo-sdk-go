@@ -29,6 +29,60 @@ func (e AgentAssetLinkKind) Valid() bool {
 	}
 }
 
+// Defines values for AgentConnectFieldType.
+const (
+	AgentConnectFieldTypeSecret AgentConnectFieldType = "secret"
+	AgentConnectFieldTypeText   AgentConnectFieldType = "text"
+)
+
+// Valid indicates whether the value is a known member of the AgentConnectFieldType enum.
+func (e AgentConnectFieldType) Valid() bool {
+	switch e {
+	case AgentConnectFieldTypeSecret:
+		return true
+	case AgentConnectFieldTypeText:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentConnectStepKind.
+const (
+	Browser AgentConnectStepKind = "browser"
+	Done    AgentConnectStepKind = "done"
+	Form    AgentConnectStepKind = "form"
+)
+
+// Valid indicates whether the value is a known member of the AgentConnectStepKind enum.
+func (e AgentConnectStepKind) Valid() bool {
+	switch e {
+	case Browser:
+		return true
+	case Done:
+		return true
+	case Form:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentConnectSubmittedStatus.
+const (
+	AgentConnectSubmittedStatusConnected AgentConnectSubmittedStatus = "connected"
+)
+
+// Valid indicates whether the value is a known member of the AgentConnectSubmittedStatus enum.
+func (e AgentConnectSubmittedStatus) Valid() bool {
+	switch e {
+	case AgentConnectSubmittedStatusConnected:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AgentCredentialLoginStatus.
 const (
 	AgentCredentialLoginStatusConnected AgentCredentialLoginStatus = "connected"
@@ -104,6 +158,162 @@ func (e AgentMcpServerInputTransport) Valid() bool {
 	case AgentMcpServerInputTransportHttp:
 		return true
 	case AgentMcpServerInputTransportStdio:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentPartnerStatus.
+const (
+	AgentPartnerStatusActive   AgentPartnerStatus = "active"
+	AgentPartnerStatusDisabled AgentPartnerStatus = "disabled"
+	AgentPartnerStatusDraft    AgentPartnerStatus = "draft"
+	AgentPartnerStatusPaused   AgentPartnerStatus = "paused"
+)
+
+// Valid indicates whether the value is a known member of the AgentPartnerStatus enum.
+func (e AgentPartnerStatus) Valid() bool {
+	switch e {
+	case AgentPartnerStatusActive:
+		return true
+	case AgentPartnerStatusDisabled:
+		return true
+	case AgentPartnerStatusDraft:
+		return true
+	case AgentPartnerStatusPaused:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentPartnerCardKeyState.
+const (
+	Ok          AgentPartnerCardKeyState = "ok"
+	Quota       AgentPartnerCardKeyState = "quota"
+	Reauthorize AgentPartnerCardKeyState = "reauthorize"
+)
+
+// Valid indicates whether the value is a known member of the AgentPartnerCardKeyState enum.
+func (e AgentPartnerCardKeyState) Valid() bool {
+	switch e {
+	case Ok:
+		return true
+	case Quota:
+		return true
+	case Reauthorize:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentPartnerCardStatus.
+const (
+	AgentPartnerCardStatusActive AgentPartnerCardStatus = "active"
+	AgentPartnerCardStatusDraft  AgentPartnerCardStatus = "draft"
+	AgentPartnerCardStatusPaused AgentPartnerCardStatus = "paused"
+)
+
+// Valid indicates whether the value is a known member of the AgentPartnerCardStatus enum.
+func (e AgentPartnerCardStatus) Valid() bool {
+	switch e {
+	case AgentPartnerCardStatusActive:
+		return true
+	case AgentPartnerCardStatusDraft:
+		return true
+	case AgentPartnerCardStatusPaused:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentPartnerConfigFieldType.
+const (
+	AgentPartnerConfigFieldTypeJson   AgentPartnerConfigFieldType = "json"
+	AgentPartnerConfigFieldTypeNumber AgentPartnerConfigFieldType = "number"
+	AgentPartnerConfigFieldTypeSecret AgentPartnerConfigFieldType = "secret"
+	AgentPartnerConfigFieldTypeText   AgentPartnerConfigFieldType = "text"
+	AgentPartnerConfigFieldTypeUrl    AgentPartnerConfigFieldType = "url"
+)
+
+// Valid indicates whether the value is a known member of the AgentPartnerConfigFieldType enum.
+func (e AgentPartnerConfigFieldType) Valid() bool {
+	switch e {
+	case AgentPartnerConfigFieldTypeJson:
+		return true
+	case AgentPartnerConfigFieldTypeNumber:
+		return true
+	case AgentPartnerConfigFieldTypeSecret:
+		return true
+	case AgentPartnerConfigFieldTypeText:
+		return true
+	case AgentPartnerConfigFieldTypeUrl:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentPartnerStatusRequestBodyStatus.
+const (
+	AgentPartnerStatusRequestBodyStatusActive   AgentPartnerStatusRequestBodyStatus = "active"
+	AgentPartnerStatusRequestBodyStatusDisabled AgentPartnerStatusRequestBodyStatus = "disabled"
+	AgentPartnerStatusRequestBodyStatusDraft    AgentPartnerStatusRequestBodyStatus = "draft"
+	AgentPartnerStatusRequestBodyStatusPaused   AgentPartnerStatusRequestBodyStatus = "paused"
+)
+
+// Valid indicates whether the value is a known member of the AgentPartnerStatusRequestBodyStatus enum.
+func (e AgentPartnerStatusRequestBodyStatus) Valid() bool {
+	switch e {
+	case AgentPartnerStatusRequestBodyStatusActive:
+		return true
+	case AgentPartnerStatusRequestBodyStatusDisabled:
+		return true
+	case AgentPartnerStatusRequestBodyStatusDraft:
+		return true
+	case AgentPartnerStatusRequestBodyStatusPaused:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentPartnerTestRequestBodyAction.
+const (
+	Connect AgentPartnerTestRequestBodyAction = "connect"
+	Health  AgentPartnerTestRequestBodyAction = "health"
+	Models  AgentPartnerTestRequestBodyAction = "models"
+)
+
+// Valid indicates whether the value is a known member of the AgentPartnerTestRequestBodyAction enum.
+func (e AgentPartnerTestRequestBodyAction) Valid() bool {
+	switch e {
+	case Connect:
+		return true
+	case Health:
+		return true
+	case Models:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentPartnerTopupPayKind.
+const (
+	AlipayApp AgentPartnerTopupPayKind = "alipay_app"
+	Web       AgentPartnerTopupPayKind = "web"
+)
+
+// Valid indicates whether the value is a known member of the AgentPartnerTopupPayKind enum.
+func (e AgentPartnerTopupPayKind) Valid() bool {
+	switch e {
+	case AlipayApp:
+		return true
+	case Web:
 		return true
 	default:
 		return false
@@ -4301,12 +4511,17 @@ type AdoptRevisionRequestBody struct {
 	RevisionId *string `json:"revision_id,omitempty"`
 }
 
-// AgentAppEndpoint defines model for AgentAppEndpoint.
+// AgentAppEndpoint partner：空 = 用户手填的接入点；否则是创建它的合作方 slug（每个合作方每人至多一个）。
+// models / default_model 只在 GET /agent/models 里给：合作方接入点列出它的模型目录（过白名单），
+// 用它建会话或改模型时同时带 endpoint_id 与 model（不带 model 用 default_model）；手填接入点 models 为空，不能带 model。
 type AgentAppEndpoint struct {
-	BaseUrl string `json:"base_url"`
-	Id      string `json:"id"`
-	KeyTail string `json:"key_tail"`
-	Name    string `json:"name"`
+	BaseUrl      string           `json:"base_url"`
+	DefaultModel *string          `json:"default_model,omitempty"`
+	Id           string           `json:"id"`
+	KeyTail      string           `json:"key_tail"`
+	Models       *[]AgentAppModel `json:"models,omitempty"`
+	Name         string           `json:"name"`
+	Partner      string           `json:"partner"`
 }
 
 // AgentAppModel ---- 工作会话（App）----
@@ -4380,6 +4595,60 @@ type AgentAssetLinkResponseBody struct {
 	// 产出文件：url 是 10 分钟有效的下载地址。已失效返回 410。
 	Data *AgentAssetLink `json:"data,omitempty"`
 	Msg  string          `json:"msg"`
+}
+
+// AgentConnectField defines model for AgentConnectField.
+type AgentConnectField struct {
+	Help        *string               `json:"help,omitempty"`
+	Label       string                `json:"label"`
+	Name        string                `json:"name"`
+	Placeholder *string               `json:"placeholder,omitempty"`
+	Type        AgentConnectFieldType `json:"type"`
+}
+
+// AgentConnectFieldType defines model for AgentConnectField.Type.
+type AgentConnectFieldType string
+
+// AgentConnectStep browser：用认证浏览器打开 url，回跳 return_to 并追加 partner=<slug>&status=pending&ticket=<票据>，
+// 或 status=cancelled|error[&reason=中文短句]（callback_scheme 是 return_to 的 scheme，state 10 分钟有效、一次性）。
+// pending 时 2 分钟内用登录会话调 connect/complete 才算连上（回调没有会话，防止别人的授权落到自己账号上）；
+// 网页版 return_to 同样要带会话调 complete。form：按 fields 画表单提交到 connect/submit；done：服务端已连好。
+type AgentConnectStep struct {
+	CallbackScheme *string              `json:"callback_scheme,omitempty"`
+	ExpiresAt      *int64               `json:"expires_at,omitempty"`
+	Fields         *[]AgentConnectField `json:"fields,omitempty"`
+	Kind           AgentConnectStepKind `json:"kind"`
+	Url            *string              `json:"url,omitempty"`
+}
+
+// AgentConnectStepKind defines model for AgentConnectStep.Kind.
+type AgentConnectStepKind string
+
+// AgentConnectStepResponseBody defines model for AgentConnectStepResponseBody.
+type AgentConnectStepResponseBody struct {
+	Code int64 `json:"code"`
+
+	// Data browser：用认证浏览器打开 url，回跳 return_to 并追加 partner=<slug>&status=pending&ticket=<票据>，
+	// 或 status=cancelled|error[&reason=中文短句]（callback_scheme 是 return_to 的 scheme，state 10 分钟有效、一次性）。
+	// pending 时 2 分钟内用登录会话调 connect/complete 才算连上（回调没有会话，防止别人的授权落到自己账号上）；
+	// 网页版 return_to 同样要带会话调 complete。form：按 fields 画表单提交到 connect/submit；done：服务端已连好。
+	Data *AgentConnectStep `json:"data,omitempty"`
+	Msg  string            `json:"msg"`
+}
+
+// AgentConnectSubmitted defines model for AgentConnectSubmitted.
+type AgentConnectSubmitted struct {
+	Status AgentConnectSubmittedStatus `json:"status"`
+}
+
+// AgentConnectSubmittedStatus defines model for AgentConnectSubmitted.Status.
+type AgentConnectSubmittedStatus string
+
+// AgentConnectSubmittedResponseBody defines model for AgentConnectSubmittedResponseBody.
+type AgentConnectSubmittedResponseBody struct {
+	Code int64                  `json:"code"`
+	Data *AgentConnectSubmitted `json:"data,omitempty"`
+	Msg  string                 `json:"msg"`
 }
 
 // AgentCredential defines model for AgentCredential.
@@ -4463,7 +4732,11 @@ type AgentEndpointListResponseBody struct {
 
 // AgentEndpointResponseBody defines model for AgentEndpointResponseBody.
 type AgentEndpointResponseBody struct {
-	Code int64             `json:"code"`
+	Code int64 `json:"code"`
+
+	// Data partner：空 = 用户手填的接入点；否则是创建它的合作方 slug（每个合作方每人至多一个）。
+	// models / default_model 只在 GET /agent/models 里给：合作方接入点列出它的模型目录（过白名单），
+	// 用它建会话或改模型时同时带 endpoint_id 与 model（不带 model 用 default_model）；手填接入点 models 为空，不能带 model。
 	Data *AgentAppEndpoint `json:"data,omitempty"`
 	Msg  string            `json:"msg"`
 }
@@ -4664,6 +4937,304 @@ type AgentModelOptionsResponseBody struct {
 type AgentMutationResponseBody struct {
 	Code int64  `json:"code"`
 	Msg  string `json:"msg"`
+}
+
+// AgentPartner config 只含非密钥字段；secretTails 是已设置的密钥字段的尾号。
+type AgentPartner struct {
+	Adapter        string             `json:"adapter"`
+	AdapterLabel   string             `json:"adapterLabel"`
+	Badge          string             `json:"badge"`
+	CallbackUrl    string             `json:"callbackUrl"`
+	Config         map[string]string  `json:"config"`
+	ConnectedUsers int64              `json:"connectedUsers"`
+	CreatedAt      int64              `json:"createdAt"`
+	DefaultModel   string             `json:"defaultModel"`
+	Description    string             `json:"description"`
+	FailedTurns7d  int64              `json:"failedTurns7d"`
+	Health         AgentPartnerHealth `json:"health"`
+	IconUrl        string             `json:"iconUrl"`
+	Id             string             `json:"id"`
+	ModelAllowlist []string           `json:"modelAllowlist"`
+	Name           string             `json:"name"`
+	RolloutUserIds []string           `json:"rolloutUserIds"`
+	SecretTails    map[string]string  `json:"secretTails"`
+	ShareNote      string             `json:"shareNote"`
+	Slug           string             `json:"slug"`
+	Status         AgentPartnerStatus `json:"status"`
+	Turns7d        int64              `json:"turns7d"`
+	UpdatedAt      int64              `json:"updatedAt"`
+	Version        int64              `json:"version"`
+}
+
+// AgentPartnerStatus defines model for AgentPartner.Status.
+type AgentPartnerStatus string
+
+// AgentPartnerAdapter defines model for AgentPartnerAdapter.
+type AgentPartnerAdapter struct {
+	ConfigSchema []AgentPartnerConfigField `json:"configSchema"`
+	Kind         string                    `json:"kind"`
+	Label        string                    `json:"label"`
+}
+
+// AgentPartnerAdapterListResponseBody defines model for AgentPartnerAdapterListResponseBody.
+type AgentPartnerAdapterListResponseBody struct {
+	Code int64                  `json:"code"`
+	Data *[]AgentPartnerAdapter `json:"data,omitempty"`
+	Msg  string                 `json:"msg"`
+}
+
+// AgentPartnerAdminListResponseBody defines model for AgentPartnerAdminListResponseBody.
+type AgentPartnerAdminListResponseBody struct {
+	Code int64           `json:"code"`
+	Data *[]AgentPartner `json:"data,omitempty"`
+	Msg  string          `json:"msg"`
+}
+
+// AgentPartnerAdminResponseBody defines model for AgentPartnerAdminResponseBody.
+type AgentPartnerAdminResponseBody struct {
+	Code int64 `json:"code"`
+
+	// Data config 只含非密钥字段；secretTails 是已设置的密钥字段的尾号。
+	Data *AgentPartner `json:"data,omitempty"`
+	Msg  string        `json:"msg"`
+}
+
+// AgentPartnerCapabilities ---- 合作方（App）----
+// 只列当前用户可见的合作方（draft 只给灰度名单，disabled 不列）。金额单位元，时间为毫秒时间戳。
+type AgentPartnerCapabilities struct {
+	Balance bool `json:"balance"`
+	Topup   bool `json:"topup"`
+}
+
+// AgentPartnerCard balance_yuan / balance_at / key_state 只在已连接、有余额能力且查询成功时给（缓存 60 秒）。
+type AgentPartnerCard struct {
+	Badge       string   `json:"badge"`
+	BalanceAt   *int64   `json:"balance_at,omitempty"`
+	BalanceYuan *float64 `json:"balance_yuan,omitempty"`
+
+	// Capabilities ---- 合作方（App）----
+	// 只列当前用户可见的合作方（draft 只给灰度名单，disabled 不列）。金额单位元，时间为毫秒时间戳。
+	Capabilities AgentPartnerCapabilities  `json:"capabilities"`
+	Connected    bool                      `json:"connected"`
+	Description  string                    `json:"description"`
+	EndpointId   *string                   `json:"endpoint_id,omitempty"`
+	IconUrl      string                    `json:"icon_url"`
+	KeyState     *AgentPartnerCardKeyState `json:"key_state,omitempty"`
+	Name         string                    `json:"name"`
+	Slug         string                    `json:"slug"`
+
+	// Status paused = 暂停新连接，已有的照常可用
+	Status       AgentPartnerCardStatus `json:"status"`
+	TopupAmounts *[]int64               `json:"topup_amounts,omitempty"`
+}
+
+// AgentPartnerCardKeyState defines model for AgentPartnerCard.KeyState.
+type AgentPartnerCardKeyState string
+
+// AgentPartnerCardStatus paused = 暂停新连接，已有的照常可用
+type AgentPartnerCardStatus string
+
+// AgentPartnerCompleteRequestBody defines model for AgentPartnerCompleteRequestBody.
+type AgentPartnerCompleteRequestBody struct {
+	// Ticket 回跳 status=pending 时带回的一次性票据（2 分钟）
+	Ticket string `json:"ticket"`
+}
+
+// AgentPartnerConfigField ---- 合作方（管理台）----
+type AgentPartnerConfigField struct {
+	Default  *string                     `json:"default,omitempty"`
+	Group    string                      `json:"group"`
+	Help     *string                     `json:"help,omitempty"`
+	Label    string                      `json:"label"`
+	Name     string                      `json:"name"`
+	Required bool                        `json:"required"`
+	Type     AgentPartnerConfigFieldType `json:"type"`
+}
+
+// AgentPartnerConfigFieldType defines model for AgentPartnerConfigField.Type.
+type AgentPartnerConfigFieldType string
+
+// AgentPartnerConnectRequestBody defines model for AgentPartnerConnectRequestBody.
+type AgentPartnerConnectRequestBody struct {
+	// ReturnTo 连接结束的回跳地址：poplar://partner/<slug>、poplarbeta://partner/<slug> 或 https://*.hduhelp.com/…
+	ReturnTo string `json:"return_to"`
+}
+
+// AgentPartnerCreateRequestBody defines model for AgentPartnerCreateRequestBody.
+type AgentPartnerCreateRequestBody struct {
+	// Partner 密钥字段留空 = 不改，clear_secrets 列出要清除的。slug 与 adapter 只在新建时生效。
+	Partner AgentPartnerInput `json:"partner"`
+	Reason  *string           `json:"reason,omitempty"`
+}
+
+// AgentPartnerDay defines model for AgentPartnerDay.
+type AgentPartnerDay struct {
+	ConnectFailures int64            `json:"connectFailures"`
+	Connects        int64            `json:"connects"`
+	Date            string           `json:"date"`
+	Disconnects     int64            `json:"disconnects"`
+	FailedTurns     int64            `json:"failedTurns"`
+	Paid            int64            `json:"paid"`
+	PaidYuan        int64            `json:"paidYuan"`
+	Recoveries      map[string]int64 `json:"recoveries"`
+	TopupYuan       int64            `json:"topupYuan"`
+	Topups          int64            `json:"topups"`
+	Turns           int64            `json:"turns"`
+}
+
+// AgentPartnerHealth defines model for AgentPartnerHealth.
+type AgentPartnerHealth struct {
+	CheckedAt *int64 `json:"checkedAt,omitempty"`
+	Error     string `json:"error"`
+	Failures  int32  `json:"failures"`
+	Status    string `json:"status"`
+}
+
+// AgentPartnerInput 密钥字段留空 = 不改，clear_secrets 列出要清除的。slug 与 adapter 只在新建时生效。
+type AgentPartnerInput struct {
+	Adapter        *string            `json:"adapter,omitempty"`
+	Badge          *string            `json:"badge,omitempty"`
+	ClearSecrets   *[]string          `json:"clear_secrets,omitempty"`
+	Config         *map[string]string `json:"config,omitempty"`
+	DefaultModel   *string            `json:"default_model,omitempty"`
+	Description    *string            `json:"description,omitempty"`
+	IconUrl        *string            `json:"icon_url,omitempty"`
+	ModelAllowlist *[]string          `json:"model_allowlist,omitempty"`
+	Name           string             `json:"name"`
+	RolloutUserIds *[]string          `json:"rollout_user_ids,omitempty"`
+	ShareNote      *string            `json:"share_note,omitempty"`
+	Slug           *string            `json:"slug,omitempty"`
+}
+
+// AgentPartnerList defines model for AgentPartnerList.
+type AgentPartnerList struct {
+	Items []AgentPartnerCard `json:"items"`
+}
+
+// AgentPartnerListResponseBody defines model for AgentPartnerListResponseBody.
+type AgentPartnerListResponseBody struct {
+	Code int64             `json:"code"`
+	Data *AgentPartnerList `json:"data,omitempty"`
+	Msg  string            `json:"msg"`
+}
+
+// AgentPartnerModelShare defines model for AgentPartnerModelShare.
+type AgentPartnerModelShare struct {
+	Model string `json:"model"`
+	Turns int64  `json:"turns"`
+}
+
+// AgentPartnerStats defines model for AgentPartnerStats.
+type AgentPartnerStats struct {
+	ConnectedUsers int64                    `json:"connectedUsers"`
+	Days           []AgentPartnerDay        `json:"days"`
+	Models         []AgentPartnerModelShare `json:"models"`
+}
+
+// AgentPartnerStatsResponseBody defines model for AgentPartnerStatsResponseBody.
+type AgentPartnerStatsResponseBody struct {
+	Code int64              `json:"code"`
+	Data *AgentPartnerStats `json:"data,omitempty"`
+	Msg  string             `json:"msg"`
+}
+
+// AgentPartnerStatusRequestBody defines model for AgentPartnerStatusRequestBody.
+type AgentPartnerStatusRequestBody struct {
+	ExpectedVersion int64                               `json:"expected_version"`
+	Reason          string                              `json:"reason"`
+	Status          AgentPartnerStatusRequestBodyStatus `json:"status"`
+}
+
+// AgentPartnerStatusRequestBodyStatus defines model for AgentPartnerStatusRequestBody.Status.
+type AgentPartnerStatusRequestBodyStatus string
+
+// AgentPartnerSubmitRequestBody defines model for AgentPartnerSubmitRequestBody.
+type AgentPartnerSubmitRequestBody struct {
+	Fields map[string]string `json:"fields"`
+}
+
+// AgentPartnerTestRequestBody defines model for AgentPartnerTestRequestBody.
+type AgentPartnerTestRequestBody struct {
+	Action AgentPartnerTestRequestBodyAction `json:"action"`
+}
+
+// AgentPartnerTestRequestBodyAction defines model for AgentPartnerTestRequestBody.Action.
+type AgentPartnerTestRequestBodyAction string
+
+// AgentPartnerTestResponseBody defines model for AgentPartnerTestResponseBody.
+type AgentPartnerTestResponseBody struct {
+	Code int64                   `json:"code"`
+	Data *AgentPartnerTestResult `json:"data,omitempty"`
+	Msg  string                  `json:"msg"`
+}
+
+// AgentPartnerTestResult defines model for AgentPartnerTestResult.
+type AgentPartnerTestResult struct {
+	CallbackUrl string           `json:"callbackUrl"`
+	Message     string           `json:"message"`
+	Models      *[]AgentAppModel `json:"models,omitempty"`
+	Ok          bool             `json:"ok"`
+
+	// Step browser：用认证浏览器打开 url，回跳 return_to 并追加 partner=<slug>&status=pending&ticket=<票据>，
+	// 或 status=cancelled|error[&reason=中文短句]（callback_scheme 是 return_to 的 scheme，state 10 分钟有效、一次性）。
+	// pending 时 2 分钟内用登录会话调 connect/complete 才算连上（回调没有会话，防止别人的授权落到自己账号上）；
+	// 网页版 return_to 同样要带会话调 complete。form：按 fields 画表单提交到 connect/submit；done：服务端已连好。
+	Step *AgentConnectStep `json:"step,omitempty"`
+}
+
+// AgentPartnerTopup pay_kind=alipay_app：用户点按钮才外部打开 pay_url；web：应用内浏览器打开。没有 pay_url 时提示改用电脑充值。
+// 唤起或从支付页返回都不算成功，轮询到 paid 才算。
+type AgentPartnerTopup struct {
+	Amount    int64                     `json:"amount"`
+	ExpiredAt int64                     `json:"expired_at"`
+	PayKind   *AgentPartnerTopupPayKind `json:"pay_kind,omitempty"`
+	PayUrl    *string                   `json:"pay_url,omitempty"`
+	SessionId string                    `json:"session_id"`
+	Status    string                    `json:"status"`
+}
+
+// AgentPartnerTopupPayKind defines model for AgentPartnerTopup.PayKind.
+type AgentPartnerTopupPayKind string
+
+// AgentPartnerTopupRequestBody defines model for AgentPartnerTopupRequestBody.
+type AgentPartnerTopupRequestBody struct {
+	// Amount 充值金额（整数元，1–100000）
+	Amount int64 `json:"amount"`
+}
+
+// AgentPartnerTopupResponseBody defines model for AgentPartnerTopupResponseBody.
+type AgentPartnerTopupResponseBody struct {
+	Code int64 `json:"code"`
+
+	// Data pay_kind=alipay_app：用户点按钮才外部打开 pay_url；web：应用内浏览器打开。没有 pay_url 时提示改用电脑充值。
+	// 唤起或从支付页返回都不算成功，轮询到 paid 才算。
+	Data *AgentPartnerTopup `json:"data,omitempty"`
+	Msg  string             `json:"msg"`
+}
+
+// AgentPartnerTopupStatus status：pending、paid、failed、closed、refunded；建议 3 秒查一次，过了 expired_at 停。
+type AgentPartnerTopupStatus struct {
+	PaidAt    *int64 `json:"paid_at,omitempty"`
+	SessionId string `json:"session_id"`
+	Status    string `json:"status"`
+}
+
+// AgentPartnerTopupStatusResponseBody defines model for AgentPartnerTopupStatusResponseBody.
+type AgentPartnerTopupStatusResponseBody struct {
+	Code int64 `json:"code"`
+
+	// Data status：pending、paid、failed、closed、refunded；建议 3 秒查一次，过了 expired_at 停。
+	Data *AgentPartnerTopupStatus `json:"data,omitempty"`
+	Msg  string                   `json:"msg"`
+}
+
+// AgentPartnerUpdateRequestBody defines model for AgentPartnerUpdateRequestBody.
+type AgentPartnerUpdateRequestBody struct {
+	ExpectedVersion int64 `json:"expected_version"`
+
+	// Partner 密钥字段留空 = 不改，clear_secrets 列出要清除的。slug 与 adapter 只在新建时生效。
+	Partner AgentPartnerInput `json:"partner"`
+	Reason  *string           `json:"reason,omitempty"`
 }
 
 // AgentPreset defines model for AgentPreset.
@@ -18352,6 +18923,11 @@ type AgentServiceAgentDeleteMcpServerParams struct {
 	Reason          *string `form:"reason,omitempty" json:"reason,omitempty"`
 }
 
+// AgentServiceAgentPartnerStatsParams defines parameters for AgentServiceAgentPartnerStats.
+type AgentServiceAgentPartnerStatsParams struct {
+	Days *int32 `form:"days,omitempty" json:"days,omitempty"`
+}
+
 // AgentServiceAgentListPresetsParams defines parameters for AgentServiceAgentListPresets.
 type AgentServiceAgentListPresetsParams struct {
 	Status *string `form:"status,omitempty" json:"status,omitempty"`
@@ -20630,6 +21206,18 @@ type AgentServiceAgentUpdateMcpServerJSONRequestBody = AgentMcpServerUpdateReque
 // AgentServiceAgentTestMcpServerJSONRequestBody defines body for AgentServiceAgentTestMcpServer for application/json ContentType.
 type AgentServiceAgentTestMcpServerJSONRequestBody = AgentMcpServerTestRequestBody
 
+// AgentServiceAgentCreatePartnerJSONRequestBody defines body for AgentServiceAgentCreatePartner for application/json ContentType.
+type AgentServiceAgentCreatePartnerJSONRequestBody = AgentPartnerCreateRequestBody
+
+// AgentServiceAgentUpdatePartnerJSONRequestBody defines body for AgentServiceAgentUpdatePartner for application/json ContentType.
+type AgentServiceAgentUpdatePartnerJSONRequestBody = AgentPartnerUpdateRequestBody
+
+// AgentServiceAgentSetPartnerStatusJSONRequestBody defines body for AgentServiceAgentSetPartnerStatus for application/json ContentType.
+type AgentServiceAgentSetPartnerStatusJSONRequestBody = AgentPartnerStatusRequestBody
+
+// AgentServiceAgentTestPartnerJSONRequestBody defines body for AgentServiceAgentTestPartner for application/json ContentType.
+type AgentServiceAgentTestPartnerJSONRequestBody = AgentPartnerTestRequestBody
+
 // AgentServiceAgentCreatePresetJSONRequestBody defines body for AgentServiceAgentCreatePreset for application/json ContentType.
 type AgentServiceAgentCreatePresetJSONRequestBody = AgentPresetCreateRequestBody
 
@@ -21115,6 +21703,18 @@ type AgentOpsServiceAgentAddMemoryJSONRequestBody = AgentMemoryCreateRequestBody
 
 // AgentOpsServiceAgentUpdateMemoryJSONRequestBody defines body for AgentOpsServiceAgentUpdateMemory for application/json ContentType.
 type AgentOpsServiceAgentUpdateMemoryJSONRequestBody = AgentMemoryUpdateRequestBody
+
+// AgentServiceAgentConnectPartnerJSONRequestBody defines body for AgentServiceAgentConnectPartner for application/json ContentType.
+type AgentServiceAgentConnectPartnerJSONRequestBody = AgentPartnerConnectRequestBody
+
+// AgentServiceAgentCompletePartnerConnectJSONRequestBody defines body for AgentServiceAgentCompletePartnerConnect for application/json ContentType.
+type AgentServiceAgentCompletePartnerConnectJSONRequestBody = AgentPartnerCompleteRequestBody
+
+// AgentServiceAgentSubmitPartnerConnectJSONRequestBody defines body for AgentServiceAgentSubmitPartnerConnect for application/json ContentType.
+type AgentServiceAgentSubmitPartnerConnectJSONRequestBody = AgentPartnerSubmitRequestBody
+
+// AgentServiceAgentTopupPartnerJSONRequestBody defines body for AgentServiceAgentTopupPartner for application/json ContentType.
+type AgentServiceAgentTopupPartnerJSONRequestBody = AgentPartnerTopupRequestBody
 
 // AgentServiceAgentCreateWorkSessionJSONRequestBody defines body for AgentServiceAgentCreateWorkSession for application/json ContentType.
 type AgentServiceAgentCreateWorkSessionJSONRequestBody = AgentWorkSessionCreateRequestBody
