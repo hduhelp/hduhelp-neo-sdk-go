@@ -3247,12 +3247,64 @@ type AgentPatchWorkSessionResp struct {
 	Data *models.AgentWorkSession `json:"data"`
 }
 
-// AgentPatchWorkSession: 修改工作会话：标题、归档、模型
+// AgentPatchWorkSession: 修改工作会话：标题、归档、模型、权限模式
 func (s *Service) AgentPatchWorkSession(ctx context.Context, req *AgentPatchWorkSessionReq, opts ...core.RequestOption) (*AgentPatchWorkSessionResp, error) {
 	resp := &AgentPatchWorkSessionResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "PATCH",
 		PathTemplate: "/hduhelp-neo/agent/sessions/{id}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentBtwWorkSessionReq is the request for AgentBtwWorkSession.
+type AgentBtwWorkSessionReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentBtwWorkSessionReqBuilder builds a AgentBtwWorkSessionReq with a fluent setter per field.
+type AgentBtwWorkSessionReqBuilder struct{ req *AgentBtwWorkSessionReq }
+
+// NewAgentBtwWorkSessionReqBuilder creates a request builder for AgentBtwWorkSession.
+func NewAgentBtwWorkSessionReqBuilder() *AgentBtwWorkSessionReqBuilder {
+	return &AgentBtwWorkSessionReqBuilder{req: &AgentBtwWorkSessionReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentBtwWorkSessionReqBuilder) Id(v string) *AgentBtwWorkSessionReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AgentBtwWorkSessionReqBuilder) Body(body *models.AgentWorkBtwRequestBody) *AgentBtwWorkSessionReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentBtwWorkSessionReqBuilder) Build() *AgentBtwWorkSessionReq { return b.req }
+
+// AgentBtwWorkSessionResp is the response for AgentBtwWorkSession.
+type AgentBtwWorkSessionResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentWorkBtw `json:"data"`
+}
+
+// AgentBtwWorkSession: 旁支提问：分出隐藏会话并发出问题
+func (s *Service) AgentBtwWorkSession(ctx context.Context, req *AgentBtwWorkSessionReq, opts ...core.RequestOption) (*AgentBtwWorkSessionResp, error) {
+	resp := &AgentBtwWorkSessionResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/agent/sessions/{id}/btw",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -3313,6 +3365,58 @@ func (s *Service) AgentCancelWorkTurn(ctx context.Context, req *AgentCancelWorkT
 	return resp, err
 }
 
+// AgentForkWorkSessionReq is the request for AgentForkWorkSession.
+type AgentForkWorkSessionReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentForkWorkSessionReqBuilder builds a AgentForkWorkSessionReq with a fluent setter per field.
+type AgentForkWorkSessionReqBuilder struct{ req *AgentForkWorkSessionReq }
+
+// NewAgentForkWorkSessionReqBuilder creates a request builder for AgentForkWorkSession.
+func NewAgentForkWorkSessionReqBuilder() *AgentForkWorkSessionReqBuilder {
+	return &AgentForkWorkSessionReqBuilder{req: &AgentForkWorkSessionReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentForkWorkSessionReqBuilder) Id(v string) *AgentForkWorkSessionReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AgentForkWorkSessionReqBuilder) Body(body *models.AgentWorkForkRequestBody) *AgentForkWorkSessionReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentForkWorkSessionReqBuilder) Build() *AgentForkWorkSessionReq { return b.req }
+
+// AgentForkWorkSessionResp is the response for AgentForkWorkSession.
+type AgentForkWorkSessionResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentWorkSession `json:"data"`
+}
+
+// AgentForkWorkSession: 从某个回合分出新会话（条目、工作区与 Claude 会话一起分支）
+func (s *Service) AgentForkWorkSession(ctx context.Context, req *AgentForkWorkSessionReq, opts ...core.RequestOption) (*AgentForkWorkSessionResp, error) {
+	resp := &AgentForkWorkSessionResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/agent/sessions/{id}/fork",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // AgentListWorkItemsReq is the request for AgentListWorkItems.
 type AgentListWorkItemsReq struct {
 	pathParams  map[string]string
@@ -3363,6 +3467,52 @@ func (s *Service) AgentListWorkItems(ctx context.Context, req *AgentListWorkItem
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/agent/sessions/{id}/items",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentPromoteWorkSessionReq is the request for AgentPromoteWorkSession.
+type AgentPromoteWorkSessionReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentPromoteWorkSessionReqBuilder builds a AgentPromoteWorkSessionReq with a fluent setter per field.
+type AgentPromoteWorkSessionReqBuilder struct{ req *AgentPromoteWorkSessionReq }
+
+// NewAgentPromoteWorkSessionReqBuilder creates a request builder for AgentPromoteWorkSession.
+func NewAgentPromoteWorkSessionReqBuilder() *AgentPromoteWorkSessionReqBuilder {
+	return &AgentPromoteWorkSessionReqBuilder{req: &AgentPromoteWorkSessionReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentPromoteWorkSessionReqBuilder) Id(v string) *AgentPromoteWorkSessionReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentPromoteWorkSessionReqBuilder) Build() *AgentPromoteWorkSessionReq { return b.req }
+
+// AgentPromoteWorkSessionResp is the response for AgentPromoteWorkSession.
+type AgentPromoteWorkSessionResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentWorkSession `json:"data"`
+}
+
+// AgentPromoteWorkSession: 把旁支会话变成普通会话（进入会话列表）
+func (s *Service) AgentPromoteWorkSession(ctx context.Context, req *AgentPromoteWorkSessionReq, opts ...core.RequestOption) (*AgentPromoteWorkSessionResp, error) {
+	resp := &AgentPromoteWorkSessionResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/agent/sessions/{id}/promote",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

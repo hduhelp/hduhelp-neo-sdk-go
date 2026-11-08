@@ -12995,7 +12995,7 @@ paths:
         patch:
             tags:
                 - AgentService
-            summary: 修改工作会话：标题、归档、模型
+            summary: 修改工作会话：标题、归档、模型、权限模式
             operationId: AgentService_AgentPatchWorkSession
             security:
                 - NativeSessionAuth: []
@@ -13019,6 +13019,39 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AgentWorkSessionResponseBody'
+            x-hduhelp-http: {'auth': 'native_session', 'request_body_required': true}
+    /hduhelp-neo/agent/sessions/{id}/btw:
+        post:
+            tags:
+                - AgentService
+            summary: 旁支提问：分出隐藏会话并发出问题
+            operationId: AgentService_AgentBtwWorkSession
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                description: |-
+                    旁支提问：在最后一个完成的回合分出隐藏会话（side=true，不进会话列表、不占会话上限，每人最多 20 个，满了删最早的闲置旁支）
+                    并把 text 作为第一条消息发出；只复制对话、不复制工作区（按上下文回答）。24 小时没有活动且未提升的旁支自动删除；
+                    旁支里的卡片 30 分钟没回答这一轮自动停止。用普通的会话流看回答。来源有回合在跑或排队返回 409 730000026，
+                    还没有任何完成的回答返回 409 730000027。同一 new_id 重放返回第一次的回合，不会再发一次。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentWorkBtwRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentWorkBtwResponseBody'
             x-hduhelp-http: {'auth': 'native_session', 'request_body_required': true}
     /hduhelp-neo/agent/sessions/{id}/cancel:
         post:
@@ -13046,6 +13079,38 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AgentWorkTurnResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/agent/sessions/{id}/fork:
+        post:
+            tags:
+                - AgentService
+            summary: 从某个回合分出新会话（条目、工作区与 Claude 会话一起分支）
+            operationId: AgentService_AgentForkWorkSession
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                description: |-
+                    分支：复制到 upto_item_id 所在回合为止的条目（新 id，body.forked_from 记来源），工作区按分支时的样子在同一沙箱里复制
+                    （不含 .git 下的 *.lock）、Claude 会话从该回合末分出。不传 upto_item_id 分到最后一个已结束的回合。
+                    来源有回合在进行返回 409 730000026（工作区要在没人改的时候复制），没有已结束的回合返回 409 730000027。
+                    来源的工作环境已销毁时只复制条目，新会话 context_lost=true。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentWorkForkRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentWorkSessionResponseBody'
             x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/agent/sessions/{id}/items:
         get:
@@ -13079,6 +13144,28 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AgentWorkItemPageResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/agent/sessions/{id}/promote:
+        post:
+            tags:
+                - AgentService
+            summary: 把旁支会话变成普通会话（进入会话列表）
+            operationId: AgentService_AgentPromoteWorkSession
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentWorkSessionResponseBody'
             x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/agent/sessions/{id}/prompts/{prompt_id}:
         post:
@@ -24095,12 +24182,72 @@ components:
                 size:
                     type: integer
                     format: int64
+        AgentWorkBtw:
+            required:
+                - session
+                - turn
+            type: object
+            properties:
+                session:
+                    $ref: '#/components/schemas/AgentWorkSession'
+                turn:
+                    $ref: '#/components/schemas/AgentWorkTurn'
+        AgentWorkBtwRequestBody:
+            required:
+                - text
+            type: object
+            properties:
+                text:
+                    type: string
+                new_id:
+                    type: string
+                    description: 旁支会话 id（ULID，幂等键）
+                turn_id:
+                    type: string
+                    description: 旁支第一条消息的 turn_id（ULID）；不传由服务端生成
+        AgentWorkBtwResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentWorkBtw'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AgentWorkCancelRequestBody:
             type: object
             properties:
                 turn_id:
                     type: string
                     description: 排队中的消息从队列撤下；不传取消进行中的回合
+        AgentWorkForkRequestBody:
+            type: object
+            properties:
+                new_id:
+                    type: string
+                    description: 新会话 id（客户端生成的 ULID，幂等键）；不传由服务端生成
+                upto_item_id:
+                    type: string
+                title:
+                    type: string
+        AgentWorkForkSource:
+            required:
+                - session_id
+                - title
+            type: object
+            properties:
+                session_id:
+                    type: string
+                title:
+                    type: string
+                    description: 来源会话现在的标题；来源已删除时为空
+                item_id:
+                    type: string
+                    description: 从哪个条目所在的回合之后分出（不传 upto_item_id 时为空）
         AgentWorkItem:
             required:
                 - id
@@ -24312,6 +24459,17 @@ components:
                 updated_at:
                     type: integer
                     format: int64
+                permission_mode:
+                    enum:
+                        - auto
+                        - ask
+                    type: string
+                    description: auto：自动审查（默认）；ask：每次写操作前问。用自配接入点（非合作方）的会话恒为 ask
+                forked_from:
+                    $ref: '#/components/schemas/AgentWorkForkSource'
+                side:
+                    type: boolean
+                    description: /btw 旁支：不在会话列表里，提升后变成普通会话
             description: deleted=true 是墓碑：只有 id、deleted、change_seq 有意义。
         AgentWorkSessionCreateRequestBody:
             required:
@@ -24408,6 +24566,12 @@ components:
                     type: string
                 endpoint_id:
                     type: string
+                permission_mode:
+                    enum:
+                        - auto
+                        - ask
+                    type: string
+                    description: 自配接入点（非合作方）的会话设 auto 返回 400 730000028
         AgentWorkSessionResponseBody:
             required:
                 - code
@@ -24503,6 +24667,12 @@ components:
                         - queue
                         - interrupt
                     type: string
+                interaction_mode:
+                    enum:
+                        - build
+                        - plan
+                    type: string
+                    description: plan：进计划模式并记在会话上，之后不带模式的回合（含自动续接、重启后）都保持计划模式，直到批准计划卡或发 build；build：回到会话的权限模式；不传保持当前。进不了计划模式时这一轮以错误结束、消息不发出。立即发送进正在跑的回合时忽略
         AgentWorkTurnResponseBody:
             required:
                 - code

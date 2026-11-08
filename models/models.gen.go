@@ -703,19 +703,19 @@ func (e AgentWorkItemState) Valid() bool {
 
 // Defines values for AgentWorkPromptKind.
 const (
-	Permission AgentWorkPromptKind = "permission"
-	Plan       AgentWorkPromptKind = "plan"
-	Question   AgentWorkPromptKind = "question"
+	AgentWorkPromptKindPermission AgentWorkPromptKind = "permission"
+	AgentWorkPromptKindPlan       AgentWorkPromptKind = "plan"
+	AgentWorkPromptKindQuestion   AgentWorkPromptKind = "question"
 )
 
 // Valid indicates whether the value is a known member of the AgentWorkPromptKind enum.
 func (e AgentWorkPromptKind) Valid() bool {
 	switch e {
-	case Permission:
+	case AgentWorkPromptKindPermission:
 		return true
-	case Plan:
+	case AgentWorkPromptKindPlan:
 		return true
-	case Question:
+	case AgentWorkPromptKindQuestion:
 		return true
 	default:
 		return false
@@ -740,6 +740,42 @@ func (e AgentWorkPromptStatus) Valid() bool {
 	case AgentWorkPromptStatusExpired:
 		return true
 	case AgentWorkPromptStatusWaiting:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentWorkSessionPermissionMode.
+const (
+	AgentWorkSessionPermissionModeAsk  AgentWorkSessionPermissionMode = "ask"
+	AgentWorkSessionPermissionModeAuto AgentWorkSessionPermissionMode = "auto"
+)
+
+// Valid indicates whether the value is a known member of the AgentWorkSessionPermissionMode enum.
+func (e AgentWorkSessionPermissionMode) Valid() bool {
+	switch e {
+	case AgentWorkSessionPermissionModeAsk:
+		return true
+	case AgentWorkSessionPermissionModeAuto:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentWorkSessionPatchRequestBodyPermissionMode.
+const (
+	AgentWorkSessionPatchRequestBodyPermissionModeAsk  AgentWorkSessionPatchRequestBodyPermissionMode = "ask"
+	AgentWorkSessionPatchRequestBodyPermissionModeAuto AgentWorkSessionPatchRequestBodyPermissionMode = "auto"
+)
+
+// Valid indicates whether the value is a known member of the AgentWorkSessionPatchRequestBodyPermissionMode enum.
+func (e AgentWorkSessionPatchRequestBodyPermissionMode) Valid() bool {
+	switch e {
+	case AgentWorkSessionPatchRequestBodyPermissionModeAsk:
+		return true
+	case AgentWorkSessionPatchRequestBodyPermissionModeAuto:
 		return true
 	default:
 		return false
@@ -824,6 +860,24 @@ func (e AgentWorkTurnStatus) Valid() bool {
 	case AgentWorkTurnStatusSteered:
 		return true
 	case AgentWorkTurnStatusWaiting:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentWorkTurnRequestBodyInteractionMode.
+const (
+	AgentWorkTurnRequestBodyInteractionModeBuild AgentWorkTurnRequestBodyInteractionMode = "build"
+	AgentWorkTurnRequestBodyInteractionModePlan  AgentWorkTurnRequestBodyInteractionMode = "plan"
+)
+
+// Valid indicates whether the value is a known member of the AgentWorkTurnRequestBodyInteractionMode enum.
+func (e AgentWorkTurnRequestBodyInteractionMode) Valid() bool {
+	switch e {
+	case AgentWorkTurnRequestBodyInteractionModeBuild:
+		return true
+	case AgentWorkTurnRequestBodyInteractionModePlan:
 		return true
 	default:
 		return false
@@ -6158,10 +6212,52 @@ type AgentWorkAttachmentInput struct {
 	Size *int64  `json:"size,omitempty"`
 }
 
+// AgentWorkBtw defines model for AgentWorkBtw.
+type AgentWorkBtw struct {
+	// Session deleted=true 是墓碑：只有 id、deleted、change_seq 有意义。
+	Session AgentWorkSession `json:"session"`
+	Turn    AgentWorkTurn    `json:"turn"`
+}
+
+// AgentWorkBtwRequestBody defines model for AgentWorkBtwRequestBody.
+type AgentWorkBtwRequestBody struct {
+	// NewId 旁支会话 id（ULID，幂等键）
+	NewId *string `json:"new_id,omitempty"`
+	Text  string  `json:"text"`
+
+	// TurnId 旁支第一条消息的 turn_id（ULID）；不传由服务端生成
+	TurnId *string `json:"turn_id,omitempty"`
+}
+
+// AgentWorkBtwResponseBody defines model for AgentWorkBtwResponseBody.
+type AgentWorkBtwResponseBody struct {
+	Code int64         `json:"code"`
+	Data *AgentWorkBtw `json:"data,omitempty"`
+	Msg  string        `json:"msg"`
+}
+
 // AgentWorkCancelRequestBody defines model for AgentWorkCancelRequestBody.
 type AgentWorkCancelRequestBody struct {
 	// TurnId 排队中的消息从队列撤下；不传取消进行中的回合
 	TurnId *string `json:"turn_id,omitempty"`
+}
+
+// AgentWorkForkRequestBody defines model for AgentWorkForkRequestBody.
+type AgentWorkForkRequestBody struct {
+	// NewId 新会话 id（客户端生成的 ULID，幂等键）；不传由服务端生成
+	NewId      *string `json:"new_id,omitempty"`
+	Title      *string `json:"title,omitempty"`
+	UptoItemId *string `json:"upto_item_id,omitempty"`
+}
+
+// AgentWorkForkSource defines model for AgentWorkForkSource.
+type AgentWorkForkSource struct {
+	// ItemId 从哪个条目所在的回合之后分出（不传 upto_item_id 时为空）
+	ItemId    *string `json:"item_id,omitempty"`
+	SessionId string  `json:"session_id"`
+
+	// Title 来源会话现在的标题；来源已删除时为空
+	Title string `json:"title"`
 }
 
 // AgentWorkItem defines model for AgentWorkItem.
@@ -6251,19 +6347,29 @@ type AgentWorkSession struct {
 	ChangeSeq int64 `json:"change_seq"`
 
 	// ContextLost 之前的上下文无法恢复，下一回合从新的 Claude 会话开始
-	ContextLost *bool   `json:"context_lost,omitempty"`
-	CreatedAt   *int64  `json:"created_at,omitempty"`
-	Deleted     *bool   `json:"deleted,omitempty"`
-	EndpointId  *string `json:"endpoint_id,omitempty"`
-	HeadSeq     *int64  `json:"head_seq,omitempty"`
-	Id          string  `json:"id"`
-	LastTurnAt  *int64  `json:"last_turn_at,omitempty"`
-	Model       *string `json:"model,omitempty"`
-	PresetId    *string `json:"preset_id,omitempty"`
-	Title       *string `json:"title,omitempty"`
-	UpdatedAt   *int64  `json:"updated_at,omitempty"`
-	Version     *int64  `json:"version,omitempty"`
+	ContextLost *bool                `json:"context_lost,omitempty"`
+	CreatedAt   *int64               `json:"created_at,omitempty"`
+	Deleted     *bool                `json:"deleted,omitempty"`
+	EndpointId  *string              `json:"endpoint_id,omitempty"`
+	ForkedFrom  *AgentWorkForkSource `json:"forked_from,omitempty"`
+	HeadSeq     *int64               `json:"head_seq,omitempty"`
+	Id          string               `json:"id"`
+	LastTurnAt  *int64               `json:"last_turn_at,omitempty"`
+	Model       *string              `json:"model,omitempty"`
+
+	// PermissionMode auto：自动审查（默认）；ask：每次写操作前问。用自配接入点（非合作方）的会话恒为 ask
+	PermissionMode *AgentWorkSessionPermissionMode `json:"permission_mode,omitempty"`
+	PresetId       *string                         `json:"preset_id,omitempty"`
+
+	// Side /btw 旁支：不在会话列表里，提升后变成普通会话
+	Side      *bool   `json:"side,omitempty"`
+	Title     *string `json:"title,omitempty"`
+	UpdatedAt *int64  `json:"updated_at,omitempty"`
+	Version   *int64  `json:"version,omitempty"`
 }
+
+// AgentWorkSessionPermissionMode auto：自动审查（默认）；ask：每次写操作前问。用自配接入点（非合作方）的会话恒为 ask
+type AgentWorkSessionPermissionMode string
 
 // AgentWorkSessionCreateRequestBody defines model for AgentWorkSessionCreateRequestBody.
 type AgentWorkSessionCreateRequestBody struct {
@@ -6312,9 +6418,15 @@ type AgentWorkSessionPatchRequestBody struct {
 	Archived   *bool   `json:"archived,omitempty"`
 	EndpointId *string `json:"endpoint_id,omitempty"`
 	Model      *string `json:"model,omitempty"`
-	Title      *string `json:"title,omitempty"`
-	Version    int64   `json:"version"`
+
+	// PermissionMode 自配接入点（非合作方）的会话设 auto 返回 400 730000028
+	PermissionMode *AgentWorkSessionPatchRequestBodyPermissionMode `json:"permission_mode,omitempty"`
+	Title          *string                                         `json:"title,omitempty"`
+	Version        int64                                           `json:"version"`
 }
+
+// AgentWorkSessionPatchRequestBodyPermissionMode 自配接入点（非合作方）的会话设 auto 返回 400 730000028
+type AgentWorkSessionPatchRequestBodyPermissionMode string
 
 // AgentWorkSessionResponseBody defines model for AgentWorkSessionResponseBody.
 type AgentWorkSessionResponseBody struct {
@@ -6354,12 +6466,18 @@ type AgentWorkTurnStatus string
 
 // AgentWorkTurnRequestBody defines model for AgentWorkTurnRequestBody.
 type AgentWorkTurnRequestBody struct {
-	Attachments  *[]AgentWorkAttachmentInput   `json:"attachments,omitempty"`
-	ExpectedHead int64                         `json:"expected_head"`
-	Mode         *AgentWorkTurnRequestBodyMode `json:"mode,omitempty"`
-	Text         *string                       `json:"text,omitempty"`
-	TurnId       string                        `json:"turn_id"`
+	Attachments  *[]AgentWorkAttachmentInput `json:"attachments,omitempty"`
+	ExpectedHead int64                       `json:"expected_head"`
+
+	// InteractionMode plan：进计划模式并记在会话上，之后不带模式的回合（含自动续接、重启后）都保持计划模式，直到批准计划卡或发 build；build：回到会话的权限模式；不传保持当前。进不了计划模式时这一轮以错误结束、消息不发出。立即发送进正在跑的回合时忽略
+	InteractionMode *AgentWorkTurnRequestBodyInteractionMode `json:"interaction_mode,omitempty"`
+	Mode            *AgentWorkTurnRequestBodyMode            `json:"mode,omitempty"`
+	Text            *string                                  `json:"text,omitempty"`
+	TurnId          string                                   `json:"turn_id"`
 }
+
+// AgentWorkTurnRequestBodyInteractionMode plan：进计划模式并记在会话上，之后不带模式的回合（含自动续接、重启后）都保持计划模式，直到批准计划卡或发 build；build：回到会话的权限模式；不传保持当前。进不了计划模式时这一轮以错误结束、消息不发出。立即发送进正在跑的回合时忽略
+type AgentWorkTurnRequestBodyInteractionMode string
 
 // AgentWorkTurnRequestBodyMode defines model for AgentWorkTurnRequestBody.Mode.
 type AgentWorkTurnRequestBodyMode string
@@ -22000,8 +22118,14 @@ type AgentServiceAgentCreateWorkSessionJSONRequestBody = AgentWorkSessionCreateR
 // AgentServiceAgentPatchWorkSessionJSONRequestBody defines body for AgentServiceAgentPatchWorkSession for application/json ContentType.
 type AgentServiceAgentPatchWorkSessionJSONRequestBody = AgentWorkSessionPatchRequestBody
 
+// AgentServiceAgentBtwWorkSessionJSONRequestBody defines body for AgentServiceAgentBtwWorkSession for application/json ContentType.
+type AgentServiceAgentBtwWorkSessionJSONRequestBody = AgentWorkBtwRequestBody
+
 // AgentServiceAgentCancelWorkTurnJSONRequestBody defines body for AgentServiceAgentCancelWorkTurn for application/json ContentType.
 type AgentServiceAgentCancelWorkTurnJSONRequestBody = AgentWorkCancelRequestBody
+
+// AgentServiceAgentForkWorkSessionJSONRequestBody defines body for AgentServiceAgentForkWorkSession for application/json ContentType.
+type AgentServiceAgentForkWorkSessionJSONRequestBody = AgentWorkForkRequestBody
 
 // AgentServiceAgentAnswerWorkPromptJSONRequestBody defines body for AgentServiceAgentAnswerWorkPrompt for application/json ContentType.
 type AgentServiceAgentAnswerWorkPromptJSONRequestBody = AgentWorkPromptAnswerRequestBody
