@@ -4836,6 +4836,11 @@ paths:
                   description: '检索范围过滤: public | internal'
                   schema:
                     type: string
+                - name: sort
+                  in: query
+                  description: 'created_asc/created_desc: 创建时间升/降序；缺省按更新时间降序'
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response

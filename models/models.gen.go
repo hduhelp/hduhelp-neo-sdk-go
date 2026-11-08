@@ -19288,6 +19288,9 @@ type KnowledgeServiceAdminListItemsParams struct {
 
 	// Visibility 检索范围过滤: public | internal
 	Visibility *string `form:"visibility,omitempty" json:"visibility,omitempty"`
+
+	// Sort created_asc/created_desc: 创建时间升/降序；缺省按更新时间降序
+	Sort *string `form:"sort,omitempty" json:"sort,omitempty"`
 }
 
 // KnowledgeServiceAdminUpdateItemParams defines parameters for KnowledgeServiceAdminUpdateItem.

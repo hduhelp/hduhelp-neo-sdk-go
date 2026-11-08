@@ -1674,6 +1674,12 @@ func (b *AdminListItemsReqBuilder) Visibility(v string) *AdminListItemsReqBuilde
 	return b
 }
 
+// Sort sets the "sort" query parameter: created_asc/created_desc: 创建时间升/降序；缺省按更新时间降序
+func (b *AdminListItemsReqBuilder) Sort(v string) *AdminListItemsReqBuilder {
+	b.req.queryParams["sort"] = v
+	return b
+}
+
 // Build finalizes the request.
 func (b *AdminListItemsReqBuilder) Build() *AdminListItemsReq { return b.req }
 
