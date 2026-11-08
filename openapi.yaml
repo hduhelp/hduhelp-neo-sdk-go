@@ -13171,6 +13171,241 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/AgentWorkTurnResponseBody'
             x-hduhelp-http: {'auth': 'native_session', 'request_body_required': true}
+    /hduhelp-neo/agent/shares:
+        get:
+            tags:
+                - AgentService
+            summary: 我的分享（未撤销的，按创建倒序）
+            operationId: AgentService_AgentListShares
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: kind
+                  in: query
+                  schema:
+                    type: string
+                - name: target_id
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentShareListResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+        post:
+            tags:
+                - AgentService
+            summary: 新建分享（同一目标未过期的复用）
+            operationId: AgentService_AgentCreateShare
+            security:
+                - NativeSessionAuth: []
+            requestBody:
+                required: true
+                description: 同一目标已有未过期、未撤销的分享时返回它（到期时间取较晚者）。预览须未关闭；会话分享截止到当前 head_seq。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentShareCreateRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentShareResponseBody'
+            x-hduhelp-http: {'auth': 'native_session', 'request_body_required': true}
+    /hduhelp-neo/agent/shares/{id}:
+        get:
+            tags:
+                - AgentService
+            summary: 访客：分享信息（失效 404）
+            operationId: AgentService_AgentGetShare
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentShareViewResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+        delete:
+            tags:
+                - AgentService
+            summary: 撤销分享
+            operationId: AgentService_AgentRevokeShare
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: |-
+                        工作模式配置管理：代理库、模块设置、Skill、MCP 服务器、预设，以及 App 读预设。
+                        写操作带 expected_version（乐观锁）与 reason（进 agent_audits）。被引用的对象
+                        删除或停用时返回 409，data.references 列出引用方。
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentMutationResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+        patch:
+            tags:
+                - AgentService
+            summary: 同步会话分享到最新、续期
+            operationId: AgentService_AgentPatchShare
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                description: sync=true 把会话分享的截止点挪到当前 head；expires_in_days 从现在起重算到期时间（已过期的也能续）。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AgentSharePatchRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentShareResponseBody'
+            x-hduhelp-http: {'auth': 'native_session', 'request_body_required': true}
+    /hduhelp-neo/agent/shares/{id}/assets/{asset_id}/link:
+        get:
+            tags:
+                - AgentService
+            summary: 访客：打开会话分享里的资产
+            operationId: AgentService_AgentGetShareAssetLink
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: asset_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentAssetLinkResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/agent/shares/{id}/enter:
+        post:
+            tags:
+                - AgentService
+            summary: 访客：进入网页预览分享（唤醒沙箱后签一次性进入地址）
+            operationId: AgentService_AgentEnterShare
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentShareEnterResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/agent/shares/{id}/items:
+        get:
+            tags:
+                - AgentService
+            summary: 访客：会话分享的条目（截止到 upto_seq）与资产
+            operationId: AgentService_AgentListShareItems
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: after_seq
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: before
+                  in: query
+                  description: 只要 seq 小于它的条目（倒序翻页，与会话条目接口相同）
+                  schema:
+                    type: integer
+                    format: int64
+                - name: limit
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentShareItemPageResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/agent/shares/{id}/previews/{asset_id}/enter:
+        post:
+            tags:
+                - AgentService
+            summary: 访客：进入会话分享里的预览卡片
+            operationId: AgentService_AgentEnterSharePreview
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: asset_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentShareEnterResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/ai/v1/purposes/{purpose}/anthropic/v1/models:
         get:
             tags:
@@ -23102,6 +23337,271 @@ components:
                     $ref: '#/components/schemas/AgentLifecycleInput'
                 dingtalk_cli_enabled:
                     type: boolean
+        AgentShare:
+            required:
+                - id
+                - kind
+                - target_id
+                - title
+                - url
+                - upto_seq
+                - expires_at
+                - open_count
+                - created_at
+            type: object
+            properties:
+                id:
+                    type: string
+                kind:
+                    enum:
+                        - preview
+                        - session
+                    type: string
+                target_id:
+                    type: string
+                    description: 预览：资产 id；会话：会话 id
+                title:
+                    type: string
+                url:
+                    type: string
+                    description: 分享链接
+                upto_seq:
+                    type: integer
+                    description: 会话分享的截止条目序号；预览分享为 0
+                    format: int64
+                expires_at:
+                    type: integer
+                    format: int64
+                revoked_at:
+                    type: integer
+                    format: int64
+                open_count:
+                    type: integer
+                    format: int64
+                last_open_at:
+                    type: integer
+                    format: int64
+                created_at:
+                    type: integer
+                    format: int64
+                stale:
+                    type: boolean
+                    description: 重复创建会话分享时：会话已有截止点之后的回合，可提示「同步到最新」
+            description: |-
+                ---- 分享（App 与学生端）----
+                链接 https://neo.hduhelp.com/agent-share/<id>，id 是 22 位 base62 随机串。主人接口只管自己的分享；
+                访客接口任何状态正常的登录用户都能调（含主人本人）。分享不存在、已撤销、已过期统一 404 + 730000021，msg 写原因。
+        AgentShareCreateRequestBody:
+            required:
+                - kind
+                - target_id
+                - expires_in_days
+            type: object
+            properties:
+                kind:
+                    enum:
+                        - preview
+                        - session
+                    type: string
+                target_id:
+                    type: string
+                expires_in_days:
+                    type: integer
+                    description: 1、7 或 30
+                    format: int32
+        AgentShareEnter:
+            required:
+                - url
+                - expires_at
+            type: object
+            properties:
+                url:
+                    type: string
+                expires_at:
+                    type: integer
+                    format: int64
+            description: |-
+                url 是预览站上的一次性进入地址（2 分钟、只能用一次），浏览器打开后凭只对该子域有效的访客 Cookie 访问。
+                沙箱 25 秒内没唤醒完返回 503 + 730000025（唤醒在后台继续），客户端稍后再调同一接口。
+        AgentShareEnterResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentShareEnter'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentShareItemPage:
+            required:
+                - items
+                - head_seq
+                - has_more
+                - assets
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentWorkItem'
+                head_seq:
+                    type: integer
+                    description: 分享可见条目里最大的 seq
+                    format: int64
+                has_more:
+                    type: boolean
+                assets:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentWorkAsset'
+                    description: 分享（或上次同步）时已有的会话资产
+        AgentShareItemPageResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentShareItemPage'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentShareList:
+            required:
+                - items
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentShare'
+        AgentShareListResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentShareList'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentShareOwner:
+            required:
+                - nickname
+            type: object
+            properties:
+                nickname:
+                    type: string
+                avatar:
+                    type: string
+        AgentSharePatchRequestBody:
+            type: object
+            properties:
+                sync:
+                    type: boolean
+                expires_in_days:
+                    type: integer
+                    description: 1、7 或 30
+                    format: int32
+        AgentSharePreviewState:
+            required:
+                - asset_id
+                - status
+            type: object
+            properties:
+                asset_id:
+                    type: string
+                status:
+                    enum:
+                        - ready
+                        - sleeping
+                        - closed
+                        - limit
+                    type: string
+                    description: ready 运行中；sleeping 休眠，进入时唤醒；closed 网页已关闭；limit 作者今天的工作时长已用完
+        AgentShareResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentShare'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AgentShareSessionMeta:
+            required:
+                - title
+                - preset_name
+                - model
+                - upto_seq
+                - created_at
+            type: object
+            properties:
+                title:
+                    type: string
+                preset_name:
+                    type: string
+                model:
+                    type: string
+                upto_seq:
+                    type: integer
+                    format: int64
+                created_at:
+                    type: integer
+                    format: int64
+        AgentShareView:
+            required:
+                - id
+                - kind
+                - title
+                - owner
+                - expires_at
+            type: object
+            properties:
+                id:
+                    type: string
+                kind:
+                    enum:
+                        - preview
+                        - session
+                    type: string
+                title:
+                    type: string
+                owner:
+                    $ref: '#/components/schemas/AgentShareOwner'
+                expires_at:
+                    type: integer
+                    format: int64
+                preview:
+                    $ref: '#/components/schemas/AgentSharePreviewState'
+                session:
+                    $ref: '#/components/schemas/AgentShareSessionMeta'
+        AgentShareViewResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentShareView'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AgentSkill:
             required:
                 - id

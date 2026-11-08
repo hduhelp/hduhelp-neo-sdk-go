@@ -3526,3 +3526,458 @@ func (s *Service) AgentSendWorkTurn(ctx context.Context, req *AgentSendWorkTurnR
 	}, resp, opts...)
 	return resp, err
 }
+
+// AgentListSharesReq is the request for AgentListShares.
+type AgentListSharesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentListSharesReqBuilder builds a AgentListSharesReq with a fluent setter per field.
+type AgentListSharesReqBuilder struct{ req *AgentListSharesReq }
+
+// NewAgentListSharesReqBuilder creates a request builder for AgentListShares.
+func NewAgentListSharesReqBuilder() *AgentListSharesReqBuilder {
+	return &AgentListSharesReqBuilder{req: &AgentListSharesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Kind sets the "kind" query parameter.
+func (b *AgentListSharesReqBuilder) Kind(v string) *AgentListSharesReqBuilder {
+	b.req.queryParams["kind"] = v
+	return b
+}
+
+// TargetId sets the "target_id" query parameter.
+func (b *AgentListSharesReqBuilder) TargetId(v string) *AgentListSharesReqBuilder {
+	b.req.queryParams["target_id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentListSharesReqBuilder) Build() *AgentListSharesReq { return b.req }
+
+// AgentListSharesResp is the response for AgentListShares.
+type AgentListSharesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentShareList `json:"data"`
+}
+
+// AgentListShares: 我的分享（未撤销的，按创建倒序）
+func (s *Service) AgentListShares(ctx context.Context, req *AgentListSharesReq, opts ...core.RequestOption) (*AgentListSharesResp, error) {
+	resp := &AgentListSharesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/agent/shares",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentCreateShareReq is the request for AgentCreateShare.
+type AgentCreateShareReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentCreateShareReqBuilder builds a AgentCreateShareReq with a fluent setter per field.
+type AgentCreateShareReqBuilder struct{ req *AgentCreateShareReq }
+
+// NewAgentCreateShareReqBuilder creates a request builder for AgentCreateShare.
+func NewAgentCreateShareReqBuilder() *AgentCreateShareReqBuilder {
+	return &AgentCreateShareReqBuilder{req: &AgentCreateShareReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *AgentCreateShareReqBuilder) Body(body *models.AgentShareCreateRequestBody) *AgentCreateShareReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentCreateShareReqBuilder) Build() *AgentCreateShareReq { return b.req }
+
+// AgentCreateShareResp is the response for AgentCreateShare.
+type AgentCreateShareResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentShare `json:"data"`
+}
+
+// AgentCreateShare: 新建分享（同一目标未过期的复用）
+func (s *Service) AgentCreateShare(ctx context.Context, req *AgentCreateShareReq, opts ...core.RequestOption) (*AgentCreateShareResp, error) {
+	resp := &AgentCreateShareResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/agent/shares",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentGetShareReq is the request for AgentGetShare.
+type AgentGetShareReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentGetShareReqBuilder builds a AgentGetShareReq with a fluent setter per field.
+type AgentGetShareReqBuilder struct{ req *AgentGetShareReq }
+
+// NewAgentGetShareReqBuilder creates a request builder for AgentGetShare.
+func NewAgentGetShareReqBuilder() *AgentGetShareReqBuilder {
+	return &AgentGetShareReqBuilder{req: &AgentGetShareReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentGetShareReqBuilder) Id(v string) *AgentGetShareReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentGetShareReqBuilder) Build() *AgentGetShareReq { return b.req }
+
+// AgentGetShareResp is the response for AgentGetShare.
+type AgentGetShareResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentShareView `json:"data"`
+}
+
+// AgentGetShare: 访客：分享信息（失效 404）
+func (s *Service) AgentGetShare(ctx context.Context, req *AgentGetShareReq, opts ...core.RequestOption) (*AgentGetShareResp, error) {
+	resp := &AgentGetShareResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/agent/shares/{id}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentRevokeShareReq is the request for AgentRevokeShare.
+type AgentRevokeShareReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentRevokeShareReqBuilder builds a AgentRevokeShareReq with a fluent setter per field.
+type AgentRevokeShareReqBuilder struct{ req *AgentRevokeShareReq }
+
+// NewAgentRevokeShareReqBuilder creates a request builder for AgentRevokeShare.
+func NewAgentRevokeShareReqBuilder() *AgentRevokeShareReqBuilder {
+	return &AgentRevokeShareReqBuilder{req: &AgentRevokeShareReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentRevokeShareReqBuilder) Id(v string) *AgentRevokeShareReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentRevokeShareReqBuilder) Build() *AgentRevokeShareReq { return b.req }
+
+// AgentRevokeShareResp is the response for AgentRevokeShare.
+type AgentRevokeShareResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// AgentRevokeShare: 撤销分享
+func (s *Service) AgentRevokeShare(ctx context.Context, req *AgentRevokeShareReq, opts ...core.RequestOption) (*AgentRevokeShareResp, error) {
+	resp := &AgentRevokeShareResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/agent/shares/{id}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentPatchShareReq is the request for AgentPatchShare.
+type AgentPatchShareReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentPatchShareReqBuilder builds a AgentPatchShareReq with a fluent setter per field.
+type AgentPatchShareReqBuilder struct{ req *AgentPatchShareReq }
+
+// NewAgentPatchShareReqBuilder creates a request builder for AgentPatchShare.
+func NewAgentPatchShareReqBuilder() *AgentPatchShareReqBuilder {
+	return &AgentPatchShareReqBuilder{req: &AgentPatchShareReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentPatchShareReqBuilder) Id(v string) *AgentPatchShareReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AgentPatchShareReqBuilder) Body(body *models.AgentSharePatchRequestBody) *AgentPatchShareReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentPatchShareReqBuilder) Build() *AgentPatchShareReq { return b.req }
+
+// AgentPatchShareResp is the response for AgentPatchShare.
+type AgentPatchShareResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentShare `json:"data"`
+}
+
+// AgentPatchShare: 同步会话分享到最新、续期
+func (s *Service) AgentPatchShare(ctx context.Context, req *AgentPatchShareReq, opts ...core.RequestOption) (*AgentPatchShareResp, error) {
+	resp := &AgentPatchShareResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PATCH",
+		PathTemplate: "/hduhelp-neo/agent/shares/{id}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentGetShareAssetLinkReq is the request for AgentGetShareAssetLink.
+type AgentGetShareAssetLinkReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentGetShareAssetLinkReqBuilder builds a AgentGetShareAssetLinkReq with a fluent setter per field.
+type AgentGetShareAssetLinkReqBuilder struct{ req *AgentGetShareAssetLinkReq }
+
+// NewAgentGetShareAssetLinkReqBuilder creates a request builder for AgentGetShareAssetLink.
+func NewAgentGetShareAssetLinkReqBuilder() *AgentGetShareAssetLinkReqBuilder {
+	return &AgentGetShareAssetLinkReqBuilder{req: &AgentGetShareAssetLinkReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentGetShareAssetLinkReqBuilder) Id(v string) *AgentGetShareAssetLinkReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// AssetId sets the "asset_id" path parameter.
+func (b *AgentGetShareAssetLinkReqBuilder) AssetId(v string) *AgentGetShareAssetLinkReqBuilder {
+	b.req.pathParams["asset_id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentGetShareAssetLinkReqBuilder) Build() *AgentGetShareAssetLinkReq { return b.req }
+
+// AgentGetShareAssetLinkResp is the response for AgentGetShareAssetLink.
+type AgentGetShareAssetLinkResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentAssetLink `json:"data"`
+}
+
+// AgentGetShareAssetLink: 访客：打开会话分享里的资产
+func (s *Service) AgentGetShareAssetLink(ctx context.Context, req *AgentGetShareAssetLinkReq, opts ...core.RequestOption) (*AgentGetShareAssetLinkResp, error) {
+	resp := &AgentGetShareAssetLinkResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/agent/shares/{id}/assets/{asset_id}/link",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentEnterShareReq is the request for AgentEnterShare.
+type AgentEnterShareReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentEnterShareReqBuilder builds a AgentEnterShareReq with a fluent setter per field.
+type AgentEnterShareReqBuilder struct{ req *AgentEnterShareReq }
+
+// NewAgentEnterShareReqBuilder creates a request builder for AgentEnterShare.
+func NewAgentEnterShareReqBuilder() *AgentEnterShareReqBuilder {
+	return &AgentEnterShareReqBuilder{req: &AgentEnterShareReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentEnterShareReqBuilder) Id(v string) *AgentEnterShareReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentEnterShareReqBuilder) Build() *AgentEnterShareReq { return b.req }
+
+// AgentEnterShareResp is the response for AgentEnterShare.
+type AgentEnterShareResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentShareEnter `json:"data"`
+}
+
+// AgentEnterShare: 访客：进入网页预览分享（唤醒沙箱后签一次性进入地址）
+func (s *Service) AgentEnterShare(ctx context.Context, req *AgentEnterShareReq, opts ...core.RequestOption) (*AgentEnterShareResp, error) {
+	resp := &AgentEnterShareResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/agent/shares/{id}/enter",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentListShareItemsReq is the request for AgentListShareItems.
+type AgentListShareItemsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentListShareItemsReqBuilder builds a AgentListShareItemsReq with a fluent setter per field.
+type AgentListShareItemsReqBuilder struct{ req *AgentListShareItemsReq }
+
+// NewAgentListShareItemsReqBuilder creates a request builder for AgentListShareItems.
+func NewAgentListShareItemsReqBuilder() *AgentListShareItemsReqBuilder {
+	return &AgentListShareItemsReqBuilder{req: &AgentListShareItemsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentListShareItemsReqBuilder) Id(v string) *AgentListShareItemsReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// AfterSeq sets the "after_seq" query parameter.
+func (b *AgentListShareItemsReqBuilder) AfterSeq(v int64) *AgentListShareItemsReqBuilder {
+	b.req.queryParams["after_seq"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// Before sets the "before" query parameter: 只要 seq 小于它的条目（倒序翻页，与会话条目接口相同）
+func (b *AgentListShareItemsReqBuilder) Before(v int64) *AgentListShareItemsReqBuilder {
+	b.req.queryParams["before"] = strconv.FormatInt(v, 10)
+	return b
+}
+
+// Limit sets the "limit" query parameter.
+func (b *AgentListShareItemsReqBuilder) Limit(v int32) *AgentListShareItemsReqBuilder {
+	b.req.queryParams["limit"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentListShareItemsReqBuilder) Build() *AgentListShareItemsReq { return b.req }
+
+// AgentListShareItemsResp is the response for AgentListShareItems.
+type AgentListShareItemsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentShareItemPage `json:"data"`
+}
+
+// AgentListShareItems: 访客：会话分享的条目（截止到 upto_seq）与资产
+func (s *Service) AgentListShareItems(ctx context.Context, req *AgentListShareItemsReq, opts ...core.RequestOption) (*AgentListShareItemsResp, error) {
+	resp := &AgentListShareItemsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/agent/shares/{id}/items",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AgentEnterSharePreviewReq is the request for AgentEnterSharePreview.
+type AgentEnterSharePreviewReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentEnterSharePreviewReqBuilder builds a AgentEnterSharePreviewReq with a fluent setter per field.
+type AgentEnterSharePreviewReqBuilder struct{ req *AgentEnterSharePreviewReq }
+
+// NewAgentEnterSharePreviewReqBuilder creates a request builder for AgentEnterSharePreview.
+func NewAgentEnterSharePreviewReqBuilder() *AgentEnterSharePreviewReqBuilder {
+	return &AgentEnterSharePreviewReqBuilder{req: &AgentEnterSharePreviewReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentEnterSharePreviewReqBuilder) Id(v string) *AgentEnterSharePreviewReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// AssetId sets the "asset_id" path parameter.
+func (b *AgentEnterSharePreviewReqBuilder) AssetId(v string) *AgentEnterSharePreviewReqBuilder {
+	b.req.pathParams["asset_id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentEnterSharePreviewReqBuilder) Build() *AgentEnterSharePreviewReq { return b.req }
+
+// AgentEnterSharePreviewResp is the response for AgentEnterSharePreview.
+type AgentEnterSharePreviewResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentShareEnter `json:"data"`
+}
+
+// AgentEnterSharePreview: 访客：进入会话分享里的预览卡片
+func (s *Service) AgentEnterSharePreview(ctx context.Context, req *AgentEnterSharePreviewReq, opts ...core.RequestOption) (*AgentEnterSharePreviewResp, error) {
+	resp := &AgentEnterSharePreviewResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/agent/shares/{id}/previews/{asset_id}/enter",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}

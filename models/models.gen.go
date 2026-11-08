@@ -395,6 +395,84 @@ func (e AgentRunUpstream) Valid() bool {
 	}
 }
 
+// Defines values for AgentShareKind.
+const (
+	AgentShareKindPreview AgentShareKind = "preview"
+	AgentShareKindSession AgentShareKind = "session"
+)
+
+// Valid indicates whether the value is a known member of the AgentShareKind enum.
+func (e AgentShareKind) Valid() bool {
+	switch e {
+	case AgentShareKindPreview:
+		return true
+	case AgentShareKindSession:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentShareCreateRequestBodyKind.
+const (
+	AgentShareCreateRequestBodyKindPreview AgentShareCreateRequestBodyKind = "preview"
+	AgentShareCreateRequestBodyKindSession AgentShareCreateRequestBodyKind = "session"
+)
+
+// Valid indicates whether the value is a known member of the AgentShareCreateRequestBodyKind enum.
+func (e AgentShareCreateRequestBodyKind) Valid() bool {
+	switch e {
+	case AgentShareCreateRequestBodyKindPreview:
+		return true
+	case AgentShareCreateRequestBodyKindSession:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentSharePreviewStateStatus.
+const (
+	AgentSharePreviewStateStatusClosed   AgentSharePreviewStateStatus = "closed"
+	AgentSharePreviewStateStatusLimit    AgentSharePreviewStateStatus = "limit"
+	AgentSharePreviewStateStatusReady    AgentSharePreviewStateStatus = "ready"
+	AgentSharePreviewStateStatusSleeping AgentSharePreviewStateStatus = "sleeping"
+)
+
+// Valid indicates whether the value is a known member of the AgentSharePreviewStateStatus enum.
+func (e AgentSharePreviewStateStatus) Valid() bool {
+	switch e {
+	case AgentSharePreviewStateStatusClosed:
+		return true
+	case AgentSharePreviewStateStatusLimit:
+		return true
+	case AgentSharePreviewStateStatusReady:
+		return true
+	case AgentSharePreviewStateStatusSleeping:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentShareViewKind.
+const (
+	AgentShareViewKindPreview AgentShareViewKind = "preview"
+	AgentShareViewKindSession AgentShareViewKind = "session"
+)
+
+// Valid indicates whether the value is a known member of the AgentShareViewKind enum.
+func (e AgentShareViewKind) Valid() bool {
+	switch e {
+	case AgentShareViewKindPreview:
+		return true
+	case AgentShareViewKindSession:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AgentSkillCreateRequestBodyProxyMode.
 const (
 	AgentSkillCreateRequestBodyProxyModeDefault AgentSkillCreateRequestBodyProxyMode = "default"
@@ -3460,19 +3538,19 @@ func (e ModelGatewayObservabilityServiceModelObservationUsageTrendParamsModelSou
 
 // Defines values for ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode.
 const (
-	Image      ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "image"
-	PerRequest ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "per_request"
-	Token      ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "token"
+	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModeImage      ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "image"
+	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModePerRequest ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "per_request"
+	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModeToken      ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode = "token"
 )
 
 // Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode enum.
 func (e ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingMode) Valid() bool {
 	switch e {
-	case Image:
+	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModeImage:
 		return true
-	case PerRequest:
+	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModePerRequest:
 		return true
-	case Token:
+	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsBillingModeToken:
 		return true
 	default:
 		return false
@@ -3661,34 +3739,34 @@ func (e NotificationServiceListNotificationTaskDeliveriesParamsStatus) Valid() b
 
 // Defines values for NotificationServiceListNotificationTaskDeliveriesParamsFailureKind.
 const (
-	DeadLetterParked   NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "dead_letter_parked"
-	Expired            NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "expired"
-	Permanent          NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "permanent"
-	Provider           NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "provider"
-	ReconcileExhausted NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "reconcile_exhausted"
-	RetryExhausted     NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "retry_exhausted"
-	Uncertain          NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "uncertain"
-	Unreachable        NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "unreachable"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindDeadLetterParked   NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "dead_letter_parked"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindExpired            NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "expired"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindPermanent          NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "permanent"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindProvider           NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "provider"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindReconcileExhausted NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "reconcile_exhausted"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindRetryExhausted     NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "retry_exhausted"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindUncertain          NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "uncertain"
+	NotificationServiceListNotificationTaskDeliveriesParamsFailureKindUnreachable        NotificationServiceListNotificationTaskDeliveriesParamsFailureKind = "unreachable"
 )
 
 // Valid indicates whether the value is a known member of the NotificationServiceListNotificationTaskDeliveriesParamsFailureKind enum.
 func (e NotificationServiceListNotificationTaskDeliveriesParamsFailureKind) Valid() bool {
 	switch e {
-	case DeadLetterParked:
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindDeadLetterParked:
 		return true
-	case Expired:
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindExpired:
 		return true
-	case Permanent:
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindPermanent:
 		return true
-	case Provider:
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindProvider:
 		return true
-	case ReconcileExhausted:
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindReconcileExhausted:
 		return true
-	case RetryExhausted:
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindRetryExhausted:
 		return true
-	case Uncertain:
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindUncertain:
 		return true
-	case Unreachable:
+	case NotificationServiceListNotificationTaskDeliveriesParamsFailureKindUnreachable:
 		return true
 	default:
 		return false
@@ -5680,6 +5758,158 @@ type AgentSettingsUpdateRequestBody struct {
 	Lifecycle          *AgentLifecycleInput `json:"lifecycle,omitempty"`
 	Reason             *string              `json:"reason,omitempty"`
 	SkillSyncEnabled   bool                 `json:"skill_sync_enabled"`
+}
+
+// AgentShare ---- 分享（App 与学生端）----
+// 链接 https://neo.hduhelp.com/agent-share/<id>，id 是 22 位 base62 随机串。主人接口只管自己的分享；
+// 访客接口任何状态正常的登录用户都能调（含主人本人）。分享不存在、已撤销、已过期统一 404 + 730000021，msg 写原因。
+type AgentShare struct {
+	CreatedAt  int64          `json:"created_at"`
+	ExpiresAt  int64          `json:"expires_at"`
+	Id         string         `json:"id"`
+	Kind       AgentShareKind `json:"kind"`
+	LastOpenAt *int64         `json:"last_open_at,omitempty"`
+	OpenCount  int64          `json:"open_count"`
+	RevokedAt  *int64         `json:"revoked_at,omitempty"`
+
+	// Stale 重复创建会话分享时：会话已有截止点之后的回合，可提示「同步到最新」
+	Stale *bool `json:"stale,omitempty"`
+
+	// TargetId 预览：资产 id；会话：会话 id
+	TargetId string `json:"target_id"`
+	Title    string `json:"title"`
+
+	// UptoSeq 会话分享的截止条目序号；预览分享为 0
+	UptoSeq int64 `json:"upto_seq"`
+
+	// Url 分享链接
+	Url string `json:"url"`
+}
+
+// AgentShareKind defines model for AgentShare.Kind.
+type AgentShareKind string
+
+// AgentShareCreateRequestBody defines model for AgentShareCreateRequestBody.
+type AgentShareCreateRequestBody struct {
+	// ExpiresInDays 1、7 或 30
+	ExpiresInDays int32                           `json:"expires_in_days"`
+	Kind          AgentShareCreateRequestBodyKind `json:"kind"`
+	TargetId      string                          `json:"target_id"`
+}
+
+// AgentShareCreateRequestBodyKind defines model for AgentShareCreateRequestBody.Kind.
+type AgentShareCreateRequestBodyKind string
+
+// AgentShareEnter url 是预览站上的一次性进入地址（2 分钟、只能用一次），浏览器打开后凭只对该子域有效的访客 Cookie 访问。
+// 沙箱 25 秒内没唤醒完返回 503 + 730000025（唤醒在后台继续），客户端稍后再调同一接口。
+type AgentShareEnter struct {
+	ExpiresAt int64  `json:"expires_at"`
+	Url       string `json:"url"`
+}
+
+// AgentShareEnterResponseBody defines model for AgentShareEnterResponseBody.
+type AgentShareEnterResponseBody struct {
+	Code int64 `json:"code"`
+
+	// Data url 是预览站上的一次性进入地址（2 分钟、只能用一次），浏览器打开后凭只对该子域有效的访客 Cookie 访问。
+	// 沙箱 25 秒内没唤醒完返回 503 + 730000025（唤醒在后台继续），客户端稍后再调同一接口。
+	Data *AgentShareEnter `json:"data,omitempty"`
+	Msg  string           `json:"msg"`
+}
+
+// AgentShareItemPage defines model for AgentShareItemPage.
+type AgentShareItemPage struct {
+	// Assets 分享（或上次同步）时已有的会话资产
+	Assets  []AgentWorkAsset `json:"assets"`
+	HasMore bool             `json:"has_more"`
+
+	// HeadSeq 分享可见条目里最大的 seq
+	HeadSeq int64           `json:"head_seq"`
+	Items   []AgentWorkItem `json:"items"`
+}
+
+// AgentShareItemPageResponseBody defines model for AgentShareItemPageResponseBody.
+type AgentShareItemPageResponseBody struct {
+	Code int64               `json:"code"`
+	Data *AgentShareItemPage `json:"data,omitempty"`
+	Msg  string              `json:"msg"`
+}
+
+// AgentShareList defines model for AgentShareList.
+type AgentShareList struct {
+	Items []AgentShare `json:"items"`
+}
+
+// AgentShareListResponseBody defines model for AgentShareListResponseBody.
+type AgentShareListResponseBody struct {
+	Code int64           `json:"code"`
+	Data *AgentShareList `json:"data,omitempty"`
+	Msg  string          `json:"msg"`
+}
+
+// AgentShareOwner defines model for AgentShareOwner.
+type AgentShareOwner struct {
+	Avatar   *string `json:"avatar,omitempty"`
+	Nickname string  `json:"nickname"`
+}
+
+// AgentSharePatchRequestBody defines model for AgentSharePatchRequestBody.
+type AgentSharePatchRequestBody struct {
+	// ExpiresInDays 1、7 或 30
+	ExpiresInDays *int32 `json:"expires_in_days,omitempty"`
+	Sync          *bool  `json:"sync,omitempty"`
+}
+
+// AgentSharePreviewState defines model for AgentSharePreviewState.
+type AgentSharePreviewState struct {
+	AssetId string `json:"asset_id"`
+
+	// Status ready 运行中；sleeping 休眠，进入时唤醒；closed 网页已关闭；limit 作者今天的工作时长已用完
+	Status AgentSharePreviewStateStatus `json:"status"`
+}
+
+// AgentSharePreviewStateStatus ready 运行中；sleeping 休眠，进入时唤醒；closed 网页已关闭；limit 作者今天的工作时长已用完
+type AgentSharePreviewStateStatus string
+
+// AgentShareResponseBody defines model for AgentShareResponseBody.
+type AgentShareResponseBody struct {
+	Code int64 `json:"code"`
+
+	// Data ---- 分享（App 与学生端）----
+	// 链接 https://neo.hduhelp.com/agent-share/<id>，id 是 22 位 base62 随机串。主人接口只管自己的分享；
+	// 访客接口任何状态正常的登录用户都能调（含主人本人）。分享不存在、已撤销、已过期统一 404 + 730000021，msg 写原因。
+	Data *AgentShare `json:"data,omitempty"`
+	Msg  string      `json:"msg"`
+}
+
+// AgentShareSessionMeta defines model for AgentShareSessionMeta.
+type AgentShareSessionMeta struct {
+	CreatedAt  int64  `json:"created_at"`
+	Model      string `json:"model"`
+	PresetName string `json:"preset_name"`
+	Title      string `json:"title"`
+	UptoSeq    int64  `json:"upto_seq"`
+}
+
+// AgentShareView defines model for AgentShareView.
+type AgentShareView struct {
+	ExpiresAt int64                   `json:"expires_at"`
+	Id        string                  `json:"id"`
+	Kind      AgentShareViewKind      `json:"kind"`
+	Owner     AgentShareOwner         `json:"owner"`
+	Preview   *AgentSharePreviewState `json:"preview,omitempty"`
+	Session   *AgentShareSessionMeta  `json:"session,omitempty"`
+	Title     string                  `json:"title"`
+}
+
+// AgentShareViewKind defines model for AgentShareView.Kind.
+type AgentShareViewKind string
+
+// AgentShareViewResponseBody defines model for AgentShareViewResponseBody.
+type AgentShareViewResponseBody struct {
+	Code int64           `json:"code"`
+	Data *AgentShareView `json:"data,omitempty"`
+	Msg  string          `json:"msg"`
 }
 
 // AgentSkill defines model for AgentSkill.
@@ -20430,6 +20660,21 @@ type AgentServiceAgentListWorkItemsParams struct {
 	Limit  *int32 `form:"limit,omitempty" json:"limit,omitempty"`
 }
 
+// AgentServiceAgentListSharesParams defines parameters for AgentServiceAgentListShares.
+type AgentServiceAgentListSharesParams struct {
+	Kind     *string `form:"kind,omitempty" json:"kind,omitempty"`
+	TargetId *string `form:"target_id,omitempty" json:"target_id,omitempty"`
+}
+
+// AgentServiceAgentListShareItemsParams defines parameters for AgentServiceAgentListShareItems.
+type AgentServiceAgentListShareItemsParams struct {
+	AfterSeq *int64 `form:"after_seq,omitempty" json:"after_seq,omitempty"`
+
+	// Before 只要 seq 小于它的条目（倒序翻页，与会话条目接口相同）
+	Before *int64 `form:"before,omitempty" json:"before,omitempty"`
+	Limit  *int32 `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
 // ModelProxyServiceListPurposeAnthropicModelsParams defines parameters for ModelProxyServiceListPurposeAnthropicModels.
 type ModelProxyServiceListPurposeAnthropicModelsParams struct {
 	// Limit 每页条数，1–1000，默认 20
@@ -21763,6 +22008,12 @@ type AgentServiceAgentAnswerWorkPromptJSONRequestBody = AgentWorkPromptAnswerReq
 
 // AgentServiceAgentSendWorkTurnJSONRequestBody defines body for AgentServiceAgentSendWorkTurn for application/json ContentType.
 type AgentServiceAgentSendWorkTurnJSONRequestBody = AgentWorkTurnRequestBody
+
+// AgentServiceAgentCreateShareJSONRequestBody defines body for AgentServiceAgentCreateShare for application/json ContentType.
+type AgentServiceAgentCreateShareJSONRequestBody = AgentShareCreateRequestBody
+
+// AgentServiceAgentPatchShareJSONRequestBody defines body for AgentServiceAgentPatchShare for application/json ContentType.
+type AgentServiceAgentPatchShareJSONRequestBody = AgentSharePatchRequestBody
 
 // ModelProxyServiceGeneratePurposeImagesJSONRequestBody defines body for ModelProxyServiceGeneratePurposeImages for application/json ContentType.
 type ModelProxyServiceGeneratePurposeImagesJSONRequestBody = ModelProxyImageGenerationRequestBody
