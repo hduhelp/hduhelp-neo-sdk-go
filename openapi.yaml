@@ -21167,6 +21167,7 @@ components:
                 - defaultModel
                 - allowPreview
                 - isDefault
+                - theme
             type: object
             properties:
                 id:
@@ -21183,6 +21184,8 @@ components:
                     type: boolean
                 isDefault:
                     type: boolean
+                theme:
+                    type: string
         AgentAppPresetListResponseBody:
             required:
                 - code
@@ -22518,6 +22521,7 @@ components:
                 - name
                 - description
                 - icon
+                - theme
                 - status
                 - isDefault
                 - sortOrder
@@ -22583,6 +22587,8 @@ components:
                 updatedAt:
                     type: integer
                     format: int64
+                theme:
+                    type: string
         AgentPresetCreateRequestBody:
             required:
                 - preset
@@ -22635,6 +22641,9 @@ components:
                         $ref: '#/components/schemas/AgentPresetMcpMount'
                 allow_preview:
                     type: boolean
+                theme:
+                    type: string
+                    description: App 对话页外观：空串为默认，science 理工科，humanities 文科。
         AgentPresetListResponseBody:
             required:
                 - code

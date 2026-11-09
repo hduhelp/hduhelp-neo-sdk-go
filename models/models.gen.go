@@ -4713,6 +4713,7 @@ type AgentAppPreset struct {
 	Id           string `json:"id"`
 	IsDefault    bool   `json:"isDefault"`
 	Name         string `json:"name"`
+	Theme        string `json:"theme"`
 }
 
 // AgentAppPresetListResponseBody defines model for AgentAppPresetListResponseBody.
@@ -5409,6 +5410,7 @@ type AgentPreset struct {
 	Slug         string                `json:"slug"`
 	SortOrder    int32                 `json:"sortOrder"`
 	Status       string                `json:"status"`
+	Theme        string                `json:"theme"`
 	UpdatedAt    int64                 `json:"updatedAt"`
 	UpdatedBy    string                `json:"updatedBy"`
 	Version      int64                 `json:"version"`
@@ -5433,6 +5435,9 @@ type AgentPresetInput struct {
 	Skills       []string                   `json:"skills"`
 	Slug         *string                    `json:"slug,omitempty"`
 	SortOrder    *int32                     `json:"sort_order,omitempty"`
+
+	// Theme App 对话页外观：空串为默认，science 理工科，humanities 文科。
+	Theme *string `json:"theme,omitempty"`
 }
 
 // AgentPresetInputReasoning defines model for AgentPresetInput.Reasoning.
