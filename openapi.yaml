@@ -3086,7 +3086,7 @@ paths:
             tags:
                 - AnalyticsService
             summary: Neo产品运营分析
-            description: 需要 analytics.dashboard:view；days 仅允许 7 或 30。北京时间自然日，访客并非学生人数。未配置或上游不可用时不返回零值统计。
+            description: 需要 analytics.dashboard:view；days 仅允许 7 或 30，source 为 web（默认）或 app。北京时间自然日，访客并非学生人数；activeUsers 为窗口内有页面访问的化名登录用户数，与访客不可相加。未配置或上游不可用时不返回零值统计。
             operationId: AnalyticsService_GetAnalytics
             security:
                 - OperatorBearerAuth: []
@@ -3096,6 +3096,10 @@ paths:
                   schema:
                     type: integer
                     format: int32
+                - name: source
+                  in: query
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -3108,7 +3112,7 @@ paths:
             tags:
                 - AnalyticsService
             summary: Neo单功能链路分析
-            description: 需要 analytics.dashboard:view。匿名访客进入到获得结果的有序漏斗，相邻步骤窗口30分钟；附带失败原因、结果、入口和终端分布。
+            description: 需要 analytics.dashboard:view。source 为 web（默认）或 app，分别对应网页与 Poplar App 站点。Umami 访客进入到获得结果的有序漏斗，相邻步骤窗口30分钟；附带失败原因、结果、入口和终端分布。
             operationId: AnalyticsService_GetAnalyticsFeature
             security:
                 - OperatorBearerAuth: []
@@ -3119,6 +3123,10 @@ paths:
                     type: integer
                     format: int32
                 - name: feature
+                  in: query
+                  schema:
+                    type: string
+                - name: source
                   in: query
                   schema:
                     type: string
@@ -13629,9 +13637,14 @@ paths:
             tags:
                 - AnalyticsService
             summary: 产品分析公开配置
-            description: 只返回采集开关与公开站点标识，不包含管理凭据
+            description: client 为 web（默认）或 app，其他值返回 400；app 返回 Poplar App 站点，未配置时 enabled=false。只返回采集开关与公开站点标识，不包含管理凭据。携带有效原生会话时附带 distinctId（服务端密钥 HMAC 派生的化名标识，不是用户 ID）。
             operationId: AnalyticsService_GetAnalyticsConfig
             security: []
+            parameters:
+                - name: client
+                  in: query
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -13639,7 +13652,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AnalyticsConfigResponseBody'
-            x-hduhelp-http: {'auth': 'public', 'catalog': 'exclude', 'requires_user': false}
+            x-hduhelp-http: {'auth': 'public_or_native_session', 'catalog': 'exclude', 'requires_user': false}
     /hduhelp-neo/callbacks/dingtalk/blessing-review:
         post:
             tags:
@@ -21168,6 +21181,7 @@ components:
                 - allowPreview
                 - isDefault
                 - theme
+                - slug
             type: object
             properties:
                 id:
@@ -21186,6 +21200,9 @@ components:
                     type: boolean
                 theme:
                     type: string
+                slug:
+                    type: string
+                    description: 预设的稳定标识，可能为空；App 用于给工作回合的分析事件打标签
         AgentAppPresetListResponseBody:
             required:
                 - code
@@ -24726,6 +24743,9 @@ components:
                     type: string
                 endpoint:
                     type: string
+                distinctId:
+                    type: string
+                    description: Pseudonymous, per-user Umami distinct id. Present only for a valid native session.
         AnalyticsConfigResponseBody:
             type: object
             properties:
@@ -24848,6 +24868,9 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/AnalyticsMetric'
+                activeUsers:
+                    type: integer
+                    format: int64
         AppAccessTokenData:
             type: object
             properties:

@@ -38,6 +38,12 @@ func (b *GetAnalyticsReqBuilder) Days(v int32) *GetAnalyticsReqBuilder {
 	return b
 }
 
+// Source sets the "source" query parameter.
+func (b *GetAnalyticsReqBuilder) Source(v string) *GetAnalyticsReqBuilder {
+	b.req.queryParams["source"] = v
+	return b
+}
+
 // Build finalizes the request.
 func (b *GetAnalyticsReqBuilder) Build() *GetAnalyticsReq { return b.req }
 
@@ -87,6 +93,12 @@ func (b *GetAnalyticsFeatureReqBuilder) Days(v int32) *GetAnalyticsFeatureReqBui
 // Feature sets the "feature" query parameter.
 func (b *GetAnalyticsFeatureReqBuilder) Feature(v string) *GetAnalyticsFeatureReqBuilder {
 	b.req.queryParams["feature"] = v
+	return b
+}
+
+// Source sets the "source" query parameter.
+func (b *GetAnalyticsFeatureReqBuilder) Source(v string) *GetAnalyticsFeatureReqBuilder {
+	b.req.queryParams["source"] = v
 	return b
 }
 

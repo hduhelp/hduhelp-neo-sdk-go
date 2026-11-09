@@ -4713,7 +4713,10 @@ type AgentAppPreset struct {
 	Id           string `json:"id"`
 	IsDefault    bool   `json:"isDefault"`
 	Name         string `json:"name"`
-	Theme        string `json:"theme"`
+
+	// Slug 预设的稳定标识，可能为空；App 用于给工作回合的分析事件打标签
+	Slug  string `json:"slug"`
+	Theme string `json:"theme"`
 }
 
 // AgentAppPresetListResponseBody defines model for AgentAppPresetListResponseBody.
@@ -6509,9 +6512,11 @@ type AllPersonInfoResponseBody struct {
 
 // AnalyticsConfigData defines model for AnalyticsConfigData.
 type AnalyticsConfigData struct {
-	Enabled   *bool   `json:"enabled,omitempty"`
-	Endpoint  *string `json:"endpoint,omitempty"`
-	WebsiteId *string `json:"websiteId,omitempty"`
+	// DistinctId Pseudonymous, per-user Umami distinct id. Present only for a valid native session.
+	DistinctId *string `json:"distinctId,omitempty"`
+	Enabled    *bool   `json:"enabled,omitempty"`
+	Endpoint   *string `json:"endpoint,omitempty"`
+	WebsiteId  *string `json:"websiteId,omitempty"`
 }
 
 // AnalyticsConfigResponseBody defines model for AnalyticsConfigResponseBody.
@@ -6569,6 +6574,7 @@ type AnalyticsResponseBody struct {
 
 // AnalyticsSnapshot defines model for AnalyticsSnapshot.
 type AnalyticsSnapshot struct {
+	ActiveUsers   *int64             `json:"activeUsers,omitempty"`
 	Devices       *[]AnalyticsMetric `json:"devices,omitempty"`
 	EndAt         *int64             `json:"endAt,omitempty"`
 	Events        *[]AnalyticsMetric `json:"events,omitempty"`
@@ -19377,13 +19383,15 @@ type AgentServiceAgentGetSkillFileParams struct {
 
 // AnalyticsServiceGetAnalyticsParams defines parameters for AnalyticsServiceGetAnalytics.
 type AnalyticsServiceGetAnalyticsParams struct {
-	Days *int32 `form:"days,omitempty" json:"days,omitempty"`
+	Days   *int32  `form:"days,omitempty" json:"days,omitempty"`
+	Source *string `form:"source,omitempty" json:"source,omitempty"`
 }
 
 // AnalyticsServiceGetAnalyticsFeatureParams defines parameters for AnalyticsServiceGetAnalyticsFeature.
 type AnalyticsServiceGetAnalyticsFeatureParams struct {
 	Days    *int32  `form:"days,omitempty" json:"days,omitempty"`
 	Feature *string `form:"feature,omitempty" json:"feature,omitempty"`
+	Source  *string `form:"source,omitempty" json:"source,omitempty"`
 }
 
 // AdminServiceDeleteAppParams defines parameters for AdminServiceDeleteApp.
