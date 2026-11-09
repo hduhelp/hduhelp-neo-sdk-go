@@ -6586,6 +6586,413 @@ type AnalyticsSnapshot struct {
 	Visitors      *int64             `json:"visitors,omitempty"`
 }
 
+// ApmAlloc defines model for ApmAlloc.
+type ApmAlloc struct {
+	Max *int64 `json:"max,omitempty"`
+	P50 *int64 `json:"p50,omitempty"`
+	P70 *int64 `json:"p70,omitempty"`
+	P90 *int64 `json:"p90,omitempty"`
+}
+
+// ApmApp Every Data struct carries status: not_configured / unavailable / ready, and
+// upstreamError (EMAS's own code and message) when status is unavailable.
+// "ready" with an empty list means EMAS answered with no data.
+type ApmApp struct {
+	Key      *int64  `json:"key,omitempty"`
+	Name     *string `json:"name,omitempty"`
+	Platform *string `json:"platform,omitempty"`
+}
+
+// ApmAppsData defines model for ApmAppsData.
+type ApmAppsData struct {
+	Apps   *[]ApmApp `json:"apps,omitempty"`
+	Status *string   `json:"status,omitempty"`
+}
+
+// ApmAppsResponseBody defines model for ApmAppsResponseBody.
+type ApmAppsResponseBody struct {
+	Code *int64       `json:"code,omitempty"`
+	Data *ApmAppsData `json:"data,omitempty"`
+	Msg  *string      `json:"msg,omitempty"`
+}
+
+// ApmIssue defines model for ApmIssue.
+type ApmIssue struct {
+	AffectedUserCount *int64    `json:"affectedUserCount,omitempty"`
+	Alloc             *ApmAlloc `json:"alloc,omitempty"`
+	DigestHash        *string   `json:"digestHash,omitempty"`
+	ErrorColumn       *int32    `json:"errorColumn,omitempty"`
+	ErrorCount        *int64    `json:"errorCount,omitempty"`
+	ErrorDeviceCount  *int64    `json:"errorDeviceCount,omitempty"`
+	ErrorDeviceRate   *float64  `json:"errorDeviceRate,omitempty"`
+	ErrorFile         *string   `json:"errorFile,omitempty"`
+	ErrorLine         *int32    `json:"errorLine,omitempty"`
+	ErrorName         *string   `json:"errorName,omitempty"`
+	ErrorRate         *float64  `json:"errorRate,omitempty"`
+	ErrorType         *string   `json:"errorType,omitempty"`
+	FirstVersion      *string   `json:"firstVersion,omitempty"`
+	LagCost           *int64    `json:"lagCost,omitempty"`
+	LastSeenAt        *int64    `json:"lastSeenAt,omitempty"`
+	Name              *string   `json:"name,omitempty"`
+	Reason            *string   `json:"reason,omitempty"`
+
+	// StackHead First lines of the aggregated stack.
+	StackHead *string   `json:"stackHead,omitempty"`
+	Status    *int32    `json:"status,omitempty"`
+	Tags      *[]string `json:"tags,omitempty"`
+	Type      *string   `json:"type,omitempty"`
+}
+
+// ApmIssueData defines model for ApmIssueData.
+type ApmIssueData struct {
+	Issue         *ApmIssueDetail `json:"issue,omitempty"`
+	Status        *string         `json:"status,omitempty"`
+	UpstreamError *string         `json:"upstreamError,omitempty"`
+}
+
+// ApmIssueDetail defines model for ApmIssueDetail.
+type ApmIssueDetail struct {
+	AffectedVersions       *[]string `json:"affectedVersions,omitempty"`
+	Alloc                  *ApmAlloc `json:"alloc,omitempty"`
+	CruxStack              *string   `json:"cruxStack,omitempty"`
+	DigestHash             *string   `json:"digestHash,omitempty"`
+	EndAt                  *int64    `json:"endAt,omitempty"`
+	ErrorColumn            *int32    `json:"errorColumn,omitempty"`
+	ErrorCount             *int64    `json:"errorCount,omitempty"`
+	ErrorCountGrowth       *float64  `json:"errorCountGrowth,omitempty"`
+	ErrorDeviceCount       *int64    `json:"errorDeviceCount,omitempty"`
+	ErrorDeviceCountGrowth *float64  `json:"errorDeviceCountGrowth,omitempty"`
+	ErrorDeviceRate        *float64  `json:"errorDeviceRate,omitempty"`
+	ErrorDeviceRateGrowth  *float64  `json:"errorDeviceRateGrowth,omitempty"`
+	ErrorFile              *string   `json:"errorFile,omitempty"`
+	ErrorLine              *string   `json:"errorLine,omitempty"`
+	ErrorName              *string   `json:"errorName,omitempty"`
+	ErrorRate              *float64  `json:"errorRate,omitempty"`
+	ErrorRateGrowth        *float64  `json:"errorRateGrowth,omitempty"`
+	ErrorType              *string   `json:"errorType,omitempty"`
+	FetchedAt              *int64    `json:"fetchedAt,omitempty"`
+	FirstSeenAt            *int64    `json:"firstSeenAt,omitempty"`
+	FirstVersion           *string   `json:"firstVersion,omitempty"`
+	KeyLine                *int32    `json:"keyLine,omitempty"`
+	LastSeenAt             *int64    `json:"lastSeenAt,omitempty"`
+	Name                   *string   `json:"name,omitempty"`
+	Reason                 *string   `json:"reason,omitempty"`
+	Stack                  *string   `json:"stack,omitempty"`
+	StartAt                *int64    `json:"startAt,omitempty"`
+	Status                 *int32    `json:"status,omitempty"`
+	Summary                *string   `json:"summary,omitempty"`
+	Symbolicated           *bool     `json:"symbolicated,omitempty"`
+	Tags                   *[]string `json:"tags,omitempty"`
+	Type                   *string   `json:"type,omitempty"`
+}
+
+// ApmIssueList defines model for ApmIssueList.
+type ApmIssueList struct {
+	EndAt     *int64      `json:"endAt,omitempty"`
+	FetchedAt *int64      `json:"fetchedAt,omitempty"`
+	Items     *[]ApmIssue `json:"items,omitempty"`
+	Page      *int32      `json:"page,omitempty"`
+	PageSize  *int32      `json:"pageSize,omitempty"`
+	StartAt   *int64      `json:"startAt,omitempty"`
+	Total     *int64      `json:"total,omitempty"`
+}
+
+// ApmIssueResponseBody defines model for ApmIssueResponseBody.
+type ApmIssueResponseBody struct {
+	Code *int64        `json:"code,omitempty"`
+	Data *ApmIssueData `json:"data,omitempty"`
+	Msg  *string       `json:"msg,omitempty"`
+}
+
+// ApmIssuesData defines model for ApmIssuesData.
+type ApmIssuesData struct {
+	List          *ApmIssueList `json:"list,omitempty"`
+	Status        *string       `json:"status,omitempty"`
+	UpstreamError *string       `json:"upstreamError,omitempty"`
+}
+
+// ApmIssuesResponseBody defines model for ApmIssuesResponseBody.
+type ApmIssuesResponseBody struct {
+	Code *int64         `json:"code,omitempty"`
+	Data *ApmIssuesData `json:"data,omitempty"`
+	Msg  *string        `json:"msg,omitempty"`
+}
+
+// ApmModuleOverview defines model for ApmModuleOverview.
+type ApmModuleOverview struct {
+	Current       *ApmTotals  `json:"current,omitempty"`
+	Error         *string     `json:"error,omitempty"`
+	Module        *string     `json:"module,omitempty"`
+	Previous      *ApmTotals  `json:"previous,omitempty"`
+	PreviousError *string     `json:"previousError,omitempty"`
+	Top           *[]ApmIssue `json:"top,omitempty"`
+}
+
+// ApmOverview defines model for ApmOverview.
+type ApmOverview struct {
+	EndAt           *int64               `json:"endAt,omitempty"`
+	FetchedAt       *int64               `json:"fetchedAt,omitempty"`
+	Modules         *[]ApmModuleOverview `json:"modules,omitempty"`
+	PreviousStartAt *int64               `json:"previousStartAt,omitempty"`
+	StartAt         *int64               `json:"startAt,omitempty"`
+}
+
+// ApmOverviewData defines model for ApmOverviewData.
+type ApmOverviewData struct {
+	Overview      *ApmOverview `json:"overview,omitempty"`
+	Status        *string      `json:"status,omitempty"`
+	UpstreamError *string      `json:"upstreamError,omitempty"`
+}
+
+// ApmOverviewResponseBody defines model for ApmOverviewResponseBody.
+type ApmOverviewResponseBody struct {
+	Code *int64           `json:"code,omitempty"`
+	Data *ApmOverviewData `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
+}
+
+// ApmRecordData defines model for ApmRecordData.
+type ApmRecordData struct {
+	OmittedKeys   *[]string          `json:"omittedKeys,omitempty"`
+	Record        *map[string]string `json:"record,omitempty"`
+	Status        *string            `json:"status,omitempty"`
+	UpstreamError *string            `json:"upstreamError,omitempty"`
+}
+
+// ApmRecordResponseBody defines model for ApmRecordResponseBody.
+type ApmRecordResponseBody struct {
+	Code *int64         `json:"code,omitempty"`
+	Data *ApmRecordData `json:"data,omitempty"`
+	Msg  *string        `json:"msg,omitempty"`
+}
+
+// ApmRows Remote-log (Tlog) payloads are untyped upstream; rows are flattened
+// (nested keys joined with ".") and filtered through a server allowlist.
+type ApmRows struct {
+	Items *[]map[string]string `json:"items,omitempty"`
+
+	// OmittedKeys Field names EMAS returned that were withheld (privacy or unrecognised).
+	OmittedKeys *[]string `json:"omittedKeys,omitempty"`
+	Page        *int32    `json:"page,omitempty"`
+	PageSize    *int32    `json:"pageSize,omitempty"`
+	Total       *int64    `json:"total,omitempty"`
+}
+
+// ApmRowsData defines model for ApmRowsData.
+type ApmRowsData struct {
+	// Rows Remote-log (Tlog) payloads are untyped upstream; rows are flattened
+	// (nested keys joined with ".") and filtered through a server allowlist.
+	Rows          *ApmRows `json:"rows,omitempty"`
+	Status        *string  `json:"status,omitempty"`
+	UpstreamError *string  `json:"upstreamError,omitempty"`
+}
+
+// ApmRowsResponseBody defines model for ApmRowsResponseBody.
+type ApmRowsResponseBody struct {
+	Code *int64       `json:"code,omitempty"`
+	Data *ApmRowsData `json:"data,omitempty"`
+	Msg  *string      `json:"msg,omitempty"`
+}
+
+// ApmSample defines model for ApmSample.
+type ApmSample struct {
+	// DeviceRef Sealed device handle for the remote-log tab; empty when EMAS has no device id.
+	DeviceRef *string         `json:"deviceRef,omitempty"`
+	Env       *ApmSampleEnv   `json:"env,omitempty"`
+	Logs      *ApmSampleLogs  `json:"logs,omitempty"`
+	Scene     *ApmSampleScene `json:"scene,omitempty"`
+}
+
+// ApmSampleData defines model for ApmSampleData.
+type ApmSampleData struct {
+	Sample        *ApmSample `json:"sample,omitempty"`
+	Status        *string    `json:"status,omitempty"`
+	UpstreamError *string    `json:"upstreamError,omitempty"`
+}
+
+// ApmSampleEnv defines model for ApmSampleEnv.
+type ApmSampleEnv struct {
+	Access        *string `json:"access,omitempty"`
+	AccessSubType *string `json:"accessSubType,omitempty"`
+	AppVersion    *string `json:"appVersion,omitempty"`
+	Brand         *string `json:"brand,omitempty"`
+	Build         *string `json:"build,omitempty"`
+	Carrier       *string `json:"carrier,omitempty"`
+	Channel       *string `json:"channel,omitempty"`
+	CpuModel      *string `json:"cpuModel,omitempty"`
+	DeviceModel   *string `json:"deviceModel,omitempty"`
+	Foreground    *bool   `json:"foreground,omitempty"`
+	Jailbroken    *bool   `json:"jailbroken,omitempty"`
+	MemInfo       *string `json:"memInfo,omitempty"`
+	Os            *string `json:"os,omitempty"`
+	OsVersion     *string `json:"osVersion,omitempty"`
+	Province      *string `json:"province,omitempty"`
+	Resolution    *string `json:"resolution,omitempty"`
+	Simulator     *bool   `json:"simulator,omitempty"`
+
+	// UserId Neo user id set by the app via setUserId.
+	UserId *string `json:"userId,omitempty"`
+}
+
+// ApmSampleList defines model for ApmSampleList.
+type ApmSampleList struct {
+	Items    *[]ApmSampleSummary `json:"items,omitempty"`
+	Page     *int32              `json:"page,omitempty"`
+	PageSize *int32              `json:"pageSize,omitempty"`
+	Total    *int64              `json:"total,omitempty"`
+}
+
+// ApmSampleLogs defines model for ApmSampleLogs.
+type ApmSampleLogs struct {
+	Backtrace           *string `json:"backtrace,omitempty"`
+	CruxStack           *string `json:"cruxStack,omitempty"`
+	CustomInfo          *string `json:"customInfo,omitempty"`
+	EventLog            *string `json:"eventLog,omitempty"`
+	ExceptionCode       *string `json:"exceptionCode,omitempty"`
+	ExceptionDetail     *string `json:"exceptionDetail,omitempty"`
+	ExceptionMsg        *string `json:"exceptionMsg,omitempty"`
+	ExceptionType       *string `json:"exceptionType,omitempty"`
+	MainLog             *string `json:"mainLog,omitempty"`
+	NativeAllThreadDump *string `json:"nativeAllThreadDump,omitempty"`
+	Stack               *string `json:"stack,omitempty"`
+	StructuredStack     *string `json:"structuredStack,omitempty"`
+	SysLog              *string `json:"sysLog,omitempty"`
+	Threads             *string `json:"threads,omitempty"`
+	Track               *string `json:"track,omitempty"`
+}
+
+// ApmSampleResponseBody defines model for ApmSampleResponseBody.
+type ApmSampleResponseBody struct {
+	Code *int64         `json:"code,omitempty"`
+	Data *ApmSampleData `json:"data,omitempty"`
+	Msg  *string        `json:"msg,omitempty"`
+}
+
+// ApmSampleScene defines model for ApmSampleScene.
+type ApmSampleScene struct {
+	ClientTime         *int64  `json:"clientTime,omitempty"`
+	Controllers        *string `json:"controllers,omitempty"`
+	FlutterRoute       *string `json:"flutterRoute,omitempty"`
+	LaunchedCrashStage *int32  `json:"launchedCrashStage,omitempty"`
+	LaunchedTime       *string `json:"launchedTime,omitempty"`
+	Page               *string `json:"page,omitempty"`
+	ProcessName        *string `json:"processName,omitempty"`
+	SessionId          *string `json:"sessionId,omitempty"`
+	ThreadName         *string `json:"threadName,omitempty"`
+	View               *string `json:"view,omitempty"`
+}
+
+// ApmSampleSummary defines model for ApmSampleSummary.
+type ApmSampleSummary struct {
+	AppVersion  *string `json:"appVersion,omitempty"`
+	Brand       *string `json:"brand,omitempty"`
+	ClientTime  *int64  `json:"clientTime,omitempty"`
+	DeviceModel *string `json:"deviceModel,omitempty"`
+	Exception   *string `json:"exception,omitempty"`
+	Foreground  *bool   `json:"foreground,omitempty"`
+	Loaded      *bool   `json:"loaded,omitempty"`
+	OsVersion   *string `json:"osVersion,omitempty"`
+	Province    *string `json:"province,omitempty"`
+
+	// Ref Opaque server-sealed handle for GET /apm/sample; EMAS event ids never leave the server.
+	Ref    *string `json:"ref,omitempty"`
+	UserId *string `json:"userId,omitempty"`
+}
+
+// ApmSamplesData defines model for ApmSamplesData.
+type ApmSamplesData struct {
+	List          *ApmSampleList `json:"list,omitempty"`
+	Status        *string        `json:"status,omitempty"`
+	UpstreamError *string        `json:"upstreamError,omitempty"`
+}
+
+// ApmSamplesResponseBody defines model for ApmSamplesResponseBody.
+type ApmSamplesResponseBody struct {
+	Code *int64          `json:"code,omitempty"`
+	Data *ApmSamplesData `json:"data,omitempty"`
+	Msg  *string         `json:"msg,omitempty"`
+}
+
+// ApmSymbolFile defines model for ApmSymbolFile.
+type ApmSymbolFile struct {
+	AppVersion   *string `json:"appVersion,omitempty"`
+	BinaryUuid   *string `json:"binaryUuid,omitempty"`
+	BuildId      *string `json:"buildId,omitempty"`
+	CreatedAt    *int64  `json:"createdAt,omitempty"`
+	ExportStatus *string `json:"exportStatus,omitempty"`
+	FileName     *string `json:"fileName,omitempty"`
+	FileType     *string `json:"fileType,omitempty"`
+	Id           *int64  `json:"id,omitempty"`
+	Status       *string `json:"status,omitempty"`
+}
+
+// ApmSymbolVersion defines model for ApmSymbolVersion.
+type ApmSymbolVersion struct {
+	Crashed      *bool     `json:"crashed,omitempty"`
+	ExportFailed *bool     `json:"exportFailed,omitempty"`
+	FileTypes    *[]string `json:"fileTypes,omitempty"`
+	Files        *int32    `json:"files,omitempty"`
+	Version      *string   `json:"version,omitempty"`
+}
+
+// ApmSymbols defines model for ApmSymbols.
+type ApmSymbols struct {
+	Errors    *[]string        `json:"errors,omitempty"`
+	FetchedAt *int64           `json:"fetchedAt,omitempty"`
+	FileTypes *[]string        `json:"fileTypes,omitempty"`
+	Files     *[]ApmSymbolFile `json:"files,omitempty"`
+
+	// Missing Versions that crashed in the last 30 days (first-seen version of crash issues) without any symbol file.
+	Missing   *[]string           `json:"missing,omitempty"`
+	Truncated *bool               `json:"truncated,omitempty"`
+	Versions  *[]ApmSymbolVersion `json:"versions,omitempty"`
+}
+
+// ApmSymbolsData defines model for ApmSymbolsData.
+type ApmSymbolsData struct {
+	Status        *string     `json:"status,omitempty"`
+	Symbols       *ApmSymbols `json:"symbols,omitempty"`
+	UpstreamError *string     `json:"upstreamError,omitempty"`
+}
+
+// ApmSymbolsResponseBody defines model for ApmSymbolsResponseBody.
+type ApmSymbolsResponseBody struct {
+	Code *int64          `json:"code,omitempty"`
+	Data *ApmSymbolsData `json:"data,omitempty"`
+	Msg  *string         `json:"msg,omitempty"`
+}
+
+// ApmTlogTaskData defines model for ApmTlogTaskData.
+type ApmTlogTaskData struct {
+	Collections *[]map[string]string `json:"collections,omitempty"`
+	Info        *map[string]string   `json:"info,omitempty"`
+	OmittedKeys *[]string            `json:"omittedKeys,omitempty"`
+
+	// PartialError Set when only one of the two upstream calls failed.
+	PartialError  *string `json:"partialError,omitempty"`
+	Status        *string `json:"status,omitempty"`
+	UpstreamError *string `json:"upstreamError,omitempty"`
+}
+
+// ApmTlogTaskResponseBody defines model for ApmTlogTaskResponseBody.
+type ApmTlogTaskResponseBody struct {
+	Code *int64           `json:"code,omitempty"`
+	Data *ApmTlogTaskData `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
+}
+
+// ApmTotals defines model for ApmTotals.
+type ApmTotals struct {
+	// DeviceSum Sum of per-issue device counts: a device hit by two issues counts twice.
+	DeviceSum *int64 `json:"deviceSum,omitempty"`
+	Errors    *int64 `json:"errors,omitempty"`
+	Issues    *int64 `json:"issues,omitempty"`
+
+	// Truncated More issues than the page cap; totals cover the top issues only.
+	Truncated *bool  `json:"truncated,omitempty"`
+	UserSum   *int64 `json:"userSum,omitempty"`
+}
+
 // AppAccessTokenData defines model for AppAccessTokenData.
 type AppAccessTokenData struct {
 	AppAccessToken *string `json:"appAccessToken,omitempty"`
@@ -19392,6 +19799,109 @@ type AnalyticsServiceGetAnalyticsFeatureParams struct {
 	Days    *int32  `form:"days,omitempty" json:"days,omitempty"`
 	Feature *string `form:"feature,omitempty" json:"feature,omitempty"`
 	Source  *string `form:"source,omitempty" json:"source,omitempty"`
+}
+
+// ApmServiceGetApmIssueParams defines parameters for ApmServiceGetApmIssue.
+type ApmServiceGetApmIssueParams struct {
+	AppKey     *int64  `form:"appKey,omitempty" json:"appKey,omitempty"`
+	Module     *string `form:"module,omitempty" json:"module,omitempty"`
+	Range      *string `form:"range,omitempty" json:"range,omitempty"`
+	DigestHash *string `form:"digestHash,omitempty" json:"digestHash,omitempty"`
+}
+
+// ApmServiceListApmIssuesParams defines parameters for ApmServiceListApmIssues.
+type ApmServiceListApmIssuesParams struct {
+	AppKey *int64  `form:"appKey,omitempty" json:"appKey,omitempty"`
+	Module *string `form:"module,omitempty" json:"module,omitempty"`
+	Range  *string `form:"range,omitempty" json:"range,omitempty"`
+	Page   *int32  `form:"page,omitempty" json:"page,omitempty"`
+
+	// Status 1 新 / 2 处理中 / 3 关闭 / 4 已修复；省略为全部。
+	Status     *int32  `form:"status,omitempty" json:"status,omitempty"`
+	Name       *string `form:"name,omitempty" json:"name,omitempty"`
+	AppVersion *string `form:"appVersion,omitempty" json:"appVersion,omitempty"`
+
+	// OrderBy count / devices / rate / deviceRate，默认 count，降序。
+	OrderBy *string `form:"orderBy,omitempty" json:"orderBy,omitempty"`
+}
+
+// ApmServiceGetApmOverviewParams defines parameters for ApmServiceGetApmOverview.
+type ApmServiceGetApmOverviewParams struct {
+	AppKey *int64  `form:"appKey,omitempty" json:"appKey,omitempty"`
+	Range  *string `form:"range,omitempty" json:"range,omitempty"`
+}
+
+// ApmServiceGetApmSampleParams defines parameters for ApmServiceGetApmSample.
+type ApmServiceGetApmSampleParams struct {
+	AppKey     *int64  `form:"appKey,omitempty" json:"appKey,omitempty"`
+	Module     *string `form:"module,omitempty" json:"module,omitempty"`
+	DigestHash *string `form:"digestHash,omitempty" json:"digestHash,omitempty"`
+	Ref        *string `form:"ref,omitempty" json:"ref,omitempty"`
+}
+
+// ApmServiceListApmSamplesParams defines parameters for ApmServiceListApmSamples.
+type ApmServiceListApmSamplesParams struct {
+	AppKey     *int64  `form:"appKey,omitempty" json:"appKey,omitempty"`
+	Module     *string `form:"module,omitempty" json:"module,omitempty"`
+	Range      *string `form:"range,omitempty" json:"range,omitempty"`
+	DigestHash *string `form:"digestHash,omitempty" json:"digestHash,omitempty"`
+	Page       *int32  `form:"page,omitempty" json:"page,omitempty"`
+	AppVersion *string `form:"appVersion,omitempty" json:"appVersion,omitempty"`
+}
+
+// ApmServiceGetApmSymbolsParams defines parameters for ApmServiceGetApmSymbols.
+type ApmServiceGetApmSymbolsParams struct {
+	AppKey *int64 `form:"appKey,omitempty" json:"appKey,omitempty"`
+}
+
+// ApmServiceListApmTlogCollectsParams defines parameters for ApmServiceListApmTlogCollects.
+type ApmServiceListApmTlogCollectsParams struct {
+	AppKey     *int64  `form:"appKey,omitempty" json:"appKey,omitempty"`
+	Range      *string `form:"range,omitempty" json:"range,omitempty"`
+	Page       *int32  `form:"page,omitempty" json:"page,omitempty"`
+	Keyword    *string `form:"keyword,omitempty" json:"keyword,omitempty"`
+	Status     *string `form:"status,omitempty" json:"status,omitempty"`
+	SourceType *string `form:"sourceType,omitempty" json:"sourceType,omitempty"`
+	DeviceRef  *string `form:"deviceRef,omitempty" json:"deviceRef,omitempty"`
+}
+
+// ApmServiceGetApmTlogDeviceParams defines parameters for ApmServiceGetApmTlogDevice.
+type ApmServiceGetApmTlogDeviceParams struct {
+	AppKey    *int64  `form:"appKey,omitempty" json:"appKey,omitempty"`
+	DeviceRef *string `form:"deviceRef,omitempty" json:"deviceRef,omitempty"`
+}
+
+// ApmServiceListApmTlogDevicesParams defines parameters for ApmServiceListApmTlogDevices.
+type ApmServiceListApmTlogDevicesParams struct {
+	AppKey *int64  `form:"appKey,omitempty" json:"appKey,omitempty"`
+	Range  *string `form:"range,omitempty" json:"range,omitempty"`
+	Page   *int32  `form:"page,omitempty" json:"page,omitempty"`
+
+	// Keyword Exact match on Neo user id or device id; cannot combine with the other filters.
+	Keyword    *string `form:"keyword,omitempty" json:"keyword,omitempty"`
+	AppVersion *string `form:"appVersion,omitempty" json:"appVersion,omitempty"`
+	Brand      *string `form:"brand,omitempty" json:"brand,omitempty"`
+	Model      *string `form:"model,omitempty" json:"model,omitempty"`
+	OsVersion  *string `form:"osVersion,omitempty" json:"osVersion,omitempty"`
+}
+
+// ApmServiceSearchApmTlogsParams defines parameters for ApmServiceSearchApmTlogs.
+type ApmServiceSearchApmTlogsParams struct {
+	AppKey    *int64  `form:"appKey,omitempty" json:"appKey,omitempty"`
+	DeviceRef *string `form:"deviceRef,omitempty" json:"deviceRef,omitempty"`
+	StartAt   *int64  `form:"startAt,omitempty" json:"startAt,omitempty"`
+	EndAt     *int64  `form:"endAt,omitempty" json:"endAt,omitempty"`
+	Page      *int32  `form:"page,omitempty" json:"page,omitempty"`
+	Keyword   *string `form:"keyword,omitempty" json:"keyword,omitempty"`
+
+	// Levels Comma-separated subset of debug,info,warning,error.
+	Levels *string `form:"levels,omitempty" json:"levels,omitempty"`
+}
+
+// ApmServiceGetApmTlogTaskParams defines parameters for ApmServiceGetApmTlogTask.
+type ApmServiceGetApmTlogTaskParams struct {
+	AppKey *int64  `form:"appKey,omitempty" json:"appKey,omitempty"`
+	TaskId *string `form:"taskId,omitempty" json:"taskId,omitempty"`
 }
 
 // AdminServiceDeleteAppParams defines parameters for AdminServiceDeleteApp.
