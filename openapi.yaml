@@ -22904,8 +22904,9 @@ components:
                     enum:
                         - pass
                         - fail
+                        - unclear
                     type: string
-                    description: pass = 聊天里列出
+                    description: pass = 聊天里列出；unclear = 还没测出结论（一天后再测，连续 3 次算 fail）
                 probed_at:
                     type: integer
                     description: 毫秒；0 = 被聊天中的拒绝排到下一轮最先复测

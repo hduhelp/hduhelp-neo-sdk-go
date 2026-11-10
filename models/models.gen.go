@@ -259,8 +259,9 @@ func (e AgentPartnerConfigFieldType) Valid() bool {
 
 // Defines values for AgentPartnerProbeVerdict.
 const (
-	Fail AgentPartnerProbeVerdict = "fail"
-	Pass AgentPartnerProbeVerdict = "pass"
+	Fail    AgentPartnerProbeVerdict = "fail"
+	Pass    AgentPartnerProbeVerdict = "pass"
+	Unclear AgentPartnerProbeVerdict = "unclear"
 )
 
 // Valid indicates whether the value is a known member of the AgentPartnerProbeVerdict enum.
@@ -269,6 +270,8 @@ func (e AgentPartnerProbeVerdict) Valid() bool {
 	case Fail:
 		return true
 	case Pass:
+		return true
+	case Unclear:
 		return true
 	default:
 		return false
@@ -5402,11 +5405,11 @@ type AgentPartnerProbe struct {
 	// ReasoningLevels 不返回 = 没测出（经 Chat Completions 转换的模型）
 	ReasoningLevels *[]string `json:"reasoning_levels,omitempty"`
 
-	// Verdict pass = 聊天里列出
+	// Verdict pass = 聊天里列出；unclear = 还没测出结论（一天后再测，连续 3 次算 fail）
 	Verdict AgentPartnerProbeVerdict `json:"verdict"`
 }
 
-// AgentPartnerProbeVerdict pass = 聊天里列出
+// AgentPartnerProbeVerdict pass = 聊天里列出；unclear = 还没测出结论（一天后再测，连续 3 次算 fail）
 type AgentPartnerProbeVerdict string
 
 // AgentPartnerProbes defines model for AgentPartnerProbes.
