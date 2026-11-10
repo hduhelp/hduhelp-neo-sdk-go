@@ -333,6 +333,58 @@ func (s *Service) ReplyAdminFeedback(ctx context.Context, req *ReplyAdminFeedbac
 	return resp, err
 }
 
+// UpdateAdminFeedbackTypeReq is the request for UpdateAdminFeedbackType.
+type UpdateAdminFeedbackTypeReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// UpdateAdminFeedbackTypeReqBuilder builds a UpdateAdminFeedbackTypeReq with a fluent setter per field.
+type UpdateAdminFeedbackTypeReqBuilder struct{ req *UpdateAdminFeedbackTypeReq }
+
+// NewUpdateAdminFeedbackTypeReqBuilder creates a request builder for UpdateAdminFeedbackType.
+func NewUpdateAdminFeedbackTypeReqBuilder() *UpdateAdminFeedbackTypeReqBuilder {
+	return &UpdateAdminFeedbackTypeReqBuilder{req: &UpdateAdminFeedbackTypeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *UpdateAdminFeedbackTypeReqBuilder) Id(v string) *UpdateAdminFeedbackTypeReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *UpdateAdminFeedbackTypeReqBuilder) Body(body *models.UpdateFeedbackTypeRequestBody) *UpdateAdminFeedbackTypeReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *UpdateAdminFeedbackTypeReqBuilder) Build() *UpdateAdminFeedbackTypeReq { return b.req }
+
+// UpdateAdminFeedbackTypeResp is the response for UpdateAdminFeedbackType.
+type UpdateAdminFeedbackTypeResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.FeedbackItem `json:"data"`
+}
+
+// UpdateAdminFeedbackType: 修改反馈类型
+func (s *Service) UpdateAdminFeedbackType(ctx context.Context, req *UpdateAdminFeedbackTypeReq, opts ...core.RequestOption) (*UpdateAdminFeedbackTypeResp, error) {
+	resp := &UpdateAdminFeedbackTypeResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/feedbacks/{id}/type",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // CreateFeedbackReq is the request for CreateFeedback.
 type CreateFeedbackReq struct {
 	pathParams  map[string]string

@@ -1415,6 +1415,24 @@ func (e ModelProbeMemberStatus) Valid() bool {
 	}
 }
 
+// Defines values for ModelProxyModelStatsWindow.
+const (
+	ModelProxyModelStatsWindowAll ModelProxyModelStatsWindow = "all"
+	ModelProxyModelStatsWindowN7d ModelProxyModelStatsWindow = "7d"
+)
+
+// Valid indicates whether the value is a known member of the ModelProxyModelStatsWindow enum.
+func (e ModelProxyModelStatsWindow) Valid() bool {
+	switch e {
+	case ModelProxyModelStatsWindowAll:
+		return true
+	case ModelProxyModelStatsWindowN7d:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ModelRequestScopedErrorsRequestBodyMode.
 const (
 	Inherit  ModelRequestScopedErrorsRequestBodyMode = "inherit"
@@ -2126,6 +2144,24 @@ func (e SetDeliveryPreferenceRequestBodyProvider) Valid() bool {
 	}
 }
 
+// Defines values for UpdateFeedbackTypeRequestBodyFeedbackType.
+const (
+	UpdateFeedbackTypeRequestBodyFeedbackTypeAssistant UpdateFeedbackTypeRequestBodyFeedbackType = "assistant"
+	UpdateFeedbackTypeRequestBodyFeedbackTypeSchool    UpdateFeedbackTypeRequestBodyFeedbackType = "school"
+)
+
+// Valid indicates whether the value is a known member of the UpdateFeedbackTypeRequestBodyFeedbackType enum.
+func (e UpdateFeedbackTypeRequestBodyFeedbackType) Valid() bool {
+	switch e {
+	case UpdateFeedbackTypeRequestBodyFeedbackTypeAssistant:
+		return true
+	case UpdateFeedbackTypeRequestBodyFeedbackTypeSchool:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AcademicServiceGetClassroomsParamsStatus.
 const (
 	AcademicServiceGetClassroomsParamsStatusUnused AcademicServiceGetClassroomsParamsStatus = "unused"
@@ -2263,16 +2299,16 @@ func (e FeedbackServiceExportAdminFeedbacksParamsStatus) Valid() bool {
 
 // Defines values for FeedbackServiceExportAdminFeedbacksParamsFeedbackType.
 const (
-	FeedbackServiceExportAdminFeedbacksParamsFeedbackTypeAssistant FeedbackServiceExportAdminFeedbacksParamsFeedbackType = "assistant"
-	FeedbackServiceExportAdminFeedbacksParamsFeedbackTypeSchool    FeedbackServiceExportAdminFeedbacksParamsFeedbackType = "school"
+	Assistant FeedbackServiceExportAdminFeedbacksParamsFeedbackType = "assistant"
+	School    FeedbackServiceExportAdminFeedbacksParamsFeedbackType = "school"
 )
 
 // Valid indicates whether the value is a known member of the FeedbackServiceExportAdminFeedbacksParamsFeedbackType enum.
 func (e FeedbackServiceExportAdminFeedbacksParamsFeedbackType) Valid() bool {
 	switch e {
-	case FeedbackServiceExportAdminFeedbacksParamsFeedbackTypeAssistant:
+	case Assistant:
 		return true
-	case FeedbackServiceExportAdminFeedbacksParamsFeedbackTypeSchool:
+	case School:
 		return true
 	default:
 		return false
@@ -2893,19 +2929,19 @@ func (e ModelGatewayServiceModelListPricesParamsSortOrder) Valid() bool {
 
 // Defines values for ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRange.
 const (
-	N24h ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRange = "24h"
-	N30d ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRange = "30d"
-	N7d  ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRange = "7d"
+	ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRangeN24h ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRange = "24h"
+	ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRangeN30d ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRange = "30d"
+	ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRangeN7d  ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRange = "7d"
 )
 
 // Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRange enum.
 func (e ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRange) Valid() bool {
 	switch e {
-	case N24h:
+	case ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRangeN24h:
 		return true
-	case N30d:
+	case ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRangeN30d:
 		return true
-	case N7d:
+	case ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRangeN7d:
 		return true
 	default:
 		return false
@@ -4677,17 +4713,26 @@ type AgentAppEndpoint struct {
 	Partner      string           `json:"partner"`
 }
 
-// AgentAppModel ---- 工作会话（App）----
-// 应答字段一律 snake_case，与 SSE 条目同形。写接口以客户端 ULID 为幂等键（会话 id、turn_id、op_id），
-// 或以 version 做乐观锁。时间均为毫秒时间戳。
+// AgentAppModel defines model for AgentAppModel.
 type AgentAppModel struct {
-	ContextWindow *int32 `json:"context_window,omitempty"`
-	Id            string `json:"id"`
+	ContextWindow *int32  `json:"context_window,omitempty"`
+	Description   *string `json:"description,omitempty"`
+	Id            string  `json:"id"`
 
 	// ImageInput 模型能否看图；未知时不返回（按支持处理）
-	ImageInput      *bool    `json:"image_input,omitempty"`
-	Name            string   `json:"name"`
-	ReasoningLevels []string `json:"reasoning_levels"`
+	ImageInput      *bool     `json:"image_input,omitempty"`
+	InputModalities *[]string `json:"input_modalities,omitempty"`
+	Name            string    `json:"name"`
+	ReasoningLevels []string  `json:"reasoning_levels"`
+
+	// Stats 合作方平台的累计调用量（不是本 App 的）。
+	Stats *AgentModelStats `json:"stats,omitempty"`
+
+	// Vendor ---- 工作会话（App）----
+	// 应答字段一律 snake_case，与 SSE 条目同形。写接口以客户端 ULID 为幂等键（会话 id、turn_id、op_id），
+	// 或以 version 做乐观锁。时间均为毫秒时间戳。
+	// 模型厂商（合作方的完整目录给出）。
+	Vendor *AgentModelVendor `json:"vendor,omitempty"`
 }
 
 // AgentAppModels defines model for AgentAppModels.
@@ -5090,6 +5135,23 @@ type AgentModelOptionsResponseBody struct {
 	Msg  string    `json:"msg"`
 }
 
+// AgentModelStats 合作方平台的累计调用量（不是本 App 的）。
+type AgentModelStats struct {
+	Availability  *float64 `json:"availability,omitempty"`
+	RequestsTotal int64    `json:"requests_total"`
+	TokensTotal   int64    `json:"tokens_total"`
+}
+
+// AgentModelVendor ---- 工作会话（App）----
+// 应答字段一律 snake_case，与 SSE 条目同形。写接口以客户端 ULID 为幂等键（会话 id、turn_id、op_id），
+// 或以 version 做乐观锁。时间均为毫秒时间戳。
+// 模型厂商（合作方的完整目录给出）。
+type AgentModelVendor struct {
+	Icon *string `json:"icon,omitempty"`
+	Name string  `json:"name"`
+	Slug string  `json:"slug"`
+}
+
 // AgentMutationResponseBody defines model for AgentMutationResponseBody.
 type AgentMutationResponseBody struct {
 	Code int64  `json:"code"`
@@ -5178,7 +5240,10 @@ type AgentPartnerCard struct {
 	IconUrl      string                    `json:"icon_url"`
 	KeyState     *AgentPartnerCardKeyState `json:"key_state,omitempty"`
 	Name         string                    `json:"name"`
-	Slug         string                    `json:"slug"`
+
+	// PreviewModels 连接前就能看到的模型：完整目录里工作模式能用、调用量最高的几个。
+	PreviewModels *[]AgentAppModel `json:"preview_models,omitempty"`
+	Slug          string           `json:"slug"`
 
 	// Status paused = 暂停新连接，已有的照常可用
 	Status       AgentPartnerCardStatus `json:"status"`
@@ -13943,22 +14008,56 @@ type ModelProxyImagesResponseBody struct {
 	Usage *map[string]interface{} `json:"usage,omitempty"`
 }
 
+// ModelProxyModelStats 调用量。window = 7d：本网关近 7 天；all：合作方平台的累计。
+type ModelProxyModelStats struct {
+	Availability *float64                   `json:"availability,omitempty"`
+	Requests     int64                      `json:"requests"`
+	Tokens       int64                      `json:"tokens"`
+	Window       ModelProxyModelStatsWindow `json:"window"`
+}
+
+// ModelProxyModelStatsWindow defines model for ModelProxyModelStats.Window.
+type ModelProxyModelStatsWindow string
+
+// ModelProxyModelVendor 模型厂商（标准模型元数据）。
+type ModelProxyModelVendor struct {
+	Icon *string `json:"icon,omitempty"`
+	Name string  `json:"name"`
+	Slug string  `json:"slug"`
+}
+
 // ModelProxyOpenAIModel defines model for ModelProxyOpenAIModel.
 type ModelProxyOpenAIModel struct {
 	// Capabilities 能力名到是否支持；未知的能力不返回。
 	Capabilities *map[string]bool `json:"capabilities,omitempty"`
 
+	// Connected 合作方模型：用户是否已连接该合作方（没连时也列出，App 当作可连接的预览）。
+	Connected *bool `json:"connected,omitempty"`
+
 	// ContextWindow 上下文窗口（token）。同名多个目标取最小值；未知不返回。
 	ContextWindow         *int32  `json:"context_window,omitempty"`
 	Created               int64   `json:"created"`
 	DefaultReasoningLevel *string `json:"default_reasoning_level,omitempty"`
+	Description           *string `json:"description,omitempty"`
 	DisplayName           string  `json:"display_name"`
 	Id                    string  `json:"id"`
-	Object                string  `json:"object"`
-	OwnedBy               string  `json:"owned_by"`
+
+	// InputModalities 输入模态：text / image / video / audio / file；未知不返回。
+	InputModalities *[]string `json:"input_modalities,omitempty"`
+	Object          string    `json:"object"`
+	OwnedBy         string    `json:"owned_by"`
+
+	// Source 来源：hduhelp = Neo 自己的模型；否则是合作方 slug（用户自带凭据，模型名形如 <slug>/<model>）。
+	Source string `json:"source"`
+
+	// Stats 调用量。window = 7d：本网关近 7 天；all：合作方平台的累计。
+	Stats *ModelProxyModelStats `json:"stats,omitempty"`
 
 	// SupportedReasoningLevels 不返回表示未知；空数组表示这个模型不能思考。
 	SupportedReasoningLevels *[]string `json:"supported_reasoning_levels,omitempty"`
+
+	// Vendor 模型厂商（标准模型元数据）。
+	Vendor *ModelProxyModelVendor `json:"vendor,omitempty"`
 }
 
 // ModelProxyOpenAIModelListBody defines model for ModelProxyOpenAIModelListBody.
@@ -18967,6 +19066,14 @@ type UpdateFavoriteResponseBody struct {
 	Msg  *string       `json:"msg,omitempty"`
 }
 
+// UpdateFeedbackTypeRequestBody defines model for UpdateFeedbackTypeRequestBody.
+type UpdateFeedbackTypeRequestBody struct {
+	FeedbackType UpdateFeedbackTypeRequestBodyFeedbackType `json:"feedbackType"`
+}
+
+// UpdateFeedbackTypeRequestBodyFeedbackType defines model for UpdateFeedbackTypeRequestBody.FeedbackType.
+type UpdateFeedbackTypeRequestBodyFeedbackType string
+
 // UpdateItemRequestBody defines model for UpdateItemRequestBody.
 type UpdateItemRequestBody struct {
 	// Authority human | official_school | official_hduhelp
@@ -22238,6 +22345,9 @@ type AdminServiceUpdateElectricityMeterJSONRequestBody = UpdateElectricityMeterR
 
 // FeedbackServiceReplyAdminFeedbackJSONRequestBody defines body for FeedbackServiceReplyAdminFeedback for application/json ContentType.
 type FeedbackServiceReplyAdminFeedbackJSONRequestBody = ReplyFeedbackRequestBody
+
+// FeedbackServiceUpdateAdminFeedbackTypeJSONRequestBody defines body for FeedbackServiceUpdateAdminFeedbackType for application/json ContentType.
+type FeedbackServiceUpdateAdminFeedbackTypeJSONRequestBody = UpdateFeedbackTypeRequestBody
 
 // AdminServiceReportImpersonationJSONRequestBody defines body for AdminServiceReportImpersonation for application/json ContentType.
 type AdminServiceReportImpersonationJSONRequestBody = ReportImpersonationRequestBody

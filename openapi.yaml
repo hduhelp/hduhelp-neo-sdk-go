@@ -4373,6 +4373,34 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/FeedbackResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/feedbacks/{id}/type:
+        put:
+            tags:
+                - FeedbackService
+            summary: 修改反馈类型
+            description: 需要同时拥有原类型和目标类型的管理权限；仅修改分类，保留处理状态和回复记录。
+            operationId: FeedbackService_UpdateAdminFeedbackType
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateFeedbackTypeRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FeedbackResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/impersonation-logs:
         get:
             tags:
@@ -21567,10 +21595,16 @@ components:
                 context_window:
                     type: integer
                     format: int32
-            description: |-
-                ---- 工作会话（App）----
-                应答字段一律 snake_case，与 SSE 条目同形。写接口以客户端 ULID 为幂等键（会话 id、turn_id、op_id），
-                或以 version 做乐观锁。时间均为毫秒时间戳。
+                vendor:
+                    $ref: '#/components/schemas/AgentModelVendor'
+                input_modalities:
+                    type: array
+                    items:
+                        type: string
+                stats:
+                    $ref: '#/components/schemas/AgentModelStats'
+                description:
+                    type: string
         AgentAppModels:
             required:
                 - models
@@ -22349,6 +22383,39 @@ components:
                     format: int64
                 msg:
                     type: string
+        AgentModelStats:
+            required:
+                - tokens_total
+                - requests_total
+            type: object
+            properties:
+                tokens_total:
+                    type: integer
+                    format: int64
+                requests_total:
+                    type: integer
+                    format: int64
+                availability:
+                    type: number
+                    format: double
+            description: 合作方平台的累计调用量（不是本 App 的）。
+        AgentModelVendor:
+            required:
+                - slug
+                - name
+            type: object
+            properties:
+                slug:
+                    type: string
+                name:
+                    type: string
+                icon:
+                    type: string
+            description: |-
+                ---- 工作会话（App）----
+                应答字段一律 snake_case，与 SSE 条目同形。写接口以客户端 ULID 为幂等键（会话 id、turn_id、op_id），
+                或以 version 做乐观锁。时间均为毫秒时间戳。
+                模型厂商（合作方的完整目录给出）。
         AgentMutationResponseBody:
             required:
                 - code
@@ -22576,6 +22643,11 @@ components:
                     items:
                         type: integer
                         format: int64
+                preview_models:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentAppModel'
+                    description: 连接前就能看到的模型：完整目录里工作模式能用、调用量最高的几个。
             description: balance_yuan / balance_at / key_state 只在已连接、有余额能力且查询成功时给（缓存 60 秒）。
         AgentPartnerCompleteRequestBody:
             required:
@@ -37610,6 +37682,41 @@ components:
                     description: 上游原样的用量，字段因模型而异
                 error:
                     $ref: '#/components/schemas/ModelProxyErrorBody'
+        ModelProxyModelStats:
+            required:
+                - tokens
+                - requests
+                - window
+            type: object
+            properties:
+                tokens:
+                    type: integer
+                    format: int64
+                requests:
+                    type: integer
+                    format: int64
+                window:
+                    enum:
+                        - 7d
+                        - all
+                    type: string
+                availability:
+                    type: number
+                    format: double
+            description: 调用量。window = 7d：本网关近 7 天；all：合作方平台的累计。
+        ModelProxyModelVendor:
+            required:
+                - slug
+                - name
+            type: object
+            properties:
+                slug:
+                    type: string
+                name:
+                    type: string
+                icon:
+                    type: string
+            description: 模型厂商（标准模型元数据）。
         ModelProxyOpenAIModel:
             required:
                 - id
@@ -37617,6 +37724,7 @@ components:
                 - created
                 - owned_by
                 - display_name
+                - source
             type: object
             properties:
                 id:
@@ -37646,6 +37754,23 @@ components:
                     type: integer
                     description: 上下文窗口（token）。同名多个目标取最小值；未知不返回。
                     format: int32
+                source:
+                    type: string
+                    description: 来源：hduhelp = Neo 自己的模型；否则是合作方 slug（用户自带凭据，模型名形如 <slug>/<model>）。
+                connected:
+                    type: boolean
+                    description: 合作方模型：用户是否已连接该合作方（没连时也列出，App 当作可连接的预览）。
+                vendor:
+                    $ref: '#/components/schemas/ModelProxyModelVendor'
+                input_modalities:
+                    type: array
+                    items:
+                        type: string
+                    description: 输入模态：text / image / video / audio / file；未知不返回。
+                stats:
+                    $ref: '#/components/schemas/ModelProxyModelStats'
+                description:
+                    type: string
         ModelProxyOpenAIModelListBody:
             required:
                 - object
@@ -46489,6 +46614,16 @@ components:
                     type: integer
                     format: int64
                 msg:
+                    type: string
+        UpdateFeedbackTypeRequestBody:
+            required:
+                - feedbackType
+            type: object
+            properties:
+                feedbackType:
+                    enum:
+                        - assistant
+                        - school
                     type: string
         UpdateItemRequestBody:
             type: object
