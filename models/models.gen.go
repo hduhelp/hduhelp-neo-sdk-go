@@ -257,6 +257,24 @@ func (e AgentPartnerConfigFieldType) Valid() bool {
 	}
 }
 
+// Defines values for AgentPartnerProbeVerdict.
+const (
+	Fail AgentPartnerProbeVerdict = "fail"
+	Pass AgentPartnerProbeVerdict = "pass"
+)
+
+// Valid indicates whether the value is a known member of the AgentPartnerProbeVerdict enum.
+func (e AgentPartnerProbeVerdict) Valid() bool {
+	switch e {
+	case Fail:
+		return true
+	case Pass:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AgentPartnerStatusRequestBodyStatus.
 const (
 	AgentPartnerStatusRequestBodyStatusActive   AgentPartnerStatusRequestBodyStatus = "active"
@@ -5368,6 +5386,45 @@ type AgentPartnerListResponseBody struct {
 type AgentPartnerModelShare struct {
 	Model string `json:"model"`
 	Turns int64  `json:"turns"`
+}
+
+// AgentPartnerProbe 聊天模型的上架实测：每个模型最近一次的结论、时间、各用例结果与测出的能力。
+type AgentPartnerProbe struct {
+	// Cases 用例 → ok 或没通过的原因
+	Cases      map[string]string `json:"cases"`
+	ImageInput *bool             `json:"image_input,omitempty"`
+	Model      string            `json:"model"`
+	PdfInput   *bool             `json:"pdf_input,omitempty"`
+
+	// ProbedAt 毫秒；0 = 被聊天中的拒绝排到下一轮最先复测
+	ProbedAt int64 `json:"probed_at"`
+
+	// ReasoningLevels 不返回 = 没测出（经 Chat Completions 转换的模型）
+	ReasoningLevels *[]string `json:"reasoning_levels,omitempty"`
+
+	// Verdict pass = 聊天里列出
+	Verdict AgentPartnerProbeVerdict `json:"verdict"`
+}
+
+// AgentPartnerProbeVerdict pass = 聊天里列出
+type AgentPartnerProbeVerdict string
+
+// AgentPartnerProbes defines model for AgentPartnerProbes.
+type AgentPartnerProbes struct {
+	Items []AgentPartnerProbe `json:"items"`
+
+	// ProbeKeys 本次能用的探测凭据数（探测 Key 加已连接的探测用户）
+	ProbeKeys int32 `json:"probe_keys"`
+
+	// Probing 实例配了探测 Key 或探测用户（聊天只列通过的）
+	Probing bool `json:"probing"`
+}
+
+// AgentPartnerProbesResponseBody defines model for AgentPartnerProbesResponseBody.
+type AgentPartnerProbesResponseBody struct {
+	Code int64               `json:"code"`
+	Data *AgentPartnerProbes `json:"data,omitempty"`
+	Msg  string              `json:"msg"`
 }
 
 // AgentPartnerStats defines model for AgentPartnerStats.

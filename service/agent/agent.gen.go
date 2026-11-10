@@ -533,6 +533,52 @@ func (s *Service) AgentUpdatePartner(ctx context.Context, req *AgentUpdatePartne
 	return resp, err
 }
 
+// AgentPartnerProbesReq is the request for AgentPartnerProbes.
+type AgentPartnerProbesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentPartnerProbesReqBuilder builds a AgentPartnerProbesReq with a fluent setter per field.
+type AgentPartnerProbesReqBuilder struct{ req *AgentPartnerProbesReq }
+
+// NewAgentPartnerProbesReqBuilder creates a request builder for AgentPartnerProbes.
+func NewAgentPartnerProbesReqBuilder() *AgentPartnerProbesReqBuilder {
+	return &AgentPartnerProbesReqBuilder{req: &AgentPartnerProbesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentPartnerProbesReqBuilder) Id(v string) *AgentPartnerProbesReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentPartnerProbesReqBuilder) Build() *AgentPartnerProbesReq { return b.req }
+
+// AgentPartnerProbesResp is the response for AgentPartnerProbes.
+type AgentPartnerProbesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentPartnerProbes `json:"data"`
+}
+
+// AgentPartnerProbes: 合作方聊天模型的上架实测记录
+func (s *Service) AgentPartnerProbes(ctx context.Context, req *AgentPartnerProbesReq, opts ...core.RequestOption) (*AgentPartnerProbesResp, error) {
+	resp := &AgentPartnerProbesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/agent/partners/{id}/probes",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // AgentPartnerStatsReq is the request for AgentPartnerStats.
 type AgentPartnerStatsReq struct {
 	pathParams  map[string]string

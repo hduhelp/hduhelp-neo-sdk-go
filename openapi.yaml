@@ -1997,6 +1997,28 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/AgentPartnerAdminResponseBody'
             x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/agent/partners/{id}/probes:
+        get:
+            tags:
+                - AgentService
+            summary: 合作方聊天模型的上架实测记录
+            operationId: AgentService_AgentPartnerProbes
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentPartnerProbesResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/agent/partners/{id}/stats:
         get:
             tags:
@@ -22868,6 +22890,72 @@ components:
                 turns:
                     type: integer
                     format: int64
+        AgentPartnerProbe:
+            required:
+                - model
+                - verdict
+                - probed_at
+                - cases
+            type: object
+            properties:
+                model:
+                    type: string
+                verdict:
+                    enum:
+                        - pass
+                        - fail
+                    type: string
+                    description: pass = 聊天里列出
+                probed_at:
+                    type: integer
+                    description: 毫秒；0 = 被聊天中的拒绝排到下一轮最先复测
+                    format: int64
+                cases:
+                    type: object
+                    additionalProperties:
+                        type: string
+                    description: 用例 → ok 或没通过的原因
+                image_input:
+                    type: boolean
+                pdf_input:
+                    type: boolean
+                reasoning_levels:
+                    type: array
+                    items:
+                        type: string
+                    description: 不返回 = 没测出（经 Chat Completions 转换的模型）
+            description: 聊天模型的上架实测：每个模型最近一次的结论、时间、各用例结果与测出的能力。
+        AgentPartnerProbes:
+            required:
+                - probing
+                - probe_keys
+                - items
+            type: object
+            properties:
+                probing:
+                    type: boolean
+                    description: 实例配了探测 Key 或探测用户（聊天只列通过的）
+                probe_keys:
+                    type: integer
+                    description: 本次能用的探测凭据数（探测 Key 加已连接的探测用户）
+                    format: int32
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentPartnerProbe'
+        AgentPartnerProbesResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentPartnerProbes'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AgentPartnerStats:
             required:
                 - connectedUsers
