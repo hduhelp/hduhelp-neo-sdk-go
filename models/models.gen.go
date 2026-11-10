@@ -4704,13 +4704,33 @@ type AdoptRevisionRequestBody struct {
 // models / default_model 只在 GET /agent/models 里给：合作方接入点列出它的模型目录（过白名单），
 // 用它建会话或改模型时同时带 endpoint_id 与 model（不带 model 用 default_model）；手填接入点 models 为空，不能带 model。
 type AgentAppEndpoint struct {
-	BaseUrl      string           `json:"base_url"`
-	DefaultModel *string          `json:"default_model,omitempty"`
-	Id           string           `json:"id"`
-	KeyTail      string           `json:"key_tail"`
-	Models       *[]AgentAppModel `json:"models,omitempty"`
-	Name         string           `json:"name"`
-	Partner      string           `json:"partner"`
+	BaseUrl      string  `json:"base_url"`
+	DefaultModel *string `json:"default_model,omitempty"`
+	Id           string  `json:"id"`
+
+	// ImageModel 也用于生图时的模型名（OpenAI Images 兼容）；不用于生图时不返回
+	ImageModel *string          `json:"image_model,omitempty"`
+	KeyTail    string           `json:"key_tail"`
+	Models     *[]AgentAppModel `json:"models,omitempty"`
+	Name       string           `json:"name"`
+	Partner    string           `json:"partner"`
+}
+
+// AgentAppImageModel 工作模式生图可选的模型：杭电助手自己的（agent.image）、合作方的（id 带 slug 前缀，connected 写连没连）、
+// 用户填了生图模型的接入点（mine/<接入点 id>）。会话的 image_model 取其中之一。
+type AgentAppImageModel struct {
+	Connected *bool   `json:"connected,omitempty"`
+	Id        *string `json:"id,omitempty"`
+	Name      *string `json:"name,omitempty"`
+
+	// Source hduhelp、合作方 slug 或 mine
+	Source *string `json:"source,omitempty"`
+
+	// Vendor ---- 工作会话（App）----
+	// 应答字段一律 snake_case，与 SSE 条目同形。写接口以客户端 ULID 为幂等键（会话 id、turn_id、op_id），
+	// 或以 version 做乐观锁。时间均为毫秒时间戳。
+	// 模型厂商（合作方的完整目录给出）。
+	Vendor *AgentModelVendor `json:"vendor,omitempty"`
 }
 
 // AgentAppModel defines model for AgentAppModel.
@@ -4737,9 +4757,10 @@ type AgentAppModel struct {
 
 // AgentAppModels defines model for AgentAppModels.
 type AgentAppModels struct {
-	DefaultModel string             `json:"default_model"`
-	Endpoints    []AgentAppEndpoint `json:"endpoints"`
-	Models       []AgentAppModel    `json:"models"`
+	DefaultModel string                `json:"default_model"`
+	Endpoints    []AgentAppEndpoint    `json:"endpoints"`
+	ImageModels  *[]AgentAppImageModel `json:"image_models,omitempty"`
+	Models       []AgentAppModel       `json:"models"`
 }
 
 // AgentAppModelsResponseBody defines model for AgentAppModelsResponseBody.
@@ -4921,8 +4942,11 @@ type AgentEndpointCreateRequestBody struct {
 	BaseUrl string `json:"base_url"`
 
 	// Id 可选：客户端生成的 ULID，作幂等键
-	Id   *string `json:"id,omitempty"`
-	Name string  `json:"name"`
+	Id *string `json:"id,omitempty"`
+
+	// ImageModel 可选：也用于 HDU Mate 生图（OpenAI Images 兼容），用这个模型名
+	ImageModel *string `json:"image_model,omitempty"`
+	Name       string  `json:"name"`
 }
 
 // AgentEndpointListResponseBody defines model for AgentEndpointListResponseBody.
@@ -6427,8 +6451,11 @@ type AgentWorkSession struct {
 	ForkedFrom  *AgentWorkForkSource `json:"forked_from,omitempty"`
 	HeadSeq     *int64               `json:"head_seq,omitempty"`
 	Id          string               `json:"id"`
-	LastTurnAt  *int64               `json:"last_turn_at,omitempty"`
-	Model       *string              `json:"model,omitempty"`
+
+	// ImageModel 这段工作生图用的模型（GET /models 的 image_models 之一）；不返回时用默认
+	ImageModel *string `json:"image_model,omitempty"`
+	LastTurnAt *int64  `json:"last_turn_at,omitempty"`
+	Model      *string `json:"model,omitempty"`
 
 	// PermissionMode auto：自动审查（默认）；ask：每次写操作前问。用自配接入点（非合作方）的会话恒为 ask
 	PermissionMode *AgentWorkSessionPermissionMode `json:"permission_mode,omitempty"`
@@ -6449,10 +6476,13 @@ type AgentWorkSessionCreateRequestBody struct {
 	EndpointId *string `json:"endpoint_id,omitempty"`
 
 	// Id 客户端生成的 ULID，也是幂等键
-	Id       string  `json:"id"`
-	Model    *string `json:"model,omitempty"`
-	PresetId string  `json:"preset_id"`
-	Title    *string `json:"title,omitempty"`
+	Id string `json:"id"`
+
+	// ImageModel 生图模型（GET /models 的 image_models 之一）；不传用默认
+	ImageModel *string `json:"image_model,omitempty"`
+	Model      *string `json:"model,omitempty"`
+	PresetId   string  `json:"preset_id"`
+	Title      *string `json:"title,omitempty"`
 }
 
 // AgentWorkSessionDetail defines model for AgentWorkSessionDetail.
@@ -6490,6 +6520,9 @@ type AgentWorkSessionPageResponseBody struct {
 type AgentWorkSessionPatchRequestBody struct {
 	Archived   *bool   `json:"archived,omitempty"`
 	EndpointId *string `json:"endpoint_id,omitempty"`
+
+	// ImageModel 换生图模型，空串回到默认；下一次生图生效
+	ImageModel *string `json:"image_model,omitempty"`
 	Model      *string `json:"model,omitempty"`
 
 	// PermissionMode 自配接入点（非合作方）的会话设 auto 返回 400 730000028

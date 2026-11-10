@@ -21570,10 +21570,30 @@ components:
                         $ref: '#/components/schemas/AgentAppModel'
                 default_model:
                     type: string
+                image_model:
+                    type: string
+                    description: 也用于生图时的模型名（OpenAI Images 兼容）；不用于生图时不返回
             description: |-
                 partner：空 = 用户手填的接入点；否则是创建它的合作方 slug（每个合作方每人至多一个）。
                 models / default_model 只在 GET /agent/models 里给：合作方接入点列出它的模型目录（过白名单），
                 用它建会话或改模型时同时带 endpoint_id 与 model（不带 model 用 default_model）；手填接入点 models 为空，不能带 model。
+        AgentAppImageModel:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                source:
+                    type: string
+                    description: hduhelp、合作方 slug 或 mine
+                connected:
+                    type: boolean
+                vendor:
+                    $ref: '#/components/schemas/AgentModelVendor'
+            description: |-
+                工作模式生图可选的模型：杭电助手自己的（agent.image）、合作方的（id 带 slug 前缀，connected 写连没连）、
+                用户填了生图模型的接入点（mine/<接入点 id>）。会话的 image_model 取其中之一。
         AgentAppModel:
             required:
                 - id
@@ -21622,6 +21642,10 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/AgentAppEndpoint'
+                image_models:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AgentAppImageModel'
         AgentAppModelsResponseBody:
             required:
                 - code
@@ -21931,6 +21955,9 @@ components:
                     type: string
                 api_key:
                     type: string
+                image_model:
+                    type: string
+                    description: 可选：也用于 HDU Mate 生图（OpenAI Images 兼容），用这个模型名
         AgentEndpointListResponseBody:
             required:
                 - code
@@ -24998,6 +25025,9 @@ components:
                 side:
                     type: boolean
                     description: /btw 旁支：不在会话列表里，提升后变成普通会话
+                image_model:
+                    type: string
+                    description: 这段工作生图用的模型（GET /models 的 image_models 之一）；不返回时用默认
             description: deleted=true 是墓碑：只有 id、deleted、change_seq 有意义。
         AgentWorkSessionCreateRequestBody:
             required:
@@ -25016,6 +25046,9 @@ components:
                     type: string
                 title:
                     type: string
+                image_model:
+                    type: string
+                    description: 生图模型（GET /models 的 image_models 之一）；不传用默认
         AgentWorkSessionDetail:
             required:
                 - session
@@ -25100,6 +25133,9 @@ components:
                         - ask
                     type: string
                     description: 自配接入点（非合作方）的会话设 auto 返回 400 730000028
+                image_model:
+                    type: string
+                    description: 换生图模型，空串回到默认；下一次生图生效
         AgentWorkSessionResponseBody:
             required:
                 - code
