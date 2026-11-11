@@ -46022,6 +46022,14 @@ components:
                 canCancel:
                     type: boolean
                     description: 是否允许退订
+                deliveryStatus:
+                    enum:
+                        - ready
+                        - wechat_binding_required
+                        - wechat_follow_required
+                        - check_failed
+                    type: string
+                    description: 已启用订阅的接收前置条件状态；不代表消息投递成功
         SubscriptionsResponseBody:
             required:
                 - code

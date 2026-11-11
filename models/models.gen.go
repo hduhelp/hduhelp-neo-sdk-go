@@ -2165,6 +2165,30 @@ func (e SetDeliveryPreferenceRequestBodyProvider) Valid() bool {
 	}
 }
 
+// Defines values for SubscriptionItemDeliveryStatus.
+const (
+	CheckFailed           SubscriptionItemDeliveryStatus = "check_failed"
+	Ready                 SubscriptionItemDeliveryStatus = "ready"
+	WechatBindingRequired SubscriptionItemDeliveryStatus = "wechat_binding_required"
+	WechatFollowRequired  SubscriptionItemDeliveryStatus = "wechat_follow_required"
+)
+
+// Valid indicates whether the value is a known member of the SubscriptionItemDeliveryStatus enum.
+func (e SubscriptionItemDeliveryStatus) Valid() bool {
+	switch e {
+	case CheckFailed:
+		return true
+	case Ready:
+		return true
+	case WechatBindingRequired:
+		return true
+	case WechatFollowRequired:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for UpdateFeedbackTypeRequestBodyFeedbackType.
 const (
 	UpdateFeedbackTypeRequestBodyFeedbackTypeAssistant UpdateFeedbackTypeRequestBodyFeedbackType = "assistant"
@@ -18670,6 +18694,9 @@ type SubscriptionItem struct {
 	CanSubscribe *bool  `json:"canSubscribe,omitempty"`
 	Channel      string `json:"channel"`
 
+	// DeliveryStatus 已启用订阅的接收前置条件状态；不代表消息投递成功
+	DeliveryStatus *SubscriptionItemDeliveryStatus `json:"deliveryStatus,omitempty"`
+
 	// Description 渠道描述
 	Description *string `json:"description,omitempty"`
 	Enabled     bool    `json:"enabled"`
@@ -18704,6 +18731,9 @@ type SubscriptionItem struct {
 	// SubscribedAt 订阅时间(毫秒)，0 表示未订阅
 	SubscribedAt *int64 `json:"subscribedAt,omitempty"`
 }
+
+// SubscriptionItemDeliveryStatus 已启用订阅的接收前置条件状态；不代表消息投递成功
+type SubscriptionItemDeliveryStatus string
 
 // SubscriptionsResponseBody defines model for SubscriptionsResponseBody.
 type SubscriptionsResponseBody struct {
