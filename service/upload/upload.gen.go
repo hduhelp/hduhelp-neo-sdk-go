@@ -47,7 +47,7 @@ type AdminSignUploadResp struct {
 	Data *models.SignUploadData `json:"data"`
 }
 
-// AdminSignUpload: 签发直传地址(运营)
+// AdminSignUpload: 签发直传表单(运营)
 func (s *Service) AdminSignUpload(ctx context.Context, req *AdminSignUploadReq, opts ...core.RequestOption) (*AdminSignUploadResp, error) {
 	resp := &AdminSignUploadResp{}
 	err := s.config.Do(ctx, &core.APIReq{
@@ -61,44 +61,44 @@ func (s *Service) AdminSignUpload(ctx context.Context, req *AdminSignUploadReq, 
 	return resp, err
 }
 
-// CompleteUploadReq is the request for CompleteUpload.
-type CompleteUploadReq struct {
+// AdminRenewUploadURLsReq is the request for AdminRenewUploadURLs.
+type AdminRenewUploadURLsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// CompleteUploadReqBuilder builds a CompleteUploadReq with a fluent setter per field.
-type CompleteUploadReqBuilder struct{ req *CompleteUploadReq }
+// AdminRenewUploadURLsReqBuilder builds a AdminRenewUploadURLsReq with a fluent setter per field.
+type AdminRenewUploadURLsReqBuilder struct{ req *AdminRenewUploadURLsReq }
 
-// NewCompleteUploadReqBuilder creates a request builder for CompleteUpload.
-func NewCompleteUploadReqBuilder() *CompleteUploadReqBuilder {
-	return &CompleteUploadReqBuilder{req: &CompleteUploadReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewAdminRenewUploadURLsReqBuilder creates a request builder for AdminRenewUploadURLs.
+func NewAdminRenewUploadURLsReqBuilder() *AdminRenewUploadURLsReqBuilder {
+	return &AdminRenewUploadURLsReqBuilder{req: &AdminRenewUploadURLsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Body sets the request body.
-func (b *CompleteUploadReqBuilder) Body(body *models.CompleteUploadRequestBody) *CompleteUploadReqBuilder {
+func (b *AdminRenewUploadURLsReqBuilder) Body(body *models.UploadURLsRequestBody) *AdminRenewUploadURLsReqBuilder {
 	b.req.body = body
 	return b
 }
 
 // Build finalizes the request.
-func (b *CompleteUploadReqBuilder) Build() *CompleteUploadReq { return b.req }
+func (b *AdminRenewUploadURLsReqBuilder) Build() *AdminRenewUploadURLsReq { return b.req }
 
-// CompleteUploadResp is the response for CompleteUpload.
-type CompleteUploadResp struct {
+// AdminRenewUploadURLsResp is the response for AdminRenewUploadURLs.
+type AdminRenewUploadURLsResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.UploadData `json:"data"`
+	Data *models.UploadURLsData `json:"data"`
 }
 
-// CompleteUpload: 确认头像直传完成
-func (s *Service) CompleteUpload(ctx context.Context, req *CompleteUploadReq, opts ...core.RequestOption) (*CompleteUploadResp, error) {
-	resp := &CompleteUploadResp{}
+// AdminRenewUploadURLs: 续签文件地址(运营)
+func (s *Service) AdminRenewUploadURLs(ctx context.Context, req *AdminRenewUploadURLsReq, opts ...core.RequestOption) (*AdminRenewUploadURLsResp, error) {
+	resp := &AdminRenewUploadURLsResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/upload/complete",
+		PathTemplate: "/hduhelp-neo/admin/upload/urls",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -139,12 +139,58 @@ type SignUploadResp struct {
 	Data *models.SignUploadData `json:"data"`
 }
 
-// SignUpload: 签发直传地址
+// SignUpload: 签发直传表单
 func (s *Service) SignUpload(ctx context.Context, req *SignUploadReq, opts ...core.RequestOption) (*SignUploadResp, error) {
 	resp := &SignUploadResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
 		PathTemplate: "/hduhelp-neo/upload/sign",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// RenewUploadURLsReq is the request for RenewUploadURLs.
+type RenewUploadURLsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// RenewUploadURLsReqBuilder builds a RenewUploadURLsReq with a fluent setter per field.
+type RenewUploadURLsReqBuilder struct{ req *RenewUploadURLsReq }
+
+// NewRenewUploadURLsReqBuilder creates a request builder for RenewUploadURLs.
+func NewRenewUploadURLsReqBuilder() *RenewUploadURLsReqBuilder {
+	return &RenewUploadURLsReqBuilder{req: &RenewUploadURLsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *RenewUploadURLsReqBuilder) Body(body *models.UploadURLsRequestBody) *RenewUploadURLsReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *RenewUploadURLsReqBuilder) Build() *RenewUploadURLsReq { return b.req }
+
+// RenewUploadURLsResp is the response for RenewUploadURLs.
+type RenewUploadURLsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.UploadURLsData `json:"data"`
+}
+
+// RenewUploadURLs: 续签文件地址
+func (s *Service) RenewUploadURLs(ctx context.Context, req *RenewUploadURLsReq, opts ...core.RequestOption) (*RenewUploadURLsResp, error) {
+	resp := &RenewUploadURLsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/upload/urls",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

@@ -6061,6 +6061,9 @@ type AgentShareItemPage struct {
 	// HeadSeq 分享可见条目里最大的 seq
 	HeadSeq int64           `json:"head_seq"`
 	Items   []AgentWorkItem `json:"items"`
+
+	// Uploads 本页消息附件的地址（key → 30 分钟有效的地址）
+	Uploads map[string]string `json:"uploads"`
 }
 
 // AgentShareItemPageResponseBody defines model for AgentShareItemPageResponseBody.
@@ -7556,12 +7559,6 @@ type AuthorizedAppItem struct {
 	Scopes       *[]string         `json:"scopes,omitempty"`
 }
 
-// AvatarUploadRequestBody defines model for AvatarUploadRequestBody.
-type AvatarUploadRequestBody struct {
-	// File Avatar image bytes uploaded as multipart field file.
-	File string `json:"file"`
-}
-
 // BanStateData defines model for BanStateData.
 type BanStateData struct {
 	Banned *bool   `json:"banned,omitempty"`
@@ -8474,11 +8471,6 @@ type CompleteLoginIntentRequestBody struct {
 	CodeChallengeMethod *string `json:"code_challenge_method,omitempty"`
 	RedirectUri         *string `json:"redirect_uri,omitempty"`
 	State               *string `json:"state,omitempty"`
-}
-
-// CompleteUploadRequestBody defines model for CompleteUploadRequestBody.
-type CompleteUploadRequestBody struct {
-	Key *string `json:"key,omitempty"`
 }
 
 // ConfigGetResponseBody defines model for ConfigGetResponseBody.
@@ -9513,12 +9505,6 @@ type DomainTreeResponseBody struct {
 	Code *int64                 `json:"code,omitempty"`
 	Data *[]KnowledgeDomainNode `json:"data,omitempty"`
 	Msg  *string                `json:"msg,omitempty"`
-}
-
-// DownloadResponseBody defines model for DownloadResponseBody.
-type DownloadResponseBody struct {
-	Code *int64  `json:"code,omitempty"`
-	Msg  *string `json:"msg,omitempty"`
 }
 
 // EditableNotice defines model for EditableNotice.
@@ -16403,8 +16389,8 @@ type PostLocation struct {
 }
 
 // PostMedia PostMedia 是笔记媒体列表的一项。笔记的媒体是图片与视频混排的有序列表，第一项是封面。
-// url 是公开读取地址：图片可加 &w=<宽度> 取缩略图；视频 302 到支持 Range 的签名地址。
-// coverUrl 只在视频项上出现，是同一地址加 w=720 的第 1 秒截帧。地址都稳定，可按地址缓存。
+// url 是 30 分钟有效的 CDN 签名地址（视频支持 Range）：图片可加 x-oss-process=style/w<档位> 取缩略图，
+// 过期后按 key 调 POST /upload/urls 续签。coverUrl 只在视频项上出现，是同一地址加第 1 秒截帧参数。
 type PostMedia struct {
 	// CoverUrl 仅 video
 	CoverUrl *string `json:"cover_url,omitempty"`
@@ -18391,7 +18377,9 @@ type SharedScheduleResponseBody struct {
 type SignUploadData struct {
 	ExpiresAt *int64  `json:"expires_at,omitempty"`
 	Key       *string `json:"key,omitempty"`
-	UploadUrl *string `json:"upload_url,omitempty"`
+
+	// Upload UploadTarget 是一次表单直传：multipart POST 到 url，fields 原样放在前面，文件放在最后、字段名 file。
+	Upload *UploadTarget `json:"upload,omitempty"`
 }
 
 // SignUploadRequestBody defines model for SignUploadRequestBody.
@@ -18400,7 +18388,7 @@ type SignUploadRequestBody struct {
 	Filename    *string `json:"filename,omitempty"`
 	Size        *int64  `json:"size,omitempty"`
 
-	// Usage 业务分组，决定文件能被哪里引用。可选值：moments、moments_video、avatar、feedback；不属于任何业务时省略。其他值返回 40029
+	// Usage 业务分组，决定文件能被哪里引用：avatar、moments、moments_video、feedback、agent_input。缺省或其他值返回 40029
 	Usage *string `json:"usage,omitempty"`
 }
 
@@ -19303,9 +19291,7 @@ type UpdateSubscriptionRequestBody struct {
 	Options *string `json:"options,omitempty"`
 }
 
-// UploadData UploadData mirrors the legacy lemon_api_gateway image-upload response
-// ({URL, Size}) extended with the server-generated object key and sniffed
-// content type.
+// UploadData UploadData 是业务响应里的一个已上传文件：url 是 30 分钟有效的地址，过期后用 key 续签。
 type UploadData struct {
 	ContentType *string `json:"contentType,omitempty"`
 	Key         *string `json:"key,omitempty"`
@@ -19313,21 +19299,28 @@ type UploadData struct {
 	Url         *string `json:"url,omitempty"`
 }
 
-// UploadRequestBody defines model for UploadRequestBody.
-type UploadRequestBody struct {
-	// File File bytes uploaded as multipart field file.
-	File string `json:"file"`
+// UploadTarget UploadTarget 是一次表单直传：multipart POST 到 url，fields 原样放在前面，文件放在最后、字段名 file。
+type UploadTarget struct {
+	Fields *map[string]string `json:"fields,omitempty"`
+	Url    *string            `json:"url,omitempty"`
 }
 
-// UploadResponseBody defines model for UploadResponseBody.
-type UploadResponseBody struct {
-	Code *int64 `json:"code,omitempty"`
+// UploadURLsData defines model for UploadURLsData.
+type UploadURLsData struct {
+	// Urls urls 只含调用方能看到的 key；看不到或不存在的 key 不出现。
+	Urls *map[string]string `json:"urls,omitempty"`
+}
 
-	// Data UploadData mirrors the legacy lemon_api_gateway image-upload response
-	// ({URL, Size}) extended with the server-generated object key and sniffed
-	// content type.
-	Data *UploadData `json:"data,omitempty"`
-	Msg  *string     `json:"msg,omitempty"`
+// UploadURLsRequestBody defines model for UploadURLsRequestBody.
+type UploadURLsRequestBody struct {
+	Keys *[]string `json:"keys,omitempty"`
+}
+
+// UploadURLsResponseBody defines model for UploadURLsResponseBody.
+type UploadURLsResponseBody struct {
+	Code *int64          `json:"code,omitempty"`
+	Data *UploadURLsData `json:"data,omitempty"`
+	Msg  *string         `json:"msg,omitempty"`
 }
 
 // UpsertUserCampusIdentityRequestBody defines model for UpsertUserCampusIdentityRequestBody.
@@ -22826,6 +22819,9 @@ type AdminServiceCreateTenantJSONRequestBody = CreateTenantRequestBody
 // UploadServiceAdminSignUploadJSONRequestBody defines body for UploadServiceAdminSignUpload for application/json ContentType.
 type UploadServiceAdminSignUploadJSONRequestBody = SignUploadRequestBody
 
+// UploadServiceAdminRenewUploadURLsJSONRequestBody defines body for UploadServiceAdminRenewUploadURLs for application/json ContentType.
+type UploadServiceAdminRenewUploadURLsJSONRequestBody = UploadURLsRequestBody
+
 // AdminServiceSetUserStatusJSONRequestBody defines body for AdminServiceSetUserStatus for application/json ContentType.
 type AdminServiceSetUserStatusJSONRequestBody = SetUserStatusRequestBody
 
@@ -23144,8 +23140,8 @@ type SubscriptionServiceBatchSetDeliveryPreferencesJSONRequestBody = BatchDelive
 // SubscriptionServiceSetDeliveryPreferenceJSONRequestBody defines body for SubscriptionServiceSetDeliveryPreference for application/json ContentType.
 type SubscriptionServiceSetDeliveryPreferenceJSONRequestBody = SetDeliveryPreferenceRequestBody
 
-// UploadServiceCompleteUploadJSONRequestBody defines body for UploadServiceCompleteUpload for application/json ContentType.
-type UploadServiceCompleteUploadJSONRequestBody = CompleteUploadRequestBody
-
 // UploadServiceSignUploadJSONRequestBody defines body for UploadServiceSignUpload for application/json ContentType.
 type UploadServiceSignUploadJSONRequestBody = SignUploadRequestBody
+
+// UploadServiceRenewUploadURLsJSONRequestBody defines body for UploadServiceRenewUploadURLs for application/json ContentType.
+type UploadServiceRenewUploadURLsJSONRequestBody = UploadURLsRequestBody
