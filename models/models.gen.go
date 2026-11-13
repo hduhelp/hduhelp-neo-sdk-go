@@ -4092,6 +4092,12 @@ type AddChunkRequestBody struct {
 	Title     *string `json:"title,omitempty"`
 }
 
+// AddOfficialMemberRequestBody defines model for AddOfficialMemberRequestBody.
+type AddOfficialMemberRequestBody struct {
+	Role   *string `json:"role,omitempty"`
+	UserId *string `json:"user_id,omitempty"`
+}
+
 // AdminAppDetail 应用详情：应用权限供 TAT/App + 受信请求目标使用；用户权限供 UAT
 // 授权码流程请求和用户同意。
 type AdminAppDetail struct {
@@ -4170,6 +4176,37 @@ type AdminAuthorizationInfo struct {
 	TenantKey       *string   `json:"tenantKey,omitempty"`
 	UserId          *string   `json:"userId,omitempty"`
 	UserNickName    *string   `json:"userNickName,omitempty"`
+}
+
+// AdminBan defines model for AdminBan.
+type AdminBan struct {
+	BannedAt   *int64  `json:"banned_at,omitempty"`
+	OperatorId *string `json:"operator_id,omitempty"`
+	Reason     *string `json:"reason,omitempty"`
+	Until      *int64  `json:"until,omitempty"`
+
+	// User Author 是作者的展示投影。
+	// // id 对用户作者是平台用户主键、对应用作者是应用 ID，两者都可直接用于对应的主页路径。
+	// 用户不以学号标识：学号可枚举，其编码本身还泄露学院与年级。
+	// // kind=anonymous 是匿名帖的作者（含该作者在自己匿名帖下的评论与互动）：displayName 是
+	// 这条帖子的花名，id 形如 anon_<帖子 ID>，只在同一条帖子内稳定（用于挂「作者」标），
+	// 不对应任何主页，不可关注；不带头像。
+	User *Author `json:"user,omitempty"`
+}
+
+// AdminBanListData defines model for AdminBanListData.
+type AdminBanListData struct {
+	List     *[]AdminBan `json:"list,omitempty"`
+	Page     *int32      `json:"page,omitempty"`
+	PageSize *int32      `json:"page_size,omitempty"`
+	Total    *int64      `json:"total,omitempty"`
+}
+
+// AdminBanListResponseBody defines model for AdminBanListResponseBody.
+type AdminBanListResponseBody struct {
+	Code *int64            `json:"code,omitempty"`
+	Data *AdminBanListData `json:"data,omitempty"`
+	Msg  *string           `json:"msg,omitempty"`
 }
 
 // AdminCampusInfo -------------------- 校区地理位置管理（campuses） --------------------
@@ -4419,6 +4456,77 @@ type AdminNoticeStats struct {
 	Targeted     int32 `json:"targeted"`
 }
 
+// AdminOfficialAccount defines model for AdminOfficialAccount.
+type AdminOfficialAccount struct {
+	AppId       *string `json:"app_id,omitempty"`
+	AvatarUrl   *string `json:"avatar_url,omitempty"`
+	LastPostAt  *int64  `json:"last_post_at,omitempty"`
+	MemberCount *int64  `json:"member_count,omitempty"`
+	Name        *string `json:"name,omitempty"`
+	PostCount   *int64  `json:"post_count,omitempty"`
+	Reason      *string `json:"reason,omitempty"`
+	Status      *string `json:"status,omitempty"`
+}
+
+// AdminOfficialAccountListData defines model for AdminOfficialAccountListData.
+type AdminOfficialAccountListData struct {
+	List *[]AdminOfficialAccount `json:"list,omitempty"`
+}
+
+// AdminOfficialAccountListResponseBody defines model for AdminOfficialAccountListResponseBody.
+type AdminOfficialAccountListResponseBody struct {
+	Code *int64                        `json:"code,omitempty"`
+	Data *AdminOfficialAccountListData `json:"data,omitempty"`
+	Msg  *string                       `json:"msg,omitempty"`
+}
+
+// AdminOfficialAccountResponseBody defines model for AdminOfficialAccountResponseBody.
+type AdminOfficialAccountResponseBody struct {
+	Code *int64                `json:"code,omitempty"`
+	Data *AdminOfficialAccount `json:"data,omitempty"`
+	Msg  *string               `json:"msg,omitempty"`
+}
+
+// AdminOfficialApplication defines model for AdminOfficialApplication.
+type AdminOfficialApplication struct {
+	AppId       *string            `json:"app_id,omitempty"`
+	Applicant   *OfficialApplicant `json:"applicant,omitempty"`
+	AvatarUrl   *string            `json:"avatar_url,omitempty"`
+	Category    *string            `json:"category,omitempty"`
+	Contact     *string            `json:"contact,omitempty"`
+	CreatedAt   *int64             `json:"created_at,omitempty"`
+	Description *string            `json:"description,omitempty"`
+	Id          *string            `json:"id,omitempty"`
+	Name        *string            `json:"name,omitempty"`
+
+	// NameConflict nameConflict 只对待审申请计算：此刻已有同名官方号或另一份同名待审申请。
+	NameConflict *bool     `json:"name_conflict,omitempty"`
+	ProofUrls    *[]string `json:"proof_urls,omitempty"`
+	Reason       *string   `json:"reason,omitempty"`
+	Status       *string   `json:"status,omitempty"`
+	UpdatedAt    *int64    `json:"updated_at,omitempty"`
+}
+
+// AdminOfficialApplicationListData defines model for AdminOfficialApplicationListData.
+type AdminOfficialApplicationListData struct {
+	List  *[]AdminOfficialApplication `json:"list,omitempty"`
+	Total *int64                      `json:"total,omitempty"`
+}
+
+// AdminOfficialApplicationListResponseBody defines model for AdminOfficialApplicationListResponseBody.
+type AdminOfficialApplicationListResponseBody struct {
+	Code *int64                            `json:"code,omitempty"`
+	Data *AdminOfficialApplicationListData `json:"data,omitempty"`
+	Msg  *string                           `json:"msg,omitempty"`
+}
+
+// AdminOfficialApplicationResponseBody defines model for AdminOfficialApplicationResponseBody.
+type AdminOfficialApplicationResponseBody struct {
+	Code *int64                    `json:"code,omitempty"`
+	Data *AdminOfficialApplication `json:"data,omitempty"`
+	Msg  *string                   `json:"msg,omitempty"`
+}
+
 // AdminPigeonRecallResponseBody defines model for AdminPigeonRecallResponseBody.
 type AdminPigeonRecallResponseBody struct {
 	Code *int64                 `json:"code,omitempty"`
@@ -4456,11 +4564,19 @@ type AdminPigeonReviewPageResponseBody struct {
 // AdminPostDetailData defines model for AdminPostDetailData.
 type AdminPostDetailData struct {
 	// AnonymousName 同 AdminPostSummary
-	AnonymousName         *string     `json:"anonymous_name,omitempty"`
+	AnonymousName *string `json:"anonymous_name,omitempty"`
+	FeaturedAt    *int64  `json:"featured_at,omitempty"`
+
+	// PinnedAt 同 AdminPostSummary
+	PinnedAt              *int64      `json:"pinned_at,omitempty"`
 	Post                  *PostDetail `json:"post,omitempty"`
 	PublishedByOperatorId *string     `json:"published_by_operator_id,omitempty"`
-	RealAuthorUserId      *string     `json:"real_author_user_id,omitempty"`
-	ReportCount           *int32      `json:"report_count,omitempty"`
+
+	// PublishedByUserId 同 AdminPostSummary
+	PublishedByUserId *string  `json:"published_by_user_id,omitempty"`
+	RankBoost         *float64 `json:"rank_boost,omitempty"`
+	RealAuthorUserId  *string  `json:"real_author_user_id,omitempty"`
+	ReportCount       *int32   `json:"report_count,omitempty"`
 }
 
 // AdminPostDetailResponseBody defines model for AdminPostDetailResponseBody.
@@ -4505,16 +4621,24 @@ type AdminPostSummary struct {
 	Brief  *string `json:"brief,omitempty"`
 
 	// Counters PostCounters 是全局计数，与调用者无关，可缓存。
-	Counters              *PostCounters `json:"counters,omitempty"`
-	CreatedAt             *int64        `json:"created_at,omitempty"`
-	Id                    *string       `json:"id,omitempty"`
-	PublishedByOperatorId *string       `json:"published_by_operator_id,omitempty"`
-	RealAuthorUserId      *string       `json:"real_author_user_id,omitempty"`
-	ReportCount           *int32        `json:"report_count,omitempty"`
-	Status                *string       `json:"status,omitempty"`
-	TakedownByOperatorId  *string       `json:"takedown_by_operator_id,omitempty"`
-	TakedownReason        *string       `json:"takedown_reason,omitempty"`
-	Title                 *string       `json:"title,omitempty"`
+	Counters   *PostCounters `json:"counters,omitempty"`
+	CreatedAt  *int64        `json:"created_at,omitempty"`
+	FeaturedAt *int64        `json:"featured_at,omitempty"`
+	Id         *string       `json:"id,omitempty"`
+
+	// PinnedAt 运营分发标记：置顶与加精的毫秒时间（未设置不出现），人工权重 1 为不干预。
+	PinnedAt              *int64  `json:"pinned_at,omitempty"`
+	PublishedByOperatorId *string `json:"published_by_operator_id,omitempty"`
+
+	// PublishedByUserId publishedByUserId 是以官方号身份发帖的那位成员。
+	PublishedByUserId    *string  `json:"published_by_user_id,omitempty"`
+	RankBoost            *float64 `json:"rank_boost,omitempty"`
+	RealAuthorUserId     *string  `json:"real_author_user_id,omitempty"`
+	ReportCount          *int32   `json:"report_count,omitempty"`
+	Status               *string  `json:"status,omitempty"`
+	TakedownByOperatorId *string  `json:"takedown_by_operator_id,omitempty"`
+	TakedownReason       *string  `json:"takedown_reason,omitempty"`
+	Title                *string  `json:"title,omitempty"`
 }
 
 // AdminPostSummaryResponseBody defines model for AdminPostSummaryResponseBody.
@@ -7222,6 +7346,10 @@ type Appeal struct {
 	// Status pending | accepted | rejected
 	Status *string `json:"status,omitempty"`
 
+	// Target ModerationTarget 是被举报或被申诉对象的摘要。missing 为 true 时对象已不存在，只有 kind 与 id。
+	// author 是真实作者（运营面不遮蔽匿名）；用户目标的 author 就是那个用户。
+	Target *ModerationTarget `json:"target,omitempty"`
+
 	// TargetId 禁言申诉为空
 	TargetId *string `json:"target_id,omitempty"`
 
@@ -7615,6 +7743,11 @@ type BindEmailRequestBody struct {
 	Email *string `json:"email,omitempty"`
 }
 
+// BindOperatorUserRequestBody defines model for BindOperatorUserRequestBody.
+type BindOperatorUserRequestBody struct {
+	UserId *string `json:"user_id,omitempty"`
+}
+
 // BindPageData defines model for BindPageData.
 type BindPageData struct {
 	// Url 绑定来源的第三方授权 URL
@@ -7756,6 +7889,26 @@ type BlessReviewCardData struct {
 type BlessReviewCardParams struct {
 	Pass     *string `json:"pass,omitempty"`
 	Reviewed *string `json:"reviewed,omitempty"`
+}
+
+// BlockedHashtag defines model for BlockedHashtag.
+type BlockedHashtag struct {
+	// BlockedAt blockedAt 近似关停时刻，准确的经办人与时间见审计。
+	BlockedAt *int64  `json:"blocked_at,omitempty"`
+	Name      *string `json:"name,omitempty"`
+	PostCount *int64  `json:"post_count,omitempty"`
+}
+
+// BlockedHashtagListData defines model for BlockedHashtagListData.
+type BlockedHashtagListData struct {
+	List *[]BlockedHashtag `json:"list,omitempty"`
+}
+
+// BlockedHashtagListResponseBody defines model for BlockedHashtagListResponseBody.
+type BlockedHashtagListResponseBody struct {
+	Code *int64                  `json:"code,omitempty"`
+	Data *BlockedHashtagListData `json:"data,omitempty"`
+	Msg  *string                 `json:"msg,omitempty"`
 }
 
 // BookItem defines model for BookItem.
@@ -11137,6 +11290,9 @@ type KnowledgeGapInfo struct {
 	LastSeen           *int64  `json:"lastSeen,omitempty"`
 	NormalizedQuestion *string `json:"normalizedQuestion,omitempty"`
 	Occurrences        *int64  `json:"occurrences,omitempty"`
+
+	// SampleQuestion 最近一次原始问法（已脱敏），比归一化后的合并键可读
+	SampleQuestion *string `json:"sampleQuestion,omitempty"`
 
 	// Status open | ignored | drafted
 	Status *string `json:"status,omitempty"`
@@ -15600,6 +15756,34 @@ type ModelUsageSummaryResponseBody struct {
 	Msg  string             `json:"msg"`
 }
 
+// ModerationTarget ModerationTarget 是被举报或被申诉对象的摘要。missing 为 true 时对象已不存在，只有 kind 与 id。
+// author 是真实作者（运营面不遮蔽匿名）；用户目标的 author 就是那个用户。
+type ModerationTarget struct {
+	// Author Author 是作者的展示投影。
+	// // id 对用户作者是平台用户主键、对应用作者是应用 ID，两者都可直接用于对应的主页路径。
+	// 用户不以学号标识：学号可枚举，其编码本身还泄露学院与年级。
+	// // kind=anonymous 是匿名帖的作者（含该作者在自己匿名帖下的评论与互动）：displayName 是
+	// 这条帖子的花名，id 形如 anon_<帖子 ID>，只在同一条帖子内稳定（用于挂「作者」标），
+	// 不对应任何主页，不可关注；不带头像。
+	Author   *Author `json:"author,omitempty"`
+	CoverUrl *string `json:"cover_url,omitempty"`
+	Excerpt  *string `json:"excerpt,omitempty"`
+	Id       *string `json:"id,omitempty"`
+
+	// Kind post | comment | user
+	Kind    *string `json:"kind,omitempty"`
+	Missing *bool   `json:"missing,omitempty"`
+
+	// PendingCount 同一目标待处理的举报数
+	PendingCount *int64 `json:"pending_count,omitempty"`
+
+	// PostId 仅评论
+	PostId         *string `json:"post_id,omitempty"`
+	Status         *string `json:"status,omitempty"`
+	TakedownReason *string `json:"takedown_reason,omitempty"`
+	Title          *string `json:"title,omitempty"`
+}
+
 // MomentsInboxEntry ---------- 收件箱 ----------
 // 社区自带一层收件箱，不接平台通知子系统：社区只需要两条清单，不需要跨端推送与
 // 订阅策略，自建比对接更省，也不受平台侧会话类型的限制。
@@ -15614,7 +15798,12 @@ type MomentsInboxEntry struct {
 	// // kind=anonymous 是匿名帖的作者（含该作者在自己匿名帖下的评论与互动）：displayName 是
 	// 这条帖子的花名，id 形如 anon_<帖子 ID>，只在同一条帖子内稳定（用于挂「作者」标），
 	// 不对应任何主页，不可关注；不带头像。
-	Actor        *Author `json:"actor,omitempty"`
+	Actor          *Author `json:"actor,omitempty"`
+	AsAppAvatarUrl *string `json:"as_app_avatar_url,omitempty"`
+
+	// AsAppId 这条是投给官方号、你作为成员收到的：带出号的身份，客户端显示官方号标签与「以官方号回复」。
+	AsAppId      *string `json:"as_app_id,omitempty"`
+	AsAppName    *string `json:"as_app_name,omitempty"`
 	CommentBrief *string `json:"comment_brief,omitempty"`
 
 	// CommentId commentId 与 commentBrief 在条目挂在某条评论上时有值：评论、回复、评论表情，
@@ -15969,9 +16158,17 @@ type OfficialAccount struct {
 	Description   *string `json:"description,omitempty"`
 	FollowedByMe  *bool   `json:"followed_by_me,omitempty"`
 	FollowerCount *int64  `json:"follower_count,omitempty"`
-	Name          *string `json:"name,omitempty"`
-	PostCount     *int64  `json:"post_count,omitempty"`
-	Verified      *bool   `json:"verified,omitempty"`
+	MemberCount   *int64  `json:"member_count,omitempty"`
+
+	// MyRole myRole 只在调用者是成员时出现。status 取 active | suspended | revoked。
+	MyRole    *string `json:"my_role,omitempty"`
+	Name      *string `json:"name,omitempty"`
+	PostCount *int64  `json:"post_count,omitempty"`
+	Status    *string `json:"status,omitempty"`
+
+	// StatusReason statusReason 是暂停或取消的原因，active 时不出现。
+	StatusReason *string `json:"status_reason,omitempty"`
+	Verified     *bool   `json:"verified,omitempty"`
 }
 
 // OfficialAccountResponseBody defines model for OfficialAccountResponseBody.
@@ -15984,6 +16181,117 @@ type OfficialAccountResponseBody struct {
 	Msg  *string          `json:"msg,omitempty"`
 }
 
+// OfficialApplicant defines model for OfficialApplicant.
+type OfficialApplicant struct {
+	AvatarUrl *string `json:"avatar_url,omitempty"`
+	Id        *string `json:"id,omitempty"`
+	Nickname  *string `json:"nickname,omitempty"`
+
+	// StudentId 打码，如 22****18
+	StudentId *string `json:"student_id,omitempty"`
+}
+
+// OfficialApplication OfficialApplication 是一份官方号申请。contact 只给本人与运营；avatar_key 与 proof_keys
+// 供被驳回后改了重交时沿用已上传的文件。
+type OfficialApplication struct {
+	AppId *string `json:"app_id,omitempty"`
+
+	// AppStatus 已开通时：active | suspended | revoked
+	AppStatus       *string `json:"app_status,omitempty"`
+	AppStatusReason *string `json:"app_status_reason,omitempty"`
+	AvatarKey       *string `json:"avatar_key,omitempty"`
+	AvatarUrl       *string `json:"avatar_url,omitempty"`
+
+	// Category department | student_org | college | club
+	Category    *string   `json:"category,omitempty"`
+	Contact     *string   `json:"contact,omitempty"`
+	CreatedAt   *int64    `json:"created_at,omitempty"`
+	Description *string   `json:"description,omitempty"`
+	Id          *string   `json:"id,omitempty"`
+	Name        *string   `json:"name,omitempty"`
+	ProofKeys   *[]string `json:"proof_keys,omitempty"`
+	ProofUrls   *[]string `json:"proof_urls,omitempty"`
+	Reason      *string   `json:"reason,omitempty"`
+
+	// Status pending | approved | rejected
+	Status    *string `json:"status,omitempty"`
+	UpdatedAt *int64  `json:"updated_at,omitempty"`
+}
+
+// OfficialApplicationInputBody defines model for OfficialApplicationInputBody.
+type OfficialApplicationInputBody struct {
+	AvatarKey   *string `json:"avatar_key,omitempty"`
+	Category    *string `json:"category,omitempty"`
+	Contact     *string `json:"contact,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Name        *string `json:"name,omitempty"`
+
+	// ProofKeys 证明材料先经 upload/sign 以 usage=official_apply 上传，最多 9 份。
+	ProofKeys *[]string `json:"proof_keys,omitempty"`
+}
+
+// OfficialApplicationListData defines model for OfficialApplicationListData.
+type OfficialApplicationListData struct {
+	List *[]OfficialApplication `json:"list,omitempty"`
+}
+
+// OfficialApplicationListResponseBody defines model for OfficialApplicationListResponseBody.
+type OfficialApplicationListResponseBody struct {
+	Code *int64                       `json:"code,omitempty"`
+	Data *OfficialApplicationListData `json:"data,omitempty"`
+	Msg  *string                      `json:"msg,omitempty"`
+}
+
+// OfficialApplicationResponseBody defines model for OfficialApplicationResponseBody.
+type OfficialApplicationResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data OfficialApplication 是一份官方号申请。contact 只给本人与运营；avatar_key 与 proof_keys
+	// 供被驳回后改了重交时沿用已上传的文件。
+	Data *OfficialApplication `json:"data,omitempty"`
+	Msg  *string              `json:"msg,omitempty"`
+}
+
+// OfficialMember ---------- 官方号成员、申请与处置 ----------
+type OfficialMember struct {
+	CreatedAt *int64 `json:"created_at,omitempty"`
+
+	// Role admin | member
+	Role *string `json:"role,omitempty"`
+
+	// User Author 是作者的展示投影。
+	// // id 对用户作者是平台用户主键、对应用作者是应用 ID，两者都可直接用于对应的主页路径。
+	// 用户不以学号标识：学号可枚举，其编码本身还泄露学院与年级。
+	// // kind=anonymous 是匿名帖的作者（含该作者在自己匿名帖下的评论与互动）：displayName 是
+	// 这条帖子的花名，id 形如 anon_<帖子 ID>，只在同一条帖子内稳定（用于挂「作者」标），
+	// 不对应任何主页，不可关注；不带头像。
+	User *Author `json:"user,omitempty"`
+}
+
+// OfficialMemberListData defines model for OfficialMemberListData.
+type OfficialMemberListData struct {
+	List *[]OfficialMember `json:"list,omitempty"`
+}
+
+// OfficialMemberListResponseBody defines model for OfficialMemberListResponseBody.
+type OfficialMemberListResponseBody struct {
+	Code *int64                  `json:"code,omitempty"`
+	Data *OfficialMemberListData `json:"data,omitempty"`
+	Msg  *string                 `json:"msg,omitempty"`
+}
+
+// OfficialMutationResponseBody defines model for OfficialMutationResponseBody.
+type OfficialMutationResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
+// OfficialStateRequestBody defines model for OfficialStateRequestBody.
+type OfficialStateRequestBody struct {
+	// Reason suspend / revoke 必填
+	Reason *string `json:"reason,omitempty"`
+}
+
 // OffsetPagination OffsetPagination 是 Agent 可直接复用的偏移分页语义。nextOffset 仅在 hasMore=true 时返回。
 type OffsetPagination struct {
 	HasMore    bool   `json:"hasMore"`
@@ -15993,18 +16301,40 @@ type OffsetPagination struct {
 	Total      int32  `json:"total"`
 }
 
+// OperatorBoundUser defines model for OperatorBoundUser.
+type OperatorBoundUser struct {
+	AvatarUrl *string `json:"avatarUrl,omitempty"`
+	Id        *string `json:"id,omitempty"`
+	Nickname  *string `json:"nickname,omitempty"`
+
+	// StudentId 打码，如 22****18
+	StudentId *string `json:"studentId,omitempty"`
+}
+
 // OperatorInfo defines model for OperatorInfo.
 type OperatorInfo struct {
-	DisplayName        *string   `json:"displayName,omitempty"`
-	Id                 *string   `json:"id,omitempty"`
-	LastLoginAt        *int64    `json:"lastLoginAt,omitempty"`
-	MustChangePassword *bool     `json:"mustChangePassword,omitempty"`
-	Permissions        *[]string `json:"permissions,omitempty"`
-	RoleId             *string   `json:"roleId,omitempty"`
-	RoleKind           *string   `json:"roleKind,omitempty"`
-	RoleName           *string   `json:"roleName,omitempty"`
-	Status             *int32    `json:"status,omitempty"`
-	Username           *string   `json:"username,omitempty"`
+	BoundUser          *OperatorBoundUser `json:"boundUser,omitempty"`
+	DisplayName        *string            `json:"displayName,omitempty"`
+	Id                 *string            `json:"id,omitempty"`
+	LastLoginAt        *int64             `json:"lastLoginAt,omitempty"`
+	MustChangePassword *bool              `json:"mustChangePassword,omitempty"`
+	OpsPushEnabled     *bool              `json:"opsPushEnabled,omitempty"`
+	Permissions        *[]string          `json:"permissions,omitempty"`
+	RoleId             *string            `json:"roleId,omitempty"`
+	RoleKind           *string            `json:"roleKind,omitempty"`
+	RoleName           *string            `json:"roleName,omitempty"`
+	Status             *int32             `json:"status,omitempty"`
+	Username           *string            `json:"username,omitempty"`
+
+	// Via via 只在 /admin/auth/me 出现：session（App 里经绑定用户的会话）或 operator（运营令牌）。
+	Via *string `json:"via,omitempty"`
+}
+
+// OperatorInfoResponseBody defines model for OperatorInfoResponseBody.
+type OperatorInfoResponseBody struct {
+	Code *int64        `json:"code,omitempty"`
+	Data *OperatorInfo `json:"data,omitempty"`
+	Msg  *string       `json:"msg,omitempty"`
 }
 
 // OperatorListResponseBody defines model for OperatorListResponseBody.
@@ -16012,6 +16342,36 @@ type OperatorListResponseBody struct {
 	Code *int64          `json:"code,omitempty"`
 	Data *[]OperatorInfo `json:"data,omitempty"`
 	Msg  *string         `json:"msg,omitempty"`
+}
+
+// OpsPushData defines model for OpsPushData.
+type OpsPushData struct {
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// OpsPushResponseBody defines model for OpsPushResponseBody.
+type OpsPushResponseBody struct {
+	Code *int64       `json:"code,omitempty"`
+	Data *OpsPushData `json:"data,omitempty"`
+	Msg  *string      `json:"msg,omitempty"`
+}
+
+// OpsTodoData defines model for OpsTodoData.
+type OpsTodoData struct {
+	Items *[]OpsTodoItem `json:"items,omitempty"`
+}
+
+// OpsTodoItem 运营待办：只含当前运营有查看权限的项。
+type OpsTodoItem struct {
+	Count *int64  `json:"count,omitempty"`
+	Key   *string `json:"key,omitempty"`
+}
+
+// OpsTodoResponseBody defines model for OpsTodoResponseBody.
+type OpsTodoResponseBody struct {
+	Code *int64       `json:"code,omitempty"`
+	Data *OpsTodoData `json:"data,omitempty"`
+	Msg  *string      `json:"msg,omitempty"`
 }
 
 // OverviewResponseBody defines model for OverviewResponseBody.
@@ -16480,12 +16840,19 @@ type PostWithdrawResponseBody struct {
 // PostingIdentity PostingIdentity 是发布器身份下拉的一项：本人，或本人有权代表的某个官方号。
 type PostingIdentity struct {
 	// AppId 仅 kind=app 有值
-	AppId       *string `json:"app_id,omitempty"`
-	AvatarUrl   *string `json:"avatar_url,omitempty"`
-	DisplayName *string `json:"display_name,omitempty"`
+	AppId     *string `json:"app_id,omitempty"`
+	AvatarUrl *string `json:"avatar_url,omitempty"`
+
+	// Disabled 号被暂停时为 true，发布器置灰并显示原因。
+	Disabled       *bool   `json:"disabled,omitempty"`
+	DisabledReason *string `json:"disabled_reason,omitempty"`
+	DisplayName    *string `json:"display_name,omitempty"`
 
 	// Kind user | app
 	Kind *string `json:"kind,omitempty"`
+
+	// Role admin | member，仅 kind=app
+	Role *string `json:"role,omitempty"`
 }
 
 // PostingIdentityData defines model for PostingIdentityData.
@@ -16646,6 +17013,9 @@ type PublishAdminNoticeResponseBody struct {
 // PublishCommentRequestBody defines model for PublishCommentRequestBody.
 type PublishCommentRequestBody struct {
 	Content *[][]RichTextNode `json:"content,omitempty"`
+
+	// PublishAsAppId publishAsAppId 是以本人所在的某个官方号身份评论或回复。
+	PublishAsAppId *string `json:"publish_as_app_id,omitempty"`
 }
 
 // PublishPostData PublishPostData 除新帖本身外带回作者的帖子总数，供个人主页与「我的」页就地加一。
@@ -16672,7 +17042,11 @@ type PublishPostRequestBody struct {
 	// Media media 是图片与视频混排的有序媒体列表，合计至多 9 项。与 images 二选一：同时非空即参数错误；
 	// 只传 images 的旧客户端按纯图片处理。
 	Media *[]PostMediaInput `json:"media,omitempty"`
-	Title *string           `json:"title,omitempty"`
+
+	// PublishAsAppId publishAsAppId 是以本人所在的某个官方号身份发布（取自 posting-identities）。官方号不能匿名；
+	// 号被暂停时返回 728000037，客户端据此把身份切回本人、保留草稿。
+	PublishAsAppId *string `json:"publish_as_app_id,omitempty"`
+	Title          *string `json:"title,omitempty"`
 }
 
 // PublishPostResponseBody defines model for PublishPostResponseBody.
@@ -16957,6 +17331,7 @@ type Report struct {
 
 	// Note 处置的经办人与时间。审核员交接与复核都要能看到是谁在何时结的案。
 	Note                 *string `json:"note,omitempty"`
+	PendingCount         *int64  `json:"pending_count,omitempty"`
 	Reason               *string `json:"reason,omitempty"`
 	ReporterUserId       *string `json:"reporter_user_id,omitempty"`
 	Resolution           *string `json:"resolution,omitempty"`
@@ -16964,9 +17339,13 @@ type Report struct {
 	ResolvedByOperatorId *string `json:"resolved_by_operator_id,omitempty"`
 
 	// Status pending | resolved | rejected
-	Status     *string `json:"status,omitempty"`
-	TargetId   *string `json:"target_id,omitempty"`
-	TargetKind *string `json:"target_kind,omitempty"`
+	Status *string `json:"status,omitempty"`
+
+	// Target ModerationTarget 是被举报或被申诉对象的摘要。missing 为 true 时对象已不存在，只有 kind 与 id。
+	// author 是真实作者（运营面不遮蔽匿名）；用户目标的 author 就是那个用户。
+	Target     *ModerationTarget `json:"target,omitempty"`
+	TargetId   *string           `json:"target_id,omitempty"`
+	TargetKind *string           `json:"target_kind,omitempty"`
 }
 
 // ReportGapRequestBody defines model for ReportGapRequestBody.
@@ -17065,7 +17444,7 @@ type ResolveReportData struct {
 type ResolveReportRequestBody struct {
 	Note *string `json:"note,omitempty"`
 
-	// Resolution takedown | dismiss | ban
+	// Resolution takedown | dismiss | ban | suspend_official（暂停官方号，只对官方号发布的内容；ban 只对用户内容）
 	Resolution *string `json:"resolution,omitempty"`
 }
 
@@ -17140,6 +17519,15 @@ type ReviewCardPrivateData struct {
 // ReviewCardPrivateParams defines model for ReviewCardPrivateParams.
 type ReviewCardPrivateParams struct {
 	PopupPrompt *string `json:"popup_prompt,omitempty"`
+}
+
+// ReviewOfficialApplicationRequestBody defines model for ReviewOfficialApplicationRequestBody.
+type ReviewOfficialApplicationRequestBody struct {
+	// Action approve | reject
+	Action *string `json:"action,omitempty"`
+
+	// Reason reject 时必填
+	Reason *string `json:"reason,omitempty"`
 }
 
 // RevokeAuthorizationResponseBody defines model for RevokeAuthorizationResponseBody.
@@ -18170,6 +18558,11 @@ type SetLoginMethodsResponseBody struct {
 	Msg  *string `json:"msg,omitempty"`
 }
 
+// SetOfficialMemberRoleRequestBody defines model for SetOfficialMemberRoleRequestBody.
+type SetOfficialMemberRoleRequestBody struct {
+	Role *string `json:"role,omitempty"`
+}
+
 // SetOperatorEnabledRequestBody defines model for SetOperatorEnabledRequestBody.
 type SetOperatorEnabledRequestBody struct {
 	Enabled *bool `json:"enabled,omitempty"`
@@ -18179,6 +18572,11 @@ type SetOperatorEnabledRequestBody struct {
 type SetOperatorEnabledResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
+}
+
+// SetOpsPushRequestBody defines model for SetOpsPushRequestBody.
+type SetOpsPushRequestBody struct {
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 // SetRankBoostRequestBody defines model for SetRankBoostRequestBody.
@@ -19234,6 +19632,23 @@ type UpdateMyProfileResponseBody struct {
 	Code *int64    `json:"code,omitempty"`
 	Data *UserInfo `json:"data,omitempty"`
 	Msg  *string   `json:"msg,omitempty"`
+}
+
+// UpdateOfficialAccountRequestBody defines model for UpdateOfficialAccountRequestBody.
+type UpdateOfficialAccountRequestBody struct {
+	AvatarKey   *string `json:"avatar_key,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Name        *string `json:"name,omitempty"`
+}
+
+// UpdateOfficialApplicationRequestBody defines model for UpdateOfficialApplicationRequestBody.
+type UpdateOfficialApplicationRequestBody struct {
+	AvatarKey   *string   `json:"avatar_key,omitempty"`
+	Category    *string   `json:"category,omitempty"`
+	Contact     *string   `json:"contact,omitempty"`
+	Description *string   `json:"description,omitempty"`
+	Name        *string   `json:"name,omitempty"`
+	ProofKeys   *[]string `json:"proof_keys,omitempty"`
 }
 
 // UpdatePolicyProfileRequestBody defines model for UpdatePolicyProfileRequestBody.
@@ -21294,6 +21709,12 @@ type MomentsServiceAdminListAuditsParams struct {
 	TargetId   *string `form:"target_id,omitempty" json:"target_id,omitempty"`
 }
 
+// MomentsServiceAdminListBansParams defines parameters for MomentsServiceAdminListBans.
+type MomentsServiceAdminListBansParams struct {
+	Page     *int32 `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32 `form:"page_size,omitempty" json:"page_size,omitempty"`
+}
+
 // MomentsServiceAdminListCommentsParams defines parameters for MomentsServiceAdminListComments.
 type MomentsServiceAdminListCommentsParams struct {
 	Page         *int32  `form:"page,omitempty" json:"page,omitempty"`
@@ -21304,6 +21725,20 @@ type MomentsServiceAdminListCommentsParams struct {
 
 	// AuthorUserId 按作者收窄
 	AuthorUserId *string `form:"author_user_id,omitempty" json:"author_user_id,omitempty"`
+}
+
+// MomentsServiceAdminListOfficialAccountsParams defines parameters for MomentsServiceAdminListOfficialAccounts.
+type MomentsServiceAdminListOfficialAccountsParams struct {
+	// Status active | suspended | revoked
+	Status  *string `form:"status,omitempty" json:"status,omitempty"`
+	Keyword *string `form:"keyword,omitempty" json:"keyword,omitempty"`
+}
+
+// MomentsServiceAdminListOfficialApplicationsParams defines parameters for MomentsServiceAdminListOfficialApplications.
+type MomentsServiceAdminListOfficialApplicationsParams struct {
+	Status   *string `form:"status,omitempty" json:"status,omitempty"`
+	Page     *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
 }
 
 // MomentsServiceAdminListPostsParams defines parameters for MomentsServiceAdminListPosts.
@@ -22726,6 +23161,24 @@ type MomentsServiceAdminUpdateCategoryJSONRequestBody = UpdateCategoryRequestBod
 // MomentsServiceAdminTakedownCommentJSONRequestBody defines body for MomentsServiceAdminTakedownComment for application/json ContentType.
 type MomentsServiceAdminTakedownCommentJSONRequestBody = TakedownRequestBody
 
+// MomentsServiceAdminAddOfficialMemberJSONRequestBody defines body for MomentsServiceAdminAddOfficialMember for application/json ContentType.
+type MomentsServiceAdminAddOfficialMemberJSONRequestBody = AddOfficialMemberRequestBody
+
+// MomentsServiceAdminSetOfficialMemberRoleJSONRequestBody defines body for MomentsServiceAdminSetOfficialMemberRole for application/json ContentType.
+type MomentsServiceAdminSetOfficialMemberRoleJSONRequestBody = SetOfficialMemberRoleRequestBody
+
+// MomentsServiceAdminResumeOfficialAccountJSONRequestBody defines body for MomentsServiceAdminResumeOfficialAccount for application/json ContentType.
+type MomentsServiceAdminResumeOfficialAccountJSONRequestBody = OfficialStateRequestBody
+
+// MomentsServiceAdminRevokeOfficialAccountJSONRequestBody defines body for MomentsServiceAdminRevokeOfficialAccount for application/json ContentType.
+type MomentsServiceAdminRevokeOfficialAccountJSONRequestBody = OfficialStateRequestBody
+
+// MomentsServiceAdminSuspendOfficialAccountJSONRequestBody defines body for MomentsServiceAdminSuspendOfficialAccount for application/json ContentType.
+type MomentsServiceAdminSuspendOfficialAccountJSONRequestBody = OfficialStateRequestBody
+
+// MomentsServiceAdminReviewOfficialApplicationJSONRequestBody defines body for MomentsServiceAdminReviewOfficialApplication for application/json ContentType.
+type MomentsServiceAdminReviewOfficialApplicationJSONRequestBody = ReviewOfficialApplicationRequestBody
+
 // MomentsServiceAdminPublishPostJSONRequestBody defines body for MomentsServiceAdminPublishPost for application/json ContentType.
 type MomentsServiceAdminPublishPostJSONRequestBody = AdminPublishPostRequestBody
 
@@ -22791,6 +23244,12 @@ type AdminServiceResetOperatorPasswordJSONRequestBody = ResetOperatorPasswordReq
 
 // AdminServiceAssignOperatorRoleJSONRequestBody defines body for AdminServiceAssignOperatorRole for application/json ContentType.
 type AdminServiceAssignOperatorRoleJSONRequestBody = AssignOperatorRoleRequestBody
+
+// AdminServiceBindOperatorUserJSONRequestBody defines body for AdminServiceBindOperatorUser for application/json ContentType.
+type AdminServiceBindOperatorUserJSONRequestBody = BindOperatorUserRequestBody
+
+// AdminServiceSetOpsPushJSONRequestBody defines body for AdminServiceSetOpsPush for application/json ContentType.
+type AdminServiceSetOpsPushJSONRequestBody = SetOpsPushRequestBody
 
 // AdminServiceAdminRefreshJSONRequestBody defines body for AdminServiceAdminRefresh for application/json ContentType.
 type AdminServiceAdminRefreshJSONRequestBody = AdminRefreshRequestBody

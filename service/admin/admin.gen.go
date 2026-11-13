@@ -2138,6 +2138,190 @@ func (s *Service) AssignOperatorRole(ctx context.Context, req *AssignOperatorRol
 	return resp, err
 }
 
+// BindOperatorUserReq is the request for BindOperatorUser.
+type BindOperatorUserReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// BindOperatorUserReqBuilder builds a BindOperatorUserReq with a fluent setter per field.
+type BindOperatorUserReqBuilder struct{ req *BindOperatorUserReq }
+
+// NewBindOperatorUserReqBuilder creates a request builder for BindOperatorUser.
+func NewBindOperatorUserReqBuilder() *BindOperatorUserReqBuilder {
+	return &BindOperatorUserReqBuilder{req: &BindOperatorUserReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *BindOperatorUserReqBuilder) Id(v string) *BindOperatorUserReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *BindOperatorUserReqBuilder) Body(body *models.BindOperatorUserRequestBody) *BindOperatorUserReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *BindOperatorUserReqBuilder) Build() *BindOperatorUserReq { return b.req }
+
+// BindOperatorUserResp is the response for BindOperatorUser.
+type BindOperatorUserResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.OperatorInfo `json:"data"`
+}
+
+// BindOperatorUser: 绑定运营账号的平台用户
+func (s *Service) BindOperatorUser(ctx context.Context, req *BindOperatorUserReq, opts ...core.RequestOption) (*BindOperatorUserResp, error) {
+	resp := &BindOperatorUserResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/operators/{id}/user",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// UnbindOperatorUserReq is the request for UnbindOperatorUser.
+type UnbindOperatorUserReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// UnbindOperatorUserReqBuilder builds a UnbindOperatorUserReq with a fluent setter per field.
+type UnbindOperatorUserReqBuilder struct{ req *UnbindOperatorUserReq }
+
+// NewUnbindOperatorUserReqBuilder creates a request builder for UnbindOperatorUser.
+func NewUnbindOperatorUserReqBuilder() *UnbindOperatorUserReqBuilder {
+	return &UnbindOperatorUserReqBuilder{req: &UnbindOperatorUserReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *UnbindOperatorUserReqBuilder) Id(v string) *UnbindOperatorUserReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *UnbindOperatorUserReqBuilder) Build() *UnbindOperatorUserReq { return b.req }
+
+// UnbindOperatorUserResp is the response for UnbindOperatorUser.
+type UnbindOperatorUserResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.OperatorInfo `json:"data"`
+}
+
+// UnbindOperatorUser: 解除运营账号的平台用户绑定
+func (s *Service) UnbindOperatorUser(ctx context.Context, req *UnbindOperatorUserReq, opts ...core.RequestOption) (*UnbindOperatorUserResp, error) {
+	resp := &UnbindOperatorUserResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/admin/operators/{id}/user",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SetOpsPushReq is the request for SetOpsPush.
+type SetOpsPushReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// SetOpsPushReqBuilder builds a SetOpsPushReq with a fluent setter per field.
+type SetOpsPushReqBuilder struct{ req *SetOpsPushReq }
+
+// NewSetOpsPushReqBuilder creates a request builder for SetOpsPush.
+func NewSetOpsPushReqBuilder() *SetOpsPushReqBuilder {
+	return &SetOpsPushReqBuilder{req: &SetOpsPushReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *SetOpsPushReqBuilder) Body(body *models.SetOpsPushRequestBody) *SetOpsPushReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *SetOpsPushReqBuilder) Build() *SetOpsPushReq { return b.req }
+
+// SetOpsPushResp is the response for SetOpsPush.
+type SetOpsPushResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.OpsPushData `json:"data"`
+}
+
+// SetOpsPush: 待办推送开关
+func (s *Service) SetOpsPush(ctx context.Context, req *SetOpsPushReq, opts ...core.RequestOption) (*SetOpsPushResp, error) {
+	resp := &SetOpsPushResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/ops/push",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// GetOpsTodoReq is the request for GetOpsTodo.
+type GetOpsTodoReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// GetOpsTodoReqBuilder builds a GetOpsTodoReq with a fluent setter per field.
+type GetOpsTodoReqBuilder struct{ req *GetOpsTodoReq }
+
+// NewGetOpsTodoReqBuilder creates a request builder for GetOpsTodo.
+func NewGetOpsTodoReqBuilder() *GetOpsTodoReqBuilder {
+	return &GetOpsTodoReqBuilder{req: &GetOpsTodoReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *GetOpsTodoReqBuilder) Build() *GetOpsTodoReq { return b.req }
+
+// GetOpsTodoResp is the response for GetOpsTodo.
+type GetOpsTodoResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.OpsTodoData `json:"data"`
+}
+
+// GetOpsTodo: 运营待办汇总
+func (s *Service) GetOpsTodo(ctx context.Context, req *GetOpsTodoReq, opts ...core.RequestOption) (*GetOpsTodoResp, error) {
+	resp := &GetOpsTodoResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/ops/todo",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // ListPermissionCatalogReq is the request for ListPermissionCatalog.
 type ListPermissionCatalogReq struct {
 	pathParams  map[string]string

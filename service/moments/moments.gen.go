@@ -196,6 +196,58 @@ func (s *Service) AdminListAudits(ctx context.Context, req *AdminListAuditsReq, 
 	return resp, err
 }
 
+// AdminListBansReq is the request for AdminListBans.
+type AdminListBansReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminListBansReqBuilder builds a AdminListBansReq with a fluent setter per field.
+type AdminListBansReqBuilder struct{ req *AdminListBansReq }
+
+// NewAdminListBansReqBuilder creates a request builder for AdminListBans.
+func NewAdminListBansReqBuilder() *AdminListBansReqBuilder {
+	return &AdminListBansReqBuilder{req: &AdminListBansReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Page sets the "page" query parameter.
+func (b *AdminListBansReqBuilder) Page(v int32) *AdminListBansReqBuilder {
+	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// PageSize sets the "page_size" query parameter.
+func (b *AdminListBansReqBuilder) PageSize(v int32) *AdminListBansReqBuilder {
+	b.req.queryParams["page_size"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminListBansReqBuilder) Build() *AdminListBansReq { return b.req }
+
+// AdminListBansResp is the response for AdminListBans.
+type AdminListBansResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AdminBanListData `json:"data"`
+}
+
+// AdminListBans: 在禁用户
+func (s *Service) AdminListBans(ctx context.Context, req *AdminListBansReq, opts ...core.RequestOption) (*AdminListBansResp, error) {
+	resp := &AdminListBansResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/moments-admin/bans",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // AdminListCategoriesReq is the request for AdminListCategories.
 type AdminListCategoriesReq struct {
 	pathParams  map[string]string
@@ -554,6 +606,46 @@ func (s *Service) AdminRestoreComment(ctx context.Context, req *AdminRestoreComm
 	return resp, err
 }
 
+// AdminListBlockedHashtagsReq is the request for AdminListBlockedHashtags.
+type AdminListBlockedHashtagsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminListBlockedHashtagsReqBuilder builds a AdminListBlockedHashtagsReq with a fluent setter per field.
+type AdminListBlockedHashtagsReqBuilder struct{ req *AdminListBlockedHashtagsReq }
+
+// NewAdminListBlockedHashtagsReqBuilder creates a request builder for AdminListBlockedHashtags.
+func NewAdminListBlockedHashtagsReqBuilder() *AdminListBlockedHashtagsReqBuilder {
+	return &AdminListBlockedHashtagsReqBuilder{req: &AdminListBlockedHashtagsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *AdminListBlockedHashtagsReqBuilder) Build() *AdminListBlockedHashtagsReq { return b.req }
+
+// AdminListBlockedHashtagsResp is the response for AdminListBlockedHashtags.
+type AdminListBlockedHashtagsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.BlockedHashtagListData `json:"data"`
+}
+
+// AdminListBlockedHashtags: 已关停话题
+func (s *Service) AdminListBlockedHashtags(ctx context.Context, req *AdminListBlockedHashtagsReq, opts ...core.RequestOption) (*AdminListBlockedHashtagsResp, error) {
+	resp := &AdminListBlockedHashtagsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/moments-admin/hashtags/blocked",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // AdminBlockHashtagReq is the request for AdminBlockHashtag.
 type AdminBlockHashtagReq struct {
 	pathParams  map[string]string
@@ -638,6 +730,588 @@ func (s *Service) AdminUnblockHashtag(ctx context.Context, req *AdminUnblockHash
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "DELETE",
 		PathTemplate: "/hduhelp-neo/admin/moments-admin/hashtags/{name}/block",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminListOfficialAccountsReq is the request for AdminListOfficialAccounts.
+type AdminListOfficialAccountsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminListOfficialAccountsReqBuilder builds a AdminListOfficialAccountsReq with a fluent setter per field.
+type AdminListOfficialAccountsReqBuilder struct{ req *AdminListOfficialAccountsReq }
+
+// NewAdminListOfficialAccountsReqBuilder creates a request builder for AdminListOfficialAccounts.
+func NewAdminListOfficialAccountsReqBuilder() *AdminListOfficialAccountsReqBuilder {
+	return &AdminListOfficialAccountsReqBuilder{req: &AdminListOfficialAccountsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Status sets the "status" query parameter: active | suspended | revoked
+func (b *AdminListOfficialAccountsReqBuilder) Status(v string) *AdminListOfficialAccountsReqBuilder {
+	b.req.queryParams["status"] = v
+	return b
+}
+
+// Keyword sets the "keyword" query parameter.
+func (b *AdminListOfficialAccountsReqBuilder) Keyword(v string) *AdminListOfficialAccountsReqBuilder {
+	b.req.queryParams["keyword"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminListOfficialAccountsReqBuilder) Build() *AdminListOfficialAccountsReq { return b.req }
+
+// AdminListOfficialAccountsResp is the response for AdminListOfficialAccounts.
+type AdminListOfficialAccountsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AdminOfficialAccountListData `json:"data"`
+}
+
+// AdminListOfficialAccounts: 官方号列表
+func (s *Service) AdminListOfficialAccounts(ctx context.Context, req *AdminListOfficialAccountsReq, opts ...core.RequestOption) (*AdminListOfficialAccountsResp, error) {
+	resp := &AdminListOfficialAccountsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/moments-admin/official-accounts",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminGetOfficialAccountReq is the request for AdminGetOfficialAccount.
+type AdminGetOfficialAccountReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminGetOfficialAccountReqBuilder builds a AdminGetOfficialAccountReq with a fluent setter per field.
+type AdminGetOfficialAccountReqBuilder struct{ req *AdminGetOfficialAccountReq }
+
+// NewAdminGetOfficialAccountReqBuilder creates a request builder for AdminGetOfficialAccount.
+func NewAdminGetOfficialAccountReqBuilder() *AdminGetOfficialAccountReqBuilder {
+	return &AdminGetOfficialAccountReqBuilder{req: &AdminGetOfficialAccountReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// AppId sets the "app_id" path parameter.
+func (b *AdminGetOfficialAccountReqBuilder) AppId(v string) *AdminGetOfficialAccountReqBuilder {
+	b.req.pathParams["app_id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminGetOfficialAccountReqBuilder) Build() *AdminGetOfficialAccountReq { return b.req }
+
+// AdminGetOfficialAccountResp is the response for AdminGetOfficialAccount.
+type AdminGetOfficialAccountResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AdminOfficialAccount `json:"data"`
+}
+
+// AdminGetOfficialAccount: 官方号详情（运营）
+func (s *Service) AdminGetOfficialAccount(ctx context.Context, req *AdminGetOfficialAccountReq, opts ...core.RequestOption) (*AdminGetOfficialAccountResp, error) {
+	resp := &AdminGetOfficialAccountResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/moments-admin/official-accounts/{app_id}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminListOfficialMembersReq is the request for AdminListOfficialMembers.
+type AdminListOfficialMembersReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminListOfficialMembersReqBuilder builds a AdminListOfficialMembersReq with a fluent setter per field.
+type AdminListOfficialMembersReqBuilder struct{ req *AdminListOfficialMembersReq }
+
+// NewAdminListOfficialMembersReqBuilder creates a request builder for AdminListOfficialMembers.
+func NewAdminListOfficialMembersReqBuilder() *AdminListOfficialMembersReqBuilder {
+	return &AdminListOfficialMembersReqBuilder{req: &AdminListOfficialMembersReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// AppId sets the "app_id" path parameter.
+func (b *AdminListOfficialMembersReqBuilder) AppId(v string) *AdminListOfficialMembersReqBuilder {
+	b.req.pathParams["app_id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminListOfficialMembersReqBuilder) Build() *AdminListOfficialMembersReq { return b.req }
+
+// AdminListOfficialMembersResp is the response for AdminListOfficialMembers.
+type AdminListOfficialMembersResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.OfficialMemberListData `json:"data"`
+}
+
+// AdminListOfficialMembers: 官方号成员（运营）
+func (s *Service) AdminListOfficialMembers(ctx context.Context, req *AdminListOfficialMembersReq, opts ...core.RequestOption) (*AdminListOfficialMembersResp, error) {
+	resp := &AdminListOfficialMembersResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/moments-admin/official-accounts/{app_id}/members",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminAddOfficialMemberReq is the request for AdminAddOfficialMember.
+type AdminAddOfficialMemberReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminAddOfficialMemberReqBuilder builds a AdminAddOfficialMemberReq with a fluent setter per field.
+type AdminAddOfficialMemberReqBuilder struct{ req *AdminAddOfficialMemberReq }
+
+// NewAdminAddOfficialMemberReqBuilder creates a request builder for AdminAddOfficialMember.
+func NewAdminAddOfficialMemberReqBuilder() *AdminAddOfficialMemberReqBuilder {
+	return &AdminAddOfficialMemberReqBuilder{req: &AdminAddOfficialMemberReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// AppId sets the "app_id" path parameter.
+func (b *AdminAddOfficialMemberReqBuilder) AppId(v string) *AdminAddOfficialMemberReqBuilder {
+	b.req.pathParams["app_id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AdminAddOfficialMemberReqBuilder) Body(body *models.AddOfficialMemberRequestBody) *AdminAddOfficialMemberReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminAddOfficialMemberReqBuilder) Build() *AdminAddOfficialMemberReq { return b.req }
+
+// AdminAddOfficialMemberResp is the response for AdminAddOfficialMember.
+type AdminAddOfficialMemberResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// AdminAddOfficialMember: 添加官方号成员（运营）
+func (s *Service) AdminAddOfficialMember(ctx context.Context, req *AdminAddOfficialMemberReq, opts ...core.RequestOption) (*AdminAddOfficialMemberResp, error) {
+	resp := &AdminAddOfficialMemberResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/moments-admin/official-accounts/{app_id}/members",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminSetOfficialMemberRoleReq is the request for AdminSetOfficialMemberRole.
+type AdminSetOfficialMemberRoleReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminSetOfficialMemberRoleReqBuilder builds a AdminSetOfficialMemberRoleReq with a fluent setter per field.
+type AdminSetOfficialMemberRoleReqBuilder struct {
+	req *AdminSetOfficialMemberRoleReq
+}
+
+// NewAdminSetOfficialMemberRoleReqBuilder creates a request builder for AdminSetOfficialMemberRole.
+func NewAdminSetOfficialMemberRoleReqBuilder() *AdminSetOfficialMemberRoleReqBuilder {
+	return &AdminSetOfficialMemberRoleReqBuilder{req: &AdminSetOfficialMemberRoleReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// AppId sets the "app_id" path parameter.
+func (b *AdminSetOfficialMemberRoleReqBuilder) AppId(v string) *AdminSetOfficialMemberRoleReqBuilder {
+	b.req.pathParams["app_id"] = v
+	return b
+}
+
+// UserId sets the "user_id" path parameter.
+func (b *AdminSetOfficialMemberRoleReqBuilder) UserId(v string) *AdminSetOfficialMemberRoleReqBuilder {
+	b.req.pathParams["user_id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AdminSetOfficialMemberRoleReqBuilder) Body(body *models.SetOfficialMemberRoleRequestBody) *AdminSetOfficialMemberRoleReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminSetOfficialMemberRoleReqBuilder) Build() *AdminSetOfficialMemberRoleReq { return b.req }
+
+// AdminSetOfficialMemberRoleResp is the response for AdminSetOfficialMemberRole.
+type AdminSetOfficialMemberRoleResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// AdminSetOfficialMemberRole: 修改官方号成员角色（运营）
+func (s *Service) AdminSetOfficialMemberRole(ctx context.Context, req *AdminSetOfficialMemberRoleReq, opts ...core.RequestOption) (*AdminSetOfficialMemberRoleResp, error) {
+	resp := &AdminSetOfficialMemberRoleResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/moments-admin/official-accounts/{app_id}/members/{user_id}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminRemoveOfficialMemberReq is the request for AdminRemoveOfficialMember.
+type AdminRemoveOfficialMemberReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminRemoveOfficialMemberReqBuilder builds a AdminRemoveOfficialMemberReq with a fluent setter per field.
+type AdminRemoveOfficialMemberReqBuilder struct{ req *AdminRemoveOfficialMemberReq }
+
+// NewAdminRemoveOfficialMemberReqBuilder creates a request builder for AdminRemoveOfficialMember.
+func NewAdminRemoveOfficialMemberReqBuilder() *AdminRemoveOfficialMemberReqBuilder {
+	return &AdminRemoveOfficialMemberReqBuilder{req: &AdminRemoveOfficialMemberReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// AppId sets the "app_id" path parameter.
+func (b *AdminRemoveOfficialMemberReqBuilder) AppId(v string) *AdminRemoveOfficialMemberReqBuilder {
+	b.req.pathParams["app_id"] = v
+	return b
+}
+
+// UserId sets the "user_id" path parameter.
+func (b *AdminRemoveOfficialMemberReqBuilder) UserId(v string) *AdminRemoveOfficialMemberReqBuilder {
+	b.req.pathParams["user_id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminRemoveOfficialMemberReqBuilder) Build() *AdminRemoveOfficialMemberReq { return b.req }
+
+// AdminRemoveOfficialMemberResp is the response for AdminRemoveOfficialMember.
+type AdminRemoveOfficialMemberResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// AdminRemoveOfficialMember: 移除官方号成员（运营）
+func (s *Service) AdminRemoveOfficialMember(ctx context.Context, req *AdminRemoveOfficialMemberReq, opts ...core.RequestOption) (*AdminRemoveOfficialMemberResp, error) {
+	resp := &AdminRemoveOfficialMemberResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/admin/moments-admin/official-accounts/{app_id}/members/{user_id}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminResumeOfficialAccountReq is the request for AdminResumeOfficialAccount.
+type AdminResumeOfficialAccountReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminResumeOfficialAccountReqBuilder builds a AdminResumeOfficialAccountReq with a fluent setter per field.
+type AdminResumeOfficialAccountReqBuilder struct {
+	req *AdminResumeOfficialAccountReq
+}
+
+// NewAdminResumeOfficialAccountReqBuilder creates a request builder for AdminResumeOfficialAccount.
+func NewAdminResumeOfficialAccountReqBuilder() *AdminResumeOfficialAccountReqBuilder {
+	return &AdminResumeOfficialAccountReqBuilder{req: &AdminResumeOfficialAccountReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// AppId sets the "app_id" path parameter.
+func (b *AdminResumeOfficialAccountReqBuilder) AppId(v string) *AdminResumeOfficialAccountReqBuilder {
+	b.req.pathParams["app_id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AdminResumeOfficialAccountReqBuilder) Body(body *models.OfficialStateRequestBody) *AdminResumeOfficialAccountReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminResumeOfficialAccountReqBuilder) Build() *AdminResumeOfficialAccountReq { return b.req }
+
+// AdminResumeOfficialAccountResp is the response for AdminResumeOfficialAccount.
+type AdminResumeOfficialAccountResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// AdminResumeOfficialAccount: 恢复官方号
+func (s *Service) AdminResumeOfficialAccount(ctx context.Context, req *AdminResumeOfficialAccountReq, opts ...core.RequestOption) (*AdminResumeOfficialAccountResp, error) {
+	resp := &AdminResumeOfficialAccountResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/moments-admin/official-accounts/{app_id}/resume",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminRevokeOfficialAccountReq is the request for AdminRevokeOfficialAccount.
+type AdminRevokeOfficialAccountReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminRevokeOfficialAccountReqBuilder builds a AdminRevokeOfficialAccountReq with a fluent setter per field.
+type AdminRevokeOfficialAccountReqBuilder struct {
+	req *AdminRevokeOfficialAccountReq
+}
+
+// NewAdminRevokeOfficialAccountReqBuilder creates a request builder for AdminRevokeOfficialAccount.
+func NewAdminRevokeOfficialAccountReqBuilder() *AdminRevokeOfficialAccountReqBuilder {
+	return &AdminRevokeOfficialAccountReqBuilder{req: &AdminRevokeOfficialAccountReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// AppId sets the "app_id" path parameter.
+func (b *AdminRevokeOfficialAccountReqBuilder) AppId(v string) *AdminRevokeOfficialAccountReqBuilder {
+	b.req.pathParams["app_id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AdminRevokeOfficialAccountReqBuilder) Body(body *models.OfficialStateRequestBody) *AdminRevokeOfficialAccountReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminRevokeOfficialAccountReqBuilder) Build() *AdminRevokeOfficialAccountReq { return b.req }
+
+// AdminRevokeOfficialAccountResp is the response for AdminRevokeOfficialAccount.
+type AdminRevokeOfficialAccountResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// AdminRevokeOfficialAccount: 取消官方号
+func (s *Service) AdminRevokeOfficialAccount(ctx context.Context, req *AdminRevokeOfficialAccountReq, opts ...core.RequestOption) (*AdminRevokeOfficialAccountResp, error) {
+	resp := &AdminRevokeOfficialAccountResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/moments-admin/official-accounts/{app_id}/revoke",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminSuspendOfficialAccountReq is the request for AdminSuspendOfficialAccount.
+type AdminSuspendOfficialAccountReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminSuspendOfficialAccountReqBuilder builds a AdminSuspendOfficialAccountReq with a fluent setter per field.
+type AdminSuspendOfficialAccountReqBuilder struct {
+	req *AdminSuspendOfficialAccountReq
+}
+
+// NewAdminSuspendOfficialAccountReqBuilder creates a request builder for AdminSuspendOfficialAccount.
+func NewAdminSuspendOfficialAccountReqBuilder() *AdminSuspendOfficialAccountReqBuilder {
+	return &AdminSuspendOfficialAccountReqBuilder{req: &AdminSuspendOfficialAccountReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// AppId sets the "app_id" path parameter.
+func (b *AdminSuspendOfficialAccountReqBuilder) AppId(v string) *AdminSuspendOfficialAccountReqBuilder {
+	b.req.pathParams["app_id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AdminSuspendOfficialAccountReqBuilder) Body(body *models.OfficialStateRequestBody) *AdminSuspendOfficialAccountReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminSuspendOfficialAccountReqBuilder) Build() *AdminSuspendOfficialAccountReq { return b.req }
+
+// AdminSuspendOfficialAccountResp is the response for AdminSuspendOfficialAccount.
+type AdminSuspendOfficialAccountResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// AdminSuspendOfficialAccount: 暂停官方号
+func (s *Service) AdminSuspendOfficialAccount(ctx context.Context, req *AdminSuspendOfficialAccountReq, opts ...core.RequestOption) (*AdminSuspendOfficialAccountResp, error) {
+	resp := &AdminSuspendOfficialAccountResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/moments-admin/official-accounts/{app_id}/suspend",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminListOfficialApplicationsReq is the request for AdminListOfficialApplications.
+type AdminListOfficialApplicationsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminListOfficialApplicationsReqBuilder builds a AdminListOfficialApplicationsReq with a fluent setter per field.
+type AdminListOfficialApplicationsReqBuilder struct {
+	req *AdminListOfficialApplicationsReq
+}
+
+// NewAdminListOfficialApplicationsReqBuilder creates a request builder for AdminListOfficialApplications.
+func NewAdminListOfficialApplicationsReqBuilder() *AdminListOfficialApplicationsReqBuilder {
+	return &AdminListOfficialApplicationsReqBuilder{req: &AdminListOfficialApplicationsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Status sets the "status" query parameter.
+func (b *AdminListOfficialApplicationsReqBuilder) Status(v string) *AdminListOfficialApplicationsReqBuilder {
+	b.req.queryParams["status"] = v
+	return b
+}
+
+// Page sets the "page" query parameter.
+func (b *AdminListOfficialApplicationsReqBuilder) Page(v int32) *AdminListOfficialApplicationsReqBuilder {
+	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// PageSize sets the "page_size" query parameter.
+func (b *AdminListOfficialApplicationsReqBuilder) PageSize(v int32) *AdminListOfficialApplicationsReqBuilder {
+	b.req.queryParams["page_size"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminListOfficialApplicationsReqBuilder) Build() *AdminListOfficialApplicationsReq {
+	return b.req
+}
+
+// AdminListOfficialApplicationsResp is the response for AdminListOfficialApplications.
+type AdminListOfficialApplicationsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AdminOfficialApplicationListData `json:"data"`
+}
+
+// AdminListOfficialApplications: 官方号申请队列
+func (s *Service) AdminListOfficialApplications(ctx context.Context, req *AdminListOfficialApplicationsReq, opts ...core.RequestOption) (*AdminListOfficialApplicationsResp, error) {
+	resp := &AdminListOfficialApplicationsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/moments-admin/official-applications",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// AdminReviewOfficialApplicationReq is the request for AdminReviewOfficialApplication.
+type AdminReviewOfficialApplicationReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AdminReviewOfficialApplicationReqBuilder builds a AdminReviewOfficialApplicationReq with a fluent setter per field.
+type AdminReviewOfficialApplicationReqBuilder struct {
+	req *AdminReviewOfficialApplicationReq
+}
+
+// NewAdminReviewOfficialApplicationReqBuilder creates a request builder for AdminReviewOfficialApplication.
+func NewAdminReviewOfficialApplicationReqBuilder() *AdminReviewOfficialApplicationReqBuilder {
+	return &AdminReviewOfficialApplicationReqBuilder{req: &AdminReviewOfficialApplicationReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AdminReviewOfficialApplicationReqBuilder) Id(v string) *AdminReviewOfficialApplicationReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *AdminReviewOfficialApplicationReqBuilder) Body(body *models.ReviewOfficialApplicationRequestBody) *AdminReviewOfficialApplicationReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *AdminReviewOfficialApplicationReqBuilder) Build() *AdminReviewOfficialApplicationReq {
+	return b.req
+}
+
+// AdminReviewOfficialApplicationResp is the response for AdminReviewOfficialApplication.
+type AdminReviewOfficialApplicationResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AdminOfficialApplication `json:"data"`
+}
+
+// AdminReviewOfficialApplication: 审核官方号申请
+func (s *Service) AdminReviewOfficialApplication(ctx context.Context, req *AdminReviewOfficialApplicationReq, opts ...core.RequestOption) (*AdminReviewOfficialApplicationResp, error) {
+	resp := &AdminReviewOfficialApplicationResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/moments-admin/official-applications/{id}/review",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

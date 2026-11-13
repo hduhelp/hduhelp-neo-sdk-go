@@ -10396,6 +10396,34 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/AdminAuditListResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/bans:
+        get:
+            tags:
+                - MomentsService
+            summary: 在禁用户
+            description: 此刻仍在禁言期内的用户，最近处置的在前
+            operationId: MomentsService_AdminListBans
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminBanListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/moments-admin/categories:
         get:
             tags:
@@ -10579,6 +10607,22 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/CommentResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/hashtags/blocked:
+        get:
+            tags:
+                - MomentsService
+            summary: 已关停话题
+            operationId: MomentsService_AdminListBlockedHashtags
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BlockedHashtagListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/moments-admin/hashtags/{name}/block:
         post:
             tags:
@@ -10622,6 +10666,306 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HashtagBlockResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/official-accounts:
+        get:
+            tags:
+                - MomentsService
+            summary: 官方号列表
+            description: 名称、头像、处置态、成员数、帖子数与最近发帖时间；revoked 只在按它筛选时出现
+            operationId: MomentsService_AdminListOfficialAccounts
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: status
+                  in: query
+                  description: active | suspended | revoked
+                  schema:
+                    type: string
+                - name: keyword
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminOfficialAccountListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/official-accounts/{app_id}:
+        get:
+            tags:
+                - MomentsService
+            summary: 官方号详情（运营）
+            description: 处置态与原因、成员数、帖子数与最近发帖时间；被取消的号也能取到
+            operationId: MomentsService_AdminGetOfficialAccount
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: app_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminOfficialAccountResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/official-accounts/{app_id}/members:
+        get:
+            tags:
+                - MomentsService
+            summary: 官方号成员（运营）
+            operationId: MomentsService_AdminListOfficialMembers
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: app_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OfficialMemberListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        post:
+            tags:
+                - MomentsService
+            summary: 添加官方号成员（运营）
+            operationId: MomentsService_AdminAddOfficialMember
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: app_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AddOfficialMemberRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OfficialMutationResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/official-accounts/{app_id}/members/{user_id}:
+        put:
+            tags:
+                - MomentsService
+            summary: 修改官方号成员角色（运营）
+            description: 管理员被封禁时由运营任命新管理员
+            operationId: MomentsService_AdminSetOfficialMemberRole
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: app_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SetOfficialMemberRoleRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OfficialMutationResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+        delete:
+            tags:
+                - MomentsService
+            summary: 移除官方号成员（运营）
+            operationId: MomentsService_AdminRemoveOfficialMember
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: app_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OfficialMutationResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/official-accounts/{app_id}/resume:
+        post:
+            tags:
+                - MomentsService
+            summary: 恢复官方号
+            operationId: MomentsService_AdminResumeOfficialAccount
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: app_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/OfficialStateRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OfficialMutationResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/official-accounts/{app_id}/revoke:
+        post:
+            tags:
+                - MomentsService
+            summary: 取消官方号
+            description: 撤掉发布权限、删除全部成员关系；已发帖子保留但不再带认证
+            operationId: MomentsService_AdminRevokeOfficialAccount
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: app_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/OfficialStateRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OfficialMutationResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/official-accounts/{app_id}/suspend:
+        post:
+            tags:
+                - MomentsService
+            summary: 暂停官方号
+            description: 暂停期间不能以它的身份发帖、评论、改帖；全体成员收到通知
+            operationId: MomentsService_AdminSuspendOfficialAccount
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: app_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/OfficialStateRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OfficialMutationResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/official-applications:
+        get:
+            tags:
+                - MomentsService
+            summary: 官方号申请队列
+            description: 条目带申请人与此刻是否重名
+            operationId: MomentsService_AdminListOfficialApplications
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminOfficialApplicationListResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/moments-admin/official-applications/{id}/review:
+        post:
+            tags:
+                - MomentsService
+            summary: 审核官方号申请
+            description: approve 建出只授予 moments:post:publish 的应用并让申请人成为管理员；reject 必须写原因。已被处理时返回 728000035
+            operationId: MomentsService_AdminReviewOfficialApplication
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ReviewOfficialApplicationRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminOfficialApplicationResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/moments-admin/posts:
         get:
@@ -12034,6 +12378,91 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AssignOperatorRoleResponseBody'
+    /hduhelp-neo/admin/operators/{id}/user:
+        put:
+            tags:
+                - AdminService
+            summary: 绑定运营账号的平台用户
+            description: 一个用户只能绑定一个运营账号，已被其他运营绑定返回 720000015；管理员账号只有超级管理员能改
+            operationId: AdminService_BindOperatorUser
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/BindOperatorUserRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OperatorInfoResponseBody'
+        delete:
+            tags:
+                - AdminService
+            summary: 解除运营账号的平台用户绑定
+            description: 该用户的会话从下一次请求起不再是运营
+            operationId: AdminService_UnbindOperatorUser
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OperatorInfoResponseBody'
+    /hduhelp-neo/admin/ops/push:
+        put:
+            tags:
+                - AdminService
+            summary: 待办推送开关
+            description: 是否把新待办推送到绑定用户的手机，只改本人
+            operationId: AdminService_SetOpsPush
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SetOpsPushRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OpsPushResponseBody'
+    /hduhelp-neo/admin/ops/todo:
+        get:
+            tags:
+                - AdminService
+            summary: 运营待办汇总
+            description: 举报、申诉、官方号申请、反馈、祝福审核、知识盲区与待审知识的待处理数，只含当前运营有查看权限的项
+            operationId: AdminService_GetOpsTodo
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OpsTodoResponseBody'
     /hduhelp-neo/admin/permissions/catalog:
         get:
             tags:
@@ -18575,6 +19004,73 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/CursorPostListResponseBody'
             x-hduhelp-http: {'requires_user': true, 'auth': 'bearer'}
+    /hduhelp-neo/moments/official-accounts/applications:
+        post:
+            tags:
+                - MomentsService
+            summary: 提交官方号申请
+            description: 同一人同时只能有一份待审；名称与现有官方号或待审申请重名时拒绝。只给 App，不进 CLI 与 MCP 目录
+            operationId: MomentsService_SubmitOfficialApplication
+            security:
+                - BearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/OfficialApplicationInputBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OfficialApplicationResponseBody'
+            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer', 'catalog': 'exclude'}
+    /hduhelp-neo/moments/official-accounts/applications/mine:
+        get:
+            tags:
+                - MomentsService
+            summary: 我的官方号申请
+            description: 新到旧。只给 App，不进 CLI 与 MCP 目录
+            operationId: MomentsService_ListMyOfficialApplications
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OfficialApplicationListResponseBody'
+            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer', 'catalog': 'exclude'}
+    /hduhelp-neo/moments/official-accounts/applications/{id}:
+        put:
+            tags:
+                - MomentsService
+            summary: 修改官方号申请
+            description: 只有被驳回的申请能改，改后回到待审。只给 App，不进 CLI 与 MCP 目录
+            operationId: MomentsService_UpdateOfficialApplication
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateOfficialApplicationRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OfficialApplicationResponseBody'
+            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer', 'catalog': 'exclude'}
     /hduhelp-neo/moments/official-accounts/{app_id}:
         get:
             tags:
@@ -18598,6 +19094,34 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/OfficialAccountResponseBody'
             x-hduhelp-http: {'requires_user': false, 'auth': 'bearer'}
+        put:
+            tags:
+                - MomentsService
+            summary: 修改官方号资料
+            description: 管理员可改简介与头像，名称只有社区运营能改。返回修改后的官方号。只给 App，不进 CLI 与 MCP 目录
+            operationId: MomentsService_UpdateOfficialAccount
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: app_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                description: UpdateOfficialAccountRequest 字段缺省即不改。管理员可改简介与头像（avatar 用途上传），名称只有社区运营能改。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateOfficialAccountRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OfficialAccountResponseBody'
+            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer', 'catalog': 'exclude'}
     /hduhelp-neo/moments/official-accounts/{app_id}/following:
         post:
             tags:
@@ -18643,6 +19167,116 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/FollowStateResponseBody'
             x-hduhelp-http: {'requires_user': true, 'auth': 'bearer'}
+    /hduhelp-neo/moments/official-accounts/{app_id}/members:
+        get:
+            tags:
+                - MomentsService
+            summary: 官方号成员
+            description: 成员或社区运营可看。只给 App，不进 CLI 与 MCP 目录
+            operationId: MomentsService_ListOfficialMembers
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: app_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OfficialMemberListResponseBody'
+            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer', 'catalog': 'exclude'}
+        post:
+            tags:
+                - MomentsService
+            summary: 添加官方号成员
+            description: 号管理员或社区运营。被添加的人收到系统通知。只给 App，不进 CLI 与 MCP 目录
+            operationId: MomentsService_AddOfficialMember
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: app_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AddOfficialMemberRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OfficialMutationResponseBody'
+            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer', 'catalog': 'exclude'}
+    /hduhelp-neo/moments/official-accounts/{app_id}/members/{user_id}:
+        put:
+            tags:
+                - MomentsService
+            summary: 修改官方号成员角色
+            description: 号管理员或社区运营；最后一名管理员不能被降级。只给 App，不进 CLI 与 MCP 目录
+            operationId: MomentsService_SetOfficialMemberRole
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: app_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SetOfficialMemberRoleRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OfficialMutationResponseBody'
+            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer', 'catalog': 'exclude'}
+        delete:
+            tags:
+                - MomentsService
+            summary: 移除官方号成员
+            description: 号管理员或社区运营可移除成员，成员可移除自己（退出）；最后一名管理员不能退出或被移除。只给 App，不进 CLI 与 MCP 目录
+            operationId: MomentsService_RemoveOfficialMember
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: app_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OfficialMutationResponseBody'
+            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer', 'catalog': 'exclude'}
     /hduhelp-neo/moments/official-accounts/{app_id}/posts:
         get:
             tags:
@@ -20334,6 +20968,13 @@ components:
                     type: string
                 content:
                     type: string
+        AddOfficialMemberRequestBody:
+            type: object
+            properties:
+                user_id:
+                    type: string
+                role:
+                    type: string
         AdminAppDetail:
             type: object
             properties:
@@ -20482,6 +21123,47 @@ components:
                     type: integer
                     format: int64
             description: '-------------------- 用户授权（app_authorizations） --------------------'
+        AdminBan:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/Author'
+                until:
+                    type: integer
+                    format: int64
+                reason:
+                    type: string
+                operator_id:
+                    type: string
+                banned_at:
+                    type: integer
+                    format: int64
+        AdminBanListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AdminBan'
+                page:
+                    type: integer
+                    format: int32
+                page_size:
+                    type: integer
+                    format: int32
+                total:
+                    type: integer
+                    format: int64
+        AdminBanListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminBanListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AdminCampusInfo:
             type: object
             properties:
@@ -20944,6 +21626,121 @@ components:
                 expired:
                     type: integer
                     format: int32
+        AdminOfficialAccount:
+            type: object
+            properties:
+                app_id:
+                    type: string
+                name:
+                    type: string
+                avatar_url:
+                    type: string
+                status:
+                    type: string
+                reason:
+                    type: string
+                member_count:
+                    type: integer
+                    format: int64
+                post_count:
+                    type: integer
+                    format: int64
+                last_post_at:
+                    type: integer
+                    format: int64
+        AdminOfficialAccountListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AdminOfficialAccount'
+        AdminOfficialAccountListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminOfficialAccountListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AdminOfficialAccountResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminOfficialAccount'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AdminOfficialApplication:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                category:
+                    type: string
+                description:
+                    type: string
+                avatar_url:
+                    type: string
+                proof_urls:
+                    type: array
+                    items:
+                        type: string
+                contact:
+                    type: string
+                status:
+                    type: string
+                reason:
+                    type: string
+                app_id:
+                    type: string
+                created_at:
+                    type: integer
+                    format: int64
+                updated_at:
+                    type: integer
+                    format: int64
+                applicant:
+                    $ref: '#/components/schemas/OfficialApplicant'
+                name_conflict:
+                    type: boolean
+                    description: nameConflict 只对待审申请计算：此刻已有同名官方号或另一份同名待审申请。
+        AdminOfficialApplicationListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AdminOfficialApplication'
+                total:
+                    type: integer
+                    format: int64
+        AdminOfficialApplicationListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminOfficialApplicationListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AdminOfficialApplicationResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminOfficialApplication'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AdminPigeonRecallResponseBody:
             type: object
             properties:
@@ -21016,6 +21813,19 @@ components:
                 anonymous_name:
                     type: string
                     description: 同 AdminPostSummary
+                published_by_user_id:
+                    type: string
+                    description: 同 AdminPostSummary
+                pinned_at:
+                    type: integer
+                    description: 同 AdminPostSummary
+                    format: int64
+                featured_at:
+                    type: integer
+                    format: int64
+                rank_boost:
+                    type: number
+                    format: double
         AdminPostDetailResponseBody:
             type: object
             properties:
@@ -21091,6 +21901,19 @@ components:
                 anonymous_name:
                     type: string
                     description: anonymousName 只在匿名帖上有值。管理面的 author 始终是真实作者，用户面看到的是这个花名。
+                published_by_user_id:
+                    type: string
+                    description: publishedByUserId 是以官方号身份发帖的那位成员。
+                pinned_at:
+                    type: integer
+                    description: 运营分发标记：置顶与加精的毫秒时间（未设置不出现），人工权重 1 为不干预。
+                    format: int64
+                featured_at:
+                    type: integer
+                    format: int64
+                rank_boost:
+                    type: number
+                    format: double
             description: |-
                 AdminPostSummary 额外暴露官方号帖背后的操作运营。
                 该字段只在管理面出现，用户面的 Author 永不携带。
@@ -26202,6 +27025,8 @@ components:
                 created_at:
                     type: integer
                     format: int64
+                target:
+                    $ref: '#/components/schemas/ModerationTarget'
             description: '---------- 申诉 ----------'
         AppealResponseBody:
             type: object
@@ -26724,6 +27549,11 @@ components:
                     type: string
                 code:
                     type: string
+        BindOperatorUserRequestBody:
+            type: object
+            properties:
+                user_id:
+                    type: string
         BindPageData:
             type: object
             properties:
@@ -26931,6 +27761,35 @@ components:
                 reviewed:
                     type: string
                 pass:
+                    type: string
+        BlockedHashtag:
+            type: object
+            properties:
+                name:
+                    type: string
+                post_count:
+                    type: integer
+                    format: int64
+                blocked_at:
+                    type: integer
+                    description: blockedAt 近似关停时刻，准确的经办人与时间见审计。
+                    format: int64
+        BlockedHashtagListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/BlockedHashtag'
+        BlockedHashtagListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/BlockedHashtagListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
                     type: string
         BookItem:
             type: object
@@ -31903,6 +32762,9 @@ components:
                     format: int64
                 draftFaqItemId:
                     type: string
+                sampleQuestion:
+                    type: string
+                    description: 最近一次原始问法（已脱敏），比归一化后的合并键可读
             description: |-
                 ============================================================================
                 管理端：知识盲区（gap）
@@ -41089,6 +41951,38 @@ components:
                     format: int64
                 msg:
                     type: string
+        ModerationTarget:
+            type: object
+            properties:
+                kind:
+                    type: string
+                    description: post | comment | user
+                id:
+                    type: string
+                title:
+                    type: string
+                excerpt:
+                    type: string
+                cover_url:
+                    type: string
+                author:
+                    $ref: '#/components/schemas/Author'
+                status:
+                    type: string
+                takedown_reason:
+                    type: string
+                post_id:
+                    type: string
+                    description: 仅评论
+                pending_count:
+                    type: integer
+                    description: 同一目标待处理的举报数
+                    format: int64
+                missing:
+                    type: boolean
+            description: |-
+                ModerationTarget 是被举报或被申诉对象的摘要。missing 为 true 时对象已不存在，只有 kind 与 id。
+                author 是真实作者（运营面不遮蔽匿名）；用户目标的 author 就是那个用户。
         MomentsInboxEntry:
             type: object
             properties:
@@ -41120,6 +42014,13 @@ components:
                     description: |-
                         mentionedMe 只在 comment、reply 与 mention 上出现。评论或回复同时 @ 了你时只有
                         一条 comment / reply（不会再多一条 mention），靠它显示「@了你」；mention 恒为 true。
+                as_app_id:
+                    type: string
+                    description: 这条是投给官方号、你作为成员收到的：带出号的身份，客户端显示官方号标签与「以官方号回复」。
+                as_app_name:
+                    type: string
+                as_app_avatar_url:
+                    type: string
             description: |-
                 ---------- 收件箱 ----------
                 社区自带一层收件箱，不接平台通知子系统：社区只需要两条清单，不需要跨端推送与
@@ -41803,6 +42704,17 @@ components:
                     format: int64
                 followed_by_me:
                     type: boolean
+                my_role:
+                    type: string
+                    description: myRole 只在调用者是成员时出现。status 取 active | suspended | revoked。
+                member_count:
+                    type: integer
+                    format: int64
+                status:
+                    type: string
+                status_reason:
+                    type: string
+                    description: statusReason 是暂停或取消的原因，active 时不出现。
             description: |-
                 ---------- 官方号 ----------
                 OfficialAccount 由应用记录投影而来，不是独立实体。
@@ -41816,6 +42728,153 @@ components:
                     format: int64
                 msg:
                     type: string
+        OfficialApplicant:
+            type: object
+            properties:
+                id:
+                    type: string
+                nickname:
+                    type: string
+                avatar_url:
+                    type: string
+                student_id:
+                    type: string
+                    description: 打码，如 22****18
+        OfficialApplication:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                category:
+                    type: string
+                    description: department | student_org | college | club
+                description:
+                    type: string
+                avatar_url:
+                    type: string
+                proof_urls:
+                    type: array
+                    items:
+                        type: string
+                contact:
+                    type: string
+                status:
+                    type: string
+                    description: pending | approved | rejected
+                reason:
+                    type: string
+                app_id:
+                    type: string
+                created_at:
+                    type: integer
+                    format: int64
+                updated_at:
+                    type: integer
+                    format: int64
+                avatar_key:
+                    type: string
+                proof_keys:
+                    type: array
+                    items:
+                        type: string
+                app_status:
+                    type: string
+                    description: 已开通时：active | suspended | revoked
+                app_status_reason:
+                    type: string
+            description: |-
+                OfficialApplication 是一份官方号申请。contact 只给本人与运营；avatar_key 与 proof_keys
+                供被驳回后改了重交时沿用已上传的文件。
+        OfficialApplicationInputBody:
+            type: object
+            properties:
+                name:
+                    type: string
+                category:
+                    type: string
+                description:
+                    type: string
+                avatar_key:
+                    type: string
+                proof_keys:
+                    type: array
+                    items:
+                        type: string
+                    description: 证明材料先经 upload/sign 以 usage=official_apply 上传，最多 9 份。
+                contact:
+                    type: string
+        OfficialApplicationListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/OfficialApplication'
+        OfficialApplicationListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/OfficialApplicationListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        OfficialApplicationResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/OfficialApplication'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        OfficialMember:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/Author'
+                role:
+                    type: string
+                    description: admin | member
+                created_at:
+                    type: integer
+                    format: int64
+            description: '---------- 官方号成员、申请与处置 ----------'
+        OfficialMemberListData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/OfficialMember'
+        OfficialMemberListResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/OfficialMemberListData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        OfficialMutationResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        OfficialStateRequestBody:
+            type: object
+            properties:
+                reason:
+                    type: string
+                    description: suspend / revoke 必填
         OffsetPagination:
             required:
                 - total
@@ -41839,6 +42898,18 @@ components:
                     type: integer
                     format: int32
             description: OffsetPagination 是 Agent 可直接复用的偏移分页语义。nextOffset 仅在 hasMore=true 时返回。
+        OperatorBoundUser:
+            type: object
+            properties:
+                id:
+                    type: string
+                nickname:
+                    type: string
+                avatarUrl:
+                    type: string
+                studentId:
+                    type: string
+                    description: 打码，如 22****18
         OperatorInfo:
             type: object
             properties:
@@ -41866,6 +42937,23 @@ components:
                     type: array
                     items:
                         type: string
+                boundUser:
+                    $ref: '#/components/schemas/OperatorBoundUser'
+                opsPushEnabled:
+                    type: boolean
+                via:
+                    type: string
+                    description: via 只在 /admin/auth/me 出现：session（App 里经绑定用户的会话）或 operator（运营令牌）。
+        OperatorInfoResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/OperatorInfo'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         OperatorListResponseBody:
             type: object
             properties:
@@ -41873,6 +42961,47 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/OperatorInfo'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        OpsPushData:
+            type: object
+            properties:
+                enabled:
+                    type: boolean
+        OpsPushResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/OpsPushData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        OpsTodoData:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/OpsTodoItem'
+        OpsTodoItem:
+            type: object
+            properties:
+                key:
+                    type: string
+                count:
+                    type: integer
+                    format: int64
+            description: 运营待办：只含当前运营有查看权限的项。
+        OpsTodoResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/OpsTodoData'
                 code:
                     type: integer
                     format: int64
@@ -42566,6 +43695,14 @@ components:
                     type: string
                 avatar_url:
                     type: string
+                role:
+                    type: string
+                    description: admin | member，仅 kind=app
+                disabled:
+                    type: boolean
+                    description: 号被暂停时为 true，发布器置灰并显示原因。
+                disabled_reason:
+                    type: string
             description: PostingIdentity 是发布器身份下拉的一项：本人，或本人有权代表的某个官方号。
         PostingIdentityData:
             type: object
@@ -42824,6 +43961,9 @@ components:
                         type: array
                         items:
                             $ref: '#/components/schemas/RichTextNode'
+                publish_as_app_id:
+                    type: string
+                    description: publishAsAppId 是以本人所在的某个官方号身份评论或回复。
         PublishPostData:
             type: object
             properties:
@@ -42870,6 +44010,11 @@ components:
                     description: |-
                         media 是图片与视频混排的有序媒体列表，合计至多 9 项。与 images 二选一：同时非空即参数错误；
                         只传 images 的旧客户端按纯图片处理。
+                publish_as_app_id:
+                    type: string
+                    description: |-
+                        publishAsAppId 是以本人所在的某个官方号身份发布（取自 posting-identities）。官方号不能匿名；
+                        号被暂停时返回 728000037，客户端据此把身份切回本人、保留草稿。
         PublishPostResponseBody:
             type: object
             properties:
@@ -43296,6 +44441,11 @@ components:
                 created_at:
                     type: integer
                     format: int64
+                target:
+                    $ref: '#/components/schemas/ModerationTarget'
+                pending_count:
+                    type: integer
+                    format: int64
         ReportGapRequestBody:
             type: object
             properties:
@@ -43417,7 +44567,7 @@ components:
             properties:
                 resolution:
                     type: string
-                    description: takedown | dismiss | ban
+                    description: takedown | dismiss | ban | suspend_official（暂停官方号，只对官方号发布的内容；ban 只对用户内容）
                 note:
                     type: string
         ResolveReportResponseBody:
@@ -43528,6 +44678,15 @@ components:
             properties:
                 popup_prompt:
                     type: string
+        ReviewOfficialApplicationRequestBody:
+            type: object
+            properties:
+                action:
+                    type: string
+                    description: approve | reject
+                reason:
+                    type: string
+                    description: reject 时必填
         RevokeAuthorizationResponseBody:
             type: object
             properties:
@@ -45073,6 +46232,11 @@ components:
                     format: int64
                 msg:
                     type: string
+        SetOfficialMemberRoleRequestBody:
+            type: object
+            properties:
+                role:
+                    type: string
         SetOperatorEnabledRequestBody:
             type: object
             properties:
@@ -45086,6 +46250,11 @@ components:
                     format: int64
                 msg:
                     type: string
+        SetOpsPushRequestBody:
+            type: object
+            properties:
+                enabled:
+                    type: boolean
         SetRankBoostRequestBody:
             type: object
             properties:
@@ -46737,6 +47906,32 @@ components:
                     type: integer
                     format: int64
                 msg:
+                    type: string
+        UpdateOfficialAccountRequestBody:
+            type: object
+            properties:
+                description:
+                    type: string
+                avatar_key:
+                    type: string
+                name:
+                    type: string
+        UpdateOfficialApplicationRequestBody:
+            type: object
+            properties:
+                name:
+                    type: string
+                category:
+                    type: string
+                description:
+                    type: string
+                avatar_key:
+                    type: string
+                proof_keys:
+                    type: array
+                    items:
+                        type: string
+                contact:
                     type: string
         UpdatePolicyProfileRequestBody:
             required:
