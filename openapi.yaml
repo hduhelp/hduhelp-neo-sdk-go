@@ -19009,7 +19009,7 @@ paths:
             tags:
                 - MomentsService
             summary: 提交官方号申请
-            description: 同一人同时只能有一份待审；名称与现有官方号或待审申请重名时拒绝。只给 App，不进 CLI 与 MCP 目录
+            description: 一人可同时有多份待审；名称与现有官方号或待审申请重名时拒绝。只给 App，不进 CLI 与 MCP 目录
             operationId: MomentsService_SubmitOfficialApplication
             security:
                 - BearerAuth: []
