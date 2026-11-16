@@ -11,6 +11,30 @@ const (
 	UATBearerAuthScopes      uATBearerAuthContextKey      = "UATBearerAuth.Scopes"
 )
 
+// Defines values for AdminLegalDocumentStatus.
+const (
+	ARCHIVED  AdminLegalDocumentStatus = "ARCHIVED"
+	DRAFT     AdminLegalDocumentStatus = "DRAFT"
+	PUBLISHED AdminLegalDocumentStatus = "PUBLISHED"
+	SCHEDULED AdminLegalDocumentStatus = "SCHEDULED"
+)
+
+// Valid indicates whether the value is a known member of the AdminLegalDocumentStatus enum.
+func (e AdminLegalDocumentStatus) Valid() bool {
+	switch e {
+	case ARCHIVED:
+		return true
+	case DRAFT:
+		return true
+	case PUBLISHED:
+		return true
+	case SCHEDULED:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AgentAssetLinkKind.
 const (
 	AgentAssetLinkKindFile    AgentAssetLinkKind = "file"
@@ -917,6 +941,24 @@ func (e AgentWorkTurnRequestBodyMode) Valid() bool {
 	case Interrupt:
 		return true
 	case Queue:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConsentAgreementType.
+const (
+	PRIVACYPOLICY ConsentAgreementType = "PRIVACY_POLICY"
+	USERAGREEMENT ConsentAgreementType = "USER_AGREEMENT"
+)
+
+// Valid indicates whether the value is a known member of the ConsentAgreementType enum.
+func (e ConsentAgreementType) Valid() bool {
+	switch e {
+	case PRIVACYPOLICY:
+		return true
+	case USERAGREEMENT:
 		return true
 	default:
 		return false
@@ -4318,6 +4360,56 @@ type AdminImpersonationLogsData struct {
 	Items   *[]AdminImpersonationLog `json:"items,omitempty"`
 }
 
+// AdminLegalDocument defines model for AdminLegalDocument.
+type AdminLegalDocument struct {
+	// ConsentEpoch 草稿为 0，发布时确定
+	ConsentEpoch *int32 `json:"consentEpoch,omitempty"`
+
+	// Content 列表不返回正文
+	Content     *string `json:"content,omitempty"`
+	CreatedAt   *int64  `json:"createdAt,omitempty"`
+	CreatedBy   *string `json:"createdBy,omitempty"`
+	EffectiveAt *int64  `json:"effectiveAt,omitempty"`
+	Id          *string `json:"id,omitempty"`
+	Locale      *string `json:"locale,omitempty"`
+
+	// Material 发布时是否按重大变更（需要重新同意）
+	Material    *bool                     `json:"material,omitempty"`
+	PublishedAt *int64                    `json:"publishedAt,omitempty"`
+	PublishedBy *string                   `json:"publishedBy,omitempty"`
+	Status      *AdminLegalDocumentStatus `json:"status,omitempty"`
+	Summary     *string                   `json:"summary,omitempty"`
+	Title       *string                   `json:"title,omitempty"`
+	Type        *string                   `json:"type,omitempty"`
+	UpdatedAt   *int64                    `json:"updatedAt,omitempty"`
+	Version     *string                   `json:"version,omitempty"`
+}
+
+// AdminLegalDocumentStatus defines model for AdminLegalDocument.Status.
+type AdminLegalDocumentStatus string
+
+// AdminLegalDocumentPage defines model for AdminLegalDocumentPage.
+type AdminLegalDocumentPage struct {
+	Items    *[]AdminLegalDocument `json:"items,omitempty"`
+	Page     *int32                `json:"page,omitempty"`
+	PageSize *int32                `json:"pageSize,omitempty"`
+	Total    *int64                `json:"total,omitempty"`
+}
+
+// AdminLegalDocumentPageResponseBody defines model for AdminLegalDocumentPageResponseBody.
+type AdminLegalDocumentPageResponseBody struct {
+	Code *int64                  `json:"code,omitempty"`
+	Data *AdminLegalDocumentPage `json:"data,omitempty"`
+	Msg  *string                 `json:"msg,omitempty"`
+}
+
+// AdminLegalDocumentResponseBody defines model for AdminLegalDocumentResponseBody.
+type AdminLegalDocumentResponseBody struct {
+	Code *int64              `json:"code,omitempty"`
+	Data *AdminLegalDocument `json:"data,omitempty"`
+	Msg  *string             `json:"msg,omitempty"`
+}
+
 // AdminLoginClientInfo 第一方登录客户端：仅这些客户端可以接收 CAS/微信/钉钉等 provider 登录后的
 // Neo 原生会话 handoff。与 OAuth apps.redirect_uris（外部应用授权码回调）严格分离。
 type AdminLoginClientInfo struct {
@@ -4747,6 +4839,13 @@ type AdminTenantInfo struct {
 	Name      *string `json:"name,omitempty"`
 	Status    *int32  `json:"status,omitempty"`
 	TenantKey *string `json:"tenantKey,omitempty"`
+}
+
+// AdminUserConsentsResponseBody defines model for AdminUserConsentsResponseBody.
+type AdminUserConsentsResponseBody struct {
+	Code *int64                 `json:"code,omitempty"`
+	Data *UserConsentRecordList `json:"data,omitempty"`
+	Msg  *string                `json:"msg,omitempty"`
 }
 
 // AdminUserDetail defines model for AdminUserDetail.
@@ -8666,6 +8765,52 @@ type ConfirmImpersonationRequestBody struct {
 	ConfirmationToken *string `json:"confirmation_token,omitempty"`
 }
 
+// ConsentAgreement defines model for ConsentAgreement.
+type ConsentAgreement struct {
+	// Locale 用户看到的文档语言，缺省 zh-CN
+	Locale  *string               `json:"locale,omitempty"`
+	Type    *ConsentAgreementType `json:"type,omitempty"`
+	Version *string               `json:"version,omitempty"`
+}
+
+// ConsentAgreementType defines model for ConsentAgreement.Type.
+type ConsentAgreementType string
+
+// ConsentStatus defines model for ConsentStatus.
+type ConsentStatus struct {
+	// Items 只含已发布的需同意类型；没有发布的类型不出现
+	Items *[]ConsentStatusItem `json:"items,omitempty"`
+
+	// RequiresConsent 任一类型需要（重新）同意
+	RequiresConsent *bool `json:"requiresConsent,omitempty"`
+}
+
+// ConsentStatusItem 一类需要用户同意的文档（隐私政策、用户协议）的同意状态。
+type ConsentStatusItem struct {
+	ActiveEpoch   *int32  `json:"activeEpoch,omitempty"`
+	ActiveVersion *string `json:"activeVersion,omitempty"`
+	AgreedAt      *int64  `json:"agreedAt,omitempty"`
+
+	// AgreedEpoch 用户同意过的最高 epoch，从未同意为 0
+	AgreedEpoch   *int32  `json:"agreedEpoch,omitempty"`
+	AgreedVersion *string `json:"agreedVersion,omitempty"`
+	EffectiveAt   *int64  `json:"effectiveAt,omitempty"`
+	Locale        *string `json:"locale,omitempty"`
+
+	// RequiresConsent activeEpoch > agreedEpoch
+	RequiresConsent *bool   `json:"requiresConsent,omitempty"`
+	Summary         *string `json:"summary,omitempty"`
+	Title           *string `json:"title,omitempty"`
+	Type            *string `json:"type,omitempty"`
+}
+
+// ConsentStatusResponseBody defines model for ConsentStatusResponseBody.
+type ConsentStatusResponseBody struct {
+	Code *int64         `json:"code,omitempty"`
+	Data *ConsentStatus `json:"data,omitempty"`
+	Msg  *string        `json:"msg,omitempty"`
+}
+
 // Course defines model for Course.
 type Course struct {
 	Classroom    *string `json:"classroom,omitempty"`
@@ -8988,6 +9133,23 @@ type CreateItemRequestBody struct {
 
 	// Visibility public | internal；空=internal
 	Visibility *string `json:"visibility,omitempty"`
+}
+
+// CreateLegalDocumentRequestBody defines model for CreateLegalDocumentRequestBody.
+type CreateLegalDocumentRequestBody struct {
+	Content *string `json:"content,omitempty"`
+
+	// EffectiveAt 生效时刻（毫秒）；晚于发布时刻则发布后进入 SCHEDULED，缺省或已过按发布时刻
+	EffectiveAt *int64 `json:"effectiveAt,omitempty"`
+
+	// Locale 缺省 zh-CN
+	Locale *string `json:"locale,omitempty"`
+
+	// Summary 本次更新摘要，重新同意弹窗里展示
+	Summary *string `json:"summary,omitempty"`
+	Title   *string `json:"title,omitempty"`
+	Type    *string `json:"type,omitempty"`
+	Version *string `json:"version,omitempty"`
 }
 
 // CreateLoginClientRequestBody defines model for CreateLoginClientRequestBody.
@@ -11489,6 +11651,28 @@ type LeaveRoomResponseBody struct {
 	Msg  *string `json:"msg,omitempty"`
 }
 
+// LegalDocumentType defines model for LegalDocumentType.
+type LegalDocumentType struct {
+	ConsentRequired *bool   `json:"consentRequired,omitempty"`
+	Label           *string `json:"label,omitempty"`
+
+	// Slug 学生端网页路径 /legal/<slug>
+	Slug *string `json:"slug,omitempty"`
+	Type *string `json:"type,omitempty"`
+}
+
+// LegalDocumentTypeList defines model for LegalDocumentTypeList.
+type LegalDocumentTypeList struct {
+	Items *[]LegalDocumentType `json:"items,omitempty"`
+}
+
+// LegalDocumentTypesResponseBody defines model for LegalDocumentTypesResponseBody.
+type LegalDocumentTypesResponseBody struct {
+	Code *int64                 `json:"code,omitempty"`
+	Data *LegalDocumentTypeList `json:"data,omitempty"`
+	Msg  *string                `json:"msg,omitempty"`
+}
+
 // LibraryAttendanceData defines model for LibraryAttendanceData.
 type LibraryAttendanceData struct {
 	Floors    *[]FloorStat     `json:"floors,omitempty"`
@@ -11640,6 +11824,13 @@ type ListPATScopesResponseBody struct {
 	Code *int64             `json:"code,omitempty"`
 	Data *ListPATScopesData `json:"data,omitempty"`
 	Msg  *string            `json:"msg,omitempty"`
+}
+
+// ListPublicLegalDocumentsResponseBody defines model for ListPublicLegalDocumentsResponseBody.
+type ListPublicLegalDocumentsResponseBody struct {
+	Code *int64                   `json:"code,omitempty"`
+	Data *PublicLegalDocumentList `json:"data,omitempty"`
+	Msg  *string                  `json:"msg,omitempty"`
 }
 
 // ListSessionsData defines model for ListSessionsData.
@@ -17003,6 +17194,35 @@ type PublicCampusListResponseBody struct {
 	Msg  *string             `json:"msg,omitempty"`
 }
 
+// PublicLegalDocument 当前生效（或曾经生效）的一份法律文档。列表只给元数据，content 只在详情里有。
+type PublicLegalDocument struct {
+	ConsentEpoch *int32 `json:"consentEpoch,omitempty"`
+
+	// Content Markdown 正文，只在详情接口返回
+	Content     *string `json:"content,omitempty"`
+	EffectiveAt *int64  `json:"effectiveAt,omitempty"`
+	Locale      *string `json:"locale,omitempty"`
+	PublishedAt *int64  `json:"publishedAt,omitempty"`
+	Summary     *string `json:"summary,omitempty"`
+	Title       *string `json:"title,omitempty"`
+	Type        *string `json:"type,omitempty"`
+	Version     *string `json:"version,omitempty"`
+}
+
+// PublicLegalDocumentList defines model for PublicLegalDocumentList.
+type PublicLegalDocumentList struct {
+	Items *[]PublicLegalDocument `json:"items,omitempty"`
+}
+
+// PublicLegalDocumentResponseBody defines model for PublicLegalDocumentResponseBody.
+type PublicLegalDocumentResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data 当前生效（或曾经生效）的一份法律文档。列表只给元数据，content 只在详情里有。
+	Data *PublicLegalDocument `json:"data,omitempty"`
+	Msg  *string              `json:"msg,omitempty"`
+}
+
 // PublishAdminNoticeResponseBody defines model for PublishAdminNoticeResponseBody.
 type PublishAdminNoticeResponseBody struct {
 	Code int64             `json:"code"`
@@ -17016,6 +17236,12 @@ type PublishCommentRequestBody struct {
 
 	// PublishAsAppId publishAsAppId 是以本人所在的某个官方号身份评论或回复。
 	PublishAsAppId *string `json:"publish_as_app_id,omitempty"`
+}
+
+// PublishLegalDocumentRequestBody defines model for PublishLegalDocumentRequestBody.
+type PublishLegalDocumentRequestBody struct {
+	// Material 重大变更：该类型的 consentEpoch 加一，已同意的用户需要重新同意
+	Material *bool `json:"material,omitempty"`
 }
 
 // PublishPostData PublishPostData 除新帖本身外带回作者的帖子总数，供个人主页与「我的」页就地加一。
@@ -17205,6 +17431,19 @@ type RebuildIndexResponseBody struct {
 	Code *int64            `json:"code,omitempty"`
 	Data *RebuildIndexData `json:"data,omitempty"`
 	Msg  *string           `json:"msg,omitempty"`
+}
+
+// RecordConsentsRequestBody defines model for RecordConsentsRequestBody.
+type RecordConsentsRequestBody struct {
+	// AgreedAt 客户端记录的同意时刻（毫秒），用于登录前在登录页勾选的同意；晚于服务器时间按服务器时间，早于 24 小时前按 24 小时前
+	AgreedAt *int64 `json:"agreedAt,omitempty"`
+
+	// Client 客户端标识，如 poplar、web；小写字母数字与 ._-，最长 32
+	Client   *string             `json:"client,omitempty"`
+	Consents *[]ConsentAgreement `json:"consents,omitempty"`
+
+	// Platform 平台，如 ios、android、web；规则同 client
+	Platform *string `json:"platform,omitempty"`
 }
 
 // RecruitmentItem defines model for RecruitmentItem.
@@ -19598,6 +19837,15 @@ type UpdateItemRequestBody struct {
 	Visibility *string `json:"visibility,omitempty"`
 }
 
+// UpdateLegalDocumentRequestBody defines model for UpdateLegalDocumentRequestBody.
+type UpdateLegalDocumentRequestBody struct {
+	Content     *string `json:"content,omitempty"`
+	EffectiveAt *int64  `json:"effectiveAt,omitempty"`
+	Summary     *string `json:"summary,omitempty"`
+	Title       *string `json:"title,omitempty"`
+	Version     *string `json:"version,omitempty"`
+}
+
 // UpdateLoginClientRequestBody defines model for UpdateLoginClientRequestBody.
 type UpdateLoginClientRequestBody struct {
 	Description  *string   `json:"description,omitempty"`
@@ -19778,6 +20026,27 @@ type UpsertUserSocialIdentityRequestBody struct {
 type UpsertUserSocialIdentityResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
+}
+
+// UserConsentRecord defines model for UserConsentRecord.
+type UserConsentRecord struct {
+	AgreedAt     *int64  `json:"agreedAt,omitempty"`
+	Client       *string `json:"client,omitempty"`
+	ClientIp     *string `json:"clientIp,omitempty"`
+	ConsentEpoch *int32  `json:"consentEpoch,omitempty"`
+	CreatedAt    *int64  `json:"createdAt,omitempty"`
+	Id           *string `json:"id,omitempty"`
+	Locale       *string `json:"locale,omitempty"`
+	Platform     *string `json:"platform,omitempty"`
+	SessionId    *string `json:"sessionId,omitempty"`
+	Type         *string `json:"type,omitempty"`
+	UserAgent    *string `json:"userAgent,omitempty"`
+	Version      *string `json:"version,omitempty"`
+}
+
+// UserConsentRecordList defines model for UserConsentRecordList.
+type UserConsentRecordList struct {
+	Items *[]UserConsentRecord `json:"items,omitempty"`
 }
 
 // UserDetailAuthorization defines model for UserDetailAuthorization.
@@ -20853,6 +21122,15 @@ type KnowledgeServiceAdminUpdateSourceParams struct {
 	Id *string `form:"id,omitempty" json:"id,omitempty"`
 }
 
+// LegalServiceAdminListLegalDocumentsParams defines parameters for LegalServiceAdminListLegalDocuments.
+type LegalServiceAdminListLegalDocumentsParams struct {
+	Page     *int32  `form:"page,omitempty" json:"page,omitempty"`
+	PageSize *int32  `form:"page_size,omitempty" json:"page_size,omitempty"`
+	Type     *string `form:"type,omitempty" json:"type,omitempty"`
+	Locale   *string `form:"locale,omitempty" json:"locale,omitempty"`
+	Status   *string `form:"status,omitempty" json:"status,omitempty"`
+}
+
 // AdminServiceDeleteLoginClientParams defines parameters for AdminServiceDeleteLoginClient.
 type AdminServiceDeleteLoginClientParams struct {
 	Id *string `form:"id,omitempty" json:"id,omitempty"`
@@ -21911,6 +22189,11 @@ type AdminServiceDeleteUserSocialIdentityParams struct {
 	IdentityId *string `form:"identity_id,omitempty" json:"identity_id,omitempty"`
 }
 
+// LegalServiceAdminListUserConsentsParams defines parameters for LegalServiceAdminListUserConsents.
+type LegalServiceAdminListUserConsentsParams struct {
+	UserId *string `form:"user_id,omitempty" json:"user_id,omitempty"`
+}
+
 // CampusLifeServiceAdminListVolunteerActivitiesParams defines parameters for CampusLifeServiceAdminListVolunteerActivities.
 type CampusLifeServiceAdminListVolunteerActivitiesParams struct {
 	Page        *int32  `form:"page,omitempty" json:"page,omitempty"`
@@ -22444,6 +22727,17 @@ type InboxServiceListInboxParams struct {
 	History  *bool  `form:"history,omitempty" json:"history,omitempty"`
 }
 
+// LegalServiceListPublicLegalDocumentsParams defines parameters for LegalServiceListPublicLegalDocuments.
+type LegalServiceListPublicLegalDocumentsParams struct {
+	Locale *string `form:"locale,omitempty" json:"locale,omitempty"`
+}
+
+// LegalServiceGetPublicLegalDocumentParams defines parameters for LegalServiceGetPublicLegalDocument.
+type LegalServiceGetPublicLegalDocumentParams struct {
+	Locale  *string `form:"locale,omitempty" json:"locale,omitempty"`
+	Version *string `form:"version,omitempty" json:"version,omitempty"`
+}
+
 // LibraryBookingServiceBookingCalendarParams defines parameters for LibraryBookingServiceBookingCalendar.
 type LibraryBookingServiceBookingCalendarParams struct {
 	Token *string `form:"token,omitempty" json:"token,omitempty"`
@@ -22745,6 +23039,11 @@ type SubscriptionServiceUpdateSubscriptionParams struct {
 	Id string `form:"id" json:"id"`
 }
 
+// LegalServiceGetConsentStatusParams defines parameters for LegalServiceGetConsentStatus.
+type LegalServiceGetConsentStatusParams struct {
+	Locale *string `form:"locale,omitempty" json:"locale,omitempty"`
+}
+
 // CampusLifeServiceListVolunteerActivitiesParams defines parameters for CampusLifeServiceListVolunteerActivities.
 type CampusLifeServiceListVolunteerActivitiesParams struct {
 	Page        *int32  `form:"page,omitempty" json:"page,omitempty"`
@@ -22977,6 +23276,15 @@ type KnowledgeServiceAdminSetTaggingPromptJSONRequestBody = SetTaggingPromptRequ
 
 // KnowledgeServiceAdminPreviewTaggingPromptJSONRequestBody defines body for KnowledgeServiceAdminPreviewTaggingPrompt for application/json ContentType.
 type KnowledgeServiceAdminPreviewTaggingPromptJSONRequestBody = SetTaggingPromptRequestBody
+
+// LegalServiceCreateLegalDocumentJSONRequestBody defines body for LegalServiceCreateLegalDocument for application/json ContentType.
+type LegalServiceCreateLegalDocumentJSONRequestBody = CreateLegalDocumentRequestBody
+
+// LegalServiceUpdateLegalDocumentJSONRequestBody defines body for LegalServiceUpdateLegalDocument for application/json ContentType.
+type LegalServiceUpdateLegalDocumentJSONRequestBody = UpdateLegalDocumentRequestBody
+
+// LegalServicePublishLegalDocumentJSONRequestBody defines body for LegalServicePublishLegalDocument for application/json ContentType.
+type LegalServicePublishLegalDocumentJSONRequestBody = PublishLegalDocumentRequestBody
 
 // AdminServiceAdminLoginJSONRequestBody defines body for AdminServiceAdminLogin for application/json ContentType.
 type AdminServiceAdminLoginJSONRequestBody = AdminLoginRequestBody
@@ -23604,3 +23912,6 @@ type UploadServiceSignUploadJSONRequestBody = SignUploadRequestBody
 
 // UploadServiceRenewUploadURLsJSONRequestBody defines body for UploadServiceRenewUploadURLs for application/json ContentType.
 type UploadServiceRenewUploadURLsJSONRequestBody = UploadURLsRequestBody
+
+// LegalServiceRecordConsentsJSONRequestBody defines body for LegalServiceRecordConsents for application/json ContentType.
+type LegalServiceRecordConsentsJSONRequestBody = RecordConsentsRequestBody

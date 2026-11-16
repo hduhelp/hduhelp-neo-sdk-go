@@ -5731,6 +5731,184 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PreviewTaggingPromptResponseBody'
+    /hduhelp-neo/admin/legal/documents:
+        get:
+            tags:
+                - LegalService
+            operationId: LegalService_AdminListLegalDocuments
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: type
+                  in: query
+                  schema:
+                    type: string
+                - name: locale
+                  in: query
+                  schema:
+                    type: string
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminLegalDocumentPageResponseBody'
+        post:
+            tags:
+                - LegalService
+            operationId: LegalService_CreateLegalDocument
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateLegalDocumentRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminLegalDocumentResponseBody'
+    /hduhelp-neo/admin/legal/documents/{id}:
+        get:
+            tags:
+                - LegalService
+            operationId: LegalService_AdminGetLegalDocument
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminLegalDocumentResponseBody'
+        put:
+            tags:
+                - LegalService
+            operationId: LegalService_UpdateLegalDocument
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateLegalDocumentRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminLegalDocumentResponseBody'
+    /hduhelp-neo/admin/legal/documents/{id}/archive:
+        post:
+            tags:
+                - LegalService
+            operationId: LegalService_ArchiveLegalDocument
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminLegalDocumentResponseBody'
+    /hduhelp-neo/admin/legal/documents/{id}/publish:
+        post:
+            tags:
+                - LegalService
+            operationId: LegalService_PublishLegalDocument
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PublishLegalDocumentRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminLegalDocumentResponseBody'
+    /hduhelp-neo/admin/legal/documents/{id}/republish:
+        post:
+            tags:
+                - LegalService
+            operationId: LegalService_RepublishLegalDocument
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminLegalDocumentResponseBody'
+    /hduhelp-neo/admin/legal/types:
+        get:
+            tags:
+                - LegalService
+            operationId: LegalService_ListLegalDocumentTypes
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LegalDocumentTypesResponseBody'
     /hduhelp-neo/admin/login:
         post:
             tags:
@@ -13036,6 +13214,25 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/DeleteUserSocialIdentityResponseBody'
+    /hduhelp-neo/admin/users/consents:
+        get:
+            tags:
+                - LegalService
+            operationId: LegalService_AdminListUserConsents
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: user_id
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminUserConsentsResponseBody'
     /hduhelp-neo/admin/users/default-identity:
         put:
             tags:
@@ -17999,6 +18196,60 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/KnowledgeTagsResponseBody'
             x-hduhelp-http: {'requires_user': true, 'auth': 'bearer'}
+    /hduhelp-neo/legal/documents:
+        get:
+            tags:
+                - LegalService
+            summary: 当前生效的法律文档列表（公开）
+            description: 每个类型一份，只含元数据。登录前可用。
+            operationId: LegalService_ListPublicLegalDocuments
+            security: []
+            parameters:
+                - name: locale
+                  in: query
+                  schema:
+                    type: string
+                    description: 语言，缺省或没有该语言的文档时回落 zh-CN
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListPublicLegalDocumentsResponseBody'
+            x-hduhelp-http: {'requires_user': false, 'auth': 'public', 'catalog': 'sdk_only'}
+    /hduhelp-neo/legal/documents/{type}:
+        get:
+            tags:
+                - LegalService
+            summary: 法律文档正文（公开）
+            description: type 如 PRIVACY_POLICY；默认当前生效版本，传 version 取曾经生效过的版本。没有时返回 718000001。
+            operationId: LegalService_GetPublicLegalDocument
+            security: []
+            parameters:
+                - name: type
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: locale
+                  in: query
+                  schema:
+                    type: string
+                    description: 语言，缺省或没有该语言的文档时回落 zh-CN
+                - name: version
+                  in: query
+                  schema:
+                    type: string
+                    description: 指定曾经生效过的版本；缺省取当前生效版本
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PublicLegalDocumentResponseBody'
+            x-hduhelp-http: {'requires_user': false, 'auth': 'public', 'catalog': 'sdk_only'}
     /hduhelp-neo/library-booking/bookings:
         get:
             tags:
@@ -20572,6 +20823,51 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/UploadURLsResponseBody'
             x-hduhelp-http: {'requires_user': true, 'auth': 'bearer'}
+    /hduhelp-neo/user/consents:
+        post:
+            tags:
+                - LegalService
+            summary: 记录同意
+            description: version 必须是该类型曾经生效过的版本；与最近一次同意相同的记录不重复写。返回记录后的同意状态。只接受原生会话。
+            operationId: LegalService_RecordConsents
+            security:
+                - NativeSessionAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RecordConsentsRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ConsentStatusResponseBody'
+            x-hduhelp-http: {'requires_user': true, 'auth': 'native_session', 'request_body_required': true}
+    /hduhelp-neo/user/consents/status:
+        get:
+            tags:
+                - LegalService
+            summary: 隐私政策与用户协议的同意状态
+            description: requiresConsent 为真时客户端应请用户（重新）同意。只接受原生会话。
+            operationId: LegalService_GetConsentStatus
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: locale
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ConsentStatusResponseBody'
+            x-hduhelp-http: {'requires_user': true, 'auth': 'native_session'}
     /hduhelp-neo/volunteer/volunteer-activities:
         get:
             tags:
@@ -21335,6 +21631,90 @@ components:
                         $ref: '#/components/schemas/AdminImpersonationLog'
                 hasMore:
                     type: boolean
+        AdminLegalDocument:
+            type: object
+            properties:
+                id:
+                    type: string
+                type:
+                    type: string
+                locale:
+                    type: string
+                version:
+                    type: string
+                title:
+                    type: string
+                summary:
+                    type: string
+                content:
+                    type: string
+                    description: 列表不返回正文
+                status:
+                    enum:
+                        - DRAFT
+                        - SCHEDULED
+                        - PUBLISHED
+                        - ARCHIVED
+                    type: string
+                consentEpoch:
+                    type: integer
+                    description: 草稿为 0，发布时确定
+                    format: int32
+                material:
+                    type: boolean
+                    description: 发布时是否按重大变更（需要重新同意）
+                effectiveAt:
+                    type: integer
+                    format: int64
+                publishedAt:
+                    type: integer
+                    format: int64
+                createdBy:
+                    type: string
+                publishedBy:
+                    type: string
+                createdAt:
+                    type: integer
+                    format: int64
+                updatedAt:
+                    type: integer
+                    format: int64
+        AdminLegalDocumentPage:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AdminLegalDocument'
+                total:
+                    type: integer
+                    format: int64
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+        AdminLegalDocumentPageResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminLegalDocumentPage'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AdminLegalDocumentResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AdminLegalDocument'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AdminLoginClientInfo:
             type: object
             properties:
@@ -22097,6 +22477,16 @@ components:
                     type: integer
                     format: int64
             description: '-------------------- 租户（接入方）管理 --------------------'
+        AdminUserConsentsResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/UserConsentRecordList'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AdminUserDetail:
             type: object
             properties:
@@ -28878,6 +29268,72 @@ components:
                     type: string
                 confirmation_token:
                     type: string
+        ConsentAgreement:
+            type: object
+            properties:
+                type:
+                    enum:
+                        - PRIVACY_POLICY
+                        - USER_AGREEMENT
+                    type: string
+                version:
+                    type: string
+                locale:
+                    type: string
+                    description: 用户看到的文档语言，缺省 zh-CN
+        ConsentStatus:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ConsentStatusItem'
+                    description: 只含已发布的需同意类型；没有发布的类型不出现
+                requiresConsent:
+                    type: boolean
+                    description: 任一类型需要（重新）同意
+        ConsentStatusItem:
+            type: object
+            properties:
+                type:
+                    type: string
+                locale:
+                    type: string
+                title:
+                    type: string
+                summary:
+                    type: string
+                activeVersion:
+                    type: string
+                activeEpoch:
+                    type: integer
+                    format: int32
+                effectiveAt:
+                    type: integer
+                    format: int64
+                agreedVersion:
+                    type: string
+                agreedEpoch:
+                    type: integer
+                    description: 用户同意过的最高 epoch，从未同意为 0
+                    format: int32
+                agreedAt:
+                    type: integer
+                    format: int64
+                requiresConsent:
+                    type: boolean
+                    description: activeEpoch > agreedEpoch
+            description: 一类需要用户同意的文档（隐私政策、用户协议）的同意状态。
+        ConsentStatusResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ConsentStatus'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         Course:
             type: object
             properties:
@@ -29440,6 +29896,31 @@ components:
                 upload_key:
                     type: string
                     description: 'kind=file: 上传接口返回的稳定对象 key'
+        CreateLegalDocumentRequestBody:
+            type: object
+            properties:
+                type:
+                    maxLength: 48
+                    type: string
+                locale:
+                    type: string
+                    description: 缺省 zh-CN
+                version:
+                    maxLength: 64
+                    type: string
+                title:
+                    maxLength: 128
+                    type: string
+                summary:
+                    maxLength: 1000
+                    type: string
+                    description: 本次更新摘要，重新同意弹窗里展示
+                content:
+                    type: string
+                effectiveAt:
+                    type: integer
+                    description: 生效时刻（毫秒）；晚于发布时刻则发布后进入 SCHEDULED，缺省或已过按发布时刻
+                    format: int64
         CreateLoginClientRequestBody:
             type: object
             properties:
@@ -33034,6 +33515,35 @@ components:
                     format: int64
                 msg:
                     type: string
+        LegalDocumentType:
+            type: object
+            properties:
+                type:
+                    type: string
+                label:
+                    type: string
+                consentRequired:
+                    type: boolean
+                slug:
+                    type: string
+                    description: 学生端网页路径 /legal/<slug>
+        LegalDocumentTypeList:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/LegalDocumentType'
+        LegalDocumentTypesResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/LegalDocumentTypeList'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         LibraryAttendanceData:
             type: object
             properties:
@@ -33289,6 +33799,16 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/ListPATScopesData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        ListPublicLegalDocumentsResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/PublicLegalDocumentList'
                 code:
                     type: integer
                     format: int64
@@ -43939,6 +44459,49 @@ components:
                     format: int64
                 msg:
                     type: string
+        PublicLegalDocument:
+            type: object
+            properties:
+                type:
+                    type: string
+                locale:
+                    type: string
+                version:
+                    type: string
+                title:
+                    type: string
+                summary:
+                    type: string
+                consentEpoch:
+                    type: integer
+                    format: int32
+                effectiveAt:
+                    type: integer
+                    format: int64
+                publishedAt:
+                    type: integer
+                    format: int64
+                content:
+                    type: string
+                    description: Markdown 正文，只在详情接口返回
+            description: 当前生效（或曾经生效）的一份法律文档。列表只给元数据，content 只在详情里有。
+        PublicLegalDocumentList:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PublicLegalDocument'
+        PublicLegalDocumentResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/PublicLegalDocument'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         PublishAdminNoticeResponseBody:
             required:
                 - code
@@ -43964,6 +44527,12 @@ components:
                 publish_as_app_id:
                     type: string
                     description: publishAsAppId 是以本人所在的某个官方号身份评论或回复。
+        PublishLegalDocumentRequestBody:
+            type: object
+            properties:
+                material:
+                    type: boolean
+                    description: 重大变更：该类型的 consentEpoch 加一，已同意的用户需要重新同意
         PublishPostData:
             type: object
             properties:
@@ -44213,6 +44782,25 @@ components:
                     format: int64
                 msg:
                     type: string
+        RecordConsentsRequestBody:
+            type: object
+            properties:
+                consents:
+                    maxItems: 8
+                    minItems: 1
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ConsentAgreement'
+                agreedAt:
+                    type: integer
+                    description: 客户端记录的同意时刻（毫秒），用于登录前在登录页勾选的同意；晚于服务器时间按服务器时间，早于 24 小时前按 24 小时前
+                    format: int64
+                client:
+                    type: string
+                    description: 客户端标识，如 poplar、web；小写字母数字与 ._-，最长 32
+                platform:
+                    type: string
+                    description: 平台，如 ios、android、web；规则同 client
         RecruitmentItem:
             type: object
             properties:
@@ -47857,6 +48445,23 @@ components:
                 visibility:
                     type: string
                     description: public | internal
+        UpdateLegalDocumentRequestBody:
+            type: object
+            properties:
+                version:
+                    maxLength: 64
+                    type: string
+                title:
+                    maxLength: 128
+                    type: string
+                summary:
+                    maxLength: 1000
+                    type: string
+                content:
+                    type: string
+                effectiveAt:
+                    type: integer
+                    format: int64
         UpdateLoginClientRequestBody:
             type: object
             properties:
@@ -48116,6 +48721,43 @@ components:
                     format: int64
                 msg:
                     type: string
+        UserConsentRecord:
+            type: object
+            properties:
+                id:
+                    type: string
+                type:
+                    type: string
+                version:
+                    type: string
+                locale:
+                    type: string
+                consentEpoch:
+                    type: integer
+                    format: int32
+                agreedAt:
+                    type: integer
+                    format: int64
+                client:
+                    type: string
+                platform:
+                    type: string
+                sessionId:
+                    type: string
+                clientIp:
+                    type: string
+                userAgent:
+                    type: string
+                createdAt:
+                    type: integer
+                    format: int64
+        UserConsentRecordList:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/UserConsentRecord'
         UserDetailAuthorization:
             type: object
             properties:
@@ -48572,6 +49214,7 @@ tags:
         ============================================================================
         Service
         ============================================================================
+    - name: LegalService
     - name: LibraryBookingService
     - name: MessagingService
     - name: ModelGatewayObservabilityService

@@ -22,6 +22,7 @@ import (
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/identity"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/inbox"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/knowledge"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/legal"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/librarybooking"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/messaging"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/modelgateway"
@@ -57,6 +58,7 @@ type Client struct {
 	Identity                  *identity.Service
 	Inbox                     *inbox.Service
 	Knowledge                 *knowledge.Service
+	Legal                     *legal.Service
 	LibraryBooking            *librarybooking.Service
 	Messaging                 *messaging.Service
 	ModelGateway              *modelgateway.Service
@@ -89,6 +91,7 @@ func attachServices(c *Client) {
 	c.Identity = identity.NewService(c.config)
 	c.Inbox = inbox.NewService(c.config)
 	c.Knowledge = knowledge.NewService(c.config)
+	c.Legal = legal.NewService(c.config)
 	c.LibraryBooking = librarybooking.NewService(c.config)
 	c.Messaging = messaging.NewService(c.config)
 	c.ModelGateway = modelgateway.NewService(c.config)
