@@ -4006,6 +4006,55 @@ type AcademicYearTerm struct {
 	Semester *string `json:"semester,omitempty"`
 }
 
+// AccountDeletionBlocker ---- 账号注销（仅原生会话；规则见 docs/account-deletion.md） ----
+type AccountDeletionBlocker struct {
+	// Code operator_bound | official_sole_admin | impersonated_session
+	Code *string `json:"code,omitempty"`
+
+	// Items 涉及的对象名（官方号名称），没有则为空
+	Items *[]string `json:"items,omitempty"`
+
+	// Message 直接展示给用户的原因与处理办法
+	Message *string `json:"message,omitempty"`
+}
+
+// AccountDeletionData defines model for AccountDeletionData.
+type AccountDeletionData struct {
+	// Blockers 非空时不能申请（仅 active 时计算）
+	Blockers *[]AccountDeletionBlocker `json:"blockers,omitempty"`
+
+	// CanCancel 注销中且尚未开始执行
+	CanCancel *bool `json:"canCancel,omitempty"`
+
+	// ConfirmText 申请时需原样输入的确认文字
+	ConfirmText *string `json:"confirmText,omitempty"`
+
+	// CoolingOffDays 冷静期天数
+	CoolingOffDays *int32 `json:"coolingOffDays,omitempty"`
+
+	// DaysRemaining 距执行还有几天（向上取整）
+	DaysRemaining *int32 `json:"daysRemaining,omitempty"`
+
+	// ReauthRequired 当前会话不是 10 分钟内登录的，需重新登录后再申请
+	ReauthRequired *bool `json:"reauthRequired,omitempty"`
+
+	// RequestedAt unix millis
+	RequestedAt *int64 `json:"requestedAt,omitempty"`
+
+	// ScheduledAt unix millis：冷静期截止，到点执行注销
+	ScheduledAt *int64 `json:"scheduledAt,omitempty"`
+
+	// Status active | pending_deletion
+	Status *string `json:"status,omitempty"`
+}
+
+// AccountDeletionResponseBody defines model for AccountDeletionResponseBody.
+type AccountDeletionResponseBody struct {
+	Code *int64               `json:"code,omitempty"`
+	Data *AccountDeletionData `json:"data,omitempty"`
+	Msg  *string              `json:"msg,omitempty"`
+}
+
 // Activity defines model for Activity.
 type Activity struct {
 	ActivityContent      *string `json:"activityContent,omitempty"`
@@ -4858,6 +4907,12 @@ type AdminUserDetail struct {
 	CreatedAt           *int64                      `json:"createdAt,omitempty"`
 	DefaultIdentityType *string                     `json:"defaultIdentityType,omitempty"`
 
+	// DeletionRequestedAt 账号注销冷静期中：申请时间（unix millis）
+	DeletionRequestedAt *int64 `json:"deletionRequestedAt,omitempty"`
+
+	// DeletionScheduledAt 账号注销冷静期中：到点执行注销的时间（unix millis）
+	DeletionScheduledAt *int64 `json:"deletionScheduledAt,omitempty"`
+
 	// Email 打码
 	Email                *string                          `json:"email,omitempty"`
 	GroupMemberships     *[]UserDetailGroupMembership     `json:"groupMemberships,omitempty"`
@@ -4879,12 +4934,18 @@ type AdminUserInfo struct {
 	BanReason *string `json:"banReason,omitempty"`
 	BannedAt  *int64  `json:"bannedAt,omitempty"`
 	CreatedAt *int64  `json:"createdAt,omitempty"`
-	Id        *string `json:"id,omitempty"`
-	NickName  *string `json:"nickName,omitempty"`
-	StaffId   *string `json:"staffId,omitempty"`
-	StaffName *string `json:"staffName,omitempty"`
-	Status    *string `json:"status,omitempty"`
-	UnitName  *string `json:"unitName,omitempty"`
+
+	// DeletionRequestedAt 账号注销冷静期中：申请时间（unix millis）
+	DeletionRequestedAt *int64 `json:"deletionRequestedAt,omitempty"`
+
+	// DeletionScheduledAt 账号注销冷静期中：到点执行注销的时间（unix millis）
+	DeletionScheduledAt *int64  `json:"deletionScheduledAt,omitempty"`
+	Id                  *string `json:"id,omitempty"`
+	NickName            *string `json:"nickName,omitempty"`
+	StaffId             *string `json:"staffId,omitempty"`
+	StaffName           *string `json:"staffName,omitempty"`
+	Status              *string `json:"status,omitempty"`
+	UnitName            *string `json:"unitName,omitempty"`
 }
 
 // AdminUserState AdminUserState 汇总一个用户在社区里的处置历史，供审核员判断是否惯犯。
@@ -17643,6 +17704,11 @@ type ReportStateResponseBody struct {
 	Msg  *string          `json:"msg,omitempty"`
 }
 
+// RequestAccountDeletionRequestBody defines model for RequestAccountDeletionRequestBody.
+type RequestAccountDeletionRequestBody struct {
+	ConfirmText *string `json:"confirm_text,omitempty"`
+}
+
 // ResetOperatorPasswordRequestBody defines model for ResetOperatorPasswordRequestBody.
 type ResetOperatorPasswordRequestBody struct {
 	NewPassword *string `json:"new_password,omitempty"`
@@ -23729,6 +23795,9 @@ type GroupChatServiceCreateGroupJSONRequestBody = CreateGroupRequestBody
 
 // GroupChatServiceCreateRecruitChatGroupJSONRequestBody defines body for GroupChatServiceCreateRecruitChatGroup for application/json ContentType.
 type GroupChatServiceCreateRecruitChatGroupJSONRequestBody = CreateRecruitChatGroupRequestBody
+
+// IdentityServiceRequestAccountDeletionJSONRequestBody defines body for IdentityServiceRequestAccountDeletion for application/json ContentType.
+type IdentityServiceRequestAccountDeletionJSONRequestBody = RequestAccountDeletionRequestBody
 
 // IdentityServiceMergeConfirmJSONRequestBody defines body for IdentityServiceMergeConfirm for application/json ContentType.
 type IdentityServiceMergeConfirmJSONRequestBody = MergeConfirmRequestBody

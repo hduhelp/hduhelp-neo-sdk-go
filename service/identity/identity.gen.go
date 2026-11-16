@@ -380,6 +380,132 @@ func (s *Service) RevokeCurrentPAT(ctx context.Context, req *RevokeCurrentPATReq
 	return resp, err
 }
 
+// GetAccountDeletionReq is the request for GetAccountDeletion.
+type GetAccountDeletionReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// GetAccountDeletionReqBuilder builds a GetAccountDeletionReq with a fluent setter per field.
+type GetAccountDeletionReqBuilder struct{ req *GetAccountDeletionReq }
+
+// NewGetAccountDeletionReqBuilder creates a request builder for GetAccountDeletion.
+func NewGetAccountDeletionReqBuilder() *GetAccountDeletionReqBuilder {
+	return &GetAccountDeletionReqBuilder{req: &GetAccountDeletionReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *GetAccountDeletionReqBuilder) Build() *GetAccountDeletionReq { return b.req }
+
+// GetAccountDeletionResp is the response for GetAccountDeletion.
+type GetAccountDeletionResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AccountDeletionData `json:"data"`
+}
+
+// GetAccountDeletion: 账号注销状态与预检
+func (s *Service) GetAccountDeletion(ctx context.Context, req *GetAccountDeletionReq, opts ...core.RequestOption) (*GetAccountDeletionResp, error) {
+	resp := &GetAccountDeletionResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/identity/account/deletion",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// RequestAccountDeletionReq is the request for RequestAccountDeletion.
+type RequestAccountDeletionReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// RequestAccountDeletionReqBuilder builds a RequestAccountDeletionReq with a fluent setter per field.
+type RequestAccountDeletionReqBuilder struct{ req *RequestAccountDeletionReq }
+
+// NewRequestAccountDeletionReqBuilder creates a request builder for RequestAccountDeletion.
+func NewRequestAccountDeletionReqBuilder() *RequestAccountDeletionReqBuilder {
+	return &RequestAccountDeletionReqBuilder{req: &RequestAccountDeletionReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *RequestAccountDeletionReqBuilder) Body(body *models.RequestAccountDeletionRequestBody) *RequestAccountDeletionReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *RequestAccountDeletionReqBuilder) Build() *RequestAccountDeletionReq { return b.req }
+
+// RequestAccountDeletionResp is the response for RequestAccountDeletion.
+type RequestAccountDeletionResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AccountDeletionData `json:"data"`
+}
+
+// RequestAccountDeletion: 申请注销账号
+func (s *Service) RequestAccountDeletion(ctx context.Context, req *RequestAccountDeletionReq, opts ...core.RequestOption) (*RequestAccountDeletionResp, error) {
+	resp := &RequestAccountDeletionResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/identity/account/deletion",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// CancelAccountDeletionReq is the request for CancelAccountDeletion.
+type CancelAccountDeletionReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// CancelAccountDeletionReqBuilder builds a CancelAccountDeletionReq with a fluent setter per field.
+type CancelAccountDeletionReqBuilder struct{ req *CancelAccountDeletionReq }
+
+// NewCancelAccountDeletionReqBuilder creates a request builder for CancelAccountDeletion.
+func NewCancelAccountDeletionReqBuilder() *CancelAccountDeletionReqBuilder {
+	return &CancelAccountDeletionReqBuilder{req: &CancelAccountDeletionReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *CancelAccountDeletionReqBuilder) Build() *CancelAccountDeletionReq { return b.req }
+
+// CancelAccountDeletionResp is the response for CancelAccountDeletion.
+type CancelAccountDeletionResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AccountDeletionData `json:"data"`
+}
+
+// CancelAccountDeletion: 撤销注销
+func (s *Service) CancelAccountDeletion(ctx context.Context, req *CancelAccountDeletionReq, opts ...core.RequestOption) (*CancelAccountDeletionResp, error) {
+	resp := &CancelAccountDeletionResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/identity/account/deletion",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // MergeConfirmReq is the request for MergeConfirm.
 type MergeConfirmReq struct {
 	pathParams  map[string]string

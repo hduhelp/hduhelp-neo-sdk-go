@@ -16712,6 +16712,60 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/CreateRecruitChatGroupResponseBody'
             x-hduhelp-http: {'requires_user': false, 'auth': 'bearer'}
+    /hduhelp-neo/identity/account/deletion:
+        get:
+            tags:
+                - IdentityService
+            summary: 账号注销状态与预检
+            description: 返回注销状态（active / pending_deletion）、冷静期截止时间与剩余天数；未申请时附带预检：blockers 非空（绑定了运营账号、是官方号唯一管理员、代登录会话）或 reauthRequired 为真时不能申请。注销冷静期内仍可调用。仅原生会话可调用。
+            operationId: IdentityService_GetAccountDeletion
+            security:
+                - NativeSessionAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AccountDeletionResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+        post:
+            tags:
+                - IdentityService
+            summary: 申请注销账号
+            description: confirm_text 必须为「注销账号」；当前会话须在 10 分钟内登录（否则 710000463），有 blockers 时拒绝（710000461）。成功后进入 30 天冷静期：除注销状态、撤销注销、退出登录、反馈外的接口一律返回 HTTP 403 + 710000460，到期后删除或匿名化个人数据。已在冷静期内重复申请返回现有状态，不顺延。仅原生会话可调用。
+            operationId: IdentityService_RequestAccountDeletion
+            security:
+                - NativeSessionAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RequestAccountDeletionRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AccountDeletionResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+        delete:
+            tags:
+                - IdentityService
+            summary: 撤销注销
+            description: 冷静期内撤销注销申请，账号立即恢复正常；已开始执行时返回 710000464。未申请时幂等返回当前状态。冷静期内仍可调用。仅原生会话可调用。
+            operationId: IdentityService_CancelAccountDeletion
+            security:
+                - NativeSessionAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AccountDeletionResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/identity/account/merge/confirm:
         post:
             tags:
@@ -21048,6 +21102,67 @@ components:
                 disabledReason:
                     type: string
                     description: 展示给用户的禁用理由
+        AccountDeletionBlocker:
+            type: object
+            properties:
+                code:
+                    type: string
+                    description: operator_bound | official_sole_admin | impersonated_session
+                message:
+                    type: string
+                    description: 直接展示给用户的原因与处理办法
+                items:
+                    type: array
+                    items:
+                        type: string
+                    description: 涉及的对象名（官方号名称），没有则为空
+            description: '---- 账号注销（仅原生会话；规则见 docs/account-deletion.md） ----'
+        AccountDeletionData:
+            type: object
+            properties:
+                status:
+                    type: string
+                    description: active | pending_deletion
+                requestedAt:
+                    type: integer
+                    description: unix millis
+                    format: int64
+                scheduledAt:
+                    type: integer
+                    description: unix millis：冷静期截止，到点执行注销
+                    format: int64
+                daysRemaining:
+                    type: integer
+                    description: 距执行还有几天（向上取整）
+                    format: int32
+                canCancel:
+                    type: boolean
+                    description: 注销中且尚未开始执行
+                coolingOffDays:
+                    type: integer
+                    description: 冷静期天数
+                    format: int32
+                blockers:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AccountDeletionBlocker'
+                    description: 非空时不能申请（仅 active 时计算）
+                reauthRequired:
+                    type: boolean
+                    description: 当前会话不是 10 分钟内登录的，需重新登录后再申请
+                confirmText:
+                    type: string
+                    description: 申请时需原样输入的确认文字
+        AccountDeletionResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AccountDeletionData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         Activity:
             type: object
             properties:
@@ -22542,6 +22657,14 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/UserDetailPersonalAccessToken'
+                deletionRequestedAt:
+                    type: integer
+                    description: 账号注销冷静期中：申请时间（unix millis）
+                    format: int64
+                deletionScheduledAt:
+                    type: integer
+                    description: 账号注销冷静期中：到点执行注销的时间（unix millis）
+                    format: int64
         AdminUserInfo:
             type: object
             properties:
@@ -22567,6 +22690,14 @@ components:
                     type: string
                 unitName:
                     type: string
+                deletionRequestedAt:
+                    type: integer
+                    description: 账号注销冷静期中：申请时间（unix millis）
+                    format: int64
+                deletionScheduledAt:
+                    type: integer
+                    description: 账号注销冷静期中：到点执行注销的时间（unix millis）
+                    format: int64
         AdminUserState:
             type: object
             properties:
@@ -45105,6 +45236,11 @@ components:
                     type: integer
                     format: int64
                 msg:
+                    type: string
+        RequestAccountDeletionRequestBody:
+            type: object
+            properties:
+                confirm_text:
                     type: string
         ResetOperatorPasswordRequestBody:
             type: object
