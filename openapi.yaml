@@ -18055,6 +18055,11 @@ paths:
                   in: query
                   schema:
                     type: boolean
+                - name: filter
+                  in: query
+                  description: pending：只看待确认（按截止时间从近到远）；unread：只看未读。与 history 互斥，留空为全部。
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -18078,6 +18083,22 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/InboxCountersResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/inbox/read-all:
+        post:
+            tags:
+                - InboxService
+            summary: 全部标为已读
+            operationId: InboxService_MarkAllInboxRead
+            security:
+                - NativeSessionAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InboxMutationResponseBody'
             x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/inbox/{id}:
         get:
@@ -32679,6 +32700,9 @@ components:
                     type: boolean
                 recalled:
                     type: boolean
+                topic:
+                    type: string
+                    description: 产生这条通知的主题（如 admin.notice、subscription.exam_reminder），客户端按它选图标；旧数据可能为空。
         InboxEntryResponseBody:
             type: object
             properties:
@@ -34335,6 +34359,13 @@ components:
                     type: integer
                     format: int64
                 msg:
+                    type: string
+        MemberAvailability:
+            type: object
+            properties:
+                userId:
+                    type: string
+                displayName:
                     type: string
         MemberInfo:
             type: object
@@ -47446,6 +47477,12 @@ components:
                 period:
                     type: integer
                     format: int32
+                freeStudents:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/MemberAvailability'
+                allFree:
+                    type: boolean
         SocialBinding:
             type: object
             properties:

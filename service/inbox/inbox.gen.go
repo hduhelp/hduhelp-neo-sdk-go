@@ -50,6 +50,12 @@ func (b *ListInboxReqBuilder) History(v bool) *ListInboxReqBuilder {
 	return b
 }
 
+// Filter sets the "filter" query parameter: pending：只看待确认（按截止时间从近到远）；unread：只看未读。与 history 互斥，留空为全部。
+func (b *ListInboxReqBuilder) Filter(v string) *ListInboxReqBuilder {
+	b.req.queryParams["filter"] = v
+	return b
+}
+
 // Build finalizes the request.
 func (b *ListInboxReqBuilder) Build() *ListInboxReq { return b.req }
 
@@ -106,6 +112,45 @@ func (s *Service) GetInboxCounters(ctx context.Context, req *GetInboxCountersReq
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/inbox/counters",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// MarkAllInboxReadReq is the request for MarkAllInboxRead.
+type MarkAllInboxReadReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// MarkAllInboxReadReqBuilder builds a MarkAllInboxReadReq with a fluent setter per field.
+type MarkAllInboxReadReqBuilder struct{ req *MarkAllInboxReadReq }
+
+// NewMarkAllInboxReadReqBuilder creates a request builder for MarkAllInboxRead.
+func NewMarkAllInboxReadReqBuilder() *MarkAllInboxReadReqBuilder {
+	return &MarkAllInboxReadReqBuilder{req: &MarkAllInboxReadReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *MarkAllInboxReadReqBuilder) Build() *MarkAllInboxReadReq { return b.req }
+
+// MarkAllInboxReadResp is the response for MarkAllInboxRead.
+type MarkAllInboxReadResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// MarkAllInboxRead: 全部标为已读
+func (s *Service) MarkAllInboxRead(ctx context.Context, req *MarkAllInboxReadReq, opts ...core.RequestOption) (*MarkAllInboxReadResp, error) {
+	resp := &MarkAllInboxReadResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/inbox/read-all",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

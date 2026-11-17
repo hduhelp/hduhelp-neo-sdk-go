@@ -11006,6 +11006,9 @@ type InboxEntry struct {
 	RequiresAck    *bool        `json:"requiresAck,omitempty"`
 	Summary        *string      `json:"summary,omitempty"`
 	Title          *string      `json:"title,omitempty"`
+
+	// Topic 产生这条通知的主题（如 admin.notice、subscription.exam_reminder），客户端按它选图标；旧数据可能为空。
+	Topic *string `json:"topic,omitempty"`
 }
 
 // InboxEntryResponseBody defines model for InboxEntryResponseBody.
@@ -12193,6 +12196,12 @@ type MeResponseBody struct {
 	Code *int64    `json:"code,omitempty"`
 	Data *UserInfo `json:"data,omitempty"`
 	Msg  *string   `json:"msg,omitempty"`
+}
+
+// MemberAvailability defines model for MemberAvailability.
+type MemberAvailability struct {
+	DisplayName *string `json:"displayName,omitempty"`
+	UserId      *string `json:"userId,omitempty"`
 }
 
 // MemberInfo ---- Room detail: room + members + history events + favorite flags ----
@@ -19150,9 +19159,11 @@ type SiteAnnouncementResponseBody struct {
 
 // Slot defines model for Slot.
 type Slot struct {
-	Day    *int32 `json:"day,omitempty"`
-	Period *int32 `json:"period,omitempty"`
-	Week   *int32 `json:"week,omitempty"`
+	AllFree      *bool                 `json:"allFree,omitempty"`
+	Day          *int32                `json:"day,omitempty"`
+	FreeStudents *[]MemberAvailability `json:"freeStudents,omitempty"`
+	Period       *int32                `json:"period,omitempty"`
+	Week         *int32                `json:"week,omitempty"`
 }
 
 // SocialBinding defines model for SocialBinding.
@@ -22791,6 +22802,9 @@ type InboxServiceListInboxParams struct {
 	Page     *int32 `form:"page,omitempty" json:"page,omitempty"`
 	PageSize *int32 `form:"page_size,omitempty" json:"page_size,omitempty"`
 	History  *bool  `form:"history,omitempty" json:"history,omitempty"`
+
+	// Filter pending：只看待确认（按截止时间从近到远）；unread：只看未读。与 history 互斥，留空为全部。
+	Filter *string `form:"filter,omitempty" json:"filter,omitempty"`
 }
 
 // LegalServiceListPublicLegalDocumentsParams defines parameters for LegalServiceListPublicLegalDocuments.
