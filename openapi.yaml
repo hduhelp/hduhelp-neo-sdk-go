@@ -11690,8 +11690,8 @@ paths:
     /hduhelp-neo/admin/notices:
         get:
             tags:
-                - AdminNoticeService
-            operationId: AdminNoticeService_ListAdminNotices
+                - AnnouncementService
+            operationId: AnnouncementService_ListAnnouncements
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -11715,12 +11715,12 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/AdminNoticePageResponseBody'
+                                $ref: '#/components/schemas/AnnouncementPageResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
         post:
             tags:
-                - AdminNoticeService
-            operationId: AdminNoticeService_CreateAdminNotice
+                - AnnouncementService
+            operationId: AnnouncementService_CreateAnnouncement
             security:
                 - OperatorBearerAuth: []
             requestBody:
@@ -11728,20 +11728,20 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/CreateAdminNoticeRequestBody'
+                            $ref: '#/components/schemas/CreateAnnouncementRequestBody'
             responses:
                 "200":
                     description: Successful response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/AdminNoticeResponseBody'
+                                $ref: '#/components/schemas/AnnouncementResponseBody'
             x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
     /hduhelp-neo/admin/notices/{id}:
         get:
             tags:
-                - AdminNoticeService
-            operationId: AdminNoticeService_GetAdminNotice
+                - AnnouncementService
+            operationId: AnnouncementService_GetAnnouncement
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -11756,12 +11756,12 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/AdminNoticeResponseBody'
+                                $ref: '#/components/schemas/AnnouncementResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
         put:
             tags:
-                - AdminNoticeService
-            operationId: AdminNoticeService_UpdateAdminNotice
+                - AnnouncementService
+            operationId: AnnouncementService_UpdateAnnouncement
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -11775,19 +11775,19 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/UpdateAdminNoticeRequestBody'
+                            $ref: '#/components/schemas/UpdateAnnouncementRequestBody'
             responses:
                 "200":
                     description: Successful response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/AdminNoticeResponseBody'
+                                $ref: '#/components/schemas/AnnouncementResponseBody'
             x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
         delete:
             tags:
-                - AdminNoticeService
-            operationId: AdminNoticeService_DeleteAdminNotice
+                - AnnouncementService
+            operationId: AnnouncementService_DeleteAnnouncement
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -11802,13 +11802,13 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/DeleteAdminNoticeResponseBody'
+                                $ref: '#/components/schemas/DeleteAnnouncementResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/notices/{id}/audience:
         get:
             tags:
-                - AdminNoticeService
-            operationId: AdminNoticeService_ListAdminNoticeAudience
+                - AnnouncementService
+            operationId: AnnouncementService_ListAnnouncementAudience
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -11844,13 +11844,35 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/AdminNoticeAudiencePageResponseBody'
+                                $ref: '#/components/schemas/AnnouncementAudiencePageResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/notices/{id}/preview:
+        post:
+            tags:
+                - AnnouncementService
+            summary: 预览公告在各渠道的样子
+            operationId: AnnouncementService_PreviewAnnouncement
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NoticePreviewResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/notices/{id}/publish:
         post:
             tags:
-                - AdminNoticeService
-            operationId: AdminNoticeService_PublishAdminNotice
+                - AnnouncementService
+            operationId: AnnouncementService_PublishAnnouncement
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -11865,13 +11887,63 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/PublishAdminNoticeResponseBody'
+                                $ref: '#/components/schemas/PublishAnnouncementResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
+    /hduhelp-neo/admin/notices/{id}/recall:
+        post:
+            tags:
+                - AnnouncementService
+            summary: 撤回已发布的公告
+            operationId: AnnouncementService_RecallAnnouncement
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RecallAnnouncementRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AnnouncementResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/notices/{id}/test-send:
+        post:
+            tags:
+                - AnnouncementService
+            summary: 把公告试发给自己
+            operationId: AnnouncementService_TestSendAnnouncement
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AnnouncementResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/notices/{id}/validate:
         post:
             tags:
-                - AdminNoticeService
-            operationId: AdminNoticeService_ValidateAdminNoticePublication
+                - AnnouncementService
+            operationId: AnnouncementService_ValidateAnnouncementPublication
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -11886,7 +11958,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/ValidateAdminNoticeResponseBody'
+                                $ref: '#/components/schemas/ValidateAnnouncementResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/notifications/deliveries/{id}:
         get:
@@ -11909,167 +11981,6 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/DeliveryResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
-    /hduhelp-neo/admin/notifications/policy-profiles:
-        get:
-            tags:
-                - NotificationService
-            operationId: NotificationService_ListNotificationPolicyProfiles
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: topic_key
-                  required: true
-                  in: query
-                  schema:
-                    type: string
-                - name: include_disabled
-                  in: query
-                  schema:
-                    type: boolean
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/PolicyProfilesResponseBody'
-            x-hduhelp-http: {'auth': 'operator'}
-        post:
-            tags:
-                - NotificationService
-            operationId: NotificationService_CreateNotificationPolicyProfile
-            security:
-                - OperatorBearerAuth: []
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/CreatePolicyProfileRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/PolicyProfileResponseBody'
-            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
-    /hduhelp-neo/admin/notifications/policy-profiles/{id}:
-        get:
-            tags:
-                - NotificationService
-            operationId: NotificationService_GetNotificationPolicyProfile
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/PolicyProfileResponseBody'
-            x-hduhelp-http: {'auth': 'operator'}
-        delete:
-            tags:
-                - NotificationService
-            operationId: NotificationService_DisableNotificationPolicyProfile
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/PolicyProfileResponseBody'
-            x-hduhelp-http: {'auth': 'operator'}
-    /hduhelp-neo/admin/notifications/policy-profiles/{id}/default:
-        put:
-            tags:
-                - NotificationService
-            operationId: NotificationService_SetDefaultNotificationPolicyProfile
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/PolicyProfileResponseBody'
-            x-hduhelp-http: {'auth': 'operator'}
-    /hduhelp-neo/admin/notifications/policy-profiles/{id}/name:
-        put:
-            tags:
-                - NotificationService
-            operationId: NotificationService_RenameNotificationPolicyProfile
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/RenamePolicyProfileRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/PolicyProfileResponseBody'
-            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
-    /hduhelp-neo/admin/notifications/policy-profiles/{id}/policy:
-        put:
-            tags:
-                - NotificationService
-            operationId: NotificationService_UpdateNotificationPolicyProfile
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/UpdatePolicyProfileRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/PolicyProfileResponseBody'
-            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
     /hduhelp-neo/admin/notifications/providers/test:
         post:
             tags:
@@ -12229,6 +12140,34 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/CancelTaskResponseBody'
             x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+    /hduhelp-neo/admin/notifications/tasks/{id}/recall:
+        post:
+            tags:
+                - NotificationService
+            summary: 撤回通知
+            operationId: NotificationService_RecallNotificationTask
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RecallTaskRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TaskResponseBody'
+            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
     /hduhelp-neo/admin/notifications/tasks/{id}/replay:
         post:
             tags:
@@ -12278,6 +12217,7 @@ paths:
                         - succeeded
                         - failed
                         - skipped
+                        - uncertain
                     type: string
                 - name: failure_kind
                   in: query
@@ -12331,11 +12271,12 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/NotificationChainTestResponseBody'
             x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
-    /hduhelp-neo/admin/notifications/topics/configurations:
+    /hduhelp-neo/admin/notifications/topics:
         get:
             tags:
                 - NotificationService
-            operationId: NotificationService_ListNotificationTopicConfigurations
+            summary: 通知类型与投递设置
+            operationId: NotificationService_ListNotificationTopicSettings
             security:
                 - OperatorBearerAuth: []
             responses:
@@ -12344,34 +12285,14 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/NotificationTopicConfigurationsResponseBody'
+                                $ref: '#/components/schemas/NotificationTopicSettingsListResponseBody'
             x-hduhelp-http: {'auth': 'operator'}
-    /hduhelp-neo/admin/notifications/topics/{topicKey}/capabilities:
-        get:
-            tags:
-                - NotificationService
-            operationId: NotificationService_GetNotificationTopicCapabilities
-            security:
-                - OperatorBearerAuth: []
-            parameters:
-                - name: topicKey
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/TopicCapabilitiesResponseBody'
-            x-hduhelp-http: {'auth': 'operator'}
-    /hduhelp-neo/admin/notifications/topics/{topicKey}/config:
+    /hduhelp-neo/admin/notifications/topics/{topicKey}/override:
         put:
             tags:
                 - NotificationService
-            operationId: NotificationService_SaveNotificationTopicConfiguration
+            summary: 覆盖通知类型的投递设置
+            operationId: NotificationService_SaveNotificationTopicOverride
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -12385,20 +12306,20 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/SaveNotificationTopicConfigurationRequestBody'
+                            $ref: '#/components/schemas/SaveNotificationTopicOverrideRequestBody'
             responses:
                 "200":
                     description: Successful response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/NotificationTopicConfigurationResponseBody'
+                                $ref: '#/components/schemas/NotificationTopicSettingsResponseBody'
             x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
-    /hduhelp-neo/admin/notifications/topics/{topicKey}/validate-policy:
-        post:
+        delete:
             tags:
                 - NotificationService
-            operationId: NotificationService_ValidateNotificationDeliveryPolicy
+            summary: 恢复通知类型的默认投递设置
+            operationId: NotificationService_ResetNotificationTopicOverride
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -12407,20 +12328,14 @@ paths:
                   required: true
                   schema:
                     type: string
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/ValidatePolicyRequestBody'
             responses:
                 "200":
                     description: Successful response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/ValidatePolicyResponseBody'
-            x-hduhelp-http: {'auth': 'operator', 'request_body_required': true}
+                                $ref: '#/components/schemas/NotificationTopicSettingsResponseBody'
+            x-hduhelp-http: {'auth': 'operator'}
     /hduhelp-neo/admin/operators:
         get:
             tags:
@@ -12804,8 +12719,8 @@ paths:
     /hduhelp-neo/admin/site-announcements:
         get:
             tags:
-                - SiteAnnouncementService
-            operationId: SiteAnnouncementService_ListSiteAnnouncements
+                - SiteBannerService
+            operationId: SiteBannerService_ListSiteBanners
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -12829,30 +12744,30 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/SiteAnnouncementPageResponseBody'
+                                $ref: '#/components/schemas/SiteBannerPageResponseBody'
         post:
             tags:
-                - SiteAnnouncementService
-            operationId: SiteAnnouncementService_CreateSiteAnnouncement
+                - SiteBannerService
+            operationId: SiteBannerService_CreateSiteBanner
             security:
                 - OperatorBearerAuth: []
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/CreateSiteAnnouncementRequestBody'
+                            $ref: '#/components/schemas/CreateSiteBannerRequestBody'
             responses:
                 "200":
                     description: Successful response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/SiteAnnouncementResponseBody'
+                                $ref: '#/components/schemas/SiteBannerResponseBody'
     /hduhelp-neo/admin/site-announcements/{id}:
         get:
             tags:
-                - SiteAnnouncementService
-            operationId: SiteAnnouncementService_GetSiteAnnouncement
+                - SiteBannerService
+            operationId: SiteBannerService_GetSiteBanner
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -12867,11 +12782,11 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/SiteAnnouncementResponseBody'
+                                $ref: '#/components/schemas/SiteBannerResponseBody'
         put:
             tags:
-                - SiteAnnouncementService
-            operationId: SiteAnnouncementService_UpdateSiteAnnouncement
+                - SiteBannerService
+            operationId: SiteBannerService_UpdateSiteBanner
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -12884,18 +12799,18 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/UpdateSiteAnnouncementRequestBody'
+                            $ref: '#/components/schemas/UpdateSiteBannerRequestBody'
             responses:
                 "200":
                     description: Successful response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/SiteAnnouncementResponseBody'
+                                $ref: '#/components/schemas/SiteBannerResponseBody'
         delete:
             tags:
-                - SiteAnnouncementService
-            operationId: SiteAnnouncementService_DeleteSiteAnnouncement
+                - SiteBannerService
+            operationId: SiteBannerService_DeleteSiteBanner
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -12910,12 +12825,12 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/SiteAnnouncementMutationResponseBody'
+                                $ref: '#/components/schemas/SiteBannerMutationResponseBody'
     /hduhelp-neo/admin/site-announcements/{id}/archive:
         post:
             tags:
-                - SiteAnnouncementService
-            operationId: SiteAnnouncementService_ArchiveSiteAnnouncement
+                - SiteBannerService
+            operationId: SiteBannerService_ArchiveSiteBanner
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -12930,12 +12845,12 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/SiteAnnouncementResponseBody'
+                                $ref: '#/components/schemas/SiteBannerResponseBody'
     /hduhelp-neo/admin/site-announcements/{id}/publish:
         post:
             tags:
-                - SiteAnnouncementService
-            operationId: SiteAnnouncementService_PublishSiteAnnouncement
+                - SiteBannerService
+            operationId: SiteBannerService_PublishSiteBanner
             security:
                 - OperatorBearerAuth: []
             parameters:
@@ -12950,7 +12865,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/SiteAnnouncementResponseBody'
+                                $ref: '#/components/schemas/SiteBannerResponseBody'
     /hduhelp-neo/admin/tenants:
         get:
             tags:
@@ -18060,6 +17975,14 @@ paths:
                   description: pending：只看待确认（按截止时间从近到远）；unread：只看未读。与 history 互斥，留空为全部。
                   schema:
                     type: string
+                - name: category
+                  in: query
+                  description: notice（缺省）或 reminder。
+                  schema:
+                    enum:
+                        - notice
+                        - reminder
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -18092,6 +18015,11 @@ paths:
             operationId: InboxService_MarkAllInboxRead
             security:
                 - NativeSessionAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/InboxReadAllRequestBody'
             responses:
                 "200":
                     description: Successful response
@@ -18158,6 +18086,11 @@ paths:
                   required: true
                   schema:
                     type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/InboxReadRequestBody'
             responses:
                 "200":
                     description: Successful response
@@ -18549,6 +18482,121 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/SeatSearchResponseBody'
             x-hduhelp-http: {'requires_user': false, 'auth': 'bearer'}
+    /hduhelp-neo/me/notification-channels/{provider}/test:
+        post:
+            tags:
+                - NotificationSettingsService
+            summary: 给自己发一条渠道测试消息
+            operationId: NotificationSettingsService_TestNotificationChannel
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: provider
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NotificationChannelTestResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/me/notification-devices/{installation}:
+        put:
+            tags:
+                - NotificationSettingsService
+            summary: 上报 App 设备与通知权限
+            operationId: NotificationSettingsService_ReportNotificationDevice
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: installation
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/NotificationDeviceRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NotificationSettingsMutationResponseBody'
+            x-hduhelp-http: {'auth': 'native_session', 'request_body_required': true}
+        delete:
+            tags:
+                - NotificationSettingsService
+            summary: 登出时移除 App 设备
+            operationId: NotificationSettingsService_ForgetNotificationDevice
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: installation
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NotificationSettingsMutationResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/me/notification-settings:
+        get:
+            tags:
+                - NotificationSettingsService
+            summary: 通知设置
+            operationId: NotificationSettingsService_GetNotificationSettings
+            security:
+                - NativeSessionAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NotificationSettingsResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
+    /hduhelp-neo/me/notification-settings/{topic}:
+        patch:
+            tags:
+                - NotificationSettingsService
+            summary: 修改一项通知设置
+            operationId: NotificationSettingsService_UpdateNotificationSetting
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: topic
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateNotificationSettingRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NotificationSettingsResponseBody'
+            x-hduhelp-http: {'auth': 'native_session', 'request_body_required': true}
     /hduhelp-neo/messaging/pigeons:
         get:
             tags:
@@ -20570,12 +20618,91 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ResolveSocialIdentityResponseBody'
             x-hduhelp-http: {'auth': 'bearer', 'catalog': 'exclude', 'request_body_required': true}
+    /hduhelp-neo/reminders:
+        put:
+            tags:
+                - ReminderService
+            summary: 更新提醒参数
+            description: 更新 id 指定提醒的参数(JSON 对象字符串)
+            operationId: ReminderService_UpdateReminder
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  required: true
+                  in: query
+                  description: 渠道 id，定位集合内单条订阅
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateSubscriptionRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SimpleResponseBody'
+            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer'}
+        post:
+            tags:
+                - ReminderService
+            summary: 订阅提醒
+            description: 开启指定提醒并写入初始参数；接收方式在 /me/notification-settings 设置
+            operationId: ReminderService_SubscribeReminder
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: channel
+                  required: true
+                  in: query
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SubscribeRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SimpleResponseBody'
+            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer'}
+        delete:
+            tags:
+                - ReminderService
+            summary: 退订提醒
+            description: 关闭 id 指定的提醒
+            operationId: ReminderService_UnsubscribeReminder
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  required: true
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SimpleResponseBody'
+            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer'}
     /hduhelp-neo/site-announcements/active:
         get:
             tags:
-                - SiteAnnouncementService
-            summary: 当前全站公告
-            operationId: SiteAnnouncementService_GetActiveSiteAnnouncement
+                - SiteBannerService
+            summary: 当前全站横幅（旧地址）
+            description: 旧版客户端仍在读这个地址。
+            operationId: SiteBannerService_GetActiveSiteBannerLegacy
             security:
                 - NativeSessionAuth: []
             responses:
@@ -20584,15 +20711,31 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/SiteAnnouncementResponseBody'
+                                $ref: '#/components/schemas/SiteBannerResponseBody'
+            x-hduhelp-http: {'auth': 'native_session', 'catalog': 'sdk_only'}
+    /hduhelp-neo/site-banners/active:
+        get:
+            tags:
+                - SiteBannerService
+            summary: 当前全站横幅
+            operationId: SiteBannerService_GetActiveSiteBanner
+            security:
+                - NativeSessionAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SiteBannerResponseBody'
             x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/subscription/sunrun/detail:
         get:
             tags:
-                - SubscriptionService
+                - ReminderService
             summary: 阳光长跑跑步记录
             description: 使用当前学号已保存的阳光长跑服务授权，返回跑步记录明细(start/end 默认 1/20，单次最多 100 条)；未授权时返回服务未授权
-            operationId: SubscriptionService_SunrunDetail
+            operationId: ReminderService_SunrunDetail
             security:
                 - BearerAuth: []
             parameters:
@@ -20623,10 +20766,10 @@ paths:
     /hduhelp-neo/subscription/sunrun/group:
         get:
             tags:
-                - SubscriptionService
+                - ReminderService
             summary: 阳光长跑达标要求
             description: 使用当前学号已保存的阳光长跑服务授权，返回所在分组的达标次数、速度与里程要求；未授权时返回服务未授权
-            operationId: SubscriptionService_SunrunGroup
+            operationId: ReminderService_SunrunGroup
             security:
                 - BearerAuth: []
             parameters:
@@ -20645,10 +20788,10 @@ paths:
     /hduhelp-neo/subscription/sunrun/overview:
         get:
             tags:
-                - SubscriptionService
+                - ReminderService
             summary: 阳光长跑成绩概览
             description: 使用当前学号已保存的阳光长跑服务授权，返回有效次数、里程、速度等成绩概览；未授权时返回服务未授权
-            operationId: SubscriptionService_SunrunOverview
+            operationId: ReminderService_SunrunOverview
             security:
                 - BearerAuth: []
             parameters:
@@ -20667,10 +20810,10 @@ paths:
     /hduhelp-neo/subscriptions:
         get:
             tags:
-                - SubscriptionService
+                - ReminderService
             summary: 获取全部提醒渠道订阅状态
             description: 返回 7 个提醒渠道的订阅状态与富元数据(图标/描述/频率/平台/预览图/选项 schema/准入)
-            operationId: SubscriptionService_ListSubscriptions
+            operationId: ReminderService_ListSubscriptions
             security:
                 - BearerAuth: []
             responses:
@@ -20683,10 +20826,10 @@ paths:
             x-hduhelp-http: {'requires_user': true, 'auth': 'bearer'}
         put:
             tags:
-                - SubscriptionService
+                - ReminderService
             summary: 更新订阅渠道配置
             description: 更新当前登录用户 id 指定渠道的偏好(JSON 字符串，需为对象；空串重置为渠道默认值)
-            operationId: SubscriptionService_UpdateSubscription
+            operationId: ReminderService_UpdateSubscription
             security:
                 - BearerAuth: []
             parameters:
@@ -20708,13 +20851,13 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SimpleResponseBody'
-            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer'}
+            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer', 'catalog': 'sdk_only'}
         post:
             tags:
-                - SubscriptionService
+                - ReminderService
             summary: 订阅提醒渠道
             description: 为当前登录用户原子地开启指定提醒渠道并写入初始偏好与订阅流水
-            operationId: SubscriptionService_Subscribe
+            operationId: ReminderService_Subscribe
             security:
                 - BearerAuth: []
             parameters:
@@ -20735,13 +20878,13 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SimpleResponseBody'
-            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer'}
+            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer', 'catalog': 'sdk_only'}
         delete:
             tags:
-                - SubscriptionService
+                - ReminderService
             summary: 退订提醒渠道
             description: 为当前登录用户关闭 id 指定的提醒渠道，并写入退订流水
-            operationId: SubscriptionService_Unsubscribe
+            operationId: ReminderService_Unsubscribe
             security:
                 - BearerAuth: []
             parameters:
@@ -20757,14 +20900,14 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SimpleResponseBody'
-            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer'}
+            x-hduhelp-http: {'requires_user': true, 'auth': 'bearer', 'catalog': 'sdk_only'}
     /hduhelp-neo/subscriptions/delivery-preferences:
         put:
             tags:
-                - SubscriptionService
+                - ReminderService
             summary: 批量设置订阅通知渠道偏好
             description: 在一个事务中统一设置或恢复当前用户全部订阅 Topic 的通知渠道偏好
-            operationId: SubscriptionService_BatchSetDeliveryPreferences
+            operationId: ReminderService_BatchSetDeliveryPreferences
             security:
                 - BearerAuth: []
             requestBody:
@@ -20784,10 +20927,10 @@ paths:
     /hduhelp-neo/subscriptions/{channel}/delivery-preference:
         get:
             tags:
-                - SubscriptionService
+                - ReminderService
             summary: 查询订阅通知渠道偏好
             description: 返回当前用户指定订阅 Topic 的渠道覆盖、绑定状态和最终生效策略
-            operationId: SubscriptionService_GetDeliveryPreference
+            operationId: ReminderService_GetDeliveryPreference
             security:
                 - BearerAuth: []
             parameters:
@@ -20806,10 +20949,10 @@ paths:
             x-hduhelp-http: {'requires_user': true, 'auth': 'bearer'}
         put:
             tags:
-                - SubscriptionService
+                - ReminderService
             summary: 设置订阅通知渠道偏好
             description: 为当前用户指定订阅 Topic 设置微信公众号或钉钉工作通知覆盖
-            operationId: SubscriptionService_SetDeliveryPreference
+            operationId: ReminderService_SetDeliveryPreference
             security:
                 - BearerAuth: []
             parameters:
@@ -20834,10 +20977,10 @@ paths:
             x-hduhelp-http: {'requires_user': true, 'auth': 'bearer', 'request_body_required': true}
         delete:
             tags:
-                - SubscriptionService
+                - ReminderService
             summary: 恢复订阅通知系统默认
             description: 删除当前用户指定订阅 Topic 的渠道覆盖并恢复管理员默认策略
-            operationId: SubscriptionService_ResetDeliveryPreference
+            operationId: ReminderService_ResetDeliveryPreference
             security:
                 - BearerAuth: []
             parameters:
@@ -21929,219 +22072,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        AdminNotice:
-            required:
-                - id
-                - title
-                - summary
-                - body
-                - requiresAck
-                - targetUserIds
-                - targetCount
-                - publishAt
-                - createdById
-                - createdAt
-                - updatedAt
-            type: object
-            properties:
-                id:
-                    type: string
-                title:
-                    type: string
-                summary:
-                    type: string
-                body:
-                    type: string
-                action:
-                    $ref: '#/components/schemas/NoticeAction'
-                requiresAck:
-                    type: boolean
-                targetUserIds:
-                    type: array
-                    items:
-                        type: string
-                targetCount:
-                    type: integer
-                    format: int32
-                publishAt:
-                    type: integer
-                    format: int64
-                expiresAt:
-                    type: integer
-                    format: int64
-                createdById:
-                    type: string
-                createdAt:
-                    type: integer
-                    format: int64
-                updatedAt:
-                    type: integer
-                    format: int64
-                events:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/AdminNoticeEvent'
-                publishedAt:
-                    type: integer
-                    format: int64
-                publishedById:
-                    type: string
-                publicationTaskId:
-                    type: string
-                publicationPolicySnapshot:
-                    type: string
-                stats:
-                    $ref: '#/components/schemas/AdminNoticeStats'
-        AdminNoticeAudienceItem:
-            required:
-                - userId
-                - pendingAck
-                - expired
-            type: object
-            properties:
-                userId:
-                    type: string
-                entryId:
-                    type: string
-                readAt:
-                    type: integer
-                    format: int64
-                acknowledgedAt:
-                    type: integer
-                    format: int64
-                pendingAck:
-                    type: boolean
-                expired:
-                    type: boolean
-        AdminNoticeAudiencePage:
-            required:
-                - items
-                - total
-                - page
-                - pageSize
-            type: object
-            properties:
-                items:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/AdminNoticeAudienceItem'
-                total:
-                    type: integer
-                    format: int64
-                page:
-                    type: integer
-                    format: int32
-                pageSize:
-                    type: integer
-                    format: int32
-        AdminNoticeAudiencePageResponseBody:
-            required:
-                - code
-                - msg
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/AdminNoticeAudiencePage'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        AdminNoticeEvent:
-            required:
-                - id
-                - eventType
-                - actorId
-                - detail
-                - createdAt
-            type: object
-            properties:
-                id:
-                    type: string
-                eventType:
-                    type: string
-                actorId:
-                    type: string
-                detail:
-                    type: string
-                createdAt:
-                    type: integer
-                    format: int64
-        AdminNoticePage:
-            required:
-                - items
-                - total
-                - page
-                - pageSize
-            type: object
-            properties:
-                items:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/AdminNotice'
-                total:
-                    type: integer
-                    format: int64
-                page:
-                    type: integer
-                    format: int32
-                pageSize:
-                    type: integer
-                    format: int32
-        AdminNoticePageResponseBody:
-            required:
-                - code
-                - msg
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/AdminNoticePage'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        AdminNoticeResponseBody:
-            required:
-                - code
-                - msg
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/AdminNotice'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        AdminNoticeStats:
-            required:
-                - targeted
-                - created
-                - read
-                - acknowledged
-                - pendingAck
-                - expired
-            type: object
-            properties:
-                targeted:
-                    type: integer
-                    format: int32
-                created:
-                    type: integer
-                    format: int32
-                read:
-                    type: integer
-                    format: int32
-                acknowledged:
-                    type: integer
-                    format: int32
-                pendingAck:
-                    type: integer
-                    format: int32
-                expired:
-                    type: integer
-                    format: int32
         AdminOfficialAccount:
             type: object
             properties:
@@ -26789,6 +26719,240 @@ components:
                 activeUsers:
                     type: integer
                     format: int64
+        Announcement:
+            required:
+                - id
+                - title
+                - summary
+                - body
+                - requiresAck
+                - targetUserIds
+                - targetCount
+                - publishAt
+                - createdById
+                - createdAt
+                - updatedAt
+            type: object
+            properties:
+                id:
+                    type: string
+                title:
+                    type: string
+                summary:
+                    type: string
+                body:
+                    type: string
+                action:
+                    $ref: '#/components/schemas/NoticeAction'
+                requiresAck:
+                    type: boolean
+                targetUserIds:
+                    type: array
+                    items:
+                        type: string
+                targetCount:
+                    type: integer
+                    format: int32
+                publishAt:
+                    type: integer
+                    format: int64
+                expiresAt:
+                    type: integer
+                    format: int64
+                createdById:
+                    type: string
+                createdAt:
+                    type: integer
+                    format: int64
+                updatedAt:
+                    type: integer
+                    format: int64
+                events:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AnnouncementEvent'
+                publishedAt:
+                    type: integer
+                    format: int64
+                publishedById:
+                    type: string
+                publicationTaskId:
+                    type: string
+                publicationPolicySnapshot:
+                    type: string
+                stats:
+                    $ref: '#/components/schemas/AnnouncementStats'
+                recalledAt:
+                    type: integer
+                    format: int64
+                recalledById:
+                    type: string
+                testedAt:
+                    type: integer
+                    description: 当前内容最近一次试发成功的时间；内容改过后为空。
+                    format: int64
+        AnnouncementAudienceItem:
+            required:
+                - userId
+                - pendingAck
+                - expired
+            type: object
+            properties:
+                userId:
+                    type: string
+                entryId:
+                    type: string
+                readAt:
+                    type: integer
+                    format: int64
+                acknowledgedAt:
+                    type: integer
+                    format: int64
+                pendingAck:
+                    type: boolean
+                expired:
+                    type: boolean
+        AnnouncementAudiencePage:
+            required:
+                - items
+                - total
+                - page
+                - pageSize
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AnnouncementAudienceItem'
+                total:
+                    type: integer
+                    format: int64
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+        AnnouncementAudiencePageResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AnnouncementAudiencePage'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AnnouncementEvent:
+            required:
+                - id
+                - eventType
+                - actorId
+                - detail
+                - createdAt
+            type: object
+            properties:
+                id:
+                    type: string
+                eventType:
+                    type: string
+                actorId:
+                    type: string
+                detail:
+                    type: string
+                createdAt:
+                    type: integer
+                    format: int64
+        AnnouncementPage:
+            required:
+                - items
+                - total
+                - page
+                - pageSize
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Announcement'
+                total:
+                    type: integer
+                    format: int64
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+        AnnouncementPageResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AnnouncementPage'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AnnouncementResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/Announcement'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AnnouncementStats:
+            required:
+                - targeted
+                - created
+                - read
+                - acknowledged
+                - pendingAck
+                - expired
+                - openedFromPush
+                - reachedBy
+            type: object
+            properties:
+                targeted:
+                    type: integer
+                    format: int32
+                created:
+                    type: integer
+                    format: int32
+                read:
+                    type: integer
+                    format: int32
+                acknowledged:
+                    type: integer
+                    format: int32
+                pendingAck:
+                    type: integer
+                    format: int32
+                expired:
+                    type: integer
+                    format: int32
+                openedFromPush:
+                    type: integer
+                    description: 从推送点开的人数（已读的一部分）。
+                    format: int32
+                reachedBy:
+                    type: object
+                    additionalProperties:
+                        type: integer
+                        format: int32
+                    description: 按实际触达渠道统计的送达人数，键为渠道。
         ApmAlloc:
             type: object
             properties:
@@ -29803,7 +29967,7 @@ components:
                 log:
                     type: string
                     description: JSON 字符串
-        CreateAdminNoticeRequestBody:
+        CreateAnnouncementRequestBody:
             required:
                 - notice
             type: object
@@ -30169,23 +30333,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        CreatePolicyProfileRequestBody:
-            required:
-                - topic_key
-                - name
-                - policy
-            type: object
-            properties:
-                topic_key:
-                    type: string
-                name:
-                    type: string
-                owner_type:
-                    type: string
-                policy:
-                    $ref: '#/components/schemas/DeliveryPolicy'
-                is_default:
-                    type: boolean
         CreateRecruitChatGroupData:
             type: object
             properties:
@@ -30294,11 +30441,11 @@ components:
                     type: string
                 action:
                     type: string
-        CreateSiteAnnouncementRequestBody:
+        CreateSiteBannerRequestBody:
             type: object
             properties:
                 announcement:
-                    $ref: '#/components/schemas/EditableSiteAnnouncement'
+                    $ref: '#/components/schemas/EditableSiteBanner'
         CreateSourceRequestBody:
             type: object
             properties:
@@ -30563,7 +30710,7 @@ components:
                     format: int64
                 msg:
                     type: string
-        DeleteAdminNoticeResponseBody:
+        DeleteAnnouncementResponseBody:
             required:
                 - code
                 - msg
@@ -30662,29 +30809,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        DeliveryGroup:
-            required:
-                - key
-                - mode
-                - required
-                - providers
-            type: object
-            properties:
-                key:
-                    type: string
-                mode:
-                    enum:
-                        - primary_only
-                        - fallback
-                        - fanout_all
-                        - fanout_best_effort
-                    type: string
-                required:
-                    type: boolean
-                providers:
-                    type: array
-                    items:
-                        type: string
         DeliveryPage:
             required:
                 - items
@@ -30719,22 +30843,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        DeliveryPolicy:
-            required:
-                - schemaVersion
-                - groups
-                - retry
-            type: object
-            properties:
-                schemaVersion:
-                    type: integer
-                    format: int32
-                groups:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/DeliveryGroup'
-                retry:
-                    $ref: '#/components/schemas/RetryPolicy'
         DeliveryPreference:
             required:
                 - channel
@@ -30779,6 +30887,7 @@ components:
                     type: string
                 provider:
                     enum:
+                        - app_push
                         - wechat_mp
                         - dingtalk_work
                     type: string
@@ -31096,7 +31205,7 @@ components:
                 expires_at:
                     type: integer
                     format: int64
-        EditableSiteAnnouncement:
+        EditableSiteBanner:
             type: object
             properties:
                 title:
@@ -32659,6 +32768,10 @@ components:
                 pendingAck:
                     type: integer
                     format: int64
+                reminderUnread:
+                    type: integer
+                    format: int64
+            description: unread 只算公告与事务；提醒的未读单独计。
         InboxCountersResponseBody:
             type: object
             properties:
@@ -32702,7 +32815,13 @@ components:
                     type: boolean
                 topic:
                     type: string
-                    description: 产生这条通知的主题（如 admin.notice、subscription.exam_reminder），客户端按它选图标；旧数据可能为空。
+                    description: 产生这条通知的类型（如 ops.announcement、reminder.exam），客户端按它选图标；旧数据可能为空。
+                category:
+                    enum:
+                        - notice
+                        - reminder
+                    type: string
+                    description: notice：公告与事务，算未读角标；reminder：订阅提醒，单独一个页签、过期自动已读。
         InboxEntryResponseBody:
             type: object
             properties:
@@ -32784,6 +32903,25 @@ components:
                     format: int64
                 msg:
                     type: string
+        InboxReadAllRequestBody:
+            type: object
+            properties:
+                category:
+                    enum:
+                        - notice
+                        - reminder
+                    type: string
+                    description: notice 或 reminder：只标这一类；缺省（旧客户端）标全部。
+        InboxReadRequestBody:
+            type: object
+            properties:
+                via:
+                    enum:
+                        - push
+                        - app
+                        - web
+                    type: string
+                    description: 从哪里打开：push（点推送进来）、app、web。缺省 app。
         InboxUnread:
             type: object
             properties:
@@ -42895,6 +43033,82 @@ components:
                         type: string
                 url:
                     type: string
+        NoticeAudienceEstimate:
+            required:
+                - recipients
+                - excluded
+                - reach
+                - inboxOnly
+                - testRequired
+            type: object
+            properties:
+                recipients:
+                    type: integer
+                    format: int32
+                excluded:
+                    type: integer
+                    description: 被排除的：账号无效、注销冷静期。
+                    format: int32
+                reach:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/NoticeReachEstimate'
+                inboxOnly:
+                    type: integer
+                    description: 所有触达渠道都不可达，只能在消息通知里看到的人数。
+                    format: int32
+                testRequired:
+                    type: boolean
+                    description: 收件人数超过门槛、当前内容还没试发过：不能发布。
+        NoticePreviewItem:
+            required:
+                - provider
+                - title
+                - body
+            type: object
+            properties:
+                provider:
+                    type: string
+                title:
+                    type: string
+                body:
+                    type: string
+            description: 每个渠道上这条公告实际会显示成什么样。
+        NoticePreviewResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/NoticePreviewItem'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        NoticeReachEstimate:
+            required:
+                - provider
+                - reachable
+                - unknown
+                - unreachable
+            type: object
+            properties:
+                provider:
+                    type: string
+                reachable:
+                    type: integer
+                    format: int32
+                unknown:
+                    type: integer
+                    format: int32
+                unreachable:
+                    type: integer
+                    format: int32
+            description: 一个触达渠道上收件人的可达情况。
         NotificationAction:
             required:
                 - type
@@ -42919,7 +43133,6 @@ components:
             required:
                 - topic_key
                 - mode
-                - target_user_id
                 - title
                 - body
             type: object
@@ -42930,8 +43143,6 @@ components:
                     enum:
                         - diagnose
                         - send
-                    type: string
-                target_user_id:
                     type: string
                 title:
                     type: string
@@ -43016,6 +43227,86 @@ components:
                     type: string
                 message:
                     type: string
+        NotificationChannel:
+            required:
+                - provider
+                - name
+                - status
+                - testable
+            type: object
+            properties:
+                provider:
+                    enum:
+                        - app_push
+                        - wechat_mp
+                        - dingtalk_work
+                        - smtp_mail
+                    type: string
+                name:
+                    type: string
+                status:
+                    enum:
+                        - reachable
+                        - unreachable
+                        - unknown
+                    type: string
+                reason:
+                    enum:
+                        - not_followed
+                        - unbound
+                        - refused
+                        - permission_off
+                        - no_device
+                        - no_email
+                    type: string
+                    description: 收不到的原因；可用或未知时为空。
+                fix:
+                    enum:
+                        - open_settings
+                        - follow_wechat
+                        - bind_wechat
+                        - bind_dingtalk
+                        - bind_email
+                        - login_app
+                    type: string
+                    description: 修复入口：open_settings 系统通知设置、follow_wechat 关注公众号、bind_wechat / bind_dingtalk / bind_email 去绑定、login_app 在手机上登录 App。
+                fixLabel:
+                    type: string
+                testable:
+                    type: boolean
+                    description: 能否发一条测试消息检查这个渠道。
+            description: |-
+                「通知设置」一页的全部数据：App 与网页版按同一份数据渲染。
+                一个触达渠道对当前用户是否可用。
+        NotificationChannelTestResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/NotificationChannelTestResult'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        NotificationChannelTestResult:
+            required:
+                - status
+                - channel
+            type: object
+            properties:
+                status:
+                    enum:
+                        - sent
+                        - failed
+                        - uncertain
+                    type: string
+                message:
+                    type: string
+                channel:
+                    $ref: '#/components/schemas/NotificationChannel'
         NotificationDelivery:
             required:
                 - id
@@ -43051,6 +43342,7 @@ components:
                         - succeeded
                         - failed
                         - skipped
+                        - uncertain
                     type: string
                 nextAction:
                     enum:
@@ -43114,70 +43406,78 @@ components:
                 deadLetterParkedAt:
                     type: integer
                     format: int64
-        NotificationLimits:
+        NotificationDeviceRequestBody:
             required:
-                - maxTargetsPerTask
-                - maxPayloadBytes
-                - maxContentBytes
-                - maxPersonalizationBytesPerTarget
-                - maxTotalPersonalizationBytes
-                - maxGroups
-                - maxProvidersPerGroup
-                - maxProviderRefs
-                - maxRetriesPerProvider
-                - maxReconcileAttemptsPerProvider
-                - maxReconcileDurationSeconds
-                - maxPlannedProviderActionsPerTask
-                - maxEnabledPolicyProfilesPerOwnerPerTopic
-                - maxPolicyProfileBytes
-                - maxDueOutboxBacklog
+                - platform
+                - permission
             type: object
             properties:
-                maxTargetsPerTask:
+                platform:
+                    enum:
+                        - ios
+                        - android
+                    type: string
+                permission:
+                    enum:
+                        - granted
+                        - prompt
+                        - blocked
+                    type: string
+                appVersion:
+                    type: string
+        NotificationSettings:
+            required:
+                - channels
+                - reminders
+                - transactions
+                - ops
+                - announcementNote
+            type: object
+            properties:
+                channels:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/NotificationChannel'
+                reminders:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ReminderSetting'
+                transactions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PushSetting'
+                ops:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PushSetting'
+                    description: 只对运营显示。
+                announcementNote:
+                    type: string
+                    description: 运营公告的说明（不能关闭）。
+        NotificationSettingsMutationResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                code:
                     type: integer
-                    format: int32
-                maxPayloadBytes:
+                    format: int64
+                msg:
+                    type: string
+        NotificationSettingsResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/NotificationSettings'
+                code:
                     type: integer
-                    format: int32
-                maxContentBytes:
-                    type: integer
-                    format: int32
-                maxPersonalizationBytesPerTarget:
-                    type: integer
-                    format: int32
-                maxTotalPersonalizationBytes:
-                    type: integer
-                    format: int32
-                maxGroups:
-                    type: integer
-                    format: int32
-                maxProvidersPerGroup:
-                    type: integer
-                    format: int32
-                maxProviderRefs:
-                    type: integer
-                    format: int32
-                maxRetriesPerProvider:
-                    type: integer
-                    format: int32
-                maxReconcileAttemptsPerProvider:
-                    type: integer
-                    format: int32
-                maxReconcileDurationSeconds:
-                    type: integer
-                    format: int32
-                maxPlannedProviderActionsPerTask:
-                    type: integer
-                    format: int32
-                maxEnabledPolicyProfilesPerOwnerPerTopic:
-                    type: integer
-                    format: int32
-                maxPolicyProfileBytes:
-                    type: integer
-                    format: int32
-                maxDueOutboxBacklog:
-                    type: integer
-                    format: int32
+                    format: int64
+                msg:
+                    type: string
         NotificationTask:
             required:
                 - id
@@ -43191,11 +43491,13 @@ components:
                 - deliverySucceeded
                 - deliveryFailed
                 - deliverySkipped
+                - deliveryUncertain
                 - createdByType
                 - createdById
                 - createdAt
                 - updatedAt
                 - requiresAck
+                - category
             type: object
             properties:
                 id:
@@ -43274,16 +43576,31 @@ components:
                     type: string
                 requiresAck:
                     type: boolean
-        NotificationTopicConfiguration:
+                category:
+                    type: string
+                deliveryUncertain:
+                    type: integer
+                    description: 结果不确定（可能已送达，无法证实），单独计数、不算失败。
+                    format: int32
+                recalledById:
+                    type: string
+                recalledAt:
+                    type: integer
+                    format: int64
+                recallReason:
+                    type: string
+        NotificationTopicSettings:
             required:
                 - topicKey
                 - topicName
                 - serviceKey
                 - serviceName
-                - allowedProviders
-                - allowedModes
-                - configured
-                - valid
+                - category
+                - record
+                - reachMode
+                - allowedReach
+                - defaults
+                - effective
             type: object
             properties:
                 topicKey:
@@ -43294,44 +43611,40 @@ components:
                     type: string
                 serviceName:
                     type: string
-                allowedProviders:
-                    type: array
-                    items:
-                        type: string
-                allowedModes:
-                    type: array
-                    items:
-                        type: string
-                configured:
-                    type: boolean
-                valid:
-                    type: boolean
-                validationError:
+                category:
+                    enum:
+                        - reminder
+                        - announcement
+                        - transaction
+                        - blessing
+                        - ops
                     type: string
-                policy:
-                    $ref: '#/components/schemas/DeliveryPolicy'
+                record:
+                    type: boolean
+                    description: 是否先写一条消息通知记录（必达）。
+                reachMode:
+                    enum:
+                        - primary_only
+                        - fallback
+                        - fanout_best_effort
+                    type: string
+                allowedReach:
+                    type: array
+                    items:
+                        type: string
+                defaults:
+                    $ref: '#/components/schemas/TopicDelivery'
+                operatorOverride:
+                    $ref: '#/components/schemas/TopicOverride'
+                effective:
+                    $ref: '#/components/schemas/TopicDelivery'
                 updatedById:
                     type: string
                 updatedAt:
                     type: integer
                     format: int64
-        NotificationTopicConfigurationResponseBody:
+        NotificationTopicSettingsListResponseBody:
             required:
-                - data
-                - code
-                - msg
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/NotificationTopicConfiguration'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        NotificationTopicConfigurationsResponseBody:
-            required:
-                - data
                 - code
                 - msg
             type: object
@@ -43339,7 +43652,20 @@ components:
                 data:
                     type: array
                     items:
-                        $ref: '#/components/schemas/NotificationTopicConfiguration'
+                        $ref: '#/components/schemas/NotificationTopicSettings'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        NotificationTopicSettingsResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/NotificationTopicSettings'
                 code:
                     type: integer
                     format: int64
@@ -43915,85 +44241,6 @@ components:
                     format: int64
                 message:
                     type: string
-        PolicyProfile:
-            required:
-                - id
-                - topicKey
-                - name
-                - ownerType
-                - isDefault
-                - createdAt
-                - updatedAt
-                - policy
-                - valid
-            type: object
-            properties:
-                id:
-                    type: string
-                topicKey:
-                    type: string
-                name:
-                    type: string
-                ownerType:
-                    enum:
-                        - system
-                        - admin
-                        - user
-                    type: string
-                ownerId:
-                    type: string
-                isDefault:
-                    type: boolean
-                disabledAt:
-                    type: integer
-                    format: int64
-                createdAt:
-                    type: integer
-                    format: int64
-                updatedAt:
-                    type: integer
-                    format: int64
-                policy:
-                    $ref: '#/components/schemas/DeliveryPolicy'
-                valid:
-                    type: boolean
-                validationError:
-                    type: string
-        PolicyProfileResponseBody:
-            required:
-                - code
-                - msg
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/PolicyProfile'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        PolicyProfilesResponseBody:
-            required:
-                - code
-                - msg
-            type: object
-            properties:
-                data:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/PolicyProfile'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        PolicySelection:
-            type: object
-            properties:
-                profileId:
-                    type: string
-                inlinePolicy:
-                    $ref: '#/components/schemas/DeliveryPolicy'
         PollWeChatQRLoginData:
             type: object
             properties:
@@ -44664,7 +44911,7 @@ components:
                     format: int64
                 msg:
                     type: string
-        PublishAdminNoticeResponseBody:
+        PublishAnnouncementResponseBody:
             required:
                 - code
                 - msg
@@ -44779,6 +45026,22 @@ components:
                     format: int64
                 msg:
                     type: string
+        PushSetting:
+            required:
+                - topic
+                - name
+                - pushEnabled
+            type: object
+            properties:
+                topic:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                pushEnabled:
+                    type: boolean
+            description: 可以关掉 App 推送的通知类型（事务类、运营待办）。
         ReactRequestBody:
             type: object
             properties:
@@ -44944,6 +45207,20 @@ components:
                     format: int64
                 msg:
                     type: string
+        RecallAnnouncementRequestBody:
+            required:
+                - reason
+            type: object
+            properties:
+                reason:
+                    type: string
+        RecallTaskRequestBody:
+            required:
+                - reason
+            type: object
+            properties:
+                reason:
+                    type: string
         RecordConsentsRequestBody:
             type: object
             properties:
@@ -45072,13 +45349,51 @@ components:
                     type: boolean
                 followed_by_me:
                     type: boolean
-        RenamePolicyProfileRequestBody:
+        ReminderSetting:
             required:
+                - topic
+                - channel
                 - name
+                - enabled
+                - options
+                - optionSchema
+                - canSubscribe
+                - canCancel
+                - preferred
+                - choices
             type: object
             properties:
+                topic:
+                    type: string
+                channel:
+                    type: string
                 name:
                     type: string
+                description:
+                    type: string
+                enabled:
+                    type: boolean
+                options:
+                    type: string
+                    description: 当前参数（JSON 字符串），未订阅时为默认值。
+                optionSchema:
+                    type: string
+                    description: 参数的 schema（JSON 数组字符串），每项带 labels：取值到文案的映射。
+                canSubscribe:
+                    type: boolean
+                canCancel:
+                    type: boolean
+                preferred:
+                    type: string
+                    description: 用户选的首选接收方式。
+                effective:
+                    type: string
+                    description: 按渠道当前状态，实际会先从哪个渠道收到；都收不到时为空（只在消息通知里）。
+                choices:
+                    type: array
+                    items:
+                        type: string
+            description: 一项提醒订阅：开关与参数沿用 /reminders，接收方式在这里。
         RenameScheduleShareRequestBody:
             required:
                 - name
@@ -45669,13 +45984,18 @@ components:
                     description: JSON 字符串
                 note:
                     type: string
-        SaveNotificationTopicConfigurationRequestBody:
-            required:
-                - policy
+        SaveNotificationTopicOverrideRequestBody:
             type: object
             properties:
-                policy:
-                    $ref: '#/components/schemas/DeliveryPolicy'
+                reach:
+                    type: array
+                    items:
+                        type: string
+                retry:
+                    $ref: '#/components/schemas/RetryPolicy'
+                expiry_seconds:
+                    type: integer
+                    format: int64
         Scene:
             type: object
             properties:
@@ -46968,6 +47288,7 @@ components:
             properties:
                 provider:
                     enum:
+                        - app_push
                         - wechat_mp
                         - dingtalk_work
                     type: string
@@ -47399,7 +47720,7 @@ components:
                     format: int64
                 msg:
                     type: string
-        SiteAnnouncement:
+        SiteBanner:
             type: object
             properties:
                 id:
@@ -47421,7 +47742,7 @@ components:
                 updatedAt:
                     type: integer
                     format: int64
-        SiteAnnouncementMutationResponseBody:
+        SiteBannerMutationResponseBody:
             type: object
             properties:
                 code:
@@ -47429,13 +47750,13 @@ components:
                     format: int64
                 msg:
                     type: string
-        SiteAnnouncementPage:
+        SiteBannerPage:
             type: object
             properties:
                 items:
                     type: array
                     items:
-                        $ref: '#/components/schemas/SiteAnnouncement'
+                        $ref: '#/components/schemas/SiteBanner'
                 total:
                     type: integer
                     format: int64
@@ -47445,21 +47766,21 @@ components:
                 pageSize:
                     type: integer
                     format: int32
-        SiteAnnouncementPageResponseBody:
+        SiteBannerPageResponseBody:
             type: object
             properties:
                 data:
-                    $ref: '#/components/schemas/SiteAnnouncementPage'
+                    $ref: '#/components/schemas/SiteBannerPage'
                 code:
                     type: integer
                     format: int64
                 msg:
                     type: string
-        SiteAnnouncementResponseBody:
+        SiteBannerResponseBody:
             type: object
             properties:
                 data:
-                    $ref: '#/components/schemas/SiteAnnouncement'
+                    $ref: '#/components/schemas/SiteBanner'
                 code:
                     type: integer
                     format: int64
@@ -48314,49 +48635,36 @@ components:
                 count:
                     type: integer
                     format: int32
-        TopicCapabilities:
+        TopicDelivery:
             required:
-                - topicKey
-                - allowedProviders
-                - allowedModes
-                - limits
-                - profiles
-                - defaultSelection
+                - reach
+                - retry
+                - expirySeconds
             type: object
             properties:
-                topicKey:
-                    type: string
-                allowedProviders:
+                reach:
                     type: array
                     items:
                         type: string
-                allowedModes:
-                    type: array
-                    items:
-                        type: string
-                limits:
-                    $ref: '#/components/schemas/NotificationLimits'
-                profiles:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/PolicyProfile'
-                defaultSelection:
-                    $ref: '#/components/schemas/PolicySelection'
-                defaultValidationError:
-                    type: string
-        TopicCapabilitiesResponseBody:
-            required:
-                - code
-                - msg
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/TopicCapabilities'
-                code:
+                retry:
+                    $ref: '#/components/schemas/RetryPolicy'
+                expirySeconds:
                     type: integer
                     format: int64
-                msg:
-                    type: string
+            description: 一个通知类型可被覆盖的投递设置：触达渠道顺序、重试、有效期（秒，0 = 不过期）。
+        TopicOverride:
+            type: object
+            properties:
+                reach:
+                    type: array
+                    items:
+                        type: string
+                retry:
+                    $ref: '#/components/schemas/RetryPolicy'
+                expirySeconds:
+                    type: integer
+                    format: int64
+            description: 运营覆盖：缺省字段沿用代码默认值。
         TotalTime:
             type: object
             properties:
@@ -48409,7 +48717,7 @@ components:
                     type: string
                 status:
                     type: string
-        UpdateAdminNoticeRequestBody:
+        UpdateAnnouncementRequestBody:
             required:
                 - notice
             type: object
@@ -48685,6 +48993,17 @@ components:
                     format: int64
                 msg:
                     type: string
+        UpdateNotificationSettingRequestBody:
+            type: object
+            properties:
+                preferredProvider:
+                    enum:
+                        - app_push
+                        - wechat_mp
+                        - dingtalk_work
+                    type: string
+                pushEnabled:
+                    type: boolean
         UpdateOfficialAccountRequestBody:
             type: object
             properties:
@@ -48711,16 +49030,6 @@ components:
                         type: string
                 contact:
                     type: string
-        UpdatePolicyProfileRequestBody:
-            required:
-                - name
-                - policy
-            type: object
-            properties:
-                name:
-                    type: string
-                policy:
-                    $ref: '#/components/schemas/DeliveryPolicy'
         UpdatePostRequestBody:
             type: object
             properties:
@@ -48770,11 +49079,11 @@ components:
                     description: erke | library | sunrun
                 enabled:
                     type: boolean
-        UpdateSiteAnnouncementRequestBody:
+        UpdateSiteBannerRequestBody:
             type: object
             properties:
                 announcement:
-                    $ref: '#/components/schemas/EditableSiteAnnouncement'
+                    $ref: '#/components/schemas/EditableSiteBanner'
         UpdateSourceRequestBody:
             type: object
             properties:
@@ -49128,7 +49437,7 @@ components:
                     format: int64
                 msg:
                     type: string
-        ValidateAdminNoticeResponseBody:
+        ValidateAnnouncementResponseBody:
             required:
                 - valid
                 - code
@@ -49137,37 +49446,8 @@ components:
             properties:
                 valid:
                     type: boolean
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
-        ValidatePolicyData:
-            required:
-                - valid
-            type: object
-            properties:
-                valid:
-                    type: boolean
-        ValidatePolicyRequestBody:
-            required:
-                - selection
-                - target_count
-            type: object
-            properties:
-                selection:
-                    $ref: '#/components/schemas/PolicySelection'
-                target_count:
-                    type: integer
-                    format: int32
-        ValidatePolicyResponseBody:
-            required:
-                - code
-                - msg
-            type: object
-            properties:
                 data:
-                    $ref: '#/components/schemas/ValidatePolicyData'
+                    $ref: '#/components/schemas/NoticeAudienceEstimate'
                 code:
                     type: integer
                     format: int64
@@ -49362,11 +49642,11 @@ components:
                     format: int32
 tags:
     - name: AcademicService
-    - name: AdminNoticeService
     - name: AdminService
     - name: AgentOpsService
     - name: AgentService
     - name: AnalyticsService
+    - name: AnnouncementService
     - name: ApmService
     - name: CampusLifeService
     - name: DingTalkWorkbenchService
@@ -49396,6 +49676,7 @@ tags:
     - name: ModelProxyService
     - name: MomentsService
     - name: NotificationService
-    - name: SiteAnnouncementService
-    - name: SubscriptionService
+    - name: NotificationSettingsService
+    - name: ReminderService
+    - name: SiteBannerService
     - name: UploadService

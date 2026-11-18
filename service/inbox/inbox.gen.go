@@ -56,6 +56,12 @@ func (b *ListInboxReqBuilder) Filter(v string) *ListInboxReqBuilder {
 	return b
 }
 
+// Category sets the "category" query parameter: notice（缺省）或 reminder。
+func (b *ListInboxReqBuilder) Category(v string) *ListInboxReqBuilder {
+	b.req.queryParams["category"] = v
+	return b
+}
+
 // Build finalizes the request.
 func (b *ListInboxReqBuilder) Build() *ListInboxReq { return b.req }
 
@@ -134,6 +140,12 @@ type MarkAllInboxReadReqBuilder struct{ req *MarkAllInboxReadReq }
 // NewMarkAllInboxReadReqBuilder creates a request builder for MarkAllInboxRead.
 func NewMarkAllInboxReadReqBuilder() *MarkAllInboxReadReqBuilder {
 	return &MarkAllInboxReadReqBuilder{req: &MarkAllInboxReadReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *MarkAllInboxReadReqBuilder) Body(body *models.InboxReadAllRequestBody) *MarkAllInboxReadReqBuilder {
+	b.req.body = body
+	return b
 }
 
 // Build finalizes the request.
@@ -269,6 +281,12 @@ func NewMarkInboxReadReqBuilder() *MarkInboxReadReqBuilder {
 // Id sets the "id" path parameter.
 func (b *MarkInboxReadReqBuilder) Id(v string) *MarkInboxReadReqBuilder {
 	b.req.pathParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *MarkInboxReadReqBuilder) Body(body *models.InboxReadRequestBody) *MarkInboxReadReqBuilder {
+	b.req.body = body
 	return b
 }
 

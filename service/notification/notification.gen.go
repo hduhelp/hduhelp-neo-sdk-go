@@ -62,374 +62,6 @@ func (s *Service) GetNotificationDelivery(ctx context.Context, req *GetNotificat
 	return resp, err
 }
 
-// ListNotificationPolicyProfilesReq is the request for ListNotificationPolicyProfiles.
-type ListNotificationPolicyProfilesReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// ListNotificationPolicyProfilesReqBuilder builds a ListNotificationPolicyProfilesReq with a fluent setter per field.
-type ListNotificationPolicyProfilesReqBuilder struct {
-	req *ListNotificationPolicyProfilesReq
-}
-
-// NewListNotificationPolicyProfilesReqBuilder creates a request builder for ListNotificationPolicyProfiles.
-func NewListNotificationPolicyProfilesReqBuilder() *ListNotificationPolicyProfilesReqBuilder {
-	return &ListNotificationPolicyProfilesReqBuilder{req: &ListNotificationPolicyProfilesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// TopicKey sets the "topic_key" query parameter.
-func (b *ListNotificationPolicyProfilesReqBuilder) TopicKey(v string) *ListNotificationPolicyProfilesReqBuilder {
-	b.req.queryParams["topic_key"] = v
-	return b
-}
-
-// IncludeDisabled sets the "include_disabled" query parameter.
-func (b *ListNotificationPolicyProfilesReqBuilder) IncludeDisabled(v bool) *ListNotificationPolicyProfilesReqBuilder {
-	b.req.queryParams["include_disabled"] = strconv.FormatBool(v)
-	return b
-}
-
-// Build finalizes the request.
-func (b *ListNotificationPolicyProfilesReqBuilder) Build() *ListNotificationPolicyProfilesReq {
-	return b.req
-}
-
-// ListNotificationPolicyProfilesResp is the response for ListNotificationPolicyProfiles.
-type ListNotificationPolicyProfilesResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data []models.PolicyProfile `json:"data"`
-}
-
-// ListNotificationPolicyProfiles calls GET /hduhelp-neo/admin/notifications/policy-profiles.
-func (s *Service) ListNotificationPolicyProfiles(ctx context.Context, req *ListNotificationPolicyProfilesReq, opts ...core.RequestOption) (*ListNotificationPolicyProfilesResp, error) {
-	resp := &ListNotificationPolicyProfilesResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/admin/notifications/policy-profiles",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// CreateNotificationPolicyProfileReq is the request for CreateNotificationPolicyProfile.
-type CreateNotificationPolicyProfileReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// CreateNotificationPolicyProfileReqBuilder builds a CreateNotificationPolicyProfileReq with a fluent setter per field.
-type CreateNotificationPolicyProfileReqBuilder struct {
-	req *CreateNotificationPolicyProfileReq
-}
-
-// NewCreateNotificationPolicyProfileReqBuilder creates a request builder for CreateNotificationPolicyProfile.
-func NewCreateNotificationPolicyProfileReqBuilder() *CreateNotificationPolicyProfileReqBuilder {
-	return &CreateNotificationPolicyProfileReqBuilder{req: &CreateNotificationPolicyProfileReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *CreateNotificationPolicyProfileReqBuilder) Body(body *models.CreatePolicyProfileRequestBody) *CreateNotificationPolicyProfileReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *CreateNotificationPolicyProfileReqBuilder) Build() *CreateNotificationPolicyProfileReq {
-	return b.req
-}
-
-// CreateNotificationPolicyProfileResp is the response for CreateNotificationPolicyProfile.
-type CreateNotificationPolicyProfileResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.PolicyProfile `json:"data"`
-}
-
-// CreateNotificationPolicyProfile calls POST /hduhelp-neo/admin/notifications/policy-profiles.
-func (s *Service) CreateNotificationPolicyProfile(ctx context.Context, req *CreateNotificationPolicyProfileReq, opts ...core.RequestOption) (*CreateNotificationPolicyProfileResp, error) {
-	resp := &CreateNotificationPolicyProfileResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/admin/notifications/policy-profiles",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// GetNotificationPolicyProfileReq is the request for GetNotificationPolicyProfile.
-type GetNotificationPolicyProfileReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// GetNotificationPolicyProfileReqBuilder builds a GetNotificationPolicyProfileReq with a fluent setter per field.
-type GetNotificationPolicyProfileReqBuilder struct {
-	req *GetNotificationPolicyProfileReq
-}
-
-// NewGetNotificationPolicyProfileReqBuilder creates a request builder for GetNotificationPolicyProfile.
-func NewGetNotificationPolicyProfileReqBuilder() *GetNotificationPolicyProfileReqBuilder {
-	return &GetNotificationPolicyProfileReqBuilder{req: &GetNotificationPolicyProfileReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Id sets the "id" path parameter.
-func (b *GetNotificationPolicyProfileReqBuilder) Id(v string) *GetNotificationPolicyProfileReqBuilder {
-	b.req.pathParams["id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *GetNotificationPolicyProfileReqBuilder) Build() *GetNotificationPolicyProfileReq {
-	return b.req
-}
-
-// GetNotificationPolicyProfileResp is the response for GetNotificationPolicyProfile.
-type GetNotificationPolicyProfileResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.PolicyProfile `json:"data"`
-}
-
-// GetNotificationPolicyProfile calls GET /hduhelp-neo/admin/notifications/policy-profiles/{id}.
-func (s *Service) GetNotificationPolicyProfile(ctx context.Context, req *GetNotificationPolicyProfileReq, opts ...core.RequestOption) (*GetNotificationPolicyProfileResp, error) {
-	resp := &GetNotificationPolicyProfileResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/admin/notifications/policy-profiles/{id}",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// DisableNotificationPolicyProfileReq is the request for DisableNotificationPolicyProfile.
-type DisableNotificationPolicyProfileReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// DisableNotificationPolicyProfileReqBuilder builds a DisableNotificationPolicyProfileReq with a fluent setter per field.
-type DisableNotificationPolicyProfileReqBuilder struct {
-	req *DisableNotificationPolicyProfileReq
-}
-
-// NewDisableNotificationPolicyProfileReqBuilder creates a request builder for DisableNotificationPolicyProfile.
-func NewDisableNotificationPolicyProfileReqBuilder() *DisableNotificationPolicyProfileReqBuilder {
-	return &DisableNotificationPolicyProfileReqBuilder{req: &DisableNotificationPolicyProfileReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Id sets the "id" path parameter.
-func (b *DisableNotificationPolicyProfileReqBuilder) Id(v string) *DisableNotificationPolicyProfileReqBuilder {
-	b.req.pathParams["id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *DisableNotificationPolicyProfileReqBuilder) Build() *DisableNotificationPolicyProfileReq {
-	return b.req
-}
-
-// DisableNotificationPolicyProfileResp is the response for DisableNotificationPolicyProfile.
-type DisableNotificationPolicyProfileResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.PolicyProfile `json:"data"`
-}
-
-// DisableNotificationPolicyProfile calls DELETE /hduhelp-neo/admin/notifications/policy-profiles/{id}.
-func (s *Service) DisableNotificationPolicyProfile(ctx context.Context, req *DisableNotificationPolicyProfileReq, opts ...core.RequestOption) (*DisableNotificationPolicyProfileResp, error) {
-	resp := &DisableNotificationPolicyProfileResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "DELETE",
-		PathTemplate: "/hduhelp-neo/admin/notifications/policy-profiles/{id}",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// SetDefaultNotificationPolicyProfileReq is the request for SetDefaultNotificationPolicyProfile.
-type SetDefaultNotificationPolicyProfileReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// SetDefaultNotificationPolicyProfileReqBuilder builds a SetDefaultNotificationPolicyProfileReq with a fluent setter per field.
-type SetDefaultNotificationPolicyProfileReqBuilder struct {
-	req *SetDefaultNotificationPolicyProfileReq
-}
-
-// NewSetDefaultNotificationPolicyProfileReqBuilder creates a request builder for SetDefaultNotificationPolicyProfile.
-func NewSetDefaultNotificationPolicyProfileReqBuilder() *SetDefaultNotificationPolicyProfileReqBuilder {
-	return &SetDefaultNotificationPolicyProfileReqBuilder{req: &SetDefaultNotificationPolicyProfileReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Id sets the "id" path parameter.
-func (b *SetDefaultNotificationPolicyProfileReqBuilder) Id(v string) *SetDefaultNotificationPolicyProfileReqBuilder {
-	b.req.pathParams["id"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *SetDefaultNotificationPolicyProfileReqBuilder) Build() *SetDefaultNotificationPolicyProfileReq {
-	return b.req
-}
-
-// SetDefaultNotificationPolicyProfileResp is the response for SetDefaultNotificationPolicyProfile.
-type SetDefaultNotificationPolicyProfileResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.PolicyProfile `json:"data"`
-}
-
-// SetDefaultNotificationPolicyProfile calls PUT /hduhelp-neo/admin/notifications/policy-profiles/{id}/default.
-func (s *Service) SetDefaultNotificationPolicyProfile(ctx context.Context, req *SetDefaultNotificationPolicyProfileReq, opts ...core.RequestOption) (*SetDefaultNotificationPolicyProfileResp, error) {
-	resp := &SetDefaultNotificationPolicyProfileResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "PUT",
-		PathTemplate: "/hduhelp-neo/admin/notifications/policy-profiles/{id}/default",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// RenameNotificationPolicyProfileReq is the request for RenameNotificationPolicyProfile.
-type RenameNotificationPolicyProfileReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// RenameNotificationPolicyProfileReqBuilder builds a RenameNotificationPolicyProfileReq with a fluent setter per field.
-type RenameNotificationPolicyProfileReqBuilder struct {
-	req *RenameNotificationPolicyProfileReq
-}
-
-// NewRenameNotificationPolicyProfileReqBuilder creates a request builder for RenameNotificationPolicyProfile.
-func NewRenameNotificationPolicyProfileReqBuilder() *RenameNotificationPolicyProfileReqBuilder {
-	return &RenameNotificationPolicyProfileReqBuilder{req: &RenameNotificationPolicyProfileReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Id sets the "id" path parameter.
-func (b *RenameNotificationPolicyProfileReqBuilder) Id(v string) *RenameNotificationPolicyProfileReqBuilder {
-	b.req.pathParams["id"] = v
-	return b
-}
-
-// Body sets the request body.
-func (b *RenameNotificationPolicyProfileReqBuilder) Body(body *models.RenamePolicyProfileRequestBody) *RenameNotificationPolicyProfileReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *RenameNotificationPolicyProfileReqBuilder) Build() *RenameNotificationPolicyProfileReq {
-	return b.req
-}
-
-// RenameNotificationPolicyProfileResp is the response for RenameNotificationPolicyProfile.
-type RenameNotificationPolicyProfileResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.PolicyProfile `json:"data"`
-}
-
-// RenameNotificationPolicyProfile calls PUT /hduhelp-neo/admin/notifications/policy-profiles/{id}/name.
-func (s *Service) RenameNotificationPolicyProfile(ctx context.Context, req *RenameNotificationPolicyProfileReq, opts ...core.RequestOption) (*RenameNotificationPolicyProfileResp, error) {
-	resp := &RenameNotificationPolicyProfileResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "PUT",
-		PathTemplate: "/hduhelp-neo/admin/notifications/policy-profiles/{id}/name",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// UpdateNotificationPolicyProfileReq is the request for UpdateNotificationPolicyProfile.
-type UpdateNotificationPolicyProfileReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// UpdateNotificationPolicyProfileReqBuilder builds a UpdateNotificationPolicyProfileReq with a fluent setter per field.
-type UpdateNotificationPolicyProfileReqBuilder struct {
-	req *UpdateNotificationPolicyProfileReq
-}
-
-// NewUpdateNotificationPolicyProfileReqBuilder creates a request builder for UpdateNotificationPolicyProfile.
-func NewUpdateNotificationPolicyProfileReqBuilder() *UpdateNotificationPolicyProfileReqBuilder {
-	return &UpdateNotificationPolicyProfileReqBuilder{req: &UpdateNotificationPolicyProfileReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Id sets the "id" path parameter.
-func (b *UpdateNotificationPolicyProfileReqBuilder) Id(v string) *UpdateNotificationPolicyProfileReqBuilder {
-	b.req.pathParams["id"] = v
-	return b
-}
-
-// Body sets the request body.
-func (b *UpdateNotificationPolicyProfileReqBuilder) Body(body *models.UpdatePolicyProfileRequestBody) *UpdateNotificationPolicyProfileReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *UpdateNotificationPolicyProfileReqBuilder) Build() *UpdateNotificationPolicyProfileReq {
-	return b.req
-}
-
-// UpdateNotificationPolicyProfileResp is the response for UpdateNotificationPolicyProfile.
-type UpdateNotificationPolicyProfileResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.PolicyProfile `json:"data"`
-}
-
-// UpdateNotificationPolicyProfile calls PUT /hduhelp-neo/admin/notifications/policy-profiles/{id}/policy.
-func (s *Service) UpdateNotificationPolicyProfile(ctx context.Context, req *UpdateNotificationPolicyProfileReq, opts ...core.RequestOption) (*UpdateNotificationPolicyProfileResp, error) {
-	resp := &UpdateNotificationPolicyProfileResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "PUT",
-		PathTemplate: "/hduhelp-neo/admin/notifications/policy-profiles/{id}/policy",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
 // TestNotificationProviderReq is the request for TestNotificationProvider.
 type TestNotificationProviderReq struct {
 	pathParams  map[string]string
@@ -724,6 +356,58 @@ func (s *Service) CancelNotificationTask(ctx context.Context, req *CancelNotific
 	return resp, err
 }
 
+// RecallNotificationTaskReq is the request for RecallNotificationTask.
+type RecallNotificationTaskReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// RecallNotificationTaskReqBuilder builds a RecallNotificationTaskReq with a fluent setter per field.
+type RecallNotificationTaskReqBuilder struct{ req *RecallNotificationTaskReq }
+
+// NewRecallNotificationTaskReqBuilder creates a request builder for RecallNotificationTask.
+func NewRecallNotificationTaskReqBuilder() *RecallNotificationTaskReqBuilder {
+	return &RecallNotificationTaskReqBuilder{req: &RecallNotificationTaskReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *RecallNotificationTaskReqBuilder) Id(v string) *RecallNotificationTaskReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Body sets the request body.
+func (b *RecallNotificationTaskReqBuilder) Body(body *models.RecallTaskRequestBody) *RecallNotificationTaskReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *RecallNotificationTaskReqBuilder) Build() *RecallNotificationTaskReq { return b.req }
+
+// RecallNotificationTaskResp is the response for RecallNotificationTask.
+type RecallNotificationTaskResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.NotificationTask `json:"data"`
+}
+
+// RecallNotificationTask: 撤回通知
+func (s *Service) RecallNotificationTask(ctx context.Context, req *RecallNotificationTaskReq, opts ...core.RequestOption) (*RecallNotificationTaskResp, error) {
+	resp := &RecallNotificationTaskResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/notifications/tasks/{id}/recall",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // ReplayNotificationTaskFailuresReq is the request for ReplayNotificationTaskFailures.
 type ReplayNotificationTaskFailuresReq struct {
 	pathParams  map[string]string
@@ -900,42 +584,42 @@ func (s *Service) TestNotificationChain(ctx context.Context, req *TestNotificati
 	return resp, err
 }
 
-// ListNotificationTopicConfigurationsReq is the request for ListNotificationTopicConfigurations.
-type ListNotificationTopicConfigurationsReq struct {
+// ListNotificationTopicSettingsReq is the request for ListNotificationTopicSettings.
+type ListNotificationTopicSettingsReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// ListNotificationTopicConfigurationsReqBuilder builds a ListNotificationTopicConfigurationsReq with a fluent setter per field.
-type ListNotificationTopicConfigurationsReqBuilder struct {
-	req *ListNotificationTopicConfigurationsReq
+// ListNotificationTopicSettingsReqBuilder builds a ListNotificationTopicSettingsReq with a fluent setter per field.
+type ListNotificationTopicSettingsReqBuilder struct {
+	req *ListNotificationTopicSettingsReq
 }
 
-// NewListNotificationTopicConfigurationsReqBuilder creates a request builder for ListNotificationTopicConfigurations.
-func NewListNotificationTopicConfigurationsReqBuilder() *ListNotificationTopicConfigurationsReqBuilder {
-	return &ListNotificationTopicConfigurationsReqBuilder{req: &ListNotificationTopicConfigurationsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewListNotificationTopicSettingsReqBuilder creates a request builder for ListNotificationTopicSettings.
+func NewListNotificationTopicSettingsReqBuilder() *ListNotificationTopicSettingsReqBuilder {
+	return &ListNotificationTopicSettingsReqBuilder{req: &ListNotificationTopicSettingsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // Build finalizes the request.
-func (b *ListNotificationTopicConfigurationsReqBuilder) Build() *ListNotificationTopicConfigurationsReq {
+func (b *ListNotificationTopicSettingsReqBuilder) Build() *ListNotificationTopicSettingsReq {
 	return b.req
 }
 
-// ListNotificationTopicConfigurationsResp is the response for ListNotificationTopicConfigurations.
-type ListNotificationTopicConfigurationsResp struct {
+// ListNotificationTopicSettingsResp is the response for ListNotificationTopicSettings.
+type ListNotificationTopicSettingsResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data []models.NotificationTopicConfiguration `json:"data"`
+	Data []models.NotificationTopicSettings `json:"data"`
 }
 
-// ListNotificationTopicConfigurations calls GET /hduhelp-neo/admin/notifications/topics/configurations.
-func (s *Service) ListNotificationTopicConfigurations(ctx context.Context, req *ListNotificationTopicConfigurationsReq, opts ...core.RequestOption) (*ListNotificationTopicConfigurationsResp, error) {
-	resp := &ListNotificationTopicConfigurationsResp{}
+// ListNotificationTopicSettings: 通知类型与投递设置
+func (s *Service) ListNotificationTopicSettings(ctx context.Context, req *ListNotificationTopicSettingsReq, opts ...core.RequestOption) (*ListNotificationTopicSettingsResp, error) {
+	resp := &ListNotificationTopicSettingsResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/admin/notifications/topics/configurations",
+		PathTemplate: "/hduhelp-neo/admin/notifications/topics",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -944,104 +628,54 @@ func (s *Service) ListNotificationTopicConfigurations(ctx context.Context, req *
 	return resp, err
 }
 
-// GetNotificationTopicCapabilitiesReq is the request for GetNotificationTopicCapabilities.
-type GetNotificationTopicCapabilitiesReq struct {
+// SaveNotificationTopicOverrideReq is the request for SaveNotificationTopicOverride.
+type SaveNotificationTopicOverrideReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// GetNotificationTopicCapabilitiesReqBuilder builds a GetNotificationTopicCapabilitiesReq with a fluent setter per field.
-type GetNotificationTopicCapabilitiesReqBuilder struct {
-	req *GetNotificationTopicCapabilitiesReq
+// SaveNotificationTopicOverrideReqBuilder builds a SaveNotificationTopicOverrideReq with a fluent setter per field.
+type SaveNotificationTopicOverrideReqBuilder struct {
+	req *SaveNotificationTopicOverrideReq
 }
 
-// NewGetNotificationTopicCapabilitiesReqBuilder creates a request builder for GetNotificationTopicCapabilities.
-func NewGetNotificationTopicCapabilitiesReqBuilder() *GetNotificationTopicCapabilitiesReqBuilder {
-	return &GetNotificationTopicCapabilitiesReqBuilder{req: &GetNotificationTopicCapabilitiesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// TopicKey sets the "topicKey" path parameter.
-func (b *GetNotificationTopicCapabilitiesReqBuilder) TopicKey(v string) *GetNotificationTopicCapabilitiesReqBuilder {
-	b.req.pathParams["topicKey"] = v
-	return b
-}
-
-// Build finalizes the request.
-func (b *GetNotificationTopicCapabilitiesReqBuilder) Build() *GetNotificationTopicCapabilitiesReq {
-	return b.req
-}
-
-// GetNotificationTopicCapabilitiesResp is the response for GetNotificationTopicCapabilities.
-type GetNotificationTopicCapabilitiesResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.TopicCapabilities `json:"data"`
-}
-
-// GetNotificationTopicCapabilities calls GET /hduhelp-neo/admin/notifications/topics/{topicKey}/capabilities.
-func (s *Service) GetNotificationTopicCapabilities(ctx context.Context, req *GetNotificationTopicCapabilitiesReq, opts ...core.RequestOption) (*GetNotificationTopicCapabilitiesResp, error) {
-	resp := &GetNotificationTopicCapabilitiesResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "GET",
-		PathTemplate: "/hduhelp-neo/admin/notifications/topics/{topicKey}/capabilities",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
-// SaveNotificationTopicConfigurationReq is the request for SaveNotificationTopicConfiguration.
-type SaveNotificationTopicConfigurationReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// SaveNotificationTopicConfigurationReqBuilder builds a SaveNotificationTopicConfigurationReq with a fluent setter per field.
-type SaveNotificationTopicConfigurationReqBuilder struct {
-	req *SaveNotificationTopicConfigurationReq
-}
-
-// NewSaveNotificationTopicConfigurationReqBuilder creates a request builder for SaveNotificationTopicConfiguration.
-func NewSaveNotificationTopicConfigurationReqBuilder() *SaveNotificationTopicConfigurationReqBuilder {
-	return &SaveNotificationTopicConfigurationReqBuilder{req: &SaveNotificationTopicConfigurationReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewSaveNotificationTopicOverrideReqBuilder creates a request builder for SaveNotificationTopicOverride.
+func NewSaveNotificationTopicOverrideReqBuilder() *SaveNotificationTopicOverrideReqBuilder {
+	return &SaveNotificationTopicOverrideReqBuilder{req: &SaveNotificationTopicOverrideReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // TopicKey sets the "topicKey" path parameter.
-func (b *SaveNotificationTopicConfigurationReqBuilder) TopicKey(v string) *SaveNotificationTopicConfigurationReqBuilder {
+func (b *SaveNotificationTopicOverrideReqBuilder) TopicKey(v string) *SaveNotificationTopicOverrideReqBuilder {
 	b.req.pathParams["topicKey"] = v
 	return b
 }
 
 // Body sets the request body.
-func (b *SaveNotificationTopicConfigurationReqBuilder) Body(body *models.SaveNotificationTopicConfigurationRequestBody) *SaveNotificationTopicConfigurationReqBuilder {
+func (b *SaveNotificationTopicOverrideReqBuilder) Body(body *models.SaveNotificationTopicOverrideRequestBody) *SaveNotificationTopicOverrideReqBuilder {
 	b.req.body = body
 	return b
 }
 
 // Build finalizes the request.
-func (b *SaveNotificationTopicConfigurationReqBuilder) Build() *SaveNotificationTopicConfigurationReq {
+func (b *SaveNotificationTopicOverrideReqBuilder) Build() *SaveNotificationTopicOverrideReq {
 	return b.req
 }
 
-// SaveNotificationTopicConfigurationResp is the response for SaveNotificationTopicConfiguration.
-type SaveNotificationTopicConfigurationResp struct {
+// SaveNotificationTopicOverrideResp is the response for SaveNotificationTopicOverride.
+type SaveNotificationTopicOverrideResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.NotificationTopicConfiguration `json:"data"`
+	Data *models.NotificationTopicSettings `json:"data"`
 }
 
-// SaveNotificationTopicConfiguration calls PUT /hduhelp-neo/admin/notifications/topics/{topicKey}/config.
-func (s *Service) SaveNotificationTopicConfiguration(ctx context.Context, req *SaveNotificationTopicConfigurationReq, opts ...core.RequestOption) (*SaveNotificationTopicConfigurationResp, error) {
-	resp := &SaveNotificationTopicConfigurationResp{}
+// SaveNotificationTopicOverride: 覆盖通知类型的投递设置
+func (s *Service) SaveNotificationTopicOverride(ctx context.Context, req *SaveNotificationTopicOverrideReq, opts ...core.RequestOption) (*SaveNotificationTopicOverrideResp, error) {
+	resp := &SaveNotificationTopicOverrideResp{}
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "PUT",
-		PathTemplate: "/hduhelp-neo/admin/notifications/topics/{topicKey}/config",
+		PathTemplate: "/hduhelp-neo/admin/notifications/topics/{topicKey}/override",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,
@@ -1050,54 +684,48 @@ func (s *Service) SaveNotificationTopicConfiguration(ctx context.Context, req *S
 	return resp, err
 }
 
-// ValidateNotificationDeliveryPolicyReq is the request for ValidateNotificationDeliveryPolicy.
-type ValidateNotificationDeliveryPolicyReq struct {
+// ResetNotificationTopicOverrideReq is the request for ResetNotificationTopicOverride.
+type ResetNotificationTopicOverrideReq struct {
 	pathParams  map[string]string
 	queryParams map[string]string
 	headers     map[string]string
 	body        any
 }
 
-// ValidateNotificationDeliveryPolicyReqBuilder builds a ValidateNotificationDeliveryPolicyReq with a fluent setter per field.
-type ValidateNotificationDeliveryPolicyReqBuilder struct {
-	req *ValidateNotificationDeliveryPolicyReq
+// ResetNotificationTopicOverrideReqBuilder builds a ResetNotificationTopicOverrideReq with a fluent setter per field.
+type ResetNotificationTopicOverrideReqBuilder struct {
+	req *ResetNotificationTopicOverrideReq
 }
 
-// NewValidateNotificationDeliveryPolicyReqBuilder creates a request builder for ValidateNotificationDeliveryPolicy.
-func NewValidateNotificationDeliveryPolicyReqBuilder() *ValidateNotificationDeliveryPolicyReqBuilder {
-	return &ValidateNotificationDeliveryPolicyReqBuilder{req: &ValidateNotificationDeliveryPolicyReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+// NewResetNotificationTopicOverrideReqBuilder creates a request builder for ResetNotificationTopicOverride.
+func NewResetNotificationTopicOverrideReqBuilder() *ResetNotificationTopicOverrideReqBuilder {
+	return &ResetNotificationTopicOverrideReqBuilder{req: &ResetNotificationTopicOverrideReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
 // TopicKey sets the "topicKey" path parameter.
-func (b *ValidateNotificationDeliveryPolicyReqBuilder) TopicKey(v string) *ValidateNotificationDeliveryPolicyReqBuilder {
+func (b *ResetNotificationTopicOverrideReqBuilder) TopicKey(v string) *ResetNotificationTopicOverrideReqBuilder {
 	b.req.pathParams["topicKey"] = v
 	return b
 }
 
-// Body sets the request body.
-func (b *ValidateNotificationDeliveryPolicyReqBuilder) Body(body *models.ValidatePolicyRequestBody) *ValidateNotificationDeliveryPolicyReqBuilder {
-	b.req.body = body
-	return b
-}
-
 // Build finalizes the request.
-func (b *ValidateNotificationDeliveryPolicyReqBuilder) Build() *ValidateNotificationDeliveryPolicyReq {
+func (b *ResetNotificationTopicOverrideReqBuilder) Build() *ResetNotificationTopicOverrideReq {
 	return b.req
 }
 
-// ValidateNotificationDeliveryPolicyResp is the response for ValidateNotificationDeliveryPolicy.
-type ValidateNotificationDeliveryPolicyResp struct {
+// ResetNotificationTopicOverrideResp is the response for ResetNotificationTopicOverride.
+type ResetNotificationTopicOverrideResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.ValidatePolicyData `json:"data"`
+	Data *models.NotificationTopicSettings `json:"data"`
 }
 
-// ValidateNotificationDeliveryPolicy calls POST /hduhelp-neo/admin/notifications/topics/{topicKey}/validate-policy.
-func (s *Service) ValidateNotificationDeliveryPolicy(ctx context.Context, req *ValidateNotificationDeliveryPolicyReq, opts ...core.RequestOption) (*ValidateNotificationDeliveryPolicyResp, error) {
-	resp := &ValidateNotificationDeliveryPolicyResp{}
+// ResetNotificationTopicOverride: 恢复通知类型的默认投递设置
+func (s *Service) ResetNotificationTopicOverride(ctx context.Context, req *ResetNotificationTopicOverrideReq, opts ...core.RequestOption) (*ResetNotificationTopicOverrideResp, error) {
+	resp := &ResetNotificationTopicOverrideResp{}
 	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/admin/notifications/topics/{topicKey}/validate-policy",
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/admin/notifications/topics/{topicKey}/override",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

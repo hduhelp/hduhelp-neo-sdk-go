@@ -7,10 +7,10 @@ import (
 
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/academic"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/admin"
-	"github.com/hduhelp/hduhelp-neo-sdk-go/service/adminnotice"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/agent"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/agentops"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/analytics"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/announcement"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/apm"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/campuslife"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/emptyschedule"
@@ -31,8 +31,9 @@ import (
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/modelproxy"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/moments"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/notification"
-	"github.com/hduhelp/hduhelp-neo-sdk-go/service/siteannouncement"
-	"github.com/hduhelp/hduhelp-neo-sdk-go/service/subscription"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/notificationsettings"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/reminder"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/sitebanner"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/upload"
 )
 
@@ -43,10 +44,10 @@ type Client struct {
 
 	Academic                  *academic.Service
 	Admin                     *admin.Service
-	AdminNotice               *adminnotice.Service
 	Agent                     *agent.Service
 	AgentOps                  *agentops.Service
 	Analytics                 *analytics.Service
+	Announcement              *announcement.Service
 	Apm                       *apm.Service
 	CampusLife                *campuslife.Service
 	EmptySchedule             *emptyschedule.Service
@@ -67,8 +68,9 @@ type Client struct {
 	ModelProxy                *modelproxy.Service
 	Moments                   *moments.Service
 	Notification              *notification.Service
-	SiteAnnouncement          *siteannouncement.Service
-	Subscription              *subscription.Service
+	NotificationSettings      *notificationsettings.Service
+	Reminder                  *reminder.Service
+	SiteBanner                *sitebanner.Service
 	Upload                    *upload.Service
 }
 
@@ -76,10 +78,10 @@ type Client struct {
 func attachServices(c *Client) {
 	c.Academic = academic.NewService(c.config)
 	c.Admin = admin.NewService(c.config)
-	c.AdminNotice = adminnotice.NewService(c.config)
 	c.Agent = agent.NewService(c.config)
 	c.AgentOps = agentops.NewService(c.config)
 	c.Analytics = analytics.NewService(c.config)
+	c.Announcement = announcement.NewService(c.config)
 	c.Apm = apm.NewService(c.config)
 	c.CampusLife = campuslife.NewService(c.config)
 	c.EmptySchedule = emptyschedule.NewService(c.config)
@@ -100,7 +102,8 @@ func attachServices(c *Client) {
 	c.ModelProxy = modelproxy.NewService(c.config)
 	c.Moments = moments.NewService(c.config)
 	c.Notification = notification.NewService(c.config)
-	c.SiteAnnouncement = siteannouncement.NewService(c.config)
-	c.Subscription = subscription.NewService(c.config)
+	c.NotificationSettings = notificationsettings.NewService(c.config)
+	c.Reminder = reminder.NewService(c.config)
+	c.SiteBanner = sitebanner.NewService(c.config)
 	c.Upload = upload.NewService(c.config)
 }
