@@ -965,6 +965,24 @@ func (e ConsentAgreementType) Valid() bool {
 	}
 }
 
+// Defines values for ContactBindDataStatus.
+const (
+	BOUND         ContactBindDataStatus = "BOUND"
+	MERGEREQUIRED ContactBindDataStatus = "MERGE_REQUIRED"
+)
+
+// Valid indicates whether the value is a known member of the ContactBindDataStatus enum.
+func (e ContactBindDataStatus) Valid() bool {
+	switch e {
+	case BOUND:
+		return true
+	case MERGEREQUIRED:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CreateFeedbackRequestBodyFeedbackType.
 const (
 	CreateFeedbackRequestBodyFeedbackTypeAssistant CreateFeedbackRequestBodyFeedbackType = "assistant"
@@ -2498,6 +2516,42 @@ func (e UpdateNotificationSettingRequestBodyPreferredProvider) Valid() bool {
 	case UpdateNotificationSettingRequestBodyPreferredProviderDingtalkWork:
 		return true
 	case UpdateNotificationSettingRequestBodyPreferredProviderWechatMp:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpsertUserContactDataStatus.
+const (
+	TAKEN   UpsertUserContactDataStatus = "TAKEN"
+	UPDATED UpsertUserContactDataStatus = "UPDATED"
+)
+
+// Valid indicates whether the value is a known member of the UpsertUserContactDataStatus enum.
+func (e UpsertUserContactDataStatus) Valid() bool {
+	switch e {
+	case TAKEN:
+		return true
+	case UPDATED:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpsertUserContactRequestBodyKind.
+const (
+	UpsertUserContactRequestBodyKindEmail UpsertUserContactRequestBodyKind = "email"
+	UpsertUserContactRequestBodyKindPhone UpsertUserContactRequestBodyKind = "phone"
+)
+
+// Valid indicates whether the value is a known member of the UpsertUserContactRequestBodyKind enum.
+func (e UpsertUserContactRequestBodyKind) Valid() bool {
+	switch e {
+	case UpsertUserContactRequestBodyKindEmail:
+		return true
+	case UpsertUserContactRequestBodyKindPhone:
 		return true
 	default:
 		return false
@@ -4208,6 +4262,24 @@ func (e NotificationServiceListNotificationTaskDeliveriesParamsFailureKind) Vali
 	}
 }
 
+// Defines values for AdminServiceDeleteUserContactParamsKind.
+const (
+	AdminServiceDeleteUserContactParamsKindEmail AdminServiceDeleteUserContactParamsKind = "email"
+	AdminServiceDeleteUserContactParamsKindPhone AdminServiceDeleteUserContactParamsKind = "phone"
+)
+
+// Valid indicates whether the value is a known member of the AdminServiceDeleteUserContactParamsKind enum.
+func (e AdminServiceDeleteUserContactParamsKind) Valid() bool {
+	switch e {
+	case AdminServiceDeleteUserContactParamsKindEmail:
+		return true
+	case AdminServiceDeleteUserContactParamsKindPhone:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for InboxServiceListInboxParamsCategory.
 const (
 	InboxServiceListInboxParamsCategoryNotice   InboxServiceListInboxParamsCategory = "notice"
@@ -4329,6 +4401,23 @@ type AccountDeletionResponseBody struct {
 	Code *int64               `json:"code,omitempty"`
 	Data *AccountDeletionData `json:"data,omitempty"`
 	Msg  *string              `json:"msg,omitempty"`
+}
+
+// AccountMergeRecord defines model for AccountMergeRecord.
+type AccountMergeRecord struct {
+	// ChosenBy user | operator
+	ChosenBy       *string               `json:"chosenBy,omitempty"`
+	CreatedAt      *int64                `json:"createdAt,omitempty"`
+	Id             *string               `json:"id,omitempty"`
+	LoserUserId    *string               `json:"loserUserId,omitempty"`
+	LostLogins     *[]string             `json:"lostLogins,omitempty"`
+	Migrated       *[]AdminMergeMigrated `json:"migrated,omitempty"`
+	OperatorUserId *string               `json:"operatorUserId,omitempty"`
+	Reason         *string               `json:"reason,omitempty"`
+	SurvivorUserId *string               `json:"survivorUserId,omitempty"`
+
+	// Trigger campus_bind | social_bind | email_bind | phone_bind | operator
+	Trigger *string `json:"trigger,omitempty"`
 }
 
 // Activity defines model for Activity.
@@ -4782,6 +4871,59 @@ type AdminMeResponseBody struct {
 	Code *int64        `json:"code,omitempty"`
 	Data *OperatorInfo `json:"data,omitempty"`
 	Msg  *string       `json:"msg,omitempty"`
+}
+
+// AdminMergeAccount defines model for AdminMergeAccount.
+type AdminMergeAccount struct {
+	Avatar    *string                    `json:"avatar,omitempty"`
+	CreatedAt *int64                     `json:"createdAt,omitempty"`
+	Data      *[]AdminMergeResourceCount `json:"data,omitempty"`
+	Logins    *[]string                  `json:"logins,omitempty"`
+	NickName  *string                    `json:"nickName,omitempty"`
+	StaffIds  *[]string                  `json:"staffIds,omitempty"`
+	UserId    *string                    `json:"userId,omitempty"`
+}
+
+// AdminMergeConflict defines model for AdminMergeConflict.
+type AdminMergeConflict struct {
+	Key        *string `json:"key,omitempty"`
+	Name       *string `json:"name,omitempty"`
+	Resolution *string `json:"resolution,omitempty"`
+	Resource   *string `json:"resource,omitempty"`
+}
+
+// AdminMergeMigrated defines model for AdminMergeMigrated.
+type AdminMergeMigrated struct {
+	Dropped  *int64  `json:"dropped,omitempty"`
+	Migrated *int64  `json:"migrated,omitempty"`
+	Name     *string `json:"name,omitempty"`
+	Resource *string `json:"resource,omitempty"`
+}
+
+// AdminMergePlan defines model for AdminMergePlan.
+type AdminMergePlan struct {
+	Conflicts   *[]AdminMergeConflict      `json:"conflicts,omitempty"`
+	LoserUserId *string                    `json:"loserUserId,omitempty"`
+	LostLogins  *[]string                  `json:"lostLogins,omitempty"`
+	Moves       *[]AdminMergeResourceCount `json:"moves,omitempty"`
+
+	// PlanDigest 确认时原样带回，计划变了会被拒绝
+	PlanDigest     *string `json:"planDigest,omitempty"`
+	SurvivorUserId *string `json:"survivorUserId,omitempty"`
+}
+
+// AdminMergeResolution defines model for AdminMergeResolution.
+type AdminMergeResolution struct {
+	Key      *string `json:"key,omitempty"`
+	Resource *string `json:"resource,omitempty"`
+	Strategy *string `json:"strategy,omitempty"`
+}
+
+// AdminMergeResourceCount ---- 账号合并：运营用同一个合并引擎合并两个账号 ----
+type AdminMergeResourceCount struct {
+	Count    *int64  `json:"count,omitempty"`
+	Name     *string `json:"name,omitempty"`
+	Resource *string `json:"resource,omitempty"`
 }
 
 // AdminOfficialAccount defines model for AdminOfficialAccount.
@@ -8208,24 +8350,11 @@ type BindPageResponseBody struct {
 	Msg  *string       `json:"msg,omitempty"`
 }
 
-// BindPhoneData defines model for BindPhoneData.
-type BindPhoneData struct {
-	// Status "BOUND"
-	Status *string `json:"status,omitempty"`
-}
-
 // BindPhoneRequestBody defines model for BindPhoneRequestBody.
 type BindPhoneRequestBody struct {
 	Code      *string `json:"code,omitempty"`
 	Phone     *string `json:"phone,omitempty"`
 	PhoneArea *string `json:"phoneArea,omitempty"`
-}
-
-// BindPhoneResponseBody defines model for BindPhoneResponseBody.
-type BindPhoneResponseBody struct {
-	Code *int64         `json:"code,omitempty"`
-	Data *BindPhoneData `json:"data,omitempty"`
-	Msg  *string        `json:"msg,omitempty"`
 }
 
 // BindProviderStatus defines model for BindProviderStatus.
@@ -9205,6 +9334,26 @@ type ConsentStatusResponseBody struct {
 	Msg  *string        `json:"msg,omitempty"`
 }
 
+// ContactBindData 绑定 / 更换手机号或邮箱的结果。号码已属于另一个账号时，验证码已证明对该号码的
+// 控制权，返回 MERGE_REQUIRED 与一次性 merge_token，客户端直接进入账号合并。
+type ContactBindData struct {
+	MergeToken *string                `json:"mergeToken,omitempty"`
+	Status     *ContactBindDataStatus `json:"status,omitempty"`
+}
+
+// ContactBindDataStatus defines model for ContactBindData.Status.
+type ContactBindDataStatus string
+
+// ContactBindResponseBody defines model for ContactBindResponseBody.
+type ContactBindResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data 绑定 / 更换手机号或邮箱的结果。号码已属于另一个账号时，验证码已证明对该号码的
+	// 控制权，返回 MERGE_REQUIRED 与一次性 merge_token，客户端直接进入账号合并。
+	Data *ContactBindData `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
+}
+
 // Course defines model for Course.
 type Course struct {
 	Classroom    *string `json:"classroom,omitempty"`
@@ -9348,6 +9497,31 @@ type CrawlRunInfo struct {
 	// Result running | success | partial | failed
 	Result    *string `json:"result,omitempty"`
 	StartedAt *int64  `json:"startedAt,omitempty"`
+}
+
+// CreateAccountMergeData defines model for CreateAccountMergeData.
+type CreateAccountMergeData struct {
+	LoserUserId    *string               `json:"loserUserId,omitempty"`
+	LostLogins     *[]string             `json:"lostLogins,omitempty"`
+	Migrated       *[]AdminMergeMigrated `json:"migrated,omitempty"`
+	SurvivorUserId *string               `json:"survivorUserId,omitempty"`
+}
+
+// CreateAccountMergeRequestBody defines model for CreateAccountMergeRequestBody.
+type CreateAccountMergeRequestBody struct {
+	AcceptLostLogins    *bool                   `json:"accept_lost_logins,omitempty"`
+	ConflictResolutions *[]AdminMergeResolution `json:"conflict_resolutions,omitempty"`
+	LoserUserId         *string                 `json:"loser_user_id,omitempty"`
+	PlanDigest          *string                 `json:"plan_digest,omitempty"`
+	Reason              *string                 `json:"reason,omitempty"`
+	SurvivorUserId      *string                 `json:"survivor_user_id,omitempty"`
+}
+
+// CreateAccountMergeResponseBody defines model for CreateAccountMergeResponseBody.
+type CreateAccountMergeResponseBody struct {
+	Code *int64                  `json:"code,omitempty"`
+	Data *CreateAccountMergeData `json:"data,omitempty"`
+	Msg  *string                 `json:"msg,omitempty"`
 }
 
 // CreateAnnouncementRequestBody defines model for CreateAnnouncementRequestBody.
@@ -9946,6 +10120,12 @@ type DeleteRoomResponseBody struct {
 
 // DeleteUserCampusIdentityResponseBody defines model for DeleteUserCampusIdentityResponseBody.
 type DeleteUserCampusIdentityResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
+// DeleteUserContactResponseBody defines model for DeleteUserContactResponseBody.
+type DeleteUserContactResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
 }
@@ -12120,6 +12300,13 @@ type LibraryReadingResponseBody struct {
 	Msg  *string             `json:"msg,omitempty"`
 }
 
+// ListAccountMergesResponseBody defines model for ListAccountMergesResponseBody.
+type ListAccountMergesResponseBody struct {
+	Code *int64                `json:"code,omitempty"`
+	Data *[]AccountMergeRecord `json:"data,omitempty"`
+	Msg  *string               `json:"msg,omitempty"`
+}
+
 // ListAssetsResponseBody defines model for ListAssetsResponseBody.
 type ListAssetsResponseBody struct {
 	Code *int64              `json:"code,omitempty"`
@@ -12544,6 +12731,24 @@ type MemberInfo struct {
 	UserId      *string `json:"userId,omitempty"`
 }
 
+// MergeAccount defines model for MergeAccount.
+type MergeAccount struct {
+	// Avatar 头像对象 key
+	Avatar *string `json:"avatar,omitempty"`
+
+	// CreatedAt 注册时间（毫秒）
+	CreatedAt *int64 `json:"createdAt,omitempty"`
+
+	// Data 该账号持有的数据
+	Data *[]MergeResourceCount `json:"data,omitempty"`
+
+	// Logins 登录方式（邮箱、手机号打码；学号；微信、钉钉；密码）
+	Logins   *[]string `json:"logins,omitempty"`
+	NickName *string   `json:"nickName,omitempty"`
+	StaffIds *[]string `json:"staffIds,omitempty"`
+	UserId   *string   `json:"userId,omitempty"`
+}
+
 // MergeClassChatGroupRequestBody defines model for MergeClassChatGroupRequestBody.
 type MergeClassChatGroupRequestBody struct {
 	ClassId            *string `json:"class_id,omitempty"`
@@ -12559,18 +12764,26 @@ type MergeClassChatGroupResponseBody struct {
 // MergeConfirmData defines model for MergeConfirmData.
 type MergeConfirmData struct {
 	AlreadyMerged *bool                `json:"alreadyMerged,omitempty"`
+	LoserUserId   *string              `json:"loserUserId,omitempty"`
+	LostLogins    *[]string            `json:"lostLogins,omitempty"`
 	Migrated      *[]MergeMigratedItem `json:"migrated,omitempty"`
 
-	// SourceInvalidated 源账号 B 已被注销、其全部登录会话将被撤销（合并完成后恒为 true）
-	SourceInvalidated *bool   `json:"sourceInvalidated,omitempty"`
-	SourceUserId      *string `json:"sourceUserId,omitempty"`
-	TargetUserId      *string `json:"targetUserId,omitempty"`
+	// ResetRequired 客户端清掉与用户相关的本机状态后重新加载
+	ResetRequired *bool `json:"resetRequired,omitempty"`
+
+	// Session 登录数据（不透明 access/refresh 令牌 + 过期时间，单位秒）
+	Session        *LoginData `json:"session,omitempty"`
+	SurvivorUserId *string    `json:"survivorUserId,omitempty"`
 }
 
 // MergeConfirmRequestBody defines model for MergeConfirmRequestBody.
 type MergeConfirmRequestBody struct {
+	AcceptLostLogins    *bool                      `json:"acceptLostLogins,omitempty"`
 	ConflictResolutions *[]MergeConflictResolution `json:"conflictResolutions,omitempty"`
 	MergeToken          *string                    `json:"merge_token,omitempty"`
+
+	// SurvivorUserId 缺省 = 旧版客户端，返回 710000473 要求更新
+	SurvivorUserId *string `json:"survivorUserId,omitempty"`
 }
 
 // MergeConfirmResponseBody defines model for MergeConfirmResponseBody.
@@ -12582,44 +12795,50 @@ type MergeConfirmResponseBody struct {
 
 // MergeConflictItem defines model for MergeConflictItem.
 type MergeConflictItem struct {
-	Key *string `json:"key,omitempty"`
+	Key  *string `json:"key,omitempty"`
+	Name *string `json:"name,omitempty"`
 
-	// Overridable 是否可用 conflictResolutions 覆盖：社交身份固定“两者保留”(overridable=false)，校园/电费等按策略迁移(overridable=true)
-	Overridable *bool `json:"overridable,omitempty"`
-
-	// Resolution 该冲突在合并时的处理结果（keep_target/keep_source/keep_both）
+	// Resolution 默认 keep_target（保留方的为准），可改为 keep_source
 	Resolution *string `json:"resolution,omitempty"`
 	Resource   *string `json:"resource,omitempty"`
 }
 
-// MergeConflictResolution ---- MergeConfirm: 确认合并（authSessionUser，幂等，事务，审计） ----
+// MergeConflictResolution defines model for MergeConflictResolution.
 type MergeConflictResolution struct {
 	Key      *string `json:"key,omitempty"`
 	Resource *string `json:"resource,omitempty"`
 	Strategy *string `json:"strategy,omitempty"`
 }
 
-// MergeIdentityItem defines model for MergeIdentityItem.
-type MergeIdentityItem struct {
-	IdentityType *string `json:"identityType,omitempty"`
-	Kind         *string `json:"kind,omitempty"`
-	Label        *string `json:"label,omitempty"`
-}
-
 // MergeMigratedItem defines model for MergeMigratedItem.
 type MergeMigratedItem struct {
 	Dropped  *int64  `json:"dropped,omitempty"`
 	Migrated *int64  `json:"migrated,omitempty"`
+	Name     *string `json:"name,omitempty"`
 	Resource *string `json:"resource,omitempty"`
+}
+
+// MergePlan 保留某一个账号时会发生什么。
+type MergePlan struct {
+	Conflicts   *[]MergeConflictItem `json:"conflicts,omitempty"`
+	LoserUserId *string              `json:"loserUserId,omitempty"`
+
+	// LostLogins 按默认处理会失去的登录方式；非空时确认须 acceptLostLogins
+	LostLogins *[]string `json:"lostLogins,omitempty"`
+
+	// Moves 被并掉的账号迁过来的数据
+	Moves          *[]MergeResourceCount `json:"moves,omitempty"`
+	SurvivorUserId *string               `json:"survivorUserId,omitempty"`
 }
 
 // MergePreviewData defines model for MergePreviewData.
 type MergePreviewData struct {
-	Conflicts        *[]MergeConflictItem  `json:"conflicts,omitempty"`
-	SourceIdentities *[]MergeIdentityItem  `json:"sourceIdentities,omitempty"`
-	SourceResources  *[]MergeResourceCount `json:"sourceResources,omitempty"`
-	SourceUserId     *string               `json:"sourceUserId,omitempty"`
-	TargetUserId     *string               `json:"targetUserId,omitempty"`
+	// Accounts 第一个是当前登录的账号
+	Accounts              *[]MergeAccount `json:"accounts,omitempty"`
+	DefaultSurvivorUserId *string         `json:"defaultSurvivorUserId,omitempty"`
+
+	// Plans 保留每一个账号各一份
+	Plans *[]MergePlan `json:"plans,omitempty"`
 }
 
 // MergePreviewRequestBody defines model for MergePreviewRequestBody.
@@ -12634,38 +12853,11 @@ type MergePreviewResponseBody struct {
 	Msg  *string           `json:"msg,omitempty"`
 }
 
-// MergeResourceCount defines model for MergeResourceCount.
+// MergeResourceCount 一类数据及其数量；name 是展示名，客户端照用。
 type MergeResourceCount struct {
 	Count    *int64  `json:"count,omitempty"`
+	Name     *string `json:"name,omitempty"`
 	Resource *string `json:"resource,omitempty"`
-}
-
-// MergeStartData defines model for MergeStartData.
-type MergeStartData struct {
-	// State 本次合并登录的 state
-	State *string `json:"state,omitempty"`
-
-	// Url 第三方授权 URL，前端跳转
-	Url *string `json:"url,omitempty"`
-}
-
-// MergeStartRequestBody defines model for MergeStartRequestBody.
-type MergeStartRequestBody struct {
-	// ClientId 运营平台注册的第一方登录客户端
-	ClientId *string `json:"client_id,omitempty"`
-
-	// GrantKey 用于证明对目标账号控制权的登录来源: cas/wxmp/dingtalk/...
-	GrantKey *string `json:"grant_key,omitempty"`
-
-	// RedirectUri 精确匹配客户端白名单
-	RedirectUri *string `json:"redirect_uri,omitempty"`
-}
-
-// MergeStartResponseBody defines model for MergeStartResponseBody.
-type MergeStartResponseBody struct {
-	Code *int64          `json:"code,omitempty"`
-	Data *MergeStartData `json:"data,omitempty"`
-	Msg  *string         `json:"msg,omitempty"`
 }
 
 // MessageItem defines model for MessageItem.
@@ -17619,6 +17811,25 @@ type Preference struct {
 	TopPublisher     *string `json:"topPublisher,omitempty"`
 }
 
+// PreviewAccountMergeData defines model for PreviewAccountMergeData.
+type PreviewAccountMergeData struct {
+	Accounts              *[]AdminMergeAccount `json:"accounts,omitempty"`
+	DefaultSurvivorUserId *string              `json:"defaultSurvivorUserId,omitempty"`
+	Plans                 *[]AdminMergePlan    `json:"plans,omitempty"`
+}
+
+// PreviewAccountMergeRequestBody defines model for PreviewAccountMergeRequestBody.
+type PreviewAccountMergeRequestBody struct {
+	UserIds *[]string `json:"user_ids,omitempty"`
+}
+
+// PreviewAccountMergeResponseBody defines model for PreviewAccountMergeResponseBody.
+type PreviewAccountMergeResponseBody struct {
+	Code *int64                   `json:"code,omitempty"`
+	Data *PreviewAccountMergeData `json:"data,omitempty"`
+	Msg  *string                  `json:"msg,omitempty"`
+}
+
 // PreviewData defines model for PreviewData.
 type PreviewData struct {
 	Preview *string `json:"preview,omitempty"`
@@ -20541,6 +20752,41 @@ type UpsertUserCampusIdentityResponseBody struct {
 	Msg  *string `json:"msg,omitempty"`
 }
 
+// UpsertUserContactData 号码属于别的账号且没有 replace_existing 时不修改，返回 TAKEN 与对方账号，运营可选移走或合并。
+type UpsertUserContactData struct {
+	OwnerUserId *string                      `json:"ownerUserId,omitempty"`
+	Status      *UpsertUserContactDataStatus `json:"status,omitempty"`
+}
+
+// UpsertUserContactDataStatus defines model for UpsertUserContactData.Status.
+type UpsertUserContactDataStatus string
+
+// UpsertUserContactRequestBody defines model for UpsertUserContactRequestBody.
+type UpsertUserContactRequestBody struct {
+	Kind *UpsertUserContactRequestBodyKind `json:"kind,omitempty"`
+
+	// PhoneArea 缺省 +86
+	PhoneArea *string `json:"phone_area,omitempty"`
+	Reason    *string `json:"reason,omitempty"`
+
+	// ReplaceExisting 号码属于别的账号时从对方身上移走
+	ReplaceExisting *bool   `json:"replace_existing,omitempty"`
+	UserId          *string `json:"user_id,omitempty"`
+	Value           *string `json:"value,omitempty"`
+}
+
+// UpsertUserContactRequestBodyKind defines model for UpsertUserContactRequestBody.Kind.
+type UpsertUserContactRequestBodyKind string
+
+// UpsertUserContactResponseBody defines model for UpsertUserContactResponseBody.
+type UpsertUserContactResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data 号码属于别的账号且没有 replace_existing 时不修改，返回 TAKEN 与对方账号，运营可选移走或合并。
+	Data *UpsertUserContactData `json:"data,omitempty"`
+	Msg  *string                `json:"msg,omitempty"`
+}
+
 // UpsertUserSocialIdentityRequestBody defines model for UpsertUserSocialIdentityRequestBody.
 type UpsertUserSocialIdentityRequestBody struct {
 	ClearUnionId *bool   `json:"clear_union_id,omitempty"`
@@ -21141,6 +21387,12 @@ type AcademicServiceTeachingClassParams struct {
 	UnitId   *string `form:"unit_id,omitempty" json:"unit_id,omitempty"`
 	Grade    *string `form:"grade,omitempty" json:"grade,omitempty"`
 	XStaffId *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AdminServiceListAccountMergesParams defines parameters for AdminServiceListAccountMerges.
+type AdminServiceListAccountMergesParams struct {
+	// UserId 作为保留方或被并掉的一方
+	UserId *string `form:"user_id,omitempty" json:"user_id,omitempty"`
 }
 
 // AgentServiceAgentDeleteMcpServerParams defines parameters for AgentServiceAgentDeleteMcpServer.
@@ -22700,6 +22952,16 @@ type AdminServiceDeleteUserCampusIdentityParams struct {
 	IdentityId *string `form:"identity_id,omitempty" json:"identity_id,omitempty"`
 }
 
+// AdminServiceDeleteUserContactParams defines parameters for AdminServiceDeleteUserContact.
+type AdminServiceDeleteUserContactParams struct {
+	UserId *string                                  `form:"user_id,omitempty" json:"user_id,omitempty"`
+	Kind   *AdminServiceDeleteUserContactParamsKind `form:"kind,omitempty" json:"kind,omitempty"`
+	Reason *string                                  `form:"reason,omitempty" json:"reason,omitempty"`
+}
+
+// AdminServiceDeleteUserContactParamsKind defines parameters for AdminServiceDeleteUserContact.
+type AdminServiceDeleteUserContactParamsKind string
+
 // AdminServiceDeleteUserSocialIdentityParams defines parameters for AdminServiceDeleteUserSocialIdentity.
 type AdminServiceDeleteUserSocialIdentityParams struct {
 	UserId     *string `form:"user_id,omitempty" json:"user_id,omitempty"`
@@ -23615,6 +23877,12 @@ type AcademicServiceCreateScheduleShareJSONRequestBody = CreateScheduleShareRequ
 // AcademicServiceRenameScheduleShareJSONRequestBody defines body for AcademicServiceRenameScheduleShare for application/json ContentType.
 type AcademicServiceRenameScheduleShareJSONRequestBody = RenameScheduleShareRequestBody
 
+// AdminServiceCreateAccountMergeJSONRequestBody defines body for AdminServiceCreateAccountMerge for application/json ContentType.
+type AdminServiceCreateAccountMergeJSONRequestBody = CreateAccountMergeRequestBody
+
+// AdminServicePreviewAccountMergeJSONRequestBody defines body for AdminServicePreviewAccountMerge for application/json ContentType.
+type AdminServicePreviewAccountMergeJSONRequestBody = PreviewAccountMergeRequestBody
+
 // AgentServiceAgentCreateMcpServerJSONRequestBody defines body for AgentServiceAgentCreateMcpServer for application/json ContentType.
 type AgentServiceAgentCreateMcpServerJSONRequestBody = AgentMcpServerCreateRequestBody
 
@@ -24131,6 +24399,9 @@ type AdminServiceSetUserStatusJSONRequestBody = SetUserStatusRequestBody
 // AdminServiceUpsertUserCampusIdentityJSONRequestBody defines body for AdminServiceUpsertUserCampusIdentity for application/json ContentType.
 type AdminServiceUpsertUserCampusIdentityJSONRequestBody = UpsertUserCampusIdentityRequestBody
 
+// AdminServiceUpsertUserContactJSONRequestBody defines body for AdminServiceUpsertUserContact for application/json ContentType.
+type AdminServiceUpsertUserContactJSONRequestBody = UpsertUserContactRequestBody
+
 // AdminServiceUpsertUserSocialIdentityJSONRequestBody defines body for AdminServiceUpsertUserSocialIdentity for application/json ContentType.
 type AdminServiceUpsertUserSocialIdentityJSONRequestBody = UpsertUserSocialIdentityRequestBody
 
@@ -24274,9 +24545,6 @@ type IdentityServiceMergeConfirmJSONRequestBody = MergeConfirmRequestBody
 
 // IdentityServiceMergePreviewJSONRequestBody defines body for IdentityServiceMergePreview for application/json ContentType.
 type IdentityServiceMergePreviewJSONRequestBody = MergePreviewRequestBody
-
-// IdentityServiceMergeStartJSONRequestBody defines body for IdentityServiceMergeStart for application/json ContentType.
-type IdentityServiceMergeStartJSONRequestBody = MergeStartRequestBody
 
 // IdentityServiceBindEmailJSONRequestBody defines body for IdentityServiceBindEmail for application/json ContentType.
 type IdentityServiceBindEmailJSONRequestBody = BindEmailRequestBody

@@ -16,6 +16,144 @@ type Service struct{ config *core.Config }
 // NewService binds the Admin service to a client config.
 func NewService(config *core.Config) *Service { return &Service{config: config} }
 
+// ListAccountMergesReq is the request for ListAccountMerges.
+type ListAccountMergesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListAccountMergesReqBuilder builds a ListAccountMergesReq with a fluent setter per field.
+type ListAccountMergesReqBuilder struct{ req *ListAccountMergesReq }
+
+// NewListAccountMergesReqBuilder creates a request builder for ListAccountMerges.
+func NewListAccountMergesReqBuilder() *ListAccountMergesReqBuilder {
+	return &ListAccountMergesReqBuilder{req: &ListAccountMergesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// UserId sets the "user_id" query parameter: 作为保留方或被并掉的一方
+func (b *ListAccountMergesReqBuilder) UserId(v string) *ListAccountMergesReqBuilder {
+	b.req.queryParams["user_id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *ListAccountMergesReqBuilder) Build() *ListAccountMergesReq { return b.req }
+
+// ListAccountMergesResp is the response for ListAccountMerges.
+type ListAccountMergesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data []models.AccountMergeRecord `json:"data"`
+}
+
+// ListAccountMerges: 账号合并记录
+func (s *Service) ListAccountMerges(ctx context.Context, req *ListAccountMergesReq, opts ...core.RequestOption) (*ListAccountMergesResp, error) {
+	resp := &ListAccountMergesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/account-merges",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// CreateAccountMergeReq is the request for CreateAccountMerge.
+type CreateAccountMergeReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// CreateAccountMergeReqBuilder builds a CreateAccountMergeReq with a fluent setter per field.
+type CreateAccountMergeReqBuilder struct{ req *CreateAccountMergeReq }
+
+// NewCreateAccountMergeReqBuilder creates a request builder for CreateAccountMerge.
+func NewCreateAccountMergeReqBuilder() *CreateAccountMergeReqBuilder {
+	return &CreateAccountMergeReqBuilder{req: &CreateAccountMergeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *CreateAccountMergeReqBuilder) Body(body *models.CreateAccountMergeRequestBody) *CreateAccountMergeReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *CreateAccountMergeReqBuilder) Build() *CreateAccountMergeReq { return b.req }
+
+// CreateAccountMergeResp is the response for CreateAccountMerge.
+type CreateAccountMergeResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.CreateAccountMergeData `json:"data"`
+}
+
+// CreateAccountMerge: 合并两个账号
+func (s *Service) CreateAccountMerge(ctx context.Context, req *CreateAccountMergeReq, opts ...core.RequestOption) (*CreateAccountMergeResp, error) {
+	resp := &CreateAccountMergeResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/account-merges",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// PreviewAccountMergeReq is the request for PreviewAccountMerge.
+type PreviewAccountMergeReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// PreviewAccountMergeReqBuilder builds a PreviewAccountMergeReq with a fluent setter per field.
+type PreviewAccountMergeReqBuilder struct{ req *PreviewAccountMergeReq }
+
+// NewPreviewAccountMergeReqBuilder creates a request builder for PreviewAccountMerge.
+func NewPreviewAccountMergeReqBuilder() *PreviewAccountMergeReqBuilder {
+	return &PreviewAccountMergeReqBuilder{req: &PreviewAccountMergeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *PreviewAccountMergeReqBuilder) Body(body *models.PreviewAccountMergeRequestBody) *PreviewAccountMergeReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *PreviewAccountMergeReqBuilder) Build() *PreviewAccountMergeReq { return b.req }
+
+// PreviewAccountMergeResp is the response for PreviewAccountMerge.
+type PreviewAccountMergeResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.PreviewAccountMergeData `json:"data"`
+}
+
+// PreviewAccountMerge: 预览合并两个账号
+func (s *Service) PreviewAccountMerge(ctx context.Context, req *PreviewAccountMergeReq, opts ...core.RequestOption) (*PreviewAccountMergeResp, error) {
+	resp := &PreviewAccountMergeResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/account-merges/preview",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // ListAppsReq is the request for ListApps.
 type ListAppsReq struct {
 	pathParams  map[string]string
@@ -3027,6 +3165,109 @@ func (s *Service) DeleteUserCampusIdentity(ctx context.Context, req *DeleteUserC
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "DELETE",
 		PathTemplate: "/hduhelp-neo/admin/users/bindings/campus",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// UpsertUserContactReq is the request for UpsertUserContact.
+type UpsertUserContactReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// UpsertUserContactReqBuilder builds a UpsertUserContactReq with a fluent setter per field.
+type UpsertUserContactReqBuilder struct{ req *UpsertUserContactReq }
+
+// NewUpsertUserContactReqBuilder creates a request builder for UpsertUserContact.
+func NewUpsertUserContactReqBuilder() *UpsertUserContactReqBuilder {
+	return &UpsertUserContactReqBuilder{req: &UpsertUserContactReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *UpsertUserContactReqBuilder) Body(body *models.UpsertUserContactRequestBody) *UpsertUserContactReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *UpsertUserContactReqBuilder) Build() *UpsertUserContactReq { return b.req }
+
+// UpsertUserContactResp is the response for UpsertUserContact.
+type UpsertUserContactResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.UpsertUserContactData `json:"data"`
+}
+
+// UpsertUserContact: 修改用户邮箱或手机号
+func (s *Service) UpsertUserContact(ctx context.Context, req *UpsertUserContactReq, opts ...core.RequestOption) (*UpsertUserContactResp, error) {
+	resp := &UpsertUserContactResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/users/bindings/contact",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// DeleteUserContactReq is the request for DeleteUserContact.
+type DeleteUserContactReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// DeleteUserContactReqBuilder builds a DeleteUserContactReq with a fluent setter per field.
+type DeleteUserContactReqBuilder struct{ req *DeleteUserContactReq }
+
+// NewDeleteUserContactReqBuilder creates a request builder for DeleteUserContact.
+func NewDeleteUserContactReqBuilder() *DeleteUserContactReqBuilder {
+	return &DeleteUserContactReqBuilder{req: &DeleteUserContactReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// UserId sets the "user_id" query parameter.
+func (b *DeleteUserContactReqBuilder) UserId(v string) *DeleteUserContactReqBuilder {
+	b.req.queryParams["user_id"] = v
+	return b
+}
+
+// Kind sets the "kind" query parameter.
+func (b *DeleteUserContactReqBuilder) Kind(v string) *DeleteUserContactReqBuilder {
+	b.req.queryParams["kind"] = v
+	return b
+}
+
+// Reason sets the "reason" query parameter.
+func (b *DeleteUserContactReqBuilder) Reason(v string) *DeleteUserContactReqBuilder {
+	b.req.queryParams["reason"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *DeleteUserContactReqBuilder) Build() *DeleteUserContactReq { return b.req }
+
+// DeleteUserContactResp is the response for DeleteUserContact.
+type DeleteUserContactResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// DeleteUserContact: 解绑用户邮箱或手机号
+func (s *Service) DeleteUserContact(ctx context.Context, req *DeleteUserContactReq, opts ...core.RequestOption) (*DeleteUserContactResp, error) {
+	resp := &DeleteUserContactResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/admin/users/bindings/contact",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

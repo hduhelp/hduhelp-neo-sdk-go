@@ -598,52 +598,6 @@ func (s *Service) MergePreview(ctx context.Context, req *MergePreviewReq, opts .
 	return resp, err
 }
 
-// MergeStartReq is the request for MergeStart.
-type MergeStartReq struct {
-	pathParams  map[string]string
-	queryParams map[string]string
-	headers     map[string]string
-	body        any
-}
-
-// MergeStartReqBuilder builds a MergeStartReq with a fluent setter per field.
-type MergeStartReqBuilder struct{ req *MergeStartReq }
-
-// NewMergeStartReqBuilder creates a request builder for MergeStart.
-func NewMergeStartReqBuilder() *MergeStartReqBuilder {
-	return &MergeStartReqBuilder{req: &MergeStartReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
-}
-
-// Body sets the request body.
-func (b *MergeStartReqBuilder) Body(body *models.MergeStartRequestBody) *MergeStartReqBuilder {
-	b.req.body = body
-	return b
-}
-
-// Build finalizes the request.
-func (b *MergeStartReqBuilder) Build() *MergeStartReq { return b.req }
-
-// MergeStartResp is the response for MergeStart.
-type MergeStartResp struct {
-	core.APIResp `json:"-"`
-	core.CodeMsg
-	Data *models.MergeStartData `json:"data"`
-}
-
-// MergeStart: 主动发起账号合并/关联
-func (s *Service) MergeStart(ctx context.Context, req *MergeStartReq, opts ...core.RequestOption) (*MergeStartResp, error) {
-	resp := &MergeStartResp{}
-	err := s.config.Do(ctx, &core.APIReq{
-		HTTPMethod:   "POST",
-		PathTemplate: "/hduhelp-neo/identity/account/merge/start",
-		PathParams:   req.pathParams,
-		QueryParams:  req.queryParams,
-		Headers:      req.headers,
-		Body:         req.body,
-	}, resp, opts...)
-	return resp, err
-}
-
 // BindEmailReq is the request for BindEmail.
 type BindEmailReq struct {
 	pathParams  map[string]string
@@ -673,6 +627,7 @@ func (b *BindEmailReqBuilder) Build() *BindEmailReq { return b.req }
 type BindEmailResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
+	Data *models.ContactBindData `json:"data"`
 }
 
 // BindEmail: 绑定邮箱
@@ -718,6 +673,7 @@ func (b *ChangeEmailReqBuilder) Build() *ChangeEmailReq { return b.req }
 type ChangeEmailResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
+	Data *models.ContactBindData `json:"data"`
 }
 
 // ChangeEmail: 更换邮箱
@@ -763,7 +719,7 @@ func (b *BindPhoneReqBuilder) Build() *BindPhoneReq { return b.req }
 type BindPhoneResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
-	Data *models.BindPhoneData `json:"data"`
+	Data *models.ContactBindData `json:"data"`
 }
 
 // BindPhone: 绑定手机号
@@ -809,6 +765,7 @@ func (b *ChangePhoneReqBuilder) Build() *ChangePhoneReq { return b.req }
 type ChangePhoneResp struct {
 	core.APIResp `json:"-"`
 	core.CodeMsg
+	Data *models.ContactBindData `json:"data"`
 }
 
 // ChangePhone: 更换手机号

@@ -1781,6 +1781,69 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/TeachingClassResponseBody'
             x-hduhelp-http: {'requires_user': false, 'auth': 'bearer'}
+    /hduhelp-neo/admin/account-merges:
+        get:
+            tags:
+                - AdminService
+            summary: 账号合并记录
+            description: 该用户作为保留方或被并掉一方的全部合并，最新在前。
+            operationId: AdminService_ListAccountMerges
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: user_id
+                  in: query
+                  description: 作为保留方或被并掉的一方
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListAccountMergesResponseBody'
+        post:
+            tags:
+                - AdminService
+            summary: 合并两个账号
+            description: 按预览的计划合并，plan_digest 与当前计划不一致时拒绝；必须填写理由。被并掉的账号软删除、会话撤销，保留账号的消息通知里会留一条说明。
+            operationId: AdminService_CreateAccountMerge
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateAccountMergeRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateAccountMergeResponseBody'
+    /hduhelp-neo/admin/account-merges/preview:
+        post:
+            tags:
+                - AdminService
+            summary: 预览合并两个账号
+            description: 与用户自己合并同一个引擎：两个账号摘要、默认保留方、保留每一个账号的计划（迁移的数据、冲突、会失去的登录方式与计划摘要）。不发生变更。
+            operationId: AdminService_PreviewAccountMerge
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PreviewAccountMergeRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PreviewAccountMergeResponseBody'
     /hduhelp-neo/admin/agent/mcp-servers:
         get:
             tags:
@@ -13080,7 +13143,6 @@ paths:
             security:
                 - OperatorBearerAuth: []
             requestBody:
-                description: '-------------------- 用户身份绑定人工调整 --------------------'
                 content:
                     application/json:
                         schema:
@@ -13116,6 +13178,61 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/DeleteUserCampusIdentityResponseBody'
+    /hduhelp-neo/admin/users/bindings/contact:
+        put:
+            tags:
+                - AdminService
+            summary: 修改用户邮箱或手机号
+            description: 号码属于别的账号时不修改，返回 status=TAKEN 与 ownerUserId；replace_existing=true 时从对方身上移走。不撤销用户会话，记审计。
+            operationId: AdminService_UpsertUserContact
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                description: |-
+                    -------------------- 用户身份绑定人工调整 --------------------
+                    ---- 用户联系方式：运营直接修改邮箱 / 手机号 ----
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpsertUserContactRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UpsertUserContactResponseBody'
+        delete:
+            tags:
+                - AdminService
+            summary: 解绑用户邮箱或手机号
+            description: 记审计。
+            operationId: AdminService_DeleteUserContact
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: user_id
+                  in: query
+                  schema:
+                    type: string
+                - name: kind
+                  in: query
+                  schema:
+                    enum:
+                        - email
+                        - phone
+                    type: string
+                - name: reason
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeleteUserContactResponseBody'
     /hduhelp-neo/admin/users/bindings/social:
         put:
             tags:
@@ -16718,7 +16835,7 @@ paths:
             tags:
                 - IdentityService
             summary: 账号合并确认
-            description: 将源账号 B 的资源按 user_id 改挂到目标 A（同类冲突默认保留 A、丢弃 B 重复项，或按 conflictResolutions）；社交身份固定“两者保留”不受策略影响；注销 B 并失效其全部会话（sourceInvalidated=true）。幂等、事务、审计。消费 merge_token。仅原生会话可调用。
+            description: 保留 survivorUserId，把另一个账号的全部数据按合并清单迁过来、联系方式与密码在保留方没有时转过来；被并掉的账号软删除、会话全部撤销，之后用它的任何凭据登录都落到保留账号。lostLogins 非空时须 acceptLostLogins。确认时重算计划，与预览不一致返回 710000470。幂等、事务、审计；消费 merge_token。仅原生会话可调用。
             operationId: IdentityService_MergeConfirm
             security:
                 - NativeSessionAuth: []
@@ -16740,14 +16857,15 @@ paths:
             tags:
                 - IdentityService
             summary: 账号合并预览
-            description: 校验 merge_token 的 target 为当前会话用户（A），预览源账号 B 将迁移的校园/社交身份、订阅、群、应用授权、PAT 等资源与冲突项（默认保留 A）。不发生变更。仅原生会话可调用。
+            description: 列出两个账号（第一个是当前登录的）与默认保留方，并分别给出保留每一个账号的计划：迁过来的数据、冲突项、会失去的登录方式。预览会钉住计划供确认比对，不延长令牌、不发生变更。仅原生会话可调用。
             operationId: IdentityService_MergePreview
             security:
                 - NativeSessionAuth: []
             requestBody:
                 description: |-
                     ==== 多身份体系 E §7: 账号合并（安全关键：需同时证明 A、B 的控制权） ====
-                    ---- MergePreview: 预览合并（authSessionUser，token 的 target 必须为当前会话用户） ----
+                    ---- 账号合并：撞上「这个学号 / 邮箱 / 手机号已属于另一个账号」时由用户确认 ----
+                    两个账号都由当前用户证明了控制权（当前会话 + 验证码或第三方登录），由用户选保留哪个。
                 content:
                     application/json:
                         schema:
@@ -16759,33 +16877,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/MergePreviewResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
-    /hduhelp-neo/identity/account/merge/start:
-        post:
-            tags:
-                - IdentityService
-            summary: 主动发起账号合并/关联
-            description: 当前会话用户 A 主动开启一次以合并为目的的第三方登录，返回授权 URL。A 在第三方证明对另一账号 B 的控制后回到 /login/callback，若解析到不同账号 B 即签发一次性 merge_token（target=A，source=B），随后走 preview/confirm。安全模型不变：仅原生会话可发起，target 恒为当前会话用户。
-            operationId: IdentityService_MergeStart
-            security:
-                - NativeSessionAuth: []
-            requestBody:
-                description: |-
-                    ---- MergeStart: 主动发起“合并/关联其他账号”（authSessionUser） ----
-                    当前会话用户 A 主动开启一次以合并为目的的第三方登录（如 CAS）。返回第三方授权
-                    URL；A 在第三方证明对账号 B 的控制后回到 /login/callback，若解析到另一账号 B，即
-                    签发一次性 merge_token（target=当前会话用户 A，source=B），随后走 preview/confirm。
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/MergeStartRequestBody'
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/MergeStartResponseBody'
             x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/identity/auth/bind/email:
         post:
@@ -16804,11 +16895,11 @@ paths:
                             $ref: '#/components/schemas/BindEmailRequestBody'
             responses:
                 "200":
-                    description: CommonResponse is the common response envelope tail (code/msg) reused across services.
+                    description: Successful response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/CommonResponseBody'
+                                $ref: '#/components/schemas/ContactBindResponseBody'
             x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/identity/auth/bind/email/change:
         post:
@@ -16827,18 +16918,18 @@ paths:
                             $ref: '#/components/schemas/ChangeEmailRequestBody'
             responses:
                 "200":
-                    description: CommonResponse is the common response envelope tail (code/msg) reused across services.
+                    description: Successful response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/CommonResponseBody'
+                                $ref: '#/components/schemas/ContactBindResponseBody'
             x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/identity/auth/bind/phone:
         post:
             tags:
                 - IdentityService
             summary: 绑定手机号
-            description: 为当前账号绑定手机号，需提供手机号、国家代码和短信验证码。需要用户已登录。返回 status=BOUND 表示绑定成功。
+            description: 为当前账号绑定手机号，需提供手机号、国家代码和短信验证码。需要用户已登录。status=BOUND 表示绑定成功；号码已属于另一个账号时返回 status=MERGE_REQUIRED 与 mergeToken，用于账号合并。
             operationId: IdentityService_BindPhone
             security:
                 - NativeSessionAuth: []
@@ -16854,7 +16945,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/BindPhoneResponseBody'
+                                $ref: '#/components/schemas/ContactBindResponseBody'
             x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/identity/auth/bind/phone/change:
         post:
@@ -16873,11 +16964,11 @@ paths:
                             $ref: '#/components/schemas/ChangePhoneRequestBody'
             responses:
                 "200":
-                    description: CommonResponse is the common response envelope tail (code/msg) reused across services.
+                    description: Successful response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/CommonResponseBody'
+                                $ref: '#/components/schemas/ContactBindResponseBody'
             x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/identity/auth/code/send:
         post:
@@ -21359,6 +21450,36 @@ components:
                     format: int64
                 msg:
                     type: string
+        AccountMergeRecord:
+            type: object
+            properties:
+                id:
+                    type: string
+                survivorUserId:
+                    type: string
+                loserUserId:
+                    type: string
+                trigger:
+                    type: string
+                    description: campus_bind | social_bind | email_bind | phone_bind | operator
+                chosenBy:
+                    type: string
+                    description: user | operator
+                lostLogins:
+                    type: array
+                    items:
+                        type: string
+                migrated:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AdminMergeMigrated'
+                operatorUserId:
+                    type: string
+                reason:
+                    type: string
+                createdAt:
+                    type: integer
+                    format: int64
         Activity:
             type: object
             properties:
@@ -22104,6 +22225,96 @@ components:
                     format: int64
                 msg:
                     type: string
+        AdminMergeAccount:
+            type: object
+            properties:
+                userId:
+                    type: string
+                nickName:
+                    type: string
+                avatar:
+                    type: string
+                staffIds:
+                    type: array
+                    items:
+                        type: string
+                logins:
+                    type: array
+                    items:
+                        type: string
+                createdAt:
+                    type: integer
+                    format: int64
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AdminMergeResourceCount'
+        AdminMergeConflict:
+            type: object
+            properties:
+                resource:
+                    type: string
+                name:
+                    type: string
+                key:
+                    type: string
+                resolution:
+                    type: string
+        AdminMergeMigrated:
+            type: object
+            properties:
+                resource:
+                    type: string
+                name:
+                    type: string
+                migrated:
+                    type: integer
+                    format: int64
+                dropped:
+                    type: integer
+                    format: int64
+        AdminMergePlan:
+            type: object
+            properties:
+                survivorUserId:
+                    type: string
+                loserUserId:
+                    type: string
+                moves:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AdminMergeResourceCount'
+                conflicts:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AdminMergeConflict'
+                lostLogins:
+                    type: array
+                    items:
+                        type: string
+                planDigest:
+                    type: string
+                    description: 确认时原样带回，计划变了会被拒绝
+        AdminMergeResolution:
+            type: object
+            properties:
+                resource:
+                    type: string
+                key:
+                    type: string
+                strategy:
+                    type: string
+        AdminMergeResourceCount:
+            type: object
+            properties:
+                resource:
+                    type: string
+                name:
+                    type: string
+                count:
+                    type: integer
+                    format: int64
+            description: '---- 账号合并：运营用同一个合并引擎合并两个账号 ----'
         AdminOfficialAccount:
             type: object
             properties:
@@ -28308,12 +28519,6 @@ components:
                     format: int64
                 msg:
                     type: string
-        BindPhoneData:
-            type: object
-            properties:
-                status:
-                    type: string
-                    description: '"BOUND"'
         BindPhoneRequestBody:
             type: object
             properties:
@@ -28322,16 +28527,6 @@ components:
                 phoneArea:
                     type: string
                 code:
-                    type: string
-        BindPhoneResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/BindPhoneData'
-                code:
-                    type: integer
-                    format: int64
-                msg:
                     type: string
         BindProviderStatus:
             type: object
@@ -29773,6 +29968,29 @@ components:
                     format: int64
                 msg:
                     type: string
+        ContactBindData:
+            type: object
+            properties:
+                status:
+                    enum:
+                        - BOUND
+                        - MERGE_REQUIRED
+                    type: string
+                mergeToken:
+                    type: string
+            description: |-
+                绑定 / 更换手机号或邮箱的结果。号码已属于另一个账号时，验证码已证明对该号码的
+                控制权，返回 MERGE_REQUIRED 与一次性 merge_token，客户端直接进入账号合并。
+        ContactBindResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ContactBindData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         Course:
             type: object
             properties:
@@ -30090,6 +30308,48 @@ components:
                 log:
                     type: string
                     description: JSON 字符串
+        CreateAccountMergeData:
+            type: object
+            properties:
+                survivorUserId:
+                    type: string
+                loserUserId:
+                    type: string
+                migrated:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AdminMergeMigrated'
+                lostLogins:
+                    type: array
+                    items:
+                        type: string
+        CreateAccountMergeRequestBody:
+            type: object
+            properties:
+                survivor_user_id:
+                    type: string
+                loser_user_id:
+                    type: string
+                plan_digest:
+                    type: string
+                conflict_resolutions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AdminMergeResolution'
+                accept_lost_logins:
+                    type: boolean
+                reason:
+                    type: string
+        CreateAccountMergeResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/CreateAccountMergeData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         CreateAnnouncementRequestBody:
             required:
                 - notice
@@ -30917,6 +31177,14 @@ components:
                 msg:
                     type: string
         DeleteUserCampusIdentityResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        DeleteUserContactResponseBody:
             type: object
             properties:
                 code:
@@ -34047,6 +34315,18 @@ components:
                     format: int64
                 msg:
                     type: string
+        ListAccountMergesResponseBody:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AccountMergeRecord'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         ListAssetsResponseBody:
             type: object
             properties:
@@ -34638,6 +34918,34 @@ components:
                 staffName:
                     type: string
             description: '---- Room detail: room + members + history events + favorite flags ----'
+        MergeAccount:
+            type: object
+            properties:
+                userId:
+                    type: string
+                nickName:
+                    type: string
+                avatar:
+                    type: string
+                    description: 头像对象 key
+                staffIds:
+                    type: array
+                    items:
+                        type: string
+                logins:
+                    type: array
+                    items:
+                        type: string
+                    description: 登录方式（邮箱、手机号打码；学号；微信、钉钉；密码）
+                createdAt:
+                    type: integer
+                    description: 注册时间（毫秒）
+                    format: int64
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/MergeResourceCount'
+                    description: 该账号持有的数据
         MergeClassChatGroupRequestBody:
             type: object
             properties:
@@ -34656,24 +34964,35 @@ components:
         MergeConfirmData:
             type: object
             properties:
-                targetUserId:
+                survivorUserId:
                     type: string
-                sourceUserId:
+                loserUserId:
                     type: string
                 migrated:
                     type: array
                     items:
                         $ref: '#/components/schemas/MergeMigratedItem'
+                lostLogins:
+                    type: array
+                    items:
+                        type: string
                 alreadyMerged:
                     type: boolean
-                sourceInvalidated:
+                resetRequired:
                     type: boolean
-                    description: 源账号 B 已被注销、其全部登录会话将被撤销（合并完成后恒为 true）
+                    description: 客户端清掉与用户相关的本机状态后重新加载
+                session:
+                    $ref: '#/components/schemas/LoginData'
         MergeConfirmRequestBody:
             type: object
             properties:
                 merge_token:
                     type: string
+                survivorUserId:
+                    type: string
+                    description: 缺省 = 旧版客户端，返回 710000473 要求更新
+                acceptLostLogins:
+                    type: boolean
                 conflictResolutions:
                     type: array
                     items:
@@ -34693,14 +35012,13 @@ components:
             properties:
                 resource:
                     type: string
+                name:
+                    type: string
                 key:
                     type: string
                 resolution:
                     type: string
-                    description: 该冲突在合并时的处理结果（keep_target/keep_source/keep_both）
-                overridable:
-                    type: boolean
-                    description: 是否可用 conflictResolutions 覆盖：社交身份固定“两者保留”(overridable=false)，校园/电费等按策略迁移(overridable=true)
+                    description: 默认 keep_target（保留方的为准），可改为 keep_source
         MergeConflictResolution:
             type: object
             properties:
@@ -34710,20 +35028,12 @@ components:
                     type: string
                 strategy:
                     type: string
-            description: '---- MergeConfirm: 确认合并（authSessionUser，幂等，事务，审计） ----'
-        MergeIdentityItem:
-            type: object
-            properties:
-                kind:
-                    type: string
-                label:
-                    type: string
-                identityType:
-                    type: string
         MergeMigratedItem:
             type: object
             properties:
                 resource:
+                    type: string
+                name:
                     type: string
                 migrated:
                     type: integer
@@ -34731,25 +35041,43 @@ components:
                 dropped:
                     type: integer
                     format: int64
-        MergePreviewData:
+        MergePlan:
             type: object
             properties:
-                targetUserId:
+                survivorUserId:
                     type: string
-                sourceUserId:
+                loserUserId:
                     type: string
-                sourceIdentities:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/MergeIdentityItem'
-                sourceResources:
+                moves:
                     type: array
                     items:
                         $ref: '#/components/schemas/MergeResourceCount'
+                    description: 被并掉的账号迁过来的数据
                 conflicts:
                     type: array
                     items:
                         $ref: '#/components/schemas/MergeConflictItem'
+                lostLogins:
+                    type: array
+                    items:
+                        type: string
+                    description: 按默认处理会失去的登录方式；非空时确认须 acceptLostLogins
+            description: 保留某一个账号时会发生什么。
+        MergePreviewData:
+            type: object
+            properties:
+                accounts:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/MergeAccount'
+                    description: 第一个是当前登录的账号
+                defaultSurvivorUserId:
+                    type: string
+                plans:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/MergePlan'
+                    description: 保留每一个账号各一份
         MergePreviewRequestBody:
             type: object
             properties:
@@ -34770,40 +35098,12 @@ components:
             properties:
                 resource:
                     type: string
+                name:
+                    type: string
                 count:
                     type: integer
                     format: int64
-        MergeStartData:
-            type: object
-            properties:
-                url:
-                    type: string
-                    description: 第三方授权 URL，前端跳转
-                state:
-                    type: string
-                    description: 本次合并登录的 state
-        MergeStartRequestBody:
-            type: object
-            properties:
-                grant_key:
-                    type: string
-                    description: '用于证明对目标账号控制权的登录来源: cas/wxmp/dingtalk/...'
-                client_id:
-                    type: string
-                    description: 运营平台注册的第一方登录客户端
-                redirect_uri:
-                    type: string
-                    description: 精确匹配客户端白名单
-        MergeStartResponseBody:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/MergeStartData'
-                code:
-                    type: integer
-                    format: int64
-                msg:
-                    type: string
+            description: 一类数据及其数量；name 是展示名，客户端照用。
         MessageItem:
             type: object
             properties:
@@ -44883,6 +45183,36 @@ components:
                 borrowedCount:
                     type: integer
                     format: int32
+        PreviewAccountMergeData:
+            type: object
+            properties:
+                accounts:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AdminMergeAccount'
+                defaultSurvivorUserId:
+                    type: string
+                plans:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AdminMergePlan'
+        PreviewAccountMergeRequestBody:
+            type: object
+            properties:
+                user_ids:
+                    type: array
+                    items:
+                        type: string
+        PreviewAccountMergeResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/PreviewAccountMergeData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         PreviewData:
             type: object
             properties:
@@ -49293,6 +49623,47 @@ components:
         UpsertUserCampusIdentityResponseBody:
             type: object
             properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        UpsertUserContactData:
+            type: object
+            properties:
+                status:
+                    enum:
+                        - UPDATED
+                        - TAKEN
+                    type: string
+                ownerUserId:
+                    type: string
+            description: 号码属于别的账号且没有 replace_existing 时不修改，返回 TAKEN 与对方账号，运营可选移走或合并。
+        UpsertUserContactRequestBody:
+            type: object
+            properties:
+                user_id:
+                    type: string
+                kind:
+                    enum:
+                        - email
+                        - phone
+                    type: string
+                value:
+                    type: string
+                phone_area:
+                    type: string
+                    description: 缺省 +86
+                replace_existing:
+                    type: boolean
+                    description: 号码属于别的账号时从对方身上移走
+                reason:
+                    type: string
+        UpsertUserContactResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/UpsertUserContactData'
                 code:
                     type: integer
                     format: int64
