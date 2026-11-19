@@ -8116,7 +8116,7 @@ type AuthorizeAllServicesRequestBody struct {
 
 // AuthorizeServiceRequestBody defines model for AuthorizeServiceRequestBody.
 type AuthorizeServiceRequestBody struct {
-	// Account 二课/图书馆缺省时使用当前学号；阳光长跑必须提交独立账号
+	// Account 二课/图书馆缺省时使用当前学号；阳光长跑/学习通必须提交独立账号
 	Account *string `json:"account,omitempty"`
 
 	// Password 二课/图书馆缺省时优先复用已有有效授权；需要重认时返回 40934
@@ -8719,6 +8719,52 @@ type ChangePhoneRequestBody struct {
 	NewCode      *string `json:"newCode,omitempty"`
 	NewPhone     *string `json:"newPhone,omitempty"`
 	NewPhoneArea *string `json:"newPhoneArea,omitempty"`
+}
+
+// ChaoxingHomeworkItem defines model for ChaoxingHomeworkItem.
+type ChaoxingHomeworkItem struct {
+	ClassId    string  `json:"classId"`
+	CourseId   string  `json:"courseId"`
+	CourseName string  `json:"courseName"`
+	Deadline   *string `json:"deadline,omitempty"`
+
+	// Grading not_graded | pending | graded | unknown
+	Grading string `json:"grading"`
+	Id      string `json:"id"`
+
+	// Kind work | pbl
+	Kind string `json:"kind"`
+
+	// Phase upcoming | active | ended | unknown
+	Phase   string  `json:"phase"`
+	StartAt *string `json:"startAt,omitempty"`
+
+	// Submission unsubmitted | submitted | returned | unknown
+	Submission     string `json:"submission"`
+	Title          string `json:"title"`
+	UpstreamStatus string `json:"upstreamStatus"`
+	WorkId         string `json:"workId"`
+}
+
+// ChaoxingHomeworkPage defines model for ChaoxingHomeworkPage.
+type ChaoxingHomeworkPage struct {
+	// Complete false when upstream pagination or date enrichment is incomplete
+	Complete  bool                   `json:"complete"`
+	FetchedAt string                 `json:"fetchedAt"`
+	Items     []ChaoxingHomeworkItem `json:"items"`
+	Limit     int32                  `json:"limit"`
+	Page      int32                  `json:"page"`
+
+	// Scope aggregate: upstream recent-task scope, not all history
+	Scope string `json:"scope"`
+	Total int32  `json:"total"`
+}
+
+// ChaoxingHomeworkResponseBody defines model for ChaoxingHomeworkResponseBody.
+type ChaoxingHomeworkResponseBody struct {
+	Code int64                `json:"code"`
+	Data ChaoxingHomeworkPage `json:"data"`
+	Msg  string               `json:"msg"`
 }
 
 // ChatGroup ============================================================================
@@ -19116,12 +19162,12 @@ type SensitiveWordResponseBody struct {
 	Msg  *string        `json:"msg,omitempty"`
 }
 
-// ServiceAuthorizationItem ==== Erke / Library / Sunrun 服务凭据授权（仅一方原生会话，禁止 CLI/PAT/UAT） ====
+// ServiceAuthorizationItem ==== Erke / Library / Sunrun / Chaoxing 服务凭据授权（仅一方原生会话，禁止 CLI/PAT/UAT） ====
 type ServiceAuthorizationItem struct {
 	Authorized     *bool `json:"authorized,omitempty"`
 	NotifyOnExpiry *bool `json:"notify_on_expiry,omitempty"`
 
-	// Type erke | library | sunrun
+	// Type erke | library | sunrun | chaoxing
 	Type  *string `json:"type,omitempty"`
 	Valid *bool   `json:"valid,omitempty"`
 }
@@ -20420,7 +20466,7 @@ type UpdateRoleResponseBody struct {
 type UpdateServiceAuthorizationNotificationRequestBody struct {
 	Enabled *bool `json:"enabled,omitempty"`
 
-	// Type erke | library | sunrun
+	// Type erke | library | sunrun | chaoxing
 	Type *string `json:"type,omitempty"`
 }
 
@@ -20920,6 +20966,13 @@ type AcademicServiceStudentGradeParams struct {
 	SchoolYear *string `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
 	Semester   *string `form:"semester,omitempty" json:"semester,omitempty"`
 	XStaffId   *string `json:"X-Staff-Id,omitempty"`
+}
+
+// AcademicServiceListChaoxingHomeworkParams defines parameters for AcademicServiceListChaoxingHomework.
+type AcademicServiceListChaoxingHomeworkParams struct {
+	Page        *int32 `form:"page,omitempty" json:"page,omitempty"`
+	Limit       *int32 `form:"limit,omitempty" json:"limit,omitempty"`
+	PendingOnly *bool  `form:"pendingOnly,omitempty" json:"pendingOnly,omitempty"`
 }
 
 // AcademicServiceLibraryAttendanceParams defines parameters for AcademicServiceLibraryAttendance.

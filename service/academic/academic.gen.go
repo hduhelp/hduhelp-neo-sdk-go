@@ -1080,6 +1080,64 @@ func (s *Service) StudentGrade(ctx context.Context, req *StudentGradeReq, opts .
 	return resp, err
 }
 
+// ListChaoxingHomeworkReq is the request for ListChaoxingHomework.
+type ListChaoxingHomeworkReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ListChaoxingHomeworkReqBuilder builds a ListChaoxingHomeworkReq with a fluent setter per field.
+type ListChaoxingHomeworkReqBuilder struct{ req *ListChaoxingHomeworkReq }
+
+// NewListChaoxingHomeworkReqBuilder creates a request builder for ListChaoxingHomework.
+func NewListChaoxingHomeworkReqBuilder() *ListChaoxingHomeworkReqBuilder {
+	return &ListChaoxingHomeworkReqBuilder{req: &ListChaoxingHomeworkReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Page sets the "page" query parameter.
+func (b *ListChaoxingHomeworkReqBuilder) Page(v int32) *ListChaoxingHomeworkReqBuilder {
+	b.req.queryParams["page"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Limit sets the "limit" query parameter.
+func (b *ListChaoxingHomeworkReqBuilder) Limit(v int32) *ListChaoxingHomeworkReqBuilder {
+	b.req.queryParams["limit"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// PendingOnly sets the "pendingOnly" query parameter.
+func (b *ListChaoxingHomeworkReqBuilder) PendingOnly(v bool) *ListChaoxingHomeworkReqBuilder {
+	b.req.queryParams["pendingOnly"] = strconv.FormatBool(v)
+	return b
+}
+
+// Build finalizes the request.
+func (b *ListChaoxingHomeworkReqBuilder) Build() *ListChaoxingHomeworkReq { return b.req }
+
+// ListChaoxingHomeworkResp is the response for ListChaoxingHomework.
+type ListChaoxingHomeworkResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.ChaoxingHomeworkPage `json:"data"`
+}
+
+// ListChaoxingHomework: 查询本人学习通作业
+func (s *Service) ListChaoxingHomework(ctx context.Context, req *ListChaoxingHomeworkReq, opts ...core.RequestOption) (*ListChaoxingHomeworkResp, error) {
+	resp := &ListChaoxingHomeworkResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/homework/chaoxing",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // LibraryAttendanceReq is the request for LibraryAttendance.
 type LibraryAttendanceReq struct {
 	pathParams  map[string]string

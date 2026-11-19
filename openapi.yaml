@@ -793,6 +793,38 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/StudentGradeResponseBody'
             x-hduhelp-http: {'requires_user': false, 'auth': 'bearer'}
+    /hduhelp-neo/academic/homework/chaoxing:
+        get:
+            tags:
+                - AcademicService
+            summary: 查询本人学习通作业
+            description: 重新读取学习通跨课程聚合列表；不保证完整历史。page 从 0 开始，limit 默认 20、最大 100，pendingOnly 默认 true。complete=false 表示列表或截止时间补充不完整。只读，不领取、作答或提交作业。
+            operationId: AcademicService_ListChaoxingHomework
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: limit
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pendingOnly
+                  in: query
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ChaoxingHomeworkResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/academic/library/attendance:
         get:
             tags:
@@ -17101,7 +17133,7 @@ paths:
             tags:
                 - IdentityService
             summary: 查询服务授权状态
-            description: 返回当前学号的二课、图书馆与阳光长跑授权状态、有效性及失效通知开关；绝不返回已存 token、Cookie 或加密密码。仅一方原生会话可调用，不向 CLI/PAT/UAT 暴露。
+            description: 返回当前学号的二课、图书馆、阳光长跑与学习通授权状态、有效性及失效通知开关；绝不返回已存 token、Cookie 或加密密码。仅一方原生会话可调用，不向 CLI/PAT/UAT 暴露。
             operationId: IdentityService_GetServiceAuthorizationStatus
             security:
                 - NativeSessionAuth: []
@@ -17140,7 +17172,7 @@ paths:
             tags:
                 - IdentityService
             summary: 设置服务授权失效通知
-            description: 按 erke/library/sunrun 设置当前学号的授权失效钉钉通知；默认关闭，仅一方原生会话可调用，不向 CLI/PAT/UAT 暴露。
+            description: 按 erke/library/sunrun/chaoxing 设置当前学号的授权失效钉钉通知；默认关闭，仅一方原生会话可调用，不向 CLI/PAT/UAT 暴露。
             operationId: IdentityService_UpdateServiceAuthorizationNotification
             security:
                 - NativeSessionAuth: []
@@ -17162,14 +17194,14 @@ paths:
             tags:
                 - IdentityService
             summary: 授权单个校园服务
-            description: 二课与图书馆不带密码时优先复用已有有效授权，无法复用则返回 40934；重新验证时账号缺省为当前学号。阳光长跑仍需提交独立 Sportmeta 账号与密码，登录后校验学生身份属于当前学号。仅一方原生会话可调用。
+            description: 二课与图书馆不带密码时优先复用已有有效授权，无法复用则返回 40934；重新验证时账号缺省为当前学号。阳光长跑仍需提交独立 Sportmeta 账号与密码，登录后校验学生身份属于当前学号。学习通使用独立账号密码，不校验杭电学号绑定。保存账号、加密密码及登录会话，查询失败时最多重新登录一次，并支持定时续期。仅一方原生会话可调用。
             operationId: IdentityService_AuthorizeService
             security:
                 - NativeSessionAuth: []
             parameters:
                 - name: service
                   in: path
-                  description: erke | library | sunrun
+                  description: erke | library | sunrun | chaoxing
                   required: true
                   schema:
                     type: string
@@ -17197,7 +17229,7 @@ paths:
             parameters:
                 - name: service
                   in: path
-                  description: erke | library | sunrun
+                  description: erke | library | sunrun | chaoxing
                   required: true
                   schema:
                     type: string
@@ -28158,7 +28190,7 @@ components:
                     description: 二课/图书馆缺省时优先复用已有有效授权；需要重认时返回 40934
                 account:
                     type: string
-                    description: 二课/图书馆缺省时使用当前学号；阳光长跑必须提交独立账号
+                    description: 二课/图书馆缺省时使用当前学号；阳光长跑/学习通必须提交独立账号
         AuthorizedAppItem:
             type: object
             properties:
@@ -29001,6 +29033,97 @@ components:
                 newPhoneArea:
                     type: string
                 newCode:
+                    type: string
+        ChaoxingHomeworkItem:
+            required:
+                - id
+                - kind
+                - workId
+                - courseId
+                - classId
+                - courseName
+                - title
+                - submission
+                - grading
+                - phase
+                - upstreamStatus
+            type: object
+            properties:
+                id:
+                    type: string
+                kind:
+                    type: string
+                    description: work | pbl
+                workId:
+                    type: string
+                courseId:
+                    type: string
+                classId:
+                    type: string
+                courseName:
+                    type: string
+                title:
+                    type: string
+                submission:
+                    type: string
+                    description: unsubmitted | submitted | returned | unknown
+                grading:
+                    type: string
+                    description: not_graded | pending | graded | unknown
+                phase:
+                    type: string
+                    description: upcoming | active | ended | unknown
+                upstreamStatus:
+                    type: string
+                startAt:
+                    type: string
+                deadline:
+                    type: string
+        ChaoxingHomeworkPage:
+            required:
+                - items
+                - total
+                - page
+                - limit
+                - fetchedAt
+                - scope
+                - complete
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ChaoxingHomeworkItem'
+                total:
+                    type: integer
+                    format: int32
+                page:
+                    type: integer
+                    format: int32
+                limit:
+                    type: integer
+                    format: int32
+                fetchedAt:
+                    type: string
+                scope:
+                    type: string
+                    description: 'aggregate: upstream recent-task scope, not all history'
+                complete:
+                    type: boolean
+                    description: false when upstream pagination or date enrichment is incomplete
+        ChaoxingHomeworkResponseBody:
+            required:
+                - data
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ChaoxingHomeworkPage'
+                code:
+                    type: integer
+                    format: int64
+                msg:
                     type: string
         ChatGroup:
             type: object
@@ -47086,14 +47209,14 @@ components:
             properties:
                 type:
                     type: string
-                    description: erke | library | sunrun
+                    description: erke | library | sunrun | chaoxing
                 authorized:
                     type: boolean
                 valid:
                     type: boolean
                 notify_on_expiry:
                     type: boolean
-            description: ==== Erke / Library / Sunrun 服务凭据授权（仅一方原生会话，禁止 CLI/PAT/UAT） ====
+            description: ==== Erke / Library / Sunrun / Chaoxing 服务凭据授权（仅一方原生会话，禁止 CLI/PAT/UAT） ====
         ServiceAuthorizationStatusData:
             type: object
             properties:
@@ -49076,7 +49199,7 @@ components:
             properties:
                 type:
                     type: string
-                    description: erke | library | sunrun
+                    description: erke | library | sunrun | chaoxing
                 enabled:
                     type: boolean
         UpdateSiteBannerRequestBody:
