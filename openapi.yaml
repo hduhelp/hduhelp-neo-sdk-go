@@ -798,10 +798,10 @@ paths:
             tags:
                 - AcademicService
             summary: 查询本人学习通作业
-            description: 重新读取学习通跨课程聚合列表；不保证完整历史。page 从 0 开始，limit 默认 20、最大 100，pendingOnly 默认 true。complete=false 表示列表或截止时间补充不完整。只读，不领取、作答或提交作业。
+            description: 重新读取学习通跨课程聚合列表；不保证完整历史。page 从 0 开始，limit 默认 20、最大 100，pendingOnly 默认 true。complete=false 表示列表或截止时间补充不完整。只读，不领取、作答或提交作业。支持原生会话及持有 academic:homework:read 的 PAT，仅查询本人作业。学习通未授权或授权失效时，返回 40932，请前往学生端“服务授权”（/account/security）授权学习通后重试。
             operationId: AcademicService_ListChaoxingHomework
             security:
-                - NativeSessionAuth: []
+                - BearerAuth: []
             parameters:
                 - name: page
                   in: query
@@ -824,7 +824,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ChaoxingHomeworkResponseBody'
-            x-hduhelp-http: {'auth': 'native_session'}
+            x-hduhelp-http: {'auth': 'bearer', 'requires_user': true}
     /hduhelp-neo/academic/library/attendance:
         get:
             tags:
@@ -17194,7 +17194,7 @@ paths:
             tags:
                 - IdentityService
             summary: 授权单个校园服务
-            description: 二课与图书馆不带密码时优先复用已有有效授权，无法复用则返回 40934；重新验证时账号缺省为当前学号。阳光长跑仍需提交独立 Sportmeta 账号与密码，登录后校验学生身份属于当前学号。学习通使用独立账号密码，不校验杭电学号绑定。保存账号、加密密码及登录会话，查询失败时最多重新登录一次，并支持定时续期。仅一方原生会话可调用。
+            description: 二课、图书馆与学习通不带密码时优先复用已有有效授权，无法复用则返回 40934；重新验证时使用当前学号和杭电统一身份认证密码，不允许指定其他学号。阳光长跑仍需提交独立 Sportmeta 账号与密码，登录后校验学生身份属于当前学号。学习通通过杭电泛雅 SSO 换取超星会话，保存学号、加密密码及超星 Cookie，查询失败时最多重新登录一次，并支持定时续期；不保存学校 SSO Cookie。仅一方原生会话可调用。
             operationId: IdentityService_AuthorizeService
             security:
                 - NativeSessionAuth: []
@@ -28187,10 +28187,10 @@ components:
             properties:
                 password:
                     type: string
-                    description: 二课/图书馆缺省时优先复用已有有效授权；需要重认时返回 40934
+                    description: 二课/图书馆/学习通缺省时优先复用已有有效授权；需要重认时返回 40934
                 account:
                     type: string
-                    description: 二课/图书馆缺省时使用当前学号；阳光长跑/学习通必须提交独立账号
+                    description: 二课/图书馆/学习通缺省时使用当前学号；阳光长跑必须提交独立账号
         AuthorizedAppItem:
             type: object
             properties:

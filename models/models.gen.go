@@ -8116,10 +8116,10 @@ type AuthorizeAllServicesRequestBody struct {
 
 // AuthorizeServiceRequestBody defines model for AuthorizeServiceRequestBody.
 type AuthorizeServiceRequestBody struct {
-	// Account 二课/图书馆缺省时使用当前学号；阳光长跑/学习通必须提交独立账号
+	// Account 二课/图书馆/学习通缺省时使用当前学号；阳光长跑必须提交独立账号
 	Account *string `json:"account,omitempty"`
 
-	// Password 二课/图书馆缺省时优先复用已有有效授权；需要重认时返回 40934
+	// Password 二课/图书馆/学习通缺省时优先复用已有有效授权；需要重认时返回 40934
 	Password *string `json:"password,omitempty"`
 }
 
