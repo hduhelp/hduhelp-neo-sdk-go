@@ -1521,6 +1521,12 @@ func (b *ListImpersonationLogsReqBuilder) Result(v string) *ListImpersonationLog
 	return b
 }
 
+// Kind sets the "kind" query parameter: user_profile_update 包含基础资料编辑及邮箱绑定；user_email_bind 保留兼容旧客户端
+func (b *ListImpersonationLogsReqBuilder) Kind(v string) *ListImpersonationLogsReqBuilder {
+	b.req.queryParams["kind"] = v
+	return b
+}
+
 // Keyword sets the "keyword" query parameter: 代登录人或被代登录人的姓名、学号/工号
 func (b *ListImpersonationLogsReqBuilder) Keyword(v string) *ListImpersonationLogsReqBuilder {
 	b.req.queryParams["keyword"] = v
@@ -1579,7 +1585,7 @@ type ListImpersonationLogsResp struct {
 	Data *models.AdminImpersonationLogsData `json:"data"`
 }
 
-// ListImpersonationLogs: 查询代登录审计记录
+// ListImpersonationLogs: 查询管理员留痕记录
 func (s *Service) ListImpersonationLogs(ctx context.Context, req *ListImpersonationLogsReq, opts ...core.RequestOption) (*ListImpersonationLogsResp, error) {
 	resp := &ListImpersonationLogsResp{}
 	err := s.config.Do(ctx, &core.APIReq{
@@ -3276,6 +3282,51 @@ func (s *Service) DeleteUserContact(ctx context.Context, req *DeleteUserContactR
 	return resp, err
 }
 
+// BindUserEmailReq is the request for BindUserEmail.
+type BindUserEmailReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// BindUserEmailReqBuilder builds a BindUserEmailReq with a fluent setter per field.
+type BindUserEmailReqBuilder struct{ req *BindUserEmailReq }
+
+// NewBindUserEmailReqBuilder creates a request builder for BindUserEmail.
+func NewBindUserEmailReqBuilder() *BindUserEmailReqBuilder {
+	return &BindUserEmailReqBuilder{req: &BindUserEmailReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *BindUserEmailReqBuilder) Body(body *models.BindUserEmailRequestBody) *BindUserEmailReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *BindUserEmailReqBuilder) Build() *BindUserEmailReq { return b.req }
+
+// BindUserEmailResp is the response for BindUserEmail.
+type BindUserEmailResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// BindUserEmail: 绑定用户邮箱
+func (s *Service) BindUserEmail(ctx context.Context, req *BindUserEmailReq, opts ...core.RequestOption) (*BindUserEmailResp, error) {
+	resp := &BindUserEmailResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/users/bindings/email",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // UpsertUserSocialIdentityReq is the request for UpsertUserSocialIdentity.
 type UpsertUserSocialIdentityReq struct {
 	pathParams  map[string]string
@@ -3455,6 +3506,51 @@ func (s *Service) IssueUserSession(ctx context.Context, req *IssueUserSessionReq
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "POST",
 		PathTemplate: "/hduhelp-neo/admin/users/impersonation",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// UpdateUserProfileReq is the request for UpdateUserProfile.
+type UpdateUserProfileReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// UpdateUserProfileReqBuilder builds a UpdateUserProfileReq with a fluent setter per field.
+type UpdateUserProfileReqBuilder struct{ req *UpdateUserProfileReq }
+
+// NewUpdateUserProfileReqBuilder creates a request builder for UpdateUserProfile.
+func NewUpdateUserProfileReqBuilder() *UpdateUserProfileReqBuilder {
+	return &UpdateUserProfileReqBuilder{req: &UpdateUserProfileReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *UpdateUserProfileReqBuilder) Body(body *models.UpdateUserProfileRequestBody) *UpdateUserProfileReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *UpdateUserProfileReqBuilder) Build() *UpdateUserProfileReq { return b.req }
+
+// UpdateUserProfileResp is the response for UpdateUserProfile.
+type UpdateUserProfileResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+}
+
+// UpdateUserProfile: 编辑用户基础资料
+func (s *Service) UpdateUserProfile(ctx context.Context, req *UpdateUserProfileReq, opts ...core.RequestOption) (*UpdateUserProfileResp, error) {
+	resp := &UpdateUserProfileResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/users/profile",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

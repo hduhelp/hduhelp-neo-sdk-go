@@ -4,6 +4,7 @@ package academic
 
 import (
 	"context"
+	"encoding/json"
 	"strconv"
 	"strings"
 
@@ -2496,6 +2497,428 @@ func (s *Service) SchoolTime(ctx context.Context, req *SchoolTimeReq, opts ...co
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "GET",
 		PathTemplate: "/hduhelp-neo/academic/schooltime/time",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SklCheckInsReq is the request for SklCheckIns.
+type SklCheckInsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// SklCheckInsReqBuilder builds a SklCheckInsReq with a fluent setter per field.
+type SklCheckInsReqBuilder struct{ req *SklCheckInsReq }
+
+// NewSklCheckInsReqBuilder creates a request builder for SklCheckIns.
+func NewSklCheckInsReqBuilder() *SklCheckInsReqBuilder {
+	return &SklCheckInsReqBuilder{req: &SklCheckInsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// CourseId sets the "courseId" query parameter.
+func (b *SklCheckInsReqBuilder) CourseId(v string) *SklCheckInsReqBuilder {
+	b.req.queryParams["courseId"] = v
+	return b
+}
+
+// SchoolYear sets the "schoolYear" query parameter.
+func (b *SklCheckInsReqBuilder) SchoolYear(v string) *SklCheckInsReqBuilder {
+	b.req.queryParams["schoolYear"] = v
+	return b
+}
+
+// Semester sets the "semester" query parameter.
+func (b *SklCheckInsReqBuilder) Semester(v int32) *SklCheckInsReqBuilder {
+	b.req.queryParams["semester"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// StartDate sets the "startDate" query parameter.
+func (b *SklCheckInsReqBuilder) StartDate(v string) *SklCheckInsReqBuilder {
+	b.req.queryParams["startDate"] = v
+	return b
+}
+
+// EndDate sets the "endDate" query parameter.
+func (b *SklCheckInsReqBuilder) EndDate(v string) *SklCheckInsReqBuilder {
+	b.req.queryParams["endDate"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *SklCheckInsReqBuilder) Build() *SklCheckInsReq { return b.req }
+
+// SklCheckInsResp is the response for SklCheckIns.
+type SklCheckInsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data json.RawMessage `json:"data"`
+}
+
+// SklCheckIns: 查询上课啦签到记录
+func (s *Service) SklCheckIns(ctx context.Context, req *SklCheckInsReq, opts ...core.RequestOption) (*SklCheckInsResp, error) {
+	resp := &SklCheckInsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/skl/check-ins",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SklCoursesReq is the request for SklCourses.
+type SklCoursesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// SklCoursesReqBuilder builds a SklCoursesReq with a fluent setter per field.
+type SklCoursesReqBuilder struct{ req *SklCoursesReq }
+
+// NewSklCoursesReqBuilder creates a request builder for SklCourses.
+func NewSklCoursesReqBuilder() *SklCoursesReqBuilder {
+	return &SklCoursesReqBuilder{req: &SklCoursesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// StartTime sets the "startTime" query parameter.
+func (b *SklCoursesReqBuilder) StartTime(v string) *SklCoursesReqBuilder {
+	b.req.queryParams["startTime"] = v
+	return b
+}
+
+// EndTime sets the "endTime" query parameter.
+func (b *SklCoursesReqBuilder) EndTime(v string) *SklCoursesReqBuilder {
+	b.req.queryParams["endTime"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *SklCoursesReqBuilder) Build() *SklCoursesReq { return b.req }
+
+// SklCoursesResp is the response for SklCourses.
+type SklCoursesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data json.RawMessage `json:"data"`
+}
+
+// SklCourses: 查询上课啦课程
+func (s *Service) SklCourses(ctx context.Context, req *SklCoursesReq, opts ...core.RequestOption) (*SklCoursesResp, error) {
+	resp := &SklCoursesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/skl/courses",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SklLeavesReq is the request for SklLeaves.
+type SklLeavesReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// SklLeavesReqBuilder builds a SklLeavesReq with a fluent setter per field.
+type SklLeavesReqBuilder struct{ req *SklLeavesReq }
+
+// NewSklLeavesReqBuilder creates a request builder for SklLeaves.
+func NewSklLeavesReqBuilder() *SklLeavesReqBuilder {
+	return &SklLeavesReqBuilder{req: &SklLeavesReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Status sets the "status" query parameter.
+func (b *SklLeavesReqBuilder) Status(v int32) *SklLeavesReqBuilder {
+	b.req.queryParams["status"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// PageNo sets the "pageNo" query parameter.
+func (b *SklLeavesReqBuilder) PageNo(v int32) *SklLeavesReqBuilder {
+	b.req.queryParams["pageNo"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// PageSize sets the "pageSize" query parameter.
+func (b *SklLeavesReqBuilder) PageSize(v int32) *SklLeavesReqBuilder {
+	b.req.queryParams["pageSize"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *SklLeavesReqBuilder) Build() *SklLeavesReq { return b.req }
+
+// SklLeavesResp is the response for SklLeaves.
+type SklLeavesResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data json.RawMessage `json:"data"`
+}
+
+// SklLeaves: 查询上课啦请假记录
+func (s *Service) SklLeaves(ctx context.Context, req *SklLeavesReq, opts ...core.RequestOption) (*SklLeavesResp, error) {
+	resp := &SklLeavesResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/skl/leaves",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SklAddLeaveReq is the request for SklAddLeave.
+type SklAddLeaveReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// SklAddLeaveReqBuilder builds a SklAddLeaveReq with a fluent setter per field.
+type SklAddLeaveReqBuilder struct{ req *SklAddLeaveReq }
+
+// NewSklAddLeaveReqBuilder creates a request builder for SklAddLeave.
+func NewSklAddLeaveReqBuilder() *SklAddLeaveReqBuilder {
+	return &SklAddLeaveReqBuilder{req: &SklAddLeaveReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *SklAddLeaveReqBuilder) Body(body *models.SklAddLeaveRequestBody) *SklAddLeaveReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *SklAddLeaveReqBuilder) Build() *SklAddLeaveReq { return b.req }
+
+// SklAddLeaveResp is the response for SklAddLeave.
+type SklAddLeaveResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data json.RawMessage `json:"data"`
+}
+
+// SklAddLeave: 提交上课啦请假
+func (s *Service) SklAddLeave(ctx context.Context, req *SklAddLeaveReq, opts ...core.RequestOption) (*SklAddLeaveResp, error) {
+	resp := &SklAddLeaveResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/academic/skl/leaves",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SklLeaveDetailReq is the request for SklLeaveDetail.
+type SklLeaveDetailReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// SklLeaveDetailReqBuilder builds a SklLeaveDetailReq with a fluent setter per field.
+type SklLeaveDetailReqBuilder struct{ req *SklLeaveDetailReq }
+
+// NewSklLeaveDetailReqBuilder creates a request builder for SklLeaveDetail.
+func NewSklLeaveDetailReqBuilder() *SklLeaveDetailReqBuilder {
+	return &SklLeaveDetailReqBuilder{req: &SklLeaveDetailReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *SklLeaveDetailReqBuilder) Id(v string) *SklLeaveDetailReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *SklLeaveDetailReqBuilder) Build() *SklLeaveDetailReq { return b.req }
+
+// SklLeaveDetailResp is the response for SklLeaveDetail.
+type SklLeaveDetailResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data json.RawMessage `json:"data"`
+}
+
+// SklLeaveDetail: 查询上课啦请假详情
+func (s *Service) SklLeaveDetail(ctx context.Context, req *SklLeaveDetailReq, opts ...core.RequestOption) (*SklLeaveDetailResp, error) {
+	resp := &SklLeaveDetailResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/skl/leaves/{id}",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SklMeReq is the request for SklMe.
+type SklMeReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// SklMeReqBuilder builds a SklMeReq with a fluent setter per field.
+type SklMeReqBuilder struct{ req *SklMeReq }
+
+// NewSklMeReqBuilder creates a request builder for SklMe.
+func NewSklMeReqBuilder() *SklMeReqBuilder {
+	return &SklMeReqBuilder{req: &SklMeReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Build finalizes the request.
+func (b *SklMeReqBuilder) Build() *SklMeReq { return b.req }
+
+// SklMeResp is the response for SklMe.
+type SklMeResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data json.RawMessage `json:"data"`
+}
+
+// SklMe: 读取上课啦用户信息
+func (s *Service) SklMe(ctx context.Context, req *SklMeReq, opts ...core.RequestOption) (*SklMeResp, error) {
+	resp := &SklMeResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/skl/me",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SklSignInReq is the request for SklSignIn.
+type SklSignInReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// SklSignInReqBuilder builds a SklSignInReq with a fluent setter per field.
+type SklSignInReqBuilder struct{ req *SklSignInReq }
+
+// NewSklSignInReqBuilder creates a request builder for SklSignIn.
+func NewSklSignInReqBuilder() *SklSignInReqBuilder {
+	return &SklSignInReqBuilder{req: &SklSignInReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *SklSignInReqBuilder) Body(body *models.SklSignInRequestBody) *SklSignInReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *SklSignInReqBuilder) Build() *SklSignInReq { return b.req }
+
+// SklSignInResp is the response for SklSignIn.
+type SklSignInResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data json.RawMessage `json:"data"`
+}
+
+// SklSignIn: 提交上课啦签到
+func (s *Service) SklSignIn(ctx context.Context, req *SklSignInReq, opts ...core.RequestOption) (*SklSignInResp, error) {
+	resp := &SklSignInResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/academic/skl/sign-in",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SklStatisticsReq is the request for SklStatistics.
+type SklStatisticsReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// SklStatisticsReqBuilder builds a SklStatisticsReq with a fluent setter per field.
+type SklStatisticsReqBuilder struct{ req *SklStatisticsReq }
+
+// NewSklStatisticsReqBuilder creates a request builder for SklStatistics.
+func NewSklStatisticsReqBuilder() *SklStatisticsReqBuilder {
+	return &SklStatisticsReqBuilder{req: &SklStatisticsReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// CourseId sets the "courseId" query parameter.
+func (b *SklStatisticsReqBuilder) CourseId(v string) *SklStatisticsReqBuilder {
+	b.req.queryParams["courseId"] = v
+	return b
+}
+
+// StartDate sets the "startDate" query parameter.
+func (b *SklStatisticsReqBuilder) StartDate(v string) *SklStatisticsReqBuilder {
+	b.req.queryParams["startDate"] = v
+	return b
+}
+
+// EndDate sets the "endDate" query parameter.
+func (b *SklStatisticsReqBuilder) EndDate(v string) *SklStatisticsReqBuilder {
+	b.req.queryParams["endDate"] = v
+	return b
+}
+
+// StudentType sets the "studentType" query parameter.
+func (b *SklStatisticsReqBuilder) StudentType(v int32) *SklStatisticsReqBuilder {
+	b.req.queryParams["studentType"] = strconv.FormatInt(int64(v), 10)
+	return b
+}
+
+// Build finalizes the request.
+func (b *SklStatisticsReqBuilder) Build() *SklStatisticsReq { return b.req }
+
+// SklStatisticsResp is the response for SklStatistics.
+type SklStatisticsResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data json.RawMessage `json:"data"`
+}
+
+// SklStatistics: 查询上课啦考勤统计
+func (s *Service) SklStatistics(ctx context.Context, req *SklStatisticsReq, opts ...core.RequestOption) (*SklStatisticsResp, error) {
+	resp := &SklStatisticsResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/academic/skl/statistics",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

@@ -1422,7 +1422,7 @@ func NewAuthorizeServiceReqBuilder() *AuthorizeServiceReqBuilder {
 	return &AuthorizeServiceReqBuilder{req: &AuthorizeServiceReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// Service sets the "service" path parameter: erke | library | sunrun | chaoxing
+// Service sets the "service" path parameter: erke | library | sunrun | chaoxing | skl
 func (b *AuthorizeServiceReqBuilder) Service(v string) *AuthorizeServiceReqBuilder {
 	b.req.pathParams["service"] = v
 	return b
@@ -1475,7 +1475,7 @@ func NewRevokeServiceAuthorizationReqBuilder() *RevokeServiceAuthorizationReqBui
 	return &RevokeServiceAuthorizationReqBuilder{req: &RevokeServiceAuthorizationReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
 }
 
-// Service sets the "service" path parameter: erke | library | sunrun | chaoxing
+// Service sets the "service" path parameter: erke | library | sunrun | chaoxing | skl
 func (b *RevokeServiceAuthorizationReqBuilder) Service(v string) *RevokeServiceAuthorizationReqBuilder {
 	b.req.pathParams["service"] = v
 	return b

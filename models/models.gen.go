@@ -4745,9 +4745,15 @@ type AdminImpersonationLog struct {
 	CompletedAt *int64 `json:"completedAt,omitempty"`
 
 	// CreatedAt Unix 毫秒
-	CreatedAt         *int64  `json:"createdAt,omitempty"`
-	ErrorCode         *string `json:"errorCode,omitempty"`
-	Id                *string `json:"id,omitempty"`
+	CreatedAt *int64 `json:"createdAt,omitempty"`
+
+	// Details JSON 编码的脱敏操作详情，不保存原始手机号或邮箱
+	Details   *string `json:"details,omitempty"`
+	ErrorCode *string `json:"errorCode,omitempty"`
+	Id        *string `json:"id,omitempty"`
+
+	// Kind 统一管理员留痕分类；历史记录归类为 impersonation
+	Kind              *string `json:"kind,omitempty"`
 	OperatorId        *string `json:"operatorId,omitempty"`
 	OperatorName      *string `json:"operatorName,omitempty"`
 	OperatorStaffId   *string `json:"operatorStaffId,omitempty"`
@@ -8398,6 +8404,18 @@ type BindStatusData struct {
 	Providers           *[]BindProviderStatus `json:"providers,omitempty"`
 }
 
+// BindUserEmailRequestBody defines model for BindUserEmailRequestBody.
+type BindUserEmailRequestBody struct {
+	Email  *string `json:"email,omitempty"`
+	UserId *string `json:"user_id,omitempty"`
+}
+
+// BindUserEmailResponseBody defines model for BindUserEmailResponseBody.
+type BindUserEmailResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
 // BindingsData ---- Bindings: 当前用户的校园/第三方绑定 ----
 type BindingsData struct {
 	Campus *[]CampusBinding `json:"campus,omitempty"`
@@ -9050,18 +9068,13 @@ type ClassRosterStudent struct {
 
 // ClassroomItem defines model for ClassroomItem.
 type ClassroomItem struct {
-	Available  *bool   `json:"available,omitempty"`
-	BuildingID *string `json:"buildingID,omitempty"`
-	Capacity   *int32  `json:"capacity,omitempty"`
-
-	// HasProjector optional 保留“尚未实地确认”与“已确认没有”的区别。
-	HasProjector  *bool   `json:"hasProjector,omitempty"`
-	HasWhiteboard *bool   `json:"hasWhiteboard,omitempty"`
-	LocationID    *string `json:"locationID,omitempty"`
-	LocationName  *string `json:"locationName,omitempty"`
-	SchoolYear    *string `json:"schoolYear,omitempty"`
-	SelfStudy     *bool   `json:"selfStudy,omitempty"`
-	Semester      *string `json:"semester,omitempty"`
+	Available    *bool   `json:"available,omitempty"`
+	BuildingID   *string `json:"buildingID,omitempty"`
+	LocationID   *string `json:"locationID,omitempty"`
+	LocationName *string `json:"locationName,omitempty"`
+	SchoolYear   *string `json:"schoolYear,omitempty"`
+	SelfStudy    *bool   `json:"selfStudy,omitempty"`
+	Semester     *string `json:"semester,omitempty"`
 }
 
 // ClassroomUsageItem defines model for ClassroomUsageItem.
@@ -18437,11 +18450,42 @@ type ResolveReportResponseBody struct {
 	Msg  *string            `json:"msg,omitempty"`
 }
 
+// ResolveSocialIdentityBatchData defines model for ResolveSocialIdentityBatchData.
+type ResolveSocialIdentityBatchData struct {
+	Items *[]ResolveSocialIdentityBatchItem `json:"items,omitempty"`
+}
+
+// ResolveSocialIdentityBatchItem defines model for ResolveSocialIdentityBatchItem.
+type ResolveSocialIdentityBatchItem struct {
+	Bound     *bool   `json:"bound,omitempty"`
+	OpenId    *string `json:"open_id,omitempty"`
+	StaffId   *string `json:"staff_id,omitempty"`
+	StaffName *string `json:"staff_name,omitempty"`
+	UserId    *string `json:"user_id,omitempty"`
+}
+
+// ResolveSocialIdentityBatchRequestBody defines model for ResolveSocialIdentityBatchRequestBody.
+type ResolveSocialIdentityBatchRequestBody struct {
+	OpenIds  []string `json:"open_ids"`
+	Provider string   `json:"provider"`
+}
+
+// ResolveSocialIdentityBatchResponseBody defines model for ResolveSocialIdentityBatchResponseBody.
+type ResolveSocialIdentityBatchResponseBody struct {
+	Code int64                          `json:"code"`
+	Data ResolveSocialIdentityBatchData `json:"data"`
+	Msg  string                         `json:"msg"`
+}
+
 // ResolveSocialIdentityData defines model for ResolveSocialIdentityData.
 type ResolveSocialIdentityData struct {
-	Bound    bool    `json:"bound"`
-	ClientId string  `json:"client_id"`
-	UserId   *string `json:"user_id,omitempty"`
+	Bound    bool   `json:"bound"`
+	ClientId string `json:"client_id"`
+
+	// StaffId Current default campus identity, when the Neo account has one.
+	StaffId   *string `json:"staff_id,omitempty"`
+	StaffName *string `json:"staff_name,omitempty"`
+	UserId    *string `json:"user_id,omitempty"`
 }
 
 // ResolveSocialIdentityRequestBody defines model for ResolveSocialIdentityRequestBody.
@@ -19373,12 +19417,12 @@ type SensitiveWordResponseBody struct {
 	Msg  *string        `json:"msg,omitempty"`
 }
 
-// ServiceAuthorizationItem ==== Erke / Library / Sunrun / Chaoxing 服务凭据授权（仅一方原生会话，禁止 CLI/PAT/UAT） ====
+// ServiceAuthorizationItem ==== Erke / Library / Sunrun / Chaoxing / SKL 服务凭据授权（仅一方原生会话，禁止 CLI/PAT/UAT） ====
 type ServiceAuthorizationItem struct {
 	Authorized     *bool `json:"authorized,omitempty"`
 	NotifyOnExpiry *bool `json:"notify_on_expiry,omitempty"`
 
-	// Type erke | library | sunrun | chaoxing
+	// Type erke | library | sunrun | chaoxing | skl
 	Type  *string `json:"type,omitempty"`
 	Valid *bool   `json:"valid,omitempty"`
 }
@@ -19823,6 +19867,55 @@ type SiteBannerResponseBody struct {
 	Code *int64      `json:"code,omitempty"`
 	Data *SiteBanner `json:"data,omitempty"`
 	Msg  *string     `json:"msg,omitempty"`
+}
+
+// SklAddLeaveRequestBody defines model for SklAddLeaveRequestBody.
+type SklAddLeaveRequestBody struct {
+	AttachmentList []SklAttachmentItem  `json:"attachmentList"`
+	EndDate        string               `json:"endDate"`
+	LeaveDetail    []SklLeaveDetailItem `json:"leaveDetail"`
+	Reason         string               `json:"reason"`
+	StartDate      string               `json:"startDate"`
+	Type           string               `json:"type"`
+}
+
+// SklAttachmentItem defines model for SklAttachmentItem.
+type SklAttachmentItem struct {
+	Bucket   string `json:"bucket"`
+	FileName string `json:"fileName"`
+	Key      string `json:"key"`
+}
+
+// SklAttachmentRequestBody defines model for SklAttachmentRequestBody.
+type SklAttachmentRequestBody struct {
+	// File 请假证明附件，不超过 8 MiB。
+	File string `json:"file"`
+}
+
+// SklLeaveDetailItem defines model for SklLeaveDetailItem.
+type SklLeaveDetailItem struct {
+	CourseId       string `json:"courseId"`
+	CourseSchemaId string `json:"courseSchemaId"`
+	RecordDate     string `json:"recordDate"`
+	Week           int32  `json:"week"`
+}
+
+// SklResponseBodyBody defines model for SklResponseBodyBody.
+type SklResponseBodyBody struct {
+	Code int64 `json:"code"`
+
+	// Data 上课啦上游 JSON 数据，字段随接口返回。
+	Data map[string]interface{} `json:"data"`
+	Msg  string                 `json:"msg"`
+}
+
+// SklSignInRequestBody defines model for SklSignInRequestBody.
+type SklSignInRequestBody struct {
+	CaptchaVerifyParam string  `json:"captchaVerifyParam"`
+	Code               string  `json:"code"`
+	Latitude           float64 `json:"latitude"`
+	Longitude          float64 `json:"longitude"`
+	T                  int64   `json:"t"`
 }
 
 // Slot defines model for Slot.
@@ -20677,7 +20770,7 @@ type UpdateRoleResponseBody struct {
 type UpdateServiceAuthorizationNotificationRequestBody struct {
 	Enabled *bool `json:"enabled,omitempty"`
 
-	// Type erke | library | sunrun | chaoxing
+	// Type erke | library | sunrun | chaoxing | skl
 	Type *string `json:"type,omitempty"`
 }
 
@@ -20696,6 +20789,20 @@ type UpdateSourceRequestBody struct {
 type UpdateSubscriptionRequestBody struct {
 	// Options 每用户每渠道偏好，JSON 字符串
 	Options *string `json:"options,omitempty"`
+}
+
+// UpdateUserProfileRequestBody defines model for UpdateUserProfileRequestBody.
+type UpdateUserProfileRequestBody struct {
+	Email    *string `json:"email,omitempty"`
+	NickName *string `json:"nick_name,omitempty"`
+	Phone    *string `json:"phone,omitempty"`
+	UserId   *string `json:"user_id,omitempty"`
+}
+
+// UpdateUserProfileResponseBody defines model for UpdateUserProfileResponseBody.
+type UpdateUserProfileResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
 }
 
 // UploadData UploadData 是业务响应里的一个已上传文件：url 是 30 分钟有效的地址，过期后用 key 续签。
@@ -21369,6 +21476,36 @@ type AcademicServiceSemesterListByDateParams struct {
 	EndDate *string `form:"end_date,omitempty" json:"end_date,omitempty"`
 }
 
+// AcademicServiceSklCheckInsParams defines parameters for AcademicServiceSklCheckIns.
+type AcademicServiceSklCheckInsParams struct {
+	CourseId   *string `form:"courseId,omitempty" json:"courseId,omitempty"`
+	SchoolYear *string `form:"schoolYear,omitempty" json:"schoolYear,omitempty"`
+	Semester   *int32  `form:"semester,omitempty" json:"semester,omitempty"`
+	StartDate  *string `form:"startDate,omitempty" json:"startDate,omitempty"`
+	EndDate    *string `form:"endDate,omitempty" json:"endDate,omitempty"`
+}
+
+// AcademicServiceSklCoursesParams defines parameters for AcademicServiceSklCourses.
+type AcademicServiceSklCoursesParams struct {
+	StartTime *string `form:"startTime,omitempty" json:"startTime,omitempty"`
+	EndTime   *string `form:"endTime,omitempty" json:"endTime,omitempty"`
+}
+
+// AcademicServiceSklLeavesParams defines parameters for AcademicServiceSklLeaves.
+type AcademicServiceSklLeavesParams struct {
+	Status   *int32 `form:"status,omitempty" json:"status,omitempty"`
+	PageNo   *int32 `form:"pageNo,omitempty" json:"pageNo,omitempty"`
+	PageSize *int32 `form:"pageSize,omitempty" json:"pageSize,omitempty"`
+}
+
+// AcademicServiceSklStatisticsParams defines parameters for AcademicServiceSklStatistics.
+type AcademicServiceSklStatisticsParams struct {
+	CourseId    *string `form:"courseId,omitempty" json:"courseId,omitempty"`
+	StartDate   *string `form:"startDate,omitempty" json:"startDate,omitempty"`
+	EndDate     *string `form:"endDate,omitempty" json:"endDate,omitempty"`
+	StudentType *int32  `form:"studentType,omitempty" json:"studentType,omitempty"`
+}
+
 // AcademicServiceStudentHistoryClassMembersParams defines parameters for AcademicServiceStudentHistoryClassMembers.
 type AcademicServiceStudentHistoryClassMembersParams struct {
 	SchoolYear *string   `form:"school_year,omitempty" json:"school_year,omitempty"`
@@ -21684,6 +21821,9 @@ type FeedbackServiceExportAdminFeedbacksParamsFeedbackType string
 // AdminServiceListImpersonationLogsParams defines parameters for AdminServiceListImpersonationLogs.
 type AdminServiceListImpersonationLogsParams struct {
 	Result *string `form:"result,omitempty" json:"result,omitempty"`
+
+	// Kind user_profile_update 包含基础资料编辑及邮箱绑定；user_email_bind 保留兼容旧客户端
+	Kind *string `form:"kind,omitempty" json:"kind,omitempty"`
 
 	// Keyword 代登录人或被代登录人的姓名、学号/工号
 	Keyword      *string `form:"keyword,omitempty" json:"keyword,omitempty"`
@@ -23877,6 +24017,12 @@ type AcademicServiceCreateScheduleShareJSONRequestBody = CreateScheduleShareRequ
 // AcademicServiceRenameScheduleShareJSONRequestBody defines body for AcademicServiceRenameScheduleShare for application/json ContentType.
 type AcademicServiceRenameScheduleShareJSONRequestBody = RenameScheduleShareRequestBody
 
+// AcademicServiceSklAddLeaveJSONRequestBody defines body for AcademicServiceSklAddLeave for application/json ContentType.
+type AcademicServiceSklAddLeaveJSONRequestBody = SklAddLeaveRequestBody
+
+// AcademicServiceSklSignInJSONRequestBody defines body for AcademicServiceSklSignIn for application/json ContentType.
+type AcademicServiceSklSignInJSONRequestBody = SklSignInRequestBody
+
 // AdminServiceCreateAccountMergeJSONRequestBody defines body for AdminServiceCreateAccountMerge for application/json ContentType.
 type AdminServiceCreateAccountMergeJSONRequestBody = CreateAccountMergeRequestBody
 
@@ -24402,6 +24548,9 @@ type AdminServiceUpsertUserCampusIdentityJSONRequestBody = UpsertUserCampusIdent
 // AdminServiceUpsertUserContactJSONRequestBody defines body for AdminServiceUpsertUserContact for application/json ContentType.
 type AdminServiceUpsertUserContactJSONRequestBody = UpsertUserContactRequestBody
 
+// AdminServiceBindUserEmailJSONRequestBody defines body for AdminServiceBindUserEmail for application/json ContentType.
+type AdminServiceBindUserEmailJSONRequestBody = BindUserEmailRequestBody
+
 // AdminServiceUpsertUserSocialIdentityJSONRequestBody defines body for AdminServiceUpsertUserSocialIdentity for application/json ContentType.
 type AdminServiceUpsertUserSocialIdentityJSONRequestBody = UpsertUserSocialIdentityRequestBody
 
@@ -24410,6 +24559,9 @@ type AdminServiceSetUserDefaultIdentityJSONRequestBody = SetUserDefaultIdentityR
 
 // AdminServiceIssueUserSessionJSONRequestBody defines body for AdminServiceIssueUserSession for application/json ContentType.
 type AdminServiceIssueUserSessionJSONRequestBody = IssueUserSessionRequestBody
+
+// AdminServiceUpdateUserProfileJSONRequestBody defines body for AdminServiceUpdateUserProfile for application/json ContentType.
+type AdminServiceUpdateUserProfileJSONRequestBody = UpdateUserProfileRequestBody
 
 // CampusLifeServiceAdminCreateVolunteerActivityJSONRequestBody defines body for CampusLifeServiceAdminCreateVolunteerActivity for application/json ContentType.
 type CampusLifeServiceAdminCreateVolunteerActivityJSONRequestBody = CreateVolunteerActivityRequestBody

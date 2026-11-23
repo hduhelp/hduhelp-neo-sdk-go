@@ -1696,6 +1696,247 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/SchoolTimeResponseBody'
             x-hduhelp-http: {'requires_user': false}
+    /hduhelp-neo/academic/skl/attachments:
+        post:
+            tags:
+                - AcademicService
+            summary: 上传上课啦请假附件
+            description: Neo 代为申请上游签名并上传附件，SKL token 不返回客户端。响应包含 data、code、msg。
+            operationId: AcademicService_SklUploadAttachment
+            security:
+                - BearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            $ref: '#/components/schemas/SklAttachmentRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SklResponseBodyBody'
+            x-hduhelp-http: {'auth': 'bearer', 'requires_user': true, 'request_content_type': 'multipart/form-data', 'file_field': 'file'}
+    /hduhelp-neo/academic/skl/check-ins:
+        get:
+            tags:
+                - AcademicService
+            summary: 查询上课啦签到记录
+            description: 带 courseId 查询课程明细，否则查询本人签到记录；data 保持上游 JSON 结构。响应包含 data、code、msg。
+            operationId: AcademicService_SklCheckIns
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: courseId
+                  in: query
+                  schema:
+                    type: string
+                - name: schoolYear
+                  in: query
+                  schema:
+                    type: string
+                - name: semester
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: startDate
+                  in: query
+                  schema:
+                    type: string
+                - name: endDate
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SklResponseBodyBody'
+            x-hduhelp-http: {'auth': 'bearer', 'requires_user': true}
+    /hduhelp-neo/academic/skl/courses:
+        get:
+            tags:
+                - AcademicService
+            summary: 查询上课啦课程
+            description: 服务端托管上课啦凭据；data 保持上游课程 JSON 结构。响应包含 data、code、msg。
+            operationId: AcademicService_SklCourses
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: startTime
+                  in: query
+                  schema:
+                    type: string
+                - name: endTime
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SklResponseBodyBody'
+            x-hduhelp-http: {'auth': 'bearer', 'requires_user': true}
+    /hduhelp-neo/academic/skl/leaves:
+        get:
+            tags:
+                - AcademicService
+            summary: 查询上课啦请假记录
+            description: data 保持上游 JSON 结构。响应包含 data、code、msg。
+            operationId: AcademicService_SklLeaves
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: status
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageNo
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SklResponseBodyBody'
+            x-hduhelp-http: {'auth': 'bearer', 'requires_user': true}
+        post:
+            tags:
+                - AcademicService
+            summary: 提交上课啦请假
+            description: 请假 JSON 只作为本次请求转发，不由 Neo 持久化；data 保持上游 JSON 结构。响应包含 data、code、msg。
+            operationId: AcademicService_SklAddLeave
+            security:
+                - BearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SklAddLeaveRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SklResponseBodyBody'
+            x-hduhelp-http: {'auth': 'bearer', 'requires_user': true, 'request_body_required': true}
+    /hduhelp-neo/academic/skl/leaves/{id}:
+        get:
+            tags:
+                - AcademicService
+            summary: 查询上课啦请假详情
+            description: data 保持上游 JSON 结构。响应包含 data、code、msg。
+            operationId: AcademicService_SklLeaveDetail
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SklResponseBodyBody'
+            x-hduhelp-http: {'auth': 'bearer', 'requires_user': true}
+    /hduhelp-neo/academic/skl/me:
+        get:
+            tags:
+                - AcademicService
+            summary: 读取上课啦用户信息
+            description: 服务端托管上课啦凭据并将上游 JSON 原样放在 data 中；未授权返回 40932。
+            operationId: AcademicService_SklMe
+            security:
+                - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SklResponseBodyBody'
+            x-hduhelp-http: {'auth': 'bearer', 'requires_user': true}
+    /hduhelp-neo/academic/skl/sign-in:
+        post:
+            tags:
+                - AcademicService
+            summary: 提交上课啦签到
+            description: 验证码和定位参数只作为本次请求转发，不由 Neo 持久化；data 保持上游 JSON 结构。响应包含 data、code、msg。
+            operationId: AcademicService_SklSignIn
+            security:
+                - BearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SklSignInRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SklResponseBodyBody'
+            x-hduhelp-http: {'auth': 'bearer', 'requires_user': true, 'request_body_required': true}
+    /hduhelp-neo/academic/skl/statistics:
+        get:
+            tags:
+                - AcademicService
+            summary: 查询上课啦考勤统计
+            description: 带 courseId 查询课程统计，否则查询本人学情统计；data 保持上游 JSON 结构。响应包含 data、code、msg。
+            operationId: AcademicService_SklStatistics
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: courseId
+                  in: query
+                  schema:
+                    type: string
+                - name: startDate
+                  in: query
+                  schema:
+                    type: string
+                - name: endDate
+                  in: query
+                  schema:
+                    type: string
+                - name: studentType
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SklResponseBodyBody'
+            x-hduhelp-http: {'auth': 'bearer', 'requires_user': true}
     /hduhelp-neo/academic/student-history/class-members:
         get:
             tags:
@@ -4522,14 +4763,19 @@ paths:
         get:
             tags:
                 - AdminService
-            summary: 查询代登录审计记录
-            description: 独立只读权限，按操作者、目标用户、时间和结果分页查询；已签发不代表用户页面已打开。
+            summary: 查询管理员留痕记录
+            description: 独立只读权限，按类型、操作者、目标用户、时间和结果分页查询；资料编辑类型包含邮箱绑定，代登录已签发不代表用户页面已打开。
             operationId: AdminService_ListImpersonationLogs
             security:
                 - OperatorBearerAuth: []
             parameters:
                 - name: result
                   in: query
+                  schema:
+                    type: string
+                - name: kind
+                  in: query
+                  description: user_profile_update 包含基础资料编辑及邮箱绑定；user_email_bind 保留兼容旧客户端
                   schema:
                     type: string
                 - name: keyword
@@ -13233,6 +13479,28 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/DeleteUserContactResponseBody'
+    /hduhelp-neo/admin/users/bindings/email:
+        put:
+            tags:
+                - AdminService
+            summary: 绑定用户邮箱
+            description: 为当前没有邮箱的用户补充邮箱登录入口；管理员需先完成线下核验，已有邮箱或邮箱已被其他账号占用时拒绝
+            operationId: AdminService_BindUserEmail
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                description: 为没有邮箱的历史账号补充邮箱登录入口。仅允许新增绑定，不支持覆盖已有邮箱。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/BindUserEmailRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BindUserEmailResponseBody'
     /hduhelp-neo/admin/users/bindings/social:
         put:
             tags:
@@ -13339,6 +13607,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/IssueUserSessionResponseBody'
+    /hduhelp-neo/admin/users/profile:
+        put:
+            tags:
+                - AdminService
+            summary: 编辑用户基础资料
+            description: 管理员直接编辑用户昵称、手机号和邮箱；未提供的字段保持原值，不发送短信或邮箱验证码
+            operationId: AdminService_UpdateUserProfile
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                description: |-
+                    编辑用户基础资料。未提供的字段保持原值；手机号和邮箱由管理员直接录入，
+                    不经过短信/邮箱验证码流程。
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateUserProfileRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UpdateUserProfileResponseBody'
     /hduhelp-neo/admin/volunteer-admin/activities:
         get:
             tags:
@@ -17224,7 +17516,7 @@ paths:
             tags:
                 - IdentityService
             summary: 查询服务授权状态
-            description: 返回当前学号的二课、图书馆、阳光长跑与学习通授权状态、有效性及失效通知开关；绝不返回已存 token、Cookie 或加密密码。仅一方原生会话可调用，不向 CLI/PAT/UAT 暴露。
+            description: 返回当前学号的二课、图书馆、阳光长跑、学习通与上课啦授权状态、有效性及失效通知开关；绝不返回已存 token、Cookie 或加密密码。仅一方原生会话可调用，不向 CLI/PAT/UAT 暴露。
             operationId: IdentityService_GetServiceAuthorizationStatus
             security:
                 - NativeSessionAuth: []
@@ -17263,7 +17555,7 @@ paths:
             tags:
                 - IdentityService
             summary: 设置服务授权失效通知
-            description: 按 erke/library/sunrun/chaoxing 设置当前学号的授权失效钉钉通知；默认关闭，仅一方原生会话可调用，不向 CLI/PAT/UAT 暴露。
+            description: 按 erke/library/sunrun/chaoxing/skl 设置当前学号的授权失效钉钉通知；默认关闭，仅一方原生会话可调用，不向 CLI/PAT/UAT 暴露。
             operationId: IdentityService_UpdateServiceAuthorizationNotification
             security:
                 - NativeSessionAuth: []
@@ -17285,14 +17577,14 @@ paths:
             tags:
                 - IdentityService
             summary: 授权单个校园服务
-            description: 二课、图书馆与学习通不带密码时优先复用已有有效授权，无法复用则返回 40934；重新验证时使用当前学号和杭电统一身份认证密码，不允许指定其他学号。阳光长跑仍需提交独立 Sportmeta 账号与密码，登录后校验学生身份属于当前学号。学习通通过杭电泛雅 SSO 换取超星会话，保存学号、加密密码及超星 Cookie，查询失败时最多重新登录一次，并支持定时续期；不保存学校 SSO Cookie。仅一方原生会话可调用。
+            description: 二课、图书馆、学习通与上课啦不带密码时优先复用已有有效授权，无法复用则返回 40934；重新验证时使用当前学号和杭电统一身份认证密码，不允许指定其他学号。阳光长跑仍需提交独立 Sportmeta 账号与密码，登录后校验学生身份属于当前学号。学习通通过杭电泛雅 SSO 换取超星会话；上课啦通过杭电统一身份认证重新获取托管凭据，均保存必要的密封登录信息并支持定时续期，不保存学校 SSO Cookie。仅一方原生会话可调用。
             operationId: IdentityService_AuthorizeService
             security:
                 - NativeSessionAuth: []
             parameters:
                 - name: service
                   in: path
-                  description: erke | library | sunrun | chaoxing
+                  description: erke | library | sunrun | chaoxing | skl
                   required: true
                   schema:
                     type: string
@@ -17320,7 +17612,7 @@ paths:
             parameters:
                 - name: service
                   in: path
-                  description: erke | library | sunrun | chaoxing
+                  description: erke | library | sunrun | chaoxing | skl
                   required: true
                   schema:
                     type: string
@@ -18561,7 +18853,7 @@ paths:
             tags:
                 - LibraryBookingService
             summary: 实时查询图书馆座位
-            description: 仅在空间、日期、开始时间和时长都确定后调用。只返回普通座位；后端在查询后自动释放上游推荐锁。Skill 使用随包模板生成可缩放页面供用户选座。
+            description: 仅在空间、日期、开始时间和时长都确定后调用。只返回普通座位。Skill 使用随包模板生成可缩放页面供用户选座。
             operationId: LibraryBookingService_SearchAvailableSeats
             security:
                 - BearerAuth: []
@@ -20741,6 +21033,29 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ResolveSocialIdentityResponseBody'
             x-hduhelp-http: {'auth': 'bearer', 'catalog': 'exclude', 'request_body_required': true}
+    /hduhelp-neo/open-apis/identity/resolve-batch:
+        post:
+            tags:
+                - IdentityService
+            summary: 批量解析应用请求的社交身份
+            description: 仅接受具备 identity:binding:resolve 的 TAT。一次解析多个 provider/open_id 绑定；未绑定项返回 bound=false。
+            operationId: IdentityService_ResolveSocialIdentityBatch
+            security:
+                - BearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ResolveSocialIdentityBatchRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ResolveSocialIdentityBatchResponseBody'
+            x-hduhelp-http: {'auth': 'bearer', 'catalog': 'exclude', 'request_body_required': true}
     /hduhelp-neo/reminders:
         put:
             tags:
@@ -22054,6 +22369,12 @@ components:
                     format: int64
                 resultErrorCode:
                     type: string
+                kind:
+                    type: string
+                    description: 统一管理员留痕分类；历史记录归类为 impersonation
+                details:
+                    type: string
+                    description: JSON 编码的脱敏操作详情，不保存原始手机号或邮箱
         AdminImpersonationLogsData:
             type: object
             properties:
@@ -28590,6 +28911,21 @@ components:
                         type: string
                 hasPassword:
                     type: boolean
+        BindUserEmailRequestBody:
+            type: object
+            properties:
+                user_id:
+                    type: string
+                email:
+                    type: string
+        BindUserEmailResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         BindingsData:
             type: object
             properties:
@@ -29572,9 +29908,6 @@ components:
                     type: string
                 locationName:
                     type: string
-                capacity:
-                    type: integer
-                    format: int32
                 selfStudy:
                     type: boolean
                 schoolYear:
@@ -29582,11 +29915,6 @@ components:
                 semester:
                     type: string
                 available:
-                    type: boolean
-                hasProjector:
-                    type: boolean
-                    description: optional 保留“尚未实地确认”与“已确认没有”的区别。
-                hasWhiteboard:
                     type: boolean
         ClassroomUsageItem:
             type: object
@@ -46103,6 +46431,52 @@ components:
                     format: int64
                 msg:
                     type: string
+        ResolveSocialIdentityBatchData:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ResolveSocialIdentityBatchItem'
+        ResolveSocialIdentityBatchItem:
+            type: object
+            properties:
+                open_id:
+                    type: string
+                bound:
+                    type: boolean
+                user_id:
+                    type: string
+                staff_id:
+                    type: string
+                staff_name:
+                    type: string
+        ResolveSocialIdentityBatchRequestBody:
+            required:
+                - provider
+                - open_ids
+            type: object
+            properties:
+                provider:
+                    type: string
+                open_ids:
+                    type: array
+                    items:
+                        type: string
+        ResolveSocialIdentityBatchResponseBody:
+            required:
+                - data
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/ResolveSocialIdentityBatchData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         ResolveSocialIdentityData:
             required:
                 - client_id
@@ -46114,6 +46488,11 @@ components:
                 bound:
                     type: boolean
                 user_id:
+                    type: string
+                staff_id:
+                    type: string
+                    description: Current default campus identity, when the Neo account has one.
+                staff_name:
                     type: string
         ResolveSocialIdentityRequestBody:
             required:
@@ -47539,14 +47918,14 @@ components:
             properties:
                 type:
                     type: string
-                    description: erke | library | sunrun | chaoxing
+                    description: erke | library | sunrun | chaoxing | skl
                 authorized:
                     type: boolean
                 valid:
                     type: boolean
                 notify_on_expiry:
                     type: boolean
-            description: ==== Erke / Library / Sunrun / Chaoxing 服务凭据授权（仅一方原生会话，禁止 CLI/PAT/UAT） ====
+            description: ==== Erke / Library / Sunrun / Chaoxing / SKL 服务凭据授权（仅一方原生会话，禁止 CLI/PAT/UAT） ====
         ServiceAuthorizationStatusData:
             type: object
             properties:
@@ -48239,6 +48618,108 @@ components:
                     format: int64
                 msg:
                     type: string
+        SklAddLeaveRequestBody:
+            required:
+                - startDate
+                - endDate
+                - type
+                - reason
+                - leaveDetail
+                - attachmentList
+            type: object
+            properties:
+                startDate:
+                    type: string
+                endDate:
+                    type: string
+                type:
+                    type: string
+                reason:
+                    type: string
+                leaveDetail:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SklLeaveDetailItem'
+                attachmentList:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SklAttachmentItem'
+        SklAttachmentItem:
+            required:
+                - bucket
+                - fileName
+                - key
+            type: object
+            properties:
+                bucket:
+                    type: string
+                fileName:
+                    type: string
+                key:
+                    type: string
+        SklAttachmentRequestBody:
+            required:
+                - file
+            type: object
+            properties:
+                file:
+                    type: string
+                    description: 请假证明附件，不超过 8 MiB。
+                    format: binary
+        SklLeaveDetailItem:
+            required:
+                - courseId
+                - courseSchemaId
+                - recordDate
+                - week
+            type: object
+            properties:
+                courseId:
+                    type: string
+                courseSchemaId:
+                    type: string
+                recordDate:
+                    type: string
+                week:
+                    type: integer
+                    format: int32
+        SklResponseBodyBody:
+            required:
+                - data
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    type: object
+                    description: 上课啦上游 JSON 数据，字段随接口返回。
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        SklSignInRequestBody:
+            required:
+                - captchaVerifyParam
+                - code
+                - latitude
+                - longitude
+                - t
+            type: object
+            properties:
+                captchaVerifyParam:
+                    type: string
+                code:
+                    type: string
+                latitude:
+                    type: number
+                    format: double
+                longitude:
+                    type: number
+                    format: double
+                t:
+                    type: integer
+                    format: int64
         Slot:
             type: object
             properties:
@@ -49529,7 +50010,7 @@ components:
             properties:
                 type:
                     type: string
-                    description: erke | library | sunrun | chaoxing
+                    description: erke | library | sunrun | chaoxing | skl
                 enabled:
                     type: boolean
         UpdateSiteBannerRequestBody:
@@ -49551,6 +50032,25 @@ components:
                 options:
                     type: string
                     description: 每用户每渠道偏好，JSON 字符串
+        UpdateUserProfileRequestBody:
+            type: object
+            properties:
+                user_id:
+                    type: string
+                nick_name:
+                    type: string
+                phone:
+                    type: string
+                email:
+                    type: string
+        UpdateUserProfileResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         UploadData:
             type: object
             properties:
