@@ -12,6 +12,7 @@ import (
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/analytics"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/announcement"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/apm"
+	"github.com/hduhelp/hduhelp-neo-sdk-go/service/appdist"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/campuslife"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/emptyschedule"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/service/feed"
@@ -49,6 +50,7 @@ type Client struct {
 	Analytics                 *analytics.Service
 	Announcement              *announcement.Service
 	Apm                       *apm.Service
+	AppDist                   *appdist.Service
 	CampusLife                *campuslife.Service
 	EmptySchedule             *emptyschedule.Service
 	Feed                      *feed.Service
@@ -83,6 +85,7 @@ func attachServices(c *Client) {
 	c.Analytics = analytics.NewService(c.config)
 	c.Announcement = announcement.NewService(c.config)
 	c.Apm = apm.NewService(c.config)
+	c.AppDist = appdist.NewService(c.config)
 	c.CampusLife = campuslife.NewService(c.config)
 	c.EmptySchedule = emptyschedule.NewService(c.config)
 	c.Feed = feed.NewService(c.config)

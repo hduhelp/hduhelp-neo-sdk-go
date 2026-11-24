@@ -7922,6 +7922,72 @@ type AppAccessTokenInternalResponseBody struct {
 	Msg  *string             `json:"msg,omitempty"`
 }
 
+// AppClientConfig defines model for AppClientConfig.
+type AppClientConfig struct {
+	HumanCheckEnabled *bool `json:"humanCheckEnabled,omitempty"`
+	WhatsNewEnabled   *bool `json:"whatsNewEnabled,omitempty"`
+}
+
+// AppClientConfigResponseBody defines model for AppClientConfigResponseBody.
+type AppClientConfigResponseBody struct {
+	Code *int64           `json:"code,omitempty"`
+	Data *AppClientConfig `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
+}
+
+// AppDistribution defines model for AppDistribution.
+type AppDistribution struct {
+	AndroidBetaPageUrl *string                   `json:"androidBetaPageUrl,omitempty"`
+	Channels           *[]AppDistributionChannel `json:"channels,omitempty"`
+	HumanCheckEnabled  *bool                     `json:"humanCheckEnabled,omitempty"`
+	IosDownloadUrl     *string                   `json:"iosDownloadUrl,omitempty"`
+	WhatsNewEnabled    *bool                     `json:"whatsNewEnabled,omitempty"`
+}
+
+// AppDistributionChannel defines model for AppDistributionChannel.
+type AppDistributionChannel struct {
+	Channel *string `json:"channel,omitempty"`
+	Label   *string `json:"label,omitempty"`
+
+	// Latest App 分发：Poplar App 的版本检查、远程开关、下载跳转与运营配置。
+	// 原先由独立站点 poplar.hduhelp.com 提供；字段名沿用它，旧版 App 经 Ingress 改写后照常解析。
+	Latest   *AppRelease `json:"latest,omitempty"`
+	MinBuild *int64      `json:"minBuild,omitempty"`
+}
+
+// AppDistributionResponseBody defines model for AppDistributionResponseBody.
+type AppDistributionResponseBody struct {
+	Code *int64           `json:"code,omitempty"`
+	Data *AppDistribution `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
+}
+
+// AppDownloadResponseBody defines model for AppDownloadResponseBody.
+type AppDownloadResponseBody struct {
+	Code *int64  `json:"code,omitempty"`
+	Msg  *string `json:"msg,omitempty"`
+}
+
+// AppDownloads defines model for AppDownloads.
+type AppDownloads struct {
+	// Android App 分发：Poplar App 的版本检查、远程开关、下载跳转与运营配置。
+	// 原先由独立站点 poplar.hduhelp.com 提供；字段名沿用它，旧版 App 经 Ingress 改写后照常解析。
+	Android *AppRelease `json:"android,omitempty"`
+
+	// AndroidBeta App 分发：Poplar App 的版本检查、远程开关、下载跳转与运营配置。
+	// 原先由独立站点 poplar.hduhelp.com 提供；字段名沿用它，旧版 App 经 Ingress 改写后照常解析。
+	AndroidBeta        *AppRelease `json:"androidBeta,omitempty"`
+	AndroidBetaPageUrl *string     `json:"androidBetaPageUrl,omitempty"`
+	IosUrl             *string     `json:"iosUrl,omitempty"`
+}
+
+// AppDownloadsResponseBody defines model for AppDownloadsResponseBody.
+type AppDownloadsResponseBody struct {
+	Code *int64        `json:"code,omitempty"`
+	Data *AppDownloads `json:"data,omitempty"`
+	Msg  *string       `json:"msg,omitempty"`
+}
+
 // AppListResponseBody defines model for AppListResponseBody.
 type AppListResponseBody struct {
 	Code *int64 `json:"code,omitempty"`
@@ -7930,6 +7996,29 @@ type AppListResponseBody struct {
 	// 两个字段按请求形态二选一填充。
 	Data *AdminAppsData `json:"data,omitempty"`
 	Msg  *string        `json:"msg,omitempty"`
+}
+
+// AppRelease App 分发：Poplar App 的版本检查、远程开关、下载跳转与运营配置。
+// 原先由独立站点 poplar.hduhelp.com 提供；字段名沿用它，旧版 App 经 Ingress 改写后照常解析。
+type AppRelease struct {
+	Build      *int64  `json:"build,omitempty"`
+	Changelog  *string `json:"changelog,omitempty"`
+	InstallUrl *string `json:"installUrl,omitempty"`
+	MinBuild   *int64  `json:"minBuild,omitempty"`
+	Sha256     *string `json:"sha256,omitempty"`
+	SizeBytes  *int64  `json:"sizeBytes,omitempty"`
+	UpdatedAt  *string `json:"updatedAt,omitempty"`
+	Version    *string `json:"version,omitempty"`
+}
+
+// AppReleaseResponseBody defines model for AppReleaseResponseBody.
+type AppReleaseResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data App 分发：Poplar App 的版本检查、远程开关、下载跳转与运营配置。
+	// 原先由独立站点 poplar.hduhelp.com 提供；字段名沿用它，旧版 App 经 Ingress 改写后照常解析。
+	Data *AppRelease `json:"data,omitempty"`
+	Msg  *string     `json:"msg,omitempty"`
 }
 
 // Appeal ---------- 申诉 ----------
@@ -20539,6 +20628,15 @@ type UpdateAnnouncementRequestBody struct {
 	Notice EditableNotice `json:"notice"`
 }
 
+// UpdateAppDistributionRequestBody defines model for UpdateAppDistributionRequestBody.
+type UpdateAppDistributionRequestBody struct {
+	AndroidBetaMinBuild *int64  `json:"android_beta_min_build,omitempty"`
+	AndroidBetaPageUrl  *string `json:"android_beta_page_url,omitempty"`
+	AndroidMinBuild     *int64  `json:"android_min_build,omitempty"`
+	IosDownloadUrl      *string `json:"ios_download_url,omitempty"`
+	WhatsNewEnabled     *bool   `json:"whats_new_enabled,omitempty"`
+}
+
 // UpdateAppRequestBody defines model for UpdateAppRequestBody.
 type UpdateAppRequestBody struct {
 	Description  *string   `json:"description,omitempty"`
@@ -24118,6 +24216,9 @@ type AgentServiceAgentUpdateSkillJSONRequestBody = AgentSkillUpdateRequestBody
 
 // AgentServiceAgentSyncSkillJSONRequestBody defines body for AgentServiceAgentSyncSkill for application/json ContentType.
 type AgentServiceAgentSyncSkillJSONRequestBody = AgentSkillSyncRequestBody
+
+// AppDistServiceUpdateAppDistributionJSONRequestBody defines body for AppDistServiceUpdateAppDistribution for application/json ContentType.
+type AppDistServiceUpdateAppDistributionJSONRequestBody = UpdateAppDistributionRequestBody
 
 // AdminServiceSetAppEnabledJSONRequestBody defines body for AdminServiceSetAppEnabled for application/json ContentType.
 type AdminServiceSetAppEnabledJSONRequestBody = SetAppEnabledRequestBody

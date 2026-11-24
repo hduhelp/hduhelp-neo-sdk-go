@@ -3925,6 +3925,42 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ApmTlogTaskResponseBody'
+    /hduhelp-neo/admin/app/distribution:
+        get:
+            tags:
+                - AppDistService
+            summary: App 发布配置
+            description: 需要 app.distribution:view。附带各安卓渠道 fir 上的最新包。
+            operationId: AppDistService_GetAppDistribution
+            security:
+                - OperatorBearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AppDistributionResponseBody'
+        put:
+            tags:
+                - AppDistService
+            summary: 修改 App 发布配置
+            description: 需要 app.distribution:configure。强制更新线不能高于该渠道 fir 上的最新构建（731000002）。
+            operationId: AppDistService_UpdateAppDistribution
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateAppDistributionRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AppDistributionResponseBody'
     /hduhelp-neo/admin/apps:
         get:
             tags:
@@ -15100,6 +15136,103 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/AnalyticsConfigResponseBody'
             x-hduhelp-http: {'auth': 'public_or_native_session', 'catalog': 'exclude', 'requires_user': false}
+    /hduhelp-neo/app/config:
+        get:
+            tags:
+                - AppDistService
+            summary: App 远程开关
+            description: humanCheckEnabled 跟随 identity.captcha_mode；whatsNewEnabled 在运营后台「App 发布」里改。
+            operationId: AppDistService_GetAppClientConfig
+            security: []
+            parameters:
+                - name: platform
+                  in: query
+                  schema:
+                    type: string
+                - name: build
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AppClientConfigResponseBody'
+            x-hduhelp-http: {'requires_user': false, 'auth': 'public', 'catalog': 'exclude'}
+    /hduhelp-neo/app/download:
+        get:
+            tags:
+                - AppDistService
+            summary: 跳转到 App 安装地址
+            description: 302 到该渠道的安装地址；没有时回到官网。
+            operationId: AppDistService_DownloadApp
+            security: []
+            parameters:
+                - name: platform
+                  in: query
+                  schema:
+                    type: string
+                - name: channel
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AppDownloadResponseBody'
+            x-hduhelp-http: {'requires_user': false, 'auth': 'public', 'catalog': 'exclude'}
+    /hduhelp-neo/app/downloads:
+        get:
+            tags:
+                - AppDistService
+            summary: App 下载入口
+            description: 官网下载区用：各渠道最新包与 iOS、测试版下载页地址。
+            operationId: AppDistService_GetAppDownloads
+            security: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AppDownloadsResponseBody'
+            x-hduhelp-http: {'requires_user': false, 'auth': 'public', 'catalog': 'exclude'}
+    /hduhelp-neo/app/releases/latest:
+        get:
+            tags:
+                - AppDistService
+            summary: App 最新版本
+            description: platform 为 android 或 ios，channel 为 prod（默认）或 beta。安卓以 fir 实际分发的包为准，minBuild 是强制更新线。没有该渠道的版本时返回 HTTP 404（旧版客户端靠它区分「没有新版」和「查询失败」）。
+            operationId: AppDistService_GetLatestAppRelease
+            security: []
+            parameters:
+                - name: platform
+                  in: query
+                  schema:
+                    type: string
+                - name: channel
+                  in: query
+                  schema:
+                    type: string
+                - name: build
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AppReleaseResponseBody'
+            x-hduhelp-http: {'requires_user': false, 'auth': 'public', 'catalog': 'exclude'}
     /hduhelp-neo/callbacks/dingtalk/blessing-review:
         post:
             tags:
@@ -28262,11 +28395,129 @@ components:
                     format: int64
                 msg:
                     type: string
+        AppClientConfig:
+            type: object
+            properties:
+                humanCheckEnabled:
+                    type: boolean
+                whatsNewEnabled:
+                    type: boolean
+        AppClientConfigResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AppClientConfig'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AppDistribution:
+            type: object
+            properties:
+                channels:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AppDistributionChannel'
+                iosDownloadUrl:
+                    type: string
+                androidBetaPageUrl:
+                    type: string
+                whatsNewEnabled:
+                    type: boolean
+                humanCheckEnabled:
+                    type: boolean
+        AppDistributionChannel:
+            type: object
+            properties:
+                channel:
+                    type: string
+                label:
+                    type: string
+                minBuild:
+                    type: integer
+                    format: int64
+                latest:
+                    $ref: '#/components/schemas/AppRelease'
+        AppDistributionResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AppDistribution'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AppDownloadResponseBody:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AppDownloads:
+            type: object
+            properties:
+                android:
+                    $ref: '#/components/schemas/AppRelease'
+                androidBeta:
+                    $ref: '#/components/schemas/AppRelease'
+                androidBetaPageUrl:
+                    type: string
+                iosUrl:
+                    type: string
+        AppDownloadsResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AppDownloads'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AppListResponseBody:
             type: object
             properties:
                 data:
                     $ref: '#/components/schemas/AdminAppsData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AppRelease:
+            type: object
+            properties:
+                version:
+                    type: string
+                build:
+                    type: integer
+                    format: int64
+                changelog:
+                    type: string
+                installUrl:
+                    type: string
+                sizeBytes:
+                    type: integer
+                    format: int64
+                sha256:
+                    type: string
+                minBuild:
+                    type: integer
+                    format: int64
+                updatedAt:
+                    type: string
+            description: |-
+                App 分发：Poplar App 的版本检查、远程开关、下载跳转与运营配置。
+                原先由独立站点 poplar.hduhelp.com 提供；字段名沿用它，旧版 App 经 Ingress 改写后照常解析。
+        AppReleaseResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AppRelease'
                 code:
                     type: integer
                     format: int64
@@ -49673,6 +49924,21 @@ components:
             properties:
                 notice:
                     $ref: '#/components/schemas/EditableNotice'
+        UpdateAppDistributionRequestBody:
+            type: object
+            properties:
+                android_min_build:
+                    type: integer
+                    format: int64
+                android_beta_min_build:
+                    type: integer
+                    format: int64
+                ios_download_url:
+                    type: string
+                android_beta_page_url:
+                    type: string
+                whats_new_enabled:
+                    type: boolean
         UpdateAppRequestBody:
             type: object
             properties:
@@ -50667,6 +50933,7 @@ tags:
     - name: AnalyticsService
     - name: AnnouncementService
     - name: ApmService
+    - name: AppDistService
     - name: CampusLifeService
     - name: DingTalkWorkbenchService
     - name: EmptyScheduleService
