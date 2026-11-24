@@ -4529,16 +4529,19 @@ type ActivityRegistrationResponseBody struct {
 
 // ActivitySummary All timestamps are Unix milliseconds. Status values are stable strings.
 type ActivitySummary struct {
-	CreatedAt   *int64  `json:"createdAt,omitempty"`
-	EndAt       *int64  `json:"endAt,omitempty"`
-	Id          *string `json:"id,omitempty"`
-	IsUrgent    *bool   `json:"isUrgent,omitempty"`
-	PublishedAt *int64  `json:"publishedAt,omitempty"`
-	StartAt     *int64  `json:"startAt,omitempty"`
-	Status      *string `json:"status,omitempty"`
-	Title       *string `json:"title,omitempty"`
-	UpdatedAt   *int64  `json:"updatedAt,omitempty"`
-	UrgentAt    *int64  `json:"urgentAt,omitempty"`
+	CreatedAt *int64  `json:"createdAt,omitempty"`
+	EndAt     *int64  `json:"endAt,omitempty"`
+	Id        *string `json:"id,omitempty"`
+
+	// ImageUrls 海报/群二维码地址，顺序即展示顺序
+	ImageUrls   *[]string `json:"imageUrls,omitempty"`
+	IsUrgent    *bool     `json:"isUrgent,omitempty"`
+	PublishedAt *int64    `json:"publishedAt,omitempty"`
+	StartAt     *int64    `json:"startAt,omitempty"`
+	Status      *string   `json:"status,omitempty"`
+	Title       *string   `json:"title,omitempty"`
+	UpdatedAt   *int64    `json:"updatedAt,omitempty"`
+	UrgentAt    *int64    `json:"urgentAt,omitempty"`
 }
 
 // AddChunkRequestBody defines model for AddChunkRequestBody.
@@ -9899,9 +9902,12 @@ type CreateTenantResponseBody struct {
 type CreateVolunteerActivityRequestBody struct {
 	Description *string `json:"description,omitempty"`
 	EndAt       *int64  `json:"end_at,omitempty"`
-	StartAt     *int64  `json:"start_at,omitempty"`
-	Status      *string `json:"status,omitempty"`
-	Title       *string `json:"title,omitempty"`
+
+	// ImageKeys 上传后的 key，最多 3 个
+	ImageKeys *[]string `json:"image_keys,omitempty"`
+	StartAt   *int64    `json:"start_at,omitempty"`
+	Status    *string   `json:"status,omitempty"`
+	Title     *string   `json:"title,omitempty"`
 }
 
 // CreateWeChatQRLoginData defines model for CreateWeChatQRLoginData.
@@ -20520,9 +20526,12 @@ type UnreturnedBatchItem struct {
 type UpdateActivityRequestBody struct {
 	Description *string `json:"description,omitempty"`
 	EndAt       *int64  `json:"end_at,omitempty"`
-	StartAt     *int64  `json:"start_at,omitempty"`
-	Status      *string `json:"status,omitempty"`
-	Title       *string `json:"title,omitempty"`
+
+	// ImageKeys 上传后的 key，最多 3 个
+	ImageKeys *[]string `json:"image_keys,omitempty"`
+	StartAt   *int64    `json:"start_at,omitempty"`
+	Status    *string   `json:"status,omitempty"`
+	Title     *string   `json:"title,omitempty"`
 }
 
 // UpdateAnnouncementRequestBody defines model for UpdateAnnouncementRequestBody.
@@ -21148,13 +21157,19 @@ type VolunteerActivityDetail struct {
 	Description *string `json:"description,omitempty"`
 	EndAt       *int64  `json:"endAt,omitempty"`
 	Id          *string `json:"id,omitempty"`
-	IsUrgent    *bool   `json:"isUrgent,omitempty"`
-	PublishedAt *int64  `json:"publishedAt,omitempty"`
-	StartAt     *int64  `json:"startAt,omitempty"`
-	Status      *string `json:"status,omitempty"`
-	Title       *string `json:"title,omitempty"`
-	UpdatedAt   *int64  `json:"updatedAt,omitempty"`
-	UrgentAt    *int64  `json:"urgentAt,omitempty"`
+
+	// ImageKeys 上传 key，仅管理端编辑时回填
+	ImageKeys *[]string `json:"imageKeys,omitempty"`
+
+	// ImageUrls 海报/群二维码地址，顺序即展示顺序
+	ImageUrls   *[]string `json:"imageUrls,omitempty"`
+	IsUrgent    *bool     `json:"isUrgent,omitempty"`
+	PublishedAt *int64    `json:"publishedAt,omitempty"`
+	StartAt     *int64    `json:"startAt,omitempty"`
+	Status      *string   `json:"status,omitempty"`
+	Title       *string   `json:"title,omitempty"`
+	UpdatedAt   *int64    `json:"updatedAt,omitempty"`
+	UrgentAt    *int64    `json:"urgentAt,omitempty"`
 }
 
 // VolunteerActivityDetailResponseBody defines model for VolunteerActivityDetailResponseBody.

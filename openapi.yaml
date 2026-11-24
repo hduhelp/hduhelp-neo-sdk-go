@@ -18853,7 +18853,7 @@ paths:
             tags:
                 - LibraryBookingService
             summary: 实时查询图书馆座位
-            description: 仅在空间、日期、开始时间和时长都确定后调用。只返回普通座位。Skill 使用随包模板生成可缩放页面供用户选座。
+            description: 仅在空间、日期、开始时间和时长都确定后调用。只返回普通座位。用户需要选座且有空座时，立即加载 hdu-library-booking Skill，用本次完整结果和随包模板展示交互座位图。在 HDU Mate 工作模式调用 workspace 的 show_html，把选座卡片放在本轮回复里。
             operationId: LibraryBookingService_SearchAvailableSeats
             security:
                 - BearerAuth: []
@@ -22001,6 +22001,11 @@ components:
                 updatedAt:
                     type: integer
                     format: int64
+                imageUrls:
+                    type: array
+                    items:
+                        type: string
+                    description: 海报/群二维码地址，顺序即展示顺序
             description: All timestamps are Unix milliseconds. Status values are stable strings.
         AddChunkRequestBody:
             type: object
@@ -31200,6 +31205,11 @@ components:
                     type: string
                 status:
                     type: string
+                image_keys:
+                    type: array
+                    items:
+                        type: string
+                    description: 上传后的 key，最多 3 个
         CreateWeChatQRLoginData:
             type: object
             properties:
@@ -49651,6 +49661,11 @@ components:
                     type: string
                 status:
                     type: string
+                image_keys:
+                    type: array
+                    items:
+                        type: string
+                    description: 上传后的 key，最多 3 个
         UpdateAnnouncementRequestBody:
             required:
                 - notice
@@ -50591,6 +50606,16 @@ components:
                 updatedAt:
                     type: integer
                     format: int64
+                imageUrls:
+                    type: array
+                    items:
+                        type: string
+                    description: 海报/群二维码地址，顺序即展示顺序
+                imageKeys:
+                    type: array
+                    items:
+                        type: string
+                    description: 上传 key，仅管理端编辑时回填
         VolunteerActivityDetailResponseBody:
             type: object
             properties:
