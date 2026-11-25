@@ -14498,7 +14498,7 @@ paths:
                     type: string
             requestBody:
                 required: true
-                description: 只改传了的字段；换模型或接入点在下一回合生效。version 落后返回 409。
+                description: 只改传了的字段；换模型或接入点在下一回合生效，权限模式立即对正在跑的回合生效。version 落后返回 409。
                 content:
                     application/json:
                         schema:
@@ -14694,6 +14694,28 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/AgentWorkPromptResponseBody'
             x-hduhelp-http: {'auth': 'native_session', 'request_body_required': true}
+    /hduhelp-neo/agent/sessions/{id}/queue/resume:
+        post:
+            tags:
+                - AgentService
+            summary: 继续发送暂停的排队消息（没暂停时什么也不做）
+            operationId: AgentService_AgentResumeWorkQueue
+            security:
+                - NativeSessionAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AgentWorkSessionStateResponseBody'
+            x-hduhelp-http: {'auth': 'native_session'}
     /hduhelp-neo/agent/sessions/{id}/stream-token:
         post:
             tags:
@@ -26940,7 +26962,7 @@ components:
                     description: 工具入参原样（超过 64 KB 截断）
                 options:
                     type: object
-                    description: title、display_name、description、decision_reason、decision_reason_type、blocked_path、suggestions、requires_user_interaction、suppress_always_allow_rule、default_to_no、mcp_server、request_id
+                    description: title、display_name、description、decision_reason、decision_reason_type、blocked_path、suggestions、requires_user_interaction、suppress_always_allow_rule、default_to_no、mcp_server、request_id；提问卡有选项带 preview（input.questions[].options[].preview）时还有 preview_format（markdown）
                 status:
                     enum:
                         - waiting
@@ -26971,7 +26993,7 @@ components:
                     type: string
                 answers:
                     type: object
-                    description: submit 时必填：键是问题原文，单选为选项 label（「其他」的文字优先），多选为数组（「其他」的文字追加）
+                    description: submit 时必填：键是问题原文，单选为选项 label（「其他」的文字优先），多选为数组（「其他」的文字追加）；跳过的题不放进来，一题都没答返回 400；工作环境的执行器还不支持跳过时有题没答返回 400 730000031「请先回答所有问题」
         AgentWorkPromptResponseBody:
             required:
                 - code
@@ -27193,6 +27215,29 @@ components:
                     format: int64
                 context_lost:
                     type: boolean
+                queue_paused:
+                    enum:
+                        - stopped
+                        - failed
+                        - quota
+                    type: string
+                    description: 排队已暂停：用户停止（stopped）或回合失败且不再自动重试（failed；额度用尽为 quota）后，本人排的消息不自动发出；发一条新消息、立即发送其中一条或 POST /queue/resume 恢复。只在队列里有被暂停的消息时返回
+                suggestion:
+                    type: string
+                    description: Claude 猜的下一句（空输入框里的建议，用户确认后才发）；只在 status=idle 时返回，新回合开始即清掉
+        AgentWorkSessionStateResponseBody:
+            required:
+                - code
+                - msg
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AgentWorkSessionState'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
         AgentWorkTurn:
             required:
                 - turn_id

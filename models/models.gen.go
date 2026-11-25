@@ -214,19 +214,19 @@ func (e AgentPartnerStatus) Valid() bool {
 
 // Defines values for AgentPartnerCardKeyState.
 const (
-	Ok          AgentPartnerCardKeyState = "ok"
-	Quota       AgentPartnerCardKeyState = "quota"
-	Reauthorize AgentPartnerCardKeyState = "reauthorize"
+	AgentPartnerCardKeyStateOk          AgentPartnerCardKeyState = "ok"
+	AgentPartnerCardKeyStateQuota       AgentPartnerCardKeyState = "quota"
+	AgentPartnerCardKeyStateReauthorize AgentPartnerCardKeyState = "reauthorize"
 )
 
 // Valid indicates whether the value is a known member of the AgentPartnerCardKeyState enum.
 func (e AgentPartnerCardKeyState) Valid() bool {
 	switch e {
-	case Ok:
+	case AgentPartnerCardKeyStateOk:
 		return true
-	case Quota:
+	case AgentPartnerCardKeyStateQuota:
 		return true
-	case Reauthorize:
+	case AgentPartnerCardKeyStateReauthorize:
 		return true
 	default:
 		return false
@@ -821,6 +821,27 @@ func (e AgentWorkSessionPatchRequestBodyPermissionMode) Valid() bool {
 	case AgentWorkSessionPatchRequestBodyPermissionModeAsk:
 		return true
 	case AgentWorkSessionPatchRequestBodyPermissionModeAuto:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentWorkSessionStateQueuePaused.
+const (
+	AgentWorkSessionStateQueuePausedFailed  AgentWorkSessionStateQueuePaused = "failed"
+	AgentWorkSessionStateQueuePausedQuota   AgentWorkSessionStateQueuePaused = "quota"
+	AgentWorkSessionStateQueuePausedStopped AgentWorkSessionStateQueuePaused = "stopped"
+)
+
+// Valid indicates whether the value is a known member of the AgentWorkSessionStateQueuePaused enum.
+func (e AgentWorkSessionStateQueuePaused) Valid() bool {
+	switch e {
+	case AgentWorkSessionStateQueuePausedFailed:
+		return true
+	case AgentWorkSessionStateQueuePausedQuota:
+		return true
+	case AgentWorkSessionStateQueuePausedStopped:
 		return true
 	default:
 		return false
@@ -7116,7 +7137,7 @@ type AgentWorkPrompt struct {
 	Input map[string]interface{} `json:"input"`
 	Kind  AgentWorkPromptKind    `json:"kind"`
 
-	// Options title、display_name、description、decision_reason、decision_reason_type、blocked_path、suggestions、requires_user_interaction、suppress_always_allow_rule、default_to_no、mcp_server、request_id
+	// Options title、display_name、description、decision_reason、decision_reason_type、blocked_path、suggestions、requires_user_interaction、suppress_always_allow_rule、default_to_no、mcp_server、request_id；提问卡有选项带 preview（input.questions[].options[].preview）时还有 preview_format（markdown）
 	Options   map[string]interface{} `json:"options"`
 	PromptId  string                 `json:"prompt_id"`
 	RunId     string                 `json:"run_id"`
@@ -7134,7 +7155,7 @@ type AgentWorkPromptStatus string
 
 // AgentWorkPromptAnswerRequestBody defines model for AgentWorkPromptAnswerRequestBody.
 type AgentWorkPromptAnswerRequestBody struct {
-	// Answers submit 时必填：键是问题原文，单选为选项 label（「其他」的文字优先），多选为数组（「其他」的文字追加）
+	// Answers submit 时必填：键是问题原文，单选为选项 label（「其他」的文字优先），多选为数组（「其他」的文字追加）；跳过的题不放进来，一题都没答返回 400；工作环境的执行器还不支持跳过时有题没答返回 400 730000031「请先回答所有问题」
 	Answers *map[string]interface{} `json:"answers,omitempty"`
 	Choice  string                  `json:"choice"`
 	OpId    string                  `json:"op_id"`
@@ -7254,19 +7275,35 @@ type AgentWorkSessionResponseBody struct {
 
 // AgentWorkSessionState defines model for AgentWorkSessionState.
 type AgentWorkSessionState struct {
-	ContextLost *bool                        `json:"context_lost,omitempty"`
-	HeadSeq     int64                        `json:"head_seq"`
-	Queued      int32                        `json:"queued"`
-	Sandbox     AgentWorkSessionStateSandbox `json:"sandbox"`
-	SessionId   string                       `json:"session_id"`
-	Status      AgentWorkSessionStateStatus  `json:"status"`
+	ContextLost *bool `json:"context_lost,omitempty"`
+	HeadSeq     int64 `json:"head_seq"`
+
+	// QueuePaused 排队已暂停：用户停止（stopped）或回合失败且不再自动重试（failed；额度用尽为 quota）后，本人排的消息不自动发出；发一条新消息、立即发送其中一条或 POST /queue/resume 恢复。只在队列里有被暂停的消息时返回
+	QueuePaused *AgentWorkSessionStateQueuePaused `json:"queue_paused,omitempty"`
+	Queued      int32                             `json:"queued"`
+	Sandbox     AgentWorkSessionStateSandbox      `json:"sandbox"`
+	SessionId   string                            `json:"session_id"`
+	Status      AgentWorkSessionStateStatus       `json:"status"`
+
+	// Suggestion Claude 猜的下一句（空输入框里的建议，用户确认后才发）；只在 status=idle 时返回，新回合开始即清掉
+	Suggestion *string `json:"suggestion,omitempty"`
 }
+
+// AgentWorkSessionStateQueuePaused 排队已暂停：用户停止（stopped）或回合失败且不再自动重试（failed；额度用尽为 quota）后，本人排的消息不自动发出；发一条新消息、立即发送其中一条或 POST /queue/resume 恢复。只在队列里有被暂停的消息时返回
+type AgentWorkSessionStateQueuePaused string
 
 // AgentWorkSessionStateSandbox defines model for AgentWorkSessionState.Sandbox.
 type AgentWorkSessionStateSandbox string
 
 // AgentWorkSessionStateStatus defines model for AgentWorkSessionState.Status.
 type AgentWorkSessionStateStatus string
+
+// AgentWorkSessionStateResponseBody defines model for AgentWorkSessionStateResponseBody.
+type AgentWorkSessionStateResponseBody struct {
+	Code int64                  `json:"code"`
+	Data *AgentWorkSessionState `json:"data,omitempty"`
+	Msg  string                 `json:"msg"`
+}
 
 // AgentWorkTurn defines model for AgentWorkTurn.
 type AgentWorkTurn struct {

@@ -3625,6 +3625,52 @@ func (s *Service) AgentAnswerWorkPrompt(ctx context.Context, req *AgentAnswerWor
 	return resp, err
 }
 
+// AgentResumeWorkQueueReq is the request for AgentResumeWorkQueue.
+type AgentResumeWorkQueueReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// AgentResumeWorkQueueReqBuilder builds a AgentResumeWorkQueueReq with a fluent setter per field.
+type AgentResumeWorkQueueReqBuilder struct{ req *AgentResumeWorkQueueReq }
+
+// NewAgentResumeWorkQueueReqBuilder creates a request builder for AgentResumeWorkQueue.
+func NewAgentResumeWorkQueueReqBuilder() *AgentResumeWorkQueueReqBuilder {
+	return &AgentResumeWorkQueueReqBuilder{req: &AgentResumeWorkQueueReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Id sets the "id" path parameter.
+func (b *AgentResumeWorkQueueReqBuilder) Id(v string) *AgentResumeWorkQueueReqBuilder {
+	b.req.pathParams["id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *AgentResumeWorkQueueReqBuilder) Build() *AgentResumeWorkQueueReq { return b.req }
+
+// AgentResumeWorkQueueResp is the response for AgentResumeWorkQueue.
+type AgentResumeWorkQueueResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AgentWorkSessionState `json:"data"`
+}
+
+// AgentResumeWorkQueue: 继续发送暂停的排队消息（没暂停时什么也不做）
+func (s *Service) AgentResumeWorkQueue(ctx context.Context, req *AgentResumeWorkQueueReq, opts ...core.RequestOption) (*AgentResumeWorkQueueResp, error) {
+	resp := &AgentResumeWorkQueueResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/agent/sessions/{id}/queue/resume",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // AgentCreateStreamTokenReq is the request for AgentCreateStreamToken.
 type AgentCreateStreamTokenReq struct {
 	pathParams  map[string]string
