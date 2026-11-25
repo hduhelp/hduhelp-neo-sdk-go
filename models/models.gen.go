@@ -8221,11 +8221,18 @@ type AuthProviderEntry struct {
 
 // AuthStatusData defines model for AuthStatusData.
 type AuthStatusData struct {
-	ActiveIdentityType      *string   `json:"activeIdentityType,omitempty"`
-	DefaultIdentityType     *string   `json:"defaultIdentityType,omitempty"`
-	LoggedIn                *bool     `json:"loggedIn,omitempty"`
-	SwitchableIdentityTypes *[]string `json:"switchableIdentityTypes,omitempty"`
-	UserId                  *string   `json:"userId,omitempty"`
+	ActiveIdentityType  *string `json:"activeIdentityType,omitempty"`
+	DefaultIdentityType *string `json:"defaultIdentityType,omitempty"`
+
+	// DemoAccount 已登录时带
+	DemoAccount *bool `json:"demoAccount,omitempty"`
+
+	// Features 会话功能集：App 按它显示入口，后端闸门按同一份规则拦截。随每次签发 / 兑换 / 刷新令牌
+	// 与 /identity/auth/status 下发，按账号计算、不分渠道。规则见 docs/app-session-features.md。
+	Features                *SessionFeatures `json:"features,omitempty"`
+	LoggedIn                *bool            `json:"loggedIn,omitempty"`
+	SwitchableIdentityTypes *[]string        `json:"switchableIdentityTypes,omitempty"`
+	UserId                  *string          `json:"userId,omitempty"`
 }
 
 // AuthenAccessTokenRequestBody defines model for AuthenAccessTokenRequestBody.
@@ -10337,6 +10344,40 @@ type DeliveryResponseBody struct {
 	Code int64                 `json:"code"`
 	Data *NotificationDelivery `json:"data,omitempty"`
 	Msg  string                `json:"msg"`
+}
+
+// DemoAccountData 审核演示账号：该账号用邮箱 + 固定验证码登录，读校园数据时以影子用户（本科）的身份解析，
+// 写影子数据的操作被拦下或模拟。见 docs/app-session-features.md。
+type DemoAccountData struct {
+	DemoAccount *bool `json:"demoAccount,omitempty"`
+
+	// FailedAttempts 当前锁定周期前累计的固定码错误次数
+	FailedAttempts *int32 `json:"failedAttempts,omitempty"`
+	HasLoginCode   *bool  `json:"hasLoginCode,omitempty"`
+
+	// HasPassword 已设置登录密码（邮箱 + 密码登录）
+	HasPassword *bool `json:"hasPassword,omitempty"`
+
+	// LockedUntil 固定码登录被锁到何时（Unix 毫秒）；未锁定时不返回
+	LockedUntil *int64 `json:"lockedUntil,omitempty"`
+
+	// ShadowIdentityType undergraduate；影子失去本科绑定时为 base
+	ShadowIdentityType *string `json:"shadowIdentityType,omitempty"`
+	ShadowNickName     *string `json:"shadowNickName,omitempty"`
+
+	// ShadowStaffId 影子当前的本科学号；失去绑定时为空
+	ShadowStaffId *string `json:"shadowStaffId,omitempty"`
+	ShadowUserId  *string `json:"shadowUserId,omitempty"`
+}
+
+// DemoAccountResponseBody defines model for DemoAccountResponseBody.
+type DemoAccountResponseBody struct {
+	Code *int64 `json:"code,omitempty"`
+
+	// Data 审核演示账号：该账号用邮箱 + 固定验证码登录，读校园数据时以影子用户（本科）的身份解析，
+	// 写影子数据的操作被拦下或模拟。见 docs/app-session-features.md。
+	Data *DemoAccountData `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
 }
 
 // DenyDeviceRespBody defines model for DenyDeviceRespBody.
@@ -12590,10 +12631,17 @@ type LoginClientListResponseBody struct {
 
 // LoginData 登录数据（不透明 access/refresh 令牌 + 过期时间，单位秒）
 type LoginData struct {
-	AccessToken          *string `json:"accessToken,omitempty"`
-	AccessTokenExpireAt  *int64  `json:"accessTokenExpireAt,omitempty"`
-	RefreshToken         *string `json:"refreshToken,omitempty"`
-	RefreshTokenExpireAt *int64  `json:"refreshTokenExpireAt,omitempty"`
+	AccessToken         *string `json:"accessToken,omitempty"`
+	AccessTokenExpireAt *int64  `json:"accessTokenExpireAt,omitempty"`
+
+	// DemoAccount 审核演示账号
+	DemoAccount *bool `json:"demoAccount,omitempty"`
+
+	// Features 会话功能集：App 按它显示入口，后端闸门按同一份规则拦截。随每次签发 / 兑换 / 刷新令牌
+	// 与 /identity/auth/status 下发，按账号计算、不分渠道。规则见 docs/app-session-features.md。
+	Features             *SessionFeatures `json:"features,omitempty"`
+	RefreshToken         *string          `json:"refreshToken,omitempty"`
+	RefreshTokenExpireAt *int64           `json:"refreshTokenExpireAt,omitempty"`
 }
 
 // LoginExchangeData defines model for LoginExchangeData.
@@ -12601,6 +12649,13 @@ type LoginExchangeData struct {
 	// AccessExpireAt access token 过期时间(Unix 秒)
 	AccessExpireAt *int64  `json:"accessExpireAt,omitempty"`
 	AccessToken    *string `json:"accessToken,omitempty"`
+
+	// DemoAccount 审核演示账号
+	DemoAccount *bool `json:"demoAccount,omitempty"`
+
+	// Features 会话功能集：App 按它显示入口，后端闸门按同一份规则拦截。随每次签发 / 兑换 / 刷新令牌
+	// 与 /identity/auth/status 下发，按账号计算、不分渠道。规则见 docs/app-session-features.md。
+	Features *SessionFeatures `json:"features,omitempty"`
 
 	// RefreshExpireAt refresh token 过期时间(Unix 秒)
 	RefreshExpireAt *int64  `json:"refreshExpireAt,omitempty"`
@@ -12694,6 +12749,13 @@ type LoginResultData struct {
 
 	// BindURL 需绑定时的绑定入口
 	BindURL *string `json:"bindURL,omitempty"`
+
+	// DemoAccount 审核演示账号
+	DemoAccount *bool `json:"demoAccount,omitempty"`
+
+	// Features 会话功能集：App 按它显示入口，后端闸门按同一份规则拦截。随每次签发 / 兑换 / 刷新令牌
+	// 与 /identity/auth/status 下发，按账号计算、不分渠道。规则见 docs/app-session-features.md。
+	Features *SessionFeatures `json:"features,omitempty"`
 
 	// MergeAvailable §7: 该身份已属另一账号，可发起合并
 	MergeAvailable *bool `json:"mergeAvailable,omitempty"`
@@ -19599,6 +19661,25 @@ type ServiceChatResponseBody struct {
 	Msg  *string          `json:"msg,omitempty"`
 }
 
+// SessionFeatures 会话功能集：App 按它显示入口，后端闸门按同一份规则拦截。随每次签发 / 兑换 / 刷新令牌
+// 与 /identity/auth/status 下发，按账号计算、不分渠道。规则见 docs/app-session-features.md。
+type SessionFeatures struct {
+	// Community 社区（发布与互动）
+	Community *bool `json:"community,omitempty"`
+
+	// Mate HDU Mate（负一屏、工作模式、会话 MCP）
+	Mate *bool `json:"mate,omitempty"`
+
+	// NotificationSettings 通知设置与订阅提醒（系统公告类消息通知不受影响）
+	NotificationSettings *bool `json:"notificationSettings,omitempty"`
+
+	// Ops 运营工作台 / 官方号入口
+	Ops *bool `json:"ops,omitempty"`
+
+	// ServiceAuthorization 应用与服务授权，以及要服务授权的功能（图书馆、二课、学习通、上课啦、阳光长跑）
+	ServiceAuthorization *bool `json:"serviceAuthorization,omitempty"`
+}
+
 // SessionInfo 会话信息
 type SessionInfo struct {
 	CreatedAt    *int64  `json:"createdAt,omitempty"`
@@ -19703,6 +19784,17 @@ type SetDeliveryPreferenceRequestBody struct {
 
 // SetDeliveryPreferenceRequestBodyProvider defines model for SetDeliveryPreferenceRequestBody.Provider.
 type SetDeliveryPreferenceRequestBodyProvider string
+
+// SetDemoAccountRequestBody defines model for SetDemoAccountRequestBody.
+type SetDemoAccountRequestBody struct {
+	// LoginCode 6 位数字，不能全同或连续；已设置过时留空表示不改；只换码不会让已登录设备下线
+	LoginCode *string `json:"login_code,omitempty"`
+
+	// LoginPassword 至少 6 位；留空不改。设置后覆盖原密码并让已登录设备全部下线
+	LoginPassword *string `json:"login_password,omitempty"`
+	ShadowUserId  *string `json:"shadow_user_id,omitempty"`
+	UserId        *string `json:"user_id,omitempty"`
+}
 
 // SetLoginMethodsRequestBody defines model for SetLoginMethodsRequestBody.
 type SetLoginMethodsRequestBody struct {
@@ -20639,6 +20731,11 @@ type UnbindCampusResponseBody struct {
 type UnbindSocialResponseBody struct {
 	Code *int64  `json:"code,omitempty"`
 	Msg  *string `json:"msg,omitempty"`
+}
+
+// UnlockDemoAccountRequestBody defines model for UnlockDemoAccountRequestBody.
+type UnlockDemoAccountRequestBody struct {
+	UserId *string `json:"user_id,omitempty"`
 }
 
 // UnreturnedBatchItem defines model for UnreturnedBatchItem.
@@ -23263,6 +23360,16 @@ type LegalServiceAdminListUserConsentsParams struct {
 	UserId *string `form:"user_id,omitempty" json:"user_id,omitempty"`
 }
 
+// AdminServiceClearDemoAccountParams defines parameters for AdminServiceClearDemoAccount.
+type AdminServiceClearDemoAccountParams struct {
+	UserId *string `form:"user_id,omitempty" json:"user_id,omitempty"`
+}
+
+// AdminServiceGetDemoAccountParams defines parameters for AdminServiceGetDemoAccount.
+type AdminServiceGetDemoAccountParams struct {
+	UserId *string `form:"user_id,omitempty" json:"user_id,omitempty"`
+}
+
 // CampusLifeServiceAdminListVolunteerActivitiesParams defines parameters for CampusLifeServiceAdminListVolunteerActivities.
 type CampusLifeServiceAdminListVolunteerActivitiesParams struct {
 	Page        *int32  `form:"page,omitempty" json:"page,omitempty"`
@@ -24709,6 +24816,12 @@ type AdminServiceUpsertUserSocialIdentityJSONRequestBody = UpsertUserSocialIdent
 
 // AdminServiceSetUserDefaultIdentityJSONRequestBody defines body for AdminServiceSetUserDefaultIdentity for application/json ContentType.
 type AdminServiceSetUserDefaultIdentityJSONRequestBody = SetUserDefaultIdentityRequestBody
+
+// AdminServiceSetDemoAccountJSONRequestBody defines body for AdminServiceSetDemoAccount for application/json ContentType.
+type AdminServiceSetDemoAccountJSONRequestBody = SetDemoAccountRequestBody
+
+// AdminServiceUnlockDemoAccountJSONRequestBody defines body for AdminServiceUnlockDemoAccount for application/json ContentType.
+type AdminServiceUnlockDemoAccountJSONRequestBody = UnlockDemoAccountRequestBody
 
 // AdminServiceIssueUserSessionJSONRequestBody defines body for AdminServiceIssueUserSession for application/json ContentType.
 type AdminServiceIssueUserSessionJSONRequestBody = IssueUserSessionRequestBody

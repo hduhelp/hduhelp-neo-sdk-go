@@ -3468,6 +3468,190 @@ func (s *Service) SetUserDefaultIdentity(ctx context.Context, req *SetUserDefaul
 	return resp, err
 }
 
+// GetDemoAccountReq is the request for GetDemoAccount.
+type GetDemoAccountReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// GetDemoAccountReqBuilder builds a GetDemoAccountReq with a fluent setter per field.
+type GetDemoAccountReqBuilder struct{ req *GetDemoAccountReq }
+
+// NewGetDemoAccountReqBuilder creates a request builder for GetDemoAccount.
+func NewGetDemoAccountReqBuilder() *GetDemoAccountReqBuilder {
+	return &GetDemoAccountReqBuilder{req: &GetDemoAccountReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// UserId sets the "user_id" query parameter.
+func (b *GetDemoAccountReqBuilder) UserId(v string) *GetDemoAccountReqBuilder {
+	b.req.queryParams["user_id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *GetDemoAccountReqBuilder) Build() *GetDemoAccountReq { return b.req }
+
+// GetDemoAccountResp is the response for GetDemoAccount.
+type GetDemoAccountResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.DemoAccountData `json:"data"`
+}
+
+// GetDemoAccount: 查看审核演示账号设置
+func (s *Service) GetDemoAccount(ctx context.Context, req *GetDemoAccountReq, opts ...core.RequestOption) (*GetDemoAccountResp, error) {
+	resp := &GetDemoAccountResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/users/demo",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// SetDemoAccountReq is the request for SetDemoAccount.
+type SetDemoAccountReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// SetDemoAccountReqBuilder builds a SetDemoAccountReq with a fluent setter per field.
+type SetDemoAccountReqBuilder struct{ req *SetDemoAccountReq }
+
+// NewSetDemoAccountReqBuilder creates a request builder for SetDemoAccount.
+func NewSetDemoAccountReqBuilder() *SetDemoAccountReqBuilder {
+	return &SetDemoAccountReqBuilder{req: &SetDemoAccountReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *SetDemoAccountReqBuilder) Body(body *models.SetDemoAccountRequestBody) *SetDemoAccountReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *SetDemoAccountReqBuilder) Build() *SetDemoAccountReq { return b.req }
+
+// SetDemoAccountResp is the response for SetDemoAccount.
+type SetDemoAccountResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.DemoAccountData `json:"data"`
+}
+
+// SetDemoAccount: 设置审核演示账号
+func (s *Service) SetDemoAccount(ctx context.Context, req *SetDemoAccountReq, opts ...core.RequestOption) (*SetDemoAccountResp, error) {
+	resp := &SetDemoAccountResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "PUT",
+		PathTemplate: "/hduhelp-neo/admin/users/demo",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// ClearDemoAccountReq is the request for ClearDemoAccount.
+type ClearDemoAccountReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// ClearDemoAccountReqBuilder builds a ClearDemoAccountReq with a fluent setter per field.
+type ClearDemoAccountReqBuilder struct{ req *ClearDemoAccountReq }
+
+// NewClearDemoAccountReqBuilder creates a request builder for ClearDemoAccount.
+func NewClearDemoAccountReqBuilder() *ClearDemoAccountReqBuilder {
+	return &ClearDemoAccountReqBuilder{req: &ClearDemoAccountReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// UserId sets the "user_id" query parameter.
+func (b *ClearDemoAccountReqBuilder) UserId(v string) *ClearDemoAccountReqBuilder {
+	b.req.queryParams["user_id"] = v
+	return b
+}
+
+// Build finalizes the request.
+func (b *ClearDemoAccountReqBuilder) Build() *ClearDemoAccountReq { return b.req }
+
+// ClearDemoAccountResp is the response for ClearDemoAccount.
+type ClearDemoAccountResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.DemoAccountData `json:"data"`
+}
+
+// ClearDemoAccount: 取消审核演示账号
+func (s *Service) ClearDemoAccount(ctx context.Context, req *ClearDemoAccountReq, opts ...core.RequestOption) (*ClearDemoAccountResp, error) {
+	resp := &ClearDemoAccountResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "DELETE",
+		PathTemplate: "/hduhelp-neo/admin/users/demo",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// UnlockDemoAccountReq is the request for UnlockDemoAccount.
+type UnlockDemoAccountReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// UnlockDemoAccountReqBuilder builds a UnlockDemoAccountReq with a fluent setter per field.
+type UnlockDemoAccountReqBuilder struct{ req *UnlockDemoAccountReq }
+
+// NewUnlockDemoAccountReqBuilder creates a request builder for UnlockDemoAccount.
+func NewUnlockDemoAccountReqBuilder() *UnlockDemoAccountReqBuilder {
+	return &UnlockDemoAccountReqBuilder{req: &UnlockDemoAccountReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Body sets the request body.
+func (b *UnlockDemoAccountReqBuilder) Body(body *models.UnlockDemoAccountRequestBody) *UnlockDemoAccountReqBuilder {
+	b.req.body = body
+	return b
+}
+
+// Build finalizes the request.
+func (b *UnlockDemoAccountReqBuilder) Build() *UnlockDemoAccountReq { return b.req }
+
+// UnlockDemoAccountResp is the response for UnlockDemoAccount.
+type UnlockDemoAccountResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.DemoAccountData `json:"data"`
+}
+
+// UnlockDemoAccount: 解锁演示账号固定码登录
+func (s *Service) UnlockDemoAccount(ctx context.Context, req *UnlockDemoAccountReq, opts ...core.RequestOption) (*UnlockDemoAccountResp, error) {
+	resp := &UnlockDemoAccountResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "POST",
+		PathTemplate: "/hduhelp-neo/admin/users/demo/unlock",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
 // IssueUserSessionReq is the request for IssueUserSession.
 type IssueUserSessionReq struct {
 	pathParams  map[string]string

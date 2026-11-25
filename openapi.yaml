@@ -13622,6 +13622,88 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SetUserDefaultIdentityResponseBody'
+    /hduhelp-neo/admin/users/demo:
+        get:
+            tags:
+                - AdminService
+            summary: 查看审核演示账号设置
+            description: 是否为演示账号、影子用户及其当前本科学号与身份类型；不返回固定验证码
+            operationId: AdminService_GetDemoAccount
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: user_id
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DemoAccountResponseBody'
+        put:
+            tags:
+                - AdminService
+            summary: 设置审核演示账号
+            description: 把有邮箱、没有手机号、没有任何校园与第三方绑定、不是官方号成员的账号设为演示账号，指定影子用户（只能是本科身份）、6 位固定验证码（拒绝全同、连续的弱码）与可选的登录密码；首次设定、换影子、设密码时吊销该账号全部会话、PAT 与应用授权，只换码时只清零锁定；记审计
+            operationId: AdminService_SetDemoAccount
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SetDemoAccountRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DemoAccountResponseBody'
+        delete:
+            tags:
+                - AdminService
+            summary: 取消审核演示账号
+            description: 清除影子与固定验证码，账号恢复为普通账号（后台设的密码保留）；吊销该账号全部会话、PAT 与应用授权；记审计
+            operationId: AdminService_ClearDemoAccount
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: user_id
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DemoAccountResponseBody'
+    /hduhelp-neo/admin/users/demo/unlock:
+        post:
+            tags:
+                - AdminService
+            summary: 解锁演示账号固定码登录
+            description: 清零固定验证码的错误计数与锁定；记审计
+            operationId: AdminService_UnlockDemoAccount
+            security:
+                - OperatorBearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UnlockDemoAccountRequestBody'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DemoAccountResponseBody'
     /hduhelp-neo/admin/users/impersonation:
         post:
             tags:
@@ -28791,6 +28873,11 @@ components:
                         type: string
                 defaultIdentityType:
                     type: string
+                features:
+                    $ref: '#/components/schemas/SessionFeatures'
+                demoAccount:
+                    type: boolean
+                    description: 已登录时带
         AuthenAccessTokenRequestBody:
             type: object
             properties:
@@ -31942,6 +32029,47 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/NotificationDelivery'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        DemoAccountData:
+            type: object
+            properties:
+                demoAccount:
+                    type: boolean
+                hasLoginCode:
+                    type: boolean
+                shadowUserId:
+                    type: string
+                shadowNickName:
+                    type: string
+                shadowStaffId:
+                    type: string
+                    description: 影子当前的本科学号；失去绑定时为空
+                shadowIdentityType:
+                    type: string
+                    description: undergraduate；影子失去本科绑定时为 base
+                failedAttempts:
+                    type: integer
+                    description: 当前锁定周期前累计的固定码错误次数
+                    format: int32
+                lockedUntil:
+                    type: integer
+                    description: 固定码登录被锁到何时（Unix 毫秒）；未锁定时不返回
+                    format: int64
+                hasPassword:
+                    type: boolean
+                    description: 已设置登录密码（邮箱 + 密码登录）
+            description: |-
+                审核演示账号：该账号用邮箱 + 固定验证码登录，读校园数据时以影子用户（本科）的身份解析，
+                写影子数据的操作被拦下或模拟。见 docs/app-session-features.md。
+        DemoAccountResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/DemoAccountData'
                 code:
                     type: integer
                     format: int64
@@ -35195,6 +35323,11 @@ components:
                 refreshTokenExpireAt:
                     type: integer
                     format: int64
+                features:
+                    $ref: '#/components/schemas/SessionFeatures'
+                demoAccount:
+                    type: boolean
+                    description: 审核演示账号
             description: 登录数据（不透明 access/refresh 令牌 + 过期时间，单位秒）
         LoginExchangeData:
             type: object
@@ -35214,6 +35347,11 @@ components:
                 returnTo:
                     type: string
                     description: 服务端已校验的第一方 SPA 恢复路径
+                features:
+                    $ref: '#/components/schemas/SessionFeatures'
+                demoAccount:
+                    type: boolean
+                    description: 审核演示账号
         LoginExchangeRequestBody:
             type: object
             properties:
@@ -35333,6 +35471,11 @@ components:
                 mergeSourceUserId:
                     type: string
                     description: 待合并的源账号 B
+                features:
+                    $ref: '#/components/schemas/SessionFeatures'
+                demoAccount:
+                    type: boolean
+                    description: 审核演示账号
             description: 登录结果（回调 / 原生登录）
         LoginResultResponseBody:
             type: object
@@ -48289,6 +48432,27 @@ components:
                     format: int64
                 msg:
                     type: string
+        SessionFeatures:
+            type: object
+            properties:
+                mate:
+                    type: boolean
+                    description: HDU Mate（负一屏、工作模式、会话 MCP）
+                community:
+                    type: boolean
+                    description: 社区（发布与互动）
+                ops:
+                    type: boolean
+                    description: 运营工作台 / 官方号入口
+                serviceAuthorization:
+                    type: boolean
+                    description: 应用与服务授权，以及要服务授权的功能（图书馆、二课、学习通、上课啦、阳光长跑）
+                notificationSettings:
+                    type: boolean
+                    description: 通知设置与订阅提醒（系统公告类消息通知不受影响）
+            description: |-
+                会话功能集：App 按它显示入口，后端闸门按同一份规则拦截。随每次签发 / 兑换 / 刷新令牌
+                与 /identity/auth/status 下发，按账号计算、不分渠道。规则见 docs/app-session-features.md。
         SessionInfo:
             type: object
             properties:
@@ -48430,6 +48594,19 @@ components:
                         - wechat_mp
                         - dingtalk_work
                     type: string
+        SetDemoAccountRequestBody:
+            type: object
+            properties:
+                user_id:
+                    type: string
+                shadow_user_id:
+                    type: string
+                login_code:
+                    type: string
+                    description: 6 位数字，不能全同或连续；已设置过时留空表示不改；只换码不会让已登录设备下线
+                login_password:
+                    type: string
+                    description: 至少 6 位；留空不改。设置后覆盖原密码并让已登录设备全部下线
         SetLoginMethodsRequestBody:
             type: object
             properties:
@@ -49929,6 +50106,11 @@ components:
                     type: integer
                     format: int64
                 msg:
+                    type: string
+        UnlockDemoAccountRequestBody:
+            type: object
+            properties:
+                user_id:
                     type: string
         UnreturnedBatchItem:
             type: object
