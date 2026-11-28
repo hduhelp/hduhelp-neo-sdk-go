@@ -4,6 +4,7 @@ package appdist
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/hduhelp/hduhelp-neo-sdk-go/core"
 	"github.com/hduhelp/hduhelp-neo-sdk-go/models"
@@ -93,6 +94,52 @@ func (s *Service) UpdateAppDistribution(ctx context.Context, req *UpdateAppDistr
 	err := s.config.Do(ctx, &core.APIReq{
 		HTTPMethod:   "PUT",
 		PathTemplate: "/hduhelp-neo/admin/app/distribution",
+		PathParams:   req.pathParams,
+		QueryParams:  req.queryParams,
+		Headers:      req.headers,
+		Body:         req.body,
+	}, resp, opts...)
+	return resp, err
+}
+
+// GetAppStoresStatusReq is the request for GetAppStoresStatus.
+type GetAppStoresStatusReq struct {
+	pathParams  map[string]string
+	queryParams map[string]string
+	headers     map[string]string
+	body        any
+}
+
+// GetAppStoresStatusReqBuilder builds a GetAppStoresStatusReq with a fluent setter per field.
+type GetAppStoresStatusReqBuilder struct{ req *GetAppStoresStatusReq }
+
+// NewGetAppStoresStatusReqBuilder creates a request builder for GetAppStoresStatus.
+func NewGetAppStoresStatusReqBuilder() *GetAppStoresStatusReqBuilder {
+	return &GetAppStoresStatusReqBuilder{req: &GetAppStoresStatusReq{pathParams: map[string]string{}, queryParams: map[string]string{}, headers: map[string]string{}}}
+}
+
+// Refresh sets the "refresh" query parameter.
+func (b *GetAppStoresStatusReqBuilder) Refresh(v bool) *GetAppStoresStatusReqBuilder {
+	b.req.queryParams["refresh"] = strconv.FormatBool(v)
+	return b
+}
+
+// Build finalizes the request.
+func (b *GetAppStoresStatusReqBuilder) Build() *GetAppStoresStatusReq { return b.req }
+
+// GetAppStoresStatusResp is the response for GetAppStoresStatus.
+type GetAppStoresStatusResp struct {
+	core.APIResp `json:"-"`
+	core.CodeMsg
+	Data *models.AppStoresStatus `json:"data"`
+}
+
+// GetAppStoresStatus: 应用商店状态
+func (s *Service) GetAppStoresStatus(ctx context.Context, req *GetAppStoresStatusReq, opts ...core.RequestOption) (*GetAppStoresStatusResp, error) {
+	resp := &GetAppStoresStatusResp{}
+	err := s.config.Do(ctx, &core.APIReq{
+		HTTPMethod:   "GET",
+		PathTemplate: "/hduhelp-neo/admin/app/stores",
 		PathParams:   req.pathParams,
 		QueryParams:  req.queryParams,
 		Headers:      req.headers,

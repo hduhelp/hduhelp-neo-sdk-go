@@ -4444,6 +4444,7 @@ type AccountMergeRecord struct {
 // Activity defines model for Activity.
 type Activity struct {
 	ActivityContent      *string `json:"activityContent,omitempty"`
+	ActivityContentName  *string `json:"activityContentName,omitempty"`
 	ActivityEndTime      *string `json:"activityEndTime,omitempty"`
 	ActivityID           *string `json:"activityID,omitempty"`
 	ActivityName         *string `json:"activityName,omitempty"`
@@ -4452,6 +4453,7 @@ type Activity struct {
 	ActivityStatus       *string `json:"activityStatus,omitempty"`
 	ActivityStatusName   *string `json:"activityStatusName,omitempty"`
 	ActivityType         *string `json:"activityType,omitempty"`
+	ActivityTypeName     *string `json:"activityTypeName,omitempty"`
 	ApplyCount           *int32  `json:"applyCount,omitempty"`
 	ApplyEndTime         *string `json:"applyEndTime,omitempty"`
 	CooperativeUnitName  *string `json:"cooperativeUnitName,omitempty"`
@@ -8056,6 +8058,54 @@ type AppReleaseResponseBody struct {
 	// 原先由独立站点 poplar.hduhelp.com 提供；字段名沿用它，旧版 App 经 Ingress 改写后照常解析。
 	Data *AppRelease `json:"data,omitempty"`
 	Msg  *string     `json:"msg,omitempty"`
+}
+
+// AppStoreEntry defines model for AppStoreEntry.
+type AppStoreEntry struct {
+	Configured *bool            `json:"configured,omitempty"`
+	ConsoleUrl *string          `json:"consoleUrl,omitempty"`
+	Error      *string          `json:"error,omitempty"`
+	Facts      *[]AppStoreFact  `json:"facts,omitempty"`
+	FetchedAt  *int64           `json:"fetchedAt,omitempty"`
+	Name       *string          `json:"name,omitempty"`
+	Ok         *bool            `json:"ok,omitempty"`
+	Online     *AppStoreVersion `json:"online,omitempty"`
+	Platform   *string          `json:"platform,omitempty"`
+	Review     *AppStoreReview  `json:"review,omitempty"`
+}
+
+// AppStoreFact defines model for AppStoreFact.
+type AppStoreFact struct {
+	Label *string `json:"label,omitempty"`
+	Value *string `json:"value,omitempty"`
+}
+
+// AppStoreReview defines model for AppStoreReview.
+type AppStoreReview struct {
+	Reason      *string `json:"reason,omitempty"`
+	State       *string `json:"state,omitempty"`
+	StateText   *string `json:"stateText,omitempty"`
+	VersionCode *int64  `json:"versionCode,omitempty"`
+	VersionName *string `json:"versionName,omitempty"`
+}
+
+// AppStoreVersion defines model for AppStoreVersion.
+type AppStoreVersion struct {
+	ReleasedAt  *int64  `json:"releasedAt,omitempty"`
+	VersionCode *int64  `json:"versionCode,omitempty"`
+	VersionName *string `json:"versionName,omitempty"`
+}
+
+// AppStoresStatus defines model for AppStoresStatus.
+type AppStoresStatus struct {
+	Platforms *[]AppStoreEntry `json:"platforms,omitempty"`
+}
+
+// AppStoresStatusResponseBody defines model for AppStoresStatusResponseBody.
+type AppStoresStatusResponseBody struct {
+	Code *int64           `json:"code,omitempty"`
+	Data *AppStoresStatus `json:"data,omitempty"`
+	Msg  *string          `json:"msg,omitempty"`
 }
 
 // Appeal ---------- 申诉 ----------
@@ -20217,6 +20267,23 @@ type StatusResponseBody struct {
 	Msg  *string     `json:"msg,omitempty"`
 }
 
+// StoreAppUpdate defines model for StoreAppUpdate.
+type StoreAppUpdate struct {
+	HasUpdate    *bool   `json:"hasUpdate,omitempty"`
+	StorePackage *string `json:"storePackage,omitempty"`
+	StoreUrl     *string `json:"storeUrl,omitempty"`
+	Supported    *bool   `json:"supported,omitempty"`
+	VersionCode  *int64  `json:"versionCode,omitempty"`
+	VersionName  *string `json:"versionName,omitempty"`
+}
+
+// StoreAppUpdateResponseBody defines model for StoreAppUpdateResponseBody.
+type StoreAppUpdateResponseBody struct {
+	Code *int64          `json:"code,omitempty"`
+	Data *StoreAppUpdate `json:"data,omitempty"`
+	Msg  *string         `json:"msg,omitempty"`
+}
+
 // StudentBirthdayInfo ---------------------------------------------------------------------------
 // 生日
 // ---------------------------------------------------------------------------
@@ -21968,6 +22035,11 @@ type ApmServiceSearchApmTlogsParams struct {
 type ApmServiceGetApmTlogTaskParams struct {
 	AppKey *int64  `form:"appKey,omitempty" json:"appKey,omitempty"`
 	TaskId *string `form:"taskId,omitempty" json:"taskId,omitempty"`
+}
+
+// AppDistServiceGetAppStoresStatusParams defines parameters for AppDistServiceGetAppStoresStatus.
+type AppDistServiceGetAppStoresStatusParams struct {
+	Refresh *bool `form:"refresh,omitempty" json:"refresh,omitempty"`
 }
 
 // AdminServiceDeleteAppParams defines parameters for AdminServiceDeleteApp.

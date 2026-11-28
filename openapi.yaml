@@ -3961,6 +3961,27 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AppDistributionResponseBody'
+    /hduhelp-neo/admin/app/stores:
+        get:
+            tags:
+                - AppDistService
+            summary: 应用商店状态
+            description: 需要 app.stores:view。各分发平台的在架版本、审核中版本与审核状态（只读）；每平台缓存 5 分钟（失败 1 分钟），refresh=true 跳过缓存。
+            operationId: AppDistService_GetAppStoresStatus
+            security:
+                - OperatorBearerAuth: []
+            parameters:
+                - name: refresh
+                  in: query
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AppStoresStatusResponseBody'
     /hduhelp-neo/admin/apps:
         get:
             tags:
@@ -15337,6 +15358,32 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/AppReleaseResponseBody'
             x-hduhelp-http: {'requires_user': false, 'auth': 'public', 'catalog': 'exclude'}
+    /hduhelp-neo/app/releases/store:
+        get:
+            tags:
+                - AppDistService
+            summary: 商店包版本检查
+            description: 安卓商店包用：installer 是安装来源包名（如 com.xiaomi.market），build 是本机 versionCode。按安装来源查对应应用商店的在架版本；商店未接入、没配置或查不到时 supported=false（hasUpdate 无意义）。每个商店的在架版本每副本缓存 10 分钟，查询失败沿用上次结果、1 分钟后再试。总是 HTTP 200。
+            operationId: AppDistService_GetStoreAppUpdate
+            security: []
+            parameters:
+                - name: installer
+                  in: query
+                  schema:
+                    type: string
+                - name: build
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StoreAppUpdateResponseBody'
+            x-hduhelp-http: {'requires_user': false, 'auth': 'public', 'catalog': 'exclude'}
     /hduhelp-neo/callbacks/dingtalk/blessing-review:
         post:
             tags:
@@ -22095,6 +22142,10 @@ components:
                     type: string
                 needReport:
                     type: string
+                activityContentName:
+                    type: string
+                activityTypeName:
+                    type: string
         ActivityDetail:
             type: object
             properties:
@@ -28645,6 +28696,81 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/AppRelease'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        AppStoreEntry:
+            type: object
+            properties:
+                platform:
+                    type: string
+                name:
+                    type: string
+                consoleUrl:
+                    type: string
+                configured:
+                    type: boolean
+                ok:
+                    type: boolean
+                error:
+                    type: string
+                online:
+                    $ref: '#/components/schemas/AppStoreVersion'
+                review:
+                    $ref: '#/components/schemas/AppStoreReview'
+                facts:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AppStoreFact'
+                fetchedAt:
+                    type: integer
+                    format: int64
+        AppStoreFact:
+            type: object
+            properties:
+                label:
+                    type: string
+                value:
+                    type: string
+        AppStoreReview:
+            type: object
+            properties:
+                versionName:
+                    type: string
+                versionCode:
+                    type: integer
+                    format: int64
+                state:
+                    type: string
+                stateText:
+                    type: string
+                reason:
+                    type: string
+        AppStoreVersion:
+            type: object
+            properties:
+                versionName:
+                    type: string
+                versionCode:
+                    type: integer
+                    format: int64
+                releasedAt:
+                    type: integer
+                    format: int64
+        AppStoresStatus:
+            type: object
+            properties:
+                platforms:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AppStoreEntry'
+        AppStoresStatusResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/AppStoresStatus'
                 code:
                     type: integer
                     format: int64
@@ -49313,6 +49439,32 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/StatusData'
+                code:
+                    type: integer
+                    format: int64
+                msg:
+                    type: string
+        StoreAppUpdate:
+            type: object
+            properties:
+                supported:
+                    type: boolean
+                hasUpdate:
+                    type: boolean
+                versionCode:
+                    type: integer
+                    format: int64
+                versionName:
+                    type: string
+                storePackage:
+                    type: string
+                storeUrl:
+                    type: string
+        StoreAppUpdateResponseBody:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/StoreAppUpdate'
                 code:
                     type: integer
                     format: int64
