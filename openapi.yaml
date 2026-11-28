@@ -7837,6 +7837,8 @@ paths:
                     enum:
                         - session
                         - internal
+                        - run
+                        - app
                     type: string
                 - name: model
                   in: query
@@ -8012,6 +8014,8 @@ paths:
                     enum:
                         - session
                         - internal
+                        - run
+                        - app
                     type: string
                 - name: model
                   in: query
@@ -9362,6 +9366,8 @@ paths:
                     enum:
                         - session
                         - internal
+                        - run
+                        - app
                     type: string
                 - name: model
                   in: query
@@ -9686,6 +9692,8 @@ paths:
                     enum:
                         - session
                         - internal
+                        - run
+                        - app
                     type: string
                 - name: model
                   in: query
@@ -10139,6 +10147,8 @@ paths:
                     enum:
                         - session
                         - internal
+                        - run
+                        - app
                     type: string
                 - name: model
                   in: query
@@ -10272,6 +10282,8 @@ paths:
                     enum:
                         - session
                         - internal
+                        - run
+                        - app
                     type: string
                 - name: model
                   in: query
@@ -10515,6 +10527,8 @@ paths:
                     enum:
                         - session
                         - internal
+                        - run
+                        - app
                     type: string
                 - name: model
                   in: query
@@ -10661,6 +10675,8 @@ paths:
                     enum:
                         - session
                         - internal
+                        - run
+                        - app
                     type: string
                 - name: model
                   in: query
@@ -10770,6 +10786,8 @@ paths:
                     enum:
                         - session
                         - internal
+                        - run
+                        - app
                     type: string
                 - name: model
                   in: query
@@ -41785,6 +41803,8 @@ components:
                     type: string
                 connectorName:
                     type: string
+                appId:
+                    type: string
         ModelRequestPage:
             required:
                 - items
@@ -41973,6 +41993,7 @@ components:
                         - internal
                         - run
                         - session
+                        - app
                     type: string
                 entry:
                     enum:
@@ -41994,9 +42015,9 @@ components:
                     type: string
                     description: |-
                         入口（第 1 章 调用入口，与 domain/modelgw.Entries 同一份）：sdk:* 是进程内 SDK 方法，只给 internal；
-                        其余是 /hduhelp-neo/ai/v1 下的代理路由，给 session / run，只能落到能调同协议端点的目标（不做跨协议转换）；
+                        其余是 /hduhelp-neo/ai/v1 下的代理路由，给 session / run / app，只能落到能调同协议端点的目标（不做跨协议转换）；
                         …/models 列出该协议能调通的名字：指定了用途（session 走 metadata_purpose，即路径或请求体里的用途）时是它的公开名与别名，
-                        否则是各用途的精确别名。空 = 不检查入口协议。
+                        否则是各用途的精确别名。app 必须用 purpose 指定路径，不能用 metadata_purpose 改写；空入口不检查协议。
                 model:
                     type: string
                 purpose:
@@ -43257,6 +43278,8 @@ components:
                 requestView:
                     type: string
                     description: An image edit's multipart request as JSON (prompt, fields, input images as media references).
+                appId:
+                    type: string
         ModelTraceReplayQueryBody:
             required:
                 - reason
@@ -43939,6 +43962,8 @@ components:
                 poolName:
                     type: string
                 connectorName:
+                    type: string
+                appId:
                     type: string
         ModelUsageItemResponseBody:
             required:

@@ -1615,6 +1615,7 @@ func (e ModelRequestScopedRuleAction) Valid() bool {
 
 // Defines values for ModelResolvePreviewRequestBodyCallerKind.
 const (
+	ModelResolvePreviewRequestBodyCallerKindApp      ModelResolvePreviewRequestBodyCallerKind = "app"
 	ModelResolvePreviewRequestBodyCallerKindInternal ModelResolvePreviewRequestBodyCallerKind = "internal"
 	ModelResolvePreviewRequestBodyCallerKindRun      ModelResolvePreviewRequestBodyCallerKind = "run"
 	ModelResolvePreviewRequestBodyCallerKindSession  ModelResolvePreviewRequestBodyCallerKind = "session"
@@ -1623,6 +1624,8 @@ const (
 // Valid indicates whether the value is a known member of the ModelResolvePreviewRequestBodyCallerKind enum.
 func (e ModelResolvePreviewRequestBodyCallerKind) Valid() bool {
 	switch e {
+	case ModelResolvePreviewRequestBodyCallerKindApp:
+		return true
 	case ModelResolvePreviewRequestBodyCallerKindInternal:
 		return true
 	case ModelResolvePreviewRequestBodyCallerKindRun:
@@ -2992,14 +2995,20 @@ func (e ModelGatewayServiceModelConnectorProbesParamsStatus) Valid() bool {
 
 // Defines values for ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsCallerKind.
 const (
+	ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsCallerKindApp      ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsCallerKind = "app"
 	ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsCallerKindInternal ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsCallerKind = "internal"
+	ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsCallerKindRun      ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsCallerKind = "run"
 	ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsCallerKindSession  ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsCallerKind = "session"
 )
 
 // Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsCallerKind enum.
 func (e ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsCallerKind) Valid() bool {
 	switch e {
+	case ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsCallerKindApp:
+		return true
 	case ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsCallerKindInternal:
+		return true
+	case ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsCallerKindRun:
 		return true
 	case ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParamsCallerKindSession:
 		return true
@@ -3142,14 +3151,20 @@ func (e ModelGatewayObservabilityServiceModelObservationDashboardBreakdownParams
 
 // Defines values for ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsCallerKind.
 const (
+	ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsCallerKindApp      ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsCallerKind = "app"
 	ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsCallerKindInternal ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsCallerKind = "internal"
+	ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsCallerKindRun      ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsCallerKind = "run"
 	ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsCallerKindSession  ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsCallerKind = "session"
 )
 
 // Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsCallerKind enum.
 func (e ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsCallerKind) Valid() bool {
 	switch e {
+	case ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsCallerKindApp:
+		return true
 	case ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsCallerKindInternal:
+		return true
+	case ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsCallerKindRun:
 		return true
 	case ModelGatewayObservabilityServiceModelObservationDashboardSnapshotParamsCallerKindSession:
 		return true
@@ -3367,14 +3382,20 @@ func (e ModelGatewayObservabilityServiceModelObservationPurposeStatsParamsRange)
 
 // Defines values for ModelGatewayObservabilityServiceModelObservationRequestsParamsCallerKind.
 const (
+	ModelGatewayObservabilityServiceModelObservationRequestsParamsCallerKindApp      ModelGatewayObservabilityServiceModelObservationRequestsParamsCallerKind = "app"
 	ModelGatewayObservabilityServiceModelObservationRequestsParamsCallerKindInternal ModelGatewayObservabilityServiceModelObservationRequestsParamsCallerKind = "internal"
+	ModelGatewayObservabilityServiceModelObservationRequestsParamsCallerKindRun      ModelGatewayObservabilityServiceModelObservationRequestsParamsCallerKind = "run"
 	ModelGatewayObservabilityServiceModelObservationRequestsParamsCallerKindSession  ModelGatewayObservabilityServiceModelObservationRequestsParamsCallerKind = "session"
 )
 
 // Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationRequestsParamsCallerKind enum.
 func (e ModelGatewayObservabilityServiceModelObservationRequestsParamsCallerKind) Valid() bool {
 	switch e {
+	case ModelGatewayObservabilityServiceModelObservationRequestsParamsCallerKindApp:
+		return true
 	case ModelGatewayObservabilityServiceModelObservationRequestsParamsCallerKindInternal:
+		return true
+	case ModelGatewayObservabilityServiceModelObservationRequestsParamsCallerKindRun:
 		return true
 	case ModelGatewayObservabilityServiceModelObservationRequestsParamsCallerKindSession:
 		return true
@@ -3430,14 +3451,20 @@ func (e ModelGatewayObservabilityServiceModelObservationRequestsParamsOrder) Val
 
 // Defines values for ModelGatewayObservabilityServiceModelObservationRequestsSummaryParamsCallerKind.
 const (
+	ModelGatewayObservabilityServiceModelObservationRequestsSummaryParamsCallerKindApp      ModelGatewayObservabilityServiceModelObservationRequestsSummaryParamsCallerKind = "app"
 	ModelGatewayObservabilityServiceModelObservationRequestsSummaryParamsCallerKindInternal ModelGatewayObservabilityServiceModelObservationRequestsSummaryParamsCallerKind = "internal"
+	ModelGatewayObservabilityServiceModelObservationRequestsSummaryParamsCallerKindRun      ModelGatewayObservabilityServiceModelObservationRequestsSummaryParamsCallerKind = "run"
 	ModelGatewayObservabilityServiceModelObservationRequestsSummaryParamsCallerKindSession  ModelGatewayObservabilityServiceModelObservationRequestsSummaryParamsCallerKind = "session"
 )
 
 // Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationRequestsSummaryParamsCallerKind enum.
 func (e ModelGatewayObservabilityServiceModelObservationRequestsSummaryParamsCallerKind) Valid() bool {
 	switch e {
+	case ModelGatewayObservabilityServiceModelObservationRequestsSummaryParamsCallerKindApp:
+		return true
 	case ModelGatewayObservabilityServiceModelObservationRequestsSummaryParamsCallerKindInternal:
+		return true
+	case ModelGatewayObservabilityServiceModelObservationRequestsSummaryParamsCallerKindRun:
 		return true
 	case ModelGatewayObservabilityServiceModelObservationRequestsSummaryParamsCallerKindSession:
 		return true
@@ -3475,14 +3502,20 @@ func (e ModelGatewayObservabilityServiceModelObservationRequestsSummaryParamsCac
 
 // Defines values for ModelGatewayObservabilityServiceModelObservationUsageParamsCallerKind.
 const (
+	ModelGatewayObservabilityServiceModelObservationUsageParamsCallerKindApp      ModelGatewayObservabilityServiceModelObservationUsageParamsCallerKind = "app"
 	ModelGatewayObservabilityServiceModelObservationUsageParamsCallerKindInternal ModelGatewayObservabilityServiceModelObservationUsageParamsCallerKind = "internal"
+	ModelGatewayObservabilityServiceModelObservationUsageParamsCallerKindRun      ModelGatewayObservabilityServiceModelObservationUsageParamsCallerKind = "run"
 	ModelGatewayObservabilityServiceModelObservationUsageParamsCallerKindSession  ModelGatewayObservabilityServiceModelObservationUsageParamsCallerKind = "session"
 )
 
 // Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationUsageParamsCallerKind enum.
 func (e ModelGatewayObservabilityServiceModelObservationUsageParamsCallerKind) Valid() bool {
 	switch e {
+	case ModelGatewayObservabilityServiceModelObservationUsageParamsCallerKindApp:
+		return true
 	case ModelGatewayObservabilityServiceModelObservationUsageParamsCallerKindInternal:
+		return true
+	case ModelGatewayObservabilityServiceModelObservationUsageParamsCallerKindRun:
 		return true
 	case ModelGatewayObservabilityServiceModelObservationUsageParamsCallerKindSession:
 		return true
@@ -3571,14 +3604,20 @@ func (e ModelGatewayObservabilityServiceModelObservationUsageParamsSortOrder) Va
 
 // Defines values for ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsCallerKind.
 const (
+	ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsCallerKindApp      ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsCallerKind = "app"
 	ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsCallerKindInternal ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsCallerKind = "internal"
+	ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsCallerKindRun      ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsCallerKind = "run"
 	ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsCallerKindSession  ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsCallerKind = "session"
 )
 
 // Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsCallerKind enum.
 func (e ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsCallerKind) Valid() bool {
 	switch e {
+	case ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsCallerKindApp:
+		return true
 	case ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsCallerKindInternal:
+		return true
+	case ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsCallerKindRun:
 		return true
 	case ModelGatewayObservabilityServiceModelObservationUsageBreakdownParamsCallerKindSession:
 		return true
@@ -3796,14 +3835,20 @@ func (e ModelGatewayObservabilityServiceModelObservationUsageModelOptionsParamsM
 
 // Defines values for ModelGatewayObservabilityServiceModelObservationUsageRankingParamsCallerKind.
 const (
+	ModelGatewayObservabilityServiceModelObservationUsageRankingParamsCallerKindApp      ModelGatewayObservabilityServiceModelObservationUsageRankingParamsCallerKind = "app"
 	ModelGatewayObservabilityServiceModelObservationUsageRankingParamsCallerKindInternal ModelGatewayObservabilityServiceModelObservationUsageRankingParamsCallerKind = "internal"
+	ModelGatewayObservabilityServiceModelObservationUsageRankingParamsCallerKindRun      ModelGatewayObservabilityServiceModelObservationUsageRankingParamsCallerKind = "run"
 	ModelGatewayObservabilityServiceModelObservationUsageRankingParamsCallerKindSession  ModelGatewayObservabilityServiceModelObservationUsageRankingParamsCallerKind = "session"
 )
 
 // Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationUsageRankingParamsCallerKind enum.
 func (e ModelGatewayObservabilityServiceModelObservationUsageRankingParamsCallerKind) Valid() bool {
 	switch e {
+	case ModelGatewayObservabilityServiceModelObservationUsageRankingParamsCallerKindApp:
+		return true
 	case ModelGatewayObservabilityServiceModelObservationUsageRankingParamsCallerKindInternal:
+		return true
+	case ModelGatewayObservabilityServiceModelObservationUsageRankingParamsCallerKindRun:
 		return true
 	case ModelGatewayObservabilityServiceModelObservationUsageRankingParamsCallerKindSession:
 		return true
@@ -3946,14 +3991,20 @@ func (e ModelGatewayObservabilityServiceModelObservationUsageRankingParamsDimens
 
 // Defines values for ModelGatewayObservabilityServiceModelObservationUsageSummaryParamsCallerKind.
 const (
+	ModelGatewayObservabilityServiceModelObservationUsageSummaryParamsCallerKindApp      ModelGatewayObservabilityServiceModelObservationUsageSummaryParamsCallerKind = "app"
 	ModelGatewayObservabilityServiceModelObservationUsageSummaryParamsCallerKindInternal ModelGatewayObservabilityServiceModelObservationUsageSummaryParamsCallerKind = "internal"
+	ModelGatewayObservabilityServiceModelObservationUsageSummaryParamsCallerKindRun      ModelGatewayObservabilityServiceModelObservationUsageSummaryParamsCallerKind = "run"
 	ModelGatewayObservabilityServiceModelObservationUsageSummaryParamsCallerKindSession  ModelGatewayObservabilityServiceModelObservationUsageSummaryParamsCallerKind = "session"
 )
 
 // Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationUsageSummaryParamsCallerKind enum.
 func (e ModelGatewayObservabilityServiceModelObservationUsageSummaryParamsCallerKind) Valid() bool {
 	switch e {
+	case ModelGatewayObservabilityServiceModelObservationUsageSummaryParamsCallerKindApp:
+		return true
 	case ModelGatewayObservabilityServiceModelObservationUsageSummaryParamsCallerKindInternal:
+		return true
+	case ModelGatewayObservabilityServiceModelObservationUsageSummaryParamsCallerKindRun:
 		return true
 	case ModelGatewayObservabilityServiceModelObservationUsageSummaryParamsCallerKindSession:
 		return true
@@ -4006,14 +4057,20 @@ func (e ModelGatewayObservabilityServiceModelObservationUsageSummaryParamsBillin
 
 // Defines values for ModelGatewayObservabilityServiceModelObservationUsageTrendParamsCallerKind.
 const (
+	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsCallerKindApp      ModelGatewayObservabilityServiceModelObservationUsageTrendParamsCallerKind = "app"
 	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsCallerKindInternal ModelGatewayObservabilityServiceModelObservationUsageTrendParamsCallerKind = "internal"
+	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsCallerKindRun      ModelGatewayObservabilityServiceModelObservationUsageTrendParamsCallerKind = "run"
 	ModelGatewayObservabilityServiceModelObservationUsageTrendParamsCallerKindSession  ModelGatewayObservabilityServiceModelObservationUsageTrendParamsCallerKind = "session"
 )
 
 // Valid indicates whether the value is a known member of the ModelGatewayObservabilityServiceModelObservationUsageTrendParamsCallerKind enum.
 func (e ModelGatewayObservabilityServiceModelObservationUsageTrendParamsCallerKind) Valid() bool {
 	switch e {
+	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsCallerKindApp:
+		return true
 	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsCallerKindInternal:
+		return true
+	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsCallerKindRun:
 		return true
 	case ModelGatewayObservabilityServiceModelObservationUsageTrendParamsCallerKindSession:
 		return true
@@ -15726,6 +15783,7 @@ type ModelRequestItem struct {
 	ActualCost            string         `json:"actualCost"`
 	AffinityKeyHash       string         `json:"affinityKeyHash"`
 	AffinityOutcome       string         `json:"affinityOutcome"`
+	AppId                 *string        `json:"appId,omitempty"`
 	AttemptCount          int64          `json:"attemptCount"`
 	AttemptsDropped       int64          `json:"attemptsDropped"`
 	AuthLatencyMs         *int64         `json:"authLatencyMs,omitempty"`
@@ -15871,9 +15929,9 @@ type ModelResolvePreviewRequestBody struct {
 	CallerKind *ModelResolvePreviewRequestBodyCallerKind `json:"caller_kind,omitempty"`
 
 	// Entry 入口（第 1 章 调用入口，与 domain/modelgw.Entries 同一份）：sdk:* 是进程内 SDK 方法，只给 internal；
-	// 其余是 /hduhelp-neo/ai/v1 下的代理路由，给 session / run，只能落到能调同协议端点的目标（不做跨协议转换）；
+	// 其余是 /hduhelp-neo/ai/v1 下的代理路由，给 session / run / app，只能落到能调同协议端点的目标（不做跨协议转换）；
 	// …/models 列出该协议能调通的名字：指定了用途（session 走 metadata_purpose，即路径或请求体里的用途）时是它的公开名与别名，
-	// 否则是各用途的精确别名。空 = 不检查入口协议。
+	// 否则是各用途的精确别名。app 必须用 purpose 指定路径，不能用 metadata_purpose 改写；空入口不检查协议。
 	Entry           *ModelResolvePreviewRequestBodyEntry `json:"entry,omitempty"`
 	InputTokens     *int64                               `json:"input_tokens,omitempty"`
 	MetadataPurpose *string                              `json:"metadata_purpose,omitempty"`
@@ -15886,9 +15944,9 @@ type ModelResolvePreviewRequestBody struct {
 type ModelResolvePreviewRequestBodyCallerKind string
 
 // ModelResolvePreviewRequestBodyEntry 入口（第 1 章 调用入口，与 domain/modelgw.Entries 同一份）：sdk:* 是进程内 SDK 方法，只给 internal；
-// 其余是 /hduhelp-neo/ai/v1 下的代理路由，给 session / run，只能落到能调同协议端点的目标（不做跨协议转换）；
+// 其余是 /hduhelp-neo/ai/v1 下的代理路由，给 session / run / app，只能落到能调同协议端点的目标（不做跨协议转换）；
 // …/models 列出该协议能调通的名字：指定了用途（session 走 metadata_purpose，即路径或请求体里的用途）时是它的公开名与别名，
-// 否则是各用途的精确别名。空 = 不检查入口协议。
+// 否则是各用途的精确别名。app 必须用 purpose 指定路径，不能用 metadata_purpose 改写；空入口不检查协议。
 type ModelResolvePreviewRequestBodyEntry string
 
 // ModelResolvePreviewResponseBody defines model for ModelResolvePreviewResponseBody.
@@ -16433,6 +16491,7 @@ type ModelTraceQueryBody struct {
 
 // ModelTraceReplay defines model for ModelTraceReplay.
 type ModelTraceReplay struct {
+	AppId        *string             `json:"appId,omitempty"`
 	Attempts     []ModelTraceAttempt `json:"attempts"`
 	CallerKind   string              `json:"callerKind"`
 	CaptureState string              `json:"captureState"`
@@ -16662,6 +16721,7 @@ type ModelUsageBucket struct {
 // ModelUsageItem defines model for ModelUsageItem.
 type ModelUsageItem struct {
 	ActualCost                string                  `json:"actualCost"`
+	AppId                     *string                 `json:"appId,omitempty"`
 	AttemptCount              int64                   `json:"attemptCount"`
 	BillingMode               string                  `json:"billingMode"`
 	BillingModel              *string                 `json:"billingModel,omitempty"`
